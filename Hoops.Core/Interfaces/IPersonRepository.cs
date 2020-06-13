@@ -1,0 +1,20 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using Hoops.Core.Entities;
+using Hoops.Core.Enum;
+
+namespace Hoops.Infrastructure.Interface
+{
+    public interface IPersonRepository : IRepository<Person>
+    {
+        int FindPersonByLastName(string name);
+        Person FindPersonByLastAndFirstName(string lastName, string firstName);
+        IQueryable<Person> FindPeopleByLastAndFirstName(string lastName, string firstName, bool playerOnly);
+        int FindByEmail(string email);
+        IQueryable<Person> GetByGroup(int companyId, int seasonId, GroupTypes.GroupType group);
+        int GetBccList(string lastName, string firstName);
+        IQueryable<Person> GetADs(int companyId);
+        void RemoveFromHousehold(int p);
+        List<string> GetParents(int personId); 
+    }
+}

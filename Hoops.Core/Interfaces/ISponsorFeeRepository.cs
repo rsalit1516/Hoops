@@ -1,0 +1,14 @@
+using Hoops.Core.Entities;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Hoops.Infrastructure.Interface;
+
+namespace Csbc.Infrastructure.Interface
+{
+    public interface ISponsorFeeRepository : IRepository<Season>
+    {
+        // Move to Sponsor Fee Repository
+        List<SponsorFee> GetSeasonFees(int seasonId);
+    }
+}
