@@ -1,0 +1,31 @@
+<div id="header" class="center-block">
+  <div id="logo">
+    <a href="index.html">
+      <img [src]="topImage" alt=" " class="img-responsive" />
+    </a>
+  </div>
+</div>
+
+<div class="row center-top">
+  <div class="col-sm-12">
+    <div class="row">
+      <div [ngClass]="meetingNoticeClass" [hidden]="!showSidebar">
+        <csbc-home-sidebar></csbc-home-sidebar>
+      </div>
+      <!-- <div class="row"> -->
+        <div [ngClass]="imageClass" >
+          <csbc-home-center class="tag"></csbc-home-center>
+          <csbc-announcements class="announcements col-12"></csbc-announcements>
+
+        </div>
+      <!-- </div> -->
+    </div>
+    <div class="row">
+      <div class="col-sm-10 col-sm-12">
+        <h6 class="centerlow" style="flex: 1 1 auto;">
+          <span class="manny">Manny Rosa - forever in our hearts at CSBC </span>
+        </h6>
+      </div>
+    </div>
+  </div>
+</div>

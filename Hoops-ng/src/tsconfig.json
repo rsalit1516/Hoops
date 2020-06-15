@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "baseUrl": "",
+    "declaration": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": ["es6", "dom"],
+    "mapRoot": "./",
+    "module": "esNext",
+    "moduleResolution": "node",
+    "outDir": "../dist/out-tsc",
+    "sourceMap": true,
+    "target": "es6",
+    "typeRoots": ["../node_modules/@types"]
+  },
+  
+    "exclude": [
+      //files to exclude: example below
+      "node_modules",
+      "**/*.spec.ts"
+    ]
+}

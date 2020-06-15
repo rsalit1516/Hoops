@@ -1,0 +1,23 @@
+[
+    {
+        "id": 1,
+        "name": "Spring 2016",
+        "startDate": "04/01/2016",
+        "endDate": "06/21/2016",
+        "currentSeason": false
+    },
+    {
+        "id": 2,
+        "name": "Summer 2016",
+        "startDate": "06/01/2016",
+        "endDate": "09/21/2016",
+        "currentSeason": false
+    },
+    {
+        "id": 3,
+        "name": "Fall 2016",
+        "startDate": "09/01/2016",
+        "endDate": "11/21/2016",
+        "currentSeason": true
+    }
+]

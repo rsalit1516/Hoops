@@ -1,0 +1,38 @@
+<div class="card" style="width: 18rem;">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-6">
+        {{ game.gameDate | date: 'MM/dd/yyyy' }}
+      </div>
+      <div class="col-6">
+        <span>{{ game.gameDate | date: 'EEE' }} : </span>
+        <span>{{ game.gameTime | date: 'shortTime' }}</span>
+      </div>
+    </div>
+    <!-- <div class="col-sm-2">
+    </div>
+    <div class="col-sm-3">
+    </div> -->
+    <div class="col-sm-12 text-center">
+      <div class="data">{{ game.location }}</div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <span>Home: </span>
+        <span>{{ game.homeTeamName }}</span>
+      </div>
+      <div class="col-sm-6">
+        <span>Visitor: </span>
+        <span>{{ game.visitingTeamName }}</span>
+      </div>
+    </div>
+    <div *ngIf="game.homeScore != 0 && game.visitorScore != 0">
+      <div class="col-sm-6">
+        <div class="text-center">{{ game.homeScore }}</div>
+      </div>
+      <div class="col-sm-6">
+        <div class="text-center">{{ game.visitorScore }}</div>
+      </div>
+    </div>
+  </div>
+</div>

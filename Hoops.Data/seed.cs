@@ -15,6 +15,9 @@ namespace Hoops.Data
         public DivisionRepository DivisionRepo { get; private set; }
         public TeamRepository TeamRepo { get; private set; }
         public ColorRepository ColorRepo { get; private set; }
+        public HouseholdRepository HouseholdRepo { get; private set; }
+        public PersonRepository PersonRepo { get; private set; }
+        public ScheduleLocationRepository LocationRepo { get; private set; }
         public Seed()
         {
             Context = new hoopsContext();
@@ -22,6 +25,9 @@ namespace Hoops.Data
             DivisionRepo = new DivisionRepository(Context);
             TeamRepo = new TeamRepository(Context);
             ColorRepo = new ColorRepository(Context);
+            HouseholdRepo = new HouseholdRepository(Context);
+            PersonRepo = new PersonRepository(Context);
+            LocationRepo = new ScheduleLocationRepository(Context);
         }
         public async Task InitializeDataAsync()
         {
@@ -181,7 +187,6 @@ namespace Hoops.Data
                     }
                 }
             }
-
         }
         private async Task InitializeColorsAsync()
         {
@@ -211,5 +216,20 @@ namespace Hoops.Data
                 ColorName = "Orange"
             });
         }
+        private async Task InitializeHouseholds()
+        {
+            var randomPhone = new Random();
+
+            await HouseholdRepo.InsertAsync(new Household
+            {
+                CompanyId = 1,
+                Name = "Blarney",
+                Phone = "954" + randomPhone.Next(1111110, 9999999).ToString(),
+                City = "Coral Springs",
+                State = "FL",
+                Email = "Blarney@xyz.com"
+            });
+        }
+        //private Array
     }
 }

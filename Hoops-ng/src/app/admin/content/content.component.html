@@ -1,0 +1,41 @@
+<form class="form-inline" novalidate (ngSubmit)="save()"  [formGroup]="contentForm">
+    <fieldset>
+        <div class="col-md-12">
+            <div class=form-group [ngClass]="{'has-error': (contentForm.get('title').touched || contentForm.get('title').dirty) && !contentForm.get('title').valid }">
+                <label class="control-label" for="title">Title</label>
+                <input id="title" class="form-control" type="text" placeholder="Title" formControlName="title" />
+            </div>
+            <span class="help-block" *ngIf="(contentForm.get('title').touched 
+                                                         || contentForm.get('title').dirty) && 
+                                                        contentForm.get('title').errors">
+                             <!-- <span *ngIf="contentForm.get('title').errors.required">
+                                Please include a title.
+                            </span> -->
+                       </span>
+        </div>
+        <div class="col-md-12">
+            <div class=form-group [ngClass]="{'has-error': (contentForm.get('subTitle').touched || contentForm.get('subTitle').dirty) && !contentForm.get('subTitle').valid }">
+                <label class="control-label" for="subTitle">Sub-Title</label>
+                <input id="subTitle" class="form-control" type="text" placeholder="Title" formControlName="subTitle" />
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class=form-group [ngClass]="{'has-error': (contentForm.get('body').touched || contentForm.get('body').dirty) && !contentForm.get('body').valid }">
+                <label class="control-label" for="body">Body</label>
+                <input id="body" class="form-control" type="text" placeholder="Title" formControlName="body" />
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class=form-group [ngClass]="{'has-error': (contentForm.get('location').touched || contentForm.get('location').dirty) && !contentForm.get('location').valid }">
+                <label class="control-label" for="location">Location</label>
+                <input id="location" class="form-control" type="text" placeholder="Title" formControlName="location" />
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class=form-group [ngClass]="{'has-error': (contentForm.get('dateAndTime').touched || contentForm.get('dateAndTime').dirty) && !contentForm.get('dateAndTime').valid }">
+                <label class="control-label" for="dateAndTime">Date and Time</label>
+                <input id="dateAndTime" class="form-control" type="text" placeholder="Title" formControlName="dateAndTime" />
+            </div>
+        </div>
+    </fieldset>
+</form>

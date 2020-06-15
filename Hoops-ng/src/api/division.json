@@ -1,0 +1,30 @@
+ [
+    {
+ "seasonId": 2082,
+            "divisionName": "TR2",
+            "divisionId": 1,
+            "minDate": "09/01/2005",
+            "maxDate": "08/31/2006"
+    },
+    {
+ "seasonId": 2082,
+            "divisionName": "TR4",
+            "divisionId": 2,
+            "minDate": "09/01/2005",
+            "maxDate": "08/31/2006"
+    },
+    {
+ "seasonId": 2082,
+            "divisionName": "SI Boys",
+            "divisionId": 3,
+            "minDate": "09/01/2005",
+            "maxDate": "08/31/2006"
+    },
+    {
+ "seasonId": 2082,
+            "divisionName": "HS Boys",
+            "divisionId": 4,
+            "minDate": "09/01/2005",
+            "maxDate": "08/31/2006"
+    }
+ ]

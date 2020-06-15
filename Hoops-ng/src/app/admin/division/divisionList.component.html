@@ -1,0 +1,67 @@
+<div class="table-wrapper">
+  <mat-toolbar>
+      <mat-toolbar-row fxLayout="row">
+        <div class="listHeader">
+          Divisions
+        </div>
+        <span fxFlex></span>
+        <div fxFlex fxLayoutAlign="end">
+          <button mat-raised-button (click)="addDivision()">
+            New
+          </button>
+          <span fxFlex></span>
+        </div>
+      </mat-toolbar-row>
+  </mat-toolbar>
+  <table mat-table id="grd" [dataSource]="dataSource">
+    <ng-container matColumnDef="divisionID">
+      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <td mat-cell *matCellDef="let game" class="teamName">
+        {{ game.divisionID }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="div_Desc">
+      <th mat-header-cell *matHeaderCellDef>Division</th>
+      <td mat-cell *matCellDef="let game" class="teamName">
+        {{ game.div_Desc }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="minDate">
+      <th mat-header-cell *matHeaderCellDef>Min Date</th>
+      <td mat-cell *matCellDef="let game" class="teamName">
+        {{ game.minDate | date: 'MM/dd/yyyy' }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="maxDate">
+      <th mat-header-cell *matHeaderCellDef>Max Date</th>
+      <td mat-cell *matCellDef="let game" class="teamName">
+        {{ game.maxDate | date: 'MM/dd/yyyy' }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="viewActions">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let row">
+        <button class="edit" (click)="getRecord(row)" mat-icon-button>
+          <mat-icon>edit</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let row">
+        <button mat-button (click)="viewTeams(row)">Teams</button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</div>
+
+<!-- <div class="col-sm-8">
+    <div *ngIf="selectedDivision">
+        <csbc-division-detail [division]="selectedDivision"></csbc-division-detail>
+    </div>
+</div> -->

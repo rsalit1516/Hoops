@@ -1,0 +1,13 @@
+@import '../../../content/_variables';
+
+.mat-dialog-container {
+    background-color: $card-background-color;
+}
+
+h1 {font-size:1.2rem;}
+input {
+    color: blue;
+}
+.error {
+    color: red;
+}

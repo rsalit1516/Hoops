@@ -1,0 +1,62 @@
+[
+    {
+        "id": 1,
+        "divisionId": 1,
+        "name": "Blues",
+        "color": "Pink"
+    },
+    {
+        "id": 2,
+        "divisionId": 1,
+        "name": "Barbs",
+        "color": "Pink"
+    },
+    {
+        "id": 3,
+        "divisionId": 1,
+        "name": "Patsies",
+        "color": "Pink"
+    },
+    {
+        "id": 4,
+        "divisionId": 1,
+        "name": "Holes",
+        "color": "Pink"
+    },
+    {
+        "id": 5,
+        "divisionId": 2,
+        "name": "Jets",
+        "color": "Pink"
+    },
+    {
+        "id": 6,
+        "divisionId": 2,
+        "name": "Finks",
+        "color": "Pink"
+    },
+    {
+        "id": 7,
+        "divisionId": 2,
+        "name": "Squirrels",
+        "color": "Pink"
+    },
+    {
+        "id": 7,
+        "divisionId": 3,
+        "name": "Rats",
+        "color": "Pink"
+    },
+    {
+        "id": 8,
+        "divisionId": 3,
+        "name": "Cycles",
+        "color": "Pink"
+    },
+    {
+        "id": 9,
+        "divisionId": 3,
+        "name": "Punks",
+        "color": "Pink"
+    }
+]

@@ -1,0 +1,29 @@
+[
+    {
+        "webContentId": 1,
+        "webContentTypeId": 3,
+        "title": "Meeting notice",
+       
+        "body": "Come to registration",
+        "location": "Mullins Hall",
+        "dateAndTime": "Sunday at 2PM - 3PM"
+    },
+    {
+        "webContentId": 2,
+        "webContentTypeId": 1,
+        "title": "Season registration",
+       
+        "body": "Come to registration",
+        "location": "Mullins Hall",
+        "dateAndTime": "Sunday at 2PM - 3PM"
+    },
+     {
+        "webContentId": 3,
+        "webContentTypeId": 2,
+        "title": "Season registration",
+        "subTitle": "Winter Season",
+        "body": "Come to registration",
+        "location": "Mullins Hall",
+        "dateAndTime": "January 21, Sunday at 2PM - 3PM"
+    }
+]

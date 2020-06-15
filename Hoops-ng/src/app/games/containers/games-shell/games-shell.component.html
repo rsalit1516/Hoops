@@ -1,0 +1,12 @@
+<csbc-games-top-menu (selectedDivision)="divisionSelected($event)">
+</csbc-games-top-menu>
+<div class="games-wrapper">
+  <div fxLayout="row wrap" fxLayoutAlign="start" 
+  fxLayoutGap="10px" fxFlex.lt-sm="100%" fxFlex.gt-sm="90%" >
+    <div fxFlex="100" class="shell">
+      <div class="game-wrapper">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>

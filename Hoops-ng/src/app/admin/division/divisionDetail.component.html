@@ -1,0 +1,21 @@
+<form class="form-horizontal" novalidate (ngSubmit)="save()" [formGroup]="divisionForm">
+    <fieldset>
+        
+        <div class=form-group [ngClass]="{'has-error': (divisionForm.get('name').touched || divisionForm.get('name').dirty) && !divisionForm.get('name').valid }">
+            <label class="col-md-2 control-label" for="name">division</label>
+            <input id="name" class="form-control" type="text" placeholder="division Name" formControlName="name"
+            />
+        </div>
+        <div class=form-group [ngClass]="{'has-error': (divisionForm.get('minDate').touched || divisionForm.get('minDate').dirty) && !divisionForm.get('minDate').valid }">
+            <label class="col-md-2 control-label" for="divisionForm.get('minDate')">min Date</label>
+            <input id="divisionForm.get('minDate')" class="form-control" required type="text" placeholder="min Date" formControlName="minDate"
+            />
+        </div>
+        <div class=form-group [ngClass]="{'has-error': (divisionForm.get('maxDate').touched || divisionForm.get('maxDate').dirty) && !divisionForm.get('minDate').valid }">
+            <label class="col-md-2 control-label" for="divisionForm.get('maxDate')">max Date</label>
+            <input id="divisionForm.get('maxDate')" class="form-control" required type="text" placeholder="max Date" formControlName="maxDate"
+            />
+        </div>
+       
+    </fieldset>
+</form>
