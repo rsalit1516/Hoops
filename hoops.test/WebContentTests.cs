@@ -1,11 +1,9 @@
 using System;
 using Xunit;
-using csbc_server.Infrastructure.Repository;
-using Csbc.Infrastructure;
-using Csbc.Entities;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Hoops.Infrastructure.Repository;
+using Hoops.Core.Entities;
 
 namespace csbc_server_test
 {

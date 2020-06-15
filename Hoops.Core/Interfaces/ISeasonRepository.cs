@@ -2,9 +2,8 @@ using Hoops.Core.Entities;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Hoops.Infrastructure.Interface;
 
-namespace Csbc.Infrastructure.Interface
+namespace Hoops.Infrastructure.Interface
 {
     public interface ISeasonRepository : IRepository<Season>
     {

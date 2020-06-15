@@ -4,14 +4,11 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Csbc.Infrastructure;
-using Hoops.Infrastructure.Interface;
-using Hoops.Infrastructure.Repository;
-using Csbc.Infrastructure.Interface;
 using Hoops.Core.Entities;
 using Hoops.Core.ViewModels;
+using Hoops.Infrastructure.Interface;
 
-namespace Csbc.Infrastructure.Repository
+namespace Hoops.Infrastructure.Repository
 {
     public class SeasonRepository : EFRepository<Season>, ISeasonRepository
     {

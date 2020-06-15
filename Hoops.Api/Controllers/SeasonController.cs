@@ -1,7 +1,7 @@
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Csbc.Infrastructure.Interface;
 using Hoops.Core.Entities;
+using Hoops.Infrastructure.Interface;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Hoops.Controllers
 {

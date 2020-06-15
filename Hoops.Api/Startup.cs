@@ -13,8 +13,9 @@ using Hoops.Infrastructure.Interface;
 using Hoops.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Hoops.Data;
 
-namespace Hoops
+namespace Hoops.Api
 {
     public class Startup
     {
@@ -29,7 +30,7 @@ namespace Hoops
         public IWebHostEnvironment Environment { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public async void ConfigureServices(IServiceCollection services)
         {
             services
                 .AddDbContext<hoopsContext>(options =>
@@ -92,16 +93,20 @@ namespace Hoops
                                 }
                         });
 
-                    // services.AddSwaggerDocument();
+                    // services..AddSwaggerDocument();
                     // Set the comments path for the Swagger JSON and UI.
                     var xmlFile =
                         $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                     var xmlPath =
                         Path.Combine(AppContext.BaseDirectory, xmlFile);
-                    c.IncludeXmlComments(xmlPath);
+                    // c.IncludeXmlComments(xmlPath);
                 });
             services.AddCors();
             services.AddControllers();
+
+            // call data initializer
+            var seed = new Seed();
+            await seed.InitializeDataAsync();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

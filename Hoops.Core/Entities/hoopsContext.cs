@@ -92,7 +92,8 @@ namespace Hoops.Core.Entities
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=1765-1VK9;Database=hoops;Trusted_Connection=True;");
+                //optionsBuilder.UseSqlServer("Server=1765-1VK9;Database=hoops;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=hoops;Trusted_Connection=True;");
             }
         }
 
@@ -111,7 +112,7 @@ namespace Hoops.Core.Entities
 
                 entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
 
-                entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime");
+                entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime").HasDefaultValue(DateTime.Now);
 
                 entity.Property(e => e.CreatedUser).HasMaxLength(50);
 
@@ -129,8 +130,8 @@ namespace Hoops.Core.Entities
                 entity.ToTable("Color");
 
                 entity.Property(e => e.ColorId)
-                    .HasColumnName("ColorID")
-                    .ValueGeneratedNever();
+                    .HasColumnName("ColorID");
+                entity.HasKey(e => e.ColorId);
 
                 entity.Property(e => e.ColorName)
                     .HasMaxLength(20)
@@ -138,7 +139,7 @@ namespace Hoops.Core.Entities
 
                 entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
 
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime").HasDefaultValue(DateTime.Now); 
 
                 entity.Property(e => e.CreatedUser)
                     .HasMaxLength(10)
@@ -181,7 +182,7 @@ namespace Hoops.Core.Entities
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime").HasDefaultValue(DateTime.Now); 
 
                 entity.Property(e => e.CreatedUser)
                     .HasMaxLength(20)
@@ -211,7 +212,7 @@ namespace Hoops.Core.Entities
 
                 entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
 
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime").HasDefaultValue(DateTime.Now); 
 
                 entity.Property(e => e.CreatedUser).HasMaxLength(50);
 
@@ -278,7 +279,7 @@ namespace Hoops.Core.Entities
 
                 entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
 
-                entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime");
+                entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime").HasDefaultValue(DateTime.Now); 
 
                 entity.Property(e => e.CreatedUser).HasMaxLength(50);
 
@@ -362,7 +363,7 @@ namespace Hoops.Core.Entities
 
                 entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
 
-                entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime");
+                entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime").HasDefaultValue(DateTime.Now);
 
                 entity.Property(e => e.CreatedUser).HasMaxLength(20);
 
@@ -400,7 +401,7 @@ namespace Hoops.Core.Entities
 
                 entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
 
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime").HasDefaultValue(DateTime.Now);
 
                 entity.Property(e => e.ErrorMsg)
                     .HasColumnName("ErrorMSG")
@@ -437,7 +438,7 @@ namespace Hoops.Core.Entities
 
                 entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
 
-                entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime");
+                entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime").HasDefaultValue(DateTime.Now);
 
                 entity.Property(e => e.CreatedUser).HasMaxLength(20);
 
@@ -502,7 +503,7 @@ namespace Hoops.Core.Entities
 
                 entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
 
-                entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime");
+                entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime").HasDefaultValue(DateTime.Now);
 
                 entity.Property(e => e.CreatedUser).HasMaxLength(20);
 
@@ -545,7 +546,7 @@ namespace Hoops.Core.Entities
                     .IsUnicode(false)
                     .IsFixedLength();
 
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime").HasDefaultValue(DateTime.Now);
 
                 entity.Property(e => e.CreatedUser)
                     .HasMaxLength(10)
@@ -706,7 +707,7 @@ namespace Hoops.Core.Entities
 
                 entity.Property(e => e.ConvenienceFee).HasColumnType("money");
 
-                entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime");
+                entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime").HasDefaultValue(DateTime.Now);
 
                 entity.Property(e => e.CreatedUser).HasMaxLength(50);
 
@@ -737,7 +738,7 @@ namespace Hoops.Core.Entities
 
                 entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
 
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime").HasDefaultValue(DateTime.Now);
 
                 entity.Property(e => e.CreatedUser).HasMaxLength(20);
 
@@ -873,7 +874,7 @@ namespace Hoops.Core.Entities
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime");
+                entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime").HasDefaultValue(DateTime.Now);
 
                 entity.Property(e => e.CreatedUser)
                     .HasMaxLength(20)
@@ -946,7 +947,7 @@ namespace Hoops.Core.Entities
                     .HasColumnName("ContactNameDELETE")
                     .HasMaxLength(50);
 
-                entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime");
+                entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime").HasDefaultValue(DateTime.Now);
 
                 entity.Property(e => e.CreatedUser).HasMaxLength(50);
 
@@ -1043,7 +1044,7 @@ namespace Hoops.Core.Entities
 
                 entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
 
-                entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime");
+                entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime").HasDefaultValue(DateTime.Now);
 
                 entity.Property(e => e.CreatedUser).HasMaxLength(50);
 
@@ -1078,7 +1079,7 @@ namespace Hoops.Core.Entities
 
                 entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
 
-                entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime");
+                entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime").HasDefaultValue(DateTime.Now);
 
                 entity.Property(e => e.CreatedUser).HasMaxLength(50);
 
@@ -1129,7 +1130,7 @@ namespace Hoops.Core.Entities
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime");
+                entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime").HasDefaultValue(DateTime.Now);
 
                 entity.Property(e => e.CreatedUser)
                     .HasMaxLength(20)
@@ -1341,7 +1342,7 @@ namespace Hoops.Core.Entities
 
                 entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
 
-                entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime");
+                entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime").HasDefaultValue(DateTime.Now);
 
                 entity.Property(e => e.CreatedUser).HasMaxLength(50);
 
@@ -1364,7 +1365,7 @@ namespace Hoops.Core.Entities
 
                 entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
 
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime").HasDefaultValue(DateTime.Now);
 
                 entity.Property(e => e.CreatedUser).HasMaxLength(50);
 
@@ -1633,7 +1634,7 @@ namespace Hoops.Core.Entities
 
                 entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
 
-                entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime");
+                entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime").HasDefaultValue(DateTime.Now);
 
                 entity.Property(e => e.DivDesc)
                     .HasColumnName("Div_Desc")

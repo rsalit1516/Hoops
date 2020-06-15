@@ -1,12 +1,10 @@
-using System;
 using Xunit;
-using csbc_server.Infrastructure.Repository;
-using Csbc.Infrastructure;
-using Csbc.Entities;
 using System.Linq;
 using System.Threading.Tasks;
+using Hoops.Core.Entities;
+using Hoops.Infrastructure.Repository;
 
-namespace csbc_server_test
+namespace Hoops.Test
 {
     public class WebContentTypeTests
     {
