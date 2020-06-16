@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
 @Injectable()
 export class DataService {
   webUrl: string;
-  baseUrl =  'https://localhost:5001';
+  baseUrl =  'http://localhost:5000';
   dotNetCoreUrl: string;
   getActiveWebContentUrl = this.dotNetCoreUrl + '/api/webcontent/getActiveWebContent';
   loginUrl = this.baseUrl + '/api/User/login';
@@ -16,11 +16,11 @@ export class DataService {
   constructor(private _http: HttpClient) {
     // this.webUrl = 'http://svc.csbchoops.net';
     // this.webUrl = 'http://localhost:29784';
-    this.webUrl = 'https://localhost:5001';
+    this.webUrl = 'http://localhost:5000';
     // this.baseUrl = 'https://localhost:5001';
     // this.webUrl = 'http://csbc-webapi.azurewebsites.net';
     // this.webUrl = 'https://apicsbc.azurewebsites.net';
-    this.dotNetCoreUrl = 'https://localhost:5001';
+    this.dotNetCoreUrl = 'http://localhost:5000';
     this.getActiveWebContentUrl = this.dotNetCoreUrl + '/api/webcontent/getActiveWebContent';
   }
 
