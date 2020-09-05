@@ -2319,15 +2319,16 @@ namespace Hoops.Core.Entities
                 entity.Property(e => e.Title).HasMaxLength(50);
                 entity.Property(e => e.Type).HasMaxLength(50);
                 entity.Property(e => e.CreatedDate).HasDefaultValue(DateTime.Now);
-                //entity.HasOne(d => d.WebContentType)
-                //    .WithOne(k => k.WebContentTypeId)
-                //    .;
+                // entity.HasOne(d => d.WebContentType)                    
+                // .WithOne(k => k.WebContent)
+                // .HasForeignKey<WebContentType>(w => w.WebContentTypeId);
             });
 
             modelBuilder.Entity<WebContentType>(entity =>
             {
                 entity.ToTable("WebContentType");
                 entity.HasKey(e => e.WebContentTypeId);
+                entity.Property(p => p.WebContentTypeId).ValueGeneratedOnAdd();
                 entity.Property(e => e.WebContentTypeDescription)
                     .IsRequired()
                     .HasMaxLength(50);

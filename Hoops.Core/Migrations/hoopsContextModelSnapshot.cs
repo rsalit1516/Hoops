@@ -38,7 +38,7 @@ namespace Hoops.Core.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smalldatetime")
-                        .HasDefaultValue(new DateTime(2020, 6, 15, 13, 14, 25, 773, DateTimeKind.Local).AddTicks(2038));
+                        .HasDefaultValue(new DateTime(2020, 9, 4, 18, 31, 48, 630, DateTimeKind.Local).AddTicks(3515));
 
                     b.Property<string>("CreatedUser")
                         .HasColumnType("nvarchar(50)")
@@ -87,7 +87,7 @@ namespace Hoops.Core.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
-                        .HasDefaultValue(new DateTime(2020, 6, 15, 13, 14, 25, 782, DateTimeKind.Local).AddTicks(2094));
+                        .HasDefaultValue(new DateTime(2020, 9, 4, 18, 31, 48, 646, DateTimeKind.Local).AddTicks(2472));
 
                     b.Property<string>("CreatedUser")
                         .HasColumnType("char(10)")
@@ -159,7 +159,7 @@ namespace Hoops.Core.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
-                        .HasDefaultValue(new DateTime(2020, 6, 15, 13, 14, 25, 786, DateTimeKind.Local).AddTicks(8624));
+                        .HasDefaultValue(new DateTime(2020, 9, 4, 18, 31, 48, 654, DateTimeKind.Local).AddTicks(1261));
 
                     b.Property<string>("CreatedUser")
                         .HasColumnType("varchar(20)")
@@ -211,7 +211,7 @@ namespace Hoops.Core.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
-                        .HasDefaultValue(new DateTime(2020, 6, 15, 13, 14, 25, 789, DateTimeKind.Local).AddTicks(1435));
+                        .HasDefaultValue(new DateTime(2020, 9, 4, 18, 31, 48, 658, DateTimeKind.Local).AddTicks(4459));
 
                     b.Property<string>("CreatedUser")
                         .HasColumnType("nvarchar(50)")
@@ -284,7 +284,7 @@ namespace Hoops.Core.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smalldatetime")
-                        .HasDefaultValue(new DateTime(2020, 6, 15, 13, 14, 25, 792, DateTimeKind.Local).AddTicks(9402));
+                        .HasDefaultValue(new DateTime(2020, 9, 4, 18, 31, 48, 667, DateTimeKind.Local).AddTicks(490));
 
                     b.Property<string>("CreatedUser")
                         .HasColumnType("nvarchar(50)")
@@ -335,7 +335,7 @@ namespace Hoops.Core.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smalldatetime")
-                        .HasDefaultValue(new DateTime(2020, 6, 15, 13, 14, 25, 795, DateTimeKind.Local).AddTicks(3317));
+                        .HasDefaultValue(new DateTime(2020, 9, 4, 18, 31, 48, 672, DateTimeKind.Local).AddTicks(6884));
 
                     b.Property<string>("CreatedUser")
                         .HasColumnType("nvarchar(50)")
@@ -457,7 +457,7 @@ namespace Hoops.Core.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smalldatetime")
-                        .HasDefaultValue(new DateTime(2020, 6, 15, 13, 14, 25, 803, DateTimeKind.Local).AddTicks(5496));
+                        .HasDefaultValue(new DateTime(2020, 9, 4, 18, 31, 48, 690, DateTimeKind.Local).AddTicks(1940));
 
                     b.Property<string>("CreatedUser")
                         .HasColumnType("nvarchar(20)")
@@ -547,7 +547,7 @@ namespace Hoops.Core.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
-                        .HasDefaultValue(new DateTime(2020, 6, 15, 13, 14, 25, 805, DateTimeKind.Local).AddTicks(2034));
+                        .HasDefaultValue(new DateTime(2020, 9, 4, 18, 31, 48, 694, DateTimeKind.Local).AddTicks(3973));
 
                     b.Property<string>("ErrorMsg")
                         .HasColumnName("ErrorMSG")
@@ -607,7 +607,7 @@ namespace Hoops.Core.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smalldatetime")
-                        .HasDefaultValue(new DateTime(2020, 6, 15, 13, 14, 25, 809, DateTimeKind.Local).AddTicks(3037));
+                        .HasDefaultValue(new DateTime(2020, 9, 4, 18, 31, 48, 703, DateTimeKind.Local).AddTicks(8771));
 
                     b.Property<string>("CreatedUser")
                         .HasColumnType("nvarchar(20)")
@@ -743,7 +743,7 @@ namespace Hoops.Core.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smalldatetime")
-                        .HasDefaultValue(new DateTime(2020, 6, 15, 13, 14, 25, 821, DateTimeKind.Local).AddTicks(197));
+                        .HasDefaultValue(new DateTime(2020, 9, 4, 18, 31, 48, 723, DateTimeKind.Local).AddTicks(6730));
 
                     b.Property<string>("CreatedUser")
                         .HasColumnType("nvarchar(20)")
@@ -865,7 +865,7 @@ namespace Hoops.Core.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
-                        .HasDefaultValue(new DateTime(2020, 6, 15, 13, 14, 25, 822, DateTimeKind.Local).AddTicks(5738));
+                        .HasDefaultValue(new DateTime(2020, 9, 4, 18, 31, 48, 727, DateTimeKind.Local).AddTicks(4812));
 
                     b.Property<string>("CreatedUser")
                         .HasColumnType("char(10)")
@@ -1319,7 +1319,7 @@ namespace Hoops.Core.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smalldatetime")
-                        .HasDefaultValue(new DateTime(2020, 6, 15, 13, 14, 25, 835, DateTimeKind.Local).AddTicks(8434));
+                        .HasDefaultValue(new DateTime(2020, 9, 4, 18, 31, 48, 766, DateTimeKind.Local).AddTicks(3959));
 
                     b.Property<string>("CreatedUser")
                         .HasColumnType("nvarchar(50)")
@@ -1382,7 +1382,7 @@ namespace Hoops.Core.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
-                        .HasDefaultValue(new DateTime(2020, 6, 15, 13, 14, 25, 837, DateTimeKind.Local).AddTicks(7544));
+                        .HasDefaultValue(new DateTime(2020, 9, 4, 18, 31, 48, 770, DateTimeKind.Local).AddTicks(9041));
 
                     b.Property<string>("CreatedUser")
                         .HasColumnType("nvarchar(20)")
@@ -1508,7 +1508,7 @@ namespace Hoops.Core.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smalldatetime")
-                        .HasDefaultValue(new DateTime(2020, 6, 15, 13, 14, 25, 851, DateTimeKind.Local).AddTicks(2415));
+                        .HasDefaultValue(new DateTime(2020, 9, 4, 18, 31, 48, 797, DateTimeKind.Local).AddTicks(9647));
 
                     b.Property<string>("CreatedUser")
                         .HasColumnType("nvarchar(50)")
@@ -1604,7 +1604,7 @@ namespace Hoops.Core.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smalldatetime")
-                        .HasDefaultValue(new DateTime(2020, 6, 15, 13, 14, 25, 840, DateTimeKind.Local).AddTicks(6008));
+                        .HasDefaultValue(new DateTime(2020, 9, 4, 18, 31, 48, 777, DateTimeKind.Local).AddTicks(4476));
 
                     b.Property<string>("CreatedUser")
                         .HasColumnType("varchar(20)")
@@ -1637,7 +1637,7 @@ namespace Hoops.Core.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smalldatetime")
-                        .HasDefaultValue(new DateTime(2020, 6, 15, 13, 14, 25, 842, DateTimeKind.Local).AddTicks(6107));
+                        .HasDefaultValue(new DateTime(2020, 9, 4, 18, 31, 48, 782, DateTimeKind.Local).AddTicks(3070));
 
                     b.Property<string>("CreatedUser")
                         .HasColumnType("varchar(20)")
@@ -1709,7 +1709,7 @@ namespace Hoops.Core.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smalldatetime")
-                        .HasDefaultValue(new DateTime(2020, 6, 15, 13, 14, 25, 844, DateTimeKind.Local).AddTicks(9421));
+                        .HasDefaultValue(new DateTime(2020, 9, 4, 18, 31, 48, 789, DateTimeKind.Local).AddTicks(1678));
 
                     b.Property<string>("CreatedUser")
                         .HasColumnType("varchar(20)")
@@ -1792,7 +1792,7 @@ namespace Hoops.Core.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smalldatetime")
-                        .HasDefaultValue(new DateTime(2020, 6, 15, 13, 14, 25, 856, DateTimeKind.Local).AddTicks(6501));
+                        .HasDefaultValue(new DateTime(2020, 9, 4, 18, 31, 48, 807, DateTimeKind.Local).AddTicks(6379));
 
                     b.Property<string>("CreatedUser")
                         .HasColumnType("nvarchar(50)")
@@ -1894,7 +1894,7 @@ namespace Hoops.Core.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smalldatetime")
-                        .HasDefaultValue(new DateTime(2020, 6, 15, 13, 14, 25, 858, DateTimeKind.Local).AddTicks(7218));
+                        .HasDefaultValue(new DateTime(2020, 9, 4, 18, 31, 48, 812, DateTimeKind.Local).AddTicks(2299));
 
                     b.Property<string>("CreatedUser")
                         .HasColumnType("nvarchar(50)")
@@ -1981,7 +1981,7 @@ namespace Hoops.Core.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2020, 6, 15, 13, 14, 25, 926, DateTimeKind.Local).AddTicks(5317));
+                        .HasDefaultValue(new DateTime(2020, 9, 4, 18, 31, 49, 9, DateTimeKind.Local).AddTicks(7030));
 
                     b.Property<int?>("CreatedUser")
                         .HasColumnType("int");
@@ -2024,8 +2024,6 @@ namespace Hoops.Core.Migrations
 
                     b.HasKey("WebContentId");
 
-                    b.HasIndex("WebContentTypeId");
-
                     b.ToTable("WebContent");
                 });
 
@@ -2039,7 +2037,7 @@ namespace Hoops.Core.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2020, 6, 15, 13, 14, 25, 927, DateTimeKind.Local).AddTicks(4378));
+                        .HasDefaultValue(new DateTime(2020, 9, 4, 18, 31, 49, 12, DateTimeKind.Local).AddTicks(4010));
 
                     b.Property<string>("CreatedUser")
                         .HasColumnType("nvarchar(max)");
@@ -2085,13 +2083,6 @@ namespace Hoops.Core.Migrations
                     b.HasOne("Hoops.Core.Entities.Color", "Color")
                         .WithMany()
                         .HasForeignKey("ColorId");
-                });
-
-            modelBuilder.Entity("Hoops.Core.Entities.WebContent", b =>
-                {
-                    b.HasOne("Hoops.Core.Entities.WebContentType", "WebContentType")
-                        .WithMany()
-                        .HasForeignKey("WebContentTypeId");
                 });
 #pragma warning restore 612, 618
         }

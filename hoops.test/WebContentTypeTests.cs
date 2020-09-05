@@ -8,25 +8,33 @@ namespace Hoops.Test
 {
     public class WebContentTypeTests
     {
+        public hoopsContext db { get; set; }
+        public WebContentTypeRepository repo { get; set; }
+        public WebContentTypeTests()
+        {
+            db = new hoopsContext();
+            var repoWebContent = new WebContentRepository(db);
+            var util = new TestUtilities();
+            util.DeleteAllWebContentAsync(repoWebContent).GetAwaiter();
+            var repo = new WebContentTypeRepository(db);
+            DeleteAllAsync(repo).GetAwaiter();
+        }
         [Fact]
         public async void AddAsyncWebContentTypeTest1()
         {
-            using (var db = new hoopsContext())
+            // await DeleteAllAsync(repo);
+            var found = await repo.GetAllAsync();
+            if (!found.Any())
             {
-                var repo = new WebContentTypeRepository(db);
-                await DeleteAllAsync(repo);
-                var found = db.WebContentTypes;
-                if (!found.Any())
+                var entity = new WebContentType
                 {
-                    var entity = new WebContentType
-                    {
-                        WebContentTypeDescription = "Meeting"
-                    };
-                    var actual = await repo.InsertAsync(entity);
-                    await db.SaveChangesAsync();
-                    Assert.True(actual != null);
-                }
+                    WebContentTypeDescription = "Meeting"
+                };
+                var actual = await repo.InsertAsync(entity);
+                await db.SaveChangesAsync();
+                Assert.True(actual != null);
             }
+
         }
         [Fact]
         public async void AddAllAsyncWebContentTypeTest1()
@@ -63,7 +71,7 @@ namespace Hoops.Test
                 await repo.DeleteAsync(result.WebContentTypeId);
             }
         }
-                private async Task DeleteAllAsync(WebContentTypeRepository  repo)
+        private async Task DeleteAllAsync(WebContentTypeRepository repo)
         {
             var records = await repo.GetAllAsync();
             foreach (var record in records)

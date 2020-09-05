@@ -22,6 +22,6 @@ namespace Hoops.Core.Entities
         public DateTime? CreatedDate { get; set; }
         public int? CreatedUser { get; set; }
 
-        public virtual WebContentType WebContentType { get; set; }
+        // public virtual WebContentType WebContentType { get; set; }
     }
 }

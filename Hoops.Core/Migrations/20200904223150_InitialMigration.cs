@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Hoops.Core.Migrations
 {
-    public partial class InitialCreation : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,7 +16,7 @@ namespace Hoops.Core.Migrations
                     CompanyID = table.Column<int>(nullable: true),
                     ColorName = table.Column<string>(unicode: false, maxLength: 20, nullable: true),
                     Discontinued = table.Column<bool>(nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: true, defaultValue: new DateTime(2020, 9, 4, 18, 31, 48, 646, DateTimeKind.Local).AddTicks(2472)),
                     CreatedUser = table.Column<string>(unicode: false, fixedLength: true, maxLength: 10, nullable: true)
                 },
                 constraints: table =>
@@ -53,7 +53,7 @@ namespace Hoops.Core.Migrations
                     TimeZone = table.Column<int>(nullable: false),
                     ImageName = table.Column<string>(unicode: false, maxLength: 50, nullable: true),
                     EmailSender = table.Column<string>(unicode: false, maxLength: 50, nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: true, defaultValue: new DateTime(2020, 9, 4, 18, 31, 48, 654, DateTimeKind.Local).AddTicks(1261)),
                     CreatedUser = table.Column<string>(unicode: false, maxLength: 20, nullable: true)
                 },
                 constraints: table =>
@@ -80,7 +80,7 @@ namespace Hoops.Core.Migrations
                     StartDate = table.Column<DateTime>(type: "datetime", nullable: true),
                     EndDate = table.Column<DateTime>(type: "datetime", nullable: true),
                     CreatedUser = table.Column<string>(maxLength: 50, nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: true)
+                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: true, defaultValue: new DateTime(2020, 9, 4, 18, 31, 48, 658, DateTimeKind.Local).AddTicks(4459))
                 },
                 constraints: table =>
                 {
@@ -112,7 +112,7 @@ namespace Hoops.Core.Migrations
                     Photo = table.Column<byte[]>(type: "image", nullable: true),
                     PhonePref = table.Column<string>(maxLength: 10, nullable: true),
                     EmailPref = table.Column<int>(nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "smalldatetime", nullable: true, defaultValue: new DateTime(2020, 6, 15, 12, 27, 4, 709, DateTimeKind.Local).AddTicks(5189)),
+                    CreatedDate = table.Column<DateTime>(type: "smalldatetime", nullable: true, defaultValue: new DateTime(2020, 9, 4, 18, 31, 48, 667, DateTimeKind.Local).AddTicks(490)),
                     CreatedUser = table.Column<string>(maxLength: 50, nullable: true)
                 },
                 constraints: table =>
@@ -141,7 +141,7 @@ namespace Hoops.Core.Migrations
                     DraftDate = table.Column<DateTime>(type: "smalldatetime", nullable: true),
                     DraftTime = table.Column<string>(maxLength: 10, nullable: true),
                     Stats = table.Column<bool>(nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "smalldatetime", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "smalldatetime", nullable: true, defaultValue: new DateTime(2020, 9, 4, 18, 31, 48, 672, DateTimeKind.Local).AddTicks(6884)),
                     CreatedUser = table.Column<string>(maxLength: 50, nullable: true)
                 },
                 constraints: table =>
@@ -208,7 +208,7 @@ namespace Hoops.Core.Migrations
                     SportsCard = table.Column<string>(maxLength: 15, nullable: true),
                     Guardian = table.Column<int>(nullable: true),
                     FeeWaived = table.Column<bool>(nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "smalldatetime", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "smalldatetime", nullable: true, defaultValue: new DateTime(2020, 9, 4, 18, 31, 48, 690, DateTimeKind.Local).AddTicks(1940)),
                     CreatedUser = table.Column<string>(maxLength: 20, nullable: true),
                     TEMID = table.Column<int>(nullable: true)
                 },
@@ -242,7 +242,7 @@ namespace Hoops.Core.Migrations
                     CompanyID = table.Column<int>(nullable: true),
                     HouseID = table.Column<int>(nullable: true),
                     ErrorMSG = table.Column<string>(maxLength: 300, nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: true)
+                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: true, defaultValue: new DateTime(2020, 9, 4, 18, 31, 48, 694, DateTimeKind.Local).AddTicks(3973))
                 },
                 constraints: table =>
                 {
@@ -286,7 +286,7 @@ namespace Hoops.Core.Migrations
                     Printing = table.Column<bool>(nullable: true),
                     Equipment = table.Column<bool>(nullable: true),
                     Electrician = table.Column<bool>(nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "smalldatetime", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "smalldatetime", nullable: true, defaultValue: new DateTime(2020, 9, 4, 18, 31, 48, 703, DateTimeKind.Local).AddTicks(8771)),
                     CreatedUser = table.Column<string>(maxLength: 20, nullable: true),
                     TEMPID = table.Column<int>(nullable: true)
                 },
@@ -303,7 +303,7 @@ namespace Hoops.Core.Migrations
                     UserID = table.Column<decimal>(type: "decimal(18, 0)", nullable: false),
                     ScreenName = table.Column<string>(unicode: false, fixedLength: true, maxLength: 10, nullable: true),
                     AccessType = table.Column<string>(unicode: false, fixedLength: true, maxLength: 1, nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: true, defaultValue: new DateTime(2020, 9, 4, 18, 31, 48, 727, DateTimeKind.Local).AddTicks(4812)),
                     CreatedUser = table.Column<string>(unicode: false, fixedLength: true, maxLength: 10, nullable: true)
                 },
                 constraints: table =>
@@ -525,7 +525,7 @@ namespace Hoops.Core.Migrations
                     SignUpsEND = table.Column<DateTime>(type: "smalldatetime", nullable: true),
                     TestSeason = table.Column<bool>(nullable: true),
                     NewSchoolYear = table.Column<bool>(nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "smalldatetime", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "smalldatetime", nullable: true, defaultValue: new DateTime(2020, 9, 4, 18, 31, 48, 766, DateTimeKind.Local).AddTicks(3959)),
                     CreatedUser = table.Column<string>(maxLength: 50, nullable: true)
                 },
                 constraints: table =>
@@ -548,7 +548,7 @@ namespace Hoops.Core.Migrations
                     Txn_ID = table.Column<string>(maxLength: 50, nullable: true),
                     Payment_status = table.Column<string>(maxLength: 50, nullable: true),
                     ErrorMessage = table.Column<string>(maxLength: 200, nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: true, defaultValue: new DateTime(2020, 9, 4, 18, 31, 48, 770, DateTimeKind.Local).AddTicks(9041)),
                     CreatedUser = table.Column<string>(maxLength: 20, nullable: true)
                 },
                 constraints: table =>
@@ -597,7 +597,7 @@ namespace Hoops.Core.Migrations
                     Color2ID = table.Column<int>(nullable: false),
                     ShoppingCartID = table.Column<int>(nullable: true),
                     MailCheck = table.Column<bool>(nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "smalldatetime", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "smalldatetime", nullable: true, defaultValue: new DateTime(2020, 9, 4, 18, 31, 48, 797, DateTimeKind.Local).AddTicks(9647)),
                     CreatedUser = table.Column<string>(maxLength: 50, nullable: true),
                     SponsorProfileID = table.Column<int>(nullable: true),
                     FeeID = table.Column<decimal>(type: "money", nullable: true),
@@ -617,7 +617,7 @@ namespace Hoops.Core.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FeeName = table.Column<string>(nullable: true),
                     Amount = table.Column<decimal>(type: "decimal(18, 2)", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "smalldatetime", nullable: false, defaultValue: new DateTime(2020, 6, 15, 12, 27, 4, 772, DateTimeKind.Local).AddTicks(8196)),
+                    CreatedDate = table.Column<DateTime>(type: "smalldatetime", nullable: false, defaultValue: new DateTime(2020, 9, 4, 18, 31, 48, 777, DateTimeKind.Local).AddTicks(4476)),
                     CreatedUser = table.Column<string>(unicode: false, maxLength: 20, nullable: true)
                 },
                 constraints: table =>
@@ -639,7 +639,7 @@ namespace Hoops.Core.Migrations
                     TransactionNumber = table.Column<string>(unicode: false, maxLength: 50, nullable: true),
                     Memo = table.Column<string>(unicode: false, maxLength: 100, nullable: true),
                     ShoppingCartID = table.Column<string>(unicode: false, maxLength: 50, nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "smalldatetime", nullable: true, defaultValue: new DateTime(2020, 6, 15, 12, 27, 4, 775, DateTimeKind.Local).AddTicks(2947)),
+                    CreatedDate = table.Column<DateTime>(type: "smalldatetime", nullable: true, defaultValue: new DateTime(2020, 9, 4, 18, 31, 48, 782, DateTimeKind.Local).AddTicks(3070)),
                     CreatedUser = table.Column<string>(unicode: false, maxLength: 20, nullable: true)
                 },
                 constraints: table =>
@@ -666,7 +666,7 @@ namespace Hoops.Core.Migrations
                     TypeOfBuss = table.Column<string>(unicode: false, maxLength: 50, nullable: true),
                     ShowAd = table.Column<bool>(nullable: true),
                     AdExpiration = table.Column<DateTime>(type: "date", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "smalldatetime", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "smalldatetime", nullable: true, defaultValue: new DateTime(2020, 9, 4, 18, 31, 48, 789, DateTimeKind.Local).AddTicks(1678)),
                     CreatedUser = table.Column<string>(unicode: false, maxLength: 20, nullable: true)
                 },
                 constraints: table =>
@@ -706,7 +706,7 @@ namespace Hoops.Core.Migrations
                     ValidationCode = table.Column<int>(nullable: true),
                     PersonId = table.Column<int>(nullable: true),
                     HouseID = table.Column<int>(nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "smalldatetime", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "smalldatetime", nullable: true, defaultValue: new DateTime(2020, 9, 4, 18, 31, 48, 812, DateTimeKind.Local).AddTicks(2299)),
                     CreatedUser = table.Column<string>(maxLength: 50, nullable: true)
                 },
                 constraints: table =>
@@ -726,12 +726,39 @@ namespace Hoops.Core.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "WebContent",
+                columns: table => new
+                {
+                    WebContentId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CompanyId = table.Column<int>(nullable: true),
+                    Page = table.Column<string>(maxLength: 50, nullable: true),
+                    WebContentTypeId = table.Column<int>(nullable: true),
+                    Type = table.Column<string>(maxLength: 50, nullable: true),
+                    Title = table.Column<string>(maxLength: 50, nullable: true),
+                    ContentSequence = table.Column<int>(nullable: true),
+                    SubTitle = table.Column<string>(maxLength: 50, nullable: true),
+                    Location = table.Column<string>(maxLength: 50, nullable: true),
+                    DateAndTime = table.Column<string>(maxLength: 50, nullable: true),
+                    Body = table.Column<string>(nullable: true),
+                    ExpirationDate = table.Column<DateTime>(type: "datetime", nullable: true),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime", nullable: true),
+                    ModifiedUser = table.Column<int>(nullable: true),
+                    CreatedDate = table.Column<DateTime>(nullable: true, defaultValue: new DateTime(2020, 9, 4, 18, 31, 49, 9, DateTimeKind.Local).AddTicks(7030)),
+                    CreatedUser = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WebContent", x => x.WebContentId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "WebContentType",
                 columns: table => new
                 {
                     WebContentTypeId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CreatedDate = table.Column<DateTime>(nullable: true, defaultValue: new DateTime(2020, 6, 15, 12, 27, 4, 871, DateTimeKind.Local).AddTicks(2054)),
+                    CreatedDate = table.Column<DateTime>(nullable: true, defaultValue: new DateTime(2020, 9, 4, 18, 31, 49, 12, DateTimeKind.Local).AddTicks(4010)),
                     CreatedUser = table.Column<string>(nullable: true),
                     WebContentTypeDescription = table.Column<string>(maxLength: 50, nullable: false)
                 },
@@ -756,7 +783,7 @@ namespace Hoops.Core.Migrations
                     TeamColor = table.Column<string>(maxLength: 50, nullable: true),
                     TeamColorID = table.Column<int>(nullable: false),
                     TeamNumber = table.Column<string>(maxLength: 2, nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "smalldatetime", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "smalldatetime", nullable: true, defaultValue: new DateTime(2020, 9, 4, 18, 31, 48, 807, DateTimeKind.Local).AddTicks(6379)),
                     CreatedUser = table.Column<string>(maxLength: 50, nullable: true),
                     ColorId = table.Column<int>(nullable: true)
                 },
@@ -777,7 +804,7 @@ namespace Hoops.Core.Migrations
                 {
                     CoachID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CreatedDate = table.Column<DateTime>(type: "smalldatetime", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "smalldatetime", nullable: true, defaultValue: new DateTime(2020, 9, 4, 18, 31, 48, 630, DateTimeKind.Local).AddTicks(3515)),
                     CreatedUser = table.Column<string>(maxLength: 50, nullable: true),
                     CompanyID = table.Column<int>(nullable: true),
                     SeasonID = table.Column<int>(nullable: true),
@@ -794,39 +821,6 @@ namespace Hoops.Core.Migrations
                         column: x => x.PersonID,
                         principalTable: "Person",
                         principalColumn: "PersonID",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "WebContent",
-                columns: table => new
-                {
-                    WebContentId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CompanyId = table.Column<int>(nullable: true),
-                    Page = table.Column<string>(maxLength: 50, nullable: true),
-                    WebContentTypeId = table.Column<int>(nullable: true),
-                    Type = table.Column<string>(maxLength: 50, nullable: true),
-                    Title = table.Column<string>(maxLength: 50, nullable: true),
-                    ContentSequence = table.Column<int>(nullable: true),
-                    SubTitle = table.Column<string>(maxLength: 50, nullable: true),
-                    Location = table.Column<string>(maxLength: 50, nullable: true),
-                    DateAndTime = table.Column<string>(maxLength: 50, nullable: true),
-                    Body = table.Column<string>(nullable: true),
-                    ExpirationDate = table.Column<DateTime>(type: "datetime", nullable: true),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime", nullable: true),
-                    ModifiedUser = table.Column<int>(nullable: true),
-                    CreatedDate = table.Column<DateTime>(nullable: true, defaultValue: new DateTime(2020, 6, 15, 12, 27, 4, 870, DateTimeKind.Local).AddTicks(1894)),
-                    CreatedUser = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_WebContent", x => x.WebContentId);
-                    table.ForeignKey(
-                        name: "FK_WebContent_WebContentType_WebContentTypeId",
-                        column: x => x.WebContentTypeId,
-                        principalTable: "WebContentType",
-                        principalColumn: "WebContentTypeId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -860,7 +854,7 @@ namespace Hoops.Core.Migrations
                     PayType = table.Column<string>(maxLength: 5, nullable: true),
                     NoteDesc = table.Column<string>(maxLength: 50, nullable: true),
                     CheckMemo = table.Column<string>(maxLength: 50, nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "smalldatetime", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "smalldatetime", nullable: true, defaultValue: new DateTime(2020, 9, 4, 18, 31, 48, 723, DateTimeKind.Local).AddTicks(6730)),
                     CreatedUser = table.Column<string>(maxLength: 20, nullable: true),
                     PlaysDown = table.Column<bool>(nullable: true),
                     PlaysUp = table.Column<bool>(nullable: true),
@@ -897,8 +891,8 @@ namespace Hoops.Core.Migrations
 
             migrationBuilder.InsertData(
                 table: "User",
-                columns: new[] { "UserID", "CompanyID", "CreatedDate", "CreatedUser", "HouseID", "Name", "PassWord", "PersonId", "PWord", "UserName", "UserType", "ValidationCode" },
-                values: new object[] { 1, null, null, null, null, null, null, null, null, "TestUser", 0, null });
+                columns: new[] { "UserID", "CompanyID", "CreatedUser", "HouseID", "Name", "PassWord", "PersonId", "PWord", "UserName", "UserType", "ValidationCode" },
+                values: new object[] { 1, null, null, null, null, null, null, null, "TestUser", 0, null });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Coach_PersonID",
@@ -1009,11 +1003,6 @@ namespace Hoops.Core.Migrations
                 name: "idx_DCh_4811_4810_Users",
                 table: "User",
                 column: "UserName");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_WebContent_WebContentTypeId",
-                table: "WebContent",
-                column: "WebContentTypeId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -1121,6 +1110,9 @@ namespace Hoops.Core.Migrations
                 name: "WebContent");
 
             migrationBuilder.DropTable(
+                name: "WebContentType");
+
+            migrationBuilder.DropTable(
                 name: "Division");
 
             migrationBuilder.DropTable(
@@ -1131,9 +1123,6 @@ namespace Hoops.Core.Migrations
 
             migrationBuilder.DropTable(
                 name: "Team");
-
-            migrationBuilder.DropTable(
-                name: "WebContentType");
 
             migrationBuilder.DropTable(
                 name: "Color");

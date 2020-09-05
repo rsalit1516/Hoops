@@ -10,5 +10,22 @@
     "terminal.integrated.env.windows": {
         "SFDX_SET_CLIENT_IDS": "sfdx-vscode"
     },
-    "git.ignoreLimitWarning": true
+    "git.ignoreLimitWarning": true,
+    "workbench.colorCustomizations": {
+        "activityBar.activeBackground": "#2e983d",
+        "activityBar.activeBorder": "#4f3bc4",
+        "activityBar.background": "#2e983d",
+        "activityBar.foreground": "#e7e7e7",
+        "activityBar.inactiveForeground": "#e7e7e799",
+        "activityBarBadge.background": "#4f3bc4",
+        "activityBarBadge.foreground": "#e7e7e7",
+        "statusBar.background": "#22712d",
+        "statusBar.foreground": "#e7e7e7",
+        "statusBarItem.hoverBackground": "#2e983d",
+        "titleBar.activeBackground": "#22712d",
+        "titleBar.activeForeground": "#e7e7e7",
+        "titleBar.inactiveBackground": "#22712d99",
+        "titleBar.inactiveForeground": "#e7e7e799"
+    },
+    "peacock.color": "#22712d"
 }

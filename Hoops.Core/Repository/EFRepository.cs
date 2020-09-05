@@ -36,7 +36,7 @@ namespace Hoops.Infrastructure.Repository
 
         public virtual async Task<IEnumerable<T>> GetAllAsync()
         {
-            return await context.Set<T>().AsQueryable().ToListAsync();
+            return await DbSet.AsQueryable().ToListAsync();
         }
 
         public virtual T GetById(int id)
