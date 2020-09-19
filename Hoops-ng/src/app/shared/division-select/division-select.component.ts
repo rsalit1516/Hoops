@@ -1,8 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Division } from 'app/domain/division';
+import { Division } from '@app/domain/division';
 import { Observable } from 'rxjs';
 import { Content } from '@angular/compiler/src/render3/r3_ast';
-import { emit } from 'cluster';
 
 @Component({
   selector: 'csbc-division-select',

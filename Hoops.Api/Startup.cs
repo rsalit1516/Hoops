@@ -19,6 +19,8 @@ namespace Hoops.Api
 {
     public class Startup
     {
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Environment = env;
@@ -65,6 +67,17 @@ namespace Hoops.Api
             services.AddTransient<IWebContentRepository, WebContentRepository>();
             services.AddTransient<IWebContentTypeRepository, WebContentTypeRepository>();
 
+            services.AddCors(options =>
+                   {
+                       options.AddPolicy(name: MyAllowSpecificOrigins,
+                                         builder =>
+                                         {
+                                             builder.WithOrigins("http://localhost:4200",
+                                                                 "http://www.contoso.com")
+                                              .AllowAnyHeader()
+                                        .AllowAnyMethod();
+                                         });
+                   });
             services.AddControllers();
             services
                 .AddSwaggerGen(c =>
@@ -101,7 +114,7 @@ namespace Hoops.Api
                         Path.Combine(AppContext.BaseDirectory, xmlFile);
                     // c.IncludeXmlComments(xmlPath);
                 });
-            services.AddCors();
+            // services.AddCors();
             services.AddControllers();
 
             // call data initializer
@@ -133,9 +146,10 @@ namespace Hoops.Api
 
             app.UseHttpsRedirection();
             app.UseRouting();
-            app
-                .UseCors(x =>
-                    x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+app.UseCors(MyAllowSpecificOrigins);
+            // app
+            //     .UseCors(x =>
+            //         x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseAuthorization();
 
             app

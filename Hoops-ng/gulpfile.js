@@ -6,7 +6,7 @@ var uglify = require('gulp-uglify');
 var ts = require("gulp-typescript");
 
 var $ = require('gulp-load-plugins')({ lazy: true });
-var tsProject = ts.createProject("tsconfig.json");
+var tsProject = ts.createProject("./tsconfig.json");
 
 gulp.task('help', $.taskListing);
 

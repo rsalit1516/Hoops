@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, combineLatest, throwError, pipe } from 'rxjs';
-import { Division } from 'app/domain/division';
+import { Division } from '@app/domain/division';
 import {
   map,
   tap,
@@ -10,17 +10,17 @@ import {
   filter,
   groupBy
 } from 'rxjs/operators';
-import { DataService } from 'app/services/data.service';
+import { DataService } from '@app/services/data.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Game } from 'app/domain/game';
+import { Game } from '@app/domain/game';
 import * as fromGames from './state';
 import * as gameActions from './state/games.actions';
 import * as fromUser from '../User/state';
 import { Store, select } from '@ngrx/store';
 import { CompileMetadataResolver } from '@angular/compiler';
-import { Standing } from 'app/domain/standing';
+import { Standing } from '@app/domain/standing';
 import { CombineLatestOperator } from 'rxjs/internal/observable/combineLatest';
-import { User } from 'app/domain/user';
+import { User } from '@app/domain/user';
 
 @Injectable({
   providedIn: 'root'
@@ -41,8 +41,8 @@ export class GameService {
   // private divisionUrl = this.dataService.webUrl + '/api/divisions';
   private divisionUrl =
     this.dataService.webUrl +
-    '/api/division/GetSeasonDivisions/' +
-    this.seasonId;
+    '/api/division/GetSeasonDivisions/' + '2192';
+    // this.seasonId;
   private divisionStartUrl =
     this.dataService.webUrl + '/api/division/GetSeasonDivisions';
   games: Game[];

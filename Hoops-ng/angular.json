@@ -14,7 +14,7 @@
             "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
-            "tsConfig": "src/tsconfig.json",
+            "tsConfig": "tsconfig.json",
             "assets": [
               "src/assets",
               "src/favicon.ico"
@@ -27,7 +27,6 @@
             "scripts": []
           },
           "configurations": {
-            "production": {
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -37,6 +36,7 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
+              "production": {
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
