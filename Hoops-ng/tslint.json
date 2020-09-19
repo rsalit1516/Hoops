@@ -8,6 +8,9 @@
     "forin": true,
     "indent": [true, "spaces"],
     "label-position": true,
+    "deprecation": {
+      "severity": "warning"
+    },
     "label-undefined": true,
     "max-line-length": [true, 140],
     "member-access": false,
@@ -27,9 +30,7 @@
     "no-switch-case-fall-through": true,
     "no-trailing-whitespace": true,
     "no-unused-expression": true,
-    "no-unused-variable": true,
     "no-unreachable": true,
-    "no-use-before-declare": true,
     "no-var-keyword": true,
     "object-literal-sort-keys": false,
     "one-line": [
