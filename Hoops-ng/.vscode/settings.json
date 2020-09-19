@@ -27,5 +27,8 @@
         "titleBar.inactiveBackground": "#22712d99",
         "titleBar.inactiveForeground": "#e7e7e799"
     },
-    "peacock.color": "#22712d"
+    "peacock.color": "#22712d",
+    "cSpell.words": [
+        "csbc"
+    ]
 }

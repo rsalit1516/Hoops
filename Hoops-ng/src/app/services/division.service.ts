@@ -17,12 +17,12 @@ import * as fromAdmin from '../admin/state';
 
 @Injectable()
 export class DivisionService {
-  private _divisionUrl =
+  private divisionUrl =
     this.dataService.webUrl + '/api/division/GetSeasonDivisions/';
 
   private season: Season;
   private _seasonId: number;
-  divisionUrl: string;
+  // divisionUrl: string;
   get seasonId() {
     return this._seasonId;
   }
@@ -32,7 +32,23 @@ export class DivisionService {
   // divisions: Division[];
   private selectedSeason$ = this.store.pipe(select(fromAdmin.getSeasons));
 
-  private _divisions$ = this._http
+  // private _divisions$ = this._http
+  //   .get<Division[]>(this.divisionUrl + this.selectedSeason$)
+  //   .pipe(
+  //     map(divisions =>
+  //       divisions.map(
+  //         division =>
+  //           ({
+  //             ...division
+  //           } as Division)
+  //       )
+  //     ),
+  //     tap(data => console.log('All: ' + JSON.stringify(data))),
+  //     catchError(this.dataService.handleError('getSeasonDivisions', null))
+  //   );
+  divisions$ =
+    // return this._divisions$;
+    this._http
     .get<Division[]>(this.divisionUrl + this.selectedSeason$)
     .pipe(
       map(divisions =>
@@ -46,12 +62,10 @@ export class DivisionService {
       tap(data => console.log('All: ' + JSON.stringify(data))),
       catchError(this.dataService.handleError('getSeasonDivisions', null))
     );
-  public get divisions$() {
-    return this._divisions$;
-  }
-  public set divisions$(value) {
-    this._divisions$ = value;
-  }
+
+  // public set divisions$(value) {
+  //   this._divisions$ = value;
+  // }
   constructor(
     private _http: HttpClient,
     public dataService: DataService,
@@ -73,9 +87,9 @@ export class DivisionService {
     if (seasonId === undefined) {
       seasonId = 2192;
     }
-    this._divisionUrl =
-      this.dataService.webUrl + '/api/division/GetSeasonDivisions/' + seasonId;
-    return this._http.get<Division[]>(this._divisionUrl).pipe(
+    // this._divisionUrl =
+    //   this.dataService.webUrl + '/api/division/GetSeasonDivisions/' + seasonId;
+    return this._http.get<Division[]>(this.divisionUrl).pipe(
       // map((response: Response) => <Division[]>),
       tap(data => console.log('All: ' + JSON.stringify(data))),
       catchError(this.dataService.handleError('getSeasonDivisions', []))
@@ -86,7 +100,7 @@ export class DivisionService {
     console.log(season);
     season.subscribe(
       d =>
-        (this._divisionUrl =
+        (this.divisionUrl =
           this.dataService.webUrl +
           '/api/division/GetSeasonDivisions/' +
           d.seasonID)
@@ -106,9 +120,9 @@ export class DivisionService {
     }
     // console.log(season.seasonID);
     // season.su
-    this._divisionUrl =
+    this.divisionUrl =
       this.dataService.webUrl + '/api/division/GetSeasonDivisions/2083'; // + this.seasonId;
-    return this._http.get<Division[]>(this._divisionUrl).pipe(
+    return this._http.get<Division[]>(this.divisionUrl).pipe(
       // map((response: Response) => <Division[]>),
       tap(data => console.log('All: ' + JSON.stringify(data))),
       catchError(this.dataService.handleError('getSeasonDivisions', []))

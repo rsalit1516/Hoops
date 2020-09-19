@@ -38,7 +38,6 @@ import { GamesPipe } from './games.pipe';
 import { LayoutModule } from '@angular/cdk/layout';
 import { CsbcDashboardComponent } from './csbc-dashboard/csbc-dashboard.component';
 
-import { AppEffects } from './app.effects';
 import { reducers, metaReducers } from './reducers';
 import { environment } from '../environments/environment';
 import { LoginDialogComponent } from './shared/login-dialog/login-dialog.component';
@@ -82,7 +81,7 @@ import { SponsorsModule } from './admin/sponsors/sponsors.module';
       maxAge: 25,
       logOnly: environment.production
     }),
-    EffectsModule.forRoot([AppEffects]),
+//    EffectsModule.forRoot([AppEffects]),
     StoreModule.forRoot(reducers, { metaReducers }),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
