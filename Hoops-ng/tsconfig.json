@@ -1,32 +1,27 @@
 {
-  "compilerOptions": {
-    "declaration": false,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "lib": [
-      "es6",
-      "dom"
-    ],
-    "baseUrl": "src",
-    "paths": {
-      "@app/*": ["app/*"]
+    "compilerOptions": {
+      "declaration": false,
+      "emitDecoratorMetadata": true,
+      "experimentalDecorators": true,
+      "lib": [
+        "es2018",
+        "dom"
+      ],
+      "baseUrl": "src",
+      "paths": {
+        "@app/*": ["app/*"]
+      },
+      "mapRoot": "./",
+      "module": "es2020",
+      "moduleResolution": "node",
+      "outDir": "../dist/out-tsc",
+      "sourceMap": true,
+      "target": "es2015",
+      
+      "typeRoots": [
+        "../node_modules/@types"
+      ]
     },
-    "mapRoot": "./",
-    "module": "es2020",
-    "moduleResolution": "node",
-    "outDir": "../dist/out-tsc",
-    "sourceMap": true,
-    "target": "es6",
-    "typeRoots": [
-      "../node_modules/@types"
-    ]
-  },
-  "files": [
-    "./src/main.ts",
-    "./src/polyfills.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "**/*.spec.ts"
-  ]
-}
+    "include": ["src/**/*"],
+"exclude": ["node_modules", "**/*.spec.ts"]
+  }

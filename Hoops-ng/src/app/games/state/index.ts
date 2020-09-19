@@ -68,4 +68,5 @@ export const getCanEdit = createSelector(
 export const getCurrentGame = createSelector(
   getGameFeatureState,
   state => state.currentGame
-)
+);
+

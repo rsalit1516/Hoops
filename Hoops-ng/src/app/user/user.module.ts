@@ -8,7 +8,8 @@ import { reducer } from './state/user.reducer';
 import { AuthService } from './auth.service';
 
 @NgModule({
-  imports: [CommonModule, StoreModule.forFeature('user', reducer)],
+  imports: [CommonModule,
+    StoreModule.forFeature('user', reducer)],
   declarations: [],
   providers: [AuthService]
 })
