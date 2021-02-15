@@ -1,8 +1,6 @@
 import {
   createFeatureSelector,
-  createSelector,
-  ActionReducerMap
-} from '@ngrx/store';
+  createSelector} from '@ngrx/store';
 import * as fromRoot from '../../state/app.state';
 import * as fromGames from './games.reducer';
 

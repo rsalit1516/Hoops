@@ -34,8 +34,8 @@ export class AuthService {
     let tFlag = false;
     console.log(userName + ', ' + password);
     return this.http
-      .get<User>(this.dataService.loginUrl + '/' + userName + '/' + password)
-    
+      .get<User>(this.dataService.loginUrl + '/' + userName + '/' + password);
+
   }
   setUserState(user: User) {
     this.store.dispatch(new userActions.SetCurrentUser(user));

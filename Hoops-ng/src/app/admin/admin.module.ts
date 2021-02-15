@@ -38,6 +38,7 @@ import { RegistrationPaymentsComponent } from './registrations-and-payments/cont
 import { SeasonRegistrationsComponent } from './registrations-and-payments/components/season-registrations/season-registrations.component';
 import { PaymentsComponent } from './registrations-and-payments/components/payments/payments.component';
 import { AdminGamesModule } from './admin-games/admin-games.module';
+import { RegistrationsAndPaymentsModule } from './registrations-and-payments/registrations-and-payments.module';
 
 @NgModule({
   imports: [
@@ -50,6 +51,7 @@ import { AdminGamesModule } from './admin-games/admin-games.module';
     ContentModule,
     DirectorModule,
     AdminGamesModule,
+    RegistrationsAndPaymentsModule,
     StoreModule.forFeature('admin', reducer),
     EffectsModule.forFeature([AdminEffects])
   ],
@@ -72,7 +74,6 @@ import { AdminGamesModule } from './admin-games/admin-games.module';
     ImportScheduleComponent,
     SeasonSelectComponent,
     SeasonSetupComponent,
-    RegistrationPaymentsComponent,
     SeasonRegistrationsComponent,
     PaymentsComponent,
   ],

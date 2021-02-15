@@ -10,7 +10,7 @@ import { AdminSeasonShellComponent } from './containers/admin-season-shell/admin
 import { AdminDivisionShellComponent } from './containers/admin-division-shell/admin-division-shell.component';
 import { PageNotFoundComponent } from 'app/app.not-found.component';
 
-import { AuthGuard }                from '../auth/auth.guard';
+import { AuthGuard } from '../auth/auth.guard';
 import { SeasonSetupComponent } from './containers/season-setup/season-setup.component';
 
 const adminRoutes: Routes = [
@@ -28,22 +28,36 @@ const adminRoutes: Routes = [
       {
         path: 'content',
         loadChildren: () =>
-          import('./content/content.module').then(mod => mod.ContentModule)
+          import('./content/content.module').then((mod) => mod.ContentModule),
       },
       { path: 'teams', component: TeamListComponent },
-      { path: 'games', loadChildren: () => import('./admin-games/admin-games.module').then( g => g.AdminGamesModule)},
+      {
+        path: 'games',
+        loadChildren: () =>
+          import('./admin-games/admin-games.module').then(
+            (g) => g.AdminGamesModule
+          ),
+      },
       { path: 'dashboard', component: AdminDashboardComponent },
       {
         path: 'director',
-        loadChildren: () => import('./director/director.module').then(m => m.DirectorModule),
+        loadChildren: () =>
+          import('./director/director.module').then(m => m.DirectorModule),
       },
-      { path: '**', component: PageNotFoundComponent }
-    ]
-  }
+      {
+        path: 'registrations',
+        loadChildren: () =>
+          import(
+            './registrations-and-payments/registrations-and-payments.module'
+          ).then((m) => m.RegistrationsAndPaymentsModule),
+      },
+      { path: '**', component: PageNotFoundComponent },
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(adminRoutes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AdminRoutingModule {}
