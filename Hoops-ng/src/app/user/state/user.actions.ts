@@ -1,6 +1,7 @@
 /* NgRx */
 import { Action } from '@ngrx/store';
 import { User } from '@app/domain/user';
+import * as fromUser from './index';
 
 export enum UserActionTypes {
   MaskUserName = '[User] Mask User Name',

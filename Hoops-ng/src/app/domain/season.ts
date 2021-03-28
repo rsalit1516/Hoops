@@ -1,6 +1,6 @@
 
 export class Season  {
-    public seasonID: number;
+    public seasonId: number;
     public description: string;
     public fromDate?: Date;
     public toDate?: Date;
@@ -13,7 +13,6 @@ export class Season  {
     public currentSchedule = false;
     public gameSchedules = false;
     public onlineRegistration = false;
-    
     constructor() { }
 }
 

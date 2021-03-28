@@ -32,7 +32,7 @@ export class GameService {
     .subscribe(season => {
       console.log(season);
       if (season !== undefined && season !== null) {
-        this.seasonId = season.seasonID;
+        this.seasonId = season.seasonId;
       }
     });
   private gameUrl = this.dataService.webUrl + '/api/schedulegame/getSeasonGames';
@@ -41,7 +41,7 @@ export class GameService {
   // private divisionUrl = this.dataService.webUrl + '/api/divisions';
   private divisionUrl =
     this.dataService.webUrl +
-    '/api/division/GetSeasonDivisions/' + '2192';
+    '/api/division/GetSeasonDivisions/' + '10004';
     // this.seasonId;
   private divisionStartUrl =
     this.dataService.webUrl + '/api/division/GetSeasonDivisions';
@@ -51,7 +51,7 @@ export class GameService {
   allGames: Game[];
   standing: any[];
   // divisions$: Observable<Division>;
-  games$ = this.http.get<Game[]>(this.gameUrl + '?seasonId=' + '2192').pipe(
+  games$ = this.http.get<Game[]>(this.gameUrl + '?seasonId=' + '10004').pipe(
     // tap(data => console.log('All games: ' + JSON.stringify(data))),
     shareReplay(1),
     catchError(this.dataService.handleError)
@@ -237,7 +237,7 @@ export class GameService {
   getCurrentSeason () {
     return this.store.select(fromGames.getCurrentSeason).subscribe(season => {
       if (season !== null) {
-        this.seasonId = season.seasonID;
+        this.seasonId = season.seasonId;
         console.log(season);
       }
     });

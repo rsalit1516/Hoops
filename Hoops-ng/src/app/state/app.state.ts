@@ -1,4 +1,4 @@
-import { UserState } from '../user/state/user.reducer';
+import { UserState } from '@app/user/state/user.reducer';
 
 
 // Representation of the entire app state

@@ -30,6 +30,6 @@ export class SeasonSelectComponent implements OnInit {
   selectedSeason(season: Season) {
     console.log(season);
     this.store.dispatch(new adminActions.SetSelectedSeason(season));
-    this.store.dispatch(new adminActions.SetSelectedSeasonId(season.seasonID));
+    this.store.dispatch(new adminActions.SetSelectedSeasonId(season.seasonId));
   }
 }

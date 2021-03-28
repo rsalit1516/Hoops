@@ -65,7 +65,7 @@ export class AdminEffects {
       ),
       tap(([action, t]) => {
         if (t) {
-          this.seasonId = t.seasonID;
+          this.seasonId = t.seasonId;
         } else {
           this.seasonId = 0;
         }
@@ -93,7 +93,7 @@ export class AdminEffects {
     ),
     tap(([action, t]) => {
       if (t) {
-        this.seasonId = t.seasonID;
+        this.seasonId = t.seasonId;
       } else {
         this.seasonId = 0;
       }

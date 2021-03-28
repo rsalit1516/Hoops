@@ -14,7 +14,7 @@ export class TeamService {
     private _TeamUrl: string;
     teams: Team[];
     constructor(private _http: HttpClient, public dataService: DataService) {
-        this._TeamUrl = this.dataService.webUrl + '/api/team/GetSeasonTeams/2192';
+        this._TeamUrl = this.dataService.webUrl + '/api/team/GetSeasonTeams/10004';
     }
 
     getTeams(): Observable<Team[]> {

@@ -7,8 +7,8 @@ import * as gameActions from './../../games/state/games.actions';
 import { Observable } from 'rxjs';
 import { Season } from 'app/domain/season';
 import { Division } from 'app/domain/division';
-import { TeamService } from 'app/services/team.service';
-import { Team } from 'app/domain/team';
+import { TeamService } from '@app/services/team.service';
+import { Team } from '@app/domain/team';
 @Component({
   selector: 'csbc-admin-dashboard',
   templateUrl: './admin-dashboard.component.html',
@@ -34,14 +34,15 @@ export class AdminDashboardComponent implements OnInit {
     this.store
       .select(fromGames.getCurrentSeason)
       .subscribe(season => {
-        (this.currentSeason = season)
+        (this.currentSeason = season);
         this.store.dispatch(new gameActions.LoadDivisions());
       }
         );
     this.store
       .select(fromGames.getDivisions)
-      .subscribe(divisions => {(this.divisions = divisions)
-      this.divisionCount = divisions.length});
+      .subscribe(divisions => {
+        (this.divisions = divisions);
+      this.divisionCount = divisions.length; });
 
   }
 }

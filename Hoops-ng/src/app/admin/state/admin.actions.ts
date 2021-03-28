@@ -1,9 +1,9 @@
 /* NgRx */
 import { Action } from '@ngrx/store';
-import { Division } from 'app/domain/division';
-import { Team } from 'app/domain/team';
-import { Season } from 'app/domain/season';
-import { Game } from 'app/domain/game';
+import { Division } from '@app/domain/division';
+import { Team } from '@app/domain/team';
+import { Season } from '@app/domain/season';
+import { Game } from '@app/domain/game';
 
 export enum AdminActionTypes {
   LoadCurrentSeason = '[Admin] Load Current Season',

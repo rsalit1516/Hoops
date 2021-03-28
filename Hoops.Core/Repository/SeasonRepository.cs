@@ -69,7 +69,7 @@ namespace Hoops.Infrastructure.Repository
                     context
                         .Set<Season>()
                         .FirstOrDefault(n =>
-                            (n.SeaDesc == seasonDescription) &&
+                            (n.Description == seasonDescription) &&
                             (n.CompanyId == companyId));
 
                 return season.SeasonId;

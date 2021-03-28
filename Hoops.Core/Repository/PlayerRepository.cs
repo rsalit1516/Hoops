@@ -427,7 +427,7 @@ namespace Hoops.Infrastructure.Repository
                         var viewPlayer = new PlayerHistory();
                         viewPlayer.SeasonId = (player.SeasonId == null ? 0 : (int)player.SeasonId);
                         if (player.Season != null)
-                            viewPlayer.Season = player.Season.SeaDesc;
+                            viewPlayer.Season = player.Season.Description;
                         if (player.Team != null)
                             viewPlayer.Team = player.Team.TeamName;
                         viewPlayer.Rating = player.Rating;

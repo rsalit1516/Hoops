@@ -63,7 +63,7 @@ export class GameEffects {
     ),
     tap(([action, t]) => {
       if (t) {
-        this.seasonId = t.seasonID;
+        this.seasonId = t.seasonId;
       } else {
         this.seasonId = 0;
       }
@@ -103,8 +103,10 @@ export class GameEffects {
       )
     ),
     tap(([action, t]) => {
+      console.log(t);
+      console.log(action);
       if (t) {
-        this.seasonId = t.seasonID;
+        this.seasonId = t.seasonId;
       } else {
         this.seasonId = 0;
       }
@@ -114,7 +116,7 @@ export class GameEffects {
         // tap(data => console.log('All games: ' + JSON.stringify(data))),
         shareReplay(1),
         map(divisions => new gameActions.LoadDivisionsSuccess(divisions)),
-        tap(divisions => console.log(divisions)),
+        tap(divisions => console.log('Divisions are:' + divisions)),
         catchError(err => of(new gameActions.LoadDivisionsFail(err)))
       )
     )

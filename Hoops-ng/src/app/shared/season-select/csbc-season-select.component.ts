@@ -27,7 +27,7 @@ export class CsbcSeasonSelectComponent implements OnInit {
 
   onClick(season: Season): void {
     console.log(season);
-    if (season.seasonID !== undefined) {
+    if (season.seasonId !== undefined) {
       this.selectedSeason = season;
       console.log(season);
       this.setSeason.emit(season);

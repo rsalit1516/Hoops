@@ -32,7 +32,7 @@ export class SeasonService {
   );
 
   constructor(private http: HttpClient, public dataService: DataService) {
-    
+
     // .currentSeason = this.getCurrent();
     this.selectedSeason$ = this.currentSeason;
     // this.currentSeason.toPromise()
@@ -53,7 +53,7 @@ export class SeasonService {
 
   getSeason(id: number): Observable<Season> {
     return this.getSeasons().pipe(
-      map((season: Season[]) => season.find(p => p.seasonID === id))
+      map((season: Season[]) => season.find(p => p.seasonId === id))
     );
   }
 

@@ -80,6 +80,15 @@
     "component-class-suffix": true,
     "directive-class-suffix": true,
     "templates-use-public": true,
-    "invoke-injectable": true
+    "invoke-injectable": true,
+ 
+    "extends": "tslint:latest",
+    "linterOptions": {
+      "exclude": [
+        "bin",
+        "node_modules",
+        "lib/*generated.js"
+      ]
+    }
   }
 }

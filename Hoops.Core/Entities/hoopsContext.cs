@@ -715,7 +715,7 @@ namespace Hoops.Core.Entities
 
                 entity.Property(e => e.ParticipationFee).HasColumnType("money");
 
-                entity.Property(e => e.SeaDesc)
+                entity.Property(e => e.Description)
                     .HasColumnName("Sea_Desc")
                     .HasMaxLength(50);
 

@@ -3,7 +3,7 @@ import {
     createSelector,
     ActionReducerMap
   } from '@ngrx/store';
-  import * as fromRoot from '../../state/app.state';
+  import * as fromRoot from '@app/state/app.state';
   import * as fromUser from './user.reducer';
 
   export interface State extends fromRoot.State {

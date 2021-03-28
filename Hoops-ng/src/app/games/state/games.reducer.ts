@@ -30,7 +30,7 @@ const initialState: GameState = {
   showListView: true,
   currentSeasonId: null,
   currentSeason: {
-    seasonID: null,
+    seasonId: null,
     description: 'Summer Season',
     currentSeason: true,
     currentSchedule: true,

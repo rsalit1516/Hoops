@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Hoops.Core.Entities
 {
@@ -7,7 +7,8 @@ namespace Hoops.Core.Entities
     {
         public int SeasonId { get; set; }
         public int? CompanyId { get; set; }
-        public string SeaDesc { get; set; }
+        [Column("SeaDesc")]
+        public string Description { get; set; }
         public DateTime? FromDate { get; set; }
         public DateTime? ToDate { get; set; }
         public decimal? ParticipationFee { get; set; }

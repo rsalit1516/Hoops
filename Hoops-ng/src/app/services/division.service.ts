@@ -85,7 +85,7 @@ export class DivisionService {
   getDivisions(seasonId: number): Observable<Division[]> {
     console.log(seasonId);
     if (seasonId === undefined) {
-      seasonId = 2192;
+      seasonId = 10004;
     }
     // this._divisionUrl =
     //   this.dataService.webUrl + '/api/division/GetSeasonDivisions/' + seasonId;
@@ -103,14 +103,14 @@ export class DivisionService {
         (this.divisionUrl =
           this.dataService.webUrl +
           '/api/division/GetSeasonDivisions/' +
-          d.seasonID)
+          d.seasonId)
     );
     this.seasonId = 2193;
     if (season !== null) {
-      if (this.season.seasonID === undefined) {
+      if (this.season.seasonId === undefined) {
         this.seasonId = 2193;
       } else {
-        season.subscribe(s => (this.seasonId = s.seasonID));
+        season.subscribe(s => (this.seasonId = s.seasonId));
         console.log(this.seasonId);
       }
     }

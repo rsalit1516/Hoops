@@ -120,7 +120,7 @@ await DeleteWebContentAsync();
 
             await SeasonRepo.InsertAsync(new Season
             {
-                SeaDesc = "Summer 2020",
+                Description = "Summer 2020",
                 CurrentSchedule = true,
                 CurrentSignUps = true,
                 CurrentSeason = true,
@@ -132,7 +132,7 @@ await DeleteWebContentAsync();
             });
             await SeasonRepo.InsertAsync(new Season
             {
-                SeaDesc = "Spring 2020",
+                Description = "Spring 2020",
                 CurrentSchedule = false,
                 CurrentSignUps = false,
                 CurrentSeason = false,
@@ -143,7 +143,7 @@ await DeleteWebContentAsync();
             });
             await SeasonRepo.InsertAsync(new Season
             {
-                SeaDesc = "Winter 2020",
+                Description = "Winter 2020",
                 CurrentSchedule = false,
                 CurrentSignUps = false,
                 CurrentSeason = false,

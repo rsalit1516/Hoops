@@ -1,27 +1,46 @@
 {
-    "compilerOptions": {
-      "declaration": false,
-      "emitDecoratorMetadata": true,
-      "experimentalDecorators": true,
-      "lib": [
-        "es2018",
-        "dom"
+  "compilerOptions": {
+    "declaration": false,
+    "downlevelIteration": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": [
+      "es2018",
+      "dom"
+    ],
+    "baseUrl": "src",
+    "paths": {
+      "@app/*": [
+        "app/*"
       ],
-      "baseUrl": "src",
-      "paths": {
-        "@app/*": ["app/*"]
-      },
-      "mapRoot": "./",
-      "module": "es2020",
-      "moduleResolution": "node",
-      "outDir": "../dist/out-tsc",
-      "sourceMap": true,
-      "target": "es2015",
-      
-      "typeRoots": [
-        "../node_modules/@types"
+      "@domain": [
+        "app/domain/*"
+      ],
+      "@shared": [
+        "app/shared/*"
       ]
     },
-    "include": ["src/**/*"],
-"exclude": ["node_modules", "**/*.spec.ts"]
-  }
+    "mapRoot": "./",
+    "module": "es2020",
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "outDir": "../dist/out-tsc",
+    "sourceMap": true,
+    "target": "es2015",
+    "typeRoots": [
+      "../node_modules/@types"
+    ],
+    "suppressImplicitAnyIndexErrors": true
+  },
+  "files": [
+    "src/app/user/state/index.ts",
+    "src/main.ts",
+    "src/polyfills"
+  ],
+  "exclude": [
+    "node_modules",
+    "typings",
+    "e2e",
+    "**/*.spec.ts"
+  ]
+}
