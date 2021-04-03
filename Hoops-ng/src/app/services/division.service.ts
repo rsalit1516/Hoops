@@ -89,7 +89,7 @@ export class DivisionService {
     }
     // this._divisionUrl =
     //   this.dataService.webUrl + '/api/division/GetSeasonDivisions/' + seasonId;
-    return this._http.get<Division[]>(this.divisionUrl).pipe(
+    return this._http.get<Division[]>(this.divisionUrl + seasonId).pipe(
       // map((response: Response) => <Division[]>),
       tap(data => console.log('All: ' + JSON.stringify(data))),
       catchError(this.dataService.handleError('getSeasonDivisions', []))

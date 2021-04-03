@@ -554,8 +554,7 @@ namespace Hoops.Core.Entities
                     .IsFixedLength();
 
                 entity.Property(e => e.RoleId)
-                    .HasColumnName("RoleID")
-                    .HasColumnType("decimal(18, 0)");
+                    .HasColumnName("RoleID");
 
                 entity.Property(e => e.ScreenName)
                     .HasMaxLength(10)
@@ -563,8 +562,7 @@ namespace Hoops.Core.Entities
                     .IsFixedLength();
 
                 entity.Property(e => e.UserId)
-                    .HasColumnName("UserID")
-                    .HasColumnType("decimal(18, 0)");
+                    .HasColumnName("UserID");
             });
 
             modelBuilder.Entity<SchDivisions>(entity =>

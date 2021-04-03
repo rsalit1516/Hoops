@@ -42,7 +42,7 @@ export class AdminSeasonListComponent implements OnInit {
   }
   setDisplayColumns() {
     this.displayColumns = [];
-    this.displayColumns.push('seasonID');
+    this.displayColumns.push('seasonId');
     this.displayColumns.push('description');
     this.displayColumns.push('fromDate');
     this.displayColumns.push('toDate');

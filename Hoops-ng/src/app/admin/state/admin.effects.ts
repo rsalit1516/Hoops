@@ -80,7 +80,7 @@ export class AdminEffects {
         )
       )
     );
-  
+
   // tslint:disable-next-line:member-ordering
   @Effect()
   loadGames$: Observable<Action> = this.actions$.pipe(
@@ -121,5 +121,5 @@ export class AdminEffects {
         )
       )
     );
-  
+
 }

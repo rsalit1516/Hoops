@@ -39,7 +39,7 @@ export class DivisionListComponent implements OnInit, OnChanges {
   selectedDivision: Division;
   seasonId: number;
   displayedColumns = [
-    'divisionID',
+    'divisionId',
     'div_Desc',
     'minDate',
     'maxDate',
@@ -101,8 +101,8 @@ export class DivisionListComponent implements OnInit, OnChanges {
       console.log(data[i]);
       if (data[i] !== undefined) {
         let division: Division = {
-          seasonID: data[i].seasonID,
-          divisionID: data[i].divisionID,
+          seasonID: data[i].seasonId,
+          divisionID: data[i].divisionId,
           div_Desc: data[i].div_Desc,
           minDate: data[i].minDate,
           maxDate: data[i].maxDate

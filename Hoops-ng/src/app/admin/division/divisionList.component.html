@@ -14,10 +14,10 @@
       </mat-toolbar-row>
   </mat-toolbar>
   <table mat-table id="grd" [dataSource]="dataSource">
-    <ng-container matColumnDef="divisionID">
+    <ng-container matColumnDef="divisionId">
       <th mat-header-cell *matHeaderCellDef>ID</th>
       <td mat-cell *matCellDef="let game" class="teamName">
-        {{ game.divisionID }}
+        {{ game.divisionId }}
       </td>
     </ng-container>
     <ng-container matColumnDef="div_Desc">
