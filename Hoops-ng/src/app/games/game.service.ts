@@ -77,7 +77,7 @@ export class GameService {
           game =>
             ({
               ...game
-              // divisionId: divisions.find(d => divisions. === d.divisionID).div_desc,
+              // divisionId: divisions.find(d => divisions. === d.divisionId).div_desc,
             } as Game)
         ),
       tap(games => console.log(games))
@@ -92,7 +92,7 @@ export class GameService {
     .subscribe(division => {
       if (division) {
         // console.log(division);
-        return (this.divisionId = division.divisionID);
+        return (this.divisionId = division.divisionId);
       }
     });
   allGames$ = this.store.pipe(
@@ -102,13 +102,13 @@ export class GameService {
   selectedDivision$ = this.store.pipe(
     select(fromGames.getCurrentDivision),
     map(division => {
-      this.divisionId = division.divisionID;
-      this.getStandingsByDivision(division.divisionID);
+      this.divisionId = division.divisionId;
+      this.getStandingsByDivision(division.divisionId);
     }),
     tap(data => console.log('Division', JSON.stringify(data)))
   );
   divisionGames$ = this.games$.pipe(
-    map(games => games.filter(game => game.divisionID === this.divisionId))
+    map(games => games.filter(game => game.divisionId === this.divisionId))
   );
   divisions: Division[];
   user: User;
@@ -131,8 +131,8 @@ export class GameService {
     console.log(games);
     for (let i = 0; i < games.length; i++) {
       console.log('looking for a match');
-      console.log(games[i].divisionID);
-      if (games[i].divisionID === divisionId) {
+      console.log(games[i].divisionId);
+      if (games[i].divisionId === divisionId) {
         g.push(games[i]);
         console.log('got a match');
       }
@@ -162,9 +162,7 @@ export class GameService {
       console.log(this.allGames);
       if (this.allGames) {
         for (let i = 0; i < this.allGames.length; i++) {
-          // console.log(this.allGames[i]);
-          // console.log(this.allGames[i].divisionID);
-          if (this.allGames[i].divisionID === div) {
+          if (this.allGames[i].divisionId === div) {
             // console.log(this.allGames[i]);
             games.push(this.allGames[i]);
           }
@@ -270,7 +268,7 @@ export class GameService {
         return true;
       } else {
         user.divisions.forEach(element => {
-          if (divisionId === element.divisionID) {
+          if (divisionId === element.divisionId) {
             return true;
             console.log('found ' + divisionId);
           }
@@ -282,7 +280,7 @@ export class GameService {
   setCanEdit (division: Division) {
     this.store.pipe(select(fromUser.getCurrentUser)).subscribe(user => {
       console.log(user);
-      let canEdit = this.getCanEdit(user, division.divisionID);
+      let canEdit = this.getCanEdit(user, division.divisionId);
       this.store.dispatch(new gameActions.SetCanEdit(canEdit));
       console.log(canEdit);
     });

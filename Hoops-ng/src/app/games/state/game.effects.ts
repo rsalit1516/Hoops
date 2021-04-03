@@ -167,7 +167,7 @@ export class GameEffects {
     ),
     tap(([action, t]) => {
       if (t) {
-        this.divisionId = t.divisionID;
+        this.divisionId = t.divisionId;
       } else {
         this.divisionId = 0;
       }
@@ -190,7 +190,7 @@ export class GameEffects {
         withLatestFrom(this.store.pipe(select(getCurrentDivision))),
         tap(([action, t]) => {
           if (t) {
-            this.divisionId = t.divisionID;
+            this.divisionId = t.divisionId;
           } else {
             this.divisionId = 0;
           }

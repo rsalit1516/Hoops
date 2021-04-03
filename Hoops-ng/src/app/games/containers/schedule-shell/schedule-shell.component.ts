@@ -88,7 +88,7 @@ export class ScheduleShellComponent implements OnInit {
   }
   divisionSelected(division: Division): void {
     console.log(division);
-    this.canEdit = this.getCanEdit(this.user, division.divisionID);
+    this.canEdit = this.getCanEdit(this.user, division.divisionId);
   }
   groupByDate(games: Game[]) {
     // console.log(games);
@@ -124,7 +124,7 @@ export class ScheduleShellComponent implements OnInit {
     console.log(divisionId);
     if (user) {
       user.divisions.forEach(element => {
-        if (divisionId === element.divisionID) {
+        if (divisionId === element.divisionId) {
           return true;
           console.log('found ' + divisionId);
         }

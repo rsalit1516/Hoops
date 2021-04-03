@@ -76,7 +76,7 @@ export class ScoresComponent implements OnInit {
       .subscribe(division => {
         console.log(division);
         if (division !== null && division !== undefined) {
-          this.divisionId = division.divisionID;
+          this.divisionId = division.divisionId;
           console.log(this.divisionId);
           this.canEdit = false;
           if (this.user !== null && this.user !== undefined) {
@@ -84,7 +84,7 @@ export class ScoresComponent implements OnInit {
               this.canEdit = true;
             } else {
               for (let i = 0; i < this.user.divisions.length; i++) {
-                if (this.user.divisions[i].divisionID === this.divisionId) {
+                if (this.user.divisions[i].divisionId === this.divisionId) {
                   this.canEdit = true;
                   console.log('Found division');
                   break;

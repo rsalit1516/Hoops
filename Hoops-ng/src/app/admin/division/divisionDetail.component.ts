@@ -18,10 +18,10 @@ export class DivisionDetailComponent implements OnInit {
     ngOnInit(): void {
         this.seasonForm = this.fb.group({
             // id: this.season.id,
-            name: this.division.div_Desc,
+            name: this.division.divisionDescription,
             maxDate: this.division.maxDate,
             minDate: this.division.minDate,
-            seasonId: this.division.seasonID
+            seasonId: this.division.seasonId
         });
     }
 

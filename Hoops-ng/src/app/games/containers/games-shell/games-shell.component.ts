@@ -140,7 +140,7 @@ export class GamesShellComponent implements OnInit {
     console.log(this.user$);
     if (division !== undefined) {
       // this.canEdit = this._gameService.setCanEdit(division);
-      this.store.dispatch(new gameActions.SetCanEdit(this._gameService.getCanEdit(this.user, division.divisionID)));
+      this.store.dispatch(new gameActions.SetCanEdit(this._gameService.getCanEdit(this.user, division.divisionId)));
       // console.log(this.canEdit);
       this.store.dispatch(new gameActions.LoadStandings());
     }
@@ -155,7 +155,7 @@ export class GamesShellComponent implements OnInit {
     let canEdit = false;
     if (user) {
       user.divisions.forEach(element => {
-        if (divisionId === element.divisionID) {
+        if (divisionId === element.divisionId) {
           console.log('found ' + divisionId);
           canEdit = true;
         }
@@ -171,9 +171,9 @@ export class GamesShellComponent implements OnInit {
       // console.log(data[i]);
       if (data[i] !== undefined) {
         let division: Division = {
-          seasonID: data[i].seasonID,
-          divisionID: data[i].divisionID,
-          div_Desc: data[i].div_Desc,
+          seasonId: data[i].seasonId,
+          divisionId: data[i].divisionId,
+          divisionDescription: data[i].divisionDescription,
           minDate: data[i].minDate,
           maxDate: data[i].maxDate
         };
@@ -192,7 +192,7 @@ export class GamesShellComponent implements OnInit {
         team.id = data[i].teamID;
         team.name = data[i].teamNumber;
         team.color = data[i].colorID;
-        team.divisionId = data[i].divisionID;
+        team.divisionId = data[i].divisionId;
         teams.push(team);
       }
       console.log(teams);

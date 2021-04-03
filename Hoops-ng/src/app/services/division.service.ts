@@ -138,7 +138,7 @@ export class DivisionService {
   division(id: number): Observable<Division> {
     console.log('Getting divisions');
     return this.getSeasonDivisions(of(this.season)).pipe(
-      map((content: Division[]) => content.find(p => p.divisionID === id))
+      map((content: Division[]) => content.find(p => p.divisionId === id))
     );
   }
 }

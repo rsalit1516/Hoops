@@ -62,7 +62,7 @@ export class GameService {
     if (allGames) {
       for (let i = 0; i < allGames.length; i++) {
         // console.log(allGames[i].divisionID);
-        if ( allGames[i].divisionID === divisionId ) {
+        if ( allGames[i].divisionId === divisionId ) {
           games.push(allGames[i]);
         }
       }

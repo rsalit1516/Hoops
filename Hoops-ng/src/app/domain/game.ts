@@ -3,7 +3,7 @@ import { Season }  from './season';
 export class Game {
     gameScheduleId: number;
      public seasonId: number;
-        public divisionID: number;
+        public divisionId: number;
         public gameId: number;
         public location: string;
         public gameDate: Date;

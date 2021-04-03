@@ -1,8 +1,8 @@
 
 export interface IDivision {
-    seasonID: number;
-    divisionID: number,
-    div_Desc: string;
+    seasonId: number;
+    divisionId: number;
+    divisionDescription: string;
     // div_Desc: string;
     minDate: Date;
     maxDate: Date;
@@ -10,10 +10,10 @@ export interface IDivision {
 
 export class Division implements IDivision {
     constructor(
-        public seasonID: number,
-        public divisionID: number,
+        public seasonId: number,
+        public divisionId: number,
         // public divisionName: string,
-       public div_Desc: string,
+       public divisionDescription: string,
         public minDate: Date,
         public maxDate: Date) {
     }
