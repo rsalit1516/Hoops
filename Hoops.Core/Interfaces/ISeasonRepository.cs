@@ -1,4 +1,4 @@
-using Hoops.Core.Entities;
+using Hoops.Core.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,6 +13,7 @@ namespace Hoops.Infrastructure.Interface
         IQueryable<Season> GetSeasons(int companyId);
 
         
-        IEnumerable<Season> GetAll(int companyId);
+        // IEnumerable<Season> GetAll(int companyId);
+        Task<List<Season>> GetAllAsync(int companyId);
     }
 }

@@ -35,7 +35,7 @@
   "files": [
     "src/app/user/state/index.ts",
     "src/main.ts",
-    "src/polyfills"
+    "./src/polyfills.ts"
   ],
   "exclude": [
     "node_modules",

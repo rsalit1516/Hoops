@@ -21,6 +21,6 @@ namespace Hoops.Core.Entities
         public bool? FeeWaived { get; set; }
         public DateTime? CreatedDate { get; set; }
         public string CreatedUser { get; set; }
-        public int? Teamid { get; set; }
+        public int? TeamId { get; set; }
     }
 }

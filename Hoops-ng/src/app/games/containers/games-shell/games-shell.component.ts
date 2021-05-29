@@ -103,7 +103,7 @@ export class GamesShellComponent implements OnInit {
       this.store.dispatch(new gameActions.LoadDivisions());
       this.store.dispatch(new gameActions.LoadStandings());
       this.store.dispatch(new gameActions.LoadTeams());
-      // this.store.dispatch(new gameActions.Load());
+      this.store.dispatch(new gameActions.Load());
     });
     //  this.currentSeason$ = this.store.pipe(
     //    select(fromGames.getCurrentSeason),

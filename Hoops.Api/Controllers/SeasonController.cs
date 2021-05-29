@@ -1,5 +1,6 @@
-using Hoops.Core.Entities;
+using Hoops.Core.Models;
 using Hoops.Infrastructure.Interface;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -26,9 +27,9 @@ namespace Hoops.Controllers
         /// </summary>
         [Route("GetAll")]
         [HttpGet]
-        public IActionResult GetSeason()
+        public async Task<IActionResult> GetSeason()
         {
-            return Ok(repository.GetAll(1));
+            return Ok(await repository.GetAllAsync(1));
         }
 
         /// <summary>

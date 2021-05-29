@@ -1,7 +1,7 @@
 <form fxFlex [formGroup]="selectForm">
   <mat-form-field>
     <mat-label>Select Season</mat-label>
-    <mat-select formControlName="description">
+    <mat-select formControlName="description" [(ngModel)]="selected">
       <mat-option
       *ngFor="let season of seasons$ | async"
       [value]="season"

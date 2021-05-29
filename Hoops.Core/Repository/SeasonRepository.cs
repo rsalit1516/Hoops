@@ -4,8 +4,8 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Hoops.Core.Entities;
-using Hoops.Core.ViewModels;
+using Hoops.Core.Models;
+using Hoops.Core;
 using Hoops.Infrastructure.Interface;
 
 namespace Hoops.Infrastructure.Repository
@@ -15,11 +15,11 @@ namespace Hoops.Infrastructure.Repository
         public SeasonRepository(hoopsContext _context) : base(_context) {}
 
         #region IRepository<T> Members
-        public IEnumerable<Season> GetAll(int companyId) =>
-            context.Seasons
+        public async Task<List<Season>> GetAllAsync(int companyId) =>
+            await context.Seasons
             .Where(s => s.CompanyId == companyId)
                 .OrderByDescending(c => c.FromDate)
-                .ToList();
+                .ToListAsync();
 
 
         #endregion // context.Set<Season>().Where(s => s.CompanyId == companyId);
@@ -110,7 +110,7 @@ namespace Hoops.Infrastructure.Repository
         // }
         
 
-        public IQueryable<SeasonCount> GetSeasonCountsSimple(int seasonId)
+        public IQueryable<Hoops.Core.ViewModels.SeasonCount> GetSeasonCountsSimple(int seasonId)
         {
             var result =
                 (
@@ -128,7 +128,7 @@ namespace Hoops.Infrastructure.Repository
                 )
                     .ToList()
                     .Select(x =>
-                        new SeasonCount
+                        new Hoops.Core.ViewModels.SeasonCount
                         {
                             Div_Desc = x.Div_Desc,
                             Total = x.Total
@@ -137,5 +137,6 @@ namespace Hoops.Infrastructure.Repository
             return result;
         }
 
+        
     }
 }

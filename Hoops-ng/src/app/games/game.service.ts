@@ -29,11 +29,14 @@ export class GameService {
   seasonId: number; // = 2192; // TO DO make this is passed in!
   currentSeason$ = this.store
     .select(fromGames.getCurrentSeason)
-    .subscribe(season => {
-      console.log(season);
-      if (season !== undefined && season !== null) {
-        this.seasonId = season.seasonId;
-      }
+    .subscribe({
+      next: season => {
+        console.log(season);
+        if (season !== undefined && season !== null) {
+          this.seasonId = season.seasonId;
+        }
+      },
+      error: this.handleError.bind(this)
     });
   private gameUrl = this.dataService.webUrl + '/api/schedulegame/getSeasonGames';
   //    this.seasonId;
@@ -51,7 +54,7 @@ export class GameService {
   allGames: Game[];
   standing: any[];
   // divisions$: Observable<Division>;
-  games$ = this.http.get<Game[]>(this.gameUrl + '?seasonId=' + '10004').pipe(
+  games$ = this.http.get<Game[]>(this.gameUrl + '?seasonId=' + '2201').pipe(
     // tap(data => console.log('All games: ' + JSON.stringify(data))),
     shareReplay(1),
     catchError(this.dataService.handleError)

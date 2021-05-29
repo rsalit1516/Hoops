@@ -26,7 +26,7 @@ import { WebContent } from '../../domain/webContent';
 @Injectable()
 export class ContentService {
   // private baseUrl = 'http://svc.csbchoops.net/api/WebContent';
-  //baseUrl = this.data.webUrl;
+  // baseUrl = this.data.webUrl;
   baseUrl = this.data.dotNetCoreUrl;
   getUrl = this.baseUrl + '/api/webcontent/getActiveWebContent';
   postUrl = this.baseUrl + '/api/webcontent';

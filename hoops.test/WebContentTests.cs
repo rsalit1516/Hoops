@@ -3,7 +3,8 @@ using Xunit;
 using System.Linq;
 using System.Threading.Tasks;
 using Hoops.Infrastructure.Repository;
-using Hoops.Core.Entities;
+using Hoops.Core.Models;
+using Hoops.Core;
 
 namespace csbc_server_test
 {

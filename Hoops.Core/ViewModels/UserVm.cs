@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Hoops.Core.Entities;
+using Hoops.Core.Models;
 
 namespace Hoops.Core.ViewModel
 {

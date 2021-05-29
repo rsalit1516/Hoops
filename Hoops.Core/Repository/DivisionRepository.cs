@@ -6,14 +6,15 @@ using System.Data;
 using Hoops.Infrastructure.Interface;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
-using Hoops.Core.Entities;
+using Hoops.Core.Models;
+using Hoops.Core;
 
 namespace Hoops.Infrastructure.Repository
 {
     public class DivisionRepository : EFRepository<Division>, IDivisionRepository
     {
 
-        public DivisionRepository(hoopsContext context) : base(context) {}
+        public DivisionRepository(hoopsContext context) : base(context) { }
 
         public IQueryable<VwDivision> LoadDivisions(int seasonId)
         {
@@ -81,7 +82,8 @@ namespace Hoops.Infrastructure.Repository
             return divisions;
         }
 
-        public async Task<IEnumerable<Division>> GetSeasonDivisionsAsync(int seasonId) => await context.Divisions
+        public async Task<IEnumerable<Division>> GetSeasonDivisionsAsync(int seasonId) =>
+        await context.Divisions
             .Where(h => h.SeasonId == seasonId)
             .OrderByDescending(d => d.MinDate)
             .ToListAsync();

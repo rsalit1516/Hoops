@@ -2,18 +2,17 @@
 using System.Linq;
 using Hoops.Infrastructure.Interface;
 using System.Data;
-using Csbc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Hoops.Core.ViewModels;
-using Hoops.Core.Entities;
+using Hoops.Core.Models;
 
 namespace Hoops.Infrastructure.Repository
 {
     public class ScheduleGameRepository : EFRepository<ScheduleGame>, IScheduleGameRepository
     {
-        public ScheduleGameRepository(hoopsContext context) : base(context) { }
+        public ScheduleGameRepository(Hoops.Core.hoopsContext context) : base(context) { }
 
         //protected hoopsContext DataContext { get; set; }
         #region IRepository<T> Members
@@ -30,6 +29,7 @@ namespace Hoops.Infrastructure.Repository
             var result = context.Set<ScheduleGame>().FirstOrDefault(s => s.ScheduleNumber == game.ScheduleNumber && s.GameNumber == game.GameNumber && s.DivisionId == game.DivisionId && s.SeasonId == game.SeasonId);
             return result;
         }
+        
         public async Task<IEnumerable<ScheduleGame>> GetSeasonGamesAsync(int seasonId)
         {
             return await context.ScheduleGames

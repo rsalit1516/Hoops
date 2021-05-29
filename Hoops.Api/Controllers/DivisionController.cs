@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Hoops.Infrastructure.Interface;
-using Hoops.Core.Entities;
+using Hoops.Core.Models;
 using System;
 
 namespace csbc_server.Controllers
@@ -12,20 +12,11 @@ namespace csbc_server.Controllers
     {
         // private readonly hoopsContext _context;
         private readonly IDivisionRepository repository;
-
-        public DivisionController(IDivisionRepository repository)
-        {
-            // _context = context
-            this.repository = repository;
-        }
+        public DivisionController(IDivisionRepository repository) => this.repository = repository;
 
         // GET: api/Division
         [HttpGet]
-        public async Task<IActionResult> GetDivision()
-        {
-            return Ok(await repository.GetAllAsync());
-            // _context.Divisions.ToListAsync();
-        }
+        public async Task<IActionResult> GetDivision() => Ok(await repository.GetAllAsync());
 
         // GET: api/Division/5
         [HttpGet("{id}")]
@@ -108,10 +99,7 @@ namespace csbc_server.Controllers
 
         [Route("GetSeasonDivisions/{seasonId}")]
         [HttpGet]
-        public async Task<IActionResult> GetSeasonDivisions(int seasonId)
-        {
-            return Ok(await repository.GetSeasonDivisionsAsync(seasonId));
-
-        }
+        public async Task<IActionResult> GetSeasonDivisions(int seasonId) => 
+        Ok(await repository.GetSeasonDivisionsAsync(seasonId));
     }
 }

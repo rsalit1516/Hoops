@@ -11,7 +11,8 @@ using Csbc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Hoops.Infrastructure.Interface;
 using System.Threading.Tasks;
-using Hoops.Core.Entities;
+using Hoops.Core.Models;
+using Hoops.Core;
 
 namespace Hoops.Infrastructure.Repository
 {

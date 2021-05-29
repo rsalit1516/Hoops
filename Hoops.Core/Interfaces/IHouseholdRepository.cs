@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Hoops.Core.Entities;
+using Hoops.Core.Models;
 
 namespace Hoops.Infrastructure.Interface{
     public interface IHouseholdRepository : IRepository<Household>

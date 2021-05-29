@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Hoops.Core.Entities
 {
+    [Table("Seasons")]
     public partial class Season
     {
         public int SeasonId { get; set; }

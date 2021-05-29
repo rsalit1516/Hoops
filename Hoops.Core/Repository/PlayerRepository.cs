@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Hoops.Infrastructure.Interface;
-using Hoops.Core.Entities;
+using Hoops.Core.Models;
 using Hoops.Core.ViewModels;
+using Hoops.Core;
 
 namespace Hoops.Infrastructure.Repository
 {
@@ -270,25 +271,25 @@ namespace Hoops.Infrastructure.Repository
             var count = sponsorPlayers.Count();
 
             var vwSeason = ConvertPlayersToSeasonPlayers(sponsorPlayers);
-            IQueryable<SeasonPlayer> vwSeasonPlayers = vwSeason.AsQueryable<SeasonPlayer>();
+            IQueryable<Hoops.Core.ViewModels.SeasonPlayer> vwSeasonPlayers = vwSeason.AsQueryable<SeasonPlayer>();
             return vwSeasonPlayers;
         }
 
-        public IQueryable<SeasonPlayer> GetCoachPlayers(int seasonId, int coachId)
+        public IQueryable<Hoops.Core.ViewModels.SeasonPlayer> GetCoachPlayers(int seasonId, int coachId)
         {
             var players = context.Set<Player>()
                 .Where(p => p.SeasonId == seasonId && p.Team.CoachId == coachId).ToList();
             var vwSeason = ConvertPlayersToSeasonPlayers(players);
-            IQueryable<SeasonPlayer> vwSeasonPlayers = vwSeason.AsQueryable<SeasonPlayer>();
+            IQueryable<Hoops.Core.ViewModels.SeasonPlayer> vwSeasonPlayers = vwSeason.AsQueryable<Hoops.Core.ViewModels.SeasonPlayer>();
             return vwSeasonPlayers;
         }
 
-        private static IEnumerable<SeasonPlayer> ConvertPlayersToSeasonPlayers(IEnumerable<Player> players)
+        private static IEnumerable<Hoops.Core.ViewModels.SeasonPlayer> ConvertPlayersToSeasonPlayers(IEnumerable<Player> players)
         {
-            var vwSeason = new List<SeasonPlayer>();
+            var vwSeason = new List<Hoops.Core.ViewModels.SeasonPlayer>();
             foreach (var player in players)
             {
-                var vwPlayer = new SeasonPlayer();
+                var vwPlayer = new Hoops.Core.ViewModels.SeasonPlayer();
                 if (player.DivisionId.HasValue)
                     vwPlayer.DivisionId = (int)player.DivisionId;
                 if (player.Division != null)
@@ -310,16 +311,16 @@ namespace Hoops.Infrastructure.Repository
             return vwSeason;
         }
 
-        private void GetHouseholdInfo(Player player, ref SeasonPlayer vwPlayer)
+        private void GetHouseholdInfo(Player player, ref Hoops.Core.ViewModels.SeasonPlayer vwPlayer)
         {
-            var house = this.context.Households.FirstOrDefault(h => h.HouseId == player.Person.MainHouseId);
+            var house = this.context.Households.FirstOrDefault(h => h.HouseId == player.Person.HouseId);
             vwPlayer.Address1 = house.Address1;
             vwPlayer.City = house.City;
             vwPlayer.State = house.State;
             vwPlayer.ZipCode = house.Zip;
         }
 
-        private static void GetPersonInfo(ref SeasonPlayer vwPlayer, Player player)
+        private static void GetPersonInfo(ref Hoops.Core.ViewModels.SeasonPlayer vwPlayer, Player player)
         {
             vwPlayer.FirstName = player.Person.FirstName;
             vwPlayer.LastName = player.Person.LastName;
@@ -503,5 +504,12 @@ namespace Hoops.Infrastructure.Repository
             }
             return srating;
         }
+
+        IQueryable<SeasonPlayer> IPlayerRepository.GetCoachPlayers(int seasonId, int coachId)
+        {
+            throw new NotImplementedException();
+        }
+
+        
     }
 }

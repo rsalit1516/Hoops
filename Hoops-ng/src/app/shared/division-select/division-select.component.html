@@ -7,7 +7,7 @@
     (click)="onClick(selectedDivision)"
   >
     <option *ngFor="let division of divisions$ | async" [ngValue]="division">
-      {{ division.div_Desc }}
+      {{ division.divisionDescription }}
     </option>
   </select>
 </div>

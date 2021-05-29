@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Hoops.Core.Entities
 {
     public partial class Coach: CommonFields
     {
+        [Column("CoachID")]
         public int CoachId { get; set; }
-        public int? CompanyId { get; set; }
+        [Column("CompanyID")]
+        public Nullable<int> CompanyId { get; set; }
         public int? SeasonId { get; set; }
         public int? PersonId { get; set; }
         public int? PlayerId { get; set; }

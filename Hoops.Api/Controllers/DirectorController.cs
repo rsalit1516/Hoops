@@ -1,6 +1,8 @@
-using Hoops.Core.Entities;
+using System.Threading.Tasks;
+using Hoops.Core.Models;
 using Hoops.Infrastructure.Interface;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace csbc_server.Controllers
 {
@@ -15,9 +17,6 @@ namespace csbc_server.Controllers
         /// Get - retrieve all directors
         /// </summary>
         [HttpGet]
-        public IActionResult Get()
-        {
-            return View(repository.GetAll());
-        }
+        public async Task<IActionResult> Get() => Ok(await repository.GetAllAsync());
     }
 }

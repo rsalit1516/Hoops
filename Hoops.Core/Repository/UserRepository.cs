@@ -1,4 +1,4 @@
-﻿using Hoops.Core.Entities;
+﻿using Hoops.Core.Models;
 using Csbc.Infrastructure;
 using Hoops.Infrastructure.Interface;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +9,7 @@ using System.Linq.Expressions;
 using System.Security.Cryptography;
 // using System.Security.Cryptography;
 using System.Threading.Tasks;
+using Hoops.Core;
 // using Microsoft.EntityFrameworkCore;
 
 namespace Hoops.Infrastructure.Repository

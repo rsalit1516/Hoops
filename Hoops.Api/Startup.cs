@@ -7,13 +7,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Csbc.Infrastructure.Repository;
 using Csbc.Infrastructure.Interface;
 using Hoops.Infrastructure.Interface;
-using Hoops.Core.Entities;
+using Hoops.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Hoops.Data;
+using Hoops.Core;
 
 namespace Hoops.Api
 {
@@ -32,28 +32,34 @@ namespace Hoops.Api
         public IWebHostEnvironment Environment { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public async void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
-            services
-                .AddDbContext<hoopsContext>(options =>
-                    options
-                        .UseSqlServer(Configuration
-                            .GetConnectionString("hoopsContext")));
+            //services
+            //    .AddDbContext<hoopsContext>(options =>
+            //        options
+            //            .UseSqlServer(Configuration
+            //                .GetConnectionString("hoopsContext")));
             if (Environment.IsDevelopment())
             {
                 services
                     .AddDbContext<hoopsContext>(options =>
                         options
                             .UseSqlServer(Configuration
-                                .GetConnectionString("hoopsContext")));
+                                .GetConnectionString("hoopsContext"),
+                            builder => {
+                                builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
+                            }));
             }
             else
             {
                 services
                     .AddDbContext<hoopsContext>(options =>
                         options
-                            .UseSqlServer(Configuration
-                                .GetConnectionString("hoopsContext")));
+                           .UseSqlServer(Configuration
+                                .GetConnectionString("hoopsContext"),
+                            builder => {
+                                builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
+                            }));
             }
 
             services.AddTransient<hoopsContext>();
@@ -118,8 +124,8 @@ namespace Hoops.Api
             services.AddControllers();
 
             // call data initializer
-            var seed = new Seed();
-            await seed.InitializeDataAsync();
+            //var seed = new Seed();
+            //await seed.InitializeDataAsync();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -146,7 +152,7 @@ namespace Hoops.Api
 
             app.UseHttpsRedirection();
             app.UseRouting();
-app.UseCors(MyAllowSpecificOrigins);
+            app.UseCors(MyAllowSpecificOrigins);
             // app
             //     .UseCors(x =>
             //         x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());

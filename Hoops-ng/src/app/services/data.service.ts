@@ -15,11 +15,8 @@ export class DataService {
   directorUrl = this.baseUrl + '/api/director';
 
   constructor (private _http: HttpClient) {
-    // this.webUrl = 'http://svc.csbchoops.net';
-    // this.webUrl = 'http://localhost:29784';
     this.webUrl = environment.apiUrl;
     console.log(environment.apiUrl);
-    // this.baseUrl = 'https://localhost:5001';
     // this.webUrl = 'http://csbc-webapi.azurewebsites.net';
     // this.webUrl = 'https://apicsbc.azurewebsites.net';
     this.dotNetCoreUrl = environment.apiUrl;

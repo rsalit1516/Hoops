@@ -1,4 +1,4 @@
-﻿using Hoops.Core.Entities;
+﻿using Hoops.Core.Models;
 
 namespace Hoops.Infrastructure.Interface
 {

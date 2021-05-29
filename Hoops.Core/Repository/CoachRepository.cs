@@ -5,7 +5,8 @@ using Hoops.Infrastructure.Interface;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.SqlClient;
 using Csbc.Infrastructure;
-using Hoops.Core.Entities;
+using Hoops.Core.Models;
+using Hoops.Core;
 
 namespace Hoops.Infrastructure.Repository
 {

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System.Data;
-using Hoops.Core.Entities;
+using Hoops.Core.Models;
 
 namespace Hoops.Infrastructure.Interface
 {

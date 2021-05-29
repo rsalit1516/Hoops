@@ -2,7 +2,8 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Hoops.Core.Entities;
+using Hoops.Core;
+using Hoops.Core.Models;
 using Hoops.Infrastructure.Repository;
 
 namespace Hoops.Data
@@ -40,7 +41,7 @@ namespace Hoops.Data
             await DeleteDivisionsAsync();
             await DeleteSeasonDataAsync();
             await DeleteAllAsync();
-await DeleteWebContentAsync();
+            await DeleteWebContentAsync();
             await CreateColorsAsync();
             await CreateSeasonsAsync();
             await CreateDivisionsAsync();

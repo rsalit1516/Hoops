@@ -4,7 +4,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Hoops.Infrastructure.Interface;
-using Hoops.Core.Entities;
+using Hoops.Core.Models;
+using Hoops.Core;
 
 namespace Hoops.Controllers
 {
@@ -40,6 +41,29 @@ namespace Hoops.Controllers
             }
 
             return scheduleGame;
+        }
+
+        // GET: api/GetSeasonGames/seasonId
+        /// <summary>
+        /// GetSeasonGames - get all games for the season
+        /// </summary>
+        /// <param name="seasonId"></param>
+        /// <returns></returns>
+        [Route("GetSeasonGames")]
+        [HttpGet]
+        public IActionResult GetSeasonGames(int seasonId)
+        {
+            return Ok(repository.GetSeasonGamesAsync(seasonId));
+        }
+
+
+        ///
+        /// GET: api/GetStandings/divisionId
+        [Route("GetStandings")]
+        [HttpGet]
+        public IActionResult GetStandings(int divisionId)
+        {
+            return Ok(repository.GetStandings(divisionId));
         }
 
         // PUT: api/ScheduleGame/5
@@ -107,12 +131,6 @@ namespace Hoops.Controllers
             return _context.ScheduleGames.Any(e => e.ScheduleGamesId == id);
         }
 
-        // GET: api/GetSeasonGames/seasonId
-        [Route("GetStandings")]
-        [HttpGet]
-        public IActionResult GetStandings(int divisionId)
-        {
-            return Ok(repository.GetStandings(divisionId));
-        }
+
     }
 }

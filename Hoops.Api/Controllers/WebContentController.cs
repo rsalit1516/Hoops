@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Csbc.Infrastructure.Interface;
 using System.Threading.Tasks;
-using Hoops.Core.Entities;
+using Hoops.Core.Models;
 
 namespace Hoops.Controllers
 {

@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Hoops.Core.Entities;
+using Hoops.Core;
+using Hoops.Core.Models;
 using Hoops.Infrastructure.Repository;
 
 namespace Hoops.Core.ViewModels
@@ -31,7 +32,7 @@ namespace Hoops.Core.ViewModels
         {
             //var sql = "Exec GetStanding @ScheduleNumber = " + divisionNo.ToString();
             //DataTable whatIsThis = db.ExecuteGetSQL(sql);
-            using (var db = new hoopsContext())
+            using (var db = new Hoops.Core.hoopsContext())
             {
                 // var rep = new ScheduleGameRepository(db); //make this a method here....
                 // var games = rep.GetSeasonGames(divisionNo).ToList<ScheduleGame>();
@@ -47,7 +48,7 @@ namespace Hoops.Core.ViewModels
 
         private List<ScheduleStandingsVM> GetTeamRecords(List<Team> teams, List<ScheduleGame> games, IEnumerable<ScheduleDivTeam> divTeams)
         {
-            using (var db = new hoopsContext())
+            using (var db = new Hoops.Core.hoopsContext())
             {
                 var teamRecords = new List<ScheduleStandingsVM>();
                 var rep = new ScheduleGameRepository(db);

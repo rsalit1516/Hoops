@@ -7,7 +7,7 @@ namespace Hoops.Core.Entities
     {
         public int PersonId { get; set; }
         public int? CompanyId { get; set; }
-        public int? MainHouseId { get; set; }
+        public int? HouseId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Workphone { get; set; }
@@ -40,6 +40,6 @@ namespace Hoops.Core.Entities
         public bool? Electrician { get; set; }
         public DateTime? CreatedDate { get; set; }
         public string CreatedUser { get; set; }
-        public int? Tempid { get; set; }
+        public int? TempId { get; set; }
     }
 }

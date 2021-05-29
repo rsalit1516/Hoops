@@ -2,8 +2,9 @@
 using System.Data;
 using Hoops.Infrastructure.Interface;
 //using CSBC.Components;
-using Hoops.Core.Entities;
+using Hoops.Core.Models;
 using System.Collections.Generic;
+using Hoops.Core;
 
 namespace Hoops.Infrastructure.Repository
 {

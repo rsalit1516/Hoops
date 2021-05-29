@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Hoops.Core.Entities;
+using Hoops.Core.Models;
 using Csbc.Infrastructure;
 using Hoops.Infrastructure.Interface;
+using Hoops.Core;
 
 namespace Hoops.Infrastructure.Repository
 {
@@ -33,7 +34,7 @@ namespace Hoops.Infrastructure.Repository
                 from d in context.Set<Director>()
                 from h in context.Set<Household>()
                 where p.PersonId == d.PersonId
-                where p.MainHouseId == h.HouseId
+                where p.HouseId == h.HouseId
                 where d.CompanyId == companyId
                 select new
                 {

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Hoops.Infrastructure.Repository;
-using Hoops.Core.Entities;
+using Hoops.Core.Models;
 
 namespace Hoops.Core.ViewModel
 {

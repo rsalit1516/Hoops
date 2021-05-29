@@ -8,7 +8,8 @@ using Csbc.Infrastructure;
 using Hoops.Infrastructure.Interface;
 using Hoops.Infrastructure.Repository;
 using Csbc.Infrastructure.Interface;
-using Hoops.Core.Entities;
+using Hoops.Core.Models;
+using Hoops.Core;
 
 namespace Csbc.Infrastructure.Repository
 {

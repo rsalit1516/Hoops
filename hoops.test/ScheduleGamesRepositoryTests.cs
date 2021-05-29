@@ -1,5 +1,6 @@
 using System;
-using Hoops.Core.Entities;
+using Hoops.Core;
+using Hoops.Core.Models;
 using Hoops.Infrastructure.Repository;
 using Xunit;
 

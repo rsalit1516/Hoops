@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
+import { pipe } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 import * as fromAdmin from '../../state';
 import { Observable } from 'rxjs';
@@ -15,17 +17,24 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 export class SeasonSelectComponent implements OnInit {
   seasons$: Observable<Season[]>;
   selectForm: FormGroup;
+  selected: Season;
 
   constructor( private store: Store<fromAdmin.State>, private fb: FormBuilder
     ) {}
 
   ngOnInit() {
-    this.seasons$ = this.store.select(fromAdmin.getSeasons);
-    
+    this.seasons$ = this.store
+      .pipe(select(fromAdmin.getSeasons));
     this.selectForm = this.fb.group({
       description: ''
-  });
-
+    });
+    this.seasons$.subscribe(seasons => {
+      if (seasons === undefined) {
+        this.selected = seasons[0];
+        console.log(this.selected);
+        this.selectedSeason(this.selected);
+      }
+    });
   }
   selectedSeason(season: Season) {
     console.log(season);

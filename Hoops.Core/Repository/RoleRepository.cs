@@ -4,7 +4,8 @@ using System.Linq.Expressions;
 using System.Linq;
 using System.Data;
 using Hoops.Infrastructure.Interface;
-using Hoops.Core.Entities;
+using Hoops.Core.Models;
+using Hoops.Core;
 
 namespace Hoops.Infrastructure.Repository
 {

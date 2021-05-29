@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using Hoops.Core.Entities;
+using Hoops.Core.Models;
 using System.Data;
 
 namespace Hoops.Infrastructure.Interface

@@ -5,11 +5,11 @@
         // Save pending changes to the data store.
         void Commit();
 
-        IScheduleGameRepository ScheduleGames { get; }
-        IColorRepository Colors { get; }
-        IHouseholdRepository Households { get; }
-        // Repository
-        IPersonRepository People { get; }
+        // IScheduleGameRepository ScheduleGames { get; }
+        // IColorRepository Colors { get; }
+        // IHouseholdRepository Households { get; }
+        // // Repository
+        // IPersonRepository People { get; }
         //IRepository<Room> Rooms { get; }
         //ISessionsRepository Sessions { get; }
         //IRepository<TimeSlot> TimeSlots { get; }

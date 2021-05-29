@@ -3,7 +3,8 @@ using System.Linq;
 using System.Data;
 using Hoops.Infrastructure.Interface;
 using Csbc.Infrastructure;
-using Hoops.Core.Entities;
+using Hoops.Core.Models;
+using Hoops.Core;
 
 namespace Hoops.Infrastructure.Repository
 {

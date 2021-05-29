@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Hoops.Core.Entities;
+using Hoops.Core.Models;
 using Hoops.Core.Enum;
 
 namespace Hoops.Infrastructure.Interface

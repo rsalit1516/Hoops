@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Hoops.Core.Entities;
+using Hoops.Core;
+using Hoops.Core.Models;
 using Hoops.Infrastructure.Interface;
 
 namespace Hoops.Infrastructure.Repository

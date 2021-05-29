@@ -5,8 +5,9 @@ using Csbc.Infrastructure;
 using Csbc.Infrastructure.Interface;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Hoops.Core.Entities;
+using Hoops.Core.Models;
 using Hoops.Core.ViewModels;
+using Hoops.Core;
 
 namespace Hoops.Infrastructure.Repository
 {
@@ -56,11 +57,10 @@ namespace Hoops.Infrastructure.Repository
         Body = z.content.Body,
         DateAndTime = z.content.DateAndTime,
         Location = z.content.Location,
-        WebContentTypeDescription = z.contentType.WebContentTypeDescription
+        WebContentTypeDescription = z.contentType.WebContentTypeDescription,
+        ExpirationDate = z.content.ExpirationDate
     })
-                //.Join 
-                //.Where(s => s.CompanyId == companyId)
-                //.Where(w => w.ExpirationDate >= DateTime.Now)
+                .OrderByDescending(e => e.ExpirationDate)
                 .OrderBy(s => s.ContentSequence)
                 .ToListAsync();
         }

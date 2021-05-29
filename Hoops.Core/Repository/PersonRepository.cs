@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Hoops.Core.Entities;
+using Hoops.Core.Models;
 using Hoops.Infrastructure.Interface;
 using Hoops.Core.Enum;
+using Hoops.Core;
 
 namespace Hoops.Infrastructure.Repository
 {
@@ -197,14 +198,14 @@ namespace Hoops.Infrastructure.Repository
 
         public IQueryable<Person> GetByHousehold(int houseId)
         {
-            return context.Set<Person>().Where(p => p.MainHouseId == houseId);
+            return context.Set<Person>().Where(p => p.HouseId == houseId);
         }
 
         public List<string> GetParents(int personId)
         {
             var child = context.Set<Person>().Find(personId);
             var parents = context.Set<Person>()
-                            .Where(p => p.MainHouseId == (child.MainHouseId) && (p.Parent == true))
+                            .Where(p => p.HouseId == (child.HouseId) && (p.Parent == true))
                             .Select(person => person.LastName + ", " + person.FirstName).ToList();
             return parents;
             
