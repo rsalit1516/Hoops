@@ -1,8 +1,0 @@
-<div>
-  <label>Season</label>
-   <select name="season" class="form-control" [(ngModel)] = "selectedSeason" (click)="onClick(selectedSeason)" >
-     <option *ngFor="let season of seasons$ | async" [ngValue]="season" >
-       {{season.description}}
-       </option>
-   </select>
-</div>
