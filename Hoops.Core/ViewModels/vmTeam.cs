@@ -26,7 +26,7 @@ namespace Hoops.Core.ViewModel
 
         public static vmTeam ConvertRecordForTeamNumber(Team team)
         {
-            // var colorRepo = new ColorRepository(new hoopsContext());
+            var colorRepo = new ColorRepository(new hoopsContext());
             var newTeam = new vmTeam
             {
                 TeamID = team.TeamId,
@@ -49,7 +49,7 @@ namespace Hoops.Core.ViewModel
             {
                 if (team.TeamColorId > 0)
                 {
-                    // newTeam.TeamName = colorRepo.GetById(team.TeamColorID).ColorName + " (" + team.TeamNumber.ToString() + ")";
+                    newTeam.TeamName = colorRepo.GetById(team.TeamColorId).ColorName + " (" + team.TeamNumber.ToString() + ")";
                 }
                 else
                     newTeam.TeamName = team.TeamNumber;

@@ -17,7 +17,7 @@ namespace Hoops.Infrastructure.Repository.Tests
         {
             using (var db = new hoopsContext())
             {
-                var repGames = new ScheduleGameRepository(db);
+                var repGames = new ScheduleGameRepository(db, new logger());
                 var games = await repGames.GetSeasonGamesAsync(2021);
                 Assert.IsTrue(games.Any());
             }

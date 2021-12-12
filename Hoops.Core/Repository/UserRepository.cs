@@ -221,24 +221,24 @@ namespace Hoops.Infrastructure.Repository
         private string HashPassword(string password)
         {
             string hashedPassword = null;
-            dynamic hashProvider = new SHA256Managed();
+            // dynamic hashProvider = new SHA256Managed();
             try
             {
                 byte[] passwordBytes = null;
                 //Dim hashBytes() As Byte
                 passwordBytes = System.Text.Encoding.Unicode.GetBytes(password);
                 //hashProvider = New SHA256Managed
-                hashProvider.Initialize();
-                passwordBytes = hashProvider.ComputeHash(passwordBytes);
+                // hashProvider.Initialize();
+                // passwordBytes = hashProvider.ComputeHash(passwordBytes);
                 hashedPassword = Convert.ToBase64String(passwordBytes);
             }
             finally
             {
-                if ((hashProvider != null))
-                {
-                    hashProvider.Clear();
-                    hashProvider = null;
-                }
+                // if ((hashProvider != null))
+                // {
+                //     hashProvider.Clear();
+                //     hashProvider = null;
+                // }
             }
             return hashedPassword;
 

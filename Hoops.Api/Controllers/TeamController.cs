@@ -10,6 +10,7 @@ using Hoops.Core.ViewModel;
 
 namespace Hoops.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class TeamController : ControllerBase
@@ -19,10 +20,9 @@ namespace Hoops.Controllers
 
         public ITeamRepository Teams { get; set; }
 
-        public TeamController(ITeamRepository _repository)
+        public TeamController(ITeamRepository repository)
         {
-           repository = _repository;
-            _context = new hoopsContext();
+            this.repository = repository; 
         }
 
         // GET: api/Team
@@ -68,6 +68,7 @@ namespace Hoops.Controllers
                 if (!TeamExists(id))
                 {
                     return NotFound();
+ 
                 }
                 else
                 {
@@ -117,19 +118,19 @@ namespace Hoops.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("GetSeasonTeams/{seasonId}")]
-        public IEnumerable<vmTeam> GetSeasonTeams(int seasonId)
+        public IEnumerable<Team> GetSeasonTeams(int seasonId)
         {
             var test = new Team();
             var teams = new List<vmTeam>();
             
             var entityTeams = repository.GetSeasonTeams(seasonId);
-            foreach (var team in entityTeams)
-            {
-                var t = vmTeam.ConvertRecordForTeamNumber(team);
-                teams.Add(t);
-            }
+            // foreach (var team in entityTeams)
+            // {
+            //     var t = ConvertRecordForTeamNumber(team);
+            //     teams.Add(t);
+            // }
 
-            return teams;
+            return entityTeams;
         }
 
     }

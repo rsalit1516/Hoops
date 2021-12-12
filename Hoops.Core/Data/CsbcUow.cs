@@ -4,7 +4,6 @@ using System;
 
 namespace CSBC.Core.Data
 {
-
     /// <summary>
     /// The Code Camper "Unit of Work"
     ///     1) decouples the repos from the controllers
@@ -24,13 +23,14 @@ namespace CSBC.Core.Data
     /// </remarks>
     public class CsbcUow : ICsbcUow, IDisposable
     {
-        // public CsbcUow(IRepositoryProvider repositoryProvider)
-        // {
-        //     CreateDbContext();
-
-        //     repositoryProvider.DbContext = DbContext;
-        //     RepositoryProvider = repositoryProvider;       
-        // }
+        private readonly hoopsContext db;
+        public CsbcUow(hoopsContext db)
+        {
+            CreateDbContext(db);
+            this.db = db;
+            // repositoryProvider.DbContext = db;
+            // RepositoryProvider = repositoryProvider;
+        }
 
         // public IScheduleGameRepository ScheduleGames { get { return GetRepo<IScheduleGameRepository>(); } }
         // public IColorRepository Colors { get { return GetRepo<IColorRepository>(); } }
@@ -53,9 +53,10 @@ namespace CSBC.Core.Data
             DbContext.SaveChanges();
         }
 
-        protected void CreateDbContext()
+        protected void CreateDbContext(hoopsContext db)
         {
-            DbContext = new hoopsContext();
+            DbContext = db;
+
 
             // Do NOT enable proxied entities, else serialization fails
             // DbContext..Configuration.ProxyCreationEnabled = false;

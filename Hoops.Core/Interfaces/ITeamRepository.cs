@@ -11,7 +11,7 @@ namespace Hoops.Infrastructure.Interface
         IQueryable<Team> GetTeams(int divisionId);
         int GetNumberofDivisionTeams(int divisionId);
         bool DeleteById(int id);
-        IQueryable<Team> GetSeasonTeams(int seasonId);
+        List<Team> GetSeasonTeams(int seasonId);
         IQueryable<Team> GetDivisionTeams(int divisionId);
     }
 }

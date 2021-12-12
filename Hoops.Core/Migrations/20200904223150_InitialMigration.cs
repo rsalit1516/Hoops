@@ -324,7 +324,7 @@ namespace Hoops.Core.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SchedueDivTeam",
+                name: "ScheduleDivTeam",
                 columns: table => new
                 {
                     ScheduleDivTeamId = table.Column<int>(nullable: false)
@@ -338,7 +338,7 @@ namespace Hoops.Core.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SchedueDivTeam", x => x.ScheduleDivTeamId);
+                    table.PrimaryKey("PK_ScheduleDivTeam", x => x.ScheduleDivTeamId);
                 });
 
             migrationBuilder.CreateTable(
@@ -971,7 +971,7 @@ namespace Hoops.Core.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_ScheduleDivTeams",
-                table: "SchedueDivTeam",
+                table: "ScheduleDivTeam",
                 columns: new[] { "ScheduleNumber", "TeamNumber" });
 
             migrationBuilder.CreateIndex(
@@ -1050,7 +1050,7 @@ namespace Hoops.Core.Migrations
                 name: "SchDivisions");
 
             migrationBuilder.DropTable(
-                name: "SchedueDivTeam");
+                name: "ScheduleDivTeam");
 
             migrationBuilder.DropTable(
                 name: "ScheduleGamesStats");

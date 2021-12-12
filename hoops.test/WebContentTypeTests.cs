@@ -7,7 +7,24 @@ using Hoops.Core;
 
 namespace Hoops.Test
 {
-    public class WebContentTypeTests
+    public class NewBaseType
+    {
+        [Fact]
+        public async void GetByWebContentTypeDescription()
+        {
+            using (var db = new hoopsContext())
+            {
+                var repo = new WebContentTypeRepository(db);
+                var inserted = await repo.InsertAsync(new WebContentType { WebContentTypeDescription = "Test" });
+                await db.SaveChangesAsync();
+                var result = await repo.GetByDescriptionAsync("Test");
+                Assert.True(result != null);
+                await repo.DeleteAsync(result.WebContentTypeId);
+            }
+        }
+    }
+
+    public class WebContentTypeTests : NewBaseType
     {
         public hoopsContext db { get; set; }
         public WebContentTypeRepository repo { get; set; }
@@ -59,19 +76,6 @@ namespace Hoops.Test
             }
         }
 
-        [Fact]
-        public async void GetByWebContentTypeDescription()
-        {
-            using (var db = new hoopsContext())
-            {
-                var repo = new WebContentTypeRepository(db);
-                var inserted = await repo.InsertAsync(new WebContentType { WebContentTypeDescription = "Test" });
-                await db.SaveChangesAsync();
-                var result = await repo.GetByDescriptionAsync("Test");
-                Assert.True(result != null);
-                await repo.DeleteAsync(result.WebContentTypeId);
-            }
-        }
         private async Task DeleteAllAsync(WebContentTypeRepository repo)
         {
             var records = await repo.GetAllAsync();

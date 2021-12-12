@@ -87,13 +87,16 @@ namespace Hoops.Core
         // public virtual DbSet<VwUsers> VwUsers { get; set; }
         public virtual DbSet<WebContent> WebContents { get; set; }
         public virtual DbSet<WebContentType> WebContentTypes { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-            }
-        }
+        // protected void OnConfiguring() {}
+        // {
+        // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        // {
+        //     // if (!optionsBuilder.IsConfigured)
+        //     // {
+        //     //     string conn = this.Database.GetConnectionString();
+        //     //     optionsBuilder.UseSqlServer(conn);
+        //     // }
+        // }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -125,10 +128,10 @@ namespace Hoops.Core
 
             modelBuilder.Entity<Color>(entity =>
             {
-                entity.ToTable("Color");
+                entity.ToTable("Colors");
 
                 entity.Property(e => e.ColorId)
-                    .HasColumnName("ColorID");
+                    .HasColumnName("ID");
                 entity.HasKey(e => e.ColorId);
 
                 entity.Property(e => e.ColorName)
@@ -246,7 +249,7 @@ namespace Hoops.Core
 
             modelBuilder.Entity<Director>(entity =>
             {
-                entity.ToTable("Director");
+                entity.ToTable("Directors");
                 entity.HasKey(e => e.DirectorId);
 
                 entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
@@ -257,7 +260,7 @@ namespace Hoops.Core
 
                 entity.Property(e => e.DirectorId).HasColumnName("ID");
 
-                entity.Property(e => e.PersonId).HasColumnName("PersonId");
+                entity.Property(e => e.PersonId).HasColumnName("PeopleID");
 
                 entity.Property(e => e.PhonePref).HasMaxLength(10);
 
@@ -337,7 +340,7 @@ namespace Hoops.Core
 
             modelBuilder.Entity<Household>(entity =>
             {
-                entity.ToTable("Household");
+                entity.ToTable("Households");
                 entity.HasKey(e => e.HouseId);
 
                 entity.HasIndex(e => new { e.Phone, e.Email, e.HouseId })
@@ -406,7 +409,7 @@ namespace Hoops.Core
 
             modelBuilder.Entity<Person>(entity =>
             {
-                entity.ToTable("Person");
+                entity.ToTable("People");
                 entity.HasKey(e => e.PersonId);
 
                 entity.HasIndex(e => e.Coach)
@@ -621,8 +624,8 @@ namespace Hoops.Core
 
             modelBuilder.Entity<ScheduleDivTeam>(entity =>
             {
-                entity.ToTable("SchedueDivTeam");
-                entity.HasKey(e => e.ScheduleDivTeamId);
+                entity.ToTable("ScheduleDivTeams");
+                entity.HasKey(e => e.ScheduleDivTeamsId);
                 entity.HasIndex(e => new { e.ScheduleNumber, e.TeamNumber })
                     .HasDatabaseName("IX_ScheduleDivTeams");
             });
@@ -1025,31 +1028,31 @@ namespace Hoops.Core
                 entity.HasIndex(e => new { e.DivisionId, e.TeamName, e.TeamColorId, e.TeamNumber, e.SeasonId })
                     .HasDatabaseName("idx_DCh_376_375_Teams");
 
-                // entity.Property(e => e.TeamId).HasColumnName("TeamID");
+                entity.Property(e => e.TeamId).HasColumnName("TeamID");
 
-                // entity.Property(e => e.AssCoachId).HasColumnName("AssCoachID");
+                entity.Property(e => e.AssCoachId).HasColumnName("AssCoachID");
 
-                // entity.Property(e => e.CoachId).HasColumnName("CoachID");
+                entity.Property(e => e.CoachId).HasColumnName("CoachID");
 
-                // entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
+                entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
 
-                // entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime").HasDefaultValue(DateTime.Now);
+                entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime").HasDefaultValue(DateTime.Now);
 
-                // entity.Property(e => e.CreatedUser).HasMaxLength(50);
+                entity.Property(e => e.CreatedUser).HasMaxLength(50);
 
-                // entity.Property(e => e.DivisionId).HasColumnName("DivisionID");
+                entity.Property(e => e.DivisionId).HasColumnName("DivisionID");
 
-                // entity.Property(e => e.SeasonId).HasColumnName("SeasonID");
+                entity.Property(e => e.SeasonId).HasColumnName("SeasonID");
 
-                // entity.Property(e => e.SponsorId).HasColumnName("SponsorID");
+                entity.Property(e => e.SponsorId).HasColumnName("SponsorID");
 
-                // entity.Property(e => e.TeamColor).HasMaxLength(50);
+                entity.Property(e => e.TeamColor).HasMaxLength(50);
 
-                // entity.Property(e => e.TeamColorId).HasColumnName("TeamColorID");
+                entity.Property(e => e.TeamColorId).HasColumnName("TeamColorID");
 
-                // entity.Property(e => e.TeamName).HasMaxLength(50);
+                entity.Property(e => e.TeamName).HasMaxLength(50);
 
-                // entity.Property(e => e.TeamNumber).HasMaxLength(2);
+                entity.Property(e => e.TeamNumber).HasMaxLength(2);
             });
 
 

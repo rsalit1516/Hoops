@@ -17,6 +17,6 @@ namespace Hoops.Core.Models
         public int ScheduleTeamNumber { get; set; }
         public int HomeLocation { get; set; }
         public int SeasonId { get; set; }
-        public int? ScheduleDivTeamId { get; set; }
+        public int? ScheduleDivTeamsId { get; set; }
     }
 }

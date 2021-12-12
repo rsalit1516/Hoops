@@ -1131,7 +1131,7 @@ namespace Hoops.Core.Migrations
                     b.HasIndex("ScheduleNumber", "TeamNumber")
                         .HasName("IX_ScheduleDivTeams");
 
-                    b.ToTable("SchedueDivTeam");
+                    b.ToTable("ScheduleDivTeam");
                 });
 
             modelBuilder.Entity("Hoops.Core.Entities.ScheduleGame", b =>

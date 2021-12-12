@@ -87,10 +87,10 @@ namespace Hoops.Core.Entities
         // public virtual DbSet<VwUsers> VwUsers { get; set; }
         public virtual DbSet<WebContent> WebContents { get; set; }
         public virtual DbSet<WebContentType> WebContentTypes { get; set; }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
+        // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        // {
            
-        }
+        // }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -624,7 +624,7 @@ namespace Hoops.Core.Entities
 
             modelBuilder.Entity<ScheduleDivTeam>(entity =>
             {
-                entity.ToTable("SchedueDivTeam");
+                entity.ToTable("ScheduleDivTeams");
                 entity.HasKey(e => e.ScheduleDivTeamId);
                 entity.HasIndex(e => new { e.ScheduleNumber, e.TeamNumber })
                     .HasDatabaseName("IX_ScheduleDivTeams");

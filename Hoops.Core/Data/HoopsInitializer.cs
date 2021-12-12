@@ -16,7 +16,7 @@ namespace Hoops.Core.Data
     public class HoopsInitializer
     {
         public const string companyName = "Test Basketball Club";
-        public int CompanyId = Convert.ToInt32(ConfigurationManager.AppSettings["CompanyId"]);
+        public int CompanyId = Convert.ToInt32(1); // TODO: get companyID from config file
         public List<string> HouseholdLastNames = new List<string>(new string[] { "Fallon", "Leno", "Obrien", "Letterman", "Morgan", "Johnson", "Smith", "Clapton", "Bruce", "Tweedy", "Franks", "Garcia", "Lesh", "Hart", "Weir", "Kreutzman" });
         public List<string> FirstNames = new List<string>(new string[] { "Mike", "Rich", "Conan", "David", "Fred", "Brenda", "Ann", "Wilbur", "Harry", "Jack", "Jill", "Robert", "William", "Carol", "James", "Harold", "Skye", "Beatrice", "Thomas" });
 

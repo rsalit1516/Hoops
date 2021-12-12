@@ -5,6 +5,8 @@ using Hoops.Infrastructure.Interface;
 using Hoops.Core.Models;
 using System.Collections.Generic;
 using Hoops.Core;
+using Hoops.Core.ViewModel;
+using System;
 
 namespace Hoops.Infrastructure.Repository
 {
@@ -49,10 +51,16 @@ namespace Hoops.Infrastructure.Repository
             return tflag;
         }
 
-        public IQueryable<Team> GetSeasonTeams(int seasonId)
+        public List<Team> GetSeasonTeams(int seasonId)
         {
-            var teams = context.Teams
-                        .Where(team => team.SeasonId == seasonId);
+            var colors = context.Colors.Where(x => x.CompanyId == 1).ToList();
+            var teams = new List<Team>();
+            foreach (Team team in context.Teams
+                        .Where(team => team.SeasonId == seasonId))
+            {
+                teams.Add(ConvertRecordForTeamNumber(team, colors));
+            }
+
             return teams;
         }
 
@@ -61,6 +69,19 @@ namespace Hoops.Infrastructure.Repository
             var teams = context.Teams
                         .Where(s => s.DivisionId == divisionId);
             return teams;
+        }
+        public Team ConvertRecordForTeamNumber(Team team, List<Color> colors)
+        {
+            if (String.IsNullOrEmpty(team.TeamName))
+            {
+                if (team.TeamColorId > 0)
+                {
+                    team.TeamName = colors.FirstOrDefault(c => c.ColorId == team.TeamColorId).ColorName + " (" + team.TeamNumber.ToString() + ")";
+                }
+                else
+                    team.TeamName = team.TeamNumber;
+            }
+            return team;
         }
     }
 }

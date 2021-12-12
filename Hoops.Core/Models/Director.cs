@@ -23,7 +23,7 @@ namespace Hoops.Core.Models
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public string CreatedUser { get; set; }
 
-        [ForeignKey("PeopleID")]
-        public virtual Person People {get; set;}
+        // [ForeignKey("PeopleID")]
+        // public virtual Person People {get; set;}
     }
 }

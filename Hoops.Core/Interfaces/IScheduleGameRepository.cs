@@ -11,8 +11,10 @@ namespace Hoops.Infrastructure.Interface
     {
         IQueryable<ScheduleGame> GetByDate(DateTime date);
         ScheduleGame GetByScheduleAndGameNo(int scheduleNo, int gameNo);
+        IEnumerable<ScheduleGame> GetSeasonGames();
         Task<IEnumerable<ScheduleGame>> GetSeasonGamesAsync(int seasonId);
         new int Update(ScheduleGame scheduleGame);
         IEnumerable<ScheduleStandingsVM> GetStandings(int divisionId);
+        List<GameSchedulesViewModel> GetGames( int seasonId);
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Hoops.Core.Models;
-using Csbc.Infrastructure;
 using Hoops.Infrastructure.Interface;
 using Hoops.Core;
 
@@ -27,18 +26,19 @@ namespace Hoops.Infrastructure.Repository
             return entity;
         }
 
-        public IQueryable<VwDirector> GetAll(int companyId)
+        public List<VwDirector> GetAll(int companyId)
         {
             var directors =
-                from p in context.Set<Person>()
-                from d in context.Set<Director>()
-                from h in context.Set<Household>()
+                from p in context.People
+                from d in context.Directors
+                from h in context.Households
                 where p.PersonId == d.PersonId
                 where p.HouseId == h.HouseId
                 where d.CompanyId == companyId
                 select new
                 {
                     d.DirectorId,
+                    p.PersonId,
                     d.Title,
                     p.FirstName,
                     p.LastName,
@@ -58,8 +58,11 @@ namespace Hoops.Infrastructure.Repository
             {
                 var dir = new VwDirector();
                 dir.DirectorId = director.DirectorId;
+                dir.PersonId = director.PersonId;
                 dir.Title = director.Title;
                 dir.Name = director.FirstName + " " + director.LastName;
+                dir.FirstName = director.FirstName ;
+                dir.LastName = director.LastName;
                 dir.Phone = director.Phone;
                 dir.WorkPhone = director.Workphone;
                 dir.CellPhone = director.Cellphone;
@@ -73,8 +76,8 @@ namespace Hoops.Infrastructure.Repository
                 vwDirectors.Add(dir);
             }
 
-            var vwDir = vwDirectors.AsQueryable<VwDirector>();
-            return vwDir;
+            // var vwDir = vwDirectors.AsQueryable<VwDirector>();
+            return vwDirectors;
         }
 
         public List<VwDirector> GetDirectorVolunteers(int companyId)

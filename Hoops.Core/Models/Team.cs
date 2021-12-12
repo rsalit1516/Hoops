@@ -11,12 +11,11 @@ namespace Hoops.Core.Models
         [Key]
         [Column("TeamID")]
         public int TeamId { get; set; }
-        public Nullable<int> CompanyID { get; set; }
-        [Column("DivisionsID")]
+        [Column("DivisionID")]
         public int DivisionId { get; set; }
         [Column("CompanyID")]
         public Nullable<int> CompanyId { get; set; }
-        [Column("SeasondID")]
+        [Column("SeasonID")]
         public Nullable<int> SeasonId { get; set; }
         [Column("CoachID")]
         public Nullable<int> CoachId { get; set; }
@@ -52,10 +51,8 @@ namespace Hoops.Core.Models
         // [ForeignKey("AssCoachID")]
         // public virtual Coach AsstCoach { get; set; }
        
-        [ForeignKey("TeamColorID")]
-        public virtual Color Color { get; set; }
+        // [ForeignKey("TeamColorID")]
+        // public virtual Color Color { get; set; }
 
     }
-
- 
 }

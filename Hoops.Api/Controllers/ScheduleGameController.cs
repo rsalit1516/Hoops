@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using Hoops.Infrastructure.Interface;
 using Hoops.Core.Models;
 using Hoops.Core;
+using Hoops.Core.ViewModels;
+using Microsoft.Extensions.Logging;
 
 namespace Hoops.Controllers
 {
@@ -15,11 +17,13 @@ namespace Hoops.Controllers
     {
         private readonly hoopsContext _context;
         private readonly IScheduleGameRepository repository;
-        public ScheduleGameController(IScheduleGameRepository repository)
-        {
-            // _context = context;
+        private readonly ILogger<ScheduleGameController> _logger;
 
+        public ScheduleGameController(IScheduleGameRepository repository, ILogger<ScheduleGameController> logger)
+        {
             this.repository = repository;
+            _logger = logger;
+            _logger.LogDebug(1, "NLog injected into ScheduleGameController");
         }
 
         // GET: api/ScheduleGame
@@ -53,7 +57,9 @@ namespace Hoops.Controllers
         [HttpGet]
         public IActionResult GetSeasonGames(int seasonId)
         {
-            return Ok(repository.GetSeasonGamesAsync(seasonId));
+            _logger.LogInformation("Retrieving season games");
+            var games = repository.GetGames(seasonId);
+            return Ok(games);
         }
 
 
@@ -63,6 +69,7 @@ namespace Hoops.Controllers
         [HttpGet]
         public IActionResult GetStandings(int divisionId)
         {
+            _logger.LogInformation("Retrieving division standings");
             return Ok(repository.GetStandings(divisionId));
         }
 

@@ -12,7 +12,6 @@ using Hoops.Infrastructure.Interface;
 using Hoops.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using Hoops.Data;
 using Hoops.Core;
 
 namespace Hoops.Api
@@ -66,7 +65,7 @@ namespace Hoops.Api
             services.AddTransient<ISeasonRepository, SeasonRepository>();
             services.AddTransient<IDivisionRepository, DivisionRepository>();
             services.AddScoped<IRepository<User>, UserRepository>();
-            services.AddTransient<IRepository<Director>, DirectorRepository>();
+            services.AddTransient<IDirectorRepository, DirectorRepository>();
             services.AddTransient<ITeamRepository, TeamRepository>();
             services.AddTransient<IColorRepository, ColorRepository>();
             services.AddTransient<IScheduleGameRepository, ScheduleGameRepository>();
