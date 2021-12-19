@@ -1,0 +1,100 @@
+@import '../../../../content/_variables';
+
+.table-striped > tbody > tr {
+  background-color: $card-background-color;
+  color: $color;
+}
+.table-striped > tbody > tr:nth-child(odd) {
+  background-color: $app-bar-background;
+}
+.table-striped thead > tr {
+  background-color: $app-bar-background;
+}
+.mat-table,
+.mat-card {
+  background-color: $card-background-color;
+  color: $color;
+  border-radius: 10px;
+  width: 100%;
+}
+.mat-table tr {
+  color: $color;
+}
+.mat-table tr th {
+  color: $color;
+  font-weight: 700;
+}
+.mat-table tr td {
+  color: $color;
+  font-weight: 500;
+}
+
+.mat-table tr td.teamName {
+  text-transform: lowercase;
+}
+.mat-table tr td.teamName:first-letter {
+  text-transform: uppercase;
+}
+.table-wrapper {
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: $border-radius;
+  margin-left: 20px;
+  margin-right: 20px;
+  background-color: $card-background-color;
+  font: .9rem
+}
+@media screen and (max-width: 600px) {
+  .table-wrapper {
+    padding-left: 2px;
+    padding-right: 2px;
+    margin-left: 2px;
+    margin-right: 2px;  }
+
+    .location {
+      font-size:.7em;
+      font-weight: 500;
+      // width: 180px;   
+  }
+}
+.date {
+  
+  font-weight: 600;
+  // width: 100px;
+  padding-left: 10px;
+}
+.time {
+  
+  font-weight: 600;
+  // width: 100px;
+  
+}
+.team {
+  
+  font-weight: 700;
+  // width: 260px;
+  
+}
+.homeTeam {
+  font-weight: 700;
+  // width: 260px;
+  
+  
+}
+
+.location {
+  font-weight: 500;
+  // width: 180px;
+  
+}
+.edit {
+  display: inline-block;
+  // width: 80px;
+  padding-left: 10px;
+}
+.row {
+  border-top: 1px solid whitesmoke ;
+  padding-top: 8px;
+  padding-bottom: 8px;
+
+}

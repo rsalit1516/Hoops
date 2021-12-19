@@ -1,0 +1,26 @@
+<form [formGroup]="filterForm">
+  <mat-toolbar>
+    <mat-toolbar-row
+      fxFlex
+      fxLayout="row"
+      fxLayoutAlign="left"
+      fxLayoutGap="4px"
+    >
+      <div fxFlex="20%">
+        <!-- <button mat-raised-button (click)="addContent()"> -->
+          <button mat-raised-button  [routerLink]="['edit']">
+          New
+        </button>
+      </div>
+      <!-- <span fxFlex="5%"></span> -->
+      <div fxFlex="25%" class="activeContentCheckbox">
+        <mat-checkbox
+          value="checked"
+          formControlName="activeContent"
+          (click)="filterContent()"
+          >Active only</mat-checkbox
+        >
+      </div>
+    </mat-toolbar-row>
+  </mat-toolbar>
+</form>

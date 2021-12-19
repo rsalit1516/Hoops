@@ -1,0 +1,25 @@
+<!-- <div style="height: 100vh;" class="wrapper"> -->
+<mat-toolbar class="top-nav-toolbar" color="default" fxShow="true">
+  <div fxHide.gt-xs>
+    <button mat-button (click)="onToggleSidenav()" class="menu-button">
+      <mat-icon>menu</mat-icon>
+    </button>
+  </div>
+  <div fxFlex fxLayout fxHide.xs>
+    <a routerLink="/home" mat-button routerLinkActive="active">Home</a>
+    <a routerLink="/games" mat-button>Games</a>
+    <a routerLink="/photos" mat-button>Photos</a>
+    <a routerLink="/contacts" mat-button>Contacts</a>
+    <a routerLink="/clubDocs" mat-button>Club Docs</a>
+    <a *ngIf="showAdminMenu" routerLink="/admin" mat-button>Admin</a>
+    <!-- <a *ngIf="showAdminMenu" routerLink="/dashboard" mat-button>Dashboard</a> -->
+    <span class="fill-space"></span>
+  </div>
+  <div fxFlex fxLayout fxLayoutAlign="end">
+    <button mat-raised-button *ngIf="!currentUser" (click)="openDialog()">
+      Admin Login
+    </button>
+    <p readonly *ngIf="currentUser">Hello {{ userName }}</p>
+  </div>
+
+</mat-toolbar>

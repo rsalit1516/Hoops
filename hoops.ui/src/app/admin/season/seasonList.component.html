@@ -1,0 +1,60 @@
+<div class="row">
+    <div class="col-sm-4">
+        <div id="panelSeason" class="row">
+            <div class="panel panel-primary">
+                <div>
+                    <table id="grdSeason" class="table  table-responsive table-condensed">
+                        <thead>
+                            <tr>
+                                 <th>ID</th>
+                                <th>Season</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let season of seasons | async" (click)="onSelect(season)">
+                                 <td>{{season.seasonID}}</td>
+                                <td>{{season.description}}</td>
+                                <td>{{season.fromDate | date:'MM/dd/yyyy'}}</td>
+                                <td>{{season.toDate | date:'MM/dd/yyyy'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-8">
+        <div *ngIf="selectedSeason">
+            <csbc-season-detail [season]="selectedSeason"></csbc-season-detail>
+        </div>
+    </div>
+</div>
+<form formName="gameForm">
+    <div id="panelSeasons" flexLayout="row">
+      <div>
+        <div class="table-wrapper">
+          <table mat-table id="grdSeasons" [dataSource]="dataSource">
+            <ng-container matColumnDef="description">
+              <th mat-header-cell *matHeaderCellDef>season</th>
+              <td mat-cell *matCellDef="let game" class="date">
+                {{ game.gameDate | date: 'M/d' }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="actions" *ngIf="canEdit">
+              <th mat-header-cell *matHeaderCellDef>Actions</th>
+              <td mat-cell *matCellDef="let game">
+                <button class="edit" *ngIf="canEdit" mat-icon-button><mat-icon>edit</mat-icon></button>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns" ></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </form>
+  
