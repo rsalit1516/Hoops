@@ -785,3 +785,19 @@
 2021-12-18 08:19:29.7460 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'lifetimeConsole' not found for logging rule: Microsoft.Hosting.Lifetime.
 2021-12-18 08:19:29.8179 Info Validating config: TargetNames=Console, ownFile-web, ConfigItems=71, FilePath=/Users/richardsalit/source/repos-github/Hoops/Hoops.Api/bin/Debug/net6.0/nlog.config
 2021-12-18 08:19:29.8243 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: allfile
+2021-12-18 11:41:06.4656 Info Message Template Auto Format enabled
+2021-12-18 11:41:06.4913 Info Loading assembly: NLog.Web.AspNetCore
+2021-12-18 11:41:06.5365 Info Adding target FileTarget(Name=allfile)
+2021-12-18 11:41:06.5429 Info Adding target FileTarget(Name=ownFile-web)
+2021-12-18 11:41:06.5440 Info Adding target ConsoleTarget(Name=Console)
+2021-12-18 11:41:06.5540 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'lifetimeConsole' not found for logging rule: Microsoft.Hosting.Lifetime.
+2021-12-18 11:41:07.5369 Info Validating config: TargetNames=Console, ownFile-web, ConfigItems=71, FilePath=/Users/richardsalit/source/repos-github/Hoops/Hoops.Api/bin/Debug/net6.0/nlog.config
+2021-12-18 11:41:07.5449 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: allfile
+2021-12-18 15:32:17.0565 Info Message Template Auto Format enabled
+2021-12-18 15:32:17.0860 Info Loading assembly: NLog.Web.AspNetCore
+2021-12-18 15:32:17.1357 Info Adding target FileTarget(Name=allfile)
+2021-12-18 15:32:17.1423 Info Adding target FileTarget(Name=ownFile-web)
+2021-12-18 15:32:17.1451 Info Adding target ConsoleTarget(Name=Console)
+2021-12-18 15:32:17.1543 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'lifetimeConsole' not found for logging rule: Microsoft.Hosting.Lifetime.
+2021-12-18 15:32:17.1998 Info Validating config: TargetNames=Console, ownFile-web, ConfigItems=71, FilePath=/Users/richardsalit/source/repos-github/Hoops/Hoops.Api/bin/Debug/net6.0/nlog.config
+2021-12-18 15:32:17.2071 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: allfile
