@@ -113,7 +113,7 @@ export class GamesShellComponent implements OnInit {
 
   divisionSelected(division: Division): void {
     this.store.dispatch(new gameActions.SetCurrentDivision(division));
-    console.log(this.user$);
+    // console.log(this.user$);
     if (division !== undefined) {
       this.store.dispatch(new gameActions.SetCanEdit(this._gameService.getCanEdit(this.user, division.divisionId)));
     }

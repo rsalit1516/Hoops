@@ -271,8 +271,6 @@ export class GameService {
         'Content-Type': 'application/json',
       }),
     };
-    console.log(homeTeamScore);
-    console.log(visitingTeamScore);
     game.homeTeamScore = homeTeamScore;
     game.visitingTeamScore = visitingTeamScore;
     console.log(game);

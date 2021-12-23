@@ -25,9 +25,8 @@ export class GamesResolver implements Resolve<boolean> {
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
     this.store.select(fromGames.getCurrentSeason).subscribe(season => {
-      console.log(season);
       const t = this._gameService.currentSeason$; // = season.seasonID;
-      this.store.dispatch(new gameActions.LoadDivisions());
+      // this.store.dispatch(new gameActions.LoadDivisions());
       this.store.dispatch(new gameActions.LoadTeams());
       this.store.dispatch(new gameActions.Load());
       this.store.dispatch(new gameActions.LoadPlayoffGames());

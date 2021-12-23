@@ -18,7 +18,7 @@ export class SeasonService {
   public selectedSeason$: Observable<Season>;
   seasons: Season[] | undefined;
   seasons$ = this.http.get<Season[]>(this._seasonsUrl).pipe(
-    tap(data => console.log('All seasons: ' + JSON.stringify(data))),
+    // tap(data => console.log('All seasons: ' + JSON.stringify(data))),
     shareReplay(1),
     // catchError(this.dataService.handleError)
   );
@@ -26,7 +26,7 @@ export class SeasonService {
   currentSeason$ =
   this.http.get<Season>(this._seasonUrl).pipe(
     map(season => season as Season),
-    tap(data => console.log('All: ' + JSON.stringify(data))),
+    // tap(data => console.log('All: ' + JSON.stringify(data))),
     catchError(this.dataService.handleError('getCurrentSeason', null))
   );
 
@@ -39,7 +39,6 @@ export class SeasonService {
   }
 
   setSelectedSeason(season: Observable<Season>) {
-    console.log(season);
     this.selectedSeason$ = season;
   }
   getSeasons(): Observable<Season[]> {

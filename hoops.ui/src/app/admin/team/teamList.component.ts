@@ -27,7 +27,6 @@ export class TeamListComponent implements OnInit {
     setTeamData(data: any[]): Team[] {
     let teams: Team[] = [];
     for (let i = 0; i <= data.length; i++) {
-      console.log(data[i]);
       if (data[i] !== undefined) {
         let team: Team = new Team();
         team.teamId = data[i].teamID;
@@ -35,7 +34,6 @@ export class TeamListComponent implements OnInit {
         team.teamColorId = data[i].colorID;
         teams.push(team);
       }
-      console.log(teams);
     }
     return teams;
   }

@@ -14,7 +14,6 @@ export class LoadContent implements Action {
 export class LoadContentSuccess implements Action {
   readonly type = HomeActionTypes.LoadContentSuccess;
   constructor(public payload: WebContent[]) {
-    console.log(payload);
   }
 }
 
@@ -23,7 +22,7 @@ export class LoadContentFail implements Action {
   constructor(public payload: string) {}
 }
 
-export type HomeActions = 
-| LoadContent 
-| LoadContentSuccess 
+export type HomeActions =
+| LoadContent
+| LoadContentSuccess
 | LoadContentFail;

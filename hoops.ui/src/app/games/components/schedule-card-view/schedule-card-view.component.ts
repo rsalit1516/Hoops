@@ -18,7 +18,7 @@ export class ScheduleCardViewComponent implements OnInit {
   @Input()
   set games (games: Game[]) {
     this._games = games;
-    console.log(games);
+    // console.log(games);
   }
   private _games!: Game[];
 
@@ -32,7 +32,6 @@ export class ScheduleCardViewComponent implements OnInit {
     .subscribe(games => {
       this.games = games;
       // this.dailySchedule = games;
-      console.log(games);
     });
   }
 }

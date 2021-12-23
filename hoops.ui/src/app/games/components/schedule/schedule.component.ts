@@ -19,16 +19,16 @@ import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'csbc-schedule',
   templateUrl: './schedule.component.html',
-  styleUrls: ['./schedule.component.scss']
+  styleUrls: ['./schedule.component.scss'],
 })
 export class ScheduleComponent implements OnInit {
   groupedGames: Game[] | undefined;
-  _gamesByDate: [Date, Game[]]| undefined;
+  _gamesByDate: [Date, Game[]] | undefined;
   divisionId: number | undefined;
   flexMediaWatcher: any;
   currentScreenWidth: any;
 
-  dailySchedule!: Game[]
+  dailySchedule!: Array<Game[]>;
   get games() {
     return this._games;
   }
@@ -50,56 +50,74 @@ export class ScheduleComponent implements OnInit {
     private media: MediaObserver
   ) {
     this.title = 'Schedule!';
-    this.flexMediaWatcher = media.media$.subscribe(change => {
+    this.flexMediaWatcher = media.media$.subscribe((change) => {
       if (change.mqAlias !== this.currentScreenWidth) {
         this.currentScreenWidth = change.mqAlias;
       }
     });
-    this.dailySchedule = new Array<Game>();
+    // this.dailySchedule = new Array<Game[]>();
   }
 
   ngOnInit() {
-    this.store.select(fromGames.getFilteredGames).subscribe(games => {
+    this.store.select(fromGames.getFilteredGames).subscribe((games) => {
       this.games = games;
-      // this.dailySchedule = games;
+      this.dailySchedule = [];
       // console.log(games);
 
-      this.groupByDate(this.games).subscribe(dailyGames => {
+      this.groupByDate(games).subscribe(dailyGames => {
         // console.log(dailyGames);
-        this.dailySchedule = dailyGames;
+        this.dailySchedule.push(dailyGames);
       });
-
+      console.log(this.dailySchedule);
     });
   }
 
   groupByDate(games: Game[]) {
     const source = from(games);
+    const gDate = source.pipe(
+      map(s => (s.gameDate = moment(s.gameDate).toDate()))
+    );
+
+    const gamesByDate = source.pipe(
+      // map(s => s.gameDate = moment(s.gameDate).toDate()),
+      groupBy(game =>
+        moment(game.gameDate).format(moment.HTML5_FMT.DATE)
+        // .toDate()
+        // .fo
+        // .toD
+        ),
+
+      mergeMap(group => group.pipe(toArray()))
+    );
+    return gamesByDate;
+
+    // const source = from(games);
     // const gDate = source.pipe(
     //   groupBy(game =>  moment(game.gameDate)
     //   .toDate()
     //   .getDate())
     //   );
 
-    const gamesByDate = source.pipe(
-      groupBy(game => game.gameDate),
-      mergeMap(group => group.pipe(toArray()))
-    );
-    console.log(gamesByDate);
-    return gamesByDate;
+    // const gamesByDate = gDate.pipe(
+    //   groupBy((game) => game.gameDate),
+    //   mergeMap((group) => group.pipe(toArray()))
+    // );
+    // console.log(gamesByDate);
+    // return gamesByDate;
   }
   groupByDate2(games: Game[]) {
     let dailySchedule = {};
-    games.forEach(val => {
+    games.forEach((val) => {
       var date = moment(val.gameDate).toDate();
     });
   }
   editGame(game: Game) {
     this.store.dispatch(new gameActions.SetCurrentGame(game));
     const dialogRef = this.dialog.open(GameScoreDialogComponent, {
-      width: '500px'
+      width: '500px',
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       console.log('The dialog was closed');
     });
   }

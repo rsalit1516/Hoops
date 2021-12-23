@@ -18,14 +18,13 @@ export class SeasonListComponent implements OnInit {
       ];
       canEdit = false;
       dataSource: MatTableDataSource<Season> | undefined;
- 
+
     constructor(private _seasonService: SeasonService) { }
 
     ngOnInit() {
         this._seasonService.seasons$.subscribe(seasons => {
                 this.seasons = seasons;
                 this.dataSource = new MatTableDataSource(this.seasons);
-                console.log(seasons);
             });
                 // error => this.errorMessage = <any>error);
     }

@@ -113,7 +113,7 @@ export class GameEffects {
     mergeMap((action) =>
       this.seasonService.currentSeason$.pipe(
         map((season) => new gameActions.SetCurrentSeason(season)),
-        tap((data) => console.log(data)),
+        // tap((data) => console.log(data)),
         catchError((err) => of(new gameActions.LoadDivisionsFail(err)))
       )
     )
@@ -126,7 +126,7 @@ export class GameEffects {
     concatMap((action) =>
       of(action).pipe(
         withLatestFrom(this.store.pipe(select(fromGames.getCurrentSeason))),
-        tap((divisions) => console.log(divisions))
+        // tap((divisions) => console.log(divisions))
       )
     ),
     tap(([action, t]) => {
@@ -162,7 +162,7 @@ export class GameEffects {
     mergeMap((action) =>
       this.teamService.getTeams().pipe(
         map((teams) => new gameActions.LoadTeamsSuccess(teams)),
-        tap((response) => console.log(response)),
+        // tap((response) => console.log(response)),
         catchError((err) => of(new gameActions.LoadDivisionsFail(err)))
       )
     )
@@ -250,7 +250,7 @@ export class GameEffects {
     switchMap((action) =>
       this.teamService.filterTeamsByDivision(this.divisionId).pipe(
         map((teams) => new gameActions.LoadFilteredTeamsSuccess(teams)),
-        tap(response => console.log(response)),
+        // tap(response => console.log(response)),
         catchError((err) => of(new gameActions.LoadFilteredTeamsFail(err)))
       )
     )
@@ -276,7 +276,7 @@ export class GameEffects {
     ),
     tap(([action, t]) => {
       if (t) {
-        console.log(t);
+        // console.log(t);
         this.team = t;
       } else {
         this.team = undefined;
@@ -285,7 +285,7 @@ export class GameEffects {
     switchMap((action) =>
       this.gameService.filterGamesByTeam(this.team).pipe(
         map((games) => new gameActions.LoadFilteredGamesByTeamSuccess(games)),
-        tap(response => console.log(response)),
+        // tap(response => console.log(response)),
         catchError((err) => of(new gameActions.LoadFilteredGamesByTeamFail(err)))
       )
     )

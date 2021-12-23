@@ -55,11 +55,11 @@ export class ScheduleShellComponent implements OnInit {
   }
 
   divisionSelected(division: Division): void {
-    console.log(division);
-    this.canEdit = this.getCanEdit(this.user, division.divisionId);
+    // console.log(division);
+    // this.canEdit = this.getCanEdit(this.user, division.divisionId);
   }
   groupByDate(games: Game[]) {
-     console.log(games);
+    // console.log(games);
     games.forEach(element => {
       element.gameTime = element.gameDate;
       element.gameDate = moment(element.gameDate)
@@ -79,7 +79,7 @@ export class ScheduleShellComponent implements OnInit {
         game => game.gameDate,
         g => g
       ),
-      tap(data => console.log(data)),
+      // tap(data => console.log(data)),
       mergeMap(group => zip(of(group.key), group.pipe(toArray()))),
       tap(data => console.log(data))
     );

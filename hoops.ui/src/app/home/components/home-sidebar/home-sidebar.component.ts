@@ -22,7 +22,8 @@ export class CsbcHomeSidebarComponent implements OnInit {
   content$ = this.store
     .select(fromHome.getContent)
     .pipe(map((result) => result.filter((c) => c.webContentTypeDescription === 'Meeting')),
-    tap (result => console.log(result)));
+    // tap (result => console.log(result)
+    );
 
   constructor(
     private _webContentService: ContentService,
@@ -32,6 +33,6 @@ export class CsbcHomeSidebarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.content$.subscribe((result) => console.log(result));
+    // this.content$.subscribe((result) => console.log(result));
   }
 }

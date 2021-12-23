@@ -19,7 +19,7 @@ export class DivisionSelectComponent implements OnInit {
   }
   onClick(division: Division) {
     this.selectedDivision.emit(division);
-    console.log(division);
+    // console.log(division);
   }
 
 }

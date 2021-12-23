@@ -53,6 +53,19 @@ export class GameFilterComponent implements OnInit {
     this.createForm();
     this.setStateSubscriptions();
     this.setControlSubscriptions();
+    this.store.select(fromGames.getCurrentSeason).subscribe((currentSeason) => {
+      this.season = currentSeason;
+      this.store.select(fromGames.getDivisions).subscribe((divisions) => {
+        this.store
+          .select(fromGames.getCurrentDivision)
+          .subscribe((division) => {
+            if (division?.divisionId === 0) {
+              console.log(division);
+              this.criteriaForm.get('divisions').setValue(divisions[0]);
+            }
+          });
+      });
+    });
     // this.criteriaForm.get('divisions').setValue();
   }
 
@@ -61,19 +74,13 @@ export class GameFilterComponent implements OnInit {
       divisions: new FormControl(''), // this.divisions$,
       teams: new FormControl(''),
       allTeams: true,
-      gameView: 'list'
+      gameView: 'list',
     });
   }
   setControlSubscriptions() {
     this.criteriaForm.get('divisions').valueChanges.subscribe((val) => {
-      const division = this.criteriaForm.controls['divisions'].value;
-      const divisionId = division.divisionId;
-      console.log(division);
-      if (division !== undefined) {
-        this.store.dispatch(new gameActions.SetCurrentDivision(division));
-        this.store.dispatch(new gameActions.SetCurrentDivisionId(divisionId));
-        this.store.dispatch(new gameActions.LoadFilteredTeams());
-      }
+      console.log(val);
+      this.changeDivision(val);
     });
     this.criteriaForm.get('teams').valueChanges.subscribe((val) => {
       console.log(val);
@@ -81,32 +88,20 @@ export class GameFilterComponent implements OnInit {
     });
   }
 
-  setStateSubscriptions() {
-    this.store.select(fromGames.getCurrentSeason).subscribe((currentSeason) => {
-      this.season = currentSeason;
-      this.divisionService.divisions$.subscribe((divisions) => {
-        if (divisions.length > 0) {
-          const defaultDivision = divisions[0];
-          console.log(defaultDivision);
-          this.criteriaForm.get('divisions').setValue(defaultDivision);
+  setStateSubscriptions() {}
 
-          this.store.dispatch(
-            new gameActions.SetCurrentDivision(defaultDivision)
-          );
-          this.store.dispatch(
-            new gameActions.SetCurrentDivisionId(defaultDivision.divisionId)
-          );
-          this.store.dispatch(new gameActions.LoadFilteredTeams());
-          this.store.select(fromGames.getFilteredTeams).subscribe((teams) => {
-            this.filteredTeams = teams;
-          });
-        }
-      });
-    });
+  changeDivision(val: Division) {
+    const division = this.criteriaForm.controls['divisions'].value;
+    const divisionId = division.divisionId;
+    console.log(division);
+    if (division !== undefined) {
+      this.store.dispatch(new gameActions.SetCurrentDivision(division));
+      this.store.dispatch(new gameActions.SetCurrentDivisionId(divisionId));
+      this.store.dispatch(new gameActions.LoadFilteredTeams());
+    }
   }
 
-  divisionSelected(division: Division): void {
-  }
+  divisionSelected(division: Division): void {}
 
   teamSelected(team: Team): void {
     this.selectedTeam.emit(team);

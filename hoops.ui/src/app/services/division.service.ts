@@ -57,7 +57,7 @@ export class DivisionService {
             } as Division)
         )
       ),
-      tap(data => console.log('All: ' + JSON.stringify(data))),
+      // tap(data => console.log('All: ' + JSON.stringify(data))),
       catchError(this.dataService.handleError('getSeasonDivisions', null))
     );
 
@@ -81,7 +81,7 @@ export class DivisionService {
   }
 
   getDivisions(seasonId: number): Observable<Division[]> {
-    console.log(seasonId);
+    // console.log(seasonId);
     if (seasonId === undefined) {
       seasonId = 2202;
     }
@@ -89,13 +89,13 @@ export class DivisionService {
     //   this.dataService.webUrl + '/api/division/GetSeasonDivisions/' + seasonId;
     return this._http.get<Division[]>(this.divisionUrl + seasonId).pipe(
       // map((response: Response) => <Division[]>),
-      tap(data => console.log('All: ' + JSON.stringify(data))),
+      // tap(data => console.log('All: ' + JSON.stringify(data))),
       catchError(this.dataService.handleError('getSeasonDivisions', []))
     );
   }
 
   getSeasonDivisions(season: Observable<Season>): Observable<Division[]> {
-    console.log(season);
+    // console.log(season);
     season.subscribe(
       d =>
         (this.divisionUrl =
@@ -109,36 +109,24 @@ export class DivisionService {
         this.seasonId = 2193;
       } else {
         season.subscribe(s => (this.seasonId = s.seasonId));
-        console.log(this.seasonId);
       }
     }
-    console.log(season);
     if (this.seasonId === undefined) {
       this.seasonId = 2193;
     }
-    // console.log(season.seasonID);
-    // season.su
     this.divisionUrl =
       this.dataService.webUrl + '/api/division/GetSeasonDivisions/2083'; // + this.seasonId;
     return this._http.get<Division[]>(this.divisionUrl).pipe(
       // map((response: Response) => <Division[]>),
-      tap(data => console.log('All: ' + JSON.stringify(data))),
+      // tap(data => console.log('All: ' + JSON.stringify(data))),
       catchError(this.dataService.handleError('getSeasonDivisions', []))
     );
   }
   getSelectedSeasonDivisions() {
     this.selectedSeason$.subscribe(season => {
       return this._http.get<Division[]>(this.divisionUrl + season);
-      tap(data => console.log('All: ' + JSON.stringify(data))),
+      // tap(data => console.log('All: ' + JSON.stringify(data))),
         catchError(this.dataService.handleError('getSeasonDivisions', null));
     });
   }
-  // division(id: number): Observable<Division> | undefined {
-  //   console.log('Getting divisions');
-  //   return this.getSeasonDivisions(of(this.season)).pipe(
-  //     map(function (content: Division[]): Division | undefined {
-  //         return content.find(p => p.divisionId === id);
-  //       })
-  //   );
-  // }
 }

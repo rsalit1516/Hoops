@@ -33,7 +33,7 @@ export class HomeEffects {
     private dataService: DataService,
     private store: Store<fromHome.State>
   ) {}
-  
+
   // tslint:disable-next-line:member-ordering
   @Effect()
   loadContent$: Observable<Action> = this.actions$.pipe(
@@ -41,7 +41,7 @@ export class HomeEffects {
     mergeMap(action =>
       this.http.get<WebContent[]>(this.dataService.getActiveWebContentUrl).pipe(
         map(content => new homeActions.LoadContentSuccess(content)),
-        tap(content => console.log(content)),
+        // tap(content => console.log(content)),
         catchError((err) => of(new homeActions.LoadContentFail(err)))
       )
     )
