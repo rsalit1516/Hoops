@@ -1,0 +1,127 @@
+<section fxLayout="row" fxLayoutAlign="start" fxLayoutGap="10px">
+  <mat-card fxFlex="98">
+    <mat-card-title>{{ pageTitle }}</mat-card-title>
+    <form novalidate (ngSubmit)="saveContent()" [formGroup]="contentForm">
+      <mat-card-content>
+        <fieldset>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Title" formControlName="title" />
+            <mat-hint>Not more then 50 characters long.</mat-hint>
+            <mat-error *ngIf="hasError('title', 'required')"
+              >Name is required</mat-error
+            >
+            <mat-error *ngIf="hasError('title', 'maxlength')"
+              >You have more than 50 characters</mat-error
+            >
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <input
+              matInput
+              placeholder="Sub Title"
+              formControlName="subTitle"
+            />
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <textarea
+              matInput
+              type="text"
+              placeholder="Body"
+              rows="4"
+              formControlName="body"
+            ></textarea>
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="location" formControlName="location" />
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <input
+              matInput
+              placeholder="Date and Time"
+              formControlName="dateAndTime"
+            />
+          </mat-form-field>
+          <mat-divider></mat-divider>
+          <mat-form-field type="date" class="standard-field-width">
+            <mat-label>Announcement Type:</mat-label>
+            <mat-select
+              [value]="selected"
+              formControlName="webContentTypeControl"
+            >
+              <mat-option
+                *ngFor="let webContentType of contentTypes"
+                [value]="webContentType"
+                >{{ webContentType.webContentTypeDescription }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="sequenceWidth">
+            <input
+              matInput
+              [matDatepicker]="picker"
+              placeholder="Choose a date"
+              formControlName="expirationDate"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field class="sequenceWidth">
+            <input
+              matInput
+              placeholder="NoticeSequence"
+              formControlName="contentSequence"
+              type="number"
+            />
+          </mat-form-field>
+          <input
+            id="webContentId"
+            class="form-control"
+            [hidden]="hideId"
+            type="text"
+            placeholder=""
+            formControlName="webContentId"
+          />
+        </fieldset>
+      </mat-card-content>
+      <mat-card-actions>
+        <div class="input-group-btn">
+          <button
+            type="button"
+            mat-raised-button
+            type="submit"
+            [disabled]="!contentForm.valid"
+            color="primary"
+          >
+            Save
+          </button>
+          <!-- <button type="button" mat-raised-button>Save and New</button> -->
+          <button
+            type="button"
+            mat-raised-button
+            [routerLink]="['/admin/content']"
+          >
+            Cancel
+          </button>
+        </div>
+      </mat-card-actions>
+    </form>
+  </mat-card>
+</section>
+<!--
+    <div class="col-sm-4 col-sm-offset-3">
+<div class="panel panel-default">
+        <div class="panel-heading">
+          <div class="panel-title" formControlName="exampleTitle">{{title}}</div>
+        </div>
+        <div class="panel-body">
+          <h5 class="text-center text-info">{{subTitle}}</h5>
+
+          <div class="text-center"><strong><span>{{body}}</span></strong></div>
+          <div class="text-center" [hidden]="!location">Location: {{location}}</div>
+          <div class="text-center" [hidden]="!dateAndTime">Date/Time: {{dateAndTime}}</div>
+        </div>
+      </div>
+      </div>-->

@@ -1,0 +1,32 @@
+<form [formGroup]="criteriaForm">
+  <div class="filter-divisions">
+    <mat-form-field>
+      <mat-select formControlName="divisions">
+        <mat-option
+          *ngFor="let division of divisions$ | async"
+          [value]="division"
+        >
+          {{ division.divisionDescription }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select placeholder="Team" formControlName="teams">
+        <mat-option *ngFor="let team of filteredTeams" [value]="team">
+          {{ team.teamName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-checkbox [checked]="showAllTeams">All Teams</mat-checkbox>
+
+    <mat-button-toggle-group name="gameView" aria-label="Schedule View">
+      <mat-button-toggle mat-icon-button routerLink="list" value="list">
+        <mat-icon>list</mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle mat-icon-button routerLink="card" value="card">
+        <mat-icon>apps</mat-icon>
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+</form>

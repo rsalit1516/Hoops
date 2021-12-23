@@ -1,0 +1,781 @@
+﻿@import '_variables';
+
+/* -------    Page Layout ----------*/
+
+div,
+h1,
+h2,
+h3,
+h4,
+p,
+img,
+ul,
+ol,
+li,
+form,
+input,
+textarea {
+    padding: 0;
+    margin: 0;
+    color: white;
+}
+
+p {
+    padding: 0 0 10px 0;
+    margin: 0;
+}
+
+ul {
+    list-style: none;
+}
+
+img {
+    outline: none;
+    border: none;
+}
+
+a {
+    outline: none;
+    text-decoration: none;
+    margin-bottom: 0px;
+    text-align: left;
+}
+
+h3,
+h4 {
+    text-align: center;
+}
+h4 {
+    font-weight: 700;
+}
+/*-------------------       General      --------------*/
+.fontSize14 {
+    font-size: 14px;
+    line-height: 18px;
+}
+
+.fontSize16 {
+    font-size: 16px;
+    line-height: 20px;
+}
+
+.fontSize18 {
+    font-size: 18px;
+    line-height: 24px;
+}
+
+.fontSize24 {
+    font-size: 24px;
+    line-height: 36px;
+}
+
+.blueText {
+    color: #118CD1;
+}
+
+.whiteText {
+    color: #fff;
+}
+
+.grayText {
+    color: #A3A3A3;
+}
+
+.blueLink {
+    color: #26A7C7;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+    .blueLink:hover {
+        color: #000;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+.yellowText {
+    color: #D17B00;
+}
+
+.whiteLink {
+    color: #fff;
+    font-size: 11px;
+}
+
+    .whiteLink:hover {
+        color: #FE8E2F;
+        font-size: 11px;
+    }
+
+.heading_1 {
+    font-size: 18px;
+    font-weight: normal;
+    color: #fff;
+    line-height: 20px;
+    padding: 0 0 10px 00px;
+    display: block;
+}
+
+.heading_2 {
+    font-size: 24px;
+    font-weight: normal;
+    color: #D17B00;
+    line-height: 28px;
+    padding: 0 0 10px 0;
+    display: block;
+}
+
+.heading_3 {
+    font-size: 18px;
+    color: #D17B00;
+    line-height: 18px;
+    display: block;
+    padding: 10px 0 10px 0;
+    font-weight: normal;
+}
+
+.heading_4 {
+    font-size: 16px;
+    font-weight: bold;
+    color: #34362E;
+    line-height: 18px;
+    padding: 3px 0 20px 35px;
+    display: block;
+    background: url(/images/heading_arrow3.gif) left top no-repeat;
+}
+
+// th {
+//     background-color: #428bca;
+//     text-align: center;
+//     color: white;
+// }
+
+.row {
+    padding-left: 20px;
+    padding-right: 24px;
+}
+
+.whiteBg {
+    background: #fff;
+}
+/*-------------------       Layout      --------------*/
+#header {
+    /*margin-left: 60px;*/
+    text-align: center;
+    /*background: top left no-repeat;*/
+    /*background-image: url('/images/CSBCTopImage.jpg');*/
+}
+
+#headerTop {
+    height: 167px;
+}
+
+
+#logo {
+    padding-top: 10px;
+    padding-left: 80px;
+}
+
+#follow_us_on {
+    float: right;
+    border-left: #040404 5px solid;
+    border-bottom: #040404 5px solid;
+}
+
+    #follow_us_on table {
+        border: #fff 1px solid;
+        background: #dfdfdf url(/images/gray_bg.gif) 0 0 repeat-x;
+    }
+
+        #follow_us_on table td {
+            padding: 1px;
+        }
+
+#topMenu {
+    height: 70px;
+    text-align: center;
+    margin-top: 40px;
+    color: #383434;
+    line-height: 45px;
+    text-transform: uppercase;
+    font: 16px/22px "Trebuchet MS", Helvetica, sans-serif;
+}
+
+    #topMenu a {
+        color: #383434;
+        padding: 0 4px 0 4px;
+        white-space: nowrap;
+        font-weight: bold;
+        line-height: 45px;
+    }
+
+        #topMenu a:hover,
+        #topMenu a.active {
+            color: #fff;
+            text-decoration: none;
+        }
+
+.btn-middle {
+    vertical-align: middle;
+}
+
+
+#menuHeader {
+    /*margin-top: 52px;*/
+}
+
+#mainCol {
+    padding: 10px;
+}
+
+#contentText {
+    margin-top: 8px;
+    margin-bottom: 4px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+.showMultiItemList {
+    margin-bottom: 4px;
+    border-bottom: 1px solid gray;
+    padding-bottom: 4px;
+    padding-top: 4px;
+}
+
+.PageTop {
+    padding-top: 8px;
+}
+
+
+
+#login .panel-body {
+    background-color: #FFFFFF;
+    /*border-left: 1px solid gray;
+    border-right: 1px solid gray;
+    border-bottom: 1px solid gray;
+    border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;*/
+    color: #141010;
+}
+
+#blackbox {
+    padding: 0px 0px 0px 140px;
+    height: 500px;
+    margin: 0px;
+    color: #495257;
+    background: #040404;
+}
+
+#graybox {
+    padding: 0px 0px 0px 0px;
+    margin: 0px;
+    color: #495257;
+    background: #FAFAFA;
+}
+
+#firebox {
+    padding: 0px 0px 0px 0px;
+    margin-left: auto;
+    margin-right: auto;
+    color: #495257;
+    background: #EFEFEF;
+    width: 950px;
+    -ms-align-content: center;
+    -webkit-align-content: center;
+    align-content: center;
+    text-align: center;
+}
+
+.left-content {
+    background-color: #f1f1f1;
+    background-image: url(/images/left-bottom.jpg);
+    background-repeat: no-repeat;
+    background-position: left bottom;
+    clear: both;
+    padding-bottom: 24px;
+}
+
+#banner {
+    width: 620px;
+    height: 326px;
+    margin-bottom: 5px;
+    background: url(/images/banner.jpg) top left no-repeat;
+}
+
+#bannerContent {
+    padding: 260px 30px 0 30px;
+    color: #fff;
+    font-size: 11px;
+}
+
+    #bannerContent a {
+        color: #EF6C15;
+        text-decoration: underline;
+        font-weight: bold;
+    }
+
+        #bannerContent a:hover {
+            color: #FFFFFF;
+        }
+
+.colHeader {
+    color: #fff;
+    text-align: center;
+    font-weight: bold;
+    display: block;
+    font-size: 12px;
+    line-height: 30px;
+    text-transform: uppercase;
+    border: #545454 1px solid;
+    background: #969696 url(/images/heading_bg.gif) top left repeat-x;
+}
+
+.box {
+    margin-bottom: 4px;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+#sponsorBox.box {
+    min-height: 360px;
+}
+
+.boxHeading {
+    padding: 0 0 0 17px;
+    color: #fff;
+    font-weight: bold;
+    display: block;
+    font-size: 12px;
+    line-height: 30px;
+    text-transform: uppercase;
+    border: #545454 1px solid;
+    background: #969696 url(/images/heading_bg.gif) top left repeat-x;
+}
+
+.boxContentHeader {
+    padding-top: 4px;
+    padding-bottom: 6px;
+}
+
+.boxHeadingcenter {
+    padding: 0 0 0 17px;
+    margin-bottom: 10px;
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+    display: block;
+    font-size: 21px;
+    line-height: 30px;
+    text-transform: uppercase;
+    border: #545454 1px solid;
+    background: #969696 url(/images/heading_bg.gif) top left repeat-x;
+}
+
+.boxContent {
+    padding-top: 10px;
+    margin-bottom: 4px;
+    /*border: #545454 1px solid;*/
+    background: #070606;
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-bottom: 12px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    color: #B7AFAF;
+   
+}
+
+.well {
+    background-color: #0d0d0d;
+    color: white;
+    border-radius: 20px;
+    -moz-background-clip: padding-box;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+     
+}
+.list-group-item {
+    background-color: #0d0d0d;
+    color: white;
+    border-radius: 5px;
+    font-weight:500;
+    text-align:center;
+}
+#sponsorFooter.boxContent {
+    background: linear-gradient(to right, #ab1504, #f5b609, #f9edbd, #f5b609, #ab1504);
+    min-height: 96px;
+}
+
+#sponsorFooter.panel-body {
+    background: linear-gradient(to right, #ab1504, #f5b609, #f9edbd, #f5b609, #ab1504);
+    min-height: 96px;
+}
+
+#sponsorName {
+    font-size: 2em;
+    color: #0b3160;
+    font-weight: 700;
+    font-style: italic;
+}
+
+.carousel-indicators li {
+    background: transparent;
+}
+
+.carousel-indicators .active {
+    background: transparent;
+}
+
+.boxPadding {
+    padding: 10px 0 10px 10px;
+}
+
+.newsTitle {
+    padding-bottom: 10px;
+    height: 16px;
+}
+
+    .newsTitle a {
+        color: #DE951B;
+        font-size: 18px;
+    }
+
+        .newsTitle a:hover {
+            color: #000;
+        }
+
+.newsDate {
+    width: 80px;
+    font-weight: bold;
+    color: #495257;
+    background: #DEDEDE;
+    padding: 2px 4px 2px 4px;
+}
+
+.gameList {
+    background-color: #FE8E2F;
+}
+
+.addBanner {
+    padding: 10px 0 8px 0;
+}
+
+.poll {
+    padding: 20px 0 8px 20px;
+}
+
+.Chart td {
+    padding: 2px 0px 2px 0px;
+    border-bottom: #DADADA 1px solid;
+    border-top: #fff 1px solid;
+    color: #495257;
+    line-height: 24px;
+}
+
+.ChartHeading td {
+    background: #E9A533;
+    padding: 0 0 0 0;
+    font-weight: bold;
+    color: #FFFFFF;
+    border: none;
+}
+
+.Chart div {
+    color: #A3A3A3;
+}
+
+.Chart .paddingLeft {
+    padding-left: 20px;
+}
+/*--------------------  footer ------------------------------*/
+#footer {
+    text-align: center;
+    color: #796A6A;
+    padding: 20px 0 20px 0;
+    font: 14px/20px "Trebuchet MS", Times, serif;
+}
+
+.footerLink {
+    text-transform: uppercase;
+    padding-bottom: 10px;
+    font-size: 11px;
+}
+
+    .footerLink a {
+        color: #fff;
+        padding: 0 4px 0 4px;
+    }
+
+#footer a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.reportLink {
+    font-size: 1em;
+    color: #780505;
+    padding-left: 4px;
+    padding-right: 12px;
+}
+
+    .reportLink a {
+        font-size: 1em;
+        color: #780505;
+    }
+
+        .reportLink a:hover {
+            color: #f31414;
+        }
+
+        .reportLink a:visited {
+            color: #420202;
+        }
+
+#BestGame {
+    padding-top: 4px;
+    padding-bottom: 6px;
+}
+
+.centerlow {
+    background-color: #070606;
+    color: #e6e3e3;
+    text-align: right;
+    font-size: 1.2em;
+    font-weight: 500;
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 4px;
+    padding-bottom: 10px;
+}
+
+    .centerlow a {
+        font-size: 1em;
+        font-weight: 400;
+    }
+
+.carousel-control.left, .carousel-control.right {
+    background: none !important;
+    // filter: progid: none !important;
+    outline: 0;
+}
+
+.carousel .carousel-control {
+    visibility: hidden;
+}
+
+.carousel:hover .carousel-control {
+    visibility: visible;
+}
+/*# sourceMappingURL=style.css.map */
+#panelGames {
+    padding-top:10px;
+}
+
+/**
+* Generated theme by Material Theme Generator
+* https://material-theme-generator.travetto.io
+*/
+
+@import '~@angular/material/theming';
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
+     
+$fontConfig: (
+  display-4: mat-typography-level(112px, 112px, 300, 'Roboto', -0.0134em),
+  display-3: mat-typography-level(56px, 56px, 400, 'Roboto', -0.0089em),
+  display-2: mat-typography-level(45px, 48px, 400, 'Roboto', 0.0000em),
+  display-1: mat-typography-level(34px, 40px, 400, 'Roboto', 0.0074em),
+  headline: mat-typography-level(24px, 32px, 400, 'Roboto', 0.0000em),
+  title: mat-typography-level(20px, 32px, 500, 'Roboto', 0.0075em),
+  subheading-2: mat-typography-level(16px, 28px, 400, 'Roboto', 0.0094em),
+  subheading-1: mat-typography-level(15px, 24px, 500, 'Roboto', 0.0067em),
+  body-2: mat-typography-level(14px, 24px, 500, 'Roboto', 0.0179em),
+  body-1: mat-typography-level(14px, 20px, 400, 'Roboto', 0.0179em),
+  button: mat-typography-level(14px, 14px, 500, 'Roboto', 0.0893em),
+  caption: mat-typography-level(12px, 20px, 400, 'Roboto', 0.0333em),
+  input: mat-typography-level(inherits, 1.125, 400, 'Roboto', 1.5px)
+);
+
+// Foreground Elements
+
+// Light Theme Text
+$dark-text: #ef2828;
+$dark-primary-text: rgba($dark-text, 0.87);
+$dark-accent-text: rgba($dark-primary-text, 0.54);
+$dark-disabled-text: rgba($dark-primary-text, 0.38);
+$dark-dividers: rgba($dark-primary-text, 0.12);
+$dark-focused: rgba($dark-primary-text, 0.12);
+
+$mat-light-theme-foreground: (
+  base:              black,
+  divider:           $dark-dividers,
+  dividers:          $dark-dividers,
+  disabled:          $dark-disabled-text,
+  disabled-button:   rgba($dark-text, 0.26),
+  disabled-text:     $dark-disabled-text,
+  elevation:         black,
+  secondary-text:    $dark-accent-text,
+  hint-text:         $dark-disabled-text,
+  accent-text:       $dark-accent-text,
+  icon:              $dark-accent-text,
+  icons:             $dark-accent-text,
+  text:              $dark-primary-text,
+  slider-min:        $dark-primary-text,
+  slider-off:        rgba($dark-text, 0.26),
+  slider-off-active: $dark-disabled-text,
+);
+
+// Dark Theme text
+$light-text: #f57878;
+$light-primary-text: $light-text;
+$light-accent-text: rgba($light-primary-text, 0.7);
+$light-disabled-text: rgba($light-primary-text, 0.5);
+$light-dividers: rgba($light-primary-text, 0.12);
+$light-focused: rgba($light-primary-text, 0.12);
+
+$mat-dark-theme-foreground: (
+  base:              $light-text,
+  divider:           $light-dividers,
+  dividers:          $light-dividers,
+  disabled:          $light-disabled-text,
+  disabled-button:   rgba($light-text, 0.3),
+  disabled-text:     $light-disabled-text,
+  elevation:         black,
+  hint-text:         $light-disabled-text,
+  secondary-text:    $light-accent-text,
+  accent-text:       $light-accent-text,
+  icon:              $light-text,
+  icons:             $light-text,
+  text:              $light-text,
+  slider-min:        $light-text,
+  slider-off:        rgba($light-text, 0.3),
+  slider-off-active: rgba($light-text, 0.3),
+);
+
+// Background config
+// Light bg
+$light-background:    #fafafa;
+$light-bg-darker-5:   darken($light-background, 5%);
+$light-bg-darker-10:  darken($light-background, 10%);
+$light-bg-darker-20:  darken($light-background, 20%);
+$light-bg-darker-30:  darken($light-background, 30%);
+$light-bg-lighter-5:  lighten($light-background, 5%);
+$dark-bg-alpha-4:     rgba(#2c2c2c, 0.04);
+$dark-bg-alpha-12:    rgba(#2c2c2c, 0.12);
+
+$mat-light-theme-background: (
+  background:               $light-background,
+  status-bar:               $light-bg-darker-20,
+  app-bar:                  $light-bg-darker-5,
+  hover:                    $dark-bg-alpha-4,
+  card:                     $light-bg-lighter-5,
+  dialog:                   $light-bg-lighter-5,
+  disabled-button:          $dark-bg-alpha-12,
+  raised-button:            $light-bg-lighter-5,
+  focused-button:           $dark-focused,
+  selected-button:          $light-bg-darker-20,
+  selected-disabled-button: $light-bg-darker-30,
+  disabled-button-toggle:   $light-bg-darker-10,
+  unselected-chip:          $light-bg-darker-10,
+  disabled-list-option:     $light-bg-darker-10,
+);
+
+// Dark bg
+$dark-background:     #2c2c2c;
+$dark-bg-lighter-5:   lighten($dark-background, 5%);
+$dark-bg-lighter-10:  lighten($dark-background, 10%);
+$dark-bg-lighter-20:  lighten($dark-background, 20%);
+$dark-bg-lighter-30:  lighten($dark-background, 30%);
+$light-bg-alpha-4:    rgba(#fafafa, 0.04);
+$light-bg-alpha-12:   rgba(#fafafa, 0.12);
+
+// Background palette for dark themes.
+$mat-dark-theme-background: (
+  background:               $dark-background,
+  status-bar:               $dark-bg-lighter-20,
+  app-bar:                  $dark-bg-lighter-5,
+  hover:                    $light-bg-alpha-4,
+  card:                     $dark-bg-lighter-5,
+  dialog:                   $dark-bg-lighter-5,
+  disabled-button:          $light-bg-alpha-12,
+  raised-button:            $dark-bg-lighter-5,
+  focused-button:           $light-focused,
+  selected-button:          $dark-bg-lighter-20,
+  selected-disabled-button: $dark-bg-lighter-30,
+  disabled-button-toggle:   $dark-bg-lighter-10,
+  unselected-chip:          $dark-bg-lighter-20,
+  disabled-list-option:     $dark-bg-lighter-10,
+);
+
+// Compute font config
+@include mat-core($fontConfig);
+
+// Theme Config
+
+$mat-primary: (
+  main: #cc33ca,
+  lighter: #f0c2ef,
+  darker: #b920b7,
+  200: #cc33ca, // For slide toggle,
+  contrast : (
+    main: $light-primary-text,
+    lighter: $dark-primary-text,
+    darker: $light-primary-text,
+  )
+);
+$theme-primary: mat-palette($mat-primary, main, lighter, darker);
+
+$mat-accent: (
+  main: #797979,
+  lighter: #d7d7d7,
+  darker: #5c5c5c,
+  200: #797979, // For slide toggle,
+  contrast : (
+    main: $light-primary-text,
+    lighter: $dark-primary-text,
+    darker: $light-primary-text,
+  )
+);
+$theme-accent: mat-palette($mat-accent, main, lighter, darker);
+
+$mat-warn: (
+  main: #ff0000,
+  lighter: #ffb3b3,
+  darker: #ff0000,
+  200: #ff0000, // For slide toggle,
+  contrast : (
+    main: $light-primary-text,
+    lighter: $dark-primary-text,
+    darker: $light-primary-text,
+  )
+);
+$theme-warn: mat-palette($mat-warn, main, lighter, darker);;
+
+$theme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
+$altTheme: mat-light-theme($theme-primary, $theme-accent, $theme-warn);
+
+// Theme Init
+@include angular-material-theme($theme);
+
+.theme-alternate {
+  @include angular-material-theme($altTheme);
+}
+
+
+// Specific component overrides, pieces that are not in line with the general theming
+
+// Handle buttons appropriately, with respect to line-height
+.mat-raised-button, .mat-stroked-button, .mat-flat-button {
+  padding: 0 1.15em;
+  margin: 0 .65em;
+  min-width: 3em;
+  line-height: 36.4px
+}
+
+.mat-standard-chip {
+  padding: .5em .85em;
+  min-height: 2.5em;
+}

@@ -1,0 +1,51 @@
+@import '../../../../content/_variables';
+
+.table-striped > tbody > tr {
+  background-color: gray;
+  color: white;
+}
+.table-striped > tbody > tr:nth-child(odd) {
+  background-color: darkslategray;
+}
+
+// .table-wrapper {
+//   padding-left: 20px;
+//   padding-right: 20px;
+//   border-radius: $border-radius;
+//   margin-left: 20px;
+//   margin-right: 20px;
+// }
+
+// .mat-table,
+// .mat-card, table {
+//   background-color: $card-background-color;
+//   color: $color;
+//   border-radius: 10px;
+//   width: 100%;
+// }
+// .mat-table tr {
+//   color: $color;
+// }
+// .mat-table tr th {
+//   color: $color;
+//   font-size: 1em;
+//   font-weight: 700;
+// }
+// .mat-table tr td {
+//   color: $color;
+//   font-size: 1em;
+//   font-weight: 500;
+// }
+
+// .mat-table tr td.teamName {
+//   text-transform: lowercase;
+// }
+// .mat-table tr td.teamName:first-letter {
+//   text-transform: uppercase;
+// }
+.standings-header {
+  font-size:1.1em;
+  font-weight:600;
+  color:$color;
+  text-align: center;
+}

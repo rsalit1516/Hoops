@@ -1,0 +1,42 @@
+@import '../../../content/_variables';
+
+.card {
+  background-color: $table-body-color;
+  color: $table-font-color;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
+  padding: 4px 8px 4px 8px;
+  border-radius: 10px;
+}
+.mat-card-subtitle {
+    font-size: 1em;
+    color: $brand-color;
+    font-weight: 700;
+}
+.mat-card {
+  background-color: $table-body-color;
+  color: $table-font-color;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
+  padding: 4px 8px 4px 8px;
+  border-radius: 10px;
+}
+.mat-list-item {
+  color: $brand-color;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.card > .heading {
+  font-size: 1.4em;
+  color: white;
+  text-align: center;
+  padding-bottom: 8px;
+}
+
+.card > .body {
+  font-size: 1em;
+  text-align: center;
+}
+
+tbody {
+  color: white;
+}

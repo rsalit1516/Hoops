@@ -1,0 +1,7 @@
+<div id="contentText" class="row">
+  <div [ngClass]="setNewsClass()">
+    <div *ngFor="let info of content$ | async" class="announcements">
+      <csbc-announcement [info]="info"></csbc-announcement>
+    </div>
+  </div>
+</div>

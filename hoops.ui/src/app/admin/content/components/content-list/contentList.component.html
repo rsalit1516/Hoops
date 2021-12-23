@@ -1,0 +1,50 @@
+<div fxLayout="row" fxLayoutAlign="start" fxLayoutGap="10px">
+  <div fxFlex="100">
+    <div id="panelContent">
+      <content-list-toolbar></content-list-toolbar>
+      <div class="table-wrapper">
+        <table mat-table id="grdSchedule" [dataSource]="dataSource">
+          <ng-container matColumnDef="title">
+            <th mat-header-cell *matHeaderCellDef>Title</th>
+            <td mat-cell *matCellDef="let content">
+              {{ content.title }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="dateAndTime">
+            <th mat-header-cell *matHeaderCellDef>Date And Time</th>
+            <td mat-cell *matCellDef="let content" class="time">
+              {{ content.dateAndTime }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="expirationDate">
+            <th mat-header-cell *matHeaderCellDef>Expiry Date</th>
+            <td mat-cell *matCellDef="let content" class="date">
+              {{ content.expirationDate | date: 'M/d/yy' }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let content">
+              <button
+                class="edit"
+                (click)="editContent(content)"
+                mat-icon-button
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </div>
+      <!-- </div> -->
+    </div>
+  </div>
+  <!--<div class="col-md-6 col-sm-12 col-xs-12">
+        <csbc-content-edit [content] = "selectedContent"></csbc-content-edit>
+    </div>-->
+</div>
