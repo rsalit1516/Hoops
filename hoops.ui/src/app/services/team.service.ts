@@ -18,11 +18,7 @@ export class TeamService {
     seasonId: number | undefined; // = 2192; // TO DO make this is passed in!
     currentSeason$ = this.store.select(fromGames.getCurrentSeason).subscribe({
       next: (season) => {
-<<<<<<< HEAD
         // console.log(season);
-=======
-        console.log(season);
->>>>>>> 41113ecb3386df8f3f5ce89af4e9244c875c49c3
         if (season !== undefined && season !== null) {
           this.seasonId = season.seasonId;
         }
@@ -42,11 +38,7 @@ export class TeamService {
         return this._http.get<Team[]>(this.teamUrl + this.seasonId)
             .pipe(
                 map((teams) => {return teams;}),
-<<<<<<< HEAD
             // tap(data => console.log('All: ' + JSON.stringify(data))),
-=======
-            tap(data => console.log('All: ' + JSON.stringify(data))),
->>>>>>> 41113ecb3386df8f3f5ce89af4e9244c875c49c3
             catchError(this.dataService.handleError('getTeams', []))
             );
     }

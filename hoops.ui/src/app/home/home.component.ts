@@ -26,7 +26,6 @@ export class HomeComponent implements OnInit {
   topImage: string;
   errorMessage: string | undefined;
 
-<<<<<<< HEAD
   activeWebContent: any[] | undefined;
   webContents: WebContent[] | undefined;
   //   currentSeason$ = this.seasonService.getCurrent();
@@ -36,17 +35,6 @@ export class HomeComponent implements OnInit {
 
   showSidebar = false;
   imageClass: string | undefined;
-=======
-  activeWebContent: any[]| undefined;
-  webContents: WebContent[]| undefined;
-  //   currentSeason$ = this.seasonService.getCurrent();
-  content$ = this.store.select(fromHome.getContent);
-  showSidebar$ = of(true);
-  meetingNotices$: Observable<WebContent[]>| undefined;
-
-  showSidebar = false;
-  imageClass: string| undefined;
->>>>>>> 41113ecb3386df8f3f5ce89af4e9244c875c49c3
   meetingNoticeClass = 'col-sm-0 col-xs-0';
 
   constructor(
