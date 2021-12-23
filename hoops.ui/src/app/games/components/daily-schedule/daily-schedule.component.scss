@@ -2,11 +2,11 @@
 .gamedate {
   color: $brand-color;
   font-weight: 600;
-  font-size: 1.1em;
+  font-size: 1.4em;
   padding-left: 24px;
   padding-top: 10px;
   padding-bottom: 8px;
-  
+
 
 }
 .mat-table {
@@ -40,4 +40,31 @@
 .mat-table tr td {
   color: $color;
   font-weight: 500;
+}
+
+.mat-column-gameTime, .mat-column-locationName, .mat-column-homeTeamScore, .mat-column-visitingTeamScore, .mat-column-actions     {
+  word-wrap: break-word !important;
+  flex: 0 0 28% !important;
+  width: 10% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+.mat-column-visitingTeam, .mat-column-homeTeam {
+  word-wrap: break-word !important;
+  flex: 0 0 28% !important;
+  width: 15% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
 }

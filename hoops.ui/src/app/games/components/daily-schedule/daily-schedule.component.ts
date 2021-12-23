@@ -54,24 +54,23 @@ export class DailyScheduleComponent implements OnInit {
         });
       }
     });
+    this.gameDate! = this.data[0].gameDate;
   }
   setupTable() {
     if (this.currentScreenWidth === 'xs') {
       // only display internalId on larger screens
       //this.displayedColumns.shift(); // remove 'internalId'
       this.displayedColumns = [
-        'gameDate',
+        'gameTime',
         'visitingTeam',
         'homeTeam',
-        'gameTime',
         'locationName',
       ];
     } else {
       this.displayedColumns = [
-        'gameDate',
+        'gameTime',
         'visitingTeam',
         'homeTeam',
-        'gameTime',
         'locationName',
         'visitingTeamScore',
         'homeTeamScore',
