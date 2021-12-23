@@ -79,11 +79,7 @@ export class ScheduleShellComponent implements OnInit {
         game => game.gameDate,
         g => g
       ),
-<<<<<<< HEAD
       // tap(data => console.log(data)),
-=======
-      tap(data => console.log(data)),
->>>>>>> 41113ecb3386df8f3f5ce89af4e9244c875c49c3
       mergeMap(group => zip(of(group.key), group.pipe(toArray()))),
       tap(data => console.log(data))
     );
