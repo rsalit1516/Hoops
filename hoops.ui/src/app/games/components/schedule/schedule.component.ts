@@ -19,16 +19,28 @@ import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'csbc-schedule',
   templateUrl: './schedule.component.html',
+<<<<<<< HEAD
   styleUrls: ['./schedule.component.scss'],
 })
 export class ScheduleComponent implements OnInit {
   groupedGames: Game[] | undefined;
   _gamesByDate: [Date, Game[]] | undefined;
+=======
+  styleUrls: ['./schedule.component.scss']
+})
+export class ScheduleComponent implements OnInit {
+  groupedGames: Game[] | undefined;
+  _gamesByDate: [Date, Game[]]| undefined;
+>>>>>>> 41113ecb3386df8f3f5ce89af4e9244c875c49c3
   divisionId: number | undefined;
   flexMediaWatcher: any;
   currentScreenWidth: any;
 
+<<<<<<< HEAD
   dailySchedule!: Array<Game[]>;
+=======
+  dailySchedule!: Game[]
+>>>>>>> 41113ecb3386df8f3f5ce89af4e9244c875c49c3
   get games() {
     return this._games;
   }
@@ -50,7 +62,11 @@ export class ScheduleComponent implements OnInit {
     private media: MediaObserver
   ) {
     this.title = 'Schedule!';
+<<<<<<< HEAD
     this.flexMediaWatcher = media.media$.subscribe((change) => {
+=======
+    this.flexMediaWatcher = media.media$.subscribe(change => {
+>>>>>>> 41113ecb3386df8f3f5ce89af4e9244c875c49c3
       if (change.mqAlias !== this.currentScreenWidth) {
         this.currentScreenWidth = change.mqAlias;
       }
@@ -98,6 +114,7 @@ export class ScheduleComponent implements OnInit {
     //   .getDate())
     //   );
 
+<<<<<<< HEAD
     // const gamesByDate = gDate.pipe(
     //   groupBy((game) => game.gameDate),
     //   mergeMap((group) => group.pipe(toArray()))
@@ -108,16 +125,35 @@ export class ScheduleComponent implements OnInit {
   groupByDate2(games: Game[]) {
     let dailySchedule = {};
     games.forEach((val) => {
+=======
+    const gamesByDate = source.pipe(
+      groupBy(game => game.gameDate),
+      mergeMap(group => group.pipe(toArray()))
+    );
+    console.log(gamesByDate);
+    return gamesByDate;
+  }
+  groupByDate2(games: Game[]) {
+    let dailySchedule = {};
+    games.forEach(val => {
+>>>>>>> 41113ecb3386df8f3f5ce89af4e9244c875c49c3
       var date = moment(val.gameDate).toDate();
     });
   }
   editGame(game: Game) {
     this.store.dispatch(new gameActions.SetCurrentGame(game));
     const dialogRef = this.dialog.open(GameScoreDialogComponent, {
+<<<<<<< HEAD
       width: '500px',
     });
 
     dialogRef.afterClosed().subscribe((result) => {
+=======
+      width: '500px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+>>>>>>> 41113ecb3386df8f3f5ce89af4e9244c875c49c3
       console.log('The dialog was closed');
     });
   }

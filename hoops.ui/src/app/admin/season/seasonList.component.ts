@@ -18,7 +18,6 @@ export class SeasonListComponent implements OnInit {
       ];
       canEdit = false;
       dataSource: MatTableDataSource<Season> | undefined;
-
     constructor(private _seasonService: SeasonService) { }
 
     ngOnInit() {

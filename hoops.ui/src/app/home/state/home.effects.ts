@@ -33,7 +33,6 @@ export class HomeEffects {
     private dataService: DataService,
     private store: Store<fromHome.State>
   ) {}
-
   // tslint:disable-next-line:member-ordering
   @Effect()
   loadContent$: Observable<Action> = this.actions$.pipe(

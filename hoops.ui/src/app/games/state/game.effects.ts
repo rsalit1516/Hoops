@@ -113,7 +113,11 @@ export class GameEffects {
     mergeMap((action) =>
       this.seasonService.currentSeason$.pipe(
         map((season) => new gameActions.SetCurrentSeason(season)),
+<<<<<<< HEAD
         // tap((data) => console.log(data)),
+=======
+        tap((data) => console.log(data)),
+>>>>>>> 41113ecb3386df8f3f5ce89af4e9244c875c49c3
         catchError((err) => of(new gameActions.LoadDivisionsFail(err)))
       )
     )
@@ -126,7 +130,11 @@ export class GameEffects {
     concatMap((action) =>
       of(action).pipe(
         withLatestFrom(this.store.pipe(select(fromGames.getCurrentSeason))),
+<<<<<<< HEAD
         // tap((divisions) => console.log(divisions))
+=======
+        tap((divisions) => console.log(divisions))
+>>>>>>> 41113ecb3386df8f3f5ce89af4e9244c875c49c3
       )
     ),
     tap(([action, t]) => {
@@ -162,7 +170,11 @@ export class GameEffects {
     mergeMap((action) =>
       this.teamService.getTeams().pipe(
         map((teams) => new gameActions.LoadTeamsSuccess(teams)),
+<<<<<<< HEAD
         // tap((response) => console.log(response)),
+=======
+        tap((response) => console.log(response)),
+>>>>>>> 41113ecb3386df8f3f5ce89af4e9244c875c49c3
         catchError((err) => of(new gameActions.LoadDivisionsFail(err)))
       )
     )
@@ -250,7 +262,11 @@ export class GameEffects {
     switchMap((action) =>
       this.teamService.filterTeamsByDivision(this.divisionId).pipe(
         map((teams) => new gameActions.LoadFilteredTeamsSuccess(teams)),
+<<<<<<< HEAD
         // tap(response => console.log(response)),
+=======
+        tap(response => console.log(response)),
+>>>>>>> 41113ecb3386df8f3f5ce89af4e9244c875c49c3
         catchError((err) => of(new gameActions.LoadFilteredTeamsFail(err)))
       )
     )
