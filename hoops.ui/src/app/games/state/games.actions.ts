@@ -62,20 +62,17 @@ export class LoadCurrentSeason implements Action {
 export class SetCurrentSeason implements Action {
   readonly type = GameActionTypes.SetCurrentSeason;
   constructor(public payload: Season | null) {
-    // console.log(payload);
   }
 }
 export class SetCurrentDivision implements Action {
   readonly type = GameActionTypes.SetCurrentDivision;
   constructor(public payload: Division) {
-    // console.log(payload);
   }
 }
 
 export class SetCurrentDivisionId implements Action {
   readonly type = GameActionTypes.SetCurrentDivisionId;
   constructor(public payload: number) {
-    // console.log(payload);
   }
 }
 

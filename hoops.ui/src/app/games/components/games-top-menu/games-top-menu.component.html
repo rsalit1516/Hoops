@@ -1,16 +1,12 @@
 <div class="row mt-3">
   <mat-toolbar class="pt-2">
     <span class="col-sm-2 col-xs-3 season">{{ seasonDescription }}</span>
-    <!-- <div [formGroup]="menuForm" ></div> -->
     <span class="col-sm-6 col-xs-4"></span>
-    <csbc-game-filter class="col-sm-4 col-xs-6"
-      [currentDivision]="selectedDivisionId$ | async"
-      (selectedDivision)="divisionSelected($event)"
-    ></csbc-game-filter>
+    <csbc-game-filter class="col-sm-5 col-xs-7"></csbc-game-filter>
   </mat-toolbar>
   <div class="row">
     <mat-toolbar>
-      <div [formGroup]="menuForm" class="filter-divisions">
+      <div class="filter-divisions">
         <!-- <mat-toolbar-row> -->
         <button mat-button class="games-button" routerLink="/games/schedule">
           Schedule

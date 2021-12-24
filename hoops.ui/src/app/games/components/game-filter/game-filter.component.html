@@ -1,7 +1,7 @@
 <form [formGroup]="criteriaForm">
   <div class="filter-divisions">
     <mat-form-field>
-      <mat-select formControlName="divisions">
+      <mat-select placeholder="Divisions" formControlName="divisions">
         <mat-option
           *ngFor="let division of divisions$ | async"
           [value]="division"
@@ -12,7 +12,7 @@
     </mat-form-field>
 
     <mat-form-field>
-      <mat-select placeholder="Team" formControlName="teams">
+      <mat-select placeholder="Teams" formControlName="teams">
         <mat-option *ngFor="let team of filteredTeams" [value]="team">
           {{ team.teamName }}
         </mat-option>

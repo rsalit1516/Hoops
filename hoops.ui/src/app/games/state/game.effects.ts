@@ -152,7 +152,6 @@ export class GameEffects {
     ofType(gameActions.GameActionTypes.SetCurrentDivision),
     tap((x) => (this.gameService.divisionId = x)),
     mapTo(new gameActions.LoadFilteredGames()),
-    // mapTo(new gameActions.LoadStandings()),
     tap(() => 'changed division')
   );
 

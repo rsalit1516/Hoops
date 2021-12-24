@@ -23,14 +23,11 @@ import { Season } from 'app/domain/season';
   styleUrls: ['./game-filter.component.scss'],
 })
 export class GameFilterComponent implements OnInit {
-  @Input()
-  divisions!: Division[];
-  @Input()
+  @Input() divisions!: Division[];
   currentDivision!: Division;
   @Input() teams!: Team[] | null;
   @Input() currentTeam!: Team;
   @Input() showAllTeams!: boolean;
-  // @Output() selectedDivision = new EventEmitter<Division>();
   @Output() selectedTeam = new EventEmitter<Team>();
   criteriaForm!: FormGroup;
   divisions$ = this.divisionService.divisions$.pipe(
@@ -46,25 +43,28 @@ export class GameFilterComponent implements OnInit {
     private fb: FormBuilder,
     private divisionService: GameService,
     private store: Store<fromGames.State>
-  ) {}
+  ) {
+    this.createForm();
+  }
 
   ngOnInit() {
     this.showAllTeams = true;
-    this.createForm();
     this.setStateSubscriptions();
     this.setControlSubscriptions();
     this.store.select(fromGames.getCurrentDivision).subscribe((division) => {
-      console.log(division);
-      this.currentDivision = division;
-      // this.d
-      this.criteriaForm.get('divisions').patchValue(division);
+      this.currentDivision = division as Division;
+      let divisionComponent = this.criteriaForm.get('divisions');
+      divisionComponent?.setValue(this.currentDivision);
+      this.changeDivision(division as Division);
+      // divisionComponent?.value = division;
+      // this.criteriaForm.controls['divisions'].setValue(division);
     });
   }
 
   createForm() {
     this.criteriaForm = this.fb.group({
-      divisions: this.currentDivision, // this.divisions$,
-      teams: new FormControl(''),
+      divisions: new FormControl(this.currentDivision),
+      teams: this.teams,
       allTeams: true,
       gameView: 'list',
     });
@@ -83,13 +83,18 @@ export class GameFilterComponent implements OnInit {
   setStateSubscriptions() {}
 
   changeDivision(val: Division) {
-    this.currentDivision = this.criteriaForm.controls['divisions'].value;
-    // const divisionId = division.divisionId;
-    console.log(this.currentDivision);
-    if (this.currentDivision !== undefined) {
-      this.store.dispatch(new gameActions.SetCurrentDivision(this.currentDivision));
-      this.store.dispatch(new gameActions.SetCurrentDivisionId(this.currentDivision.divisionId));
+    const changedDivision = this.criteriaForm.controls['divisions'].value;
+
+    if ((this.currentDivision !== undefined) && (changedDivision !== this.currentDivision) ) {
+     this.currentDivision = changedDivision;
+      this.store.dispatch(
+        new gameActions.SetCurrentDivision(this.currentDivision)
+      );
+      this.store.dispatch(
+        new gameActions.SetCurrentDivisionId(this.currentDivision.divisionId)
+      );
       this.store.dispatch(new gameActions.LoadFilteredTeams());
+      this.store.dispatch(new gameActions.LoadStandings);
     }
   }
 

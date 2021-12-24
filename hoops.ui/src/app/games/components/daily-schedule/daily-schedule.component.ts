@@ -20,7 +20,6 @@ export class DailyScheduleComponent implements OnInit {
   @Input() games!: Game[];
   @Input() canEdit!: boolean;
   displayedColumns = [
-    'gameDate',
     'gameTime',
     'locationName',
     'homeTeam',

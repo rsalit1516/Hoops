@@ -14,7 +14,7 @@ const gamesRoutes: Routes = [
     path: '',
     component: GamesShellComponent,
     children: [
-      { path: '', component: ScheduleShellComponent },
+      { path: '', component: ScheduleComponent },
       { path: 'schedule', component: ScheduleShellComponent },
       { path: 'standings', component: StandingsShellComponent },
       { path: 'card', component: ScheduleCardViewComponent },

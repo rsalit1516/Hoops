@@ -18,8 +18,8 @@ import { Season } from '@app/domain/season';
 export class GamesTopMenuComponent implements OnInit {
   @Input()
   divisions!: Division[];
-  @Input() currentDivision: Division | undefined;
-  menuForm!: FormGroup;
+  @Output() currentDivision: Division | undefined;
+  // menuForm!: FormGroup;
   @Output() selectedDivision = new EventEmitter<Division>();
   private errorMessageSubject = new Subject<string>();
 
@@ -38,33 +38,16 @@ export class GamesTopMenuComponent implements OnInit {
   // firstDivision: Observable<Division> ;
 
   constructor(
-    private fb: FormBuilder,
+    // private fb: FormBuilder,
     private store: Store<fromGames.State>,
     private gameService: GameService,
     private seasonService: SeasonService
-  ) {
-    const firstDivision = this.gameService.divisions$.pipe(take(1));
-    firstDivision.subscribe((x) => {
-      this.selectedDivision.emit(x[0]);
-      console.log(x);
-    });
-  }
+  ) {}
 
   ngOnInit() {
     this.store.select(fromGames.getCurrentSeason).subscribe((currentSeason) => {
       this.seasonDescription = currentSeason?.description;
     });
-    this.createForm();
-  }
-  createForm() {
-    this.menuForm = this.fb.group({
-      divisions: this.divisions,
-      teams: null,
-      allTeams: true,
-    });
-  }
-  divisionSelected(division: Division): void {
-    console.log(division);
-    this.selectedDivision.emit(division);
+    this.store.select(fromGames.getCurrentDivision).subscribe(division => this.currentDivision = division);
   }
 }
