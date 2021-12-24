@@ -141,8 +141,9 @@ export class GameEffects {
         shareReplay(1),
         map((divisions) => new gameActions.LoadDivisionsSuccess(divisions)),
         catchError((err) => of(new gameActions.LoadDivisionsFail(err)))
-      )
-    )
+      ),
+    ),
+
   );
 
   // tslint:disable-next-line:member-ordering
@@ -218,17 +219,6 @@ export class GameEffects {
     )
   );
 
-  // tslint:disable-next-line:member-ordering
-  // @Effect()
-  // loadFilteredGamesByTeam$: Observable<Action> = this.actions$.pipe(
-  //   ofType(gameActions.GameActionTypes.LoadFilteredGames),
-  //   mergeMap(action =>
-  //     this.gameService.filterGamesByTeam().pipe(
-  //       // map(games => (new gameActions.LoadFilteredGamesSuccess(games))),
-  //       catchError(err => of(new gameActions.LoadFilteredGamesFail(err)))
-  //     )
-  //   )
-  // );
 
   // tslint:disable-next-line:member-ordering
   @Effect()

@@ -174,10 +174,7 @@ export class LoadDivisionsSuccess implements Action {
   readonly type = GameActionTypes.LoadDivisionsSuccess;
 
   constructor(public payload: Division[]) {
-    // console.log(payload);
-    // this.store.dispatch(
-    //   new SetCurrentDivision(payload[0])
-    // );
+    console.log(payload);
   }
 }
 export class LoadPlayoffGames implements Action {

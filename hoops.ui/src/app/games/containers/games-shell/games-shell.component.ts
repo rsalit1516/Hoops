@@ -20,7 +20,7 @@ import {
   toArray,
   tap,
   flatMap,
-  concatMap
+  concatMap,
 } from 'rxjs/operators';
 import * as moment from 'moment';
 import { User } from 'app/domain/user';
@@ -28,7 +28,7 @@ import { User } from 'app/domain/user';
 @Component({
   selector: 'csbc-games-shell',
   templateUrl: './games-shell.component.html',
-  styleUrls: ['./games-shell.component.scss']
+  styleUrls: ['./games-shell.component.scss'],
 })
 export class GamesShellComponent implements OnInit {
   @Input() showAllTeams: boolean | undefined;
@@ -39,7 +39,7 @@ export class GamesShellComponent implements OnInit {
   teams: any;
   user$ = this.userStore
     .pipe(select(fromUser.getCurrentUser))
-    .subscribe(user => (this.user = user));
+    .subscribe((user) => (this.user = user));
   allGames$: Observable<Game[]> | undefined;
   errorMessage: any;
   selectedDivisionId$: Observable<number> | undefined;
@@ -77,32 +77,24 @@ export class GamesShellComponent implements OnInit {
     this.selectedDivisionId = 1;
   }
 
-  ngOnInit () {
+  ngOnInit() {
     this.store.dispatch(new gameActions.LoadCurrentSeason());
     this.setStateSubscriptions();
   }
   setStateSubscriptions() {
-    // this.store.select(fromGames.getCurrentSeason).subscribe(season => {
-    //   console.log(season);
-    //   const t = this._gameService.currentSeason$; // = season.seasonID;
-    //   this.store.dispatch(new gameActions.LoadDivisions());
-    //   this.store.dispatch(new gameActions.LoadTeams());
-    //   this.store.dispatch(new gameActions.Load());
-    //   this.store.dispatch(new gameActions.LoadPlayoffGames());
-    //   this.store.dispatch(new gameActions.LoadStandings());
-    // });
-    this.divisionId$ = this.store.pipe(select(fromGames.getCurrentDivisionId)) as Observable<number>;
+    this.divisionId$ = this.store.pipe(
+      select(fromGames.getCurrentDivisionId)
+    ) as Observable<number>;
 
-    this.divisionId$.subscribe(divisionId => {
+    this.divisionId$.subscribe((divisionId) => {
       this._gameService.divisionId = divisionId;
-//         this.store.dispatch(new gameActions.SetCurrentDivision(divisionId));
-        this.store.dispatch(new gameActions.SetCurrentDivisionId(divisionId));
-        this.store.dispatch(new gameActions.LoadFilteredTeams);
-      });
+      this.store.dispatch(new gameActions.SetCurrentDivisionId(divisionId));
+      this.store.dispatch(new gameActions.LoadFilteredTeams());
+    });
 
     this.filteredGames$ = this.store.pipe(select(fromGames.getFilteredGames));
     // this.standings$ = this.store.pipe(select(fromGames.getStandings));
-    this.store.pipe(select(fromUser.getCurrentUser)).subscribe(user => {
+    this.store.pipe(select(fromUser.getCurrentUser)).subscribe((user) => {
       this.user = user;
     });
   }
@@ -115,7 +107,11 @@ export class GamesShellComponent implements OnInit {
     this.store.dispatch(new gameActions.SetCurrentDivision(division));
     // console.log(this.user$);
     if (division !== undefined) {
-      this.store.dispatch(new gameActions.SetCanEdit(this._gameService.getCanEdit(this.user, division.divisionId)));
+      this.store.dispatch(
+        new gameActions.SetCanEdit(
+          this._gameService.getCanEdit(this.user, division.divisionId)
+        )
+      );
     }
   }
   teamSelected(team: Team): void {
@@ -124,8 +120,8 @@ export class GamesShellComponent implements OnInit {
 
   getCanEdit(user: User, divisionId: number): boolean {
     let canEdit = false;
-    if ((user) && (user.divisions)) {
-      user.divisions.forEach(element => {
+    if (user && user.divisions) {
+      user.divisions.forEach((element) => {
         if (divisionId === element.divisionId) {
           console.log('found ' + divisionId);
           canEdit = true;
@@ -146,7 +142,7 @@ export class GamesShellComponent implements OnInit {
           divisionId: data[i].divisionId,
           divisionDescription: data[i].divisionDescription,
           minDate: data[i].minDate,
-          maxDate: data[i].maxDate
+          maxDate: data[i].maxDate,
         };
         divisions.push(division);
       }

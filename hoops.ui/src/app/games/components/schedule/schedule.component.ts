@@ -68,7 +68,7 @@ export class ScheduleComponent implements OnInit {
         // console.log(dailyGames);
         this.dailySchedule.push(dailyGames);
       });
-      console.log(this.dailySchedule);
+      // console.log(this.dailySchedule);
     });
   }
 

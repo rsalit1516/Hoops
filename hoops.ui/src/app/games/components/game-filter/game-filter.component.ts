@@ -53,25 +53,17 @@ export class GameFilterComponent implements OnInit {
     this.createForm();
     this.setStateSubscriptions();
     this.setControlSubscriptions();
-    this.store.select(fromGames.getCurrentSeason).subscribe((currentSeason) => {
-      this.season = currentSeason;
-      this.store.select(fromGames.getDivisions).subscribe((divisions) => {
-        this.store
-          .select(fromGames.getCurrentDivision)
-          .subscribe((division) => {
-            if (division?.divisionId === 0) {
-              console.log(division);
-              this.criteriaForm.get('divisions').setValue(divisions[0]);
-            }
-          });
-      });
+    this.store.select(fromGames.getCurrentDivision).subscribe((division) => {
+      console.log(division);
+      this.currentDivision = division;
+      // this.d
+      this.criteriaForm.get('divisions').patchValue(division);
     });
-    // this.criteriaForm.get('divisions').setValue();
   }
 
   createForm() {
     this.criteriaForm = this.fb.group({
-      divisions: new FormControl(''), // this.divisions$,
+      divisions: this.currentDivision, // this.divisions$,
       teams: new FormControl(''),
       allTeams: true,
       gameView: 'list',
@@ -91,12 +83,12 @@ export class GameFilterComponent implements OnInit {
   setStateSubscriptions() {}
 
   changeDivision(val: Division) {
-    const division = this.criteriaForm.controls['divisions'].value;
-    const divisionId = division.divisionId;
-    console.log(division);
-    if (division !== undefined) {
-      this.store.dispatch(new gameActions.SetCurrentDivision(division));
-      this.store.dispatch(new gameActions.SetCurrentDivisionId(divisionId));
+    this.currentDivision = this.criteriaForm.controls['divisions'].value;
+    // const divisionId = division.divisionId;
+    console.log(this.currentDivision);
+    if (this.currentDivision !== undefined) {
+      this.store.dispatch(new gameActions.SetCurrentDivision(this.currentDivision));
+      this.store.dispatch(new gameActions.SetCurrentDivisionId(this.currentDivision.divisionId));
       this.store.dispatch(new gameActions.LoadFilteredTeams());
     }
   }
