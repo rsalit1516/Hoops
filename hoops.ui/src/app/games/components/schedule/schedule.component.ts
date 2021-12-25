@@ -91,26 +91,14 @@ export class ScheduleComponent implements OnInit {
     );
     return gamesByDate;
 
-    // const source = from(games);
-    // const gDate = source.pipe(
-    //   groupBy(game =>  moment(game.gameDate)
-    //   .toDate()
-    //   .getDate())
-    //   );
+  }
+  // groupByDate2(games: Game[]) {
+  //   let dailySchedule = {};
+  //   games.forEach((val) => {
+  //     var date = moment(val.gameDate).toDate();
+  //   });
+  // }
 
-    // const gamesByDate = gDate.pipe(
-    //   groupBy((game) => game.gameDate),
-    //   mergeMap((group) => group.pipe(toArray()))
-    // );
-    // console.log(gamesByDate);
-    // return gamesByDate;
-  }
-  groupByDate2(games: Game[]) {
-    let dailySchedule = {};
-    games.forEach((val) => {
-      var date = moment(val.gameDate).toDate();
-    });
-  }
   editGame(game: Game) {
     this.store.dispatch(new gameActions.SetCurrentGame(game));
     const dialogRef = this.dialog.open(GameScoreDialogComponent, {

@@ -18,24 +18,14 @@ import { Team } from '@app/domain/team';
 })
 export class GamesTopMenuComponent implements OnInit {
   @Input() divisions!: Division[];
+  @Input() teams!: Team[];
   @Output() currentDivision: Division | undefined;
-  // menuForm!: FormGroup;
   @Output() selectedDivision = new EventEmitter<Division>();
   private errorMessageSubject = new Subject<string>();
   filteredTeams!: Team[];
-  divisions$ = this.gameService.divisions$;
-  // .pipe(
-  //   tap(test => console.log(test)),
-  //   catchError(err => {
-  //     this.errorMessageSubject.next(err);
-  //     return EMPTY;
-  //   })
-  // );
-  // currentSeason$ = this.seasonService.currentSeason$.subscribe((season: { description: string; }) => this.seasonDescription = season.description);
   seasonDescription: string | undefined;
   selectedDivisionId$: Observable<number> | undefined;
   season: Season | undefined;
-  // firstDivision: Observable<Division> ;
 
   constructor(
     // private fb: FormBuilder,
@@ -48,10 +38,6 @@ export class GamesTopMenuComponent implements OnInit {
     this.store.select(fromGames.getCurrentSeason).subscribe((currentSeason) => {
       this.seasonDescription = currentSeason?.description;
     });
-    this.store.select(fromGames.getCurrentDivision).subscribe(division => {
-      console.log('new division' + division?.divisionDescription);
-      this.currentDivision = division;
-      this.store.select(fromGames.getFilteredTeams).subscribe(teams => this.filteredTeams = teams);
-    });
+
   }
 }

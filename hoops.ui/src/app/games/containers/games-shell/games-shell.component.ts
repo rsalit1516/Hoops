@@ -67,6 +67,8 @@ export class GamesShellComponent implements OnInit {
   divisionId$!: Observable<number> | undefined;
   selectedDivisionId: number;
   divisions!: Division[];
+  currentDivision: Division | undefined;
+  filteredTeams!: Team[];
   constructor(
     private seasonService: SeasonService,
     private divisionService: DivisionService,
@@ -83,21 +85,28 @@ export class GamesShellComponent implements OnInit {
     this.setStateSubscriptions();
   }
   setStateSubscriptions() {
-    this.store.select(fromGames.getDivisions).subscribe(divisions => this.divisions = divisions)
+    this.store
+      .select(fromGames.getDivisions)
+      .subscribe((divisions) => (this.divisions = divisions));
     this.divisionId$ = this.store.pipe(
       select(fromGames.getCurrentDivisionId)
     ) as Observable<number>;
-
-    //this.divisionId$.subscribe((divisionId) => {
-      // this._gameService.divisionId = divisionId;
-      // this.store.dispatch(new gameActions.SetCurrentDivisionId(divisionId));
-      // this.store.dispatch(new gameActions.LoadFilteredTeams());
-    // });
 
     // this.filteredGames$ = this.store.pipe(select(fromGames.getFilteredGames));
     // this.standings$ = this.store.pipe(select(fromGames.getStandings));
     this.store.pipe(select(fromUser.getCurrentUser)).subscribe((user) => {
       this.user = user;
+    });
+    this.store.select(fromGames.getCurrentDivision).subscribe((division) => {
+      console.log('new division' + division?.divisionDescription);
+      this.currentDivision = division;
+      const divId = division?.divisionId as number;
+      this.store.select(fromGames.getFilteredTeams).subscribe((teams) => {
+        console.log(teams);
+        this.filteredTeams = teams;
+
+        console.log(this.filteredTeams);
+      });
     });
   }
   public filterByDivision(divisionId: number): void {

@@ -72,19 +72,19 @@ export class GameFilterComponent implements OnInit {
     });
   }
   setControlSubscriptions() {
-    this.store.select(fromGames.getFilteredTeams).subscribe((teams) => {
-      this.filteredTeams = teams;
-      console.log(this.filteredTeams);
-      const team = new Team(
-        0,
-        this.currentDivision.divisionId,
-        'All Teams',
-        'All Teams',
-        '0'
-      );
-      this.filteredTeams.push(team);
-      console.log(this.filteredTeams);
-    });
+    // this.store.select(fromGames.getFilteredTeams).subscribe((teams) => {
+    //   this.filteredTeams = teams;
+    //   console.log(this.filteredTeams);
+    //   const team = new Team(
+    //     0,
+    //     this.currentDivision.divisionId,
+    //     'All Teams',
+    //     'All Teams',
+    //     '0'
+    //   );
+    //   this.filteredTeams.push(team);
+    //   console.log(this.filteredTeams);
+    // });
     this.divisionComponent?.valueChanges.subscribe((division) => {
       console.log(division);
       this.changeDivision(division);
@@ -92,8 +92,8 @@ export class GameFilterComponent implements OnInit {
     this.teamComponent?.valueChanges.subscribe((val) => {
       console.log(val);
       this.store.dispatch(new gameActions.SetCurrentTeam(val));
-      let check = this.criteriaForm.get('allTeamCheckbox') as FormControl;
-      check.setValue(false);
+      // let check = this.criteriaForm.get('allTeamCheckbox') as FormControl;
+      // check.setValue(false);
     });
   }
 
