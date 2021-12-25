@@ -54,10 +54,6 @@ export class ScheduleShellComponent implements OnInit {
 
   }
 
-  divisionSelected(division: Division): void {
-    // console.log(division);
-    // this.canEdit = this.getCanEdit(this.user, division.divisionId);
-  }
   groupByDate(games: Game[]) {
     // console.log(games);
     games.forEach(element => {

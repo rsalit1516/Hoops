@@ -53,7 +53,7 @@ export class DailyScheduleComponent implements OnInit {
         });
       }
     });
-    this.gameDate! = this.data[0].gameDate;
+    this.gameDate! = this.data[0].gameDate as Date;
   }
   setupTable() {
     if (this.currentScreenWidth === 'xs') {

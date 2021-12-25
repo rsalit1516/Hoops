@@ -147,13 +147,11 @@ export class LoadFilteredGamesByTeamSuccess implements Action {
 
 export class LoadFilteredGamesByTeamFail implements Action {
   readonly type = GameActionTypes.LoadFilteredGamesByTeamFail;
-
   constructor(public payload: string) {}
 }
 export class LoadStandings implements Action {
   readonly type = GameActionTypes.LoadStandings;
 }
-
 export class LoadStandingsSuccess implements Action {
   readonly type = GameActionTypes.LoadStandingsSuccess;
   constructor(public payload: Standing[]) {}
@@ -169,9 +167,7 @@ export class LoadDivisions implements Action {
 }
 export class LoadDivisionsSuccess implements Action {
   readonly type = GameActionTypes.LoadDivisionsSuccess;
-
   constructor(public payload: Division[]) {
-    console.log(payload);
   }
 }
 export class LoadPlayoffGames implements Action {

@@ -9,6 +9,7 @@ import { Division } from '@app/domain/division';
 import { SeasonService } from '@app/services/season.service';
 import { GameService } from '@app/games/game.service';
 import { Season } from '@app/domain/season';
+import { Team } from '@app/domain/team';
 
 @Component({
   selector: 'csbc-games-top-menu',
@@ -16,13 +17,12 @@ import { Season } from '@app/domain/season';
   styleUrls: ['./games-top-menu.component.scss'],
 })
 export class GamesTopMenuComponent implements OnInit {
-  @Input()
-  divisions!: Division[];
+  @Input() divisions!: Division[];
   @Output() currentDivision: Division | undefined;
   // menuForm!: FormGroup;
   @Output() selectedDivision = new EventEmitter<Division>();
   private errorMessageSubject = new Subject<string>();
-
+  filteredTeams!: Team[];
   divisions$ = this.gameService.divisions$;
   // .pipe(
   //   tap(test => console.log(test)),
@@ -48,6 +48,10 @@ export class GamesTopMenuComponent implements OnInit {
     this.store.select(fromGames.getCurrentSeason).subscribe((currentSeason) => {
       this.seasonDescription = currentSeason?.description;
     });
-    this.store.select(fromGames.getCurrentDivision).subscribe(division => this.currentDivision = division);
+    this.store.select(fromGames.getCurrentDivision).subscribe(division => {
+      console.log('new division' + division?.divisionDescription);
+      this.currentDivision = division;
+      this.store.select(fromGames.getFilteredTeams).subscribe(teams => this.filteredTeams = teams);
+    });
   }
 }

@@ -2,7 +2,7 @@
   <mat-toolbar class="pt-2">
     <span class="col-sm-2 col-xs-3 season">{{ seasonDescription }}</span>
     <span class="col-sm-6 col-xs-4"></span>
-    <csbc-game-filter class="col-sm-5 col-xs-7"></csbc-game-filter>
+    <csbc-game-filter [divisions] = "divisions" [teams] = "filteredTeams" class="col-sm-5 col-xs-7"></csbc-game-filter>
   </mat-toolbar>
   <div class="row">
     <mat-toolbar>
