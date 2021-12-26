@@ -16,6 +16,7 @@ import { catchError, tap, map } from 'rxjs/operators';
 import { EMPTY, Observable } from 'rxjs';
 import { GameService } from 'app/games/game.service';
 import { Season } from 'app/domain/season';
+import { Constants } from '@app/shared/constants';
 
 @Component({
   selector: 'csbc-game-filter',
@@ -72,26 +73,17 @@ export class GameFilterComponent implements OnInit {
     });
   }
   setControlSubscriptions() {
-    // this.store.select(fromGames.getFilteredTeams).subscribe((teams) => {
-    //   this.filteredTeams = teams;
-    //   console.log(this.filteredTeams);
-    //   const team = new Team(
-    //     0,
-    //     this.currentDivision.divisionId,
-    //     'All Teams',
-    //     'All Teams',
-    //     '0'
-    //   );
-    //   this.filteredTeams.push(team);
-    //   console.log(this.filteredTeams);
-    // });
     this.divisionComponent?.valueChanges.subscribe((division) => {
       console.log(division);
       this.changeDivision(division);
     });
     this.teamComponent?.valueChanges.subscribe((val) => {
       console.log(val);
+      if (val.teamName === Constants.ALLTEAMS) {
+        this.changeDivision(this.currentDivision);
+      } else {
       this.store.dispatch(new gameActions.SetCurrentTeam(val));
+      }
       // let check = this.criteriaForm.get('allTeamCheckbox') as FormControl;
       // check.setValue(false);
     });
@@ -102,10 +94,10 @@ export class GameFilterComponent implements OnInit {
   changeDivision(val: Division) {
     const changedDivision = this.criteriaForm.controls['divisions'].value;
 
-    if (
-      this.currentDivision !== undefined &&
-      changedDivision !== this.currentDivision
-    ) {
+    // if (
+    //   this.currentDivision !== undefined &&
+    //   changedDivision !== this.currentDivision
+    // ) {
       this.currentDivision = changedDivision;
       this.store.dispatch(
         new gameActions.SetCurrentDivision(this.currentDivision)
@@ -115,7 +107,7 @@ export class GameFilterComponent implements OnInit {
       );
       this.store.dispatch(new gameActions.LoadFilteredTeams());
       this.store.dispatch(new gameActions.LoadStandings());
-    }
+    // }
   }
 
   divisionSelected(division: Division): void {}

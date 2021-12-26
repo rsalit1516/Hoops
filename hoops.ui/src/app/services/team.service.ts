@@ -12,6 +12,7 @@ import { Team } from '../domain/team';
 import { DataService } from './data.service';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
+import { Constants } from '@app/shared/constants';
 
 @Injectable()
 export class TeamService {
@@ -48,11 +49,10 @@ export class TeamService {
     let filteredTeams: Team[] = [];
     const teamId: number = 0;
     const divisionId: number = 0;
-    const name: string = 'All Teams';
-    const teamName: string = 'All Teams';
+    const name: string = Constants.ALLTEAMS;
+    const teamName: string = Constants.ALLTEAMS;
     const teamNumber: string = '0';
     const team = new Team(teamId, divisionId, teamName, teamNumber);
-    console.log(team);
     filteredTeams.push(team);
 
     this.store.pipe(select(fromGames.getTeams)).subscribe((allTeams) => {

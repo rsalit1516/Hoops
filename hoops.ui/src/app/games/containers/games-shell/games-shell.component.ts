@@ -98,14 +98,10 @@ export class GamesShellComponent implements OnInit {
       this.user = user;
     });
     this.store.select(fromGames.getCurrentDivision).subscribe((division) => {
-      console.log('new division' + division?.divisionDescription);
       this.currentDivision = division;
       const divId = division?.divisionId as number;
       this.store.select(fromGames.getFilteredTeams).subscribe((teams) => {
-        console.log(teams);
         this.filteredTeams = teams;
-
-        console.log(this.filteredTeams);
       });
     });
   }
