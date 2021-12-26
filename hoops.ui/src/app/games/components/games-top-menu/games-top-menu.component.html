@@ -1,38 +1,39 @@
-<div class="row mt-4">
-  <div class="col-sm-2 col-12 season">{{ seasonDescription }}</div>
-
+<div>
+  <div class="row mt-4">
+    <div class="col-3 season">{{ seasonDescription }}</div>
+  </div>
   <div class="row mt-4">
     <div class="col-sm-4 col-12">
-    <mat-toolbar>
-      <div class="filter-divisions">
-        <!-- <mat-toolbar-row> -->
-        <button mat-button class="games-button" routerLink="/games/schedule">
-          Schedule
-        </button>
-        <button mat-button class="games-button" routerLink="/games/standings">
-          Standings
-        </button>
-        <button
-          mat-button
-          fxHide.gt-md="true"
-          class="games-button"
-          routerLink="/games/scores"
-        >
-          Scores
-        </button>
-        <!-- </mat-toolbar-row> -->
-      </div>
-    </mat-toolbar>
-  </div>
+      <mat-toolbar>
+        <div class="filter-divisions">
+          <!-- <mat-toolbar-row> -->
+          <button mat-button class="games-button" routerLink="/games/schedule">
+            Schedule
+          </button>
+          <button mat-button class="games-button" routerLink="/games/standings">
+            Standings
+          </button>
+          <button
+            mat-button
+            fxHide.gt-md="true"
+            class="games-button"
+            routerLink="/games/scores"
+          >
+            Scores
+          </button>
+          <!-- </mat-toolbar-row> -->
+        </div>
+      </mat-toolbar>
+    </div>
     <div class="col-sm-2 col-0"></div>
     <div class="col-sm-6 col-12">
-    <mat-toolbar >
-      <csbc-game-filter
-        [divisions]="divisions"
-        [teams]="teams"
-        class=""
-      ></csbc-game-filter>
-    </mat-toolbar>
-  </div>
+      <mat-toolbar>
+        <csbc-game-filter
+          [divisions]="divisions"
+          [teams]="teams"
+          class=""
+        ></csbc-game-filter>
+      </mat-toolbar>
+    </div>
   </div>
 </div>

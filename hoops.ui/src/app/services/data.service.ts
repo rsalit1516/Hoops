@@ -4,11 +4,12 @@ import { Division } from '@app/domain/division';
 import { map, tap, catchError } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import { Constants } from '@app/shared/constants';
 
 @Injectable()
 export class DataService {
   webUrl: string;
-  baseUrl = 'https://localhost:5001';
+  baseUrl = Constants.DEFAULTURL;
   dotNetCoreUrl: string;
   getActiveWebContentUrl: string;
   loginUrl = this.baseUrl + '/api/User/login';

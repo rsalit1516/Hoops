@@ -28,7 +28,7 @@ export class StandingsComponent implements OnInit {
 
   // need to add back Games behind
   // displayedColumns = ['teamName', 'won', 'lost', 'pct', 'streak'];
-  displayedColumns = ['teamName', 'won', 'lost', 'pct'];
+  displayedColumns = ['teamName', 'won', 'lost', 'pct', 'pf', 'pa'];
   dataSource: MatTableDataSource<Standing>;
   constructor(private gameService: GameService) {
     this.title = 'Standings';

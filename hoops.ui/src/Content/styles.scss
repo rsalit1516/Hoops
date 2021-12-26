@@ -447,6 +447,10 @@ a {
 /*#region Responsive */
 
 @media (max-width: 979px) {
+  body {
+    font-size:14px;
+  }
+
   .sidebar-filler {
     width: 200px;
   }
@@ -482,6 +486,10 @@ a {
 @media (max-width: 767px) {
   .sidebar-filler {
     display: none;
+  }
+
+  body {
+    font-size:12px;
   }
 
   .nav-collapse {
@@ -520,6 +528,10 @@ a {
   .today-datas li {
     padding: 1em 0.5em;
     line-height: 1em;
+  }
+
+  body {
+    font-size:8px;
   }
 
   .today-datas li i {

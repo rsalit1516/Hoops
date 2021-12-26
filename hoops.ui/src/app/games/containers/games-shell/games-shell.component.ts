@@ -69,6 +69,8 @@ export class GamesShellComponent implements OnInit {
   divisions!: Division[];
   currentDivision: Division | undefined;
   filteredTeams!: Team[];
+  filteredGames!: Game[];
+  filteredGamesByDate!: Observable<Game[]>;
   constructor(
     private seasonService: SeasonService,
     private divisionService: DivisionService,
@@ -81,7 +83,6 @@ export class GamesShellComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.store.dispatch(new gameActions.LoadCurrentSeason());
     this.setStateSubscriptions();
   }
   setStateSubscriptions() {
@@ -100,10 +101,17 @@ export class GamesShellComponent implements OnInit {
     this.store.select(fromGames.getCurrentDivision).subscribe((division) => {
       this.currentDivision = division;
       const divId = division?.divisionId as number;
-      this.store.select(fromGames.getFilteredTeams).subscribe((teams) => {
-        this.filteredTeams = teams;
-      });
+      console.log(division);
+      // this.store.dispatch(new gameActions.LoadFilteredGames);
+      // this.store.select(fromGames.getFilteredTeams).subscribe((teams) => {
+      //   this.filteredTeams = teams;
+      // });
     });
+    // this.store.select(fromGames.getFilteredGames).subscribe(games => {
+    //   this.filteredGames = games;
+    //   this.filteredGamesByDate = this._gameService.groupByDate(games);
+    //   console.log(this.filteredGames);
+    // })
   }
   public filterByDivision(divisionId: number): void {
     console.log(divisionId);

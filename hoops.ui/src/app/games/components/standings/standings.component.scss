@@ -7,7 +7,15 @@
 .table-striped > tbody > tr:nth-child(odd) {
   background-color: darkslategray;
 }
-
+.mat-table tr td {
+  color: $color;
+  font-weight: 500;
+  font-size: 1.3em;
+}
+th {
+  font-size: 1.3em;
+  font-weight: 700;
+}
 // .table-wrapper {
 //   padding-left: 20px;
 //   padding-right: 20px;
