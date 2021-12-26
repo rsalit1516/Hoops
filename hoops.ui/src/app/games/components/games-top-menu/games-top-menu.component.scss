@@ -1,5 +1,9 @@
 @import '../../../../Content/variables';
-// @use '../../../../content/variables.scss';
+
+.body {
+  background-color: $background-color;
+  color: $navbar-color;
+}
 
 .filter-divisions {
   padding-left: 20px;

@@ -1,10 +1,8 @@
-<div class="row mt-3">
-  <mat-toolbar class="pt-2">
-    <span class="col-sm-2 col-xs-3 season">{{ seasonDescription }}</span>
-    <span class="col-sm-6 col-xs-4"></span>
-    <csbc-game-filter [divisions] = "divisions" [teams] = "teams" class="col-sm-5 col-xs-7"></csbc-game-filter>
-  </mat-toolbar>
-  <div class="row">
+<div class="row mt-4">
+  <div class="col-sm-2 col-12 season">{{ seasonDescription }}</div>
+
+  <div class="row mt-4">
+    <div class="col-sm-4 col-12">
     <mat-toolbar>
       <div class="filter-divisions">
         <!-- <mat-toolbar-row> -->
@@ -25,5 +23,16 @@
         <!-- </mat-toolbar-row> -->
       </div>
     </mat-toolbar>
+  </div>
+    <div class="col-sm-2 col-0"></div>
+    <div class="col-sm-6 col-12">
+    <mat-toolbar >
+      <csbc-game-filter
+        [divisions]="divisions"
+        [teams]="teams"
+        class=""
+      ></csbc-game-filter>
+    </mat-toolbar>
+  </div>
   </div>
 </div>

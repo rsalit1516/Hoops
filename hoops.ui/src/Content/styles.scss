@@ -15,13 +15,15 @@ body {
 
 .mat-toolbar {
   background: $background-color;
-  color: white;
+  color: $font-color-text;
 }
 .mat-select-value {
-  color: ghostwhite;
+  color: $font-color-text;
 }
+
 .mat-form-field {
-  color: ghostwhite;
+  background: $background-color;
+  color: $font-color-text;
 }
 /*For Bootstrap 3*/
 .nav,

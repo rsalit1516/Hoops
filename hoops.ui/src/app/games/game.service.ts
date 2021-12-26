@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, combineLatest, throwError, pipe, from } from 'rxjs';
 import { Division } from '@app/domain/division';
-import { map, tap, catchError, shareReplay, distinct, toArray } from 'rxjs/operators';
+import { map, tap, catchError, shareReplay, distinct, toArray, mergeMap, groupBy } from 'rxjs/operators';
 import { DataService } from '@app/services/data.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Game } from '@app/domain/game';
@@ -12,6 +12,7 @@ import { Store, select } from '@ngrx/store';
 import { User } from '@app/domain/user';
 import { TeamService } from '@app/services/team.service';
 import { Team } from '@app/domain/team';
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root',
@@ -179,6 +180,21 @@ export class GameService {
     });
     console.log(games);
     return of(games);
+  }
+
+  groupByDate(games: Game[]) {
+    const source = from(games);
+    const gDate = source.pipe(
+      map(s => (s.gameDate = moment(s.gameDate).toDate()))
+    );
+
+    const gamesByDate = source.pipe(
+      groupBy(game =>
+        moment(game.gameDate).format(moment.HTML5_FMT.DATE)
+        ),
+      mergeMap(group => group.pipe(toArray()))
+    );
+    return gamesByDate;
   }
 
   private sort(a: any, b: any) {

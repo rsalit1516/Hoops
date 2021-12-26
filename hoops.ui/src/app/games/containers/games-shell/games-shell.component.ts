@@ -159,7 +159,6 @@ export class GamesShellComponent implements OnInit {
   setTeamData(data: any[]): Team[] {
     let teams: Team[] = [];
     for (let i = 0; i <= data.length; i++) {
-      // console.log(data[i]);
       if (data[i] !== undefined) {
         let team: Team = new Team();
         team.teamId = data[i].teamID;
