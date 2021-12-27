@@ -74,7 +74,6 @@ export class GameFilterComponent implements OnInit {
   }
   setControlSubscriptions() {
     this.divisionComponent?.valueChanges.subscribe((division) => {
-      console.log(division);
       this.changeDivision(division);
     });
     this.teamComponent?.valueChanges.subscribe((val) => {
@@ -94,21 +93,16 @@ export class GameFilterComponent implements OnInit {
   changeDivision(val: Division) {
     const changedDivision = this.criteriaForm.controls['divisions'].value;
 
-    if (
-      this.currentDivision !== undefined &&
-      changedDivision !== this.currentDivision
-    ) {
+    // if (this.currentDivision !== undefined &&
+    //   changedDivision !== this.currentDivision
+    // ) {
       this.currentDivision = changedDivision;
-      console.log(this.currentDivision);
       this.store.dispatch(
         new gameActions.SetCurrentDivision(this.currentDivision)
       );
-      this.store.dispatch(
-        new gameActions.SetCurrentDivisionId(this.currentDivision.divisionId)
-      );
       this.store.dispatch(new gameActions.LoadFilteredTeams());
       this.store.dispatch(new gameActions.LoadStandings());
-    }
+    // }
   }
 
   divisionSelected(division: Division): void {}

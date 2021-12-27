@@ -1,15 +1,11 @@
 @import "../../../../content/_variables.scss";
 
 .filter-wrapper {
-  padding-left: 20px;
+  padding-left: 12px;
   padding-right: 10px;
-  padding-bottom: 2px;
-  padding-top: 2px;
   background-color: transparent;
   color: white;
-  margin-left: 20px;
-  margin-right: 24px;
-  float: right;
+
 }
 .filter-divisions {
   background-color: transparent;
@@ -22,10 +18,12 @@
 }
 .mat-form-field {
   padding-bottom: 2px;
-  margin-bottom: 10px;
   padding-right: 12px;
   background-color: $background-color;
   color: white;
+}
+.mat-form-field-infix important{
+  width:100px;
 }
 
 .mat-form-field-type-mat-select .mat-form-field-label {
@@ -40,9 +38,9 @@ label {
   color: white;
 }
 ::ng-deep .mat-select-content {
-  width: 200px;
+  width: 20px;
   background-color: rgb(156, 72, 16);
-  font-size: 1em;
+  font-size: $table-font-size;
 }
 .mat-button,
 .mat-raised-button {

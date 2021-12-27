@@ -69,7 +69,6 @@ export class ScheduleComponent implements OnInit {
         this.gameService.groupByDate(games).subscribe((dailyGames) => {
           this.dailySchedule.push(dailyGames);
         });
-        console.log(this.dailySchedule);
       });
     });
   }

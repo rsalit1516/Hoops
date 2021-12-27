@@ -1,18 +1,11 @@
 @import '../../../../Content/variables';
 
-.filter-divisions {
-  padding-left: 20px;
-  padding-right: 10px;
-  padding-bottom: 2px;
-  padding-top: 2px;
-  background-color: transparent;
-  color: white;
-  float: right;
-  font-size: .9em;
-}
-
 .mat-sidenav-container {
   background-color: $background-color;
+}
+
+.mat-form-field-infix {
+  width:100px;
 }
 
 .top-nav-toolbar {
@@ -59,10 +52,7 @@ h2 {
   border-radius: 10px;
 }
 
-.mat-toolbar-row,
-.mat-toolbar-single-row {
-  height: 42px;
-}
+
 .top-menu-wrapper {
   margin-bottom: 2vh;
   padding-bottom: 2vh;
