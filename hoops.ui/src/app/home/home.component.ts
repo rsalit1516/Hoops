@@ -63,6 +63,8 @@ export class HomeComponent implements OnInit {
     this.gameStore.select(fromGames.getCurrentSeason).subscribe((season) => {
       if (season !== null) {
         this.gameStore.dispatch(new gameActions.LoadDivisions());
+        this.store.dispatch(new gameActions.LoadTeams());
+        this.store.dispatch(new gameActions.Load());
       }
     });
 
@@ -74,10 +76,11 @@ export class HomeComponent implements OnInit {
               .select(fromGames.getCurrentDivision)
               .subscribe((division) => {
                 if (division === undefined || division.seasonId === 0) {
+                  console.log('about to dispatch');
                   this.gameStore.dispatch(
                     new gameActions.SetCurrentDivision(divisions[0])
                   );
-                  this.gameStore.dispatch(new gameActions.LoadFilteredTeams());
+                  // this.gameStore.dispatch(new gameActions.LoadFilteredTeams());
                 }
               });
           }
@@ -94,10 +97,10 @@ export class HomeComponent implements OnInit {
     this.meetingNotices$!.subscribe((results) => {
       this.showSidebar = results.length > 0;
       if (results.length > 0) {
-        this.imageClass = 'col-sm-8 col-md-9 col-xs-12';
-        this.meetingNoticeClass = 'col-sm-4 col-md-3 col-xs-12';
+        this.imageClass = 'col-sm-8 col-md-9 col-12';
+        this.meetingNoticeClass = 'col-sm-4 col-md-3 col-12';
       } else {
-        this.imageClass = 'col-sm-12 center-block';
+        this.imageClass = 'col-sm-8 offset-sm-2 col-12';
         this.meetingNoticeClass = 'col-0';
       }
     });
@@ -107,7 +110,7 @@ export class HomeComponent implements OnInit {
     if (this.showNews()) {
       return 'col-sm-6 col-xs-12';
     } else {
-      return 'col-sm-10 col-sm-offset-1 col-xs-12';
+      return 'col-sm-8 col-sm-offset-2 col-12';
     }
   }
 

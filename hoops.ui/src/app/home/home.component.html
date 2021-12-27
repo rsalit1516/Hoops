@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid home-wrapper">
   <div class="row center-top">
     <div id="header">
       <div id="logo">
@@ -8,10 +8,8 @@
       </div>
     </div>
   </div>
-  <div class="row align-items-right">
-
-      <csbc-home-center class="tag align-right"></csbc-home-center>
-
+  <div class="row">
+      <csbc-home-center class="col-sm-6 offset-sm-3 col-12 tag"></csbc-home-center>
   </div>
   <div class="row">
     <div [ngClass]="meetingNoticeClass" [hidden]="!showSidebar">
@@ -25,8 +23,8 @@
     </div>
   </div>
   <div class="row">
-      <h4 class="centerlow" >
-        <span class="manny">Manny Rosa - forever in our hearts at CSBC </span>
-      </h4>
+      <div class="col-sm-6 offset-sm-3 col-12">
+        <div class="manny">Manny Rosa - forever in our hearts at CSBC </div>
+      </div>
   </div>
 </div>

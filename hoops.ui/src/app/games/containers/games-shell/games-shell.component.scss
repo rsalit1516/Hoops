@@ -1,15 +1,13 @@
 @import '../../../../content/_variables';
 
-.shell {
+.games-wrapper {
+  background-color: $background-color;
   width: 100%;
   padding-top: 12px;
   padding-left: 8px;
   padding-right: 8px;
   margin-left: auto;
   margin-right: auto;
-}
-.game-wrapper {
-  background-color: $background-color;
 }
 .season {
   color: white;

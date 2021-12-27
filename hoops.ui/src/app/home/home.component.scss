@@ -1,4 +1,4 @@
-@import '../../content/_variables';
+@import "../../content/_variables";
 
 h4 {
   color: white;
@@ -19,7 +19,7 @@ img {
   font-size: 1.1em;
   text-align: right;
   padding-top: 20px;
-  padding-right:12px;
+  padding-right: 12px;
 }
 #logo {
   display: flex;
@@ -40,9 +40,8 @@ em {
 .manny {
   background-color: transparent;
   color: darken(#ebf3c6, 10%);
-  float: right;
   text-align: right;
-  font-size: .9em;
+  font-size: $card-body;
   font-weight: 400;
   font-style: italic;
   padding-top: 40px;
@@ -52,17 +51,17 @@ em {
   padding-top: 20px;
 }
 
-
-
 .mat-card {
   border-radius: 10px;
   background-color: $card-background-color;
-  margin-bottom: 10px;
-  font-family: Roboto, Arial, Helvetica, sans-serif;
+  margin-bottom: 16px;
+  padding-top: 1.6vh;
+  padding-bottom: 1.6vh;
 }
+
 .mat-card-title {
-  font-size: 1.5em;
-  font-weight: 720;
+  font-size: $card-title-font-size;
+  font-weight: 750;
   font-variant: small-caps;
   color: $navbar-color;
   text-align: center;
@@ -80,9 +79,14 @@ em {
 }
 
 .mat-card-content {
-  font-size: 1.1em;
+  font-size: $card-body;
   color: $font-color-text;
   font-weight: 400;
+  padding-left: auto;
+  padding-right: auto;
+  padding-top: 4px;
+  margin-left: 3em;
+  margin-right: 3em;
 }
 .top-padding {
   margin-top: 24px;
@@ -97,4 +101,17 @@ em {
   font-style: italic;
   font-weight: 700;
   font-size: 1.2em;
+}
+.home-wrapper {
+  font-size: $wrapper-font-size;
+}
+
+.infoLocation {
+  background-color: $card-highlight;
+  margin-right: 4vw;
+  margin-left: 4vw;
+  margin-top: 2vh;
+  border-radius: 10px;
+  padding-top: 1vh;
+  padding-bottom: 1vh;
 }

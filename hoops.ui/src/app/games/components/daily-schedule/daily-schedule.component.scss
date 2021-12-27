@@ -21,7 +21,7 @@
 .mat-table tr th {
   color: $color;
   font-weight: 700;
-  font-size:1.1em;
+  font-size: $table-font-size;
 }
 .mat-table  .mat-header-row {
   border-bottom-width: thin;
@@ -40,7 +40,7 @@
 .mat-table tr td {
   color: $color;
   font-weight: 500;
-  font-size: 1.3em;
+  font-size: $table-font-size;
 }
 
 .mat-column-gameTime, .mat-column-locationName, .mat-column-homeTeamScore, .mat-column-visitingTeamScore, .mat-column-actions     {

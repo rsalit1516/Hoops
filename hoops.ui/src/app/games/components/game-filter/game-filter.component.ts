@@ -94,11 +94,12 @@ export class GameFilterComponent implements OnInit {
   changeDivision(val: Division) {
     const changedDivision = this.criteriaForm.controls['divisions'].value;
 
-    // if (
-    //   this.currentDivision !== undefined &&
-    //   changedDivision !== this.currentDivision
-    // ) {
+    if (
+      this.currentDivision !== undefined &&
+      changedDivision !== this.currentDivision
+    ) {
       this.currentDivision = changedDivision;
+      console.log(this.currentDivision);
       this.store.dispatch(
         new gameActions.SetCurrentDivision(this.currentDivision)
       );
@@ -107,7 +108,7 @@ export class GameFilterComponent implements OnInit {
       );
       this.store.dispatch(new gameActions.LoadFilteredTeams());
       this.store.dispatch(new gameActions.LoadStandings());
-    // }
+    }
   }
 
   divisionSelected(division: Division): void {}

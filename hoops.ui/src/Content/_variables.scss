@@ -18,7 +18,15 @@ $status-bar-background: #000000;
 $app-bar-background: #212121;
 $color: #d17b00;
 $card-sub-title-color: #3a5794;
+$card-highlight: rgba(68, 58, 92, 0.925);;
 
 $border-radius: 10px;
-$font-color-text: rgba(240, 235, 235, 0.925);
+$font-color-text: rgb(238, 231, 231);
 $field-label:rgb(245, 245, 245);
+
+/* font sizes */
+$table-font-size: 1em;
+$heading-font-size: 1.4em;
+$card-body: 1.1em;
+$wrapper-font-size: 1em;
+$card-title-font-size: 1.8em;

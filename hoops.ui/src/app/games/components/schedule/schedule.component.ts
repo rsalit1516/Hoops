@@ -61,17 +61,18 @@ export class ScheduleComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.select(fromGames.getFilteredGames).subscribe((games) => {
-      this.games = games;
-      this.dailySchedule = [];
+    this.store.select(fromGames.getCurrentDivision).subscribe((division) => {
+      this.store.select(fromGames.getFilteredGames).subscribe((games) => {
+        this.games = games;
+        this.dailySchedule = [];
 
-      this.gameService.groupByDate(games).subscribe(dailyGames => {
-        this.dailySchedule.push(dailyGames);
+        this.gameService.groupByDate(games).subscribe((dailyGames) => {
+          this.dailySchedule.push(dailyGames);
+        });
+        console.log(this.dailySchedule);
       });
-      console.log(this.dailySchedule);
     });
   }
-
 
   editGame(game: Game) {
     this.store.dispatch(new gameActions.SetCurrentGame(game));

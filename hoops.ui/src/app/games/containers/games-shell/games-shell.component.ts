@@ -95,6 +95,11 @@ export class GamesShellComponent implements OnInit {
 
     // this.filteredGames$ = this.store.pipe(select(fromGames.getFilteredGames));
     // this.standings$ = this.store.pipe(select(fromGames.getStandings));
+    this.store.select(fromGames.getDivisions).subscribe(divisions => {
+      this.store.dispatch(new gameActions.SetCurrentDivision(divisions[0]));
+
+    })
+
     this.store.pipe(select(fromUser.getCurrentUser)).subscribe((user) => {
       this.user = user;
     });
@@ -102,10 +107,11 @@ export class GamesShellComponent implements OnInit {
       this.currentDivision = division;
       const divId = division?.divisionId as number;
       console.log(division);
-      // this.store.dispatch(new gameActions.LoadFilteredGames);
-      // this.store.select(fromGames.getFilteredTeams).subscribe((teams) => {
-      //   this.filteredTeams = teams;
-      // });
+      this.store.dispatch(new gameActions.LoadFilteredTeams());
+      this.store.dispatch(new gameActions.LoadFilteredGames);
+      this.store.select(fromGames.getFilteredTeams).subscribe((teams) => {
+        this.filteredTeams = teams;
+      });
     });
     // this.store.select(fromGames.getFilteredGames).subscribe(games => {
     //   this.filteredGames = games;
