@@ -6,6 +6,7 @@
 
 .top-nav-toolbar {
   background-color: $card-background-color;
+  text-align: right;
 }
 
 .mat-toolbar  {
@@ -81,4 +82,14 @@ button {
   min-width: 0;
   padding: 0;
   line-height: normal;
+}
+
+.brand {
+  color:$brand-color;
+  font-size: $heading-font-size;
+  margin-right: 12px;
+  font-variant:small-caps ;
+}
+.menu-spacer {
+  width: 80px;
 }

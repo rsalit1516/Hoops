@@ -1,5 +1,8 @@
 <!-- <div style="height: 100vh;" class="wrapper"> -->
+
 <mat-toolbar class="top-nav-toolbar" color="default" fxShow="true">
+  <div class="brand">Coral Springs Basketball Club</div>
+  <div class="menu-spacer"></div>
   <div fxHide.gt-xs>
     <button mat-button (click)="onToggleSidenav()" class="menu-button">
       <mat-icon>menu</mat-icon>
@@ -21,5 +24,4 @@
     </button>
     <p readonly *ngIf="currentUser">Hello {{ userName }}</p>
   </div>
-
 </mat-toolbar>
