@@ -2,36 +2,35 @@
   <div class="card-body">
     <div class="containerfluid">
       <div class="row">
-        <div class="col-sm-4 col-md-4">
+        <div class="col-sm-4 col-6">
           {{ game.gameDate | date: "MM/dd/yyyy" }}
         </div>
-        <div class="col-sm-4 col-md-4">
+        <div class="col-sm-4 col-6 text-right">
           <span>{{ game.gameDate | date: "EEE" }}, </span>
           <span>{{ game.gameTime | date: "shortTime" }}</span>
         </div>
-        <div class="col-sm-4 col-md-4 text-center">
+        <div class="col-sm-4 col-md-12 text-center">
           <div class="data">{{ game.locationName }}</div>
         </div>
-        <div class="col-sm-6 col-md-6 text-left">
+        <div class="col-sm-6 col-6 text-left">
           <span>Visitor: </span>
           <span>{{ game.visitingTeamName }}</span>
         </div>
-        <div class="col-sm-6 col-md-6 tex-left">
+        <div class="col-sm-6 col-6 tex-left">
           <span>Home: </span>
           <span>{{ game.homeTeamName }}</span>
         </div>
-
         <div
           *ngIf="game.homeTeamScore != 0 && game.visitingTeamScore != 0"
-          class="col-sm-6 tex-left"
+          class="col-sm-6 col-6 text-right"
         >
-          <div class="tex-left">Visitor: {{ game.visitingTeamScore }}</div>
+          Visitor: {{ game.visitingTeamScore }}
         </div>
         <div
-          class="col-sm-6"
           *ngIf="game.homeTeamScore != 0 && game.visitingTeamScore != 0"
+          class="col-sm-6 col-6 text-right"
         >
-          <div class="tex-left">Home: {{ game.homeTeamScore }}</div>
+          Home: {{ game.homeTeamScore }}
         </div>
       </div>
     </div>

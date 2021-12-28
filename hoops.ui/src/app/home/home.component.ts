@@ -75,13 +75,13 @@ export class HomeComponent implements OnInit {
             this.gameStore
               .select(fromGames.getCurrentDivision)
               .subscribe((division) => {
-                if (division === undefined || division.seasonId === 0) {
-                  console.log('about to dispatch');
-                  this.gameStore.dispatch(
-                    new gameActions.SetCurrentDivision(divisions[0])
-                  );
-                  // this.gameStore.dispatch(new gameActions.LoadFilteredTeams());
-                }
+                // if (division === undefined || division.seasonId === 0) {
+                //   console.log('about to dispatch');
+                //   this.gameStore.dispatch(
+                //     new gameActions.SetCurrentDivision(divisions[0])
+                //   );
+                //   // this.gameStore.dispatch(new gameActions.LoadFilteredTeams());
+                // }
               });
           }
         });

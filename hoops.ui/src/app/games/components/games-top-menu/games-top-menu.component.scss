@@ -4,8 +4,8 @@
   background-color: $background-color;
 }
 
-.mat-form-field-infix {
-  width:100px;
+.mat-form-field {
+  width:120px;
 }
 
 .top-nav-toolbar {
@@ -16,6 +16,7 @@
   padding-top:4px;
   background-color: $background-color;
   color: $navbar-color;
+  font-size: $wrapper-font-size;
 }
 
 a {
@@ -25,7 +26,7 @@ a {
 }
 
 button {
-  font-size: $table-font-size;
+  font-size: $button-font-size;
   font-variant-caps: small-caps;
   font-weight: 500;
   background-color: $card-background-color;
@@ -36,7 +37,6 @@ button {
 }
 
 .games-button {
-
   color: $navbar-color;
 }
 .fill-space {
@@ -50,6 +50,7 @@ h2 {
   font-weight: 700;
   text-align: center;
   border-radius: 10px;
+  margin-left: 20px;
 }
 
 

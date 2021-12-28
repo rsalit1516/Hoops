@@ -15,5 +15,6 @@
 h2 {
   background-color: $card-background-color;
   color: $brand-color;
-  font-size: 1.4em;
+  font-size: $heading-font-size;
+  padding-left: 8px;
 }
