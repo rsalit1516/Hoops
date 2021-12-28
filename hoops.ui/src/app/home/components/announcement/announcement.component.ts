@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { WebContent } from '@app/domain/webContent';
 import { Content } from 'app/domain/content';
 
 @Component({
@@ -7,7 +8,7 @@ import { Content } from 'app/domain/content';
   styleUrls: ['../../home.component.scss'],
 })
 export class AnnouncementComponent implements OnInit {
-  @Input() info!: Content;
+  @Input() info!: WebContent;
   constructor() {}
 
   ngOnInit(): void {}

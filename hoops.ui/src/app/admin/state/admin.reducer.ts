@@ -15,7 +15,7 @@ export interface AdminState {
 }
 
 const initialState: AdminState = {
-  currentSeason: new Season( 0 ),
+  currentSeason: new Season(),
   currentSeasonId: 2193,
   currentDivisionId: undefined,
   currentTeamId: null,

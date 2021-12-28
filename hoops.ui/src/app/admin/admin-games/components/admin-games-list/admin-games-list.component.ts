@@ -11,8 +11,8 @@ import * as gameActions from 'app/games/state/games.actions';
   templateUrl: './admin-games-list.component.html',
   styleUrls: [
     './admin-games-list.component.scss',
-    '../../../admin.component.scss'
-  ]
+    '../../../admin.component.scss',
+  ],
 })
 export class AdminGamesListComponent implements OnInit {
   dataSource!: MatTableDataSource<Game>;
@@ -21,14 +21,14 @@ export class AdminGamesListComponent implements OnInit {
   flexMediaWatcher: any;
   currentScreenWidth: any;
   title = 'Game List - work in progress';
-canEdit: boolean = false;
+  canEdit: boolean = false;
 
   constructor(
     private store: Store<fromGames.State>,
     public dialog: MatDialog,
     private media: MediaObserver
   ) {
-    this.flexMediaWatcher = media.media$.subscribe(change => {
+    this.flexMediaWatcher = media.media$.subscribe((change) => {
       if (change.mqAlias !== this.currentScreenWidth) {
         this.currentScreenWidth = change.mqAlias;
         this.setupTable();
@@ -41,7 +41,7 @@ canEdit: boolean = false;
       'homeTeamName',
       'visitingTeamName',
       'homeTeamScore',
-      'visitingTeamScore'
+      'visitingTeamScore',
     ];
     console.log(this.games);
     this.dataSource = new MatTableDataSource(this.games);
@@ -49,7 +49,7 @@ canEdit: boolean = false;
 
   ngOnInit(): void {
     this.setupTable();
-    this.store.select(fromGames.getCurrentSeason).subscribe(season => {
+    this.store.select(fromGames.getCurrentSeason).subscribe((season) => {
       this.store.dispatch(new gameActions.Load());
     });
   }
@@ -61,7 +61,7 @@ canEdit: boolean = false;
       'homeTeamName',
       'visitingTeamName',
       'homeTeamScore',
-      'visitingTeamScore'
+      'visitingTeamScore',
     ];
     if (this.currentScreenWidth === 'xs') {
       // only display internalId on larger screens
@@ -71,10 +71,12 @@ canEdit: boolean = false;
         'gameTime',
         'locationName',
         'homeTeamName',
-        'visitingTeamName'
+        'visitingTeamName',
       ];
     }
     this.dataSource = new MatTableDataSource(this.games);
-
+  }
+  editGame(game: Game) {
+    // TODO: implement this method
   }
 }

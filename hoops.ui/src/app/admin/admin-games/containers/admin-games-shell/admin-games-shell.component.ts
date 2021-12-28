@@ -43,7 +43,8 @@ export class AdminGamesShellComponent implements OnInit {
     console.log(season);
     this.store.dispatch(new gameActions.SetCurrentSeason(season));
   }
-  clickedDivision(division: Division) {
+  clickedDivision(division: MouseEvent) {
+    // TODO: need to change the parameter
     console.log(division);
   }
 }

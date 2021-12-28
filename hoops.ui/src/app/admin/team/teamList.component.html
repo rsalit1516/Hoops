@@ -13,9 +13,9 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let team of teams" (click)="onSelect(team)">
-                                <td>{{team.id}}</td>
+                                <td>{{team.teamId}}</td>
                                 <td>{{team.name}}</td>
-                                <td>{{team.color}}</td>
+                                <td>{{team.teamColorId}}</td>
                             </tr>
                         </tbody>
                     </table>

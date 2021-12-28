@@ -15,11 +15,11 @@ import { Team } from '@app/domain/team';
   styleUrls: ['./admin-dashboard.component.scss']
 })
 export class AdminDashboardComponent implements OnInit {
-  currentSeason: void | Season;
-  divisions: Division[];
-  divisionCount: number;
-  teams: Team[];
-  teamCount: number;
+  currentSeason!: Season;
+  divisions!: Division[];
+  divisionCount!: number;
+  teams!: Team[];
+  teamCount!: number;
   constructor(private store: Store<fromGames.State>, private teamService: TeamService) {}
 
   ngOnInit() {
@@ -34,7 +34,7 @@ export class AdminDashboardComponent implements OnInit {
     this.store
       .select(fromGames.getCurrentSeason)
       .subscribe(season => {
-        (this.currentSeason = season);
+        (this.currentSeason = season as Season);
         this.store.dispatch(new gameActions.LoadDivisions());
       }
         );

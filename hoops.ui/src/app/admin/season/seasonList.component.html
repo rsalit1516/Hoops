@@ -13,8 +13,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let season of seasons | async" (click)="onSelect(season)">
-                                 <td>{{season.seasonID}}</td>
+                            <tr *ngFor="let season of seasons" (click)="onSelect(season)">
+                                 <td>{{season.seasonId}}</td>
                                 <td>{{season.description}}</td>
                                 <td>{{season.fromDate | date:'MM/dd/yyyy'}}</td>
                                 <td>{{season.toDate | date:'MM/dd/yyyy'}}</td>
@@ -57,4 +57,3 @@
       </div>
     </div>
   </form>
-  

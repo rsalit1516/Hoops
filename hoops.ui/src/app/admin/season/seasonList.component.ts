@@ -22,7 +22,7 @@ export class SeasonListComponent implements OnInit {
 
     ngOnInit() {
         this._seasonService.seasons$.subscribe(seasons => {
-                this.seasons = seasons;
+                this.seasons = seasons as Season[];
                 this.dataSource = new MatTableDataSource(this.seasons);
             });
                 // error => this.errorMessage = <any>error);

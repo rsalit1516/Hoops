@@ -12,10 +12,10 @@ import { Observable } from 'rxjs';
 })
 export class CsbcSeasonSelectComponent implements OnInit {
   @Input() seasons$: Observable<Season[]> | undefined;
-  @Input() selectedSeason: Season = new Season(0);
+  @Input() selectedSeason: Season = new Season();
   @Output() setSeason = new EventEmitter<Season>(); // : Season;
-  
-  season: Season = new Season(0);
+
+  season: Season = new Season();
   constructor(private _seasonService: SeasonService) {}
 
   ngOnInit() {

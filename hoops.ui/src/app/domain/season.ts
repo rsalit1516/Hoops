@@ -9,12 +9,10 @@ export class Season  {
     public sponsorDiscount?: number;
     public onlineStarts?: Date;
     public onlineStops?: Date;
-    public currentSeason = false;
-    public currentSchedule = false;
-    public gameSchedules = false;
-    public onlineRegistration = false;
-    constructor(_seasonId: number) {
-        this.seasonId = _seasonId;
-     }
+    public currentSeason!: boolean;
+    public currentSchedule!: boolean;
+    public gameSchedules!: boolean;
+    public onlineRegistration!: boolean;
+    constructor() {}
 }
 
