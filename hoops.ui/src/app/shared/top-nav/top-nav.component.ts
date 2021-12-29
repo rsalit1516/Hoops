@@ -8,8 +8,8 @@ import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { User } from 'app/domain/user';
 import { environment } from '../../../environments/environment';
-import { ActivatedRoute, Router } from '@angular/router';
-
+import { Router } from '@angular/router';
+import { Constants } from '../constants';
 @Component({
   selector: 'csbc-top-nav',
   templateUrl: './top-nav.component.html',
@@ -25,14 +25,16 @@ export class TopNavComponent implements OnInit {
     opened: false;
   };
   env: any;
+  constants: typeof Constants;
 
   constructor(public dialog: MatDialog, private store: Store<fromUser.State>, private route: Router) {
-    this.route.events.subscribe(route => console.log(route));
+    // this.route.events.subscribe(route => console.log(route));
+    this.constants = Constants;
   }
 
   ngOnInit() {
     this.env = environment.environment;
-    console.log(this.env);
+    // console.log(this.env);
     this.store.pipe(select(fromUser.getCurrentUser)).subscribe((user) => {
       // console.log(user);
       if (user !== null && user.userId !== 0) {

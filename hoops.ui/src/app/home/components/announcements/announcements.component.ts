@@ -34,8 +34,6 @@ export class CsbcAnnouncementsComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.getWebContent();
-    this.content$.subscribe(x => console.log(x));
   }
 
   sortByContentSequence(a: { contentSequence: number; },b: { contentSequence: number; }) {
