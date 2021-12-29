@@ -1,7 +1,11 @@
-@import '../../../content/_variables';
+@import '../../../Content/_variables';
 
 .mat-dialog-container {
     background-color: $card-background-color;
+}
+.mat-form-field {
+  background-color: whitesmoke;
+  color: black;
 }
 
 h1 {font-size:1.2rem;}

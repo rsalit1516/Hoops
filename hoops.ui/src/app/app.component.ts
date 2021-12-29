@@ -1,4 +1,5 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -8,9 +9,13 @@ import { Component, Output, EventEmitter } from '@angular/core';
     './app.component.scss'
   ]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   @Output() public sidenavToggle = new EventEmitter();
-  constructor() {}
+
+  constructor(private router: Router) {}
+  ngOnInit() {
+      this.router.navigate([''])
+  }
   public onToggleSidenav = () => {
     this.sidenavToggle.emit();
   };

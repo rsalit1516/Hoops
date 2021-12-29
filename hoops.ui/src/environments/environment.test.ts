@@ -1,5 +1,5 @@
 export const environment = {
-  production: true,
+  production: false,
   apiUrl: 'https://csbchoopswebapi20210207173342.azurewebsites.net',
-  environment: 'production'
+  environment: 'test'
 };
