@@ -18,5 +18,7 @@
         "statusBarItem.remoteBackground": "#972453",
         "statusBarItem.remoteForeground": "#e7e7e7"
     },
-    "peacock.color": "#972453"
+    "peacock.color": "#972453",
+    "appService.defaultWebAppToDeploy": "/subscriptions/8e346d0a-6768-4719-b95e-b058700d71ab/resourceGroups/Default-Web-EastUS/providers/Microsoft.Web/sites/csbc-api",
+    "appService.deploySubpath": "Hoops.Api/publish"
 }
