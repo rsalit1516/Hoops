@@ -3,6 +3,7 @@ export class Constants {
   public static ALLTEAMS = 'All Teams';
   public static DEFAULTURL = environment.apiUrl;
 
+  /* literals */
   public static GAMESMENU = 'Games';
   public static PHOTOMENU = 'Photos';
   public static CONTACTSMENU = 'Contacts';
