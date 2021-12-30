@@ -20,10 +20,14 @@
     </mat-form-field>
 
     <mat-button-toggle-group name="gameView" aria-label="Schedule View">
-      <mat-button-toggle mat-icon-button routerLink="list" value="list" matTooltip = "Show in grid view">
+      <mat-button-toggle mat-icon-button routerLink="list" value="list"
+      matTooltip = "Show in grid view"
+      [matTooltipClass]="'tooltip'">
         <mat-icon>list</mat-icon>
       </mat-button-toggle>
-      <mat-button-toggle mat-icon-button routerLink="card" value="card" matTooltip = "Show in card view">
+      <mat-button-toggle mat-icon-button routerLink="card" value="card"
+      matTooltip = "Show in card view"
+      [matTooltipClass]="'tooltip'">
         <mat-icon>apps</mat-icon>
       </mat-button-toggle>
     </mat-button-toggle-group>

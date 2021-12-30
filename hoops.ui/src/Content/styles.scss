@@ -454,7 +454,7 @@ a {
   .mat-body, .mat-typography {
     font-size:12px;
   }
-  
+
   .sidebar-filler {
     width: 200px;
   }
@@ -587,4 +587,7 @@ a {
   }
 }
 
+.mat-tooltip.tooltip {
+  font-size: 1em !important;
+}
 /*#endregion */
