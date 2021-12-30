@@ -1,0 +1,20 @@
+@import "../../../../content/_variables";
+
+.panel-primary .panel-body{
+    background-color: gray;
+    border-color: gray;
+    box-shadow: 2px gray;
+    color: white;
+    border-radius: 10px;
+}
+
+.gameTime {
+    color: white;
+}
+
+h2 {
+  background-color: $card-background-color;
+  color: $brand-color;
+  font-size: $heading-font-size;
+  padding-left: 8px;
+}

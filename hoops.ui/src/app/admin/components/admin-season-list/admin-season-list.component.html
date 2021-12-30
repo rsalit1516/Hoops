@@ -1,0 +1,40 @@
+<div fxLayout="row" fxLayoutAlign="start" fxLayoutGap="10px">
+  <div fxFlex="100">
+    <div id="panelContent">
+      <div class="table-wrapper">
+        <table
+          mat-table
+          id="grdSchedule"
+          [dataSource]="dataSource"
+        >
+          <ng-container matColumnDef="seasonId">
+            <th mat-header-cell *matHeaderCellDef>ID</th>
+            <td mat-cell *matCellDef="let season">
+              {{ season.seasonId }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef>Description</th>
+            <td mat-cell *matCellDef="let season">
+              {{ season.description }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="fromDate">
+            <th mat-header-cell *matHeaderCellDef>From Date</th>
+            <td mat-cell *matCellDef="let season">
+              {{ season.fromDate | date: 'shortDate' }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="toDate">
+            <th mat-header-cell *matHeaderCellDef>To Date</th>
+            <td mat-cell *matCellDef="let season">
+              {{ season.toDate | date: 'shortDate' }}
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayColumns"></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

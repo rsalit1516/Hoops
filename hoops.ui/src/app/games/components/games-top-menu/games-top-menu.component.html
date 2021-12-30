@@ -1,0 +1,29 @@
+<div class="top-menu-wrapper">
+  <div class="row mt-4">
+    <h2 class="col-sm-3 col-10 offset-1">{{ seasonDescription }}</h2>
+  </div>
+  <div class="row mt-2">
+    <div class="col-sm-4 col-12">
+      <mat-toolbar>
+        <div>
+          <button mat-button class="games-button" routerLink="/games/schedule">
+            Schedule
+          </button>
+          <button mat-button class="games-button" routerLink="/games/standings">
+            Standings
+          </button>
+        </div>
+      </mat-toolbar>
+    </div>
+    <div class="col-sm-2 col-0"></div>
+    <div class="col-sm-6 col-12">
+      <mat-toolbar>
+        <csbc-game-filter
+          [divisions]="divisions"
+          [teams]="teams"
+          class=""
+        ></csbc-game-filter>
+      </mat-toolbar>
+    </div>
+  </div>
+</div>

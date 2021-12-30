@@ -1,0 +1,24 @@
+@import "../../../../content/_variables";
+
+.panel-primary .panel-body {
+  background-color: gray;
+  border-color: gray;
+  box-shadow: 2px gray;
+  color: white;
+}
+
+.gameTime {
+  color: white;
+}
+.data {
+  font-weight: 700;
+  color: $brand-color;
+}
+.card-body {
+  color: $brand-color;
+}
+.card {
+  background-color: $card-background-color;
+  border-radius: 5%;
+  border-color: darken($card-background-color, 10);
+}

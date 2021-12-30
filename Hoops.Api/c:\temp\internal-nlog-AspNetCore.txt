@@ -753,6 +753,146 @@
 2021-12-12 14:03:12.8149 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'lifetimeConsole' not found for logging rule: Microsoft.Hosting.Lifetime.
 2021-12-12 14:03:13.0080 Info Validating config: TargetNames=Console, ownFile-web, ConfigItems=71, FilePath=/Users/richardsalit/source/repos-github/Hoops/Hoops.Api/bin/Debug/net6.0/nlog.config
 2021-12-12 14:03:13.0194 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: allfile
+
+2021-12-12 14:07:30.2630 Info Message Template Auto Format enabled
+2021-12-12 14:07:30.3066 Info Loading assembly: NLog.Web.AspNetCore
+2021-12-12 14:07:30.3905 Info Adding target FileTarget(Name=allfile)
+2021-12-12 14:07:30.3998 Info Adding target FileTarget(Name=ownFile-web)
+2021-12-12 14:07:30.4032 Info Adding target ConsoleTarget(Name=Console)
+2021-12-12 14:07:30.4165 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'lifetimeConsole' not found for logging rule: Microsoft.Hosting.Lifetime.
+2021-12-12 14:07:30.6139 Info Validating config: TargetNames=Console, ownFile-web, ConfigItems=71, FilePath=/Users/richardsalit/source/repos-github/Hoops/Hoops.Api/bin/Debug/net6.0/nlog.config
+2021-12-12 14:07:30.6241 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: allfile
+2021-12-12 14:07:37.7575 Info Message Template Auto Format enabled
+2021-12-12 14:07:37.7940 Info Loading assembly: NLog.Web.AspNetCore
+2021-12-12 14:07:37.8523 Info Adding target FileTarget(Name=allfile)
+2021-12-12 14:07:37.8555 Info Adding target FileTarget(Name=ownFile-web)
+2021-12-12 14:07:37.8583 Info Adding target ConsoleTarget(Name=Console)
+2021-12-12 14:07:37.8713 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'lifetimeConsole' not found for logging rule: Microsoft.Hosting.Lifetime.
+2021-12-12 14:07:38.1033 Info Validating config: TargetNames=Console, ownFile-web, ConfigItems=71, FilePath=/Users/richardsalit/source/repos-github/Hoops/Hoops.Api/bin/Debug/net6.0/nlog.config
+2021-12-12 14:07:38.1146 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: allfile
+2021-12-12 14:11:22.1146 Info Message Template Auto Format enabled
+2021-12-12 14:11:22.1433 Info Loading assembly: NLog.Web.AspNetCore
+2021-12-12 14:11:22.1968 Info Adding target FileTarget(Name=allfile)
+2021-12-12 14:11:22.1999 Info Adding target FileTarget(Name=ownFile-web)
+2021-12-12 14:11:22.2031 Info Adding target ConsoleTarget(Name=Console)
+2021-12-12 14:11:22.2161 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'lifetimeConsole' not found for logging rule: Microsoft.Hosting.Lifetime.
+2021-12-12 14:11:22.4606 Info Validating config: TargetNames=Console, ownFile-web, ConfigItems=71, FilePath=/Users/richardsalit/source/repos-github/Hoops/Hoops.Api/bin/Debug/net6.0/nlog.config
+2021-12-12 14:11:22.4702 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: allfile
+2021-12-18 08:19:29.6630 Info Message Template Auto Format enabled
+2021-12-18 08:19:29.6851 Info Loading assembly: NLog.Web.AspNetCore
+2021-12-18 08:19:29.7284 Info Adding target FileTarget(Name=allfile)
+2021-12-18 08:19:29.7348 Info Adding target FileTarget(Name=ownFile-web)
+2021-12-18 08:19:29.7369 Info Adding target ConsoleTarget(Name=Console)
+2021-12-18 08:19:29.7460 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'lifetimeConsole' not found for logging rule: Microsoft.Hosting.Lifetime.
+2021-12-18 08:19:29.8179 Info Validating config: TargetNames=Console, ownFile-web, ConfigItems=71, FilePath=/Users/richardsalit/source/repos-github/Hoops/Hoops.Api/bin/Debug/net6.0/nlog.config
+2021-12-18 08:19:29.8243 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: allfile
+2021-12-18 11:41:06.4656 Info Message Template Auto Format enabled
+2021-12-18 11:41:06.4913 Info Loading assembly: NLog.Web.AspNetCore
+2021-12-18 11:41:06.5365 Info Adding target FileTarget(Name=allfile)
+2021-12-18 11:41:06.5429 Info Adding target FileTarget(Name=ownFile-web)
+2021-12-18 11:41:06.5440 Info Adding target ConsoleTarget(Name=Console)
+2021-12-18 11:41:06.5540 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'lifetimeConsole' not found for logging rule: Microsoft.Hosting.Lifetime.
+2021-12-18 11:41:07.5369 Info Validating config: TargetNames=Console, ownFile-web, ConfigItems=71, FilePath=/Users/richardsalit/source/repos-github/Hoops/Hoops.Api/bin/Debug/net6.0/nlog.config
+2021-12-18 11:41:07.5449 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: allfile
+2021-12-18 15:32:17.0565 Info Message Template Auto Format enabled
+2021-12-18 15:32:17.0860 Info Loading assembly: NLog.Web.AspNetCore
+2021-12-18 15:32:17.1357 Info Adding target FileTarget(Name=allfile)
+2021-12-18 15:32:17.1423 Info Adding target FileTarget(Name=ownFile-web)
+2021-12-18 15:32:17.1451 Info Adding target ConsoleTarget(Name=Console)
+2021-12-18 15:32:17.1543 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'lifetimeConsole' not found for logging rule: Microsoft.Hosting.Lifetime.
+2021-12-18 15:32:17.1998 Info Validating config: TargetNames=Console, ownFile-web, ConfigItems=71, FilePath=/Users/richardsalit/source/repos-github/Hoops/Hoops.Api/bin/Debug/net6.0/nlog.config
+2021-12-18 15:32:17.2071 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: allfile
+2021-12-19 14:11:10.3833 Info Message Template Auto Format enabled
+2021-12-19 14:11:10.4197 Info Loading assembly: NLog.Web.AspNetCore
+2021-12-19 14:11:10.4722 Info Adding target FileTarget(Name=allfile)
+2021-12-19 14:11:10.4820 Info Adding target FileTarget(Name=ownFile-web)
+2021-12-19 14:11:10.4843 Info Adding target ConsoleTarget(Name=Console)
+2021-12-19 14:11:10.4972 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'lifetimeConsole' not found for logging rule: Microsoft.Hosting.Lifetime.
+2021-12-19 14:11:10.6687 Info Validating config: TargetNames=Console, ownFile-web, ConfigItems=71, FilePath=/Users/richardsalit/source/repos-github/Hoops/Hoops.Api/bin/Debug/net6.0/nlog.config
+2021-12-19 14:11:10.6766 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: allfile
+2021-12-21 17:32:30.0246 Info Message Template Auto Format enabled
+2021-12-21 17:32:30.0641 Info Loading assembly: NLog.Web.AspNetCore
+2021-12-21 17:32:30.1263 Info Adding target FileTarget(Name=allfile)
+2021-12-21 17:32:30.1544 Info Adding target FileTarget(Name=ownFile-web)
+2021-12-21 17:32:30.1632 Info Adding target ConsoleTarget(Name=Console)
+2021-12-21 17:32:30.2053 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'lifetimeConsole' not found for logging rule: Microsoft.Hosting.Lifetime.
+2021-12-21 17:32:30.3535 Info Validating config: TargetNames=Console, ownFile-web, ConfigItems=71, FilePath=/Users/richardsalit/source/repos-github/Hoops/Hoops.Api/bin/Debug/net6.0/nlog.config
+2021-12-21 17:32:30.3638 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: allfile
+2021-12-26 09:38:04.4455 Info Shutdown() called. Logger closing...
+2021-12-26 09:38:04.4515 Info Closing old configuration.
+2021-12-26 09:38:04.5009 Info Logger has been closed down.
+2021-12-26 09:38:05.7701 Info AppDomain Shutting down. Logger closing...
+2021-12-26 09:38:05.7721 Info Logger has been shut down.
+2021-12-26 09:38:19.7301 Info Message Template Auto Format enabled
+2021-12-26 09:38:19.7597 Info Loading assembly: NLog.Web.AspNetCore
+2021-12-26 09:38:19.8130 Info Adding target FileTarget(Name=allfile)
+2021-12-26 09:38:19.8162 Info Adding target FileTarget(Name=ownFile-web)
+2021-12-26 09:38:19.8184 Info Adding target ConsoleTarget(Name=Console)
+2021-12-26 09:38:19.8293 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'lifetimeConsole' not found for logging rule: Microsoft.Hosting.Lifetime.
+2021-12-26 09:38:20.0395 Info Validating config: TargetNames=Console, ownFile-web, ConfigItems=71, FilePath=/Users/richardsalit/source/repos-github/Hoops/Hoops.Api/bin/Debug/net6.0/nlog.config
+2021-12-26 09:38:20.0489 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: allfile
+2021-12-28 15:00:46.6581 Info Message Template Auto Format enabled
+2021-12-28 15:00:46.6893 Info Loading assembly: NLog.Web.AspNetCore
+2021-12-28 15:00:46.7612 Info Adding target FileTarget(Name=allfile)
+2021-12-28 15:00:46.7647 Info Adding target FileTarget(Name=ownFile-web)
+2021-12-28 15:00:46.7683 Info Adding target ConsoleTarget(Name=Console)
+2021-12-28 15:00:46.7816 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'lifetimeConsole' not found for logging rule: Microsoft.Hosting.Lifetime.
+2021-12-28 15:00:46.9291 Info Validating config: TargetNames=Console, ownFile-web, ConfigItems=71, FilePath=/Users/richardsalit/source/repos-github/Hoops/Hoops.Api/bin/Debug/net6.0/nlog.config
+2021-12-28 15:00:46.9382 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: allfile
+2021-12-28 15:01:49.2174 Info AppDomain Shutting down. Logger closing...
+2021-12-28 15:01:49.2198 Info Logger has been shut down.
+2021-12-28 15:05:35.9515 Info Message Template Auto Format enabled
+2021-12-28 15:05:35.9815 Info Loading assembly: NLog.Web.AspNetCore
+2021-12-28 15:05:36.0325 Info Adding target FileTarget(Name=allfile)
+2021-12-28 15:05:36.0396 Info Adding target FileTarget(Name=ownFile-web)
+2021-12-28 15:05:36.0439 Info Adding target ConsoleTarget(Name=Console)
+2021-12-28 15:05:36.0561 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'lifetimeConsole' not found for logging rule: Microsoft.Hosting.Lifetime.
+2021-12-28 15:05:36.1065 Info Validating config: TargetNames=Console, ownFile-web, ConfigItems=71, FilePath=/Users/richardsalit/source/repos-github/Hoops/Hoops.Api/bin/Debug/net6.0/nlog.config
+2021-12-28 15:05:36.1162 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: allfile
+2021-12-28 15:19:15.1952 Info Message Template Auto Format enabled
+2021-12-28 15:19:15.2294 Info Loading assembly: NLog.Web.AspNetCore
+2021-12-28 15:19:15.2937 Info Adding target FileTarget(Name=allfile)
+2021-12-28 15:19:15.2965 Info Adding target FileTarget(Name=ownFile-web)
+2021-12-28 15:19:15.3002 Info Adding target ConsoleTarget(Name=Console)
+2021-12-28 15:19:15.3189 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'lifetimeConsole' not found for logging rule: Microsoft.Hosting.Lifetime.
+2021-12-28 15:19:15.4044 Info Validating config: TargetNames=Console, ownFile-web, ConfigItems=71, FilePath=/Users/richardsalit/source/repos-github/Hoops/Hoops.Api/bin/Debug/net6.0/nlog.config
+2021-12-28 15:19:15.4157 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: allfile
+2021-12-28 15:19:20.4346 Info Message Template Auto Format enabled
+2021-12-28 15:19:20.4664 Info Loading assembly: NLog.Web.AspNetCore
+2021-12-28 15:19:20.5154 Info Adding target FileTarget(Name=allfile)
+2021-12-28 15:19:20.5176 Info Adding target FileTarget(Name=ownFile-web)
+2021-12-28 15:19:20.5204 Info Adding target ConsoleTarget(Name=Console)
+2021-12-28 15:19:20.5348 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'lifetimeConsole' not found for logging rule: Microsoft.Hosting.Lifetime.
+2021-12-28 15:19:20.5919 Info Validating config: TargetNames=Console, ownFile-web, ConfigItems=71, FilePath=/Users/richardsalit/source/repos-github/Hoops/Hoops.Api/bin/Debug/net6.0/nlog.config
+2021-12-28 15:19:20.6003 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: allfile
+2021-12-28 16:05:19.4628 Info Message Template Auto Format enabled
+2021-12-28 16:05:19.5011 Info Loading assembly: NLog.Web.AspNetCore
+2021-12-28 16:05:19.5546 Info Adding target FileTarget(Name=allfile)
+2021-12-28 16:05:19.5572 Info Adding target FileTarget(Name=ownFile-web)
+2021-12-28 16:05:19.5601 Info Adding target ConsoleTarget(Name=Console)
+2021-12-28 16:05:19.5731 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'lifetimeConsole' not found for logging rule: Microsoft.Hosting.Lifetime.
+2021-12-28 16:05:19.6592 Info Validating config: TargetNames=Console, ownFile-web, ConfigItems=71, FilePath=/Users/richardsalit/source/repos-github/Hoops/Hoops.Api/bin/Debug/net6.0/nlog.config
+2021-12-28 16:05:19.6670 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: allfile
+2021-12-29 09:20:29.7128 Info Shutdown() called. Logger closing...
+2021-12-29 09:20:29.7142 Info Closing old configuration.
+2021-12-29 09:20:29.7257 Info Logger has been closed down.
+2021-12-29 09:23:55.9967 Info Message Template Auto Format enabled
+2021-12-29 09:23:56.0264 Info Loading assembly: NLog.Web.AspNetCore
+2021-12-29 09:23:56.0693 Info Adding target FileTarget(Name=allfile)
+2021-12-29 09:23:56.0785 Info Adding target FileTarget(Name=ownFile-web)
+2021-12-29 09:23:56.0805 Info Adding target ConsoleTarget(Name=Console)
+2021-12-29 09:23:56.0888 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'lifetimeConsole' not found for logging rule: Microsoft.Hosting.Lifetime.
+2021-12-29 09:23:56.1667 Info Validating config: TargetNames=Console, ownFile-web, ConfigItems=71, FilePath=/Users/richardsalit/source/repos-github/Hoops/Hoops.Api/bin/Debug/net6.0/nlog.config
+2021-12-29 09:23:56.1727 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: allfile
+2021-12-29 09:24:32.8451 Info Message Template Auto Format enabled
+2021-12-29 09:24:32.8679 Info Loading assembly: NLog.Web.AspNetCore
+2021-12-29 09:24:32.9056 Info Adding target FileTarget(Name=allfile)
+2021-12-29 09:24:32.9074 Info Adding target FileTarget(Name=ownFile-web)
+2021-12-29 09:24:32.9097 Info Adding target ConsoleTarget(Name=Console)
+2021-12-29 09:24:32.9188 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'lifetimeConsole' not found for logging rule: Microsoft.Hosting.Lifetime.
+2021-12-29 09:24:32.9895 Info Validating config: TargetNames=Console, ownFile-web, ConfigItems=71, FilePath=/Users/richardsalit/source/repos-github/Hoops/Hoops.Api/bin/Debug/net6.0/nlog.config
+2021-12-29 09:24:32.9955 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: allfile
+
 2021-12-12 18:10:33.2570 Info Message Template Auto Format enabled
 2021-12-12 18:10:33.2825 Info Loading assembly: NLog.Web.AspNetCore
 2021-12-12 18:10:33.3248 Info Adding target FileTarget(Name=allfile)

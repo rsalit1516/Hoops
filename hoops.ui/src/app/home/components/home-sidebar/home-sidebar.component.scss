@@ -1,0 +1,22 @@
+@import '../../../../content/_variables';
+
+.sidebar-widget form {
+    margin: 0em -1em;
+}
+
+.sidebar {
+   /// background-color: $sidebar-background-color;
+    min-height: 500px;
+    border-radius: 5px 5px;
+    margin-top: -2px;
+}
+
+ul {
+    list-style: none;
+}
+
+.panel-title, .card-title {
+    font-size: 1.2em;
+    text-align: center;
+    background-color: #424242;
+}

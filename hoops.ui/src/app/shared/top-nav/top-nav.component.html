@@ -1,0 +1,29 @@
+<!-- <div style="height: 100vh;" class="wrapper"> -->
+
+<mat-toolbar class="top-nav-toolbar" color="default" fxShow="true">
+  <a routerLink="/home" class="brand">Coral Springs Basketball Club</a>
+  <div class="menu-spacer"></div>
+  <div fxHide.gt-xs>
+    <button mat-button (click)="onToggleSidenav()" class="menu-button">
+      <mat-icon>menu</mat-icon>
+    </button>
+  </div>
+  <div fxFlex fxLayout fxHide.xs>
+    <a routerLink="/home" mat-button>Home</a>
+    <a routerLink="/games" mat-button>{{constants.GAMESMENU}}</a>
+    <a routerLink="/photos" mat-button>{{constants.PHOTOMENU}}</a>
+    <a routerLink="/contacts" mat-button>{{constants.CONTACTSMENU}}</a>
+    <a routerLink="/clubDocs" mat-button>{{constants.CLUBDOCSMENU}}</a>
+    <a *ngIf="showAdminMenu" routerLink="/admin" mat-button>{{constants.ADMINMENU}}</a>
+    <!-- <a *ngIf="showAdminMenu" routerLink="/dashboard" mat-button>Dashboard</a> -->
+    <span class="fill-space"></span>
+  </div>
+  <div fxFlex fxLayout fxLayoutAlign="end">
+    <button mat-raised-button *ngIf="!currentUser" (click)="openDialog()"
+    matTooltip="Login for division directors"
+    matTooltipClass="tooltip">
+      Login
+    </button>
+    <p readonly *ngIf="currentUser">Hello {{ userName }}</p>
+  </div>
+</mat-toolbar>

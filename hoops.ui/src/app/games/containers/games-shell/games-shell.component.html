@@ -1,0 +1,8 @@
+<csbc-games-top-menu
+  [divisions]="divisions"
+  [teams]="filteredTeams"
+  (selectedDivision)="divisionSelected($event)"
+></csbc-games-top-menu>
+<div class="games-wrapper">
+    <router-outlet></router-outlet>
+</div>

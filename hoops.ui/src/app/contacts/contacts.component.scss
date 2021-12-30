@@ -1,0 +1,35 @@
+@import '../../content/_variables';
+
+
+.row {
+    margin: auto;
+    width: 90%;
+}
+
+td{
+  color: $brand-color;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  font-size: 1.1em;
+}
+
+.panel-title {
+  color: $brand-color;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  font-size: 1.4em;;
+}
+
+.panel-heading{
+  margin-top: 20px;
+  margin-bottom: 16px;
+}
+.panel {
+  background-color: $app-bar-background;
+  border-radius: 5px;
+  border-color: darken($app-bar-background, 5%);
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-bottom: 8px;
+  padding-top: 4px;
+}
