@@ -1,0 +1,29 @@
+<form class="form-horizontal" novalidate (ngSubmit)="save()" [formGroup]="seasonForm">
+    <fieldset>
+        <div class=form-group [ngClass]="{'has-error': (seasonForm.get('name').touched || seasonForm.get('name').dirty) && !seasonForm.get('name').valid }">
+            <label class="col-md-2 control-label" for="name">Season</label>
+            <input id="name" class="form-control" type="text" placeholder="Season Name" formControlName="name"
+            />
+        </div>
+        <div class=form-group [ngClass]="{'has-error': (seasonForm.get('startDate').touched || seasonForm.get('startDate').dirty) && !seasonForm.get('startDate').valid }">
+            <label class="col-md-2 control-label" for="seasonForm.get('startDate')">Start Date</label>
+            <input id="seasonForm.get('startDate')" class="form-control" required type="text" placeholder="Start Date" formControlName="startDate"
+            />
+        </div>
+        <div class=form-group [ngClass]="{'has-error': (seasonForm.get('endDate').touched || seasonForm.get('endDate').dirty) && !seasonForm.get('startDate').valid }">
+            <label class="col-md-2 control-label" for="seasonForm.get('endDate')">End Date</label>
+            <input id="seasonForm.get('endDate')" class="form-control" required type="text" placeholder="End Date" formControlName="endDate"
+            />
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-1 col-md-8 checkbox">
+                <label>
+                            <input id="currentSeason"
+                                   type="checkbox"
+                                   formControlName="currentSeason" >
+                            Current Season
+                        </label>
+            </div>
+        </div>
+    </fieldset>
+</form>

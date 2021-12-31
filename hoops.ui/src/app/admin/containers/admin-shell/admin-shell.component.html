@@ -1,0 +1,36 @@
+<!-- <div class="container"> -->
+  <div class="flex-container" fxLayout="row" fxLayoutGap="10px" style="margin-top:20px;">
+  <div fxFlex.gt-md="10" fxFlex.lt-md="25" style="margin-bottom:12px;">
+    <mat-sidenav-container class="admin-container">
+      <mat-sidenav-content>
+        <mat-nav-list dense>
+          <a mat-list-item routerLink="/admin/dashboard">Dashboard
+            <span class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span>
+          </a>
+          <mat-divider></mat-divider>
+          <a mat-list-item routerLink="/admin/director" routerLinkActive="active">Directors</a>
+          <a mat-list-item routerLink="/admin/households" routerLinkActive="active">Households</a>
+          <a mat-list-item routerLink="/admin/people" routerLinkActive="active">People</a>
+          <a mat-list-item routerLink="/admin/colors" routerLinkActive="active">Uniform Colors</a>
+          <a mat-list-item routerLink="/admin/users" routerLinkActive="active">Users</a>
+          <mat-divider></mat-divider>
+          <a mat-list-item routerLink="/admin/seasons" routerLinkActive="active">Seasons</a>
+           <a mat-list-item routerLink="/admin/division" >Divisions</a>
+           <a mat-list-item routerLink="/admin/games" >Games</a>
+           <a mat-list-item routerLink="/admin/season-setup" >Season Setup</a>
+          <!--<a mat-list-item routerLink="/admin/teams" routerLinkActive="active">Teams</a>
+          <a mat-list-item routerLink="/admin/games" routerLinkActive="active">Games</a> -->
+          <mat-divider></mat-divider>
+          <a mat-list-item routerLink="./content" routerLinkActive="active">Content</a>      
+          <!-- <a mat-list-item routerLink="./director" routerLinkActive="active">Directors</a> -->
+        </mat-nav-list>
+        <!-- <p><button mat-button (click)="sidenav.toggle()">sidenav.toggle()</button></p>
+    <p>Events:</p> -->
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+  </div>
+  <div fxFlex="75" >
+    <router-outlet></router-outlet>
+  </div>
+</div>
+<!-- </div> -->

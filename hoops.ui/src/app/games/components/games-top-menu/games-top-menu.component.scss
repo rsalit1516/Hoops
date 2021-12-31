@@ -1,0 +1,63 @@
+@import '../../../../Content/variables';
+
+.mat-sidenav-container {
+  background-color: $background-color;
+}
+
+.mat-form-field {
+  width:120px;
+}
+
+.top-nav-toolbar {
+  background-color: $card-background-color;
+}
+
+.mat-toolbar {
+  padding-top:4px;
+  background-color: $background-color;
+  color: $navbar-color;
+  font-size: $wrapper-font-size;
+}
+
+a {
+  font-size: 1.2em;
+  font-weight: 600;
+  color: $navbar-color;
+}
+
+button {
+  font-size: $button-font-size;
+  font-variant-caps: small-caps;
+  font-weight: 500;
+  background-color: $card-background-color;
+  padding-right: 8px;
+  padding-left: 8px;
+  margin-right: 12px;
+  color: $navbar-color;
+}
+
+.games-button {
+  color: $navbar-color;
+}
+.fill-space {
+  flex: 1 1 auto;
+}
+h2 {
+  color: $background-color;
+  background-color : $brand-color;
+  font-variant: small-caps;
+  font-size: $heading-font-size;
+  font-weight: 700;
+  text-align: center;
+  border-radius: 10px;
+  margin-left: 20px;
+}
+
+
+.top-menu-wrapper {
+  margin-bottom: 2vh;
+  padding-bottom: 2vh;
+  border-bottom: 2px solid $brand-color;
+  font-size: $wrapper-font-size;
+}
+

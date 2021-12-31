@@ -1,0 +1,14 @@
+<mat-sidenav-container>
+  <mat-sidenav #sidenav role="navigation" (click)="sidenav.close()">
+    <csbc-sidenav-list (sidenavClose)="sidenav.close()"></csbc-sidenav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content fxFlexFill>
+    <csbc-top-nav (sidenavToggle)="sidenav.toggle()"></csbc-top-nav>
+    <div class="container-fluid">
+      <!-- <div class="row"> -->
+        <router-outlet></router-outlet>
+      <!-- </div> -->
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
