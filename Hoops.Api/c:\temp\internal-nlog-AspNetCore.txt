@@ -753,6 +753,7 @@
 2021-12-12 14:03:12.8149 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'lifetimeConsole' not found for logging rule: Microsoft.Hosting.Lifetime.
 2021-12-12 14:03:13.0080 Info Validating config: TargetNames=Console, ownFile-web, ConfigItems=71, FilePath=/Users/richardsalit/source/repos-github/Hoops/Hoops.Api/bin/Debug/net6.0/nlog.config
 2021-12-12 14:03:13.0194 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: allfile
+
 2021-12-12 14:07:30.2630 Info Message Template Auto Format enabled
 2021-12-12 14:07:30.3066 Info Loading assembly: NLog.Web.AspNetCore
 2021-12-12 14:07:30.3905 Info Adding target FileTarget(Name=allfile)
@@ -987,3 +988,12 @@
 2021-12-30 17:22:32.9023 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'lifetimeConsole' not found for logging rule: Microsoft.Hosting.Lifetime.
 2021-12-30 17:22:33.1316 Info Validating config: TargetNames=Console, ownFile-web, ConfigItems=71, FilePath=/Users/richardsalit/source/repos-github/Hoops/Hoops.Api/bin/Debug/net6.0/nlog.config
 2021-12-30 17:22:33.1379 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: allfile
+2021-12-12 18:10:33.2570 Info Message Template Auto Format enabled
+2021-12-12 18:10:33.2825 Info Loading assembly: NLog.Web.AspNetCore
+2021-12-12 18:10:33.3248 Info Adding target FileTarget(Name=allfile)
+2021-12-12 18:10:33.3268 Info Adding target FileTarget(Name=ownFile-web)
+2021-12-12 18:10:33.3288 Info Adding target ConsoleTarget(Name=Console)
+2021-12-12 18:10:33.3380 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'lifetimeConsole' not found for logging rule: Microsoft.Hosting.Lifetime.
+2021-12-12 18:10:33.4844 Info Validating config: TargetNames=Console, ownFile-web, ConfigItems=71, FilePath=/Users/richardsalit/source/repos-github/Hoops/Hoops.Api/bin/Debug/net6.0/nlog.config
+2021-12-12 18:10:33.4909 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: allfile
+
