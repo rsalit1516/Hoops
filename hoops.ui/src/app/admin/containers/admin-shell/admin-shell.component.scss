@@ -19,8 +19,9 @@
 // .mat-sidenav-container {
   // width: 200px;
 // }
-.mat-list-item {
+a.mat-list-item {
   color: $font-color-text;
+  font-size: $button-font-size;
 }
 .container {
   margin-left: 0px;

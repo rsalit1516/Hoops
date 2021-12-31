@@ -78,7 +78,7 @@ namespace Hoops.Api
                                          builder =>
                                          {
                                              builder.WithOrigins("http://localhost:4200",
-                                                                 "http://www.contoso.com")
+                                                                 "http://localhost50364")
                                               .AllowAnyHeader()
                                         .AllowAnyMethod();
                                          });
