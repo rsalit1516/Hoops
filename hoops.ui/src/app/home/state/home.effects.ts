@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import * as homeActions from './home.actions';
 import * as fromHome from './';
 
@@ -34,8 +34,8 @@ export class HomeEffects {
     private store: Store<fromHome.State>
   ) {}
   // tslint:disable-next-line:member-ordering
-  @Effect()
-  loadContent$: Observable<Action> = this.actions$.pipe(
+  
+  loadContent$: Observable<Action> = createEffect(() => this.actions$.pipe(
     ofType(homeActions.HomeActionTypes.LoadContent),
     mergeMap(action =>
       this.http.get<WebContent[]>(this.dataService.getActiveWebContentUrl).pipe(
@@ -44,5 +44,5 @@ export class HomeEffects {
         catchError((err) => of(new homeActions.LoadContentFail(err)))
       )
     )
-  );
+  ));
 }

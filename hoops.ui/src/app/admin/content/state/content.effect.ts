@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import * as contentActions from './content.actions';
 import * as fromContent from './';
 import {
@@ -30,8 +30,8 @@ export class ContentEffects {
   ) {}
 
   // tslint:disable-next-line:member-ordering
-  @Effect()
-  loadContent$: Observable<Action> = this.actions$.pipe(
+  
+  loadContent$: Observable<Action> = createEffect(() => this.actions$.pipe(
     ofType(contentActions.ContentActionTypes.Load),
     mergeMap(action =>
       this.contentService.content$.pipe(
@@ -40,10 +40,10 @@ export class ContentEffects {
         catchError(err => of(new contentActions.LoadFail(err)))
       )
     )
-  );
+  ));
 
-  @Effect()
-  loadActiveContent$: Observable<Action> = this.actions$.pipe(
+  
+  loadActiveContent$: Observable<Action> = createEffect(() => this.actions$.pipe(
     ofType(contentActions.ContentActionTypes.SetActiveContent),
     switchMap(action =>
       this.contentService.getActiveContents().pipe(
@@ -52,9 +52,9 @@ export class ContentEffects {
         catchError(err => of(new contentActions.SetActiveContentFail(err)))
       )
     )
-  );
-  @Effect()
-  loadAllContent$: Observable<Action> = this.actions$.pipe(
+  ));
+  
+  loadAllContent$: Observable<Action> = createEffect(() => this.actions$.pipe(
     ofType(contentActions.ContentActionTypes.SetAllContent),
     switchMap(action =>
       this.contentService.getAllContents().pipe(
@@ -63,5 +63,5 @@ export class ContentEffects {
         catchError(err => of(new contentActions.SetAllContentFail(err)))
       )
     )
-  );
+  ));
 }

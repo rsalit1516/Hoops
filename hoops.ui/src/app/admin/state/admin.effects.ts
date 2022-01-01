@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import * as adminActions from './admin.actions';
 // import * as fromGames from './state';
 import {
@@ -42,8 +42,8 @@ export class AdminEffects {
   ) {}
 
   // tslint:disable-next-line:member-ordering
-  @Effect()
-  loadSeasons$: Observable<Action> = this.actions$.pipe(
+  
+  loadSeasons$: Observable<Action> = createEffect(() => this.actions$.pipe(
     ofType(adminActions.AdminActionTypes.LoadSeasons),
     mergeMap(action =>
       this.seasonService.seasons$.pipe(
@@ -51,11 +51,11 @@ export class AdminEffects {
         catchError(err => of(new adminActions.LoadSeasonsFail(err)))
       )
     )
-  );
+  ));
 
     // tslint:disable-next-line:member-ordering
-    @Effect()
-    loadDivisions$: Observable<Action> = this.actions$.pipe(
+    
+    loadDivisions$: Observable<Action> = createEffect(() => this.actions$.pipe(
       ofType(adminActions.AdminActionTypes.LoadDivisions),
       concatMap(action =>
         of(action).pipe(
@@ -79,11 +79,11 @@ export class AdminEffects {
           catchError(err => of(new adminActions.LoadDivisionsFail(err)))
         )
       )
-    );
+    ));
 
   // tslint:disable-next-line:member-ordering
-  @Effect()
-  loadGames$: Observable<Action> = this.actions$.pipe(
+  
+  loadGames$: Observable<Action> = createEffect(() => this.actions$.pipe(
     ofType(adminActions.AdminActionTypes.LoadGames),
     concatMap(action =>
       of(action).pipe(
@@ -108,10 +108,10 @@ export class AdminEffects {
         catchError(err => of(new adminActions.LoadGamesFail(err)))
       )
     )
-  );
+  ));
     // tslint:disable-next-line:member-ordering
-    @Effect()
-    setCurrentSeason$: Observable<Action> = this.actions$.pipe(
+    
+    setCurrentSeason$: Observable<Action> = createEffect(() => this.actions$.pipe(
       ofType(adminActions.AdminActionTypes.LoadCurrentSeason),
       mergeMap(action =>
         this.seasonService.currentSeason$.pipe(
@@ -120,6 +120,6 @@ export class AdminEffects {
           catchError(err => of(new adminActions.LoadDivisionsFail(err)))
         )
       )
-    );
+    ));
 
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import * as gameActions from './games.actions';
 import * as fromGames from './';
 import { map, switchMap, mergeMap, catchError, tap, mapTo, withLatestFrom, concatMap, shareReplay} from 'rxjs/operators';
@@ -47,8 +47,8 @@ export class GameEffects {
   ) {}
 
   // tslint:disable-next-line:member-ordering
-  @Effect()
-  loadGames$: Observable<Action> = this.actions$.pipe(
+  
+  loadGames$: Observable<Action> = createEffect(() => this.actions$.pipe(
     ofType(gameActions.GameActionTypes.Load),
     concatMap((action) =>
       of(action).pipe(
@@ -73,11 +73,11 @@ export class GameEffects {
         catchError((err) => of(new gameActions.LoadFail(err)))
       )
     )
-  );
+  ));
 
   // tslint:disable-next-line:member-ordering
-  @Effect()
-  loadPlayoffGames$: Observable<Action> = this.actions$.pipe(
+  
+  loadPlayoffGames$: Observable<Action> = createEffect(() => this.actions$.pipe(
     ofType(gameActions.GameActionTypes.LoadPlayoffGames),
     concatMap((action) =>
       of(action).pipe(
@@ -104,11 +104,11 @@ export class GameEffects {
           catchError((err) => of(new gameActions.LoadPlayoffGamesFail(err)))
         )
     )
-  );
+  ));
 
   // tslint:disable-next-line:member-ordering
-  @Effect()
-  setCurrentSeason$: Observable<Action> = this.actions$.pipe(
+  
+  setCurrentSeason$: Observable<Action> = createEffect(() => this.actions$.pipe(
     ofType(gameActions.GameActionTypes.LoadCurrentSeason),
     mergeMap((action) =>
       this.seasonService.currentSeason$.pipe(
@@ -117,11 +117,11 @@ export class GameEffects {
         catchError((err) => of(new gameActions.LoadDivisionsFail(err)))
       )
     )
-  );
+  ));
 
   // tslint:disable-next-line:member-ordering
-  @Effect()
-  loadDivisions$: Observable<Action> = this.actions$.pipe(
+  
+  loadDivisions$: Observable<Action> = createEffect(() => this.actions$.pipe(
     ofType(gameActions.GameActionTypes.LoadDivisions),
     concatMap((action) =>
       of(action).pipe(
@@ -144,20 +144,20 @@ export class GameEffects {
       ),
     ),
 
-  );
+  ));
 
   // tslint:disable-next-line:member-ordering
-  @Effect()
-  changeDivision$: Observable<Action> = this.actions$.pipe(
+  
+  changeDivision$: Observable<Action> = createEffect(() => this.actions$.pipe(
     ofType(gameActions.GameActionTypes.SetCurrentDivision),
     tap((x) => (this.gameService.divisionId = x)),
     mapTo(new gameActions.LoadFilteredGames()),
     tap(() => 'changed division')
-  );
+  ));
 
   // tslint:disable-next-line:member-ordering
-  @Effect()
-  loadTeams$: Observable<Action> = this.actions$.pipe(
+  
+  loadTeams$: Observable<Action> = createEffect(() => this.actions$.pipe(
     ofType(gameActions.GameActionTypes.LoadTeams),
     mergeMap((action) =>
       this.teamService.getTeams().pipe(
@@ -166,10 +166,10 @@ export class GameEffects {
         catchError((err) => of(new gameActions.LoadDivisionsFail(err)))
       )
     )
-  );
+  ));
   // tslint:disable-next-line:member-ordering
-  @Effect()
-  loadFilteredGames$: Observable<Action> = this.actions$.pipe(
+  
+  loadFilteredGames$: Observable<Action> = createEffect(() => this.actions$.pipe(
     ofType(gameActions.GameActionTypes.LoadFilteredGames),
     concatMap((action) =>
       of(action).pipe(
@@ -191,11 +191,11 @@ export class GameEffects {
         catchError((err) => of(new gameActions.LoadFilteredGamesFail(err)))
       )
     )
-  );
+  ));
 
   // tslint:disable-next-line:member-ordering
-  @Effect()
-  loadStandings$: Observable<Action> = this.actions$.pipe(
+  
+  loadStandings$: Observable<Action> = createEffect(() => this.actions$.pipe(
     ofType(gameActions.GameActionTypes.LoadStandings),
     concatMap((action) =>
       of(action).pipe(
@@ -216,12 +216,12 @@ export class GameEffects {
         catchError((err) => of(new gameActions.LoadStandingsFail(err)))
       )
     )
-  );
+  ));
 
 
   // tslint:disable-next-line:member-ordering
-  @Effect()
-  loadFilteredTeams$: Observable<Action> = this.actions$.pipe(
+  
+  loadFilteredTeams$: Observable<Action> = createEffect(() => this.actions$.pipe(
     ofType(gameActions.GameActionTypes.LoadFilteredTeams),
     concatMap((action) =>
       of(action).pipe(
@@ -243,20 +243,20 @@ export class GameEffects {
         catchError((err) => of(new gameActions.LoadFilteredTeamsFail(err)))
       )
     )
-  );
+  ));
 
     // tslint:disable-next-line:member-ordering
-    @Effect()
-    changeTeam$: Observable<Action> = this.actions$.pipe(
+    
+    changeTeam$: Observable<Action> = createEffect(() => this.actions$.pipe(
       ofType(gameActions.GameActionTypes.SetCurrentTeam),
       tap(x => this.gameService.teamId = x),
       mapTo(new gameActions.LoadFilteredGamesByTeam()),
       tap(() => 'changed team')
-    );
+    ));
 
     // tslint:disable-next-line:member-ordering
-  @Effect()
-  loadFilteredGamesByTeam$: Observable<Action> = this.actions$.pipe(
+  
+  loadFilteredGamesByTeam$: Observable<Action> = createEffect(() => this.actions$.pipe(
     ofType(gameActions.GameActionTypes.LoadFilteredGamesByTeam),
     concatMap((action) =>
       of(action).pipe(
@@ -278,6 +278,6 @@ export class GameEffects {
         catchError((err) => of(new gameActions.LoadFilteredGamesByTeamFail(err)))
       )
     )
-  );
+  ));
 
 }
