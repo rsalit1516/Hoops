@@ -357,11 +357,9 @@ Hoops.Api/c:/temp/internal-nlog-AspNetCore.txt
 Hoops.Api/c:/temp/internal-nlog-AspNetCore.txt
 .gitignore
 .vscode/settings.json
-Hoops.Api/appsettings.Production.json
 Hoops.Api/c:/temp/internal-nlog-AspNetCore.txt
 Hoops.Api/hoops.api.csproj
-Hoops.Api/Controllers/SeasonController.cs
 hoops.ui/.DS_Store
 hoops.ui/angular.json
-hoops.ui/dist/
-hoops.ui/.angular/cache/
+hoops.ui/dist/**
+hoops.ui/.angular/cache/**
