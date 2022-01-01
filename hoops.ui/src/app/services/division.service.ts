@@ -1,7 +1,5 @@
 import { map, tap } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
-import '../rxjs-extensions';
-
 import { Division } from '../domain/division';
 import { Season } from '../domain/season';
 import { DataService } from './data.service';

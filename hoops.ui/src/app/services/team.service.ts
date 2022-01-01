@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { map, tap } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
-import '../rxjs-extensions';
 
 import * as fromGames from '../games/state';
 import * as gameActions from '../games/state/games.actions';

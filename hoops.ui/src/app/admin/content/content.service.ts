@@ -7,7 +7,6 @@ import {
   HttpParams,
   HttpHeaders
 } from '@angular/common/http';
-import '../../rxjs-extensions';
 
 import * as moment from 'moment';
 

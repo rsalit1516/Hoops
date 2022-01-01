@@ -1,7 +1,6 @@
                                                                                               import { Injectable } from '@angular/core';
 import { map, tap } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
-import '../rxjs-extensions';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 

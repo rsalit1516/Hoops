@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { map, tap, shareReplay } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
-import '../rxjs-extensions';
 
 import { Season } from '../domain/season';
 import { DataService } from './data.service';

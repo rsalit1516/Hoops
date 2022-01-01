@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { map, tap } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import '../rxjs-extensions';
 
 import { Content } from '../domain/content';
 import { DataService } from './data.service';
