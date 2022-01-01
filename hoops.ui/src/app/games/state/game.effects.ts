@@ -53,7 +53,7 @@ export class GameEffects {
     concatMap((action) =>
       of(action).pipe(
         withLatestFrom(this.store.pipe(select(fromGames.getCurrentSeason))),
-        tap((divisions) => console.log(divisions))
+        // tap((divisions) => console.log(divisions))
       )
     ),
     tap(([action, t]) => {

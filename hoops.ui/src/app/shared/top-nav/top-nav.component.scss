@@ -1,17 +1,15 @@
-@import '../../../Content/variables';
+@import "../../../Content/variables";
 
 .mat-sidenav-container {
   background-color: $background-color;
 }
 
-.top-nav-toolbar {
-  background-color: $card-background-color;
+.mat-toolbar.top-nav-toolbar {
+  background-color: $background-color;
   text-align: right;
+  border-bottom: 2px solid $brand-color;
 }
 
-.mat-toolbar  {
-  background-color: $card-background-color;
-}
 a {
   font-size: 1.5em;
   font-weight: 600;
@@ -74,7 +72,7 @@ p {
   font-size: 1.2rem;
 }
 button {
-  background-color: $brand-color;
+  background-color: $navbar-color;
   font-weight: 600;
 }
 .menu-button {
@@ -84,11 +82,12 @@ button {
   line-height: normal;
 }
 
-.brand {
-  color:$brand-color;
+a.brand {
+  color: $navbar-color;
   font-size: $heading-font-size;
   margin-right: 12px;
-  font-variant:small-caps ;
+  font-variant: small-caps;
+  text-decoration: none;
 }
 .menu-spacer {
   width: 80px;

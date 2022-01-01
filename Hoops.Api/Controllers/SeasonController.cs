@@ -10,16 +10,11 @@ namespace Hoops.Controllers
     [ApiController]
     public class SeasonController : ControllerBase
     {
-        // private readonly hoopsContext _context;
-
         private readonly ISeasonRepository repository;
-
         public ISeasonRepository Seasons { get; set; }
-
         public SeasonController(ISeasonRepository repository)
         {
             this.repository = repository;
-            // Seasons = context;
         }
 
         /// <summary>

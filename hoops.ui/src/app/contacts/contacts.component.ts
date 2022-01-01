@@ -15,7 +15,6 @@ export class ContactsComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('getting directors');
     this.directorList$ = this.directorService.getDirectors();
   }
 }

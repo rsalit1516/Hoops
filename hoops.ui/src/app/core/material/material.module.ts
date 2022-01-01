@@ -23,6 +23,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
 
 @NgModule({
   imports: [
@@ -46,7 +48,7 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
     MatRadioModule,
     MatSelectModule,
     MatChipsModule,
-    MatCheckboxModule, MatProgressSpinnerModule, MatButtonToggleModule
+    MatCheckboxModule, MatProgressSpinnerModule, MatButtonToggleModule, MatTooltipModule
   ],
   exports: [
     MatButtonModule,
@@ -70,7 +72,7 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
     MatChipsModule,
     MatCheckboxModule,
     MatProgressSpinnerModule,
-    MatDialogModule
+    MatDialogModule, MatTooltipModule
   ],
   declarations: []
 })

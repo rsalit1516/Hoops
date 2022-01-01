@@ -42,6 +42,7 @@ const appRoutes: Routes = [
     path: 'dashboard',
     component: CsbcDashboardComponent
   },
+
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }
 ];

@@ -34,7 +34,7 @@ export class HomeComponent implements OnInit {
   meetingNotices$: Observable<WebContent[]> | undefined;
 
   showSidebar = false;
-  imageClass: string | undefined;
+  imageClass = 'col-sm-8 offset-sm-2 col-12';
   meetingNoticeClass = 'col-sm-0 col-xs-0';
 
   constructor(

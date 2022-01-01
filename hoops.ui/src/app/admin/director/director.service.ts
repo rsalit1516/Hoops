@@ -25,7 +25,7 @@ export class DirectorService {
   getDirectors(): Observable<Director[]> {
     return this.http.get<Director[]>(this.url).pipe(
         map(response => this.directors = response),
-        tap(data => console.log('All: ' + JSON.stringify(data))),
+        // tap(data => console.log('All: ' + JSON.stringify(data))),
         catchError(this.dataService.handleError('getDirectors', []))
       );
   }
