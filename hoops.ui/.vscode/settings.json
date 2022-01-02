@@ -3,6 +3,6 @@
         "node_modules{,/**}",
         ".vscode{,/**}"
     ],
-    "appService.defaultWebAppToDeploy": "",
+    "appService.defaultWebAppToDeploy": "/subscriptions/8e346d0a-6768-4719-b95e-b058700d71ab/resourceGroups/Default-Web-EastUS/providers/Microsoft.Web/sites/csbchoops-ui",
     "appService.deploySubpath": "dist/test"
 }
