@@ -1,75 +1,187 @@
-<section>
-
-    <div class="row">
-        <div class="col-sm-3 col-12">
-            <div class="panel panel-primary">
-                <div class=" panel-heading">
-                    <div class="panel-title">Documents and Links</div>
-                </div>
-                <!--<div class="panel-body">-->
-                <ul class="list-group">
-                    <li class="list-group-item"> <a href= "{{docDir}}REGISTRATIONFORM.pdf" id="lnkReg" target="_blank">Registration Form</a></li>
-                    <li class="list-group-item"><a href= "{{docDir}}SponsorForm.pdf" id="lnkSponsor" target="_blank">Sponsor Form</a></li>
-                    <li class="list-group-item"><a href="{{docDir}}TieBreaker.pdf" id="Lnk2" target="_blank">Tie Break Instructions</a></li>
-                    <li class="list-group-item"><a href="{{docDir}}ADScores.pdf" id="Lnk3" target="_blank">AD Scores / Website Instructions</a></li>
-                    <li class="list-group-item"><a href="{{docDir}}Scorebook.pdf" id="Lnk4" target="_blank">Keeping the Scorebook</a></li>
-                    <li class="list-group-item"><a href="{{docDir}}CourtsLocations.pdf" id="Lnk5" target="_blank">Directions to the Courts</a></li>
-                    <li class="list-group-item"><a href="{{docDir}}Scholarship.pdf" id="Lnk6" target="_blank">Jon Miller, Scholarship</a></li>
-                    <li class="list-group-item"><a href="{{docDir}}Maxey.pdf" id="Lnk76" target="_blank">Sean Maxey, Scholarship</a></li>
-                </ul>
-                <!-- /div> -->
-            </div>
-        </div>
-        <div class="col-sm-3 col-12">
-            <div class="panel panel-primary">
-                <div class=" panel-heading">
-                    <div class="panel-title">Girl's Divisions Rules</div>
-                </div>
-                <!--<div class="panel-body">-->
-                <ul class="list-group">
-                    <li class="list-group-item"><a href="{{docDir}}tg.pdf" id="Lnk6" target="_blank">Trainee Girls</a></li>
-                    <li class="list-group-item"><a href="{{docDir}}ig.pdf" id="Lnk6" target="_blank">Int Girls</a></li>
-                    <li class="list-group-item"><a href="{{docDir}}jvg.pdf" id="Lnk6" target="_blank">JV Girls</a></li>
-                    <li class="list-group-item"><a href="{{docDir}}vg.pdf" id="Lnk6" target="_blank">Varsity Girls</a></li>
-                    <li class="list-group-item"><a href="{{docDir}}hsg.pdf" id="Lnk6" target="_blank">HS Girls</a></li>
-                    <li class="list-group-item"><a href="{{docDir}}women.pdf" id="Lnk6" target="_blank">Women</a></li>
-
-
-                </ul>
-            </div>
-        </div>
-        <div class="col-sm-3 col-12">
-            <div class="panel panel-primary">
-                <div class=" panel-heading">
-                    <div class="panel-title">Boy's Divisions Rules</div>
-                </div>
-                <!--<div class="panel-body">-->
-                <ul class="list-group">
-                    <li class="list-group-item"><a href="{{docDir}}t1.pdf" id="Lnk6" target="_blank">Traineee 1</a></li>
-                    <li class="list-group-item"><a href="{{docDir}}t2.pdf" id="Lnk6" target="_blank">Traineee 2</a></li>
-                    <li class="list-group-item"><a href="{{docDir}}t3.pdf" id="Lnk6" target="_blank">Traineee 3</a></li>
-                    <li class="list-group-item"><a href="{{docDir}}t4.pdf" id="Lnk6" target="_blank">Traineee 4</a></li>
-                    <li class="list-group-item"><a href="{{docDir}}ib.pdf" id="Lnk6" target="_blank">Int Boys</a></li>
-                    <li class="list-group-item"><a href="{{docDir}}jvb.pdf" id="Lnk6" target="_blank">JV Boys</a></li>
-                    <li class="list-group-item"><a href="{{docDir}}vb.pdf" id="Lnk6" target="_blank">Varsity Boys</a></li>
-                    <li class="list-group-item"><a href="{{docDir}}hsb.pdf" id="Lnk6" target="_blank">HS Boys</a></li>
-                    <li class="list-group-item"><a href="{{docDir}}men18.pdf" id="Lnk6" target="_blank">Men 18+</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="col-sm-3 col-12">
-            <div class="panel panel-primary">
-                <div class=" panel-heading">
-                    <div class="panel-title">Game Rules</div>
-                </div>
-
-                <ul class="list-group">
-                    <li class="list-group-item"><a href="{{docDir}}GeneralRules.pdf" id="Lnk6" target="_blank">General Rules</a></li>
-                    <li class="list-group-item"><a href="{{docDir}}ParkRules.pdf" id="Lnk6" target="_blank">Park Rules</a></li>
-                    <li class="list-group-item"><a href="{{docDir}}Clockrules.pdf" id="Lnk6" target="_blank">Clock Rules</a></li>
-                </ul>
-            </div>
-        </div>
+<section class="container">
+  <div class="row">
+    <div class="col-sm-3 col-12">
+      <mat-card class="example-card">
+        <mat-card-header>
+          <mat-card-title>Documents and Links</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <ul class="list-group">
+            <li class="list-group-item">
+              <a
+                href="{{ docDir }}REGISTRATIONFORM.pdf"
+                id="lnkReg"
+                target="_blank"
+                >Registration Form</a
+              >
+            </li>
+            <li class="list-group-item">
+              <a
+                href="{{ docDir }}SponsorForm.pdf"
+                id="lnkSponsor"
+                target="_blank"
+                >Sponsor Form</a
+              >
+            </li>
+            <li class="list-group-item">
+              <a href="{{ docDir }}TieBreaker.pdf" id="Lnk2" target="_blank"
+                >Tie Break Instructions</a
+              >
+            </li>
+            <li class="list-group-item">
+              <a href="{{ docDir }}ADScores.pdf" id="Lnk3" target="_blank"
+                >AD Scores / Website Instructions</a
+              >
+            </li>
+            <li class="list-group-item">
+              <a href="{{ docDir }}Scorebook.pdf" id="Lnk4" target="_blank"
+                >Keeping the Scorebook</a
+              >
+            </li>
+            <li class="list-group-item">
+              <a
+                href="{{ docDir }}CourtsLocations.pdf"
+                id="Lnk5"
+                target="_blank"
+                >Directions to the Courts</a
+              >
+            </li>
+            <li class="list-group-item">
+              <a href="{{ docDir }}Scholarship.pdf" id="Lnk6" target="_blank"
+                >Jon Miller, Scholarship</a
+              >
+            </li>
+            <li class="list-group-item">
+              <a href="{{ docDir }}Maxey.pdf" id="Lnk76" target="_blank"
+                >Sean Maxey, Scholarship</a
+              >
+            </li>
+          </ul>
+        </mat-card-content>
+      </mat-card>
     </div>
-
+    <div class="col-sm-3 col-12">
+      <mat-card class="example-card">
+        <mat-card-header>
+          <mat-card-title>Girl's Divisions Rules</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <ul class="list-group">
+            <li class="list-group-item">
+              <a href="{{ docDir }}TG.pdf" id="Lnk6" target="_blank"
+                >Trainee Girls</a
+              >
+            </li>
+            <li class="list-group-item">
+              <a href="{{ docDir }}IG.pdf" id="Lnk6" target="_blank"
+                >Int Girls</a
+              >
+            </li>
+            <li class="list-group-item">
+              <a href="{{ docDir }}JVG.pdf" id="Lnk6" target="_blank"
+                >JV Girls</a
+              >
+            </li>
+            <li class="list-group-item">
+              <a href="{{ docDir }}VG.pdf" id="Lnk6" target="_blank"
+                >Varsity Girls</a
+              >
+            </li>
+            <li class="list-group-item">
+              <a href="{{ docDir }}HSG.pdf" id="Lnk6" target="_blank"
+                >HS Girls</a
+              >
+            </li>
+            <li class="list-group-item">
+              <a href="{{ docDir }}WOMEN.pdf" id="Lnk6" target="_blank"
+                >Women</a
+              >
+            </li>
+          </ul>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-sm-3 col-12">
+      <mat-card class="example-card">
+        <mat-card-header>
+          <mat-card-title>Boy's Divisions Rules</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <ul class="list-group">
+            <li class="list-group-item">
+              <a href="{{ docDir }}T1.pdf" id="Lnk6" target="_blank"
+                >Traineee 1</a
+              >
+            </li>
+            <li class="list-group-item">
+              <a href="{{ docDir }}T2.pdf" id="Lnk6" target="_blank"
+                >Traineee 2</a
+              >
+            </li>
+            <li class="list-group-item">
+              <a href="{{ docDir }}T3.pdf" id="Lnk6" target="_blank"
+                >Traineee 3</a
+              >
+            </li>
+            <li class="list-group-item">
+              <a href="{{ docDir }}T4.pdf" id="Lnk6" target="_blank"
+                >Traineee 4</a
+              >
+            </li>
+            <li class="list-group-item">
+              <a href="{{ docDir }}IB.pdf" id="Lnk6" target="_blank"
+                >Int Boys</a
+              >
+            </li>
+            <li class="list-group-item">
+              <a href="{{ docDir }}JVB.pdf" id="Lnk6" target="_blank"
+                >JV Boys</a
+              >
+            </li>
+            <li class="list-group-item">
+              <a href="{{ docDir }}VB.pdf" id="Lnk6" target="_blank"
+                >Varsity Boys</a
+              >
+            </li>
+            <li class="list-group-item">
+              <a href="{{ docDir }}HSB.pdf" id="Lnk6" target="_blank"
+                >HS Boys</a
+              >
+            </li>
+            <li class="list-group-item">
+              <a href="{{ docDir }}MEN18.pdf" id="Lnk6" target="_blank"
+                >Men 18+</a
+              >
+            </li>
+          </ul>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-sm-3 col-12">
+      <mat-card class="example-card">
+        <mat-card-header>
+          <mat-card-title>Game Rules</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <ul class="list-group">
+            <li class="list-group-item">
+              <a href="{{ docDir }}GeneralRules.pdf" id="Lnk6" target="_blank"
+                >General Rules</a
+              >
+            </li>
+            <li class="list-group-item">
+              <a href="{{ docDir }}ParkRules.pdf" id="Lnk6" target="_blank"
+                >Park Rules</a
+              >
+            </li>
+            <li class="list-group-item">
+              <a href="{{ docDir }}Clockrules.pdf" id="Lnk6" target="_blank"
+                >Clock Rules</a
+              >
+            </li>
+          </ul>
+          </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
 </section>

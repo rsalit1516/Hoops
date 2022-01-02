@@ -1,0 +1,19 @@
+@import "../../Content/_variables";
+
+.container {
+  margin-top: 24px;
+}
+
+.list-group-item {
+  background-color: $card-background-color;
+  color: whitesmoke;
+}
+
+a {
+  background-color: $card-background-color;
+  color: whitesmoke;
+}
+.mat-card {
+  background-color: $card-background-color;
+  color: whitesmoke;
+}
