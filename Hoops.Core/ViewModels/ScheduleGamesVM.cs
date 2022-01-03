@@ -4,6 +4,7 @@ using System.Linq;
 using System.Data;
 using Hoops.Infrastructure.Repository;
 using Hoops.Core.Models;
+using static Hoops.Core.Enum.GroupTypes;
 
 namespace Hoops.Core.ViewModels
 {
@@ -30,6 +31,7 @@ namespace Hoops.Core.ViewModels
         public string GameDescription { get; set; }
         public int VisitingTeamId { get; set; }
         public int HomeTeamId { get; set; }
+        public GameTypes GameType {get; set;}
 
         public List<GameSchedulesViewModel> GetGames(int seasonId)
         {
