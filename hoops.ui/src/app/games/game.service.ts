@@ -247,7 +247,7 @@ export class GameService {
     // console.log(divisionId);
     let tFlag = false;
     if (user) {
-      if (user.userType === 3) {
+      if ((user.userType === 2) || (user.userType === 3)) {
         tFlag = true;
         return true;
       } else {
