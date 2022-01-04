@@ -6,11 +6,10 @@ import { Content } from '@angular/compiler/src/render3/r3_ast';
 @Component({
   selector: 'csbc-division-select',
   templateUrl: './division-select.component.html',
-  styleUrls: ['./division-select.component.css']
+  styleUrls: ['./division-select.component.scss']
 })
 export class DivisionSelectComponent implements OnInit {
-  @Input()
-  divisions$!: Observable<Division[]>;
+@Input() divisions$!: Observable<Division[]>;
 @Input() division: Division | undefined;
 @Output() selectedDivision = new EventEmitter<Division>();
   constructor() { }

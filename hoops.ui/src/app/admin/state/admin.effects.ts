@@ -27,9 +27,9 @@ import { Division } from 'app/domain/division';
 
 @Injectable()
 export class AdminEffects {
-  seasonId: number;
-  gameUrl: string;
-  divisionStartUrl: string;
+  seasonId!: number;
+  gameUrl!: string;
+  divisionStartUrl!: string;
   constructor(
     private actions$: Actions,
     private seasonService: SeasonService,
@@ -42,7 +42,7 @@ export class AdminEffects {
   ) {}
 
   // tslint:disable-next-line:member-ordering
-  
+
   loadSeasons$: Observable<Action> = createEffect(() => this.actions$.pipe(
     ofType(adminActions.AdminActionTypes.LoadSeasons),
     mergeMap(action =>
@@ -54,7 +54,7 @@ export class AdminEffects {
   ));
 
     // tslint:disable-next-line:member-ordering
-    
+
     loadDivisions$: Observable<Action> = createEffect(() => this.actions$.pipe(
       ofType(adminActions.AdminActionTypes.LoadDivisions),
       concatMap(action =>
@@ -82,7 +82,7 @@ export class AdminEffects {
     ));
 
   // tslint:disable-next-line:member-ordering
-  
+
   loadGames$: Observable<Action> = createEffect(() => this.actions$.pipe(
     ofType(adminActions.AdminActionTypes.LoadGames),
     concatMap(action =>
@@ -110,7 +110,7 @@ export class AdminEffects {
     )
   ));
     // tslint:disable-next-line:member-ordering
-    
+
     setCurrentSeason$: Observable<Action> = createEffect(() => this.actions$.pipe(
       ofType(adminActions.AdminActionTypes.LoadCurrentSeason),
       mergeMap(action =>

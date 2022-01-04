@@ -34,14 +34,14 @@ export class AdminGamesShellComponent implements OnInit {
     this.store.select(fromAdmin.getCurrentSeason).subscribe(season => {
       console.log(season);
 
-//       this.store.dispatch(new gameActions.Load());
-      this.store.dispatch(new gameActions.LoadDivisions());
-//       this.store.dispatch(new gameActions.LoadTeams());
+//       this.store.dispatch(new adminActions.Load());
+      this.store.dispatch(new adminActions.LoadDivisions());
+      this.store.dispatch(new adminActions.LoadTeams());
     });
   }
   selectedSeason(season: Season) {
     console.log(season);
-    this.store.dispatch(new gameActions.SetCurrentSeason(season));
+    this.store.dispatch(new adminActions.SetCurrentSeason(season));
   }
   clickedDivision(division: MouseEvent) {
     // TODO: need to change the parameter

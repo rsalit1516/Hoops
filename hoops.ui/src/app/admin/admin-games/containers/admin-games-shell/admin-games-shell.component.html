@@ -1,18 +1,20 @@
 <div class="container">
-  <div fxFlex="25">
-    <csbc-season-select
-      [seasons$]="seasons$"
-      (setSeason)="selectedSeason($event)"
-    ></csbc-season-select>
-  </div>
-  <div fxFlex="25">
-    <csbc-division-select
-      [divisions$]="divisions$"
-      (click)="clickedDivision($event)"
-    >
-    </csbc-division-select>
-  </div>
-  <div fxFlex="75">
-    <router-outlet></router-outlet>
+  <div class="row">
+    <div class="col-4">
+      <csbc-season-select
+        [seasons$]="seasons$"
+        (setSeason)="selectedSeason($event)"
+      ></csbc-season-select>
+    </div>
+    <div col-4>
+      <csbc-division-select
+        [divisions$]="divisions$"
+        (click)="clickedDivision($event)"
+      >
+      </csbc-division-select>
+    </div>
+    <div col-9>
+      <router-outlet></router-outlet>
+    </div>
   </div>
 </div>
