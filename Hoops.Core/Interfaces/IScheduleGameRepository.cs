@@ -16,5 +16,6 @@ namespace Hoops.Infrastructure.Interface
         new int Update(ScheduleGame scheduleGame);
         IEnumerable<ScheduleStandingsVM> GetStandings(int divisionId);
         List<GameSchedulesViewModel> GetGames( int seasonId);
+        Task UpdateScore(int id, int homeTeamScore, int visitorTeamScore);
     }
 }

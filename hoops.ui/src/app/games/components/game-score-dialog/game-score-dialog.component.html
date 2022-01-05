@@ -1,7 +1,7 @@
 <h1 mat-dialog-title>Scores</h1>
 <div mat-dialog-content>
   <form
-    class="example-form"
+    class="dialog-form"
     [formGroup]="gameScoreForm"
     (ngSubmit)="onSubmitClick()"
   >
@@ -20,7 +20,7 @@
     </div>
   </form>
 </div>
-<!-- <div>{{game$ | async}}</div> -->
+<div class="message">Scores and standings will be updated after refreshing the application</div>
 <div mat-dialog-actions>
   <button
     mat-raised-button

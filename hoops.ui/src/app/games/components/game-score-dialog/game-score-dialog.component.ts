@@ -24,7 +24,7 @@ export class GameScoreDialogComponent implements OnInit {
     visitorTeamScore: new FormControl('')
   });
   game$: any;
-  game: Game;
+  game!: Game;
 
   constructor(
     public dialogRef: MatDialogRef<GameScoreDialogComponent>,

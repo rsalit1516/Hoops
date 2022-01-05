@@ -1,7 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, combineLatest, throwError, pipe, from } from 'rxjs';
 import { Division } from '@app/domain/division';
-import { map, tap, catchError, shareReplay, distinct, toArray, mergeMap, groupBy } from 'rxjs/operators';
+import {
+  map,
+  tap,
+  catchError,
+  shareReplay,
+  distinct,
+  toArray,
+  mergeMap,
+  groupBy,
+} from 'rxjs/operators';
 import { DataService } from '@app/services/data.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Game } from '@app/domain/game';
@@ -46,11 +55,13 @@ export class GameService {
   allGames: Game[] | undefined;
   standing: any[] | undefined;
   // divisions$: Observable<Division>;
-  games$ = this.http.get<Game[]>(this.dataService.seasonGamesUrl + '?seasonId=' + '2203').pipe(
-    // tap((data) => console.log("All games: " + JSON.stringify(data))),
-    shareReplay(1)
-    // catchError()
-  );
+  games$ = this.http
+    .get<Game[]>(this.dataService.seasonGamesUrl + '?seasonId=' + '2203')
+    .pipe(
+      // tap((data) => console.log("All games: " + JSON.stringify(data))),
+      shareReplay(1)
+      // catchError()
+    );
 
   divisions$ = this.store.select(fromGames.getDivisions);
 
@@ -117,11 +128,13 @@ export class GameService {
   }
   getGames(): Observable<Game[]> {
     const divId = fromGames.getCurrentDivisionId;
-    return this.http.get<Game[]>(this.dataService.seasonGamesUrl + this.currentSeason$).pipe(
-      map((response) => (this.games = response))
-      // tap(data => console.log('All: ' + JSON.stringify(data))),
-      // catchError(this.handleError)
-    );
+    return this.http
+      .get<Game[]>(this.dataService.seasonGamesUrl + this.currentSeason$)
+      .pipe(
+        map((response) => (this.games = response)),
+        tap(data => console.log('All: ' + JSON.stringify(data))),
+        //catchError(this.handleError)
+      );
   }
 
   // getGame(id: number): Observable<Game> {
@@ -135,13 +148,13 @@ export class GameService {
     let sortedDate: Game[] = [];
     this.store.pipe(select(fromGames.getGames)).subscribe((allGames) => {
       this.allGames = allGames;
-      console.log(allGames);
+      // console.log(allGames);
       this.setCanEdit(div);
       if (allGames) {
         for (let i = 0; i < this.allGames.length; i++) {
           if (this.allGames[i].divisionId === div) {
             let game = allGames[i];
-            console.log(game);
+            // console.log(game);
             // if (allGames[i].homeTeamScore === -1) allGames[i].homeTeamScore = 0;
             // if (game.homeTeamScore === -1) game.homeTeamScore = 0;
             // if (game.visitingTeamScore === -1) game.visitingTeamScore = 0;
@@ -166,7 +179,6 @@ export class GameService {
     });
     let games: Game[] = [];
     if (this.allGames) {
-
       for (let i = 0; i < this.allGames.length; i++) {
         if (
           this.allGames[i].visitingTeamId === teamId ||
@@ -186,14 +198,12 @@ export class GameService {
   groupByDate(games: Game[]) {
     const source = from(games);
     const gDate = source.pipe(
-      map(s => (s.gameDate = moment(s.gameDate).toDate()))
+      map((s) => (s.gameDate = moment(s.gameDate).toDate()))
     );
 
     const gamesByDate = source.pipe(
-      groupBy(game =>
-        moment(game.gameDate).format(moment.HTML5_FMT.DATE)
-        ),
-      mergeMap(group => group.pipe(toArray()))
+      groupBy((game) => moment(game.gameDate).format(moment.HTML5_FMT.DATE)),
+      mergeMap((group) => group.pipe(toArray()))
     );
     return gamesByDate;
   }
@@ -248,7 +258,7 @@ export class GameService {
     // console.log(divisionId);
     let tFlag = false;
     if (user) {
-      if ((user.userType === 2) || (user.userType === 3)) {
+      if (user.userType === 2 || user.userType === 3) {
         tFlag = true;
         return true;
       } else {
@@ -280,22 +290,25 @@ export class GameService {
     visitingTeamScore,
   }: {
     game: Game;
-    homeTeamScore: any;
-    visitingTeamScore: any;
-  }) {
+    homeTeamScore: number;
+    visitingTeamScore: number;
+  }): void {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       }),
     };
-    game.homeTeamScore = homeTeamScore;
-    game.visitingTeamScore = visitingTeamScore;
-    console.log(game);
-    const gameUrl = this.dataService.webUrl + '/api/games/updateScores';
+    console.log(homeTeamScore);
+    let g = game;
+
+    // g.homeTeamScore = homeTeamScore;
+    // g.visitingTeamScore = visitingTeamScore;
+    console.log(g);
+    const gameUrl = this.dataService.webUrl + '/api/ScheduleGame/UpdateScores/' + game.scheduleGamesId + '/' + homeTeamScore + '/' + visitingTeamScore; /// updateScores';
     // + game;
     console.log(gameUrl);
     let result = this.http
-      .put(gameUrl, game, httpOptions)
+      .put(gameUrl , game, httpOptions)
       .subscribe((x) => console.log(x));
     // .pipe(
     //   tap(data => console.log(data)),

@@ -105,6 +105,15 @@ namespace Hoops.Controllers
             return NoContent();
         }
 
+        [HttpPut("UpdateScores/{id}/{homeTeamScore}/{visitorTeamScore}")]
+        public async Task<IActionResult> UpdateScores(int id, int homeTeamScore, int visitorTeamScore)
+        {
+            await this.repository.UpdateScore(id, homeTeamScore, visitorTeamScore);
+
+            return NoContent();
+        }
+
+
         // POST: api/ScheduleGame
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.

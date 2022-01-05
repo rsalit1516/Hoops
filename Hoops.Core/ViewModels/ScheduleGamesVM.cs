@@ -31,8 +31,8 @@ namespace Hoops.Core.ViewModels
         public string GameDescription { get; set; }
         public int VisitingTeamId { get; set; }
         public int HomeTeamId { get; set; }
-        public GameTypes GameType {get; set;}
-
+        public GameTypes GameType { get; set; }
+        public int ScheduleGamesId { get; set; }
         public List<GameSchedulesViewModel> GetGames(int seasonId)
         {
             using (var db = new hoopsContext())
@@ -40,7 +40,7 @@ namespace Hoops.Core.ViewModels
                 var result = (from d in db.Divisions
                               from g in db.ScheduleGames
                               from l in db.ScheduleLocations
-                              
+
                               where g.SeasonId == seasonId
                               where g.DivisionId == d.DivisionId
                               where g.LocationNumber == l.LocationNumber
@@ -195,11 +195,11 @@ namespace Hoops.Core.ViewModels
 
         }
 
-        private static ScheduleDivTeam  GetTeam(List<ScheduleDivTeam> schedDiv, int gameNo, int teamNo, int? seasonId )
+        private static ScheduleDivTeam GetTeam(List<ScheduleDivTeam> schedDiv, int gameNo, int teamNo, int? seasonId)
         {
             return schedDiv.FirstOrDefault(s => s.ScheduleNumber == gameNo &&
                 s.TeamNumber == teamNo &&
-                s.SeasonId == seasonId );
+                s.SeasonId == seasonId);
         }
 
         private List<GameSchedulesViewModel> GetPlayoffGames(int divisionId)

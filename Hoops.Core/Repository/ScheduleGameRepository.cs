@@ -397,7 +397,8 @@ namespace Hoops.Infrastructure.Repository
                                   ScheduleNumber = g.ScheduleNumber,
                                   HomeTeamScore = g.HomeTeamScore == -1 ? 0 : (int)g.HomeTeamScore,
                                   VisitingTeamScore = g.VisitingTeamScore == -1 ? 0 : (int)g.VisitingTeamScore,
-                                  GameType = GameTypes.Regular
+                                  GameType = GameTypes.Regular,
+                                  ScheduleGamesId = g.ScheduleGamesId
                               });
 
                 var afterBasicQuery = DateTime.Now;
@@ -586,6 +587,25 @@ namespace Hoops.Infrastructure.Repository
             if (DateTime.TryParse(dateString, out newDate))
                 date = newDate;
             return newDate;
+        }
+
+        public async Task UpdateScore(int id, int homeTeamScore, int visitorTeamScore)
+        {
+            var game = context.ScheduleGames.FirstOrDefault(g => g.ScheduleGamesId == id);
+            game.HomeTeamScore = homeTeamScore;
+            game.VisitingTeamScore = visitorTeamScore;
+
+            context.Entry(game).State = EntityState.Modified;
+
+            try
+            {
+                await context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+
         }
     }
 }
