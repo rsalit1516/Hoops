@@ -6,7 +6,7 @@ using Hoops.Infrastructure.Repository;
 using Hoops.Core.Models;
 using Hoops.Core;
 
-namespace csbc_server_test
+namespace Hoops.Tests
 {
     public class WebContents
     {

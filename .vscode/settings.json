@@ -20,5 +20,6 @@
     },
     "peacock.color": "#972453",
     "appService.defaultWebAppToDeploy": "",
-    "appService.deploySubpath": "Hoops.Api/publish"
+    "appService.deploySubpath": "Hoops.Api/publish",
+    "dotnet-test-explorer.testProjectPath": "**/*Tests.@(csproj|vbproj|fsproj)"
 }

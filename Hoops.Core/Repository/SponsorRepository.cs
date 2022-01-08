@@ -1,10 +1,12 @@
 ﻿using System;
-using System.Linq;
 using System.Data;
 using Hoops.Infrastructure.Interface;
-using Csbc.Infrastructure;
 using Hoops.Core.Models;
 using Hoops.Core;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hoops.Infrastructure.Repository
 {
@@ -36,11 +38,12 @@ namespace Hoops.Infrastructure.Repository
         }
 
 
-        public IQueryable<Sponsor> GetSeasonSponsors(int seasonId)
+        public async Task<List<Sponsor>> GetSeasonSponsors(int seasonId)
         {
             var sponsorRepository = new SponsorRepository(new hoopsContext());
-            var sponsors = context.Set<Sponsor>().Where(s => s.SeasonId == seasonId);
-            //var count = sponsors.Count();
+            var sponsors = await context.Set<Sponsor>()
+                .Where( s => s.SeasonId == seasonId)
+                .ToListAsync();
             return sponsors;
         }
 

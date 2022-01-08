@@ -1,26 +1,25 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Hoops.Infrastructure.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
+using Microsoft.Extensions.Logging;
+using Hoops.Infrastructure.Interface;
 using System.Threading.Tasks;
-using Hoops.Core;
+using Hoops.Infrastructure.Repository;
+using Xunit;
 
-namespace Hoops.Infrastructure.Repository.Tests
+
+namespace Hoops.CoreTests
 {
-    [TestClass()]
-    public class ScheduleGameRepositoryTests
+    public class ScheduleGameRepositoryTests : TestWithSqlite
     {
-        [TestMethod()]
-        public async void GetSeasonGamesAsyncTest()
+        private readonly IScheduleGameRepository repository;
+        private readonly ILogger<ScheduleGameRepository> _logger;
+
+
+        [Fact]
+        public async Task GetSeasonGamesAsyncTest()
         {
-            using (var db = new hoopsContext())
-            {
-                var repGames = new ScheduleGameRepository(db, new logger());
-                var games = await repGames.GetSeasonGamesAsync(2021);
-                Assert.IsTrue(games.Any());
-            }
+            var repGames = new ScheduleGameRepository(DbContext, _logger);
+            var games = await repGames.GetSeasonGamesAsync(2021);
+            Assert.True(games.Any());
         }
     }
 }

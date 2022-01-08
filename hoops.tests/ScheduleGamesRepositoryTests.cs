@@ -2,19 +2,21 @@ using System;
 using Hoops.Core;
 using Hoops.Core.Models;
 using Hoops.Infrastructure.Repository;
+using Microsoft.Extensions.Logging;
 using Xunit;
 
-namespace csbc_server_test
+namespace Hoops.Test
 {
     public class ScheduleGamesRepositoryTests
     {
         public hoopsContext context;
         public ScheduleGameRepository repo;
+        private readonly ILogger<ScheduleGameRepository> _logger;
+
         public ScheduleGamesRepositoryTests()
         {
             context = new hoopsContext();
-            repo = new ScheduleGameRepository(context);
-        //     // _context = contex
+            repo = new ScheduleGameRepository(context, _logger);
         }
         [Fact]
         public void ScheduleGamesRepositoryTest1()
@@ -29,7 +31,7 @@ namespace csbc_server_test
             // var repo = new ScheduleGameRepository(new hoopsContext());
             var actual = repo.GetStandings(4119);
             Assert.True(actual != null);
-            
+
         }
     }
 
