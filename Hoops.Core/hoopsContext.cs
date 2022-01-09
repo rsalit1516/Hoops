@@ -1,5 +1,4 @@
 ﻿using System;
-// using System.Data.Entity;
 using Hoops.Core.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -53,7 +52,7 @@ namespace Hoops.Core
         // public virtual DbSet<TeamRosters> TeamRosters { get; set; }
         public virtual DbSet<Team> Teams { get; set; }
         public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<Version> Version { get; set; }
+        // public virtual DbSet<Version> Version { get; set; }
         // public virtual DbSet<VwAllSponsors> VwAllSponsors { get; set; }
         // public virtual DbSet<VwBatchPlayers> VwBatchPlayers { get; set; }
         // public virtual DbSet<VwCheckEmail> VwCheckEmail { get; set; }
@@ -908,7 +907,7 @@ namespace Hoops.Core
 
             modelBuilder.Entity<Sponsor>(entity =>
             {
-                entity.ToTable("Sponsor");
+                entity.ToTable("Sponsors");
                 entity.HasKey(e => e.SponsorId);
 
                 entity.Property(e => e.SponsorId)

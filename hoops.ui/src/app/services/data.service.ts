@@ -15,14 +15,16 @@ export class DataService {
   loginUrl = this.baseUrl + '/api/User/login';
   directorUrl = this.baseUrl + '/api/Director';
   seasonGamesUrl = this.baseUrl + '/api/Schedulegame/getSeasonGames';
+  sponsorUrl = this.baseUrl + '/api/Sponsor';
 
-  constructor (private _http: HttpClient) {
+  constructor(private _http: HttpClient) {
     this.webUrl = environment.apiUrl;
     // console.log(environment.apiUrl);
     // this.webUrl = 'http://csbc-webapi.azurewebsites.net';
     // this.webUrl = 'https://apicsbc.azurewebsites.net';
     this.dotNetCoreUrl = environment.apiUrl;
-    this.getActiveWebContentUrl = this.dotNetCoreUrl + '/api/webcontent/getActiveWebContent';
+    this.getActiveWebContentUrl =
+      this.dotNetCoreUrl + '/api/webcontent/getActiveWebContent';
   }
 
   /**
@@ -31,7 +33,7 @@ export class DataService {
    * @param operation - name of the operation that failed
    * @param result - optional value to return as the observable result
    */
-  handleError<T> (operation = 'operation', result?: T) {
+  handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       // TODO: send the error to remote logging infrastructure
       // console.error(error); // log to console instead
@@ -43,7 +45,7 @@ export class DataService {
       return of(result as T);
     };
   }
-  log (arg0: string) {
+  log(arg0: string) {
     throw new Error('Method not implemented.');
   }
 }

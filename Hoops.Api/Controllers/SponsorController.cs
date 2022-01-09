@@ -21,7 +21,7 @@ namespace Hoops.Api.Controllers
         {
             this.repository = repository;
             _logger = logger;
-            _context = new hoopsContext();
+            // _context = new hoopsContext();
             _logger.LogDebug(1, "NLog injected into ScheduleGameController");
         }
 
@@ -32,8 +32,8 @@ namespace Hoops.Api.Controllers
         [HttpGet()]
         public async Task<ActionResult<List<Sponsor>>> GetSeasonSponsors()
         {
-            var season = await _context.Seasons.FirstOrDefaultAsync(season => season.CurrentSeason == true);
-            return Ok(await repository.GetSeasonSponsors(season.SeasonId));
+            // var season = await _context.Seasons.FirstOrDefaultAsync(season => season.CurrentSeason == true);
+            return Ok(await repository.GetSeasonSponsors());
         }
     }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Content } from '../domain/content';
-import { ContentService } from '../services/content.service';
+import { ContentService } from './content.service';
 import { SeasonService } from '../services/season.service';
 import * as fromHome from './state';
 import * as homeActions from './state/home.actions';

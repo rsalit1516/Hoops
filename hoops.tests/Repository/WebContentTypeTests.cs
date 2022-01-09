@@ -1,15 +1,17 @@
-using Xunit;
 using System.Linq;
 using System.Threading.Tasks;
 using Hoops.Core.Models;
 using Hoops.Infrastructure.Repository;
 using Hoops.Core;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Hoops.Tests;
 
-namespace Hoops.Test
+namespace Hoops.Core.Tests
 {
-    public class NewBaseType
+    [TestClass]
+    public class WebContentTypeTests: TestWithSqlite
     {
-        [Fact]
+        [TestMethod]
         public async void GetByWebContentTypeDescription()
         {
             using (var db = new hoopsContext())
@@ -18,17 +20,17 @@ namespace Hoops.Test
                 var inserted = await repo.InsertAsync(new WebContentType { WebContentTypeDescription = "Test" });
                 await db.SaveChangesAsync();
                 var result = await repo.GetByDescriptionAsync("Test");
-                Assert.True(result != null);
+                Assert.IsTrue(result != null);
                 await repo.DeleteAsync(result.WebContentTypeId);
             }
         }
     }
 
-    public class WebContentTypeTests : NewBaseType
+    public class WebContentTypeTests1 : TestUtilities
     {
         public hoopsContext db { get; set; }
         public WebContentTypeRepository repo { get; set; }
-        public WebContentTypeTests()
+        public async void WebContentTypeTests()
         {
             db = new hoopsContext();
             var repoWebContent = new WebContentRepository(db);
@@ -37,7 +39,7 @@ namespace Hoops.Test
             var repo = new WebContentTypeRepository(db);
             DeleteAllAsync(repo).GetAwaiter();
         }
-        [Fact]
+        [TestMethod]
         public async void AddAsyncWebContentTypeTest1()
         {
             // await DeleteAllAsync(repo);
@@ -50,11 +52,11 @@ namespace Hoops.Test
                 };
                 var actual = await repo.InsertAsync(entity);
                 await db.SaveChangesAsync();
-                Assert.True(actual != null);
+                Assert.IsTrue(actual != null);
             }
 
         }
-        [Fact]
+        [TestMethod]
         public async void AddAllAsyncWebContentTypeTest1()
         {
             using (var db = new hoopsContext())
@@ -72,7 +74,7 @@ namespace Hoops.Test
                 actual = repo.Insert(new WebContentType { WebContentTypeDescription = "Event" });
                 repo.Insert(new WebContentType { WebContentTypeDescription = "Season Info" });
                 db.SaveChanges();
-                Assert.True(records.Count() == 3);
+                Assert.IsTrue(records.Count() == 3);
             }
         }
 

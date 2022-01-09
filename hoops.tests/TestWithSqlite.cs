@@ -6,8 +6,9 @@ using Hoops.Core;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
-namespace Hoops.CoreTests
+namespace Hoops.Core.Tests
 {
+
     public abstract class TestWithSqlite : IDisposable
     {
         private const string InMemoryConnectionString = "DataSource=:memory:";

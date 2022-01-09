@@ -61,7 +61,7 @@ namespace Hoops.Core.Data
         }
         public async Task CustomSeed(hoopsContext context)
         {
-            DeleteTestSponsors();
+            // DeleteTestSponsors();
             DeleteTestCoaches(context);
             DeleteTestColors(context);
             //DeleteTestPlayers(context);
@@ -300,7 +300,7 @@ namespace Hoops.Core.Data
                 var repPeople = new PersonRepository(new hoopsContext());
                 var people = db.People.Where(p => p.Sponsor == true).ToList();
 
-                var rep = new SponsorRepository(new hoopsContext());
+                // var rep = new SponsorRepository(new hoopsContext());
                 var repColor = new ColorRepository(new hoopsContext());
                 var color = repColor.GetByName(1, ColorNames[2].ToString());
                 var colorId = color == null ? 0 : color.ColorId;
@@ -321,15 +321,15 @@ namespace Hoops.Core.Data
 
                     });
 
-                    rep.Insert(
-                        new Sponsor
-                        {
-                            SponsorId = 0,
-                            CompanyId = CompanyId,
-                            SeasonId = currentSeason,
-                            Color1Id = colorId,
-                            SponsorProfileId = sponsorProfile.SponsorProfileId
-                        });
+                    // rep.Insert(
+                    //     new Sponsor
+                    //     {
+                    //         SponsorId = 0,
+                    //         CompanyId = CompanyId,
+                    //         SeasonId = currentSeason,
+                    //         Color1Id = colorId,
+                    //         SponsorProfileId = sponsorProfile.SponsorProfileId
+                    //     });
                     db.SaveChanges();
                 }
             }
@@ -643,18 +643,18 @@ namespace Hoops.Core.Data
                 rep.Delete(coach);
             }
         }
-        public void DeleteTestSponsors()
-        {
-            using (var db = new hoopsContext())
-            {
-                var rep = new SponsorRepository(db);
-                var sponsors = rep.GetAll(CompanyId).ToList<Sponsor>();
-                foreach (Sponsor sponsor in sponsors)
-                {
-                    rep.Delete(sponsor);
-                }
-            }
-        }
+        // public void DeleteTestSponsors()
+        // {
+        //     using (var db = new hoopsContext())
+        //     {
+        //         var rep = new SponsorRepository(db);
+        //         var sponsors = rep.GetAll(CompanyId).ToList<Sponsor>();
+        //         foreach (Sponsor sponsor in sponsors)
+        //         {
+        //             rep.Delete(sponsor);
+        //         }
+        //     }
+        // }
         public void DeleteTestTeams()
         {
             using (var db = new hoopsContext())

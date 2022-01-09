@@ -1,28 +1,30 @@
 using System;
-using Xunit;
 using System.Linq;
 using System.Threading.Tasks;
 using Hoops.Infrastructure.Repository;
 using Hoops.Core.Models;
 using Hoops.Core;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Hoops.Tests
+
+namespace Hoops.Core.Tests
 {
-    public class WebContents
+[TestClass]
+    public class WebContents : TestWithSqlite
     {
         public WebContents()
         {
             Task task = CreateData();
         }
 
-        [Fact]
+        [TestMethod]
         public void GetActiveWebContentAsyncTest1()
         {
             var repo = new WebContentRepository(new hoopsContext());
             var actual = repo.GetActiveWebContentAsync(1);
-            Assert.True(actual.Result.Count() == 3);
+            Assert.IsTrue(actual.Result.Count() == 3);
         }
-        [Fact]
+        [TestMethod]
         public async void AddAllAsyncWebContentTypeTest()
         {
             using (var db = new hoopsContext())
@@ -91,7 +93,7 @@ namespace Hoops.Tests
                 });
 
                 await db.SaveChangesAsync();
-                Assert.True(db.WebContents.Count() == 4);
+                Assert.IsTrue(db.WebContents.Count() == 4);
         }
         }
 

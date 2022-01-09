@@ -115,3 +115,50 @@ em {
   padding-top: 1vh;
   padding-bottom: 1vh;
 }
+
+.carousel {
+  height: 140px;
+  background-color: $card-background-color;
+  color: white;
+  font-size: 0em;
+  margin-top: 40px;
+  position:fixed;
+  width:100%;
+   bottom:0;
+}
+
+.carousel-caption {
+  padding-top: 20px;;
+  color: $brand-color;
+  font-size: 2.2rem;
+  position:relative;
+  right:auto;
+  left:auto;
+  margin-left: auto;
+  margin-right: auto;
+}
+.url {
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 1.4rem;
+  text-align: center;
+}
+
+a {
+  font-size: 1.4rem;
+  padding-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.picsum-img-wrapper {
+  display: none;
+}
+.carousel-wrapper {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  margin-top:20px;
+  margin-bottom:40px;
+}

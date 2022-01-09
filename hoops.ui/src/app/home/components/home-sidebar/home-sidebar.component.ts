@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Content } from '../../../domain/content';
-import { ContentService } from '../../../services/content.service';
+import { ContentService } from '../../content.service';
 import { map, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';

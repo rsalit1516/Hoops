@@ -5,6 +5,7 @@ using System.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Hoops.Core;
 using Hoops.Core.ViewModels;
 using Hoops.Core.Models;
 using Microsoft.Extensions.Logging;
@@ -16,7 +17,7 @@ namespace Hoops.Infrastructure.Repository
     {
         private readonly ILogger<ScheduleGameRepository> _logger;
 
-        public ScheduleGameRepository(Hoops.Core.hoopsContext context, ILogger<ScheduleGameRepository> logger) : base(context)
+        public ScheduleGameRepository(hoopsContext context, ILogger<ScheduleGameRepository> logger) : base(context)
         {
             _logger = logger;
         }

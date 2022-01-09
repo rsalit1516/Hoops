@@ -7,13 +7,19 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Hoops.Core.ViewModels;
 
 namespace Hoops.Infrastructure.Repository
 {
     public class SponsorRepository : EFRepository<Sponsor>, ISponsorRepository
     {
+        private readonly ILogger<ScheduleGameRepository> _logger;
 
-        public SponsorRepository(hoopsContext context) : base(context) { }
+        public SponsorRepository(hoopsContext context, ILogger<ScheduleGameRepository> logger) : base(context)
+        {
+            _logger = logger;
+        }
 
         #region IRepository<T> Members
 
@@ -38,18 +44,28 @@ namespace Hoops.Infrastructure.Repository
         }
 
 
-        public async Task<List<Sponsor>> GetSeasonSponsors(int seasonId)
+        public async Task<List<SponsorVM>> GetSeasonSponsors()
         {
-            var sponsorRepository = new SponsorRepository(new hoopsContext());
-            var sponsors = await context.Set<Sponsor>()
-                .Where( s => s.SeasonId == seasonId)
+            // var sponsorRepository = new SponsorRepository(new hoopsContext(), );
+            var sponsors = context.Set<Sponsor>()
+            .Join(context.SponsorProfiles,
+            sponsor => sponsor.SponsorProfileId,
+            profile => profile.SponsorProfileId,
+            (sponsor, profile) => new SponsorVM
+            {
+                SponsorId = sponsor.SponsorId,
+                SponsorName = profile.SpoName,
+                Url = profile.Url,
+                AdExpiration = profile.AdExpiration
+            })
+                .Where(x => x.AdExpiration >= DateTime.Now)
                 .ToListAsync();
-            return sponsors;
+            return await sponsors;
         }
 
         public bool IsSeasonSponsor(int seasonId, int sponsorProfileId)
         {
-            var sponsorRepository = new SponsorRepository(new hoopsContext());
+            // var sponsorRepository = new SponsorRepository(new hoopsContext());
             var sponsors = context.Set<Sponsor>().Where(s => s.SeasonId == seasonId && s.SponsorProfileId == sponsorProfileId);
             //var count = sponsors.Count();
             return sponsors.Any();

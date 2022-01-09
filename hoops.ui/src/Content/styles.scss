@@ -12,6 +12,9 @@ body {
   color: ghostwhite;
   background: $background-color;
 }
+.mat-sidenav-container {
+  min-height:1200px;
+}
 
 .mat-toolbar {
   background: $background-color;
@@ -591,3 +594,6 @@ a {
   font-size: 1em !important;
 }
 /*#endregion */
+
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';

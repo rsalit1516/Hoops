@@ -4,7 +4,7 @@ import { catchError } from 'rxjs/operators';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 
 import { Content } from '../domain/content';
-import { DataService } from './data.service';
+import { DataService } from '../services/data.service';
 import { WebContent } from '../domain/webContent';
 import { Observable } from 'rxjs';
 

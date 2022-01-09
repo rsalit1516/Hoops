@@ -6,6 +6,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from './core/core.module';
 import { AppRoutingModule } from './app-routing.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 /* ngrx */
 import { StoreModule } from '@ngrx/store';
@@ -27,7 +28,7 @@ import { TopNavComponent } from './shared/top-nav/top-nav.component';
 import { CsbcPhotosComponent } from './photos/csbc-photos.component';
 import { ContactsComponent } from './contacts/contacts.component';
 import { AdminModule } from './admin/admin.module';
-import { ComposeMessageComponent } from './compose-message.component';
+// import { ComposeMessageComponent } from './compose-message.component';
 
 import { SeasonService } from './services/season.service';
 import { DivisionService } from './services/division.service';
@@ -55,7 +56,7 @@ import { SponsorsModule } from './admin/sponsors/sponsors.module';
     CsbcPhotosComponent,
     ContactsComponent,
     LoginComponent,
-    ComposeMessageComponent,
+    // ComposeMessageComponent,
     GamesPipe,
     CsbcDashboardComponent
   ],
@@ -77,6 +78,7 @@ import { SponsorsModule } from './admin/sponsors/sponsors.module';
     UserModule,
     SponsorsModule,
     UserModule,
+    NgbModule,
     StoreModule.forRoot(reducers, { metaReducers }),
     // StoreModule.forRoot({}),
     StoreDevtoolsModule.instrument({

@@ -1,0 +1,18 @@
+<div class="carousel-wrapper">
+  <ngb-carousel
+    [showNavigationArrows]="showNavigationArrows"
+    [showNavigationIndicators]="showNavigationIndicators"
+  >
+    <ng-template ngbSlide *ngFor="let sponsor of sponsors">
+      <div class="picsum-img-wrapper">
+        <img [src]="" alt="" />
+      </div>
+      <div class="carousel-caption">
+        {{ sponsor.sponsorName }}
+      </div>
+      <div class="url">
+      <a href="sponsor.url">{{ sponsor.url }}</a>
+    </div>
+    </ng-template>
+  </ngb-carousel>
+</div>
