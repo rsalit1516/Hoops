@@ -32,13 +32,13 @@ import { ContentModule } from './content/content.module';
 import { DirectorModule } from './director/director.module';
 
 import { ImportScheduleComponent } from './import-schedule/import-schedule.component';
-import { SeasonSelectComponent } from './components/season-select/season-select.component';
 import { SeasonSetupComponent } from './containers/season-setup/season-setup.component';
 import { RegistrationPaymentsComponent } from './registrations-and-payments/containers/registration-payments/registration-payments.component';
 import { SeasonRegistrationsComponent } from './registrations-and-payments/components/season-registrations/season-registrations.component';
 import { PaymentsComponent } from './registrations-and-payments/components/payments/payments.component';
 import { AdminGamesModule } from './admin-games/admin-games.module';
 import { RegistrationsAndPaymentsModule } from './registrations-and-payments/registrations-and-payments.module';
+import { AdminSharedModule } from './admin-shared/admin-shared.module';
 
 @NgModule({
   imports: [
@@ -47,6 +47,7 @@ import { RegistrationsAndPaymentsModule } from './registrations-and-payments/reg
     FormsModule,
     SharedModule,
     CoreModule,
+    AdminSharedModule,
     AdminRoutingModule,
     ContentModule,
     DirectorModule,
@@ -72,11 +73,9 @@ import { RegistrationsAndPaymentsModule } from './registrations-and-payments/reg
     AdminTeamListComponent,
     AdminDivisionShellComponent,
     ImportScheduleComponent,
-    SeasonSelectComponent,
     SeasonSetupComponent,
     SeasonRegistrationsComponent,
     PaymentsComponent,
   ],
-  // exports: [SeasonSelectComponent]
 })
 export class AdminModule {}

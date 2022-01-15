@@ -27,7 +27,11 @@ export class TopNavComponent implements OnInit {
   env: any;
   constants: typeof Constants;
 
-  constructor(public dialog: MatDialog, private store: Store<fromUser.State>, private route: Router) {
+  constructor(
+    public dialog: MatDialog,
+    private store: Store<fromUser.State>,
+    private route: Router
+  ) {
     // this.route.events.subscribe(route => console.log(route));
     this.constants = Constants;
   }
@@ -37,22 +41,27 @@ export class TopNavComponent implements OnInit {
     // console.log(this.env);
     this.store.pipe(select(fromUser.getCurrentUser)).subscribe((user) => {
       // console.log(user);
-      if (user !== null && user.userId !== 0) {
-        this.currentUser = user;
-        if (user) {
-          this.userName = user.firstName;
-          if (this.env !== 'Production') {
-            this.showAdminMenu =
-              user.screens == undefined ? false : user.screens.length > 0;
+      console.log(this.env);
+      if (this.env === 'Production') {
+        if (user !== null && user.userId !== 0) {
+          this.currentUser = user;
+          if (user) {
+            this.userName = user.firstName;
+            if (this.env !== 'Production') {
+              this.showAdminMenu =
+                user.screens == undefined ? false : user.screens.length > 0;
+            }
           }
         }
+      } else {
+        this.showAdminMenu = true;
       }
     });
   }
 
   openDialog() {
     const dialogRef = this.dialog.open(LoginDialogComponent, {
-      width: '320px',
+      width: '480px',
     });
 
     dialogRef.afterClosed().subscribe((result) => {

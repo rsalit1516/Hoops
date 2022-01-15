@@ -24,6 +24,7 @@ import { GameService } from 'app/games/game.service';
 import { TeamService } from 'app/services/team.service';
 import { DataService } from 'app/services/data.service';
 import { Division } from 'app/domain/division';
+import { Season } from '@app/domain/season';
 
 @Injectable()
 export class AdminEffects {
@@ -115,7 +116,7 @@ export class AdminEffects {
       ofType(adminActions.AdminActionTypes.LoadCurrentSeason),
       mergeMap(action =>
         this.seasonService.currentSeason$.pipe(
-          map(season => new adminActions.SetCurrentSeason(season)),
+          map(season => new adminActions.SetCurrentSeason(season as Season)),
           tap(data => console.log(data)),
           catchError(err => of(new adminActions.LoadDivisionsFail(err)))
         )

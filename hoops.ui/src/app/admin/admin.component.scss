@@ -12,6 +12,11 @@
   padding: 10px 10px 0 10px;
 }
 
+.mat-label, .mat-form-field, .mat-form-field-label {
+  font-size: 1.2em;
+  color: $card-title-font-size;
+}
+
 .mat-table {
   width: 100%;
 }

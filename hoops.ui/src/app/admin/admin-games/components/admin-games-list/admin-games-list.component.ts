@@ -20,7 +20,7 @@ export class AdminGamesListComponent implements OnInit {
   displayedColumns!: string[];
   flexMediaWatcher: any;
   currentScreenWidth: any;
-  title = 'Game List - work in progress';
+  title = 'Game List';
   canEdit: boolean = false;
 
   constructor(

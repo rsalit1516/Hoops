@@ -59,6 +59,5 @@ namespace Hoops.Infrastructure.Repository
             var payments = repPayments.GetTotalPayments(sponsorProfileId);
             return (Convert.ToDecimal(fees) - payments);
         }
-
     }
 }

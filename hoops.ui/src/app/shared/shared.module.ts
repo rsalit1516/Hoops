@@ -7,17 +7,15 @@ import { CoreModule } from '@app/core/core.module';
 import { PageNotFoundComponent } from '@app/app.not-found.component';
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { CsbcSeasonSelectComponent } from './season-select/csbc-season-select.component';
-import { DivisionSelectComponent } from './division-select/division-select.component';
 import { CsbcCardComponent } from './csbc-card/csbc-card.component';
 
 @NgModule({
   imports: [CommonModule, FormsModule, CoreModule],
-  exports: [CsbcSeasonSelectComponent, DivisionSelectComponent],
+  exports: [CsbcSeasonSelectComponent],
   declarations: [
     LoginDialogComponent,
     PageNotFoundComponent,
     CsbcSeasonSelectComponent,
-    DivisionSelectComponent,
     CsbcCardComponent
   ],
   entryComponents: [LoginDialogComponent],

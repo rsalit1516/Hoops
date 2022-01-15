@@ -50,6 +50,4 @@ namespace Hoops.Core.Models
         [ForeignKey("SponsorProfileID")]
         public virtual SponsorProfile SponsorProfile { get; set; }
     }
-
-
 }

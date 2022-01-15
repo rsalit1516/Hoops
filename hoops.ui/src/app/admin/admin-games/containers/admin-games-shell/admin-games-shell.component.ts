@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import * as fromGames from '../../../../games/state';
-import * as gameActions from '../../../../games/state/games.actions';
 import { Store } from '@ngrx/store';
 
 import * as adminActions from '../../../state/admin.actions';
@@ -8,10 +6,7 @@ import * as fromAdmin from '../../../state';
 import * as fromUser from '../../../../user/state';
 
 import { GameService } from 'app/games/game.service';
-import { LoadSeasons } from './../../../state/admin.actions';
 import { Season } from '../../../../domain/season';
-import { Division } from '../../../../domain/division';
-
 @Component({
   selector: 'csbc-admin-games-shell',
   templateUrl: './admin-games-shell.component.html',
@@ -24,7 +19,7 @@ export class AdminGamesShellComponent implements OnInit {
   seasons$ = this.store.select(fromAdmin.getSeasons);
   divisions$ = this.store.select(fromAdmin.getSeasonDivisions);
   constructor(
-    private store: Store<fromGames.State>,
+    private store: Store<fromAdmin.State>,
     private gameService: GameService
   ) {}
 
