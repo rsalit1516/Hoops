@@ -15,6 +15,8 @@ export class DataService {
   loginUrl = this.baseUrl + '/api/User/login';
   directorUrl = this.baseUrl + '/api/Director';
   seasonGamesUrl = this.baseUrl + '/api/Schedulegame/getSeasonGames';
+  seasonDivisionsUrl = this.baseUrl + '/api/division/GetSeasonDivisions/';
+
 
   constructor (private _http: HttpClient) {
     this.webUrl = environment.apiUrl;

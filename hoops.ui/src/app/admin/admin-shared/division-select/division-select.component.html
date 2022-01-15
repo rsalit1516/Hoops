@@ -1,13 +1,18 @@
-<div>
-  <mat-label>Division</mat-label>
-  <mat-select
-    name="division"
-    class="form-control"
-    [(ngModel)]="selectedDivision" >
-    <mat-option *ngFor="let division of divisions$ | async" [value]="division.divisionId">
-      {{ division.divisionDescription }}
-    </mat-option>
-  </mat-select>
-</div>
+<form [formGroup]="selectForm">
+  <mat-form-field>
+    <mat-label>Division</mat-label>
+    <mat-select
+      name="division"
+      class="form-control"
+    >
+      <mat-option
+        *ngFor="let division of divisions$ | async"
+        ngValue="division"
+      >
+        {{ division.divisionDescription }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</form>
 
 <!-- (click)="onClick(selectedDivision)" -->

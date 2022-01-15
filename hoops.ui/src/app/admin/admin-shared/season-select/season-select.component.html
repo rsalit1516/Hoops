@@ -4,7 +4,7 @@
     <mat-select formControlName="description" [(ngModel)]="selected">
       <mat-option
       *ngFor="let season of seasons$ | async"
-      [value]="season"
+      ngValue="season"
       (click)="selectedSeason(season)"
     >
       {{ season.description }}

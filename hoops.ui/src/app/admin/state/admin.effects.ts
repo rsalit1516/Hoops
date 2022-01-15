@@ -30,7 +30,8 @@ import { Season } from '@app/domain/season';
 export class AdminEffects {
   seasonId!: number;
   gameUrl!: string;
-  divisionStartUrl!: string;
+  divisionStartUrl = this.dataService.seasonDivisionsUrl;
+
   constructor(
     private actions$: Actions,
     private seasonService: SeasonService,

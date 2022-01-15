@@ -1,16 +1,13 @@
 <div class="container">
   <div class="row">
     <div class="col-4">
-      <csbc-season-select
-        [seasons$]="seasons$"
-        (setSeason)="selectedSeason($event)"
-      ></csbc-season-select>
+      <season-select></season-select>
     </div>
     <div class="col-4">
-      <csbc-division-select
+      <division-select
         (click)="clickedDivision($event)"
       >
-      </csbc-division-select>
+      </division-select>
     </div>
     <div class="col-9">
       <router-outlet></router-outlet>
