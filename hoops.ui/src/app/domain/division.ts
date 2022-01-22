@@ -1,13 +1,4 @@
-export interface IDivision {
-  seasonId: number;
-  divisionId: number;
-  divisionDescription: string;
-  // div_Desc: string;
-  minDate: Date;
-  maxDate: Date;
-}
-
-export class Division implements IDivision {
+export class Division {
   constructor(
     public seasonId: number,
     public divisionId: number,

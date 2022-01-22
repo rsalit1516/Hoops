@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import * as adminActions from './admin.actions';
-// import * as fromGames from './state';
 import {
   map,
   switchMap,
@@ -16,7 +14,8 @@ import { Store, Action, select } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { SeasonService } from 'app/services/season.service';
 import { DivisionService } from 'app/services/division.service';
-// import { GameService } from '../game.service';
+
+import * as adminActions from './admin.actions';
 import * as fromAdmin from './';
 import { Game } from 'app/domain/game';
 import { HttpClient } from '@angular/common/http';
@@ -29,8 +28,10 @@ import { Season } from '@app/domain/season';
 @Injectable()
 export class AdminEffects {
   seasonId!: number;
-  gameUrl!: string;
-  divisionStartUrl = this.dataService.seasonDivisionsUrl;
+  gameUrl = this.dataService.seasonGamesUrl;
+  seasonDivisionsUrl = this.dataService.seasonDivisionsUrl;
+  divisionId!: number;
+  division!: Division;
 
   constructor(
     private actions$: Actions,
@@ -62,7 +63,7 @@ export class AdminEffects {
       concatMap(action =>
         of(action).pipe(
           withLatestFrom(this.store.pipe(select(fromAdmin.getCurrentSeason))),
-          tap(divisions => console.log(divisions))
+          tap(season => console.log(season))
         )
       ),
       tap(([action, t]) => {
@@ -73,11 +74,11 @@ export class AdminEffects {
         }
       }),
       mergeMap(action =>
-        this.http.get<Division[]>(this.divisionStartUrl + this.seasonId).pipe(
+        this.http.get<Division[]>(this.seasonDivisionsUrl + this.seasonId).pipe(
           // tap(data => console.log('All games: ' + JSON.stringify(data))),
           shareReplay(1),
           map(divisions => new adminActions.LoadDivisionsSuccess(divisions)),
-          tap(divisions => console.log(divisions)),
+          // tap(divisions => console.log(divisions)),
           catchError(err => of(new adminActions.LoadDivisionsFail(err)))
         )
       )
@@ -102,8 +103,8 @@ export class AdminEffects {
     }),
 
     mergeMap(action =>
-      this.http.get<Game[]>(this.gameUrl + this.seasonId).pipe(
-        // tap(data => console.log('All games: ' + JSON.stringify(data))),
+      this.http.get<Game[]>(this.gameUrl + '?seasonId=' + this.seasonId).pipe(
+        // tap(data => console.log('All admin games: ' + JSON.stringify(data))),
         shareReplay(1),
         map(games => new adminActions.LoadGamesSuccess(games)),
         tap(games => console.log(games)),
@@ -124,4 +125,27 @@ export class AdminEffects {
       )
     ));
 
+    loadFilteredGames$: Observable<Action> = createEffect(() => this.actions$.pipe(
+      ofType(adminActions.AdminActionTypes.LoadFilteredGames),
+      concatMap((action) =>
+        of(action).pipe(
+          withLatestFrom(this.store.pipe(select(fromAdmin.getSelectedDivision)))
+        )
+      ),
+      tap(([action, t]) => {
+        if (t) {
+          // console.log(t);
+          this.divisionId = t.divisionId;
+        } else {
+          this.divisionId = 0;
+        }
+      }),
+      switchMap((action) =>
+        this.gameService.filterGamesByDivision(this.divisionId).pipe(
+          map((games) => new adminActions.LoadFilteredGamesSuccess(games)),
+          // tap(response => console.log(response)),
+          catchError((err) => of(new adminActions.LoadFilteredGamesFail(err)))
+        )
+      )
+    ));
 }

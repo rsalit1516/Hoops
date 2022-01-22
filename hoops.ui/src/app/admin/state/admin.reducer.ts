@@ -1,26 +1,32 @@
-import { createFeatureSelector, createSelector } from '@ngrx/store';
-
 import { AdminActions, AdminActionTypes } from './admin.actions';
-import * as fromRoot from '../../state/app.state';
-import { Season } from 'app/domain/season';
-import { Division } from 'app/domain/division';
+// import * as fromRoot from '../../state/app.state';
+import { Season } from '@app/domain/season';
+import { Division } from '@app/domain/division';
+import { Game } from '@app/domain/game';
+import { Team } from '@app/domain/team';
 
 export interface AdminState {
-  currentSeasonId: number | undefined;
-  currentDivisionId: number | undefined;
+  selectedDivision: Division | null;
   currentTeamId: number | null;
+  games: Game[];
+  filteredGames: Game[];
   seasons: Season[];
   currentSeason: Season;
   divisions: Division[];
+  teams: Team[];
+  seasonDivisions: Division[];
 }
 
 const initialState: AdminState = {
   currentSeason: new Season(),
-  currentSeasonId: 2193,
-  currentDivisionId: undefined,
+  selectedDivision: null,
   currentTeamId: null,
+  games: [],
+  filteredGames: [],
   seasons: [],
-  divisions: []
+  divisions: [],
+  teams: [],
+  seasonDivisions: [],
 };
 
 export function reducer(
@@ -31,29 +37,44 @@ export function reducer(
     case AdminActionTypes.LoadSeasonsSuccess:
       return {
         ...state,
-        seasons: action.payload
+        seasons: action.payload,
       };
-    case AdminActionTypes.LoadDivisionsSuccess:
-      return {
-        ...state,
-        divisions: action.payload
-      };
+
     case AdminActionTypes.SetCurrentSeason:
       return {
         ...state,
-        currentSeason: action.payload
+        currentSeason: action.payload,
+      };
+    case AdminActionTypes.SetSelectedDivision:
+      return {
+        ...state,
+        selectedDivision: action.payload,
       };
     case AdminActionTypes.SetSelectedSeason:
       return {
         ...state,
-        currentSeason: action.payload
+        currentSeason: action.payload,
       };
-    case AdminActionTypes.SetSelectedSeasonId:
+    case AdminActionTypes.LoadGamesSuccess:
       return {
         ...state,
-        currentSeasonId: action.payload
+        games: action.payload,
       };
-
+    case AdminActionTypes.LoadFilteredGamesSuccess:
+      return {
+        ...state,
+        filteredGames: action.payload,
+      };
+    case AdminActionTypes.LoadDivisionsSuccess:
+      return {
+        ...state,
+        seasonDivisions: action.payload,
+      };
+    case AdminActionTypes.LoadDivisionTeamsSuccess:
+      return {
+        ...state,
+        teams: action.payload,
+      };
     default: {
       return state;
     }

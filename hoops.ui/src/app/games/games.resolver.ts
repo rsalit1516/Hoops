@@ -30,19 +30,6 @@ export class GamesResolver implements Resolve<boolean> {
       // this.store.dispatch(new gameActions.LoadDivisions());
       this.store.dispatch(new gameActions.LoadPlayoffGames());
       this.store.dispatch(new gameActions.LoadStandings());
-      // this.store.select(fromGames.getDivisions).subscribe((divisions) => {
-      //   console.log(divisions);
-      //   this.store
-      //     .select(fromGames.getCurrentDivision)
-      //     .subscribe((division) => {
-        //     if (division?.seasonId !== season?.seasonId) {
-        //       console.log('wrong division set at init');
-              // this.store.dispatch(
-              //   new gameActions.SetCurrentDivision(divisions[0])
-              // );
-        //     }
-          // });
-      // });
     });
     return of(true);
   }

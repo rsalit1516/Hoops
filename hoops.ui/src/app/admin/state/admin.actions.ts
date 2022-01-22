@@ -11,6 +11,9 @@ export enum AdminActionTypes {
   LoadGames = '[Admin] Load Games',
   LoadGamesSuccess = '[Admin] Load Games Success',
   LoadGamesFail = '[Admin] Load GamesFail',
+  LoadFilteredGames = '[Admin] Load Filtered Games',
+  LoadFilteredGamesSuccess = '[Admin] Load Filtered Games Success',
+  LoadFilteredGamesFail = '[Admin] Load Filtered Games Fail',
   LoadSeasons = '[Admin] Load Seasons',
   LoadSeasonsSuccess = '[Admin] Load Seasons Success',
   LoadSeasonsFail = '[Admin] Load Seasons Fail',
@@ -18,13 +21,13 @@ export enum AdminActionTypes {
   SetSelectedSeason = '[Admin] Set Selected Season',
   SetSelectedSeasonId = '[Admin] Set Selected Season ID',
   LoadDivisions = '[Admin] Load All Season Divisions',
-  LoadDivisionsSuccess = '[Admin API] Load Divisions Success',
-  LoadDivisionsFail = '[Admin API] Load Divisions File',
+  LoadDivisionsSuccess = '[Admin] Load Divisions Success',
+  LoadDivisionsFail = '[Admin] Load Divisions File',
   SetSelectedDivision = '[Admin] Set Selected Division',
-  LoadTeams = '[Admin] Load All Season Divisions',
-  LoadTeamsSuccess = '[Admin API] Load Divisions Success',
-  LoadTeamsFail = '[Admin API] Load Teams File',
-  SetSelectedTeam = '[Admin] Set Selected Division'
+  LoadDivisionTeams = '[Admin] Load Division Season Teams',
+  LoadDivisionTeamsSuccess = '[Admin] Load Division Teams Success',
+  LoadDivisionTeamsFail = '[Admin] Load Teams Fail',
+  SetSelectedTeam = '[Admin] Set Selected Team'
 }
 export class LoadCurrentSeason implements Action {
   readonly type = AdminActionTypes.LoadCurrentSeason;
@@ -41,6 +44,21 @@ export class LoadGamesFail implements Action {
   readonly type = AdminActionTypes.LoadGamesFail;
   constructor(public payload: string) {}
 }
+export class LoadFilteredGames implements Action {
+  readonly type = AdminActionTypes.LoadFilteredGames;
+}
+export class LoadFilteredGamesSuccess implements Action {
+  readonly type = AdminActionTypes.LoadFilteredGamesSuccess;
+  constructor(public payload: Game[]) {
+    console.log(payload);
+  }
+}
+
+export class LoadFilteredGamesFail implements Action {
+  readonly type = AdminActionTypes.LoadFilteredGamesFail;
+  constructor(public payload: string) {}
+}
+
 export class LoadSeasons implements Action {
   readonly type = AdminActionTypes.LoadSeasons;
 }
@@ -81,9 +99,7 @@ export class LoadDivisions implements Action {
 }
 export class LoadDivisionsSuccess implements Action {
   readonly type = AdminActionTypes.LoadDivisionsSuccess;
-  constructor(public payload: Division[]) {
-    console.log(payload);
-  }
+  constructor(public payload: Division[]) {}
 }
 
 export class LoadDivisionsFail implements Action {
@@ -94,18 +110,18 @@ export class SetSelectedDivision implements Action {
   readonly type = AdminActionTypes.SetSelectedDivision;
   constructor(public payload: Division) {}
 }
-export class LoadTeams implements Action {
-  readonly type = AdminActionTypes.LoadTeams;
+export class LoadDivisionTeams implements Action {
+  readonly type = AdminActionTypes.LoadDivisionTeams;
 }
-export class LoadTeamsSuccess implements Action {
-  readonly type = AdminActionTypes.LoadTeamsSuccess;
-  constructor(public payload: Division[]) {
+export class LoadDivisionTeamsSuccess implements Action {
+  readonly type = AdminActionTypes.LoadDivisionTeamsSuccess;
+  constructor(public payload: Team[]) {
     console.log(payload);
   }
 }
 
-export class LoadTeamsFail implements Action {
-  readonly type = AdminActionTypes.LoadTeamsFail;
+export class LoadDivisionTeamsFail implements Action {
+  readonly type = AdminActionTypes.LoadDivisionTeamsFail;
   constructor(public payload: string) {}
 }
 export class SetSelectedTeam implements Action {
@@ -119,6 +135,9 @@ export type AdminActions =
   | LoadGames
   | LoadGamesSuccess
   | LoadGamesFail
+  | LoadFilteredGames
+  | LoadFilteredGamesSuccess
+  | LoadFilteredGamesFail
   | LoadSeasons
   | LoadSeasonsSuccess
   | LoadSeasonsFail
@@ -129,7 +148,7 @@ export type AdminActions =
   | LoadDivisionsSuccess
   | LoadDivisionsFail
   | SetSelectedDivision
-  | LoadTeams
-  | LoadTeamsSuccess
-  | LoadTeamsFail
+  | LoadDivisionTeams
+  | LoadDivisionTeamsSuccess
+  | LoadDivisionTeamsFail
   | SetSelectedTeam;

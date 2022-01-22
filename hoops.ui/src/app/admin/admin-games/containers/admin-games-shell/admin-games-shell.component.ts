@@ -12,8 +12,8 @@ import { Season } from '../../../../domain/season';
   templateUrl: './admin-games-shell.component.html',
   styleUrls: [
     './admin-games-shell.component.scss',
-    '../../../admin.component.scss'
-  ]
+    '../../../admin.component.scss',
+  ],
 })
 export class AdminGamesShellComponent implements OnInit {
   seasons$ = this.store.select(fromAdmin.getSeasons);
@@ -26,17 +26,24 @@ export class AdminGamesShellComponent implements OnInit {
   ngOnInit(): void {
     //    this.store.dispatch(new adminActions.LoadSeasons());
 
-    this.store.select(fromAdmin.getCurrentSeason).subscribe(season => {
+    this.store.select(fromAdmin.getCurrentSeason).subscribe((season) => {
       console.log(season);
-
-//       this.store.dispatch(new adminActions.Load());
-      this.store.dispatch(new adminActions.LoadDivisions());
-      this.store.dispatch(new adminActions.LoadTeams());
+      if (season !== undefined) {
+        this.store.dispatch(new adminActions.LoadGames());
+        this.store.dispatch(new adminActions.LoadDivisions());
+        //this.store.dispatch(new adminActions.LoadTeams());
+      }
+    });
+    this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
+      console.log(division);
+      if (division !== undefined) {
+        this.store.dispatch(new adminActions.LoadFilteredGames());
+      }
     });
   }
   selectedSeason(season: Season) {
     console.log(season);
-    this.store.dispatch(new adminActions.SetCurrentSeason(season));
+    // this.store.dispatch(new adminActions.SetCurrentSeason(season));
   }
   clickedDivision(division: MouseEvent) {
     // TODO: need to change the parameter

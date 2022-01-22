@@ -1,6 +1,4 @@
 import { Component, OnInit, OnChanges, Input } from '@angular/core';
-// import { Observable } from 'rxjs/Observable';
-// import { Subscription } from 'rxjs/Subscription';
 
 import { SeasonService } from '../../services/season.service';
 import { DivisionService } from '../../services/division.service';
@@ -63,11 +61,11 @@ export class DivisionListComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.store
-      .pipe(select(fromAdmin.getCurrentSeasonId))
-      .subscribe(seasonId => {
-        this.seasonId = seasonId;
+      .pipe(select(fromAdmin.getCurrentSeason))
+      .subscribe(season => {
+        this.seasonId = season.seasonId;
         console.log(this.seasonId);
-        this._divisionService.getDivisions(seasonId as number).subscribe(divisions => {
+        this._divisionService.getDivisions(season.seasonId as number).subscribe(divisions => {
           this.divisions = divisions;
           this.dataSource = new MatTableDataSource(divisions);
 

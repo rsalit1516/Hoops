@@ -25,12 +25,9 @@ export class GameEffects {
   divisionId$!: Observable<number>;
   divisionId!: number;
   private gameUrl = this.dataService.seasonGamesUrl;
-  private divisionUrl =
-    this.dataService.webUrl + '/api/division/GetSeasonDivisions/';
-  private divisionStartUrl =
-    this.dataService.webUrl + '/api/division/GetSeasonDivisions/';
-  private playoffGameUrl =
-    this.dataService.webUrl + '/api/schedulegame/getSeasonPlayoffGames';
+  private divisionUrl = this.dataService.seasonDivisionsUrl;
+  private divisionStartUrl =  this.dataService.seasonDivisionsUrl;
+  private playoffGameUrl = this.dataService.playoffGameUrl;
   teamId: any;
   team: Team | undefined;
 
@@ -47,7 +44,7 @@ export class GameEffects {
   ) {}
 
   // tslint:disable-next-line:member-ordering
-  
+
   loadGames$: Observable<Action> = createEffect(() => this.actions$.pipe(
     ofType(gameActions.GameActionTypes.Load),
     concatMap((action) =>
@@ -76,7 +73,7 @@ export class GameEffects {
   ));
 
   // tslint:disable-next-line:member-ordering
-  
+
   loadPlayoffGames$: Observable<Action> = createEffect(() => this.actions$.pipe(
     ofType(gameActions.GameActionTypes.LoadPlayoffGames),
     concatMap((action) =>
@@ -107,7 +104,7 @@ export class GameEffects {
   ));
 
   // tslint:disable-next-line:member-ordering
-  
+
   setCurrentSeason$: Observable<Action> = createEffect(() => this.actions$.pipe(
     ofType(gameActions.GameActionTypes.LoadCurrentSeason),
     mergeMap((action) =>
@@ -120,7 +117,7 @@ export class GameEffects {
   ));
 
   // tslint:disable-next-line:member-ordering
-  
+
   loadDivisions$: Observable<Action> = createEffect(() => this.actions$.pipe(
     ofType(gameActions.GameActionTypes.LoadDivisions),
     concatMap((action) =>
@@ -147,7 +144,7 @@ export class GameEffects {
   ));
 
   // tslint:disable-next-line:member-ordering
-  
+
   changeDivision$: Observable<Action> = createEffect(() => this.actions$.pipe(
     ofType(gameActions.GameActionTypes.SetCurrentDivision),
     tap((x) => (this.gameService.divisionId = x)),
@@ -156,7 +153,7 @@ export class GameEffects {
   ));
 
   // tslint:disable-next-line:member-ordering
-  
+
   loadTeams$: Observable<Action> = createEffect(() => this.actions$.pipe(
     ofType(gameActions.GameActionTypes.LoadTeams),
     mergeMap((action) =>
@@ -168,7 +165,7 @@ export class GameEffects {
     )
   ));
   // tslint:disable-next-line:member-ordering
-  
+
   loadFilteredGames$: Observable<Action> = createEffect(() => this.actions$.pipe(
     ofType(gameActions.GameActionTypes.LoadFilteredGames),
     concatMap((action) =>
@@ -194,7 +191,7 @@ export class GameEffects {
   ));
 
   // tslint:disable-next-line:member-ordering
-  
+
   loadStandings$: Observable<Action> = createEffect(() => this.actions$.pipe(
     ofType(gameActions.GameActionTypes.LoadStandings),
     concatMap((action) =>
@@ -220,7 +217,7 @@ export class GameEffects {
 
 
   // tslint:disable-next-line:member-ordering
-  
+
   loadFilteredTeams$: Observable<Action> = createEffect(() => this.actions$.pipe(
     ofType(gameActions.GameActionTypes.LoadFilteredTeams),
     concatMap((action) =>
@@ -246,7 +243,7 @@ export class GameEffects {
   ));
 
     // tslint:disable-next-line:member-ordering
-    
+
     changeTeam$: Observable<Action> = createEffect(() => this.actions$.pipe(
       ofType(gameActions.GameActionTypes.SetCurrentTeam),
       tap(x => this.gameService.teamId = x),
@@ -255,7 +252,7 @@ export class GameEffects {
     ));
 
     // tslint:disable-next-line:member-ordering
-  
+
   loadFilteredGamesByTeam$: Observable<Action> = createEffect(() => this.actions$.pipe(
     ofType(gameActions.GameActionTypes.LoadFilteredGamesByTeam),
     concatMap((action) =>

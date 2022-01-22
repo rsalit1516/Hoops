@@ -1,14 +1,10 @@
 <form [formGroup]="selectForm">
   <mat-form-field>
     <mat-label>Select Season</mat-label>
-    <mat-select formControlName="description" [(ngModel)]="selected">
-      <mat-option
-      *ngFor="let season of seasons$ | async"
-      ngValue="season"
-      (click)="selectedSeason(season)"
-    >
-      {{ season.description }}
-    </mat-option>
+    <mat-select formControlName="season" class="form-control">
+      <mat-option *ngFor="let season of seasons$ | async" [value]="season">
+        {{ season.description }}
+      </mat-option>
     </mat-select>
   </mat-form-field>
 </form>

@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { pipe } from 'rxjs';
-import { filter } from 'rxjs/operators';
 
 import * as fromAdmin from '../../state';
 import { Observable } from 'rxjs';
@@ -22,30 +20,29 @@ export class SeasonSelectComponent implements OnInit {
 
   constructor(private store: Store<fromAdmin.State>, private fb: FormBuilder) {
     this.selectForm = this.fb.group({
-      description: new FormControl(''),
+      season: new FormControl(''),
     });
   }
 
   ngOnInit() {
-    this.seasonComponent = this.selectForm.get('description') as FormControl;
+    this.seasonComponent = this.selectForm.get('season') as FormControl;
     this.seasons$ = this.store.pipe(select(fromAdmin.getSeasons));
 
     this.seasonComponent?.valueChanges.subscribe((value) => {
       console.log(value);
       this.store.dispatch(new adminActions.SetSelectedSeason(value));
-      this.store.dispatch(new adminActions.SetSelectedSeasonId(value.seasonId));
+      // this.store.dispatch(new adminActions.SetSelectedSeasonId(value.seasonId));
     });
     this.seasons$.subscribe((seasons) => {
       if (seasons === undefined) {
         this.selected = seasons[0];
-        console.log(this.selected);
         this.selectedSeason(this.selected);
       }
     });
   }
   selectedSeason(season: Season) {
     console.log(season);
-    this.store.dispatch(new adminActions.SetSelectedSeason(season));
-    this.store.dispatch(new adminActions.SetSelectedSeasonId(season.seasonId));
+    // this.store.dispatch(new adminActions.SetSelectedSeason(season));
+    // this.store.dispatch(new adminActions.SetSelectedSeasonId(season.seasonId));
   }
 }

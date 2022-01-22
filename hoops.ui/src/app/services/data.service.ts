@@ -16,11 +16,11 @@ export class DataService {
   directorUrl = this.baseUrl + '/api/Director';
   seasonGamesUrl = this.baseUrl + '/api/Schedulegame/getSeasonGames';
   seasonDivisionsUrl = this.baseUrl + '/api/division/GetSeasonDivisions/';
+  playoffGameUrl = this.baseUrl + '/api/schedulegame/getSeasonPlayoffGames';
 
 
   constructor (private _http: HttpClient) {
     this.webUrl = environment.apiUrl;
-    // console.log(environment.apiUrl);
     // this.webUrl = 'http://csbc-webapi.azurewebsites.net';
     // this.webUrl = 'https://apicsbc.azurewebsites.net';
     this.dotNetCoreUrl = environment.apiUrl;
