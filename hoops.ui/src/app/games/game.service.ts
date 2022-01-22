@@ -135,13 +135,12 @@ export class GameService {
     let sortedDate: Game[] = [];
     this.store.pipe(select(fromGames.getGames)).subscribe((allGames) => {
       this.allGames = allGames;
-      console.log(allGames);
       this.setCanEdit(div);
       if (allGames) {
         for (let i = 0; i < this.allGames.length; i++) {
           if (this.allGames[i].divisionId === div) {
             let game = allGames[i];
-            console.log(game);
+            // console.log(game);
             // if (allGames[i].homeTeamScore === -1) allGames[i].homeTeamScore = 0;
             // if (game.homeTeamScore === -1) game.homeTeamScore = 0;
             // if (game.visitingTeamScore === -1) game.visitingTeamScore = 0;

@@ -1,1 +1,51 @@
-<p>admin-game-detail works!</p>
+
+<form [formGroup]="gameEditForm">
+  <mat-form-field class="example-full-width" appearance="fill" >
+    <mat-label>Game Date</mat-label>
+    <input matInput [matDatepicker]="picker" value="gameDate" formControlName="gameDate">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+  <mat-form-field class="example-full-width" appearance="fill" >
+    <mat-label>Game Time</mat-label>
+    <input matInput value="gameTime" placeholder="06:00" formControlName="gameTime">
+
+  </mat-form-field>
+  <mat-form-field class="example-full-width" appearance="fill" >
+    <mat-label>Location</mat-label>
+    <input matInput value="locationName" formControlName="locationName">
+  </mat-form-field>
+  <mat-form-field class="example-full-width" appearance="fill" >
+    <mat-label>Visitor Team</mat-label>
+    <input matInput value="visitorTeam" formControlName="visitorTeam">
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width" appearance="fill" >
+    <mat-label>HomeTeam</mat-label>
+    <input matInput value="homeTeam" formControlName="homeTeam">
+  </mat-form-field>
+</form>
+
+<!-- divisionId(pin):4126
+companyId(pin):null
+seasonId(pin):2204
+divisionDescription(pin):"SI BOYS"
+gameDate(pin):"2021-12-06T18:00:00"
+gameTimeString(pin):"1899-12-30 18:00:00"
+gameTime(pin):"1899-12-30T18:00:00"
+locationName(pin):"Gym East"
+gameNumber(pin):1
+visitingTeamNumber(pin):61
+homeTeamNumber(pin):18
+visitingTeamSeasonNumber(pin):12
+homeTeamSeasonNumber(pin):3
+visitingTeamName(pin):"WHITE (12)"
+homeTeamName(pin):"ROYAL BLUE (03)"
+scheduleNumber(pin):74
+homeTeamScore(pin):21
+visitingTeamScore(pin):22
+gameDescription(pin):null
+visitingTeamId(pin):7498
+homeTeamId(pin):7486
+gameType(pin):0
+ -->

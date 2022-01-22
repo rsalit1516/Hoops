@@ -33,7 +33,6 @@ export const getSeasonDivisions = createSelector(
   getAdminFeatureState,
   state => state.seasonDivisions
 );
-
 export const getSeasonGames = createSelector(
   getAdminFeatureState,
   state => state.games
@@ -41,4 +40,8 @@ export const getSeasonGames = createSelector(
 export const getFilteredGames = createSelector(
   getAdminFeatureState,
   state => state.filteredGames
+);
+export const getSelectedGame = createSelector(
+  getAdminFeatureState,
+  state => state.selectedGame
 );

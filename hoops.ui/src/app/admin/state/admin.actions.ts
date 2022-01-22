@@ -27,7 +27,8 @@ export enum AdminActionTypes {
   LoadDivisionTeams = '[Admin] Load Division Season Teams',
   LoadDivisionTeamsSuccess = '[Admin] Load Division Teams Success',
   LoadDivisionTeamsFail = '[Admin] Load Teams Fail',
-  SetSelectedTeam = '[Admin] Set Selected Team'
+  SetSelectedTeam = '[Admin] Set Selected Team',
+  SetSelectedGame = '[Admin] Set SelectedGame'
 }
 export class LoadCurrentSeason implements Action {
   readonly type = AdminActionTypes.LoadCurrentSeason;
@@ -49,9 +50,7 @@ export class LoadFilteredGames implements Action {
 }
 export class LoadFilteredGamesSuccess implements Action {
   readonly type = AdminActionTypes.LoadFilteredGamesSuccess;
-  constructor(public payload: Game[]) {
-    console.log(payload);
-  }
+  constructor(public payload: Game[]) {}
 }
 
 export class LoadFilteredGamesFail implements Action {
@@ -129,6 +128,10 @@ export class SetSelectedTeam implements Action {
   constructor(public payload: Team) {}
 }
 
+export class SetSelectedGame implements Action {
+  readonly type = AdminActionTypes.SetSelectedGame;
+  constructor(public payload: Game) {}
+}
 export type AdminActions =
   | LoadCurrentSeason
   | SetCurrentSeason
@@ -151,4 +154,5 @@ export type AdminActions =
   | LoadDivisionTeams
   | LoadDivisionTeamsSuccess
   | LoadDivisionTeamsFail
-  | SetSelectedTeam;
+  | SetSelectedTeam
+  | SetSelectedGame;

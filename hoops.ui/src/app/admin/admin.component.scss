@@ -15,13 +15,14 @@
 .mat-label, .mat-form-field, .mat-form-field-label {
   font-size: 1.2em;
   color: $card-title-font-size;
+  background-color: $admin-background-color;
 }
 
 .mat-table {
   width: 100%;
 }
 fieldset {
-  background-color: black;
+  background-color: $admin-table-background-color;
 }
 
 nav.sidebar {
@@ -235,6 +236,9 @@ div {
   color: $card-background-color;
 }
 .form-control {
-  background-color: $card-background-color;
-  color: $font-color-text;
+  background-color: $admin-table-background-color;
+  color: $admin-font-color;
+}
+.row-is-clicked {
+  font-weight: bold;
 }

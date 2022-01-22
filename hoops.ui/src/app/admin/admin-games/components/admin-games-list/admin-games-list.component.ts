@@ -4,10 +4,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { MediaObserver } from '@angular/flex-layout';
 import { MatTableDataSource } from '@angular/material/table';
 import { Game } from 'app/domain/game';
-import * as fromGames from '../../../../games/state';
-import * as gameActions from 'app/games/state/games.actions';
+import * as fromAdmin from '../../../state';
+import * as adminActions from '../../../state/admin.actions';
+import { Observable } from 'rxjs';
 @Component({
-  selector: 'csbc-admin-games-list',
+  selector: 'admin-games-list',
   templateUrl: './admin-games-list.component.html',
   styleUrls: [
     './admin-games-list.component.scss',
@@ -17,14 +18,17 @@ import * as gameActions from 'app/games/state/games.actions';
 export class AdminGamesListComponent implements OnInit {
   dataSource!: MatTableDataSource<Game>;
   games!: Game[];
+  games$: Observable<Game[]> | undefined;
+
   displayedColumns!: string[];
   flexMediaWatcher: any;
   currentScreenWidth: any;
   title = 'Game List';
   canEdit: boolean = false;
+  clickedRows = new Set<Game>();
 
   constructor(
-    private store: Store<fromGames.State>,
+    private store: Store<fromAdmin.State>,
     public dialog: MatDialog,
     private media: MediaObserver
   ) {
@@ -44,14 +48,13 @@ export class AdminGamesListComponent implements OnInit {
       'visitingTeamScore',
     ];
     console.log(this.games);
-    this.dataSource = new MatTableDataSource(this.games);
+    this.store.select(fromAdmin.getFilteredGames).subscribe((games) => {
+      this.dataSource = new MatTableDataSource(games);
+    });
   }
 
   ngOnInit(): void {
     this.setupTable();
-    this.store.select(fromGames.getCurrentSeason).subscribe((season) => {
-      this.store.dispatch(new gameActions.Load());
-    });
   }
   setupTable() {
     this.displayedColumns = [
@@ -78,5 +81,9 @@ export class AdminGamesListComponent implements OnInit {
   }
   editGame(game: Game) {
     // TODO: implement this method
+  }
+  selectRow(row: any) {
+    console.log(row);
+    this.store.dispatch(new adminActions.SetSelectedGame(row));
   }
 }

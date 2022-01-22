@@ -6,6 +6,7 @@ import { Store, select } from '@ngrx/store';
 import * as fromAdmin from '../../state';
 import * as adminActions from '../../state/admin.actions';
 import { Observable } from 'rxjs';
+import { Game } from '@app/domain/game';
 
 @Component({
   selector: 'csbc-admin-season-list',
@@ -47,5 +48,8 @@ export class AdminSeasonListComponent implements OnInit {
     this.displayColumns.push('description');
     this.displayColumns.push('fromDate');
     this.displayColumns.push('toDate');
+  }
+  selectRow(row: any) {
+    console.log('Row' + row);
   }
 }

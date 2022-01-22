@@ -6,6 +6,7 @@ import { AdminGamesShellComponent } from './containers/admin-games-shell/admin-g
 import { CoreModule } from '@app/core/core.module';
 import { SharedModule } from '@app/shared/shared.module';
 import { AdminSharedModule } from '../admin-shared/admin-shared.module';
+import { AdminGameDetailComponent } from './components/admin-game-detail/admin-game-detail.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,6 @@ import { AdminSharedModule } from '../admin-shared/admin-shared.module';
     SharedModule,
     AdminSharedModule
   ],
-  declarations: [AdminGamesListComponent, AdminGamesShellComponent],
+  declarations: [AdminGamesListComponent, AdminGamesShellComponent, AdminGameDetailComponent]
 })
 export class AdminGamesModule {}

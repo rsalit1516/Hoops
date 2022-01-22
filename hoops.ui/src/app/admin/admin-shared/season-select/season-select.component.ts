@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { Season } from 'app/domain/season';
 import * as adminActions from '../../state/admin.actions';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { subscribeOn } from 'rxjs-compat/operator/subscribeOn';
 
 @Component({
   selector: 'season-select',
@@ -27,7 +28,10 @@ export class SeasonSelectComponent implements OnInit {
   ngOnInit() {
     this.seasonComponent = this.selectForm.get('season') as FormControl;
     this.seasons$ = this.store.pipe(select(fromAdmin.getSeasons));
-
+    this.store.pipe(select(fromAdmin.getCurrentSeason)).subscribe((season) => {
+      console.log(season);
+      this.seasonComponent?.setValue(season);
+    });
     this.seasonComponent?.valueChanges.subscribe((value) => {
       console.log(value);
       this.store.dispatch(new adminActions.SetSelectedSeason(value));
