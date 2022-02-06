@@ -13,9 +13,9 @@ export interface State extends fromRoot.State {
 const getAdminFeatureState = createFeatureSelector<fromAdmin.AdminState>(
   'admin'
 );
-export const getCurrentSeason = createSelector(
+export const getSelectedSeason = createSelector(
   getAdminFeatureState,
-  state => state.currentSeason
+  state => state.selectedSeason
 );
 export const getSelectedDivision = createSelector(
   getAdminFeatureState,
@@ -44,4 +44,12 @@ export const getFilteredGames = createSelector(
 export const getSelectedGame = createSelector(
   getAdminFeatureState,
   state => state.selectedGame
+);
+export const getSeasonTeams = createSelector(
+  getAdminFeatureState,
+  state => state.seasonTeams
+);
+export const getDivisionTeams = createSelector(
+  getAdminFeatureState,
+  state => state.divisionTeams
 );

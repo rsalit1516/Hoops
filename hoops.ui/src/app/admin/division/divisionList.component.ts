@@ -61,7 +61,7 @@ export class DivisionListComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.store
-      .pipe(select(fromAdmin.getCurrentSeason))
+      .pipe(select(fromAdmin.getSelectedSeason))
       .subscribe(season => {
         this.seasonId = season.seasonId;
         console.log(this.seasonId);

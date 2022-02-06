@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Division } from '@app/domain/division';
 import { Observable } from 'rxjs';
 import * as fromAdmin from '../../state';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import * as adminActions from '../../state/admin.actions';
 
@@ -29,9 +29,15 @@ export class DivisionSelectComponent implements OnInit {
     // this.divisions$ = this.store.select(fromAdmin.getSeasonDivisions); //.subscribe(divisions => this.divisions = divisions);
     this.divisionComponent = this.selectForm.get('division') as FormControl;
     this.divisionComponent?.valueChanges.subscribe((value) => {
-      // console.log(value);
+      console.log(value);
       this.store.dispatch(new adminActions.SetSelectedDivision(value));
     });
+    this.store.pipe(select(fromAdmin.getSelectedDivision)).subscribe((division) => {
+      console.log(division);
+      this.divisionComponent?.setValue(division);
+
+    });
+
   }
   onClick(division: Division) {
     // this.selectedDivision.emit(division);

@@ -18,7 +18,7 @@ export class DataService {
   seasonDivisionsUrl = this.baseUrl + '/api/division/GetSeasonDivisions/';
   playoffGameUrl = this.baseUrl + '/api/schedulegame/getSeasonPlayoffGames';
   getCurrentSeasonUrl = this.baseUrl + '/api/season/getCurrentSeason';
-
+  getSeasonTeamsUrl = this.baseUrl + '/api/Team/getSeasonTeams/';
 
   constructor (private _http: HttpClient) {
     this.webUrl = environment.apiUrl;

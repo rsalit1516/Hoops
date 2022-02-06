@@ -28,7 +28,7 @@ export class SeasonSelectComponent implements OnInit {
   ngOnInit() {
     this.seasonComponent = this.selectForm.get('season') as FormControl;
     this.seasons$ = this.store.pipe(select(fromAdmin.getSeasons));
-    this.store.pipe(select(fromAdmin.getCurrentSeason)).subscribe((season) => {
+    this.store.pipe(select(fromAdmin.getSelectedSeason)).subscribe((season) => {
       console.log(season);
       this.seasonComponent?.setValue(season);
     });

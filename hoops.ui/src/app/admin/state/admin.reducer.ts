@@ -6,29 +6,31 @@ import { Game } from '@app/domain/game';
 import { Team } from '@app/domain/team';
 
 export interface AdminState {
+  selectedSeason: Season;
   selectedDivision: Division | null;
   currentTeamId: number | null;
   games: Game[];
   filteredGames: Game[];
   seasons: Season[];
-  currentSeason: Season;
   divisions: Division[];
-  teams: Team[];
+  divisionTeams: Team[];
   seasonDivisions: Division[];
   selectedGame: Game | null;
+  seasonTeams: Team[] | null;
 }
 
 const initialState: AdminState = {
-  currentSeason: new Season(),
+  selectedSeason: new Season(),
   selectedDivision: null,
   currentTeamId: null,
   games: [],
   filteredGames: [],
   seasons: [],
   divisions: [],
-  teams: [],
+  divisionTeams: [],
   seasonDivisions: [],
   selectedGame: null,
+  seasonTeams: []
 };
 
 export function reducer(
@@ -42,11 +44,11 @@ export function reducer(
         seasons: action.payload,
       };
 
-    case AdminActionTypes.SetCurrentSeason:
-      return {
-        ...state,
-        currentSeason: action.payload,
-      };
+    // case AdminActionTypes.SetCurrentSeason:
+    //   return {
+    //     ...state,
+    //     currentSeason: action.payload,
+    //   };
     case AdminActionTypes.SetSelectedDivision:
       return {
         ...state,
@@ -55,7 +57,7 @@ export function reducer(
     case AdminActionTypes.SetSelectedSeason:
       return {
         ...state,
-        currentSeason: action.payload,
+        selectedSeason: action.payload,
       };
     case AdminActionTypes.SetSelectedGame:
       return {
@@ -80,9 +82,15 @@ export function reducer(
     case AdminActionTypes.LoadDivisionTeamsSuccess:
       return {
         ...state,
-        teams: action.payload,
+        divisionTeams: action.payload,
       };
-    default: {
+
+      case AdminActionTypes.LoadSeasonTeamsSuccess:
+        return {
+          ...state,
+          seasonTeams: action.payload,
+        };
+        default: {
       return state;
     }
   }

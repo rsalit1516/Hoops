@@ -22,9 +22,28 @@ export class AdminShellComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(new contentActions.Load());
     this.store.dispatch(new adminActions.LoadSeasons());
-    this.store.select(fromAdmin.getCurrentSeason).subscribe((season) => {
+    this.store.select(fromAdmin.getSeasons).subscribe((seasons) => {
+      this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
+        console.log(season);
+        if (season.seasonId === undefined) {
+          for (let i = 0; i < seasons.length; i++) {
+            if (seasons[i].currentSeason === true) {
+              this.store.dispatch(
+                new adminActions.SetSelectedSeason(seasons[i])
+              );
+              break;
+            }
+          }
+        }
+      });
+    });
+    this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
       console.log(season);
       this.store.dispatch(new adminActions.LoadDivisions());
+    });
+    this.store.select(fromAdmin.getSeasonDivisions).subscribe((divisions) => {
+      console.log(divisions);
+      this.store.dispatch(new adminActions.SetSelectedDivision(divisions[0]));
     });
   }
 }

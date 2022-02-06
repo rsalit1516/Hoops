@@ -1,12 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { Season } from 'app/domain/season';
 import { Store, select } from '@ngrx/store';
 
 import * as fromAdmin from '../../state';
 import * as adminActions from '../../state/admin.actions';
-import { Observable } from 'rxjs';
-import { Game } from '@app/domain/game';
+import { Season } from '@app/domain/season';
 
 @Component({
   selector: 'csbc-admin-season-list',

@@ -26,18 +26,20 @@ export class AdminGamesShellComponent implements OnInit {
   ngOnInit(): void {
     //    this.store.dispatch(new adminActions.LoadSeasons());
 
-    this.store.select(fromAdmin.getCurrentSeason).subscribe((season) => {
+    this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
       console.log(season);
       if (season !== undefined) {
         this.store.dispatch(new adminActions.LoadGames());
         this.store.dispatch(new adminActions.LoadDivisions());
-        //this.store.dispatch(new adminActions.LoadTeams());
+        this.store.dispatch(new adminActions.LoadSeasonTeams());
       }
     });
+
     this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
       console.log(division);
       if (division !== undefined) {
         this.store.dispatch(new adminActions.LoadFilteredGames());
+        this.store.dispatch(new adminActions.LoadDivisionTeams());
       }
     });
   }

@@ -133,6 +133,7 @@ export class GameService {
   filterGamesByDivision(div: number): Observable<Game[]> {
     let games: Game[] = [];
     let sortedDate: Game[] = [];
+    console.log(div);
     this.store.pipe(select(fromGames.getGames)).subscribe((allGames) => {
       this.allGames = allGames;
       this.setCanEdit(div);

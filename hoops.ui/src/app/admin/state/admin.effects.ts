@@ -19,11 +19,12 @@ import * as adminActions from './admin.actions';
 import * as fromAdmin from './';
 import { Game } from 'app/domain/game';
 import { HttpClient } from '@angular/common/http';
-import { GameService } from 'app/games/game.service';
 import { TeamService } from 'app/services/team.service';
 import { DataService } from 'app/services/data.service';
 import { Division } from 'app/domain/division';
 import { Season } from '@app/domain/season';
+import { Team } from '@app/domain/team';
+import { GameService } from '../services/game.service';
 
 @Injectable()
 export class AdminEffects {
@@ -62,7 +63,7 @@ export class AdminEffects {
       ofType(adminActions.AdminActionTypes.LoadDivisions),
       concatMap(action =>
         of(action).pipe(
-          withLatestFrom(this.store.pipe(select(fromAdmin.getCurrentSeason))),
+          withLatestFrom(this.store.pipe(select(fromAdmin.getSelectedSeason))),
           tap(season => console.log(season))
         )
       ),
@@ -90,7 +91,7 @@ export class AdminEffects {
     ofType(adminActions.AdminActionTypes.LoadGames),
     concatMap(action =>
       of(action).pipe(
-        withLatestFrom(this.store.pipe(select(fromAdmin.getCurrentSeason))),
+        withLatestFrom(this.store.pipe(select(fromAdmin.getSelectedSeason))),
         tap(divisions => console.log(divisions))
       )
     ),
@@ -113,12 +114,11 @@ export class AdminEffects {
     )
   ));
     // tslint:disable-next-line:member-ordering
-
     setCurrentSeason$: Observable<Action> = createEffect(() => this.actions$.pipe(
       ofType(adminActions.AdminActionTypes.LoadCurrentSeason),
       mergeMap(action =>
         this.seasonService.currentSeason$.pipe(
-          map(season => new adminActions.SetCurrentSeason(season as Season)),
+          map(season => new adminActions.SetSelectedSeason(season as Season)),
           tap(data => console.log(data)),
           catchError(err => of(new adminActions.LoadDivisionsFail(err)))
         )
@@ -134,7 +134,7 @@ export class AdminEffects {
       ),
       tap(([action, t]) => {
         if (t) {
-          // console.log(t);
+          console.log(t);
           this.divisionId = t.divisionId;
         } else {
           this.divisionId = 0;
@@ -143,6 +143,55 @@ export class AdminEffects {
       switchMap((action) =>
         this.gameService.filterGamesByDivision(this.divisionId).pipe(
           map((games) => new adminActions.LoadFilteredGamesSuccess(games)),
+          // tap(response => console.log(response)),
+          catchError((err) => of(new adminActions.LoadFilteredGamesFail(err)))
+        )
+      )
+    ));
+    loadSeasonTeam$: Observable<Action> = createEffect(() => this.actions$.pipe(
+      ofType(adminActions.AdminActionTypes.LoadGames),
+      concatMap(action =>
+        of(action).pipe(
+          withLatestFrom(this.store.pipe(select(fromAdmin.getSelectedSeason))),
+          tap(divisions => console.log(divisions))
+        )
+      ),
+      tap(([action, t]) => {
+        if (t) {
+          this.seasonId = t.seasonId;
+        } else {
+          this.seasonId = 0;
+        }
+      }),
+
+      mergeMap(action =>
+        this.http.get<Team[]>(this.dataService.getSeasonTeamsUrl + this.seasonId).pipe(
+          // tap(data => console.log('All admin games: ' + JSON.stringify(data))),
+          shareReplay(1),
+          map(games => new adminActions.LoadSeasonTeamsSuccess(games)),
+          tap(games => console.log(games)),
+          catchError(err => of(new adminActions.LoadSeasonTeamsFail(err)))
+        )
+      )
+    ));
+    loadDivisionTeams$: Observable<Action> = createEffect(() => this.actions$.pipe(
+      ofType(adminActions.AdminActionTypes.LoadDivisionTeams),
+      concatMap((action) =>
+        of(action).pipe(
+          withLatestFrom(this.store.pipe(select(fromAdmin.getSelectedDivision)))
+        )
+      ),
+      tap(([action, t]) => {
+        if (t) {
+          // console.log(t);
+          this.divisionId = t.divisionId;
+        } else {
+          this.divisionId = 0;
+        }
+      }),
+      switchMap((action) =>
+        this.teamService.filterTeamsByDivision(this.divisionId).pipe(
+          map((teams) => new adminActions.LoadDivisionTeamsSuccess(teams)),
           // tap(response => console.log(response)),
           catchError((err) => of(new adminActions.LoadFilteredGamesFail(err)))
         )

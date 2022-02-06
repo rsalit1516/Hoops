@@ -1,31 +1,64 @@
+<mat-card>
+  <mat-card-title>Game</mat-card-title>
+  <mat-card-content>
+    <form [formGroup]="gameEditForm">
+      <mat-form-field class="form-control" appearance="fill">
+        <mat-label>Game Date</mat-label>
+        <input
+          matInput
+          [matDatepicker]="picker"
+          value="gameDate"
+          formControlName="gameDate"
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field class="form-control" appearance="fill">
+        <mat-label>Game Time</mat-label>
+        <input
+          matInput
+          value="gameTime"
+          placeholder="06:00"
+          formControlName="gameTime"
+        />
+      </mat-form-field>
+      <mat-form-field class="form-control" appearance="fill">
+        <mat-label>Location</mat-label>
+        <input matInput value="locationName" formControlName="locationName" />
+      </mat-form-field>
+      <mat-form-field
+        class="form-control"
+        appearance="fill"
+      >
+        <mat-label>Visitor Team</mat-label>
+        <mat-select formControlName="visitorTeam" class="form-control">
+          <mat-option
+            *ngFor="let team of divisionTeams$ | async"
+            [value]="team.teamId"
+          >
+            {{ team.teamName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
 
-<form [formGroup]="gameEditForm">
-  <mat-form-field class="example-full-width" appearance="fill" >
-    <mat-label>Game Date</mat-label>
-    <input matInput [matDatepicker]="picker" value="gameDate" formControlName="gameDate">
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
-  <mat-form-field class="example-full-width" appearance="fill" >
-    <mat-label>Game Time</mat-label>
-    <input matInput value="gameTime" placeholder="06:00" formControlName="gameTime">
-
-  </mat-form-field>
-  <mat-form-field class="example-full-width" appearance="fill" >
-    <mat-label>Location</mat-label>
-    <input matInput value="locationName" formControlName="locationName">
-  </mat-form-field>
-  <mat-form-field class="example-full-width" appearance="fill" >
-    <mat-label>Visitor Team</mat-label>
-    <input matInput value="visitorTeam" formControlName="visitorTeam">
-  </mat-form-field>
-
-  <mat-form-field class="example-full-width" appearance="fill" >
-    <mat-label>HomeTeam</mat-label>
-    <input matInput value="homeTeam" formControlName="homeTeam">
-  </mat-form-field>
-</form>
-
+      <mat-form-field class="form-control" appearance="fill">
+        <mat-label>HomeTeam</mat-label>
+        <mat-select formControlName="homeTeam" class="form-control">
+          <mat-option
+            *ngFor="let team of divisionTeams$ | async"
+            [value]="team.teamId"
+          >
+            {{ team.teamName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button color="Primary">Save</button>
+    <button mat-raised-button color="Primary">Cancel</button>
+  </mat-card-actions>
+</mat-card>
 <!-- divisionId(pin):4126
 companyId(pin):null
 seasonId(pin):2204

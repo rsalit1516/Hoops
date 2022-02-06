@@ -1,7 +1,7 @@
 $sidebar-background-color: #232323;
 $brand-color: #c2450b; //#ff5600
 $sidebar-color: orange;
-$background-color: black;
+$background-color: rgb(27, 24, 24);
 $sidebar-pill-background: orange;
 $panel-default-heading-background: #000000;
 $basketball-color: #b86850;
@@ -12,7 +12,7 @@ $navbar-background-color: #212121;
 
 $navbar-color: lighten($brand-color, 30%);
 $sidebar-menu: lighten( black, 12%);
-$card-background-color: darken(#3f3f3f, 10%);
+$card-background-color: lighten(#3f3f3f, 10%);
 $card-background-color-shadow: darken(#3f3f3f, 40%);
 $card-color: lighten(#d17b00, 20%);
 $status-bar-background: #000000;
@@ -34,6 +34,8 @@ $card-title-font-size: 1.8em;
 $button-font-size: 1.4em;
 
 /* admin */
-$admin-background-color: white;
-$admin-font-color: black;
-$admin-table-background-color: rgb(160, 155, 155);
+$admin-background-color: black;
+$admin-font-color: white;
+$admin-table-background-color: lighten(black, 10%);
+$admin-card-background-color: lighten(black, 20%);
+$admin-table-background-color-border: lighten(black, 5%);
