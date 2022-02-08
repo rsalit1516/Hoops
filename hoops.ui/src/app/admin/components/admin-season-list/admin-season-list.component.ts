@@ -27,6 +27,7 @@ export class AdminSeasonListComponent implements OnInit {
   dataSource = new MatTableDataSource();
 
   displayColumns: string[];
+
   constructor(private store: Store<fromAdmin.State>) {
     this.displayColumns = [];
   }

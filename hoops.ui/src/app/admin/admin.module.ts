@@ -26,7 +26,7 @@ import { AdminEffects } from './state/admin.effects';
 import { AdminSeasonShellComponent } from './containers/admin-season-shell/admin-season-shell.component';
 import { AdminSeasonListComponent } from './components/admin-season-list/admin-season-list.component';
 import { AdminDivisionListComponent } from './components/admin-division-list/admin-division-list.component';
-import { AdminTeamListComponent } from './components/admin-team-list/admin-team-list.component';
+
 import { AdminDivisionShellComponent } from './containers/admin-division-shell/admin-division-shell.component';
 import { ContentModule } from './content/content.module';
 import { DirectorModule } from './director/director.module';
@@ -53,8 +53,9 @@ import { AdminSharedModule } from './admin-shared/admin-shared.module';
     DirectorModule,
     AdminGamesModule,
     RegistrationsAndPaymentsModule,
+    AdminSharedModule,
     StoreModule.forFeature('admin', reducer),
-    EffectsModule.forFeature([AdminEffects])
+    EffectsModule.forFeature([AdminEffects]),
   ],
   declarations: [
     AdminComponent,
@@ -63,14 +64,12 @@ import { AdminSharedModule } from './admin-shared/admin-shared.module';
     SeasonListComponent,
     DivisionDetailComponent,
     DivisionListComponent,
-    TeamListComponent,
     PlayerListComponent,
     DivisionMasterComponent,
     AdminShellComponent,
     AdminSeasonShellComponent,
     AdminSeasonListComponent,
     AdminDivisionListComponent,
-    AdminTeamListComponent,
     AdminDivisionShellComponent,
     ImportScheduleComponent,
     SeasonSetupComponent,

@@ -6,7 +6,7 @@ namespace Hoops.Infrastructure.Interface
 {
     public interface IRepository<T> where T : class
     {
-        T Insert(T entity);
+        T Insert(T entity);abstract
         Task<T> InsertAsync(T entity);
         void Delete(T entity);
         Task DeleteAsync(int id);

@@ -53,3 +53,8 @@ export const getDivisionTeams = createSelector(
   getAdminFeatureState,
   state => state.divisionTeams
 );
+export const getSelectedTeam = createSelector(
+  getAdminFeatureState,
+  state => state.selectedTeam
+);
+

@@ -17,6 +17,7 @@ export interface AdminState {
   seasonDivisions: Division[];
   selectedGame: Game | null;
   seasonTeams: Team[] | null;
+  selectedTeam: Team | null;
 }
 
 const initialState: AdminState = {
@@ -30,7 +31,8 @@ const initialState: AdminState = {
   divisionTeams: [],
   seasonDivisions: [],
   selectedGame: null,
-  seasonTeams: []
+  seasonTeams: [],
+  selectedTeam: null
 };
 
 export function reducer(
@@ -84,7 +86,11 @@ export function reducer(
         ...state,
         divisionTeams: action.payload,
       };
-
+      case AdminActionTypes.SetSelectedTeam:
+        return {
+          ...state,
+          selectedTeam: action.payload,
+        };
       case AdminActionTypes.LoadSeasonTeamsSuccess:
         return {
           ...state,

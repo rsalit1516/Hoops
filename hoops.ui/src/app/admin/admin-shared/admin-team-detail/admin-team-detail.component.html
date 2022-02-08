@@ -1,0 +1,41 @@
+<mat-card>
+  <mat-card-title>Game</mat-card-title>
+  <mat-card-content>
+    <form [formGroup]="teamEditForm">
+      <mat-form-field class="form-control" appearance="fill">
+        <mat-label>Team Name</mat-label>
+        <input
+          matInput
+          value="teamName"
+          formControlName="teamName"/>
+      </mat-form-field>
+      <mat-form-field class="form-control" appearance="fill">
+        <mat-label>Team No</mat-label>
+        <input
+          matInput
+          value="gameTime"
+          placeholder=""
+          formControlName="teamNo"
+        />
+      </mat-form-field>
+      <mat-form-field class="form-control" appearance="fill">
+        <mat-label>Color</mat-label>
+        <input matInput value="lcolor" formControlName="color" />
+      </mat-form-field>
+      <mat-form-field class="form-control" appearance="fill">
+        <mat-label>Coach</mat-label>
+        <input matInput value="coach" formControlName="coachName" />
+      </mat-form-field>
+      <mat-form-field class="form-control" appearance="fill">
+        <mat-label>sponsor</mat-label>
+        <input matInput value="sponsor" formControlName="sponsor" />
+      </mat-form-field>
+    </form>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button color="Primary">New Team</button>
+    <button mat-raised-button color="Primary">Save</button>
+    <button mat-raised-button color="Primary">Cancel</button>
+  </mat-card-actions>
+</mat-card>
+
