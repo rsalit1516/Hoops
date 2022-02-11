@@ -57,4 +57,8 @@ export const getSelectedTeam = createSelector(
   getAdminFeatureState,
   state => state.selectedTeam
 );
+export const getColors = createSelector(
+  getAdminFeatureState,
+  state => state.colors
+)
 

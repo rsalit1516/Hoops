@@ -19,7 +19,8 @@ export class DataService {
   playoffGameUrl = this.baseUrl + '/api/schedulegame/getSeasonPlayoffGames';
   getCurrentSeasonUrl = this.baseUrl + '/api/season/getCurrentSeason';
   getSeasonTeamsUrl = this.baseUrl + '/api/Team/getSeasonTeams/';
-
+  getColorUrl = this.baseUrl + '/api/Color';
+  teamPostUrl = this.baseUrl + '/api/Team'
   constructor (private _http: HttpClient) {
     this.webUrl = environment.apiUrl;
     // this.webUrl = 'http://csbc-webapi.azurewebsites.net';

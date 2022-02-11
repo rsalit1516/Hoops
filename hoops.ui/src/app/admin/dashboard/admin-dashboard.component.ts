@@ -9,10 +9,15 @@ import { Season } from 'app/domain/season';
 import { Division } from 'app/domain/division';
 import { TeamService } from '@app/services/team.service';
 import { Team } from '@app/domain/team';
+import { Router } from '@angular/router';
+
+import * as fromAdmin from '../state';
+import * as adminActions from '../state/admin.actions';
+
 @Component({
   selector: 'csbc-admin-dashboard',
   templateUrl: './admin-dashboard.component.html',
-  styleUrls: ['./admin-dashboard.component.scss']
+  styleUrls: ['./admin-dashboard.component.scss'],
 })
 export class AdminDashboardComponent implements OnInit {
   currentSeason!: Season;
@@ -20,29 +25,32 @@ export class AdminDashboardComponent implements OnInit {
   divisionCount!: number;
   teams!: Team[];
   teamCount!: number;
-  constructor(private store: Store<fromGames.State>, private teamService: TeamService) {}
+  constructor(
+    private store: Store<fromAdmin.State>,
+    private teamService: TeamService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
-    this.store.dispatch(new gameActions.LoadCurrentSeason());
+    this.store.dispatch(new adminActions.LoadCurrentSeason());
     this.setStateSubscriptions();
-    this.teamService.getTeams().subscribe(teams => {
+    this.teamService.getTeams().subscribe((teams) => {
       this.teams = teams;
       this.teamCount = teams.length;
     });
   }
   setStateSubscriptions() {
-    this.store
-      .select(fromGames.getCurrentSeason)
-      .subscribe(season => {
-        (this.currentSeason = season as Season);
-        this.store.dispatch(new gameActions.LoadDivisions());
-      }
-        );
-    this.store
-      .select(fromGames.getDivisions)
-      .subscribe(divisions => {
-        (this.divisions = divisions);
-      this.divisionCount = divisions.length; });
-
+    this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
+      this.currentSeason = season as Season;
+      this.store.dispatch(new gameActions.LoadDivisions());
+    });
+    this.store.select(fromAdmin.getSeasonDivisions).subscribe((divisions) => {
+      this.divisions = divisions;
+      this.divisionCount = divisions.length;
+    });
+  }
+  goToDivision(division: Division) {
+    this.store.dispatch(new adminActions.SetSelectedDivision(division));
+    this.router.navigate(['/admin/division']);
   }
 }

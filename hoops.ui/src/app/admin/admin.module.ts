@@ -25,7 +25,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { AdminEffects } from './state/admin.effects';
 import { AdminSeasonShellComponent } from './containers/admin-season-shell/admin-season-shell.component';
 import { AdminSeasonListComponent } from './components/admin-season-list/admin-season-list.component';
-import { AdminDivisionListComponent } from './components/admin-division-list/admin-division-list.component';
+// import { AdminDivisionListComponent } from './components/admin-division-list/admin-division-list.component';
 
 import { AdminDivisionShellComponent } from './containers/admin-division-shell/admin-division-shell.component';
 import { ContentModule } from './content/content.module';
@@ -69,7 +69,6 @@ import { AdminSharedModule } from './admin-shared/admin-shared.module';
     AdminShellComponent,
     AdminSeasonShellComponent,
     AdminSeasonListComponent,
-    AdminDivisionListComponent,
     AdminDivisionShellComponent,
     ImportScheduleComponent,
     SeasonSetupComponent,

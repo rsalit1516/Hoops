@@ -5,6 +5,7 @@ import * as adminActions from '../../state/admin.actions';
 import * as contentActions from '../../content/state/content.actions';
 import * as fromAdmin from '../../state';
 import * as fromUser from '../../../user/state';
+import { ColorService } from '@app/admin/admin-shared/services/color.service';
 
 @Component({
   selector: 'csbc-admin-shell',
@@ -17,7 +18,7 @@ export class AdminShellComponent implements OnInit {
 
   shouldRun = true;
 
-  constructor(private store: Store<fromAdmin.State>) {}
+  constructor(private store: Store<fromAdmin.State>, private colorService: ColorService) {}
 
   ngOnInit() {
     this.store.dispatch(new contentActions.Load());
@@ -44,6 +45,9 @@ export class AdminShellComponent implements OnInit {
         this.store.dispatch(new adminActions.LoadSeasonTeams());
       }
     });
+    this.store.select(fromAdmin.getSeasonDivisions).subscribe((divisions) => {
+      this.store.dispatch(new adminActions.SetSelectedDivision(divisions[0]));
+    });
 
     this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
       console.log(division);
@@ -56,5 +60,7 @@ export class AdminShellComponent implements OnInit {
       console.log(divisions);
       this.store.dispatch(new adminActions.SetSelectedDivision(divisions[0]));
     });
+    this.colorService.getColors().subscribe(colors =>
+    this.store.dispatch(new adminActions.SetColors(colors)));
   }
 }

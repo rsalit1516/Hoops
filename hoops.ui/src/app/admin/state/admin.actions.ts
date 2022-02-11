@@ -4,6 +4,7 @@ import { Division } from '@app/domain/division';
 import { Team } from '@app/domain/team';
 import { Season } from '@app/domain/season';
 import { Game } from '@app/domain/game';
+import { Color } from '@app/domain/color';
 
 export enum AdminActionTypes {
   LoadCurrentSeason = '[Admin] Load Current Season',
@@ -31,7 +32,8 @@ export enum AdminActionTypes {
   LoadDivisionTeamsSuccess = '[Admin] Load Division Teams Success',
   LoadDivisionTeamsFail = '[Admin] Load Teams Fail',
   SetSelectedTeam = '[Admin] Set Selected Team',
-  SetSelectedGame = '[Admin] Set SelectedGame'
+  SetSelectedGame = '[Admin] Set SelectedGame',
+  SetColors = '[Admin] Set Colors'
 }
 export class LoadCurrentSeason implements Action {
   readonly type = AdminActionTypes.LoadCurrentSeason;
@@ -147,6 +149,11 @@ export class SetSelectedGame implements Action {
   readonly type = AdminActionTypes.SetSelectedGame;
   constructor(public payload: Game) {}
 }
+
+export class SetColors implements Action {
+  readonly type = AdminActionTypes.SetColors;
+  constructor(public payload: Color[]) {}
+}
 export type AdminActions =
   | LoadCurrentSeason
   | SetCurrentSeason
@@ -172,4 +179,5 @@ export type AdminActions =
   | LoadDivisionTeamsSuccess
   | LoadDivisionTeamsFail
   | SetSelectedTeam
-  | SetSelectedGame;
+  | SetSelectedGame
+  | SetColors;

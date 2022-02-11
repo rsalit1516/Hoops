@@ -1,4 +1,4 @@
-div class="container-fluid">
+<div class="container-fluid">
   <div class="row">
     <div class="col-4">
       <season-select></season-select>
@@ -6,11 +6,18 @@ div class="container-fluid">
     <div class="col-4">
       <division-select></division-select>
     </div>
+    <div class="col-3">
+    <mat-toolbar>
+      <button mat-raised-button (click)="newTeam()">New</button>
+    </mat-toolbar>
+    </div>
   </div>
-  <div class="col-4">
-    <app-admin-team-list></app-admin-team-list>
+  <div class="row">
+    <div class="col-4">
+      <app-admin-team-list></app-admin-team-list>
+    </div>
+    <div class="col-6">
+      <app-admin-team-detail></app-admin-team-detail>
+    </div>
   </div>
-  <div class="col-6">
-    <app-admin-team-detail></app-admin-team-detail>
-  </div>
-
+</div>

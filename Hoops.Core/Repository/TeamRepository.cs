@@ -76,7 +76,9 @@ namespace Hoops.Infrastructure.Repository
             {
                 if (team.TeamColorId > 0)
                 {
-                    team.TeamName = colors.FirstOrDefault(c => c.ColorId == team.TeamColorId).ColorName + " (" + team.TeamNumber.ToString() + ")";
+                    var color = colors.FirstOrDefault(c => c.ColorId == team.TeamColorId);
+                    team.TeamName = color.ColorName + " (" + team.TeamNumber.ToString() + ")";
+                    team.TeamColor = color.ColorName;
                 }
                 else
                     team.TeamName = team.TeamNumber;

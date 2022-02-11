@@ -166,10 +166,10 @@ export class AdminEffects {
 
       mergeMap(action =>
         this.http.get<Team[]>(this.dataService.getSeasonTeamsUrl + this.seasonId).pipe(
-          // tap(data => console.log('All admin games: ' + JSON.stringify(data))),
+          // tap(data => console.log('All admin teams:' + JSON.stringify(data))),
           shareReplay(1),
-          map(games => new adminActions.LoadSeasonTeamsSuccess(games)),
-          tap(games => console.log(games)),
+          map(teams => new adminActions.LoadSeasonTeamsSuccess(teams)),
+          tap(teams => console.log(teams)),
           catchError(err => of(new adminActions.LoadSeasonTeamsFail(err)))
         )
       )

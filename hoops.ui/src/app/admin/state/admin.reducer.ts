@@ -4,6 +4,7 @@ import { Season } from '@app/domain/season';
 import { Division } from '@app/domain/division';
 import { Game } from '@app/domain/game';
 import { Team } from '@app/domain/team';
+import { Color } from '@app/domain/color';
 
 export interface AdminState {
   selectedSeason: Season;
@@ -18,6 +19,7 @@ export interface AdminState {
   selectedGame: Game | null;
   seasonTeams: Team[] | null;
   selectedTeam: Team | null;
+  colors: Color[];
 }
 
 const initialState: AdminState = {
@@ -32,7 +34,8 @@ const initialState: AdminState = {
   seasonDivisions: [],
   selectedGame: null,
   seasonTeams: [],
-  selectedTeam: null
+  selectedTeam: null,
+  colors: [],
 };
 
 export function reducer(
@@ -86,17 +89,22 @@ export function reducer(
         ...state,
         divisionTeams: action.payload,
       };
-      case AdminActionTypes.SetSelectedTeam:
-        return {
-          ...state,
-          selectedTeam: action.payload,
-        };
-      case AdminActionTypes.LoadSeasonTeamsSuccess:
-        return {
-          ...state,
-          seasonTeams: action.payload,
-        };
-        default: {
+    case AdminActionTypes.SetSelectedTeam:
+      return {
+        ...state,
+        selectedTeam: action.payload,
+      };
+    case AdminActionTypes.SetColors:
+      return {
+        ...state,
+        colors: action.payload,
+      };
+    case AdminActionTypes.LoadSeasonTeamsSuccess:
+      return {
+        ...state,
+        seasonTeams: action.payload,
+      };
+    default: {
       return state;
     }
   }

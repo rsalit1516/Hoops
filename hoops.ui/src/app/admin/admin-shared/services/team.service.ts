@@ -1,10 +1,11 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Team } from '@app/domain/team';
 import { DataService } from '@app/services/data.service';
 import { Constants } from '@app/shared/constants';
 import { select, Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
-import * as fromAdmin from '../state/';
+import * as fromAdmin from '../../state';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,8 @@ import * as fromAdmin from '../state/';
 export class TeamService {
   constructor(
     private dataService: DataService,
-    private store: Store<fromAdmin.State>
+    private store: Store<fromAdmin.State>,
+    private http: HttpClient
   ) {}
 
   filterTeamsByDivision(div: number): Observable<Team[]> {
@@ -33,4 +35,8 @@ export class TeamService {
     // });
     return of(filteredTeams);
   }
+  saveTeam(team: Team): void {
+    this.http.post(this.dataService.teamPostUrl, team);
+  }
+  newTeam() {}
 }
