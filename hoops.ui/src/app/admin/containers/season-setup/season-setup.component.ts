@@ -22,7 +22,7 @@ export class SeasonSetupComponent implements OnInit {
       }
     });
   }
-  newTeam(): void {
-    this.teamService.newTeam();
+  newTeam(): Team {
+    return this.teamService.newTeam();
   }
 }

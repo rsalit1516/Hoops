@@ -19,7 +19,7 @@ import * as adminActions from './admin.actions';
 import * as fromAdmin from './';
 import { Game } from 'app/domain/game';
 import { HttpClient } from '@angular/common/http';
-import { TeamService } from 'app/services/team.service';
+import { TeamService } from '../admin-shared/services/team.service';
 import { DataService } from 'app/services/data.service';
 import { Division } from 'app/domain/division';
 import { Season } from '@app/domain/season';
@@ -149,7 +149,7 @@ export class AdminEffects {
       )
     ));
     loadSeasonTeam$: Observable<Action> = createEffect(() => this.actions$.pipe(
-      ofType(adminActions.AdminActionTypes.LoadGames),
+      ofType(adminActions.AdminActionTypes.LoadSeasonTeams),
       concatMap(action =>
         of(action).pipe(
           withLatestFrom(this.store.pipe(select(fromAdmin.getSelectedSeason))),
@@ -166,7 +166,7 @@ export class AdminEffects {
 
       mergeMap(action =>
         this.http.get<Team[]>(this.dataService.getSeasonTeamsUrl + this.seasonId).pipe(
-          // tap(data => console.log('All admin teams:' + JSON.stringify(data))),
+          tap(data => console.log('All admin teams:' + JSON.stringify(data))),
           shareReplay(1),
           map(teams => new adminActions.LoadSeasonTeamsSuccess(teams)),
           tap(teams => console.log(teams)),

@@ -26,9 +26,9 @@ namespace Hoops.Controllers
         }
         // GET: api/Colors
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Color>>> Get()
+        public ActionResult<IEnumerable<Color>> Get()
         {
-            return Ok(await repository.GetAllAsync());
+            return Ok(repository.GetAll());
         }
     }
 }

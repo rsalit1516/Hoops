@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Color } from '@app/domain/color';
+import { Division } from '@app/domain/division';
 import { Team } from '@app/domain/team';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import * as fromAdmin from '../../state';
+import * as fromUser from '../../../user/state';
 import { TeamService } from './../services/team.service';
+import { User } from '@app/domain/user';
 
 @Component({
   selector: 'app-admin-team-detail',
@@ -25,16 +28,27 @@ export class AdminTeamDetailComponent implements OnInit {
   });
   colors$: Observable<Color[]>;
   team: Team | undefined;
+  selectedDivision$ = this.store.select(fromAdmin.getSelectedDivision);
+  selectedSeason$ = this.store.select(fromAdmin.getSelectedSeason);
+  selectedDivision: Division | null | undefined;
+  user!: User;
 
   constructor(
     private store: Store<fromAdmin.State>,
+    private userStore: Store<fromUser.State>,
     private fb: FormBuilder,
     private teamService: TeamService
   ) {
     this.colors$ = this.store.select(fromAdmin.getColors);
+    this.store
+      .select(fromUser.getCurrentUser)
+      .subscribe((user) => (this.user = user));
   }
 
   ngOnInit(): void {
+    this.selectedDivision$.subscribe(
+      (division) => (this.selectedDivision = division)
+    );
     this.store.select(fromAdmin.getSelectedTeam).subscribe((team) => {
       console.log(team);
       this.team = team as Team;
@@ -57,14 +71,17 @@ export class AdminTeamDetailComponent implements OnInit {
   }
   save() {
     let team: Team;
+    console.log(this.editTeamForm.value.color);
     team = {
       teamId: 0,
       name: '',
-      divisionId: 9900,
+      divisionId: this.selectedDivision?.divisionId as number,
       teamNumber: this.editTeamForm.value.teamNo,
-      teamColorId: this.editTeamForm.value.color.teamColorId,
+      teamColorId: this.editTeamForm.value.color,
+      createdUser: this.user.userName,
     };
     this.teamService.saveTeam(team);
+    this.newTeam();
   }
   cancel() {}
 }

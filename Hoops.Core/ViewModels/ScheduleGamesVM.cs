@@ -69,131 +69,131 @@ namespace Hoops.Core.ViewModels
         }
 
 
-        public List<GameSchedulesViewModel> GetGames(int seasonId, int divisionId)
-        {
-            using (var db = new hoopsContext())
-            {
-                var result = (from d in db.Divisions
-                              from g in db.ScheduleGames
-                              from l in db.ScheduleLocations
-                              where g.SeasonId == seasonId
-                              where g.DivisionId == divisionId
-                              where g.LocationNumber == l.LocationNumber
-                              where d.DivisionId == g.DivisionId
-                              select new GameSchedulesViewModel
-                              {
-                                  DivisionDescription = d.DivisionDescription,
-                                  DivisionId = d.DivisionId,
-                                  SeasonId = seasonId,
-                                  GameDate = g.GameDate,
-                                  GameTimeString = g.GameTime,
-                                  LocationName = l.LocationName,
-                                  GameNumber = g.GameNumber,
-                                  VisitingTeamNumber = g.VisitingTeamNumber,
-                                  HomeTeamNumber = g.HomeTeamNumber,
-                                  ScheduleNumber = g.ScheduleNumber,
-                                  HomeTeamScore = (int)g.HomeTeamScore,
-                                  VisitingTeamScore = (int)g.VisitingTeamScore
-                              });
-                //List<TeamViewModel> teams;
-                var games = GetTeamNamesFromScheduledGames(db, result);
-                var playoffGames = GetPlayoffGames(divisionId);
-                games.AddRange(playoffGames);
+        // public List<GameSchedulesViewModel> GetGames(int seasonId, int divisionId)
+        // {
+        //     using (var db = new hoopsContext())
+        //     {
+        //         var result = (from d in db.Divisions
+        //                       from g in db.ScheduleGames
+        //                       from l in db.ScheduleLocations
+        //                       where g.SeasonId == seasonId
+        //                       where g.DivisionId == divisionId
+        //                       where g.LocationNumber == l.LocationNumber
+        //                       where d.DivisionId == g.DivisionId
+        //                       select new GameSchedulesViewModel
+        //                       {
+        //                           DivisionDescription = d.DivisionDescription,
+        //                           DivisionId = d.DivisionId,
+        //                           SeasonId = seasonId,
+        //                           GameDate = g.GameDate,
+        //                           GameTimeString = g.GameTime,
+        //                           LocationName = l.LocationName,
+        //                           GameNumber = g.GameNumber,
+        //                           VisitingTeamNumber = g.VisitingTeamNumber,
+        //                           HomeTeamNumber = g.HomeTeamNumber,
+        //                           ScheduleNumber = g.ScheduleNumber,
+        //                           HomeTeamScore = (int)g.HomeTeamScore,
+        //                           VisitingTeamScore = (int)g.VisitingTeamScore
+        //                       });
+        //         //List<TeamViewModel> teams;
+        //         var games = GetTeamNamesFromScheduledGames(db, result);
+        //         var playoffGames = GetPlayoffGames(divisionId);
+        //         games.AddRange(playoffGames);
 
-                return games;
-            }
-        }
-        public List<GameSchedulesViewModel> GetGames(int seasonId, int divisionId, int teamId)
-        {
-            using (var db = new hoopsContext())
-            {
-                var rep = new TeamRepository(db);
-                var team = rep.GetById(teamId);
-                int teamNo;
-                if (Int32.TryParse(team.TeamNumber, out teamNo))
-                {
-                    var scheduleNumber = db.Set<ScheduleGame>()
-                        .FirstOrDefault(g => g.DivisionId == divisionId).ScheduleNumber;
-                    var teamNumber = db.Set<ScheduleDivTeam>()
-                        .FirstOrDefault(s => s.ScheduleTeamNumber == teamNo && s.ScheduleNumber == scheduleNumber).TeamNumber;
+        //         return games;
+        //     }
+        // }
+        // public List<GameSchedulesViewModel> GetGames(int seasonId, int divisionId, int teamId)
+        // {
+        //     using (var db = new hoopsContext())
+        //     {
+        //         var rep = new TeamRepository(db);
+        //         var team = rep.GetById(teamId);
+        //         int teamNo;
+        //         if (Int32.TryParse(team.TeamNumber, out teamNo))
+        //         {
+        //             var scheduleNumber = db.Set<ScheduleGame>()
+        //                 .FirstOrDefault(g => g.DivisionId == divisionId).ScheduleNumber;
+        //             var teamNumber = db.Set<ScheduleDivTeam>()
+        //                 .FirstOrDefault(s => s.ScheduleTeamNumber == teamNo && s.ScheduleNumber == scheduleNumber).TeamNumber;
 
-                    var result = (from t in db.Teams
-                                  from g in db.ScheduleGames
-                                  from l in db.ScheduleLocations
+        //             var result = (from t in db.Teams
+        //                           from g in db.ScheduleGames
+        //                           from l in db.ScheduleLocations
 
-                                  where g.SeasonId == seasonId
-                                  where t.TeamId == teamId
-                                  where (g.VisitingTeamNumber == teamNumber || g.HomeTeamNumber == teamNumber)
-                                  where g.ScheduleNumber == scheduleNumber
-                                  where g.LocationNumber == l.LocationNumber
-                                  select new GameSchedulesViewModel
-                                  {
-                                      DivisionId = t.DivisionId,
-                                      SeasonId = g.SeasonId,
-                                      GameDate = g.GameDate,
-                                      GameTimeString = g.GameTime,
-                                      LocationName = l.LocationName,
-                                      GameNumber = g.GameNumber,
-                                      VisitingTeamNumber = g.VisitingTeamNumber,
-                                      HomeTeamNumber = g.HomeTeamNumber,
-                                      ScheduleNumber = g.ScheduleNumber,
-                                      HomeTeamScore = (int)g.HomeTeamScore,
-                                      VisitingTeamScore = (int)g.VisitingTeamScore
-                                  });
-                    //List<TeamViewModel> teams;
-                    //var count = result.Count<GameSchedulesViewModel>();
-                    var games = GetTeamNamesFromScheduledGames(db, result);
-                    var playoffGames = GetPlayoffGames(divisionId);
-                    games.AddRange(playoffGames);
-                    return games;
-                }
-                else
-                {
-                    return new List<GameSchedulesViewModel>();
-                }
-            }
-        }
-        private static List<GameSchedulesViewModel> GetTeamNamesFromScheduledGames(hoopsContext db, IQueryable<GameSchedulesViewModel> result)
-        {
-            List<GameSchedulesViewModel> games = new List<GameSchedulesViewModel>();
-            var seasonId = result.First().SeasonId;
-            //var teams = TeamViewModel.GetDivisionTeams(result.FirstOrDefault<GameSchedulesViewModel>().DivisionId);
-            var teams = TeamViewModel.GetSeasonTeams((int)seasonId);
-            var schedDiv = db.Set<ScheduleDivTeam>().Where(s => s.SeasonId == seasonId).ToList();
-            foreach (GameSchedulesViewModel game in result)
-            {
-                //first get real game time
-                DateTime time;
-                if (DateTime.TryParse(game.GameTimeString, out time))
-                    game.GameTime = time;
-                game.GameDate = CombineDateAndTime(game.GameDate, game.GameTime);
-                game.VisitingTeamSeasonNumber = GetTeam(schedDiv, game.ScheduleNumber, (int)game.VisitingTeamNumber, seasonId).ScheduleTeamNumber;
+        //                           where g.SeasonId == seasonId
+        //                           where t.TeamId == teamId
+        //                           where (g.VisitingTeamNumber == teamNumber || g.HomeTeamNumber == teamNumber)
+        //                           where g.ScheduleNumber == scheduleNumber
+        //                           where g.LocationNumber == l.LocationNumber
+        //                           select new GameSchedulesViewModel
+        //                           {
+        //                               DivisionId = t.DivisionId,
+        //                               SeasonId = g.SeasonId,
+        //                               GameDate = g.GameDate,
+        //                               GameTimeString = g.GameTime,
+        //                               LocationName = l.LocationName,
+        //                               GameNumber = g.GameNumber,
+        //                               VisitingTeamNumber = g.VisitingTeamNumber,
+        //                               HomeTeamNumber = g.HomeTeamNumber,
+        //                               ScheduleNumber = g.ScheduleNumber,
+        //                               HomeTeamScore = (int)g.HomeTeamScore,
+        //                               VisitingTeamScore = (int)g.VisitingTeamScore
+        //                           });
+        //             //List<TeamViewModel> teams;
+        //             //var count = result.Count<GameSchedulesViewModel>();
+        //             var games = GetTeamNamesFromScheduledGames(db, result);
+        //             var playoffGames = GetPlayoffGames(divisionId);
+        //             games.AddRange(playoffGames);
+        //             return games;
+        //         }
+        //         else
+        //         {
+        //             return new List<GameSchedulesViewModel>();
+        //         }
+        //     }
+        // }
+        // private static List<GameSchedulesViewModel> GetTeamNamesFromScheduledGames(hoopsContext db, IQueryable<GameSchedulesViewModel> result)
+        // {
+        //     List<GameSchedulesViewModel> games = new List<GameSchedulesViewModel>();
+        //     var seasonId = result.First().SeasonId;
+        //     //var teams = TeamViewModel.GetDivisionTeams(result.FirstOrDefault<GameSchedulesViewModel>().DivisionId);
+        //     var teams = TeamViewModel.GetSeasonTeams((int)seasonId);
+        //     var schedDiv = db.Set<ScheduleDivTeam>().Where(s => s.SeasonId == seasonId).ToList();
+        //     foreach (GameSchedulesViewModel game in result)
+        //     {
+        //         //first get real game time
+        //         DateTime time;
+        //         if (DateTime.TryParse(game.GameTimeString, out time))
+        //             game.GameTime = time;
+        //         game.GameDate = CombineDateAndTime(game.GameDate, game.GameTime);
+        //         game.VisitingTeamSeasonNumber = GetTeam(schedDiv, game.ScheduleNumber, (int)game.VisitingTeamNumber, seasonId).ScheduleTeamNumber;
 
-                if (teams.Any())
-                {
-                    var team = teams.FirstOrDefault(t => t.TeamNo == game.VisitingTeamSeasonNumber && t.DivisionId == game.DivisionId);
-                    if (team != null)
-                    {
-                        game.VisitingTeamName = team.TeamName;
-                        game.VisitingTeamId = team.TeamId;
-                    }
-                }
-                game.HomeTeamSeasonNumber = GetTeam(schedDiv, game.ScheduleNumber, (int)game.HomeTeamNumber, seasonId).ScheduleTeamNumber;
+        //         if (teams.Any())
+        //         {
+        //             var team = teams.FirstOrDefault(t => t.TeamNo == game.VisitingTeamSeasonNumber && t.DivisionId == game.DivisionId);
+        //             if (team != null)
+        //             {
+        //                 game.VisitingTeamName = team.TeamName;
+        //                 game.VisitingTeamId = team.TeamId;
+        //             }
+        //         }
+        //         game.HomeTeamSeasonNumber = GetTeam(schedDiv, game.ScheduleNumber, (int)game.HomeTeamNumber, seasonId).ScheduleTeamNumber;
 
-                if (teams.Any()) ////get teamId!
-                {
-                    var team = teams.FirstOrDefault(t => t.TeamNo == game.HomeTeamSeasonNumber && t.DivisionId == game.DivisionId);
-                    if (team != null)
-                    {
-                        game.HomeTeamName = team.TeamName;
-                        game.HomeTeamId = team.TeamId;
-                    }
-                }
-                games.Add(game);
-            }
-            return games;
+        //         if (teams.Any()) ////get teamId!
+        //         {
+        //             var team = teams.FirstOrDefault(t => t.TeamNo == game.HomeTeamSeasonNumber && t.DivisionId == game.DivisionId);
+        //             if (team != null)
+        //             {
+        //                 game.HomeTeamName = team.TeamName;
+        //                 game.HomeTeamId = team.TeamId;
+        //             }
+        //         }
+        //         games.Add(game);
+        //     }
+        //     return games;
 
-        }
+        // }
 
         private static ScheduleDivTeam  GetTeam(List<ScheduleDivTeam> schedDiv, int gameNo, int teamNo, int? seasonId )
         {

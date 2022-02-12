@@ -39,12 +39,13 @@ export class AdminShellComponent implements OnInit {
       });
     });
     this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
-      console.log(season);
       if (season !== undefined) {
+        console.log(season);
         this.store.dispatch(new adminActions.LoadDivisions());
         this.store.dispatch(new adminActions.LoadSeasonTeams());
       }
     });
+
     this.store.select(fromAdmin.getSeasonDivisions).subscribe((divisions) => {
       this.store.dispatch(new adminActions.SetSelectedDivision(divisions[0]));
     });
@@ -60,6 +61,14 @@ export class AdminShellComponent implements OnInit {
       console.log(divisions);
       this.store.dispatch(new adminActions.SetSelectedDivision(divisions[0]));
     });
+    this.store.select(fromAdmin.getSeasonTeams).subscribe((teams) => {
+      this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
+        console.log(division);
+        if (division !== undefined) {
+          this.store.dispatch(new adminActions.LoadDivisionTeams());
+        }
+      })});
+
     this.colorService.getColors().subscribe(colors =>
     this.store.dispatch(new adminActions.SetColors(colors)));
   }

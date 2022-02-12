@@ -35,7 +35,6 @@ export class SeasonSelectComponent implements OnInit {
     this.seasonComponent?.valueChanges.subscribe((value) => {
       console.log(value);
       this.store.dispatch(new adminActions.SetSelectedSeason(value));
-      // this.store.dispatch(new adminActions.SetSelectedSeasonId(value.seasonId));
     });
     this.seasons$.subscribe((seasons) => {
       if (seasons === undefined) {

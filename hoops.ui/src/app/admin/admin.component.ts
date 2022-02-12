@@ -53,13 +53,13 @@ export class AdminComponent  implements OnInit {
     // this.user = this.userService.user;
     // TODO: get user types!
     this.menu();
-    this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
-      console.log(season);
-      if (season !== undefined) {
-        this.store.dispatch(new adminActions.LoadDivisions());
-        this.store.dispatch(new adminActions.LoadSeasonTeams());
-      }
-    });
+    // this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
+    //   console.log(season);
+    //   if (season !== undefined) {
+    //     this.store.dispatch(new adminActions.LoadDivisions());
+    //     this.store.dispatch(new adminActions.LoadSeasonTeams());
+    //   }
+    // });
 
     this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
       console.log(division);
