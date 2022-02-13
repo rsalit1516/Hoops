@@ -6,6 +6,8 @@ import { Team } from '@app/domain/team';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import * as fromAdmin from '../../state';
+import * as adminActions from '../../state/admin.actions';
+
 import * as fromUser from '../../../user/state';
 import { TeamService } from './../services/team.service';
 import { User } from '@app/domain/user';
@@ -32,6 +34,7 @@ export class AdminTeamDetailComponent implements OnInit {
   selectedSeason$ = this.store.select(fromAdmin.getSelectedSeason);
   selectedDivision: Division | null | undefined;
   user!: User;
+  title = 'Team';
 
   constructor(
     private store: Store<fromAdmin.State>,
@@ -63,17 +66,23 @@ export class AdminTeamDetailComponent implements OnInit {
     });
   }
   newTeam() {
-    return (this.editTeamForm = this.fb.group({
+    this.editTeamForm = this.fb.group({
       teamName: [''],
       teamNo: [''],
       color: [''],
-    }));
-  }
+    });
+let newTeam  = new Team();
+
+    newTeam.teamId = 0;
+    newTeam.teamName = '';
+    this.store.dispatch(new adminActions.SetSelectedTeam(newTeam));
+
+}
   save() {
     let team: Team;
-    console.log(this.editTeamForm.value.color);
-    team = {
-      teamId: 0,
+    console.log(this.team)
+;    team = {
+      teamId: this.team?.teamId as number,
       name: '',
       divisionId: this.selectedDivision?.divisionId as number,
       teamNumber: this.editTeamForm.value.teamNo,

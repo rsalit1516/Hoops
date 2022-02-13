@@ -49,7 +49,7 @@ export class TeamService {
       this.store.dispatch(new adminActions.LoadSeasonTeams());
       });
     } else {
-      this.http.put<Team>(this.dataService.teamPostUrl, team);
+      this.updateTeam(team);
     }
   }
   addTeam(team: Team) : Observable<Team | ArrayBuffer> {
@@ -60,7 +60,7 @@ export class TeamService {
     };
     console.log(this.dataService.teamPostUrl);
       return this.http
-        .post<Team>(this.dataService.teamPostUrl, team, httpOptions)
+        .post<Team>(this.dataService.teamPostUrl, team, this.dataService.httpOptions)
         .pipe(catchError(this.dataService.handleError('addTeam', team)));
   }
   addNewTeamDefaults(team: Team) {
@@ -80,5 +80,10 @@ export class TeamService {
       return team;
     });
     return team;
+  }
+  updateTeam(team:Team) {
+    return this.http
+        .put<Team>(this.dataService.teamPostUrl + team.teamId, team, this.dataService.httpOptions)
+        .pipe(catchError(this.dataService.handleError('updateTeam', team)));
   }
 }

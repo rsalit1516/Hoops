@@ -1,7 +1,10 @@
-<h2>{{ title }}</h2>
+
 <form formName="gameForm">
-  <div id="panelGames" flexLayout="row">
-    <div>
+  <mat-card>
+    <mat-card-title>
+      {{ title }}
+    </mat-card-title>
+    <mat-card-content>
       <div class="table-wrapper">
         <mat-table #table id="grdTeams" [dataSource]="dataSource">
           <!-- <ng-container matColumnDef="teamNo">
@@ -20,7 +23,7 @@
             <th mat-header-cell *matHeaderCellDef>Color</th>
             <td mat-cell *matCellDef="let team" class="">
               {{ team.teamColor }}
-            </td> </ng-container 
+            </td> </ng-container
           >-->
           <!-- <ng-container matColumnDef="coach">
             <th mat-header-cell *matHeaderCellDef>Coach</th>
@@ -51,6 +54,7 @@
           ></tr>
         </mat-table>
       </div>
-    </div>
-  </div>
+    </mat-card-content>
+    </mat-card>
+
 </form>

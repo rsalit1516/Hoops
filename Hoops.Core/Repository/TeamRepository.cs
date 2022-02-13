@@ -71,10 +71,9 @@ namespace Hoops.Infrastructure.Repository
                     teams.Add(ConvertRecordForTeamNumber(team, colors));
                 }
             }
-               logger.LogInformation(teams.ToString());
             if (teams != null)
             {
-                logger.LogInformation("Retrieving season teams: " + teams.Count.ToString());
+                // logger.LogInformation("Retrieving season teams: " + teams.Count.ToString());
             }
             return teams;
         }
@@ -91,8 +90,8 @@ namespace Hoops.Infrastructure.Repository
         {
             if (team.TeamColorId > 0)
             {
-                logger.LogInformation(team.TeamColorId.ToString());
-                logger.LogInformation(team.TeamNumber);
+                // logger.LogInformation(team.TeamColorId.ToString());
+                // logger.LogInformation(team.TeamNumber);
                 var color = colors.FirstOrDefault(c => c.ColorId == team.TeamColorId);
                 team.TeamName = color.ColorName + " (" + team.TeamNumber.ToString() + ")";
                 team.TeamColor = color.ColorName;

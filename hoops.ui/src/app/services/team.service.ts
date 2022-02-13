@@ -54,13 +54,15 @@ export class TeamService {
     const team = new Team(teamId, divisionId, teamName, teamNumber);
     // filteredTeams.push(team);
 
-    this.store.pipe(select(fromGames.getTeams)).subscribe((allTeams) => {
-      allTeams.forEach((element) => {
-        if (element.divisionId === div) {
-          filteredTeams.push(element);
-        }
-      });
-    });
+    // this.store.pipe(select(fromGames.getTeams)).subscribe((allTeams) => {
+    //   // console.log(allTeams);
+    //   allTeams.forEach((element) => {
+    //     // console.log(element);
+    //     if (element.divisionId === div) {
+    //       filteredTeams.push(element);
+    //     }
+    //   });
+    // });
     return of(filteredTeams);
   }
 

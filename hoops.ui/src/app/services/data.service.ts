@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Division } from '@app/domain/division';
 import { map, tap, catchError } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Constants } from '@app/shared/constants';
 
@@ -20,7 +20,14 @@ export class DataService {
   getCurrentSeasonUrl = this.baseUrl + '/api/season/getCurrentSeason';
   getSeasonTeamsUrl = this.baseUrl + '/api/Team/getSeasonTeams/';
   getColorUrl = this.baseUrl + '/api/Color';
-  teamPostUrl = this.baseUrl + '/api/Team'
+  teamPostUrl = this.baseUrl + '/api/Team';
+
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+    }),
+  }
+
   constructor (private _http: HttpClient) {
     this.webUrl = environment.apiUrl;
     // this.webUrl = 'http://csbc-webapi.azurewebsites.net';
