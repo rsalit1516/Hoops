@@ -345,7 +345,7 @@ namespace Hoops.Infrastructure.Repository
                     {
                         var color = colors.FirstOrDefault(c => c.ColorId == team.TeamColorId);
                         // _logger.LogInformation("GetDivisionTeams: Color Name: " + color.ColorName);
-                        team.TeamName = color == null ? "(" + team.TeamNumber + ")" : color.ColorName + "(" + team.TeamNumber + ")";
+                        team.TeamName = color == null ? "(" + team.TeamNumber + ")" : color.ColorName.ToUpper() + "(" + team.TeamNumber + ")";
                     }
                     else
                     {

@@ -93,7 +93,7 @@ namespace Hoops.Infrastructure.Repository
                 // logger.LogInformation(team.TeamColorId.ToString());
                 // logger.LogInformation(team.TeamNumber);
                 var color = colors.FirstOrDefault(c => c.ColorId == team.TeamColorId);
-                team.TeamName = color.ColorName + " (" + team.TeamNumber.ToString() + ")";
+                team.TeamName = color.ColorName.ToUpper() + " (" + team.TeamNumber.ToString() + ")";
                 team.TeamColor = color.ColorName;
             }
             else

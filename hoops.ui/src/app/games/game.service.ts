@@ -141,10 +141,6 @@ export class GameService {
         for (let i = 0; i < this.allGames.length; i++) {
           if (this.allGames[i].divisionId === div) {
             let game = allGames[i];
-            // console.log(game);
-            // if (allGames[i].homeTeamScore === -1) allGames[i].homeTeamScore = 0;
-            // if (game.homeTeamScore === -1) game.homeTeamScore = 0;
-            // if (game.visitingTeamScore === -1) game.visitingTeamScore = 0;
             games.push(game);
           }
         }
