@@ -88,6 +88,7 @@ let newTeam  = new Team();
       teamNumber: this.editTeamForm.value.teamNo,
       teamColorId: this.editTeamForm.value.color,
       createdUser: this.user.userName,
+      createdDate: new Date()
     };
     this.teamService.saveTeam(team);
     this.newTeam();

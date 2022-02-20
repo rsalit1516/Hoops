@@ -50,6 +50,7 @@ export class TeamService {
       });
     } else {
       this.updateTeam(team);
+      this.store.dispatch(new adminActions.LoadSeasonTeams());
     }
   }
   addTeam(team: Team) : Observable<Team | ArrayBuffer> {
