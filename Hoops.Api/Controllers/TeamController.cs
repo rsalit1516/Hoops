@@ -56,16 +56,19 @@ namespace Hoops.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTeam(int id, Team team)
         {
+            _logger.LogInformation("Updating new team");
+            _logger.LogInformation(team.TeamId.ToString());
+            _logger.LogInformation(team.TeamColorId.ToString());
             if (id != team.TeamId)
             {
                 return BadRequest();
             }
-
-            _context.Entry(team).State = EntityState.Modified;
+            repository.Update(team);
+            //            _context.Entry(team).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await repository.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -89,7 +92,7 @@ namespace Hoops.Controllers
         [HttpPost]
         public async Task<ActionResult<Team>> PostTeam(Team team)
         {
-             _logger.LogInformation("Posting new team");
+            _logger.LogInformation("Posting new team");
             // if (team.SeasonId == null)
             // {
             //     var div = _context.Divisions.FirstOrDefault(d => d.DivisionId == team.DivisionId);

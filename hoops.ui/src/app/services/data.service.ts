@@ -21,6 +21,10 @@ export class DataService {
   getSeasonTeamsUrl = this.baseUrl + '/api/Team/getSeasonTeams/';
   getColorUrl = this.baseUrl + '/api/Color';
   teamPostUrl = this.baseUrl + '/api/Team';
+  teamPutUrl = this.baseUrl + '/api/Team/';
+  getContentUrl = this.baseUrl + '/api/webcontent/getActiveWebContent';
+  postContentUrl = this.baseUrl + '/api/webcontent';
+  putContentUrl = this.baseUrl + '/api/webcontent/';
 
   httpOptions = {
     headers: new HttpHeaders({

@@ -44,25 +44,25 @@ export class TeamService {
     team.createdDate = new Date();
 
     if (team.teamId === 0) {
-      this.addTeam(team).subscribe(team => {
+      this.addTeam(team).subscribe((team) => {
         console.log(team);
-      this.store.dispatch(new adminActions.LoadSeasonTeams());
+        this.store.dispatch(new adminActions.LoadSeasonTeams());
       });
     } else {
-      this.updateTeam(team);
-      this.store.dispatch(new adminActions.LoadSeasonTeams());
+      this.updateTeam(team).subscribe((team) => {
+        this.store.dispatch(new adminActions.LoadSeasonTeams());
+      });
     }
   }
-  addTeam(team: Team) : Observable<Team | ArrayBuffer> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
-    };
+  addTeam(team: Team): Observable<Team | ArrayBuffer> {
     console.log(this.dataService.teamPostUrl);
-      return this.http
-        .post<Team>(this.dataService.teamPostUrl, team, this.dataService.httpOptions)
-        .pipe(catchError(this.dataService.handleError('addTeam', team)));
+    return this.http
+      .post<Team>(
+        this.dataService.teamPostUrl,
+        team,
+        this.dataService.httpOptions
+      )
+      .pipe(catchError(this.dataService.handleError('addTeam', team)));
   }
   addNewTeamDefaults(team: Team) {
     this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
@@ -82,9 +82,13 @@ export class TeamService {
     });
     return team;
   }
-  updateTeam(team:Team) {
+  updateTeam(team: Team) {
     return this.http
-        .put<Team>(this.dataService.teamPostUrl + team.teamId, team, this.dataService.httpOptions)
-        .pipe(catchError(this.dataService.handleError('updateTeam', team)));
+      .put<Team>(
+        this.dataService.teamPutUrl + team.teamId,
+        team,
+        this.dataService.httpOptions
+      )
+      .pipe(catchError(this.dataService.handleError('updateTeam', team)));
   }
 }
