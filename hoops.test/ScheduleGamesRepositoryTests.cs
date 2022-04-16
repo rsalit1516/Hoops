@@ -2,6 +2,7 @@ using System;
 using Hoops.Core;
 using Hoops.Core.Models;
 using Hoops.Infrastructure.Repository;
+using Microsoft.Extensions.Logging;
 using Xunit;
 
 namespace csbc_server_test
@@ -10,10 +11,11 @@ namespace csbc_server_test
     {
         public hoopsContext context;
         public ScheduleGameRepository repo;
+        private readonly ILogger<ScheduleGameRepository> _logger;
         public ScheduleGamesRepositoryTests()
         {
             context = new hoopsContext();
-            repo = new ScheduleGameRepository(context);
+            repo = new ScheduleGameRepository(context, _logger);
         //     // _context = contex
         }
         [Fact]
@@ -30,6 +32,13 @@ namespace csbc_server_test
             var actual = repo.GetStandings(4119);
             Assert.True(actual != null);
             
+        }
+        [Fact]
+        public void ScheduleGamesRepositoryTestTest()
+        {
+            var x = true;
+            Assert.True(x);
+
         }
     }
 

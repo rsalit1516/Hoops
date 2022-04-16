@@ -60,5 +60,8 @@ export const getSelectedTeam = createSelector(
 export const getColors = createSelector(
   getAdminFeatureState,
   state => state.colors
-)
-
+);
+export const getShowOnlyActiveWebContent = createSelector(
+  getAdminFeatureState,
+  state => state.showOnlyActiveWebContent
+);

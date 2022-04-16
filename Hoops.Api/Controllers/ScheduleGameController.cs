@@ -79,16 +79,17 @@ namespace Hoops.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutScheduleGame(int id, ScheduleGame scheduleGame)
         {
+            _logger.LogInformation("Retrieving division standings");
             if (id != scheduleGame.ScheduleGamesId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(scheduleGame).State = EntityState.Modified;
+            repository.Update(scheduleGame);
 
             try
             {
-                await _context.SaveChangesAsync();
+                await repository.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {

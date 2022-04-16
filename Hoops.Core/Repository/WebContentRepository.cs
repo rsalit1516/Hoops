@@ -1,13 +1,12 @@
 using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using Csbc.Infrastructure;
-using Csbc.Infrastructure.Interface;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Hoops.Core.Models;
 using Hoops.Core.ViewModels;
 using Hoops.Core;
+using Hoops.Infrastructure.Interface;
 
 namespace Hoops.Infrastructure.Repository
 {

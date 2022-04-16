@@ -33,7 +33,8 @@ export enum AdminActionTypes {
   LoadDivisionTeamsFail = '[Admin] Load Teams Fail',
   SetSelectedTeam = '[Admin] Set Selected Team',
   SetSelectedGame = '[Admin] Set SelectedGame',
-  SetColors = '[Admin] Set Colors'
+  SetColors = '[Admin] Set Colors',
+  SetShowOnlyActiveWebContent =  '[Admin] Set Show Only Active Web Content'
 }
 export class LoadCurrentSeason implements Action {
   readonly type = AdminActionTypes.LoadCurrentSeason;
@@ -154,6 +155,12 @@ export class SetColors implements Action {
   readonly type = AdminActionTypes.SetColors;
   constructor(public payload: Color[]) {}
 }
+
+export class SetShowOnlyActiveWebContent implements Action {
+  readonly type = AdminActionTypes.SetShowOnlyActiveWebContent;
+  constructor(public payload: boolean) {}
+}
+
 export type AdminActions =
   | LoadCurrentSeason
   | SetCurrentSeason
@@ -180,4 +187,5 @@ export type AdminActions =
   | LoadDivisionTeamsFail
   | SetSelectedTeam
   | SetSelectedGame
-  | SetColors;
+  | SetColors
+  | SetShowOnlyActiveWebContent;

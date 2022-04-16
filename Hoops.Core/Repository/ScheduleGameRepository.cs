@@ -80,15 +80,15 @@ namespace Hoops.Infrastructure.Repository
             }
         }
 
-        public override ScheduleGame Update(ScheduleGame scheduleGame)
-        {
-            if (scheduleGame == null) throw new ArgumentNullException("scheduleGame");
-            //var game = GetByScheduleAndGameNo(scheduleGame);
-            var game = GetByScheduleGamesId(scheduleGame.ScheduleGamesId);
-            Delete(game);
-            Insert(scheduleGame);
-            return scheduleGame;
-        }
+        // public override ScheduleGame Update(ScheduleGame scheduleGame)
+        // {
+        //     if (scheduleGame == null) throw new ArgumentNullException("scheduleGame");
+        //     //var game = GetByScheduleAndGameNo(scheduleGame);
+        //     var game = GetByScheduleGamesId(scheduleGame.ScheduleGamesId);
+        //     Delete(game);
+        //     Insert(scheduleGame);
+        //     return scheduleGame;
+        // }
 
         public override ScheduleGame Insert(ScheduleGame scheduleGame)
         {
@@ -156,10 +156,6 @@ namespace Hoops.Infrastructure.Repository
             return context.Set<ScheduleGame>().FirstOrDefault(g => g.ScheduleNumber == scheduleNo && g.GameNumber == gameNo);
         }
 
-        int IScheduleGameRepository.Update(ScheduleGame scheduleGame)
-        {
-            throw new NotImplementedException();
-        }
         public IEnumerable<ScheduleStandingsVM> GetStandings(int divisionId)
         {
             var colors = context.Colors.Where(c => c.CompanyId == 1).ToList();

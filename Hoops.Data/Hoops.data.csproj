@@ -17,4 +17,5 @@
   </PropertyGroup>
 
 
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Hoops.data' " />
 </Project>

@@ -15,28 +15,27 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   styleUrls: ['./content-list-toolbar.component.scss']
 })
 export class ContentListToolbarComponent implements OnInit {
-  filterForm: FormGroup;
+  filterForm = this.fb.group({
+    activeContent: true
+  });
 
   constructor(
     private router: Router,
     private store: Store<fromContent.State>,
     private fb: FormBuilder
-  ) {}
+  ) {
+
+  }
 
   ngOnInit() {
-    this.filterForm = this.fb.group({
-      activeContent: true
-    });
+
     this.store.dispatch(new contentActions.SetIsActiveOnly(true));
     this.store.dispatch(new contentActions.SetActiveContent());
   }
   addContent() {
     const content = new Content();
     this.store.dispatch(new contentActions.SetSelectedContent(content));
-    this.router.navigate([
-      './admin/content/edit',
-      '../../../admin.component.scss'
-    ]);
+    this.router.navigate(['./admin/content/edit']);
   }
   filterContent() {
     const isActive = this.filterForm.value.activeContent !== true;

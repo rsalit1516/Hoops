@@ -7,11 +7,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Csbc.Infrastructure.Interface;
 using Hoops.Infrastructure.Interface;
 using Hoops.Core.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
+
 using Hoops.Core;
 
 namespace Hoops.Api
@@ -33,11 +32,6 @@ namespace Hoops.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services
-            //    .AddDbContext<hoopsContext>(options =>
-            //        options
-            //            .UseSqlServer(Configuration
-            //                .GetConnectionString("hoopsContext")));
             if (Environment.IsDevelopment())
             {
                 services

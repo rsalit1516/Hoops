@@ -22,9 +22,10 @@ export class DataService {
   getColorUrl = this.baseUrl + '/api/Color';
   teamPostUrl = this.baseUrl + '/api/Team';
   teamPutUrl = this.baseUrl + '/api/Team/';
-  getContentUrl = this.baseUrl + '/api/webcontent/getActiveWebContent';
+  getContentUrl = this.baseUrl + '/api/webcontent';
+  getActiveContentUrl = this.baseUrl + '/api/webcontent/getActiveWebContent';
   postContentUrl = this.baseUrl + '/api/webcontent';
-  putContentUrl = this.baseUrl + '/api/webcontent/';
+  putContentUrl = this.baseUrl + '/api/WebContent/';
 
   httpOptions = {
     headers: new HttpHeaders({

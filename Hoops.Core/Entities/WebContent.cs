@@ -8,7 +8,7 @@ namespace Hoops.Core.Entities
         public int WebContentId { get; set; }
         public int? CompanyId { get; set; }
         public string Page { get; set; }
-        public int? WebContentTypeId { get; set; }
+        public int WebContentTypeId { get; set; }
         public string Type { get; set; }
         public string Title { get; set; }
         public int? ContentSequence { get; set; }
@@ -21,7 +21,6 @@ namespace Hoops.Core.Entities
         public int? ModifiedUser { get; set; }
         public DateTime? CreatedDate { get; set; }
         public int? CreatedUser { get; set; }
-
-        // public virtual WebContentType WebContentType { get; set; }
+        public virtual WebContentType WebContentType { get; set; }
     }
 }

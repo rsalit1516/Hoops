@@ -20,6 +20,7 @@ export interface AdminState {
   seasonTeams: Team[] | null;
   selectedTeam: Team | null;
   colors: Color[];
+  showOnlyActiveWebContent: boolean;
 }
 
 const initialState: AdminState = {
@@ -36,6 +37,7 @@ const initialState: AdminState = {
   seasonTeams: [],
   selectedTeam: null,
   colors: [],
+  showOnlyActiveWebContent: true
 };
 
 export function reducer(

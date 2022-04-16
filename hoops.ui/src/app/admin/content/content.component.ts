@@ -10,30 +10,14 @@ import { Content } from '../../domain/content';
 })
 
 export class ContentComponent implements OnInit {
-    @Input() content: Content;
-    contentForm: FormGroup;
-
+    content!: Content;
 
     constructor(private fb: FormBuilder) { }
 
     ngOnInit(): void {
-        this.contentForm = this.fb.group({
-            title: ['Test', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-            subTitle: '',
-            body: '',
-            location: '',
-            dateAndTime: '',
-            webContentTypeId: ''
-        });
     }
 
-    update(): void {
-        this.contentForm.patchValue({
-            title: this.content.title,
-            subTitle: this.content.subTitle,
-            body: this.content.body
-        });
-    }
+    update(): void {}
 
     save() {
 
