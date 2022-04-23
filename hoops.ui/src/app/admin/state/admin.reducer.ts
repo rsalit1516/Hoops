@@ -5,6 +5,7 @@ import { Division } from '@app/domain/division';
 import { Game } from '@app/domain/game';
 import { Team } from '@app/domain/team';
 import { Color } from '@app/domain/color';
+import { PlayoffGame } from '@app/domain/playoffGame';
 
 export interface AdminState {
   selectedSeason: Season;
@@ -21,6 +22,9 @@ export interface AdminState {
   selectedTeam: Team | null;
   colors: Color[];
   showOnlyActiveWebContent: boolean;
+  gameType: string;
+  playoffGames: PlayoffGame[];
+
 }
 
 const initialState: AdminState = {
@@ -37,7 +41,9 @@ const initialState: AdminState = {
   seasonTeams: [],
   selectedTeam: null,
   colors: [],
-  showOnlyActiveWebContent: true
+  showOnlyActiveWebContent: true,
+  gameType: 'Regular Season',
+  playoffGames: [],
 };
 
 export function reducer(
@@ -51,11 +57,6 @@ export function reducer(
         seasons: action.payload,
       };
 
-    // case AdminActionTypes.SetCurrentSeason:
-    //   return {
-    //     ...state,
-    //     currentSeason: action.payload,
-    //   };
     case AdminActionTypes.SetSelectedDivision:
       return {
         ...state,
@@ -106,7 +107,13 @@ export function reducer(
         ...state,
         seasonTeams: action.payload,
       };
-    default: {
+      case AdminActionTypes.SetGameType:
+        return {
+          ...state,
+          gameType: action.payload,
+        };
+
+      default: {
       return state;
     }
   }

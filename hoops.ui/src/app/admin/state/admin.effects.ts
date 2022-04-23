@@ -25,12 +25,14 @@ import { Division } from 'app/domain/division';
 import { Season } from '@app/domain/season';
 import { Team } from '@app/domain/team';
 import { GameService } from '../services/game.service';
+import { PlayoffGame } from '@app/domain/playoffGame';
 
 @Injectable()
 export class AdminEffects {
   seasonId!: number;
   gameUrl = this.dataService.seasonGamesUrl;
   seasonDivisionsUrl = this.dataService.seasonDivisionsUrl;
+  private playoffGameUrl = this.dataService.playoffGameUrl;
   divisionId!: number;
   division!: Division;
 
@@ -197,4 +199,33 @@ export class AdminEffects {
         )
       )
     ));
+    loadPlayoffGames$: Observable<Action> = createEffect(() => this.actions$.pipe(
+      ofType(adminActions.AdminActionTypes.LoadPlayoffGames),
+      concatMap((action) =>
+        of(action).pipe(
+          withLatestFrom(this.store.pipe(select(fromAdmin.getSelectedSeason))),
+          tap((divisions) => console.log(divisions))
+        )
+      ),
+      tap(([action, t]) => {
+        if (t) {
+          this.seasonId = t.seasonId;
+        } else {
+          this.seasonId = 0;
+        }
+      }),
+
+      mergeMap((action) =>
+        this.http
+          .get<PlayoffGame[]>(this.playoffGameUrl + '?seasonId=' + this.seasonId)
+          .pipe(
+            // tap(data => console.log('All playoff games: ' +this.playoffGameUrl + ' '+ JSON.stringify(data))),
+            shareReplay(1),
+            map((games) => new adminActions.LoadPlayoffGamesSuccess(games)),
+            tap(games => console.log(games)),
+            catchError((err) => of(new adminActions.LoadPlayoffGamesFail(err)))
+          )
+      )
+    ));
+
 }

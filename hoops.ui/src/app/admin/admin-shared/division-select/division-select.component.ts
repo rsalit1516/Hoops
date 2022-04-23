@@ -15,7 +15,6 @@ export class DivisionSelectComponent implements OnInit {
   @Output() selectedDivision = new EventEmitter<Division>();
   selectForm!: FormGroup;
   divisions$: Observable<Division[]>;
-  // divisions: Division[];
   divisionComponent: FormControl | null | undefined;
 
   constructor(private store: Store<fromAdmin.State>, private fb: FormBuilder) {
@@ -26,16 +25,12 @@ export class DivisionSelectComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.divisions$ = this.store.select(fromAdmin.getSeasonDivisions); //.subscribe(divisions => this.divisions = divisions);
     this.divisionComponent = this.selectForm.get('division') as FormControl;
     this.divisionComponent?.valueChanges.subscribe((value) => {
-      console.log(value);
       this.store.dispatch(new adminActions.SetSelectedDivision(value));
     });
     this.store.pipe(select(fromAdmin.getSelectedDivision)).subscribe((division) => {
-      console.log(division);
       this.divisionComponent?.setValue(division);
-
     });
 
   }

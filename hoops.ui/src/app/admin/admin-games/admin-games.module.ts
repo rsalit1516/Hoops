@@ -7,6 +7,8 @@ import { CoreModule } from '@app/core/core.module';
 import { SharedModule } from '@app/shared/shared.module';
 import { AdminSharedModule } from '../admin-shared/admin-shared.module';
 import { AdminGameDetailComponent } from './components/admin-game-detail/admin-game-detail.component';
+import { AdminGamesPlayoffsDetailComponent } from './components/admin-games-playoffs-detail/admin-games-playoffs-detail.component';
+import { AdminGamesPlayoffsListComponent } from './components/admin-games-playoffs-list/admin-games-playoffs-list.component';
 
 @NgModule({
   imports: [
@@ -16,6 +18,6 @@ import { AdminGameDetailComponent } from './components/admin-game-detail/admin-g
     SharedModule,
     AdminSharedModule
   ],
-  declarations: [AdminGamesListComponent, AdminGamesShellComponent, AdminGameDetailComponent]
+  declarations: [AdminGamesListComponent, AdminGamesShellComponent, AdminGameDetailComponent, AdminGamesPlayoffsDetailComponent, AdminGamesPlayoffsListComponent]
 })
 export class AdminGamesModule {}

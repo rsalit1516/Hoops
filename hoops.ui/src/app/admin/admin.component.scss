@@ -2,12 +2,15 @@
 
 .mat-sidenav {
   color: white;
-  // background-color: $card-background-color;
 }
 .mat-list-item-content {
   color: white;
   font-size: 1.1em;
 }
+.mat-toolbar {
+  background-color: black;
+ }
+
 .main {
   padding: 10px 10px 0 10px;
 }
@@ -17,11 +20,13 @@ input {
 }
 
 .mat-label, .mat-form-field, .mat-form-field-label {
-  font-size: 1.2em;
+  font-size: .8em;
   color: $card-title-font-size;
   background-color: $admin-background-color;
 }
-
+.form-control {
+  font-size:.9em;
+}
 .mat-table {
   width: 100%;
 }
@@ -202,7 +207,7 @@ div {
 .mat-card {
   background-color: $admin-card-background-color
 }
-.mat-card-title {
+.mat-card-title, h2 {
   color: $card-color;
 }
 .mat-raised-button .mat-button {

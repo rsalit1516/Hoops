@@ -65,3 +65,7 @@ export const getShowOnlyActiveWebContent = createSelector(
   getAdminFeatureState,
   state => state.showOnlyActiveWebContent
 );
+export const getGameType = createSelector(
+  getAdminFeatureState,
+  state => state.gameType
+);

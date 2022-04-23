@@ -5,6 +5,7 @@ import { Team } from '@app/domain/team';
 import { Season } from '@app/domain/season';
 import { Game } from '@app/domain/game';
 import { Color } from '@app/domain/color';
+import { PlayoffGame } from '@app/domain/playoffGame';
 
 export enum AdminActionTypes {
   LoadCurrentSeason = '[Admin] Load Current Season',
@@ -34,7 +35,11 @@ export enum AdminActionTypes {
   SetSelectedTeam = '[Admin] Set Selected Team',
   SetSelectedGame = '[Admin] Set SelectedGame',
   SetColors = '[Admin] Set Colors',
-  SetShowOnlyActiveWebContent =  '[Admin] Set Show Only Active Web Content'
+  SetGameType = '[Admin] Set Game Type',
+  SetShowOnlyActiveWebContent =  '[Admin] Set Show Only Active Web Content',
+  LoadPlayoffGames = "[Game] Load Playoff Games",
+  LoadPlayoffGamesSuccess = "[Game] Load Playoff Games Success",
+  LoadPlayoffGamesFail = "[Game] Load Playoff Games Fail",
 }
 export class LoadCurrentSeason implements Action {
   readonly type = AdminActionTypes.LoadCurrentSeason;
@@ -161,6 +166,24 @@ export class SetShowOnlyActiveWebContent implements Action {
   constructor(public payload: boolean) {}
 }
 
+export class SetGameType implements Action {
+  readonly type = AdminActionTypes.SetGameType;
+  constructor(public payload: string) {}
+}
+export class LoadPlayoffGames implements Action {
+  readonly type = AdminActionTypes.LoadPlayoffGames;
+}
+export class LoadPlayoffGamesSuccess implements Action {
+  readonly type = AdminActionTypes.LoadPlayoffGamesSuccess;
+
+  constructor(public payload: PlayoffGame[]) {}
+}
+export class LoadPlayoffGamesFail implements Action {
+  readonly type = AdminActionTypes.LoadPlayoffGamesFail;
+
+  constructor(public payload: string) {}
+}
+
 export type AdminActions =
   | LoadCurrentSeason
   | SetCurrentSeason
@@ -188,4 +211,8 @@ export type AdminActions =
   | SetSelectedTeam
   | SetSelectedGame
   | SetColors
-  | SetShowOnlyActiveWebContent;
+| SetGameType
+  | SetShowOnlyActiveWebContent
+  | LoadPlayoffGames
+  | LoadPlayoffGamesSuccess
+  | LoadPlayoffGamesFail;

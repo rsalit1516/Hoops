@@ -11,7 +11,7 @@ import * as adminActions from '../../../state/admin.actions';
   selector: 'admin-game-detail',
   templateUrl: './admin-game-detail.component.html',
   styleUrls: [
-    './admin-game-detail.component.css',
+    './admin-game-detail.component.scss',
     '../../../admin.component.scss',
   ],
 })

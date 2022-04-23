@@ -1,5 +1,6 @@
 <div class="container-fluid">
   <div class="row">
+    <mat-toolbar>
     <div class="col-4">
       <season-select></season-select>
     </div>
@@ -9,10 +10,13 @@
     <div class="col-4">
       <division-select></division-select>
     </div>
+  </mat-toolbar>
   </div>
   <div class="row">
     <div class="col-7">
-      <admin-games-list></admin-games-list>
+      <admin-games-list hidden="showRegularSeason"></admin-games-list>
+      <app-admin-games-playoffs-list hidden="showPlayoffs"></app-admin-games-playoffs-list>
+
     </div>
     <div class="col-5">
       <admin-game-detail></admin-game-detail>

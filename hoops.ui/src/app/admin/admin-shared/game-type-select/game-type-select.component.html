@@ -1,12 +1,11 @@
 <form [formGroup]="selectForm">
   <mat-form-field>
-    <mat-label>Select Division</mat-label>
-    <mat-select formControlName="division" class="form-control">
+    <mat-label>Game Type</mat-label>
+    <mat-select formControlName="gameType" class="form-control" >
       <mat-option
-        *ngFor="let gameType of gameTypes"
-        [value]="gameType"
+        *ngFor="let type of gameTypes" [value]="selectedType"
       >
-        {{ gameType }}
+        {{ type }}
       </mat-option>
     </mat-select>
   </mat-form-field>

@@ -18,20 +18,22 @@ import { Season } from '../../../../domain/season';
 export class AdminGamesShellComponent implements OnInit {
   seasons$ = this.store.select(fromAdmin.getSeasons);
   divisions$ = this.store.select(fromAdmin.getSeasonDivisions);
+  showRegularSeason = true;
+  showPlayoffs = false;
+  
   constructor(
     private store: Store<fromAdmin.State>,
     private gameService: GameService
   ) {}
 
   ngOnInit(): void {
-    //    this.store.dispatch(new adminActions.LoadSeasons());
-
     this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
       console.log(season);
       if (season !== undefined) {
         this.store.dispatch(new adminActions.LoadGames());
         this.store.dispatch(new adminActions.LoadDivisions());
         this.store.dispatch(new adminActions.LoadSeasonTeams());
+        this.store.dispatch(new adminActions.LoadPlayoffGames());
       }
     });
 
