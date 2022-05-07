@@ -1,13 +1,13 @@
-<form [formGroup]="selectForm">
+
   <mat-form-field>
     <mat-label>Game Type</mat-label>
-    <mat-select formControlName="gameType" class="form-control" >
+    <mat-select [formControl]="gameTypeComponent" class="form-control" [compareWith]="compareFn" >
       <mat-option
-        *ngFor="let type of gameTypes" [value]="selectedType"
+        *ngFor="let type of gameTypes" [value]="type"
       >
         {{ type }}
       </mat-option>
     </mat-select>
   </mat-form-field>
-</form>
+
 

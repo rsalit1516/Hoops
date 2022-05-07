@@ -22,21 +22,22 @@ export class SeasonSelectComponent implements OnInit {
   selectedSeason: Season | undefined;
   defaultSeason: Season | undefined;
   selectForm = this.fb.group({
-    seasonControl: new FormControl(),
+    // seasonControl: new FormControl(''),
   });
+  seasonControl=  new FormControl('');
 
   constructor(private store: Store<fromAdmin.State>, private fb: FormBuilder) {
     this.seasons$ = this.store.select(fromAdmin.getSeasons);
   }
 
   ngOnInit() {
-    this.seasonComponent = this.selectForm.get('seasonControl') as FormControl;
+    // this.seasonComponent = this.selectForm.get('seasonControl') as FormControl;
 
-    // this.seasonComponent?.valueChanges.subscribe((value) => {
-    //   console.log(this.seasonComponent?.value);
-    //   console.log(value);
-    //   this.store.dispatch(new adminActions.SetSelectedSeason(value));
-    // });
+    this.seasonControl.valueChanges.subscribe((value) => {
+      console.log(this.seasonControl.value);
+      console.log(value);
+      this.store.dispatch(new adminActions.SetSelectedSeason(value));
+    });
 
     this.store.pipe(select(fromAdmin.getSelectedSeason)).subscribe((season) => {
       console.log(season);

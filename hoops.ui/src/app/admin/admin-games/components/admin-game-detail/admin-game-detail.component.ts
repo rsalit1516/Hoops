@@ -37,15 +37,15 @@ export class AdminGameDetailComponent implements OnInit {
     this.store.select(fromAdmin.getSelectedGame).subscribe((game) => {
       console.log(game);
       this.getTeam(game?.homeTeamId as number).subscribe(team => {
-        console.log(team);
+        // console.log(team);
         this.homeTeam = team;
       });
       console.log(this.homeTeam);
       this.getTeam(game?.visitingTeamId as number).subscribe(team => {
-        console.log(team);
+        // console.log(team);
         this.visitorTeam = team;
       });
-      console.log(this.visitorTeam);
+      // console.log(this.visitorTeam);
 
       this.gameEditForm.patchValue({
         gameDate: game?.gameDate as Date,

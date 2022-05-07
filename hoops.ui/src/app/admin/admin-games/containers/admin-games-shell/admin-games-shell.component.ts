@@ -7,6 +7,7 @@ import * as fromUser from '../../../../user/state';
 
 import { GameService } from 'app/games/game.service';
 import { Season } from '../../../../domain/season';
+import { Game } from '@app/domain/game';
 @Component({
   selector: 'csbc-admin-games-shell',
   templateUrl: './admin-games-shell.component.html',
@@ -20,7 +21,8 @@ export class AdminGamesShellComponent implements OnInit {
   divisions$ = this.store.select(fromAdmin.getSeasonDivisions);
   showRegularSeason = true;
   showPlayoffs = false;
-  
+  games: Game[] | undefined;
+
   constructor(
     private store: Store<fromAdmin.State>,
     private gameService: GameService
@@ -44,6 +46,21 @@ export class AdminGamesShellComponent implements OnInit {
         this.store.dispatch(new adminActions.LoadDivisionTeams());
       }
     });
+    this.store.select(fromAdmin.getGameType).subscribe((gameType) => {
+      console.log(gameType);
+      this.showPlayoffs = (gameType == 'Playoffs');
+      this.showRegularSeason = (gameType == 'Regular Season');
+      if (gameType !== undefined) {
+        console.log('Calling filtered games');
+        this.store.dispatch(new adminActions.LoadFilteredGames());
+        this.store.dispatch(new adminActions.LoadDivisionTeams());
+      }
+    });
+    this.store.select(fromAdmin.getFilteredGames).subscribe((games) => {
+      console.log(games);
+      this.games = games;
+    });
+
   }
   selectedSeason(season: Season) {
     console.log(season);

@@ -47,7 +47,6 @@ export class AdminGamesListComponent implements OnInit {
       'homeTeamScore',
       'visitingTeamScore',
     ];
-    console.log(this.games);
     this.store.select(fromAdmin.getFilteredGames).subscribe((games) => {
       this.dataSource = new MatTableDataSource(games);
     });
@@ -55,6 +54,10 @@ export class AdminGamesListComponent implements OnInit {
 
   ngOnInit(): void {
     this.setupTable();
+    this.store.select(fromAdmin.getFilteredGames).subscribe((games) => {
+      console.log(games);
+      this.dataSource = new MatTableDataSource<Game>(games);
+    });
   }
   setupTable() {
     this.displayedColumns = [
@@ -77,7 +80,6 @@ export class AdminGamesListComponent implements OnInit {
         'visitingTeamName',
       ];
     }
-    this.dataSource = new MatTableDataSource(this.games);
   }
   editGame(game: Game) {
     // TODO: implement this method

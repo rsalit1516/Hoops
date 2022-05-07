@@ -15,22 +15,35 @@ import * as adminActions from '../../state/admin.actions';
 export class GameTypeSelectComponent implements OnInit {
   selectForm!: FormGroup;
   gameTypes = ['Regular Season', 'Playoffs'];
-  gameTypeComponent: FormControl | null | undefined;
+  gameTypeComponent = new FormControl();
   selected = this.gameTypes[0];
   selectedType = this.gameTypes[0];
+  gameType: string;
 
-  constructor(private fb: FormBuilder, private store: Store<fromAdmin.State>) {}
+  constructor(private fb: FormBuilder, private store: Store<fromAdmin.State>) {
+    this.gameType = this.selectedType;
+  }
 
   ngOnInit(): void {
-    this.gameTypeComponent = this.selectForm.get('gameType') as FormControl;
-    this.selectForm = this.fb.group({
-      gametType: ['Playoffs'],
-    });
+    // this.gameTypeComponent = this.selectForm.get('gameType') as FormControl;
+    // this.selectForm = this.fb.group({
+    //   gametType: ['Playoffs'],
+    // });
 
     this.gameTypeComponent?.setValue(this.selected);
     this.gameTypeComponent.valueChanges.subscribe((value) => {
       console.log(value);
-      this.store.dispatch(new adminActions.SetSelectedDivision(value));
+      this.store.dispatch(new adminActions.SetGameType(value));
     });
+  }
+
+  changeGameType(value: string) {
+    console.log(value);
+  }
+
+  compareFn(c1: string, c2: string): boolean {
+    console.log(c1);
+    console.log(c2);
+    return c1 && c2 ? c1 === c2 : c1 === c2;
   }
 }

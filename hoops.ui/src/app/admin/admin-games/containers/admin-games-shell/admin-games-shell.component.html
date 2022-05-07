@@ -14,8 +14,8 @@
   </div>
   <div class="row">
     <div class="col-7">
-      <admin-games-list hidden="showRegularSeason"></admin-games-list>
-      <app-admin-games-playoffs-list hidden="showPlayoffs"></app-admin-games-playoffs-list>
+      <admin-games-list *ngIf="showRegularSeason"></admin-games-list>
+      <app-admin-games-playoffs-list *ngIf="showPlayoffs"></app-admin-games-playoffs-list>
 
     </div>
     <div class="col-5">
