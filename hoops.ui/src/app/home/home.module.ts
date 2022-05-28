@@ -13,6 +13,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { HomeEffects } from './state/home.effects';
 import { AnnouncementComponent } from './components/announcement/announcement.component';
 import { MeetingComponent } from './components/meeting/meeting.component';
+import { SponsorListingComponent } from './components/sponsor-listing/sponsor-listing.component';
+import { SponsorListComponent } from './components/sponsor-list/sponsor-list.component';
 
 @NgModule({
   imports: [
@@ -29,6 +31,8 @@ import { MeetingComponent } from './components/meeting/meeting.component';
     CsbcHomeSidebarComponent,
     AnnouncementComponent,
     MeetingComponent,
+    SponsorListingComponent,
+    SponsorListComponent,
 
   ],
   providers: [

@@ -12,6 +12,7 @@ using Hoops.Core.Models;
 using Microsoft.EntityFrameworkCore;
 
 using Hoops.Core;
+using Microsoft.OpenApi.Models;
 
 namespace Hoops.Api
 {
@@ -65,6 +66,7 @@ namespace Hoops.Api
             services.AddTransient<IScheduleGameRepository, ScheduleGameRepository>();
             services.AddTransient<IWebContentRepository, WebContentRepository>();
             services.AddTransient<IWebContentTypeRepository, WebContentTypeRepository>();
+            services.AddTransient<ISponsorRepository, SponsorRepository>();
 
             services.AddCors(options =>
                    {
