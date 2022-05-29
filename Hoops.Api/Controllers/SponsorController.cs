@@ -23,9 +23,9 @@ namespace Hoops.Api.Controllers
         /// </summary>
         [Route("GetSeasonSponsors/{seasonId}")]
         [HttpGet]
-        public IActionResult GetSeasonSponsors(int seasonId)
+        public async Task<IActionResult> GetSeasonSponsors(int seasonId)
         {
-            return Ok(repository.GetSeasonSponsors(seasonId));
+            return Ok(await repository.GetSeasonSponsorsAsync(seasonId));
         }
     }
 }

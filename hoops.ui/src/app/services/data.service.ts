@@ -26,6 +26,7 @@ export class DataService {
   getActiveContentUrl = this.baseUrl + '/api/webcontent/getActiveWebContent';
   postContentUrl = this.baseUrl + '/api/webcontent';
   putContentUrl = this.baseUrl + '/api/WebContent/';
+  getCurrentSponsors = this.baseUrl + '/api/GetSeasonSponsors';
 
   httpOptions = {
     headers: new HttpHeaders({
