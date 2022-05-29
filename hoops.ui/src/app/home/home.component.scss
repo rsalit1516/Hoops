@@ -106,6 +106,7 @@ em {
 }
 .home-wrapper {
   font-size: $wrapper-font-size;
+  height:100%;
 }
 
 .infoLocation {
@@ -119,12 +120,17 @@ em {
 }
 
 div.sponsor {
-  height: 40px;
+  height: 240px;
   position: fixed;
+  left: 0;
   bottom:0%;
   width:100%;
-  background-color: #393838;
-  opacity: 1;
+  background-color: $card-background-color;
+  // opacity: 1;
+  text-align: center;
+}
+.sponsor-carousel {
+  height: 240px;
 }
 
 p {

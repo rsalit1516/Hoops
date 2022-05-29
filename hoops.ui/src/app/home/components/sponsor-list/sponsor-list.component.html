@@ -1,11 +1,14 @@
-<p >sponsor-list works!</p>
-<ngb-carousel *ngIf="images">
-  <ng-template ngbSlide>
-    <div class="picsum-img-wrapper">
-      <img [src]="images[0]" alt="Random first slide">
-    </div>
-    <div class="carousel-caption">
-      <h3>First slide label</h3>
-      <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-    </div>
-  </ng-template>
+<!-- <p>sponsor-list works!</p> -->
+<div class="sponsor-carousel">
+  <ngb-carousel>
+    <ng-template ngbSlide *ngFor="let sponsor of sponsors">
+      <div class="sponsor-wrapper">
+      <div class="sponsor-name">
+       {{sponsor.name}}
+      </div>
+<div class="sponsor-phone">{{sponsor.phone}}</div>
+<div class="sponsor-website"><a href = "{{sponsor.website}}" target = "_blank"></a>{{sponsor.website}}</div>
+</div>
+    </ng-template>
+  </ngb-carousel>
+</div>

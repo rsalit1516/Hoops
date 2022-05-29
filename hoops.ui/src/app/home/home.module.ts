@@ -15,12 +15,14 @@ import { AnnouncementComponent } from './components/announcement/announcement.co
 import { MeetingComponent } from './components/meeting/meeting.component';
 import { SponsorListingComponent } from './components/sponsor-listing/sponsor-listing.component';
 import { SponsorListComponent } from './components/sponsor-list/sponsor-list.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   imports: [
     CommonModule,
     SharedModule,
     CoreModule,
+    NgbModule,
     StoreModule.forFeature('home', reducer),
     EffectsModule.forFeature([HomeEffects])
   ],

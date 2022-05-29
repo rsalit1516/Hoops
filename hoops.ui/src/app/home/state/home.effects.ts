@@ -23,9 +23,8 @@ import { WebContent } from 'app/domain/webContent';
 
 @Injectable()
 export class HomeEffects {
-  seasonId: number;
+  seasonId: number | undefined;
   gameUrl: string | undefined;
-  divisionStartUrl: string;
   constructor(
     private actions$: Actions,
     private http: HttpClient,
@@ -34,7 +33,7 @@ export class HomeEffects {
     private store: Store<fromHome.State>
   ) {}
   // tslint:disable-next-line:member-ordering
-  
+
   loadContent$: Observable<Action> = createEffect(() => this.actions$.pipe(
     ofType(homeActions.HomeActionTypes.LoadContent),
     mergeMap(action =>
