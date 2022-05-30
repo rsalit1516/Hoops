@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import * as homeActions from './home.actions';
 import * as fromHome from './';
+import * as fromGames from '../../games/state';
 
 import {
   map,
@@ -12,20 +13,22 @@ import {
   withLatestFrom,
   tap,
   shareReplay,
+  exhaustMap,
 } from 'rxjs/operators';
-import { Store, Action, select } from '@ngrx/store';
+import { Store, Action, select, ActionType } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 // import { ContentService } from '../../services/content.service';
 import { DataService } from '../../services/data.service';
 import { Content } from 'app/domain/content';
 import { HttpClient } from '@angular/common/http';
 import { WebContent } from 'app/domain/webContent';
+import { Sponsor } from '@app/domain/sponsor';
+import { Season } from '@app/domain/season';
 
 @Injectable()
 export class HomeEffects {
-  seasonId: number;
+  seasonId: number | undefined;
   gameUrl: string | undefined;
-  divisionStartUrl: string;
   constructor(
     private actions$: Actions,
     private http: HttpClient,
@@ -34,7 +37,7 @@ export class HomeEffects {
     private store: Store<fromHome.State>
   ) {}
   // tslint:disable-next-line:member-ordering
-  
+
   loadContent$: Observable<Action> = createEffect(() => this.actions$.pipe(
     ofType(homeActions.HomeActionTypes.LoadContent),
     mergeMap(action =>
@@ -45,4 +48,21 @@ export class HomeEffects {
       )
     )
   ));
+
+  loadSponsors$: Observable<Action> = createEffect(() => this.actions$.pipe(
+    ofType(homeActions.HomeActionTypes.LoadSponsors),
+    concatLatestFrom(() => this.store.select(fromGames.getCurrentSeason)),
+    exhaustMap(([, currentSeason] ) =>
+    {
+      // const season = currentSeason;
+      // const id = currentSeason?.seasonId;
+        return this.http.get<Sponsor[]>(this.dataService.getCurrentSponsors + currentSeason?.seasonId).pipe(
+          map(sponsors => new homeActions.LoadSponsorsSuccess(sponsors)),
+          tap(content => console.log(content)),
+          catchError((err) => of(new homeActions.LoadSponsorsFail(err)))
+        );
+      }
+    )
+  ));
+
 }

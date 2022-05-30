@@ -14,7 +14,7 @@ import * as contentActions from '../../state/content.actions';
   styleUrls: ['./content-shell.component.scss']
 })
 export class ContentShellComponent implements OnInit {
-  @Input() content: Content;
+  content!: Content;
 
   contentForm: FormGroup;
   title = 'Web Site Messages';
@@ -25,13 +25,6 @@ export class ContentShellComponent implements OnInit {
     private router: Router,
     private store: Store<fromContent.State>
   ) {
-
-    router.navigate(['./admin/content/list']);
-  }
-
-  ngOnInit(): void {
-    console.log('called content shell');
-    this.store.dispatch(new contentActions.Load());
     this.contentForm = this.fb.group({
       title: [
         'Test',
@@ -42,6 +35,15 @@ export class ContentShellComponent implements OnInit {
       location: '',
       dateAndTime: '',
       webContentTypeId: ''
+    });
+    router.navigate(['./admin/content/list']);
+  }
+
+  ngOnInit(): void {
+    console.log('called content shell');
+    this.store.dispatch(new contentActions.Load());
+    this.store.select(fromContent.getContentList).subscribe(content => {
+      this.store.dispatch(new contentActions.SetActiveContent());
     });
   }
 

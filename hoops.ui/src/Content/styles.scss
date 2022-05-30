@@ -22,8 +22,19 @@ body {
 }
 
 .mat-form-field {
-  background: $background-color;
-  color: $font-color-text;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 8px;
+  color: $admin-font-color;
+  background-color: $admin-card-background-color;
+}
+.mat-select {
+  color: $admin-font-color;
+  background-color: $admin-card-background-color;
+}
+.mat-select-arrow-wrapper {
+  color: $admin-font-color;
+  background-color: $admin-card-background-color;
 }
 /*For Bootstrap 3*/
 .nav,

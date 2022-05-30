@@ -52,15 +52,17 @@ export class TeamService {
     const teamName: string = Constants.ALLTEAMS;
     const teamNumber: string = '0';
     const team = new Team(teamId, divisionId, teamName, teamNumber);
-    filteredTeams.push(team);
+    // filteredTeams.push(team);
 
-    this.store.pipe(select(fromGames.getTeams)).subscribe((allTeams) => {
-      allTeams.forEach((element) => {
-        if (element.divisionId === div) {
-          filteredTeams.push(element);
-        }
-      });
-    });
+    // this.store.pipe(select(fromGames.getTeams)).subscribe((allTeams) => {
+    //   // console.log(allTeams);
+    //   allTeams.forEach((element) => {
+    //     // console.log(element);
+    //     if (element.divisionId === div) {
+    //       filteredTeams.push(element);
+    //     }
+    //   });
+    // });
     return of(filteredTeams);
   }
 

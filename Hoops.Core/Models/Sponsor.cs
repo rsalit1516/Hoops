@@ -47,9 +47,7 @@ namespace Hoops.Core.Models
         public Nullable<decimal> FeeId { get; set; }
         public DateTime? AdExpiration { get; set; }
 
-        [ForeignKey("SponsorProfileID")]
-        public virtual SponsorProfile SponsorProfile { get; set; }
+        // [ForeignKey("SponsorProfileID")]
+        // public virtual SponsorProfile SponsorProfile { get; set; }
     }
-
-
 }

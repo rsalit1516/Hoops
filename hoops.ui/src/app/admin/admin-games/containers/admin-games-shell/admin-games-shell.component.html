@@ -1,18 +1,30 @@
-<div class="container">
-  <div fxFlex="25">
-    <csbc-season-select
-      [seasons$]="seasons$"
-      (setSeason)="selectedSeason($event)"
-    ></csbc-season-select>
+<div class="container-fluid">
+  <div class="row">
+    <mat-toolbar>
+    <div class="col-4">
+      <season-select></season-select>
+    </div>
+    <div class="col-4">
+      <game-type-select></game-type-select>
+    </div>
+    <div class="col-4">
+      <division-select></division-select>
+    </div>
+  </mat-toolbar>
   </div>
-  <div fxFlex="25">
-    <csbc-division-select
-      [divisions$]="divisions$"
-      (click)="clickedDivision($event)"
-    >
-    </csbc-division-select>
+  <div class="row">
+    <div class="col-7">
+      <admin-games-list *ngIf="showRegularSeason"></admin-games-list>
+      <app-admin-games-playoffs-list *ngIf="showPlayoffs"></app-admin-games-playoffs-list>
+
+    </div>
+    <div class="col-5">
+      <admin-game-detail></admin-game-detail>
+    </div>
   </div>
-  <div fxFlex="75">
-    <router-outlet></router-outlet>
-  </div>
+  <!-- <div class="row"> -->
+  <!-- <div class="col-9">
+  <router-outlet></router-outlet>
+</div> -->
+  <!-- </div> -->
 </div>

@@ -13,18 +13,13 @@ export interface State extends fromRoot.State {
 const getAdminFeatureState = createFeatureSelector<fromAdmin.AdminState>(
   'admin'
 );
-
-export const getCurrentSeasonId = createSelector(
+export const getSelectedSeason = createSelector(
   getAdminFeatureState,
-  state => state.currentSeasonId
+  state => state.selectedSeason
 );
-export const getCurrentSeason = createSelector(
+export const getSelectedDivision = createSelector(
   getAdminFeatureState,
-  state => state.currentSeason
-);
-export const getCurrentDivisionId = createSelector(
-  getAdminFeatureState,
-  state => state.currentDivisionId
+  state => state.selectedDivision
 );
 export const getCurrentTeamId = createSelector(
   getAdminFeatureState,
@@ -36,5 +31,41 @@ export const getSeasons = createSelector(
 );
 export const getSeasonDivisions = createSelector(
   getAdminFeatureState,
-  state => state.divisions
+  state => state.seasonDivisions
+);
+export const getSeasonGames = createSelector(
+  getAdminFeatureState,
+  state => state.games
+);
+export const getFilteredGames = createSelector(
+  getAdminFeatureState,
+  state => state.filteredGames
+);
+export const getSelectedGame = createSelector(
+  getAdminFeatureState,
+  state => state.selectedGame
+);
+export const getSeasonTeams = createSelector(
+  getAdminFeatureState,
+  state => state.seasonTeams
+);
+export const getDivisionTeams = createSelector(
+  getAdminFeatureState,
+  state => state.divisionTeams
+);
+export const getSelectedTeam = createSelector(
+  getAdminFeatureState,
+  state => state.selectedTeam
+);
+export const getColors = createSelector(
+  getAdminFeatureState,
+  state => state.colors
+);
+export const getShowOnlyActiveWebContent = createSelector(
+  getAdminFeatureState,
+  state => state.showOnlyActiveWebContent
+);
+export const getGameType = createSelector(
+  getAdminFeatureState,
+  state => state.gameType
 );

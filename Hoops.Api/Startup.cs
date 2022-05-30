@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Csbc.Infrastructure.Interface;
 using Hoops.Infrastructure.Interface;
 using Hoops.Core.Models;
 using Microsoft.EntityFrameworkCore;
@@ -71,6 +70,7 @@ namespace Hoops.Api
             services.AddTransient<IScheduleGameRepository, ScheduleGameRepository>();
             services.AddTransient<IWebContentRepository, WebContentRepository>();
             services.AddTransient<IWebContentTypeRepository, WebContentTypeRepository>();
+            services.AddTransient<ISponsorRepository, SponsorRepository>();
 
             services.AddCors(options =>
                    {

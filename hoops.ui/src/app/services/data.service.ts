@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Division } from '@app/domain/division';
 import { map, tap, catchError } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Constants } from '@app/shared/constants';
 
@@ -15,10 +15,27 @@ export class DataService {
   loginUrl = this.baseUrl + '/api/User/login';
   directorUrl = this.baseUrl + '/api/Director';
   seasonGamesUrl = this.baseUrl + '/api/Schedulegame/getSeasonGames';
+  seasonDivisionsUrl = this.baseUrl + '/api/division/GetSeasonDivisions/';
+  playoffGameUrl = this.baseUrl + '/api/schedulegame/getSeasonPlayoffGames';
+  getCurrentSeasonUrl = this.baseUrl + '/api/season/getCurrentSeason';
+  getSeasonTeamsUrl = this.baseUrl + '/api/Team/getSeasonTeams/';
+  getColorUrl = this.baseUrl + '/api/Color';
+  teamPostUrl = this.baseUrl + '/api/Team';
+  teamPutUrl = this.baseUrl + '/api/Team/';
+  getContentUrl = this.baseUrl + '/api/webcontent';
+  getActiveContentUrl = this.baseUrl + '/api/webcontent/getActiveWebContent';
+  postContentUrl = this.baseUrl + '/api/webcontent';
+  putContentUrl = this.baseUrl + '/api/WebContent/';
+  getCurrentSponsors = this.baseUrl + '/api/Sponsor/GetSeasonSponsors/';
+
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+    }),
+  }
 
   constructor (private _http: HttpClient) {
     this.webUrl = environment.apiUrl;
-    // console.log(environment.apiUrl);
     // this.webUrl = 'http://csbc-webapi.azurewebsites.net';
     // this.webUrl = 'https://apicsbc.azurewebsites.net';
     this.dotNetCoreUrl = environment.apiUrl;

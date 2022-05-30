@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'csbc-season-select',
   templateUrl: './csbc-season-select.component.html',
-  styleUrls: ['./csbc-season-select.component.css']
+  styleUrls: ['./csbc-season-select.component.scss']
 })
 export class CsbcSeasonSelectComponent implements OnInit {
   @Input() seasons$: Observable<Season[]> | undefined;

@@ -4,7 +4,7 @@ using Hoops.Core.Models;
 using Hoops.Core.ViewModels;
 using Hoops.Infrastructure.Interface;
 
-namespace Csbc.Infrastructure.Interface
+namespace Hoops.Infrastructure.Interface
 {
     public interface IWebContentRepository: IRepository<WebContent>
     {

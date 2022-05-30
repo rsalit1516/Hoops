@@ -1,13 +1,15 @@
-@import '../../../../content/_variables';
+@import '../../../../Content/variables';
 
 .admin-container {
-  border-radius: 10px;
+  // border-radius: 10px;
   padding-left: 10px;
   padding-right: 10px;
   margin-right: 4px;
   margin-left: 4px;
-  background-color: $sidebar-menu;
+  background-color: transparent;
   color: $table-body-color;
+  border-right: $brand-color solid 1px; ;
+  font-size: 1.2em;
 }
 
 .admin-events {
@@ -16,13 +18,18 @@
   overflow: auto;
   border: 1px solid #555;
 }
-// .mat-sidenav-container {
-  // width: 200px;
-// }
+.mat-list-item-content {
+  font-size: 1.4em;
+}
 a.mat-list-item {
   color: $font-color-text;
-  font-size: $button-font-size;
+  font-size: 1.3em;
 }
+.mat-list-text {
+  color: $font-color-text;
+  font-size: 1.2em;
+}
+
 .container {
   margin-left: 0px;
   padding-left: 0px;

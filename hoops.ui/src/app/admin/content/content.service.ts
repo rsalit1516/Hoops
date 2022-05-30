@@ -5,7 +5,7 @@ import {
   HttpClient,
   HttpResponse,
   HttpParams,
-  HttpHeaders
+  HttpHeaders,
 } from '@angular/common/http';
 
 import * as moment from 'moment';
@@ -22,12 +22,6 @@ import { Observable, of } from 'rxjs';
 
 @Injectable()
 export class ContentService {
-  // private baseUrl = 'http://svc.csbchoops.net/api/WebContent';
-  // baseUrl = this.data.webUrl;
-  baseUrl = this.data.dotNetCoreUrl;
-  getUrl = this.baseUrl + '/api/webcontent/getActiveWebContent';
-  postUrl = this.baseUrl + '/api/webcontent';
-  putUrl = this.baseUrl + '/api/webcontent';
   private _selectedContent: any;
   selectedContent$!: Observable<any>;
   standardNotice = 1;
@@ -40,8 +34,8 @@ export class ContentService {
     this.selectedContent$ = of(value);
     console.log(value);
   }
-  content$ = this.http.get<WebContent[]>(this.getUrl).pipe(
-    // tap(data => console.log('All: ' + JSON.stringify(data))),
+  content$ = this.http.get<WebContent[]>(this.data.getContentUrl).pipe(
+    tap((data) => console.log('All: ' + JSON.stringify(data))),
     shareReplay(1),
     catchError(this.data.handleError('getContents', []))
   );
@@ -53,25 +47,25 @@ export class ContentService {
   ) {}
 
   getContents(): Observable<WebContent[]> {
-    return this.http.get<WebContent[]>(this.getUrl).pipe(
-      tap(data => console.log('All: ' + JSON.stringify(data))),
+    return this.http.get<WebContent[]>(this.data.getContentUrl).pipe(
+      tap((data) => console.log('All: ' + JSON.stringify(data))),
       catchError(this.data.handleError('getContents', []))
     );
   }
   getActiveContents(): Observable<WebContent[]> {
     let filteredContent: WebContent[] = [];
 
-    this.store.select(fromContent.getContentList).subscribe(contents => {
+    this.store.select(fromContent.getContentList).subscribe((contents) => {
       console.log(contents);
       if (contents !== undefined) {
         const today = moment();
         // console.log(today);
         for (let i = 0; i < contents.length; i++) {
-          // const expirationDate = moment(contents[i].expirationDate);
-          // if (expirationDate >= today) {
+          const expirationDate = moment(contents[i].expirationDate);
+          if (expirationDate >= today) {
             console.log(contents[i]);
             filteredContent.push(contents[i]);
-          // }
+          }
         }
       }
     });
@@ -80,7 +74,7 @@ export class ContentService {
   }
   getAllContents(): Observable<WebContent[]> {
     let filteredContent: WebContent[] = [];
-    this.store.select(fromContent.getContentList).subscribe(contents => {
+    this.store.select(fromContent.getContentList).subscribe((contents) => {
       if (contents !== undefined) {
         for (let i = 0; i < contents.length; i++) {
           filteredContent.push(contents[i]);
@@ -99,9 +93,9 @@ export class ContentService {
       //     observer.complete();
       // });
     }
-    return this.http.get(this.getUrl).pipe(
+    return this.http.get(this.data.getContentUrl).pipe(
       // map(this.extractData),
-      tap(data => console.log('getContent: ' + JSON.stringify(data))),
+      tap((data) => console.log('getContent: ' + JSON.stringify(data))),
       catchError(this.data.handleError('getContent', []))
     );
   }
@@ -142,9 +136,13 @@ export class ContentService {
     let options = { headers: new HttpParams() };
 
     if (contentForm.webContentId === null) {
-      return this.createContent(content, options.headers);
+      return this.createContent(content, options.headers).subscribe((x) =>
+        console.log(x)
+      );
     } else {
-      return this.updateContent(content, options.headers);
+      return this.updateContent(content, options.headers).subscribe((x) =>
+        console.log(x)
+      );
     }
   }
 
@@ -152,38 +150,29 @@ export class ContentService {
     // content.webContentId = this.standardNotice;
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
+        'Content-Type': 'application/json',
+      }),
     };
     console.log(content);
     return this.http
-      .post(this.postUrl, content, httpOptions)
-      .subscribe(x => {});
-    // return this.http
-    //   .post(this.baseUrl, content) // , options)
-    //   .pipe(
-    //     map(this.extractData),
-    //     tap(data => console.log('createContent: ' + JSON.stringify(data))),
-    //     catchError(this.data.handleError('postContent', []))
-    //   );
+      .post<WebContent>(
+        this.data.postContentUrl,
+        content,
+        this.data.httpOptions
+      )
+      .pipe(catchError(this.data.handleError('addContent', content)));
   }
 
   private updateContent(content: Content, options: HttpParams) {
     // const url = `${this.baseUrl}/${content.webContentId}`;
-    console.log(this.putUrl);
-    // content.webContentTypeId = 1;
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
+    console.log(this.data.putContentUrl);
     console.log(content);
-    return this.http.put(this.postUrl, content, httpOptions).subscribe(x => {});
-    // .pipe(
-    //  //  map(() => content),
-    //   tap(data => console.log('updateContent: ' + JSON.stringify(data))),
-    //   catchError(this.data.handleError('updateContent', []))
-    // );
+    return this.http
+      .put<WebContent>(this.data.putContentUrl + content.webContentId, content, this.data.httpOptions)
+      .pipe(
+        tap((data) => console.log('updateContent: ' + JSON.stringify(data))),
+        catchError(this.data.handleError('updateContent', content))
+      );
   }
 
   private extractData(response: Response) {
@@ -205,7 +194,7 @@ export class ContentService {
       expirationDate: new Date(),
       webContentTypeId: 1,
       contentSequence: 1,
-      webContentType: new WebContentType()
+      webContentType: new WebContentType(),
     };
   }
   getWebContentType(id: number): WebContentType {

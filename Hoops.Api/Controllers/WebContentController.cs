@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using Csbc.Infrastructure.Interface;
 using System.Threading.Tasks;
 using Hoops.Core.Models;
+using Microsoft.Extensions.Logging;
+using Hoops.Infrastructure.Interface;
+using System.Linq;
 
 namespace Hoops.Controllers
 {
@@ -13,16 +15,17 @@ namespace Hoops.Controllers
         // private readonly hoopsContext _context;
 
         public IWebContentRepository repository { get; set; }
+        private readonly ILogger<WebContentController> _logger;
 
         /// <summary>
         /// WebContentController
         /// </summary>
         /// <param name="_webContent"></param>
-        public WebContentController(
-            IWebContentRepository _webContent
-        )
+        public WebContentController( IWebContentRepository _webContent, ILogger<WebContentController> logger )
         {
             this.repository = _webContent;
+             _logger = (ILogger<WebContentController>)logger;
+            _logger.LogDebug(1, "NLog injected into Web Content Controller");
         }
 
         /// <summary>
@@ -32,7 +35,7 @@ namespace Hoops.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<WebContent>> GetWebContent()
         {
-            return Ok(repository.GetAll());
+            return Ok(repository.GetAll().OrderByDescending(x => x.ExpirationDate));
         }
 
         // GET: api/WebContent/5
@@ -121,6 +124,11 @@ namespace Hoops.Controllers
         [HttpPost]
         public ActionResult<WebContent> PostWebContent(WebContent webContent)
         {
+            _logger.LogInformation("Updating new controller");
+            _logger.LogInformation(webContent.WebContentId.ToString());
+            _logger.LogInformation(webContent.Title);
+            _logger.LogInformation(webContent.WebContentTypeId.ToString());
+            _logger.LogInformation(webContent.WebContentType.WebContentTypeId.ToString());
             var content = repository.Insert(webContent);
             return Ok(content);
         }

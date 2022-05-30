@@ -5,6 +5,8 @@ export class Team {
     teamColorId?: number;
     teamName?: string;
     teamNumber?: string;
+    createdDate?: Date;
+    createdUser?: string | undefined;
     constructor(
       _teamId? : number,
       _divisionId?: number,

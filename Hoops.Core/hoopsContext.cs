@@ -31,13 +31,6 @@ namespace Hoops.Core
         public virtual DbSet<Person> People { get; set; }
         public virtual DbSet<Player> Players { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
-        // public virtual DbSet<SchDivisions> SchDivisions { get; set; }
-        // public virtual DbSet<SchExceptions> SchExceptions { get; set; }
-        // public virtual DbSet<SchGameTimes> SchGameTimes { get; set; }
-        // public virtual DbSet<SchGames> SchGames { get; set; }
-        // public virtual DbSet<SchLocations> SchLocations { get; set; }
-        // public virtual DbSet<SchOptions> SchOptions { get; set; }
-        // public virtual DbSet<SchTeams> SchTeams { get; set; }
         public virtual DbSet<ScheduleDivTeam> ScheduleDivTeams { get; set; }
         public virtual DbSet<ScheduleGame> ScheduleGames { get; set; }
         // public virtual DbSet<ScheduleGamesStats> ScheduleGamesStats { get; set; }
@@ -54,6 +47,10 @@ namespace Hoops.Core
         public virtual DbSet<Team> Teams { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Version> Version { get; set; }
+        public virtual DbSet<WebContent> WebContents { get; set; }
+        public virtual DbSet<WebContentType> WebContentTypes { get; set; }
+        
+        // Views 
         // public virtual DbSet<VwAllSponsors> VwAllSponsors { get; set; }
         // public virtual DbSet<VwBatchPlayers> VwBatchPlayers { get; set; }
         // public virtual DbSet<VwCheckEmail> VwCheckEmail { get; set; }
@@ -85,8 +82,16 @@ namespace Hoops.Core
         // public virtual DbSet<VwSponsors> VwSponsors { get; set; }
         // public virtual DbSet<VwTeam> VwTeams { get; set; }
         // public virtual DbSet<VwUsers> VwUsers { get; set; }
-        public virtual DbSet<WebContent> WebContents { get; set; }
-        public virtual DbSet<WebContentType> WebContentTypes { get; set; }
+        
+        // Tables used for importing form scheduler 
+        // public virtual DbSet<SchDivisions> SchDivisions { get; set; }
+        // public virtual DbSet<SchExceptions> SchExceptions { get; set; }
+        // public virtual DbSet<SchGameTimes> SchGameTimes { get; set; }
+        // public virtual DbSet<SchGames> SchGames { get; set; }
+        // public virtual DbSet<SchLocations> SchLocations { get; set; }
+        // public virtual DbSet<SchOptions> SchOptions { get; set; }
+        // public virtual DbSet<SchTeams> SchTeams { get; set; }
+
         // protected void OnConfiguring() {}
         // {
         // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -908,7 +913,7 @@ namespace Hoops.Core
 
             modelBuilder.Entity<Sponsor>(entity =>
             {
-                entity.ToTable("Sponsor");
+                entity.ToTable("Sponsors");
                 entity.HasKey(e => e.SponsorId);
 
                 entity.Property(e => e.SponsorId)

@@ -13,7 +13,8 @@ namespace Hoops.Infrastructure.Interface
         ScheduleGame GetByScheduleAndGameNo(int scheduleNo, int gameNo);
         IEnumerable<ScheduleGame> GetSeasonGames();
         Task<IEnumerable<ScheduleGame>> GetSeasonGamesAsync(int seasonId);
-        new int Update(ScheduleGame scheduleGame);
+        // new int Update(ScheduleGame scheduleGame);
+        new ScheduleGame Insert(ScheduleGame scheduleGame);
         IEnumerable<ScheduleStandingsVM> GetStandings(int divisionId);
         List<GameSchedulesViewModel> GetGames( int seasonId);
         Task UpdateScore(int id, int homeTeamScore, int visitorTeamScore);

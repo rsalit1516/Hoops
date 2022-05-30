@@ -1,26 +1,49 @@
-import { createFeatureSelector, createSelector } from '@ngrx/store';
-
 import { AdminActions, AdminActionTypes } from './admin.actions';
-import * as fromRoot from '../../state/app.state';
-import { Season } from 'app/domain/season';
-import { Division } from 'app/domain/division';
+// import * as fromRoot from '../../state/app.state';
+import { Season } from '@app/domain/season';
+import { Division } from '@app/domain/division';
+import { Game } from '@app/domain/game';
+import { Team } from '@app/domain/team';
+import { Color } from '@app/domain/color';
+import { PlayoffGame } from '@app/domain/playoffGame';
 
 export interface AdminState {
-  currentSeasonId: number | undefined;
-  currentDivisionId: number | undefined;
+  selectedSeason: Season;
+  selectedDivision: Division | null;
   currentTeamId: number | null;
+  games: Game[];
+  filteredGames: Game[];
   seasons: Season[];
-  currentSeason: Season;
   divisions: Division[];
+  divisionTeams: Team[];
+  seasonDivisions: Division[];
+  selectedGame: Game | null;
+  seasonTeams: Team[] | null;
+  selectedTeam: Team | null;
+  colors: Color[];
+  showOnlyActiveWebContent: boolean;
+  gameType: string;
+  playoffGames: PlayoffGame[];
+
 }
 
 const initialState: AdminState = {
-  currentSeason: new Season(),
-  currentSeasonId: 2193,
-  currentDivisionId: undefined,
+  selectedSeason: new Season(),
+  selectedDivision: null,
   currentTeamId: null,
+  games: [],
+  filteredGames: [],
   seasons: [],
-  divisions: []
+  divisions: [],
+  divisionTeams: [],
+  seasonDivisions: [],
+  selectedGame: null,
+  seasonTeams: [],
+  selectedTeam: null,
+  colors: [],
+  showOnlyActiveWebContent: true,
+  gameType: 'Regular Season',
+  playoffGames: [],
 };
 
 export function reducer(
@@ -31,30 +54,66 @@ export function reducer(
     case AdminActionTypes.LoadSeasonsSuccess:
       return {
         ...state,
-        seasons: action.payload
+        seasons: action.payload,
       };
-    case AdminActionTypes.LoadDivisionsSuccess:
+
+    case AdminActionTypes.SetSelectedDivision:
       return {
         ...state,
-        divisions: action.payload
-      };
-    case AdminActionTypes.SetCurrentSeason:
-      return {
-        ...state,
-        currentSeason: action.payload
+        selectedDivision: action.payload,
       };
     case AdminActionTypes.SetSelectedSeason:
       return {
         ...state,
-        currentSeason: action.payload
+        selectedSeason: action.payload,
       };
-    case AdminActionTypes.SetSelectedSeasonId:
+    case AdminActionTypes.SetSelectedGame:
       return {
         ...state,
-        currentSeasonId: action.payload
+        selectedGame: action.payload,
       };
+    case AdminActionTypes.LoadGamesSuccess:
+      return {
+        ...state,
+        games: action.payload,
+      };
+    case AdminActionTypes.LoadFilteredGamesSuccess:
+      return {
+        ...state,
+        filteredGames: action.payload,
+      };
+    case AdminActionTypes.LoadDivisionsSuccess:
+      return {
+        ...state,
+        seasonDivisions: action.payload,
+      };
+    case AdminActionTypes.LoadDivisionTeamsSuccess:
+      return {
+        ...state,
+        divisionTeams: action.payload,
+      };
+    case AdminActionTypes.SetSelectedTeam:
+      return {
+        ...state,
+        selectedTeam: action.payload,
+      };
+    case AdminActionTypes.SetColors:
+      return {
+        ...state,
+        colors: action.payload,
+      };
+    case AdminActionTypes.LoadSeasonTeamsSuccess:
+      return {
+        ...state,
+        seasonTeams: action.payload,
+      };
+      case AdminActionTypes.SetGameType:
+        return {
+          ...state,
+          gameType: action.payload,
+        };
 
-    default: {
+      default: {
       return state;
     }
   }

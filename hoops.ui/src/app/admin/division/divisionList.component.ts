@@ -1,6 +1,4 @@
 import { Component, OnInit, OnChanges, Input } from '@angular/core';
-// import { Observable } from 'rxjs/Observable';
-// import { Subscription } from 'rxjs/Subscription';
 
 import { SeasonService } from '../../services/season.service';
 import { DivisionService } from '../../services/division.service';
@@ -14,12 +12,13 @@ import * as adminActions from '../state/admin.actions';
 import { LoadDivisions } from './../state/admin.actions';
 import { Observable } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'csbc-division-list',
   templateUrl: './divisionList.component.html',
   styleUrls: ['../admin.component.scss'],
-  providers: [SeasonService]
+  providers: [SeasonService],
 })
 export class DivisionListComponent implements OnInit, OnChanges {
   @Input() selectedSeason!: Season;
@@ -36,45 +35,37 @@ export class DivisionListComponent implements OnInit, OnChanges {
   divisions: Division[] | undefined;
   // subscription: Subscription;
   errorMessage: string | undefined;
-  selectedDivision: Division| undefined;
-  seasonId: number| undefined;
+  selectedDivision: Division | undefined;
+  seasonId: number | undefined;
   displayedColumns = [
     'divisionId',
     'divisionDescription',
     'minDate',
     'maxDate',
     'actions',
-    'viewActions'
+    'viewActions',
   ];
-  dataSource: MatTableDataSource<Division>| undefined;
-  divisions$: Observable<Division[]>| undefined;
+  dataSource: MatTableDataSource<Division> | undefined;
+  divisions$: Observable<Division[]> | undefined;
   constructor(
     private _divisionService: DivisionService,
     public seasonService: SeasonService,
-    private store: Store<fromAdmin.State>
-  ) {
-    // this.store
-    //   .pipe(select(fromAdmin.getSeasonDivisions))
-    //   .subscribe(divisions => {
-    //     console.log(divisions);
-    //     this.dataSource = new MatTableDataSource(divisions);
-    //   });
-  }
+    private store: Store<fromAdmin.State>,
+    private router: Router
+  ) {}
 
   ngOnInit() {
-    this.store
-      .pipe(select(fromAdmin.getCurrentSeasonId))
-      .subscribe(seasonId => {
-        this.seasonId = seasonId;
-        console.log(this.seasonId);
-        this._divisionService.getDivisions(seasonId as number).subscribe(divisions => {
-          this.divisions = divisions;
-          this.dataSource = new MatTableDataSource(divisions);
+    this.store.pipe(select(fromAdmin.getSelectedSeason)).subscribe((season) => {
+      this.seasonId = season.seasonId;
+      console.log(this.seasonId);
+      this.store.select(fromAdmin.getSeasonDivisions).subscribe((divisions) => {
+        this.divisions = divisions;
+        this.dataSource = new MatTableDataSource(divisions);
 
-          //turn this to effect or load into store
-          //this.store.dispatch(new adminActions.)
-        });
+        //turn this to effect or load into store
+        //this.store.dispatch(new adminActions.)
       });
+    });
   }
   ngOnChanges(): void {
     if (this.selectedSeason !== undefined) {
@@ -105,7 +96,7 @@ export class DivisionListComponent implements OnInit, OnChanges {
           divisionId: data[i].divisionId,
           divisionDescription: data[i].divisionDescription,
           minDate: data[i].minDate,
-          maxDate: data[i].maxDate
+          maxDate: data[i].maxDate,
         };
         divisions.push(division);
       }
@@ -118,6 +109,8 @@ export class DivisionListComponent implements OnInit, OnChanges {
   }
   viewTeams(division: any) {
     console.log(division);
+    this.store.dispatch(new adminActions.SetSelectedDivision(division));
+    this.router.navigate(['./admin/season-setup']);
   }
   getRecord(division: any) {
     console.log(division);

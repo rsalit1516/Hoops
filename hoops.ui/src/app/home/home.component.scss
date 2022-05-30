@@ -1,8 +1,9 @@
 @import "../../content/_variables";
 
 h4 {
-  color: white;
+  color: $brand-color;
   font-size: 1.1em;
+  font-weight: 700;
 }
 img {
   max-width: 100%;
@@ -16,7 +17,8 @@ img {
 .tag-line {
   font-variant: small-caps;
   font-style: italic;
-  font-size: 1.1em;
+  font-size: 1.5em;
+  font-weight: 700;
   text-align: right;
   padding-top: 20px;
   padding-right: 12px;
@@ -55,8 +57,8 @@ em {
   border-radius: 10px;
   background-color: $card-background-color;
   margin-bottom: 16px;
-  padding-top: 1.6vh;
-  padding-bottom: 1.6vh;
+  padding-top: 18px;
+  padding-bottom: 20px;
 }
 
 .mat-card-title {
@@ -104,6 +106,7 @@ em {
 }
 .home-wrapper {
   font-size: $wrapper-font-size;
+  height:100%;
 }
 
 .infoLocation {
@@ -114,4 +117,22 @@ em {
   border-radius: 10px;
   padding-top: 1vh;
   padding-bottom: 1vh;
+}
+
+div.sponsor {
+  height: 140px;
+  position: fixed;
+  left: 0;
+  bottom:0%;
+  width:100%;
+  background-color: darken($card-background-color, 10%);
+  // opacity: 1;
+  text-align: center;
+}
+.sponsor-carousel {
+  height: 120px;
+}
+
+p {
+  color: white;
 }

@@ -7,7 +7,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
-import { MatSortModule } from '@angular/material/sort'
+import { MatSortModule } from '@angular/material/sort';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -22,9 +22,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
-
+import { NgxMatDatetimePickerModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
 
 @NgModule({
   imports: [
@@ -48,7 +48,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatRadioModule,
     MatSelectModule,
     MatChipsModule,
-    MatCheckboxModule, MatProgressSpinnerModule, MatButtonToggleModule, MatTooltipModule
+    MatCheckboxModule,
+    MatProgressSpinnerModule,
+    MatButtonToggleModule,
+    MatTooltipModule,
+    NgxMatDatetimePickerModule,
   ],
   exports: [
     MatButtonModule,
@@ -72,9 +76,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatChipsModule,
     MatCheckboxModule,
     MatProgressSpinnerModule,
-    MatDialogModule, MatTooltipModule
+    MatDialogModule,
+    MatTooltipModule,
+    NgxMatDatetimePickerModule,
+    NgxMatTimepickerModule,
   ],
-  declarations: []
+  declarations: [],
 })
-
-export class MaterialModule { }
+export class MaterialModule {}

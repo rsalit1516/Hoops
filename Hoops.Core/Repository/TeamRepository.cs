@@ -7,14 +7,21 @@ using System.Collections.Generic;
 using Hoops.Core;
 using Hoops.Core.ViewModel;
 using System;
+using Microsoft.Extensions.Logging;
 
 namespace Hoops.Infrastructure.Repository
 {
     public class TeamRepository : EFRepository<Team>, ITeamRepository
     {
+        private readonly ILogger<TeamRepository> logger;
 
-        public TeamRepository(hoopsContext context) : base(context) { }
-
+        public TeamRepository(hoopsContext context, ILogger<TeamRepository> _logger) : base(context)
+        {
+            logger = _logger;
+        }
+        public TeamRepository(hoopsContext context) : base(context)
+        {
+        }
         #region IRepository<T> Members
 
         public IEnumerable<Team> GetAll(int companyId)
@@ -54,35 +61,46 @@ namespace Hoops.Infrastructure.Repository
         public List<Team> GetSeasonTeams(int seasonId)
         {
             var colors = context.Colors.Where(x => x.CompanyId == 1).ToList();
+            var divisions = context.Divisions.Where(div => div.SeasonId == seasonId);
             var teams = new List<Team>();
-            foreach (Team team in context.Teams
-                        .Where(team => team.SeasonId == seasonId))
+            foreach (Division division in divisions)
             {
-                teams.Add(ConvertRecordForTeamNumber(team, colors));
-            }
-
-            return teams;
-        }
-
-        public IQueryable<Team> GetDivisionTeams(int divisionId)
-        {
-            var teams = context.Teams
-                        .Where(s => s.DivisionId == divisionId);
-            return teams;
-        }
-        public Team ConvertRecordForTeamNumber(Team team, List<Color> colors)
-        {
-            if (String.IsNullOrEmpty(team.TeamName))
-            {
-                if (team.TeamColorId > 0)
+                var teamDiv = context.Teams.Where(team => team.DivisionId == division.DivisionId);
+                foreach (Team team in teamDiv)
                 {
-                    team.TeamName = colors.FirstOrDefault(c => c.ColorId == team.TeamColorId).ColorName + " (" + team.TeamNumber.ToString() + ")";
+                    teams.Add(ConvertRecordForTeamNumber(team, colors));
                 }
-                else
-                    team.TeamName = team.TeamNumber;
             }
-            return team;
+            if (teams != null)
+            {
+                // logger.LogInformation("Retrieving season teams: " + teams.Count.ToString());
+            }
+            return teams;
         }
+
+    public IQueryable<Team> GetDivisionTeams(int divisionId)
+    {
+        var teams = context.Teams
+                    .Where(s => s.DivisionId == divisionId);
+        return teams;
     }
+    public Team ConvertRecordForTeamNumber(Team team, List<Color> colors)
+    {
+        if (String.IsNullOrEmpty(team.TeamName))
+        {
+            if (team.TeamColorId > 0)
+            {
+                // logger.LogInformation(team.TeamColorId.ToString());
+                // logger.LogInformation(team.TeamNumber);
+                var color = colors.FirstOrDefault(c => c.ColorId == team.TeamColorId);
+                team.TeamName = color.ColorName.ToUpper() + " (" + team.TeamNumber.ToString() + ")";
+                team.TeamColor = color.ColorName;
+            }
+            else
+                team.TeamName = team.TeamNumber;
+        }
+        return team;
+    }
+}
 }
 

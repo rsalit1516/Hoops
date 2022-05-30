@@ -30,11 +30,11 @@ export class ContentEffects {
   ) {}
 
   // tslint:disable-next-line:member-ordering
-  
+
   loadContent$: Observable<Action> = createEffect(() => this.actions$.pipe(
     ofType(contentActions.ContentActionTypes.Load),
     mergeMap(action =>
-      this.contentService.content$.pipe(
+      this.contentService.getContents().pipe(
         map(content => new contentActions.LoadSuccess(content)),
         tap(content => console.log(content)),
         catchError(err => of(new contentActions.LoadFail(err)))
@@ -42,7 +42,7 @@ export class ContentEffects {
     )
   ));
 
-  
+
   loadActiveContent$: Observable<Action> = createEffect(() => this.actions$.pipe(
     ofType(contentActions.ContentActionTypes.SetActiveContent),
     switchMap(action =>
@@ -53,7 +53,7 @@ export class ContentEffects {
       )
     )
   ));
-  
+
   loadAllContent$: Observable<Action> = createEffect(() => this.actions$.pipe(
     ofType(contentActions.ContentActionTypes.SetAllContent),
     switchMap(action =>

@@ -2,9 +2,11 @@
 using System.Linq;
 using System.Data;
 using Hoops.Infrastructure.Interface;
-using Csbc.Infrastructure;
 using Hoops.Core.Models;
 using Hoops.Core;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace Hoops.Infrastructure.Repository
 {
@@ -36,18 +38,48 @@ namespace Hoops.Infrastructure.Repository
         }
 
 
-        public IQueryable<Sponsor> GetSeasonSponsors(int seasonId)
+        public IQueryable<SponsorWithProfile> GetSeasonSponsors(int seasonId)
         {
             var sponsorRepository = new SponsorRepository(new hoopsContext());
-            var sponsors = context.Set<Sponsor>().Where(s => s.SeasonId == seasonId);
-            //var count = sponsors.Count();
+            var sponsors = context.Set<Sponsor>()
+            .Join(context.Set<SponsorProfile>(),
+            s => s.SponsorProfileId,
+            p => p.SponsorProfileId,
+            (s, p) => new { s, p })
+            .Where(z => z.s.SeasonId == seasonId)
+            .Select(z => new SponsorWithProfile
+            {
+                Name = z.p.SpoName,
+                Phone = z.p.Phone
+
+            });
             return sponsors;
         }
 
+        public async Task<List<SponsorWithProfile>> GetSeasonSponsorsAsync(int seasonId)
+        {
+            var sponsors = await context.Set<Sponsor>()
+            .Join(context.Set<SponsorProfile>(),
+            s => s.SponsorProfileId,
+            p => p.SponsorProfileId,
+            (s, p) => new { s, p })
+            .Where(z => z.s.SeasonId == seasonId)
+            .Select(z => new SponsorWithProfile
+            {
+                SponsorId = z.s.SponsorId, 
+                Name = z.p.SpoName,
+                Website = z.p.Url,
+                Phone = z.p.Phone
+
+            })
+            .ToListAsync();
+            return sponsors;
+        }
         public bool IsSeasonSponsor(int seasonId, int sponsorProfileId)
         {
             var sponsorRepository = new SponsorRepository(new hoopsContext());
-            var sponsors = context.Set<Sponsor>().Where(s => s.SeasonId == seasonId && s.SponsorProfileId == sponsorProfileId);
+            var sponsors = context.Set<Sponsor>()
+            .Where(s => s.SeasonId == seasonId && s.SponsorProfileId == sponsorProfileId);
             //var count = sponsors.Count();
             return sponsors.Any();
         }
@@ -59,6 +91,5 @@ namespace Hoops.Infrastructure.Repository
             var payments = repPayments.GetTotalPayments(sponsorProfileId);
             return (Convert.ToDecimal(fees) - payments);
         }
-
     }
 }

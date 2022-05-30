@@ -2,21 +2,39 @@
 
 .mat-sidenav {
   color: white;
-  // background-color: $card-background-color;
 }
 .mat-list-item-content {
   color: white;
   font-size: 1.1em;
 }
+.mat-toolbar {
+  background-color: black;
+ }
+
 .main {
   padding: 10px 10px 0 10px;
 }
+input {
+  font-size: $table-font-size;
+  font-weight: 700;
+}
 
+.mat-label, .mat-form-field, .mat-form-field-label {
+  font-size: .8em;
+  color: $card-title-font-size;
+  background-color: $admin-background-color;
+}
+.form-control {
+  font-size:.9em;
+}
 .mat-table {
   width: 100%;
 }
 fieldset {
-  background-color: black;
+  background-color: $admin-table-background-color;
+}
+button {
+  margin-right: 12px;
 }
 
 nav.sidebar {
@@ -175,13 +193,7 @@ div {
   background-color: black;
   font-size: 1em;
 }
-th {
-  background-color: $card-background-color;
-  color: white;
-  font-weight: 600;
-  padding-top: 6px;
-  padding-bottom: 6px;
-}
+
 tbody {
   color: white;
 }
@@ -192,9 +204,15 @@ table .table .table-responsive .table-condensed {
 div {
   color: $brand-color;
 }
+.mat-card {
+  background-color: $admin-card-background-color
+}
+.mat-card-title, h2 {
+  color: $card-color;
+}
 .mat-raised-button .mat-button {
   background-color: $brand-color;
-  color: $card-background-color;
+  color: white;
 }
 .mat-cell,
 .mat-header-cell {
@@ -205,27 +223,27 @@ div {
   // min-height:auto; // overrides the 'inherit' that set the min height of the row
   padding: 12px 8px 12px 4px;
 }
-.mat-select {
-  color: $basketball-color;
+
+.mat-select-value {
+  color: $admin-font-color;
 }
-.map-select-arrow-wrapper {
-  color: $basketball-color;
-}
-.mat-form-field {
-  padding-left: 12px;
-  padding-right: 12px;
-  padding-top: 8px;
-  color: $basketball-color;
-  background-color: $card-background-color;
-}
+
 .ng-star-inserted {
   color: $basketball-color;
 }
 .mat-checkbox {
   background-color: $card-background-color;
-  color: $brand-color;
+  color: $admin-font-color;
 }
 .mat-raised-button {
   background-color: $brand-color;
-  color: $card-background-color;
+  color:white;
+}
+.form-control {
+  background-color: $admin-table-background-color;
+  color: $admin-font-color;
+  border-color: $admin-table-background-color-border;
+}
+.row-is-clicked {
+  font-weight: bold;
 }

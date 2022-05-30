@@ -7,11 +7,13 @@ import { Store } from '@ngrx/store';
 import * as fromContent from './content/state';
 import * as contentActions from './content/state/content.actions';
 import { MatSidenav } from '@angular/material/sidenav';
-
+import * as adminActions from './state/admin.actions';
+import * as fromAdmin from './state';
+import * as fromUser from '../user/state';
 
 class MenuItem {
-  routerLink: string;
-  description: string;
+  routerLink: string | undefined;
+  description: string | undefined;
 }
 const SMALL_WIDTH_BREAKPOINT = 720;
 @Component({
@@ -21,11 +23,11 @@ const SMALL_WIDTH_BREAKPOINT = 720;
 
 
 export class AdminComponent  implements OnInit {
-  @ViewChild(MatSidenav, {static: false}) sidenav: MatSidenav;
+  @ViewChild(MatSidenav, {static: false}) sidenav: MatSidenav | undefined;
 
-  opened: true;
+  opened = true;
   mode = 'side';
-  menuItems: MenuItem[];
+  menuItems!: MenuItem[];
   private mediaMatcher: MediaQueryList = matchMedia(
     `(max-width: ${SMALL_WIDTH_BREAKPOINT}px)`
   );
@@ -51,6 +53,26 @@ export class AdminComponent  implements OnInit {
     // this.user = this.userService.user;
     // TODO: get user types!
     this.menu();
+    // this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
+    //   console.log(season);
+    //   if (season !== undefined) {
+    //     this.store.dispatch(new adminActions.LoadDivisions());
+    //     this.store.dispatch(new adminActions.LoadSeasonTeams());
+    //   }
+    // });
+
+    this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
+      console.log(division);
+      if (division !== undefined) {
+        this.store.dispatch(new adminActions.LoadDivisionTeams());
+      }
+    });
+
+    this.store.select(fromAdmin.getSeasonDivisions).subscribe((divisions) => {
+      console.log(divisions);
+      this.store.dispatch(new adminActions.SetSelectedDivision(divisions[0]));
+      this.store.dispatch(new adminActions.LoadDivisionTeams);
+    });
   }
     menu() {
     this.menuItems = new Array<MenuItem>();

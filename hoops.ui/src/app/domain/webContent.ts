@@ -21,6 +21,11 @@ export class WebContent {
     public location: string | undefined;
     public dateAndTime: string | undefined;
     public webContentTypeDescription: string | undefined;
+    public expirationDate: Date | undefined;
+    public webContentType!: {
+      webContentTypeId: number,
+      webContentTypeDescription: string
+    }
     constructor() {
     }
 }
