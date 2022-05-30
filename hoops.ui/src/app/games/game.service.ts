@@ -288,7 +288,6 @@ export class GameService {
     game.visitingTeamScore = visitingTeamScore;
     console.log(game);
     const gameUrl = this.dataService.webUrl + '/api/games/updateScores';
-    // + game;
     console.log(gameUrl);
     let result = this.http
       .put(gameUrl, game, httpOptions)
