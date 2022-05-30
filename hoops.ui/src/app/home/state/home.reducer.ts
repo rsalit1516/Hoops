@@ -1,5 +1,4 @@
 import { HomeActions, HomeActionTypes } from './home.actions';
-import { Content } from 'app/domain/content';
 import { WebContent } from '../../domain/webContent';
 import { Sponsor } from '@app/domain/sponsor';
 
@@ -20,6 +19,11 @@ export function reducer(state = initialState, action: HomeActions): HomeState {
         ...state,
         content: action.payload,
       };
+      case HomeActionTypes.LoadSponsorsSuccess:
+        return {
+          ...state,
+          sponsors: action.payload,
+        };
     default: {
       return state;
     }

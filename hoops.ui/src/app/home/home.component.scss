@@ -120,17 +120,17 @@ em {
 }
 
 div.sponsor {
-  height: 240px;
+  height: 140px;
   position: fixed;
   left: 0;
   bottom:0%;
   width:100%;
-  background-color: $card-background-color;
+  background-color: darken($card-background-color, 10%);
   // opacity: 1;
   text-align: center;
 }
 .sponsor-carousel {
-  height: 240px;
+  height: 120px;
 }
 
 p {

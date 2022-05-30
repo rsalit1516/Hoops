@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Sponsor } from '@app/domain/sponsor';
+import { Store } from '@ngrx/store';
+import * as fromHome from '../../state';
+
 
 @Component({
   selector: 'app-sponsor-list',
@@ -9,11 +12,13 @@ import { Sponsor } from '@app/domain/sponsor';
 export class SponsorListComponent implements OnInit {
   sponsors: Sponsor[] | undefined;
 
-  constructor() { }
+  constructor(private store: Store<fromHome.State>) { }
 
   ngOnInit(): void {
-    this.sponsors = this.getSponsors();
-
+    this.store
+    .select(fromHome.getSponsors)
+    .subscribe((sponsors) => (this.sponsors = sponsors));
+    // this.sponsors = this.getSponsors();
 
   }
   getSponsors(): Sponsor[] {
