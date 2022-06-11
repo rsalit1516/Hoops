@@ -50,7 +50,7 @@
             >
               <mat-option
                 *ngFor="let webContentType of contentTypes"
-                [value]="webContentType"
+                [value]="webContentType.webContentTypeId"
                 >{{ webContentType.webContentTypeDescription }}</mat-option
               >
             </mat-select>

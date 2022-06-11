@@ -120,7 +120,7 @@ export class ContentService {
     // content.webContentType = this.getWebContentType(
     //   contentForm.webContentType.Web
     // );
-    content.webContentType = contentForm.webContentTypeControl;
+    content.webContentTypeId = contentForm.webContentTypeControl;
     content.webContentId =
       contentForm.webContentId === null ? 0 : contentForm.webContentId;
     console.log(content);
@@ -135,7 +135,7 @@ export class ContentService {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = { headers: new HttpParams() };
 
-    if (contentForm.webContentId === null) {
+    if (contentForm.webContentId === undefined) {
       return this.createContent(content, options.headers).subscribe((x) =>
         console.log(x)
       );

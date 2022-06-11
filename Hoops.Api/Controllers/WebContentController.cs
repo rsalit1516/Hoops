@@ -128,7 +128,7 @@ namespace Hoops.Controllers
             _logger.LogInformation(webContent.WebContentId.ToString());
             _logger.LogInformation(webContent.Title);
             _logger.LogInformation(webContent.WebContentTypeId.ToString());
-            _logger.LogInformation(webContent.WebContentType.WebContentTypeId.ToString());
+            // _logger.LogInformation(webContent.WebContentType.WebContentTypeId.ToString());
             var content = repository.Insert(webContent);
             return Ok(content);
         }

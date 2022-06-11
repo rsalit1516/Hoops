@@ -2297,41 +2297,18 @@ namespace Hoops.Core
             //     entity.Property(e => e.UserName).HasMaxLength(50);
             // });
 
-            modelBuilder.Entity<WebContent>(entity =>
-            {
-                entity.ToTable("WebContent");
-                entity.HasKey(entity => entity.WebContentId);
-                entity.Property(e => e.DateAndTime).HasMaxLength(50);
+            // modelBuilder.Entity<WebContentType>(entity =>
+            // {
+            //     entity.ToTable("WebContentType");
+            //     entity.HasKey(e => e.WebContentTypeId);
+            //     entity.Property(p => p.WebContentTypeId).ValueGeneratedOnAdd();
+            //     entity.Property(e => e.WebContentTypeDescription)
+            //         .IsRequired()
+            //         .HasMaxLength(50);
+            //     // entity.Property(e => e.CreatedDate).HasDefaultValue(DateTime.Now);
+            // });
 
-                entity.Property(e => e.ExpirationDate).HasColumnType("datetime");
-
-                entity.Property(e => e.Location).HasMaxLength(50);
-
-                entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
-
-                entity.Property(e => e.Page).HasMaxLength(50);
-
-                entity.Property(e => e.SubTitle).HasMaxLength(50);
-
-                entity.Property(e => e.Title).HasMaxLength(50);
-                entity.Property(e => e.Type).HasMaxLength(50);
-                // entity.Property(e => e.CreatedDate).HasDefaultValue(DateTime.Now);
-                // entity.HasOne(d => d.WebContentType)                    
-                // .WithOne(k => k.WebContent)
-                // .HasForeignKey<WebContentType>(w => w.WebContentTypeId);
-            });
-
-            modelBuilder.Entity<WebContentType>(entity =>
-            {
-                entity.ToTable("WebContentType");
-                entity.HasKey(e => e.WebContentTypeId);
-                entity.Property(p => p.WebContentTypeId).ValueGeneratedOnAdd();
-                entity.Property(e => e.WebContentTypeDescription)
-                    .IsRequired()
-                    .HasMaxLength(50);
-                // entity.Property(e => e.CreatedDate).HasDefaultValue(DateTime.Now);
-            });
-
+           
             modelBuilder.Entity<User>().HasData(new User { UserId = 1, UserName = "TestUser", UserType = 0 });
             // modelBuilder.Entity<WebContentType>().HasData(new WebContentType
             // {

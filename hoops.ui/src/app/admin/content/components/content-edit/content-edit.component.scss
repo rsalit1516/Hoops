@@ -1,4 +1,4 @@
-@import '../../../../../content/_variables';
+@import '../../../../../Content/variables';
 
 fieldset {
   background-color: darken($card-background-color, 30%);
@@ -56,10 +56,18 @@ button {
 }
 .mat-form-field-label-wrapper {
   color: $field-label;
-} 
+}
+.mat-form-field {
+  color: $field-label;
+  font-size: 1.2em;
+}
 .mat-input {
   color: $field-label !important;
 }
 .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
   color: $field-label !important;
+}
+label {
+  font-size: 1.2em;
+  color: $field-label;
 }
