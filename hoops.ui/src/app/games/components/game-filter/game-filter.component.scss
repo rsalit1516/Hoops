@@ -11,6 +11,7 @@
   background-color: transparent;
   color: white;
   font-size: 0.9em;
+  width: 100%;
 }
 
 .mat-toolbar {
@@ -21,7 +22,7 @@
   padding-right: 12px;
   background-color: $background-color;
   color: white;
-  width: 140px;
+  width: 240px;
   font-size:$button-font-size;
 }
 .mat-form-field-infix {
