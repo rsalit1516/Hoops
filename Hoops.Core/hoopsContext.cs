@@ -2297,25 +2297,8 @@ namespace Hoops.Core
             //     entity.Property(e => e.UserName).HasMaxLength(50);
             // });
 
-            // modelBuilder.Entity<WebContentType>(entity =>
-            // {
-            //     entity.ToTable("WebContentType");
-            //     entity.HasKey(e => e.WebContentTypeId);
-            //     entity.Property(p => p.WebContentTypeId).ValueGeneratedOnAdd();
-            //     entity.Property(e => e.WebContentTypeDescription)
-            //         .IsRequired()
-            //         .HasMaxLength(50);
-            //     // entity.Property(e => e.CreatedDate).HasDefaultValue(DateTime.Now);
-            // });
-
            
             modelBuilder.Entity<User>().HasData(new User { UserId = 1, UserName = "TestUser", UserType = 0 });
-            // modelBuilder.Entity<WebContentType>().HasData(new WebContentType
-            // {
-            //     WebContentTypeId = 1,
-            //     WebContentTypeDescription = "Meeting"
-            // }, new WebContentType { WebContentTypeId = 2, WebContentTypeDescription = "Notice" }
-            // );
 
             OnModelCreatingPartial(modelBuilder);
         }

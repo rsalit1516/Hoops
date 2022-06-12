@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
-import { map, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/delay';
 import { Observable, of } from 'rxjs';
 
 @Injectable()

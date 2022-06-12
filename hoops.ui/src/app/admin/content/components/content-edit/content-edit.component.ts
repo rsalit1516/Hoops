@@ -10,23 +10,15 @@ import {
 import {
   FormBuilder,
   FormGroup,
-  FormControl,
-  FormArray,
   Validators,
   FormControlName
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 // import { Http, Response, Headers, RequestOptions } from '@angular/http';
 
-import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/observable/merge';
-import { Subscription } from 'rxjs';
-import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/throw';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/of';
 
 import { Content } from '../../../../domain/content';
 import { ContentService } from '../../content.service';
@@ -125,7 +117,7 @@ export class ContentEditComponent implements OnInit {
     if (this.contentForm) {
       this.contentForm.reset();
     }
-    
+
     if (content.webContentId === 0) {
       this.pageTitle = 'Add Content';
     } else {

@@ -15,7 +15,6 @@ namespace Hoops.Controllers
     [Route("api/[controller]")]
     public class ColorController : ControllerBase
     {
-        private readonly hoopsContext _context;
         private readonly IColorRepository repository;
         private readonly ILogger<ColorController> _logger;
         public ColorController(IColorRepository repository, ILogger<ColorController> logger)

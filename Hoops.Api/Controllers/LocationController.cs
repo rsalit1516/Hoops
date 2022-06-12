@@ -12,8 +12,8 @@ namespace Hoops.Api.Controllers
     [Route("api/[controller]")]
     public class LocationController : ControllerBase
     {
-                private readonly hoopsContext _context;
-        private readonly IScheduleLocationRepository repository;
+         //       private readonly hoopsContext _context;
+        // private readonly IScheduleLocationRepository repository;
 
     }
 }
