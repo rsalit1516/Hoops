@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Hoops.Core.Models;
 
+[Table("WebContent")]
 public partial class WebContent
 {
     [Key]
@@ -27,22 +28,6 @@ public partial class WebContent
     // public WebContentType WebContentType { get; set; }
     // [ForeignKey("WebContentTypeId")]
     public int WebContentTypeId { get; set; }
-    public virtual WebContentType WebContentType { get; set; }
+    // public virtual WebContentType WebContentType { get; set; }
 
-    public void Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<WebContent> entity)
-    {
-        entity.ToTable("WebContent");
-        entity.HasKey(entity => entity.WebContentId);
-        entity.Property(e => e.DateAndTime).HasMaxLength(50);
-        entity.Property(e => e.ExpirationDate).HasColumnType("datetime");
-        entity.Property(e => e.Location).HasMaxLength(50);
-        entity.Property(e => e.ModifiedDate).HasColumnType("datetime")
-        .HasDefaultValue(DateTime.Now);
-        entity.Property(e => e.Page).HasMaxLength(50);
-        entity.Property(e => e.SubTitle).HasMaxLength(50);
-        entity.Property(e => e.Title).HasMaxLength(50);
-        entity.Property(e => e.Type).HasMaxLength(50);
-        // entity.Navigation(w => w.WebContentType)
-        // .UsePropertyAccessMode(PropertyAccessMode..Property);
-    }
 }

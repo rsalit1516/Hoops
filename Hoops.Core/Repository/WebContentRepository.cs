@@ -82,9 +82,7 @@ namespace Hoops.Infrastructure.Repository
             var newEntity = new WebContent();
             newEntity.Title = entity.Title;
             newEntity.Location = entity.Location;
-            newEntity.WebContentType = new WebContentType();
-            // newEntity.WebContentType.WebContentTypeId =
-            //     entity.WebContentType.WebContentTypeId;
+            newEntity.WebContentTypeId= entity.WebContentTypeId;
             // newEntity.WebContentType.WebContentTypeDescription =
             //     entity.WebContentType.WebContentTypeDescription;
             // To Do: fix this!

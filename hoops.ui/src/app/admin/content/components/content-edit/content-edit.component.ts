@@ -1,28 +1,9 @@
-import {
-  Component,
-  OnInit,
-  AfterViewInit,
-  OnDestroy,
-  ViewChildren,
-  ElementRef,
-  Inject
-} from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-  FormControlName
-} from '@angular/forms';
+import { Component, OnInit, ViewChildren, ElementRef, Inject } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormControlName } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-// import { Http, Response, Headers, RequestOptions } from '@angular/http';
-
-import 'rxjs/add/observable/fromEvent';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/operator/catch';
 
 import { Content } from '../../../../domain/content';
 import { ContentService } from '../../content.service';
-import { pipe } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 
 import * as fromContent from '../../state';
