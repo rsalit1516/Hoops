@@ -148,7 +148,12 @@ export class GameEffects {
   changeDivision$: Observable<Action> = createEffect(() => this.actions$.pipe(
     ofType(gameActions.GameActionTypes.SetCurrentDivision),
     tap((x) => (this.gameService.divisionId = x)),
-    mapTo(new gameActions.LoadFilteredGames()),
+    switchMap(m => [
+      new gameActions.LoadFilteredGames(),
+      new gameActions.LoadFilteredTeams(),
+      new gameActions.LoadStandings()
+    ]),
+
     tap(() => 'changed division')
   ));
 

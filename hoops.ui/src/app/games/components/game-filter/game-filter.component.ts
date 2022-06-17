@@ -100,8 +100,8 @@ export class GameFilterComponent implements OnInit {
       this.store.dispatch(
         new gameActions.SetCurrentDivision(this.currentDivision)
       );
-      this.store.dispatch(new gameActions.LoadFilteredTeams());
-      this.store.dispatch(new gameActions.LoadStandings());
+      // this.store.dispatch(new gameActions.LoadFilteredTeams());
+      // this.store.dispatch(new gameActions.LoadStandings());
     // }
   }
 
