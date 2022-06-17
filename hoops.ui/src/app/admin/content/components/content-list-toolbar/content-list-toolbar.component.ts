@@ -7,7 +7,7 @@ import { ContentService } from '../../content.service';
 
 import * as fromContent from '../../state';
 import * as contentActions from '../../state/content.actions';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'content-list-toolbar',
@@ -22,7 +22,7 @@ export class ContentListToolbarComponent implements OnInit {
   constructor(
     private router: Router,
     private store: Store<fromContent.State>,
-    private fb: FormBuilder
+    private fb: UntypedFormBuilder
   ) {
 
   }

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Content } from 'app/domain/content';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ContentService } from '../../content.service';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -16,11 +16,11 @@ import * as contentActions from '../../state/content.actions';
 export class ContentShellComponent implements OnInit {
   content!: Content;
 
-  contentForm: FormGroup;
+  contentForm: UntypedFormGroup;
   title = 'Web Site Messages';
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private _contentService: ContentService,
     private router: Router,
     private store: Store<fromContent.State>

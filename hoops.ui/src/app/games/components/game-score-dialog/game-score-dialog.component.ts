@@ -4,7 +4,7 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA
 } from '@angular/material/dialog';
-import { FormControl, FormGroup, FormArray, FormBuilder } from '@angular/forms';
+import { UntypedFormControl, FormGroup, FormArray, UntypedFormBuilder } from '@angular/forms';
 import { GameService } from 'app/games/game.service';
 
 import * as fromGames from '../../state';
@@ -18,17 +18,17 @@ import { Game } from 'app/domain/game';
 })
 export class GameScoreDialogComponent implements OnInit {
   gameScoreForm = this.fb.group({
-    homeTeamName: new FormControl(''),
-    homeTeamScore: new FormControl(''),
-    visitorTeamName: new FormControl(''),
-    visitorTeamScore: new FormControl('')
+    homeTeamName: new UntypedFormControl(''),
+    homeTeamScore: new UntypedFormControl(''),
+    visitorTeamName: new UntypedFormControl(''),
+    visitorTeamScore: new UntypedFormControl('')
   });
   game$: any;
   game: Game;
 
   constructor(
     public dialogRef: MatDialogRef<GameScoreDialogComponent>,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private gameService: GameService,
     private store: Store<fromGames.State>
   ) {}

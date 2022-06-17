@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
+import { FormGroup, UntypedFormControl, UntypedFormBuilder } from '@angular/forms';
 import { Team } from '@app/domain/team';
 import { select, Store } from '@ngrx/store';
 import { from, Observable, of } from 'rxjs';
@@ -26,14 +26,14 @@ export class AdminGameDetailComponent implements OnInit {
   visitorTeam!: Team | undefined;
   homeTeam: Team | undefined;
   divisionTeams$: Observable<Team[]>;
-  visitorComponent: FormControl | null | undefined;
+  visitorComponent: UntypedFormControl | null | undefined;
 
-  constructor(private store: Store<fromAdmin.State>, private fb: FormBuilder) {
+  constructor(private store: Store<fromAdmin.State>, private fb: UntypedFormBuilder) {
     this.divisionTeams$ = this.store.select(fromAdmin.getDivisionTeams);
   }
 
   ngOnInit(): void {
-    this.visitorComponent = this.gameEditForm.get('visitorTeam') as FormControl;
+    this.visitorComponent = this.gameEditForm.get('visitorTeam') as UntypedFormControl;
     this.store.select(fromAdmin.getSelectedGame).subscribe((game) => {
       console.log(game);
       this.getTeam(game?.homeTeamId as number).subscribe(team => {

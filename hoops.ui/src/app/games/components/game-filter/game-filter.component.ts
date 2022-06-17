@@ -1,8 +1,8 @@
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import {
-  FormControl,
-  FormBuilder,
-  FormGroup,
+  UntypedFormControl,
+  UntypedFormBuilder,
+  UntypedFormGroup,
   FormControlDirective,
 } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
@@ -30,7 +30,7 @@ export class GameFilterComponent implements OnInit {
   @Input() currentTeam!: Team;
   @Input() showAllTeams!: boolean;
   @Output() selectedTeam = new EventEmitter<Team>();
-  criteriaForm!: FormGroup;
+  criteriaForm!: UntypedFormGroup;
   divisions$ = this.divisionService.divisions$.pipe(
     catchError((err) => {
       return EMPTY;
@@ -39,11 +39,11 @@ export class GameFilterComponent implements OnInit {
   selected!: Division;
   filteredTeams: Team[] | undefined;
   season: Season | undefined;
-  teamComponent: FormControl | null | undefined;
-  divisionComponent: FormControl | null | undefined;
+  teamComponent: UntypedFormControl | null | undefined;
+  divisionComponent: UntypedFormControl | null | undefined;
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private divisionService: GameService,
     private store: Store<fromGames.State>
   ) {
@@ -52,8 +52,8 @@ export class GameFilterComponent implements OnInit {
 
   ngOnInit() {
     this.showAllTeams = true;
-    this.divisionComponent = this.criteriaForm.get('divisions') as FormControl;
-    this.teamComponent = this.criteriaForm.get('teams') as FormControl;
+    this.divisionComponent = this.criteriaForm.get('divisions') as UntypedFormControl;
+    this.teamComponent = this.criteriaForm.get('teams') as UntypedFormControl;
     this.setStateSubscriptions();
     this.setControlSubscriptions();
     this.store.select(fromGames.getCurrentDivision).subscribe((division) => {
@@ -66,7 +66,7 @@ export class GameFilterComponent implements OnInit {
 
   createForm() {
     this.criteriaForm = this.fb.group({
-      divisions: new FormControl(this.currentDivision),
+      divisions: new UntypedFormControl(this.currentDivision),
       teams: this.teams,
       allTeams: true,
       gameView: 'list',

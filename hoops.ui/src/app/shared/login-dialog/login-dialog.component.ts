@@ -9,7 +9,7 @@ import {
   FormControl,
   FormGroup,
   FormArray,
-  FormBuilder,
+  UntypedFormBuilder,
   Validators
 } from '@angular/forms';
 import * as userActions from '../../user/state/user.actions';
@@ -36,7 +36,7 @@ export class LoginDialogComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<LoginDialogComponent>,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private authService: AuthService,
     private store: Store<fromUser.State>
   ) {}

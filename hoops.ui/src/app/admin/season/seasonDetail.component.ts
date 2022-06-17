@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 
 import { Season } from '../../domain/season';
 
@@ -10,9 +10,9 @@ import { Season } from '../../domain/season';
 
 export class SeasonDetailComponent implements OnInit {
     @Input() season: Season;
-    seasonForm: FormGroup;
+    seasonForm: UntypedFormGroup;
 
-    constructor(private fb: FormBuilder) { }
+    constructor(private fb: UntypedFormBuilder) { }
     
     ngOnInit(): void {
         this.seasonForm = this.fb.group({

@@ -5,7 +5,7 @@ import * as fromAdmin from '../../state';
 import { Observable } from 'rxjs';
 import { Season } from 'app/domain/season';
 import * as adminActions from '../../state/admin.actions';
-import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder, UntypedFormControl } from '@angular/forms';
 import { subscribeOn } from 'rxjs-compat/operator/subscribeOn';
 
 @Component({
@@ -17,16 +17,16 @@ export class SeasonSelectComponent implements OnInit {
   seasons$!: Observable<Season[]>;
   // selectForm!: FormGroup;
   selected: Season | undefined;
-  seasonComponent: FormControl | null | undefined;
+  seasonComponent: UntypedFormControl | null | undefined;
   seasons: Season[] | undefined;
   selectedSeason: Season | undefined;
   defaultSeason: Season | undefined;
   selectForm = this.fb.group({
     // seasonControl: new FormControl(''),
   });
-  seasonControl=  new FormControl('');
+  seasonControl=  new UntypedFormControl('');
 
-  constructor(private store: Store<fromAdmin.State>, private fb: FormBuilder) {
+  constructor(private store: Store<fromAdmin.State>, private fb: UntypedFormBuilder) {
     this.seasons$ = this.store.select(fromAdmin.getSeasons);
   }
 

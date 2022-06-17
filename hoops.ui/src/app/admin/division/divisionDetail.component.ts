@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 
 import { Season } from '../../domain/season';
 import { Division } from '../../domain/division';
@@ -12,10 +12,10 @@ import { Division } from '../../domain/division';
 
 export class DivisionDetailComponent implements OnInit {
     @Input() division!: Division;
-    seasonForm: FormGroup;
-    divisionForm: FormGroup;
+    seasonForm: UntypedFormGroup;
+    divisionForm: UntypedFormGroup;
 
-    constructor(private fb: FormBuilder) {
+    constructor(private fb: UntypedFormBuilder) {
         this.seasonForm = this.fb.group({
             // id: this.season.id,
             name: this.division.divisionDescription,

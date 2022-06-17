@@ -1,7 +1,7 @@
 import { Component, OnInit, NgZone, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 import { Store } from '@ngrx/store';
 
 import * as fromContent from './content/state';
@@ -31,9 +31,9 @@ export class AdminComponent  implements OnInit {
   private mediaMatcher: MediaQueryList = matchMedia(
     `(max-width: ${SMALL_WIDTH_BREAKPOINT}px)`
   );
-  options: FormGroup;
+  options: UntypedFormGroup;
 
-  constructor(zone: NgZone, private router: Router, fb: FormBuilder,     private store: Store<fromContent.State>
+  constructor(zone: NgZone, private router: Router, fb: UntypedFormBuilder,     private store: Store<fromContent.State>
     ) {
     this.options = fb.group({
       bottom: 0,

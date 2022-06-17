@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChildren, ElementRef, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormControlName } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators, FormControlName } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Content } from '../../../../domain/content';
@@ -22,7 +22,7 @@ export class ContentEditComponent implements OnInit {
 
   // @Input()
   content!: Content;
-  contentForm!: FormGroup;
+  contentForm!: UntypedFormGroup;
   errorMessage: string | undefined;
   pageTitle: string | undefined;
   hideId: boolean | undefined;
@@ -46,7 +46,7 @@ export class ContentEditComponent implements OnInit {
   selected!: WebContentType;
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<fromContent.State>,

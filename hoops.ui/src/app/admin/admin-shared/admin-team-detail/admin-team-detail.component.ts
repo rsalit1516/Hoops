@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { Color } from '@app/domain/color';
 import { Division } from '@app/domain/division';
 import { Team } from '@app/domain/team';
@@ -39,7 +39,7 @@ export class AdminTeamDetailComponent implements OnInit {
   constructor(
     private store: Store<fromAdmin.State>,
     private userStore: Store<fromUser.State>,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private teamService: TeamService
   ) {
     this.colors$ = this.store.select(fromAdmin.getColors);

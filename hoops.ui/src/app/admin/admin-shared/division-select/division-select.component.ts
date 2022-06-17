@@ -3,7 +3,7 @@ import { Division } from '@app/domain/division';
 import { Observable } from 'rxjs';
 import * as fromAdmin from '../../state';
 import { select, Store } from '@ngrx/store';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import * as adminActions from '../../state/admin.actions';
 
 @Component({
@@ -13,19 +13,19 @@ import * as adminActions from '../../state/admin.actions';
 })
 export class DivisionSelectComponent implements OnInit {
   @Output() selectedDivision = new EventEmitter<Division>();
-  selectForm!: FormGroup;
+  selectForm!: UntypedFormGroup;
   divisions$: Observable<Division[]>;
-  divisionComponent: FormControl | null | undefined;
+  divisionComponent: UntypedFormControl | null | undefined;
 
-  constructor(private store: Store<fromAdmin.State>, private fb: FormBuilder) {
+  constructor(private store: Store<fromAdmin.State>, private fb: UntypedFormBuilder) {
     this.selectForm = this.fb.group({
-      division: new FormControl(''),
+      division: new UntypedFormControl(''),
     });
     this.divisions$ = this.store.select(fromAdmin.getSeasonDivisions);
   }
 
   ngOnInit(): void {
-    this.divisionComponent = this.selectForm.get('division') as FormControl;
+    this.divisionComponent = this.selectForm.get('division') as UntypedFormControl;
     this.divisionComponent?.valueChanges.subscribe((value) => {
       this.store.dispatch(new adminActions.SetSelectedDivision(value));
     });

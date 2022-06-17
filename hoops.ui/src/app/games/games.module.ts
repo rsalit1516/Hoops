@@ -25,35 +25,33 @@ import { AppModule } from 'app/app.module';
 import { DailyScheduleComponent } from './components/daily-schedule/daily-schedule.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    CoreModule,
-    SharedModule,
-    GamesRoutingModule,
-    StoreModule.forFeature('games', reducer),
-    EffectsModule.forFeature([GameEffects])
-  ],
-  exports: [GamesRoutingModule],
-  declarations: [
-    // GamesComponent,
-    ScheduleComponent,
-    StandingsComponent,
-    ScheduleCardViewComponent,
-    GameCardComponent,
-    GameFilterComponent,
-    GamesShellComponent,
-    GameSortPipe,
-    GamesTopMenuComponent,
-    ScheduleShellComponent,
-    ScoresComponent,
-    StandingsShellComponent,
-    GameScoreDialogComponent,
-    DailyScheduleComponent
-  ],
-  entryComponents: [GameScoreDialogComponent],
-
-  providers: [GameService]
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        CoreModule,
+        SharedModule,
+        GamesRoutingModule,
+        StoreModule.forFeature('games', reducer),
+        EffectsModule.forFeature([GameEffects])
+    ],
+    exports: [GamesRoutingModule],
+    declarations: [
+        // GamesComponent,
+        ScheduleComponent,
+        StandingsComponent,
+        ScheduleCardViewComponent,
+        GameCardComponent,
+        GameFilterComponent,
+        GamesShellComponent,
+        GameSortPipe,
+        GamesTopMenuComponent,
+        ScheduleShellComponent,
+        ScoresComponent,
+        StandingsShellComponent,
+        GameScoreDialogComponent,
+        DailyScheduleComponent
+    ],
+    providers: [GameService]
 })
 export class GamesModule {}

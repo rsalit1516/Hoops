@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import * as fromAdmin from '../../state';
 import * as adminActions from '../../state/admin.actions';
@@ -13,14 +13,14 @@ import * as adminActions from '../../state/admin.actions';
   ],
 })
 export class GameTypeSelectComponent implements OnInit {
-  selectForm!: FormGroup;
+  selectForm!: UntypedFormGroup;
   gameTypes = ['Regular Season', 'Playoffs'];
-  gameTypeComponent = new FormControl();
+  gameTypeComponent = new UntypedFormControl();
   selected = this.gameTypes[0];
   selectedType = this.gameTypes[0];
   gameType: string;
 
-  constructor(private fb: FormBuilder, private store: Store<fromAdmin.State>) {
+  constructor(private fb: UntypedFormBuilder, private store: Store<fromAdmin.State>) {
     this.gameType = this.selectedType;
   }
 

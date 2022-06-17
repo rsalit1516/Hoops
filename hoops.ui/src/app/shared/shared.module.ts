@@ -10,17 +10,16 @@ import { CsbcSeasonSelectComponent } from './season-select/csbc-season-select.co
 import { CsbcCardComponent } from './csbc-card/csbc-card.component';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, CoreModule],
-  exports: [CsbcSeasonSelectComponent],
-  declarations: [
-    LoginDialogComponent,
-    PageNotFoundComponent,
-    CsbcSeasonSelectComponent,
-    CsbcCardComponent
-  ],
-  entryComponents: [LoginDialogComponent],
-  providers: [
-    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } }
-  ]
+    imports: [CommonModule, FormsModule, CoreModule],
+    exports: [CsbcSeasonSelectComponent],
+    declarations: [
+        LoginDialogComponent,
+        PageNotFoundComponent,
+        CsbcSeasonSelectComponent,
+        CsbcCardComponent
+    ],
+    providers: [
+        { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } }
+    ]
 })
 export class SharedModule {}
