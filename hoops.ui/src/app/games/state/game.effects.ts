@@ -150,11 +150,25 @@ export class GameEffects {
     tap((x) => (this.gameService.divisionId = x)),
     switchMap(m => [
       new gameActions.LoadFilteredGames(),
-      new gameActions.LoadFilteredTeams(),
-      new gameActions.LoadStandings()
     ]),
 
     tap(() => 'changed division')
+  ));
+
+  filterTeams$: Observable<Action> = createEffect(() => this.actions$.pipe(
+    ofType(gameActions.GameActionTypes.SetCurrentDivision),
+    tap((x) => (this.gameService.divisionId = x)),
+    switchMap(m => [
+      new gameActions.LoadFilteredTeams(),
+    ])
+  ));
+
+  updateStandingForDivison$: Observable<Action> = createEffect(() => this.actions$.pipe(
+    ofType(gameActions.GameActionTypes.SetCurrentDivision),
+    tap((x) => (this.gameService.divisionId = x)),
+    switchMap(m => [
+      new gameActions.LoadStandings()
+    ])
   ));
 
   // tslint:disable-next-line:member-ordering
