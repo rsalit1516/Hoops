@@ -362,3 +362,7 @@ hoops.ui/.DS_Store
 hoops.ui/angular.json
 hoops.ui/dist/**
 hoops.ui/.angular/cache/**
+.DS_Store
+.DS_Store
+Hoops.Api/.DS_Store
+Hoops.Core/.DS_Store
