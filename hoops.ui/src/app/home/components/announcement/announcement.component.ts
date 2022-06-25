@@ -14,6 +14,6 @@ export class AnnouncementComponent implements OnInit {
   ngOnInit(): void {}
 
   hideLocationAndDateTime() {
-    return (this.info.location=== null && this.info.dateAndTime === null );
+    return (this.info.location=== '' && this.info.dateAndTime === '' );
   }
 }
