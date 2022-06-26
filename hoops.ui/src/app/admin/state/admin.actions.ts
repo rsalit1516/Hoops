@@ -123,9 +123,7 @@ export class LoadSeasonTeams implements Action {
 }
 export class LoadSeasonTeamsSuccess implements Action {
   readonly type = AdminActionTypes.LoadSeasonTeamsSuccess;
-  constructor(public payload: Team[]) {
-    console.log(payload);
-  }
+  constructor(public payload: Team[]) {}
 }
 
 export class LoadSeasonTeamsFail implements Action {
@@ -137,9 +135,7 @@ export class LoadDivisionTeams implements Action {
 }
 export class LoadDivisionTeamsSuccess implements Action {
   readonly type = AdminActionTypes.LoadDivisionTeamsSuccess;
-  constructor(public payload: Team[]) {
-    console.log(payload);
-  }
+  constructor(public payload: Team[]) {}
 }
 
 export class LoadDivisionTeamsFail implements Action {

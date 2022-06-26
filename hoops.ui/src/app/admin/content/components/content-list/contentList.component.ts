@@ -44,21 +44,18 @@ export class ContentListComponent implements OnInit {
     // });
 
     this.store.select(fromContent.getfilteredList).subscribe(data => {
-      console.log(data);
+      // console.log(data);
       this.dataSource = new MatTableDataSource(data);
     });
   }
 
   onSelect(content: Content): void {
     console.log(content);
-    //  this.selectedContent = content;
   }
 
   editContent(content: any) {
-    console.log(content);
     this.store.dispatch(new contentActions.SetSelectedContent(content));
     this.router.navigate(['./admin/content/edit']);
-    // this._contentService.selectedContent = content;
   }
   addContent() {
     this.router.navigate(['./admin/content/edit']);

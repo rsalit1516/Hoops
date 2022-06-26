@@ -5,6 +5,7 @@
       <mat-card-content>
         <fieldset>
           <mat-form-field class="full-width">
+            <mat-label>Title</mat-label>
             <input matInput placeholder="Title" formControlName="title" />
             <mat-hint>Not more then 50 characters long.</mat-hint>
             <mat-error *ngIf="hasError('title', 'required')"

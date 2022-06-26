@@ -25,7 +25,6 @@ export class AdminShellComponent implements OnInit {
     this.store.dispatch(new adminActions.LoadSeasons());
     this.store.select(fromAdmin.getSeasons).subscribe((seasons) => {
       this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
-        console.log(season);
         if (season.seasonId === undefined) {
           for (let i = 0; i < seasons.length; i++) {
             if (seasons[i].currentSeason === true) {
@@ -40,7 +39,6 @@ export class AdminShellComponent implements OnInit {
     });
     this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
       if (season !== undefined) {
-        console.log(season);
         this.store.dispatch(new adminActions.LoadDivisions());
         this.store.dispatch(new adminActions.LoadSeasonTeams());
       }
@@ -51,19 +49,16 @@ export class AdminShellComponent implements OnInit {
     });
 
     this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
-      console.log(division);
       if (division !== undefined) {
         this.store.dispatch(new adminActions.LoadDivisionTeams());
       }
     });
 
     this.store.select(fromAdmin.getSeasonDivisions).subscribe((divisions) => {
-      console.log(divisions);
       this.store.dispatch(new adminActions.SetSelectedDivision(divisions[0]));
     });
     this.store.select(fromAdmin.getSeasonTeams).subscribe((teams) => {
       this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
-        console.log(division);
         if (division !== undefined) {
           this.store.dispatch(new adminActions.LoadDivisionTeams());
         }

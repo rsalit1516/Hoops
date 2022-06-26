@@ -1,7 +1,7 @@
 @import '../../../../../Content/variables';
 
 fieldset {
-  background-color: darken($card-background-color, 30%);
+  background-color: lighten($card-background-color, 25%);
   border-radius: 10px;
   padding-left: 20px;
   padding-right: 20px;
@@ -17,7 +17,7 @@ h2 {
 }
 
 input, textarea.mat-input-element{
-  background-color: $card-background-color;
+  background-color: lighten($card-background-color, 25%);
   padding-top: 12px;
   padding-bottom:12px;
   padding-left: 12px;
@@ -60,6 +60,7 @@ button {
 .mat-form-field {
   color: $field-label;
   font-size: 1.2em;
+  background-color: lighten($card-background-color, 25%);
 }
 .mat-input {
   color: $field-label !important;
@@ -69,5 +70,8 @@ button {
 }
 label {
   font-size: 1.2em;
-  color: $field-label;
+  color: white;
+}
+.mat-label {
+  color: white;
 }

@@ -48,7 +48,7 @@ export class ContentService {
 
   getContents(): Observable<WebContent[]> {
     return this.http.get<WebContent[]>(this.data.getContentUrl).pipe(
-      tap((data) => console.log('All: ' + JSON.stringify(data))),
+      // tap((data) => console.log('All: ' + JSON.stringify(data))),
       catchError(this.data.handleError('getContents', []))
     );
   }
@@ -56,7 +56,6 @@ export class ContentService {
     let filteredContent: WebContent[] = [];
 
     this.store.select(fromContent.getContentList).subscribe((contents) => {
-      console.log(contents);
       if (contents !== undefined) {
         const today = moment();
         // console.log(today);
@@ -69,9 +68,9 @@ export class ContentService {
         }
       }
     });
-    console.log(filteredContent);
     return of(filteredContent);
   }
+
   getAllContents(): Observable<WebContent[]> {
     let filteredContent: WebContent[] = [];
     this.store.select(fromContent.getContentList).subscribe((contents) => {
