@@ -89,6 +89,7 @@ namespace Hoops.Infrastructure.Repository
             // newEntity.WebContentTypeId = entity.WebContentType.WebContentTypeId;
             newEntity.ExpirationDate = entity.ExpirationDate;
             newEntity.SubTitle = entity.SubTitle;
+            newEntity.Body = entity.Body;
             newEntity.ContentSequence = entity.ContentSequence;
             newEntity.DateAndTime = entity.DateAndTime;
             newEntity.Page = entity.Page;
