@@ -22,10 +22,21 @@ export class TeamService {
 
   filterTeamsByDivision(div: number): Observable<Team[]> {
     let filteredTeams: Team[] = [];
+    console.log(filteredTeams);
     this.store.pipe(select(fromAdmin.getSeasonTeams)).subscribe((teams) => {
+      console.log(teams);
       teams?.forEach((team) => {
         if (team.divisionId === div) {
-          filteredTeams.push(team);
+          const t: Team = {
+            teamId: team.teamId,
+            divisionId: team.divisionId,
+            name: team.teamName,
+            teamName: team.teamName,
+            teamNumber: team.teamNumber,
+            teamColorId: team.teamColorId,
+          };
+          console.log(t);
+          filteredTeams = [...filteredTeams, t]; // .push(t);
         }
       });
     });

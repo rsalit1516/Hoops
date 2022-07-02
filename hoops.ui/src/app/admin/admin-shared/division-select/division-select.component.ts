@@ -3,7 +3,7 @@ import { Division } from '@app/domain/division';
 import { Observable } from 'rxjs';
 import * as fromAdmin from '../../state';
 import { select, Store } from '@ngrx/store';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { FormControl, FormGroup, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import * as adminActions from '../../state/admin.actions';
 
 @Component({
@@ -21,6 +21,9 @@ export class DivisionSelectComponent implements OnInit {
     this.selectForm = this.fb.group({
       division: new UntypedFormControl(''),
     });
+    // const selectForm = new FormGroup({
+    //   division: new FormControl('', { nonNullable: true }),
+    // })
     this.divisions$ = this.store.select(fromAdmin.getSeasonDivisions);
   }
 

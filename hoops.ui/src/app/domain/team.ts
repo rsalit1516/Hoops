@@ -1,7 +1,7 @@
 export class Team {
     teamId!: number;
     divisionId!: number;
-    name!: string;
+    name?: string;
     teamColorId?: number;
     teamName?: string;
     teamNumber?: string;
@@ -10,12 +10,13 @@ export class Team {
     constructor(
       _teamId? : number,
       _divisionId?: number,
-      // _name?: string,
+      _name?: string,
       _teamName?: string,
-      _teamNumber?: string) {
+      _teamNumber?: string,
+    _teamColorId?: number) {
       this.teamId = _teamId as number;
       this.divisionId = _divisionId as number;
-      // this.name = _name;
+      this.name = _teamName;
       this.teamName = _teamName;
       this.teamNumber = _teamNumber;
       }

@@ -1,7 +1,7 @@
 <form [formGroup]="selectForm">
   <mat-form-field>
     <mat-label>Division</mat-label>
-    <mat-select formControlName="division" class="form-control" [(ngModel)]="selectedDivision">
+    <mat-select formControlName="division" class="form-control" [value]="selectedDivision">
       <mat-option
         *ngFor="let division of divisions$ | async"
         [value]="division"

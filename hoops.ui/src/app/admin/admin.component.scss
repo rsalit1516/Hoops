@@ -20,13 +20,11 @@ input {
 }
 
 .mat-label, .mat-form-field, .mat-form-field-label {
-  font-size: .8em;
+  font-size: 1.1em;
   color: $card-title-font-size;
   background-color: $admin-background-color;
 }
-.form-control {
-  font-size:.9em;
-}
+
 .mat-table {
   width: 100%;
 }
@@ -243,7 +241,23 @@ div {
   background-color: $admin-table-background-color;
   color: $admin-font-color;
   border-color: $admin-table-background-color-border;
+  font-size:1.2em;
 }
 .row-is-clicked {
   font-weight: bold;
+}
+
+tr.mat-header-row {
+  height:24px;
+  border-bottom: .5px solid gray;
+  font-size: 1.4em;
+  font-weight: 800;
+}
+tr.mat-row {
+  height:24px;
+  font-size: 1.1em;
+  font-weight: 500;
+  padding-bottom: 8px;
+  padding-top: 8px;
+  margin-bottom:40px;
 }
