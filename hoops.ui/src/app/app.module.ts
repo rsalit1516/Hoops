@@ -27,7 +27,6 @@ import { TopNavComponent } from './shared/top-nav/top-nav.component';
 import { CsbcPhotosComponent } from './photos/csbc-photos.component';
 import { ContactsComponent } from './contacts/contacts.component';
 import { AdminModule } from './admin/admin.module';
-import { ComposeMessageComponent } from './compose-message.component';
 
 import { SeasonService } from './services/season.service';
 import { DivisionService } from './services/division.service';
@@ -55,7 +54,6 @@ import { SponsorsModule } from './admin/sponsors/sponsors.module';
     CsbcPhotosComponent,
     ContactsComponent,
     LoginComponent,
-    ComposeMessageComponent,
     GamesPipe,
     CsbcDashboardComponent
   ],

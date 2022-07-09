@@ -13,7 +13,7 @@ import * as adminActions from '../../state/admin.actions';
 })
 export class AdminTeamListComponent implements OnInit {
   title = 'Team List';
-  dataSource: MatTableDataSource<Team> | undefined;
+  dataSource!: Team[];
   teams!: Team[];
   canEdit = true;
   displayedColumns = [ 'teamName' ];
@@ -24,7 +24,7 @@ export class AdminTeamListComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.select(fromAdmin.getDivisionTeams).subscribe((teams) => {
-      this.dataSource = new MatTableDataSource(teams);
+      this.dataSource = teams;
     });
   }
 

@@ -9,4 +9,7 @@ export class Constants {
   public static CONTACTSMENU = 'Contacts';
   public static CLUBDOCSMENU = 'Club Docs';
   public static ADMINMENU = 'Admin';
+
+  /* company */
+  public static COMPANYID = 1;
 }

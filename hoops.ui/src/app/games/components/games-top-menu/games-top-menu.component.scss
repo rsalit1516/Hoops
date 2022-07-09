@@ -5,7 +5,7 @@
 }
 
 .mat-form-field {
-  width:120px;
+  width: 120px;
 }
 
 .top-nav-toolbar {
@@ -13,7 +13,7 @@
 }
 
 .mat-toolbar {
-  padding-top:4px;
+  padding-top: 4px;
   background-color: $background-color;
   color: $navbar-color;
   font-size: $wrapper-font-size;
@@ -39,17 +39,21 @@ button {
 .games-button {
   color: $navbar-color;
 }
+
 .fill-space {
   flex: 1 1 auto;
 }
+
 h2 {
-  color: $background-color;
-  background-color : $brand-color;
+  color: $brand-color;
+  background-color: transparent; //$background-color;
   font-variant: small-caps;
   font-size: $heading-font-size;
   font-weight: 700;
-  text-align: center;
-  }
+  text-align: right;
+  padding-top: 12px;
+  padding-right: 20px;
+}
 
 
 .top-menu-wrapper {
@@ -58,4 +62,3 @@ h2 {
   border-bottom: 2px solid $brand-color;
   font-size: $wrapper-font-size;
 }
-
