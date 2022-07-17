@@ -12,7 +12,7 @@ import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 @Component({
   selector: 'content-list-toolbar',
   templateUrl: './content-list-toolbar.component.html',
-  styleUrls: ['./content-list-toolbar.component.scss']
+  styleUrls: ['./content-list-toolbar.component.scss', '../../../admin.component.scss']
 })
 export class ContentListToolbarComponent implements OnInit {
   filterForm = this.fb.group({

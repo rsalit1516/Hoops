@@ -1,5 +1,7 @@
-﻿@import "~bootstrap/dist/css/bootstrap.css";
+﻿@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+@import "~bootstrap/dist/css/bootstrap.css";
 @import "_variables";
+
 
 // @import './_mixins';
 /*#region Override background color theme */
@@ -24,18 +26,36 @@ body {
 .mat-form-field {
   padding-left: 12px;
   padding-right: 12px;
-  padding-top: 8px;
+  padding-top: 12px;
   color: $admin-font-color;
   background-color: $admin-card-background-color;
+  font-size: 1.2rem;
 }
+
 .mat-select {
   color: $admin-font-color;
   background-color: $admin-card-background-color;
 }
+
 .mat-select-arrow-wrapper {
   color: $admin-font-color;
   background-color: $admin-card-background-color;
 }
+
+.mat-form-field-empty.mat-form-field-label, .mat-form-field-label {
+  font-size: 1.3rem !important;
+  color: $field-label !important;
+}
+.mat-datepicker-toggle {
+  color: $admin-input-hint-color !important;
+}
+.mat-datepicker-toggle-default-icon {
+  width: 1rem;
+}
+.mat-checkbox-background {
+  background-color: $brand-color !important;
+}
+
 /*For Bootstrap 3*/
 .nav,
 .pagination,
@@ -602,7 +622,4 @@ a {
   font-size: 1em !important;
 }
 /*#endregion */
-.mat-form-field-appearance-legacy.mat-form-field-label {
-  color: $field-label;
-  font-size: 1.4rem;
-}
+

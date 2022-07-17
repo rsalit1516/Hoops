@@ -8,7 +8,8 @@
   font-size: 1.1em;
 }
 .mat-toolbar {
-  background-color: black;
+  background-color: transparent;
+  padding-bottom: 20px;
  }
 
 .main {
@@ -23,8 +24,8 @@ input, textarea {
   color: $field-label;
 }
 
-.mat-form-field.mat-label,  .mat-form-field.mat-form-field-label {
-  font-size: 1.1rem;
+.mat-form-field.mat-label,  input.mat-form-field-label {
+  font-size: 1.1rem !important;
   color: $field-label;
 }
 
@@ -264,10 +265,12 @@ div {
   background-color: $card-background-color;
   color: $admin-font-color;
 }
+
 .mat-raised-button {
   background-color: $brand-color;
   color:white;
 }
+
 .form-control {
   background-color: $admin-table-background-color;
   color: $admin-font-color;
@@ -291,4 +294,11 @@ tr.mat-row {
   padding-bottom: 8px;
   padding-top: 8px;
   margin-bottom:40px;
+}
+.mat-hint {
+  font-size: $admin-input-hint-font-size;
+  color: $admin-input-hint-color;
+}
+.mat-datepicker {
+  color: $admin-input-hint-color;
 }
