@@ -41,11 +41,13 @@ export class AdminShellComponent implements OnInit {
       if (season !== undefined) {
         this.store.dispatch(new adminActions.LoadDivisions());
         this.store.dispatch(new adminActions.LoadSeasonTeams());
+        this.store.dispatch(new adminActions.LoadGames());
+        this.store.dispatch(new adminActions.LoadPlayoffGames());
       }
     });
 
     this.store.select(fromAdmin.getSeasonDivisions).subscribe((divisions) => {
-      this.store.dispatch(new adminActions.SetSelectedDivision(divisions[0]));
+      this.store.dispatch(new adminActions.SetSelectedDivision(divisions[ 0 ]));
     });
 
     this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {

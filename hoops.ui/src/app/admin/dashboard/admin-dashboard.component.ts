@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 
 import * as fromAdmin from '../state';
 import * as adminActions from '../state/admin.actions';
+import { Game } from '@app/domain/game';
 
 @Component({
   selector: 'csbc-admin-dashboard',
@@ -25,6 +26,9 @@ export class AdminDashboardComponent implements OnInit {
   divisionCount!: number;
   teams!: Team[];
   teamCount!: number;
+  seasonGames: Game[] | undefined;
+  seasonGameCount: number | undefined;
+
   constructor(
     private store: Store<fromAdmin.State>,
     private teamService: TeamService,
@@ -38,6 +42,10 @@ export class AdminDashboardComponent implements OnInit {
       this.teams = teams;
       this.teamCount = teams.length;
     });
+    this.store.select(fromAdmin.getSeasonGames).subscribe(games => {
+      this.seasonGames = games;
+      this.seasonGameCount = games.length;
+    })
   }
   setStateSubscriptions() {
     this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {

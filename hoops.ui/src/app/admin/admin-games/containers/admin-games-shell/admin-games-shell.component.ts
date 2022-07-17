@@ -32,8 +32,8 @@ export class AdminGamesShellComponent implements OnInit {
     this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
       console.log(season);
       if (season !== undefined) {
-        this.store.dispatch(new adminActions.LoadGames());
-        this.store.dispatch(new adminActions.LoadDivisions());
+        // this.store.dispatch(new adminActions.LoadGames());
+        // this.store.dispatch(new adminActions.LoadDivisions());
         this.store.dispatch(new adminActions.LoadSeasonTeams());
         this.store.dispatch(new adminActions.LoadPlayoffGames());
       }

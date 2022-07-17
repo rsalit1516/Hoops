@@ -1,43 +1,13 @@
-<!-- <div class="row">
-  <div class="col-sm-3 col-xs-6 col-xss-12">
-    <div class="card" routerLink="/admin/season">
-      <div class="heading">Current Season</div>
-      <div class="body" *ngIf="currentSeason">
-        {{ currentSeason.description }}
-      </div>
-    </div>
-  </div>
-
-  <div class="col-sm-3 col-xs-6 col-xss-12">
-    <div class="card" routerLink="/admin/division">
-      <div class="heading">Divisions</div>
-      <div *ngFor="let division of divisions">
-        {{ division.div_Desc }}
-      </div>
-    </div>
-  </div>
-  <div class="col-sm-3 col-xs-6 col-xss-12">
-    <div class="card" routerLink="/admin/player">
-      <div class="heading">Players</div>
-      <div class="body">40</div>
-    </div>
-  </div>
-  <div> -->
 <div class="row" >
-  <div class="col-2">
-    <mat-card class="dashboard-card">
-      <mat-card-header>
-        <mat-card-title>Current Season:</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="body" *ngIf="currentSeason">
-          {{ currentSeason.description }}
+  <div class="col-12">
+        <div class="dashboard-header" *ngIf="currentSeason">
+          Current Season: {{ currentSeason.description }}
         </div>
-      </mat-card-content>
-    </mat-card>
   </div>
+  </div>
+  <div class="row">
   <div class="col-2">
-    <mat-card class="dashboard-card">
+    <mat-card class = "dashboard-card">
       <mat-card-header>
         <!-- <div mat-card-avatar class="example-header-image"></div> -->
         <mat-card-title>Divisions</mat-card-title>
@@ -56,14 +26,25 @@
   <div class="col-2">
     <mat-card class="dashboard-card">
       <mat-card-header>
-        <!-- <div mat-card-avatar class="example-header-image"></div> -->
         <mat-card-title>Teams</mat-card-title>
-        <!-- <mat-card-subtitle>Dog Breed</mat-card-subtitle>-->
       </mat-card-header>
       <mat-card-content>
         <!-- <div class="heading">Current Season</div> -->
         <div class="body">
-          {{ teamCount }}
+          Season Teams: {{ teamCount }}
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div class="col-2">
+    <mat-card class="dashboard-card">
+      <mat-card-header>
+        <mat-card-title>Games</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <!-- <div class="heading">Current Season</div> -->
+        <div class="body">
+          Season Games: {{ seasonGameCount }}
         </div>
       </mat-card-content>
     </mat-card>
