@@ -23,18 +23,18 @@ $card-highlight: $brand-color;
 
 $border-radius: 10px;
 $font-color-text: rgb(238, 231, 231);
-$field-label:rgb(245, 245, 245);
+$field-label:rgb(220, 216, 216);
 
 /* font sizes */
-$table-font-size: 1em;
-$heading-font-size: 1.5em;
-$card-body: 1.1em;
-$wrapper-font-size: 1em;
-$card-title-font-size: 1.8em;
-$button-font-size: 1.4em;
+$table-font-size: 1.1rem;
+$heading-font-size: 1.5rem;
+$card-body: 1.1rem;
+$wrapper-font-size: 1rem;
+$card-title-font-size: 1.8rem;
+$button-font-size: 1.4rem;
 
 /* admin */
-$admin-background-color: black;
+$admin-background-color: lighten(black, 5%);
 $admin-font-color: white;
 $admin-table-background-color: lighten(black, 10%);
 $admin-card-background-color: lighten(black, 20%);

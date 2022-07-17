@@ -17,25 +17,35 @@
           </mat-form-field>
 
           <mat-form-field class="full-width">
-            <input
-              matInput
+            <mat-label>Sub-Title</mat-label>
+            <input matInput
               placeholder="Sub Title"
               formControlName="subTitle"
             />
+            <mat-hint>Add a sub-title. Not more then 50 characters long.</mat-hint>
+            <mat-error *ngIf="hasError('subTitle', 'maxlength')"
+              >You have more than 50 characters</mat-error
+            >
           </mat-form-field>
           <mat-form-field class="full-width">
+            <mat-label>Body</mat-label>
+
             <textarea
               matInput
               type="text"
               placeholder="Body"
-              rows="4"
+              rows="6"
               formControlName="body"
             ></textarea>
+            <mat-hint>Descibe the notice</mat-hint>
+
           </mat-form-field>
           <mat-form-field class="full-width">
+            <mat-label>Location</mat-label>
             <input matInput placeholder="location" formControlName="location" />
           </mat-form-field>
           <mat-form-field class="full-width">
+            <mat-label>Date and Time</mat-label>
             <input
               matInput
               placeholder="Date and Time"
@@ -44,7 +54,7 @@
           </mat-form-field>
           <mat-divider></mat-divider>
           <mat-form-field type="date" class="standard-field-width">
-            <mat-label>Announcement Type:</mat-label>
+            <mat-label>Announcement Type</mat-label>
             <mat-select
               [value]="selected"
               formControlName="webContentTypeControl"
@@ -60,7 +70,7 @@
             <input
               matInput
               [matDatepicker]="picker"
-              placeholder="Choose a date"
+              placeholder="Notice Expiration date"
               formControlName="expirationDate"
             />
             <mat-datepicker-toggle
@@ -70,6 +80,7 @@
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
           <mat-form-field class="sequenceWidth">
+            <mat-label>Notice Order</mat-label>
             <input
               matInput
               placeholder="NoticeSequence"
@@ -82,7 +93,6 @@
             class="form-control"
             [hidden]="hideId"
             type="text"
-            placeholder=""
             formControlName="webContentId"
           />
         </fieldset>

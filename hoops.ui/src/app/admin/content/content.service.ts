@@ -19,6 +19,7 @@ import { Store } from '@ngrx/store';
 import { WebContentType } from 'app/domain/webContentType';
 import { WebContent } from '../../domain/webContent';
 import { Observable, of } from 'rxjs';
+import { Constants } from '@app/shared/constants';
 
 @Injectable()
 export class ContentService {
@@ -129,6 +130,8 @@ export class ContentService {
     content.dateAndTime = contentForm.dateAndTime;
     content.location = contentForm.location;
     content.expirationDate = contentForm.expirationDate;
+    content.contentSequence = contentForm.contentSequence;
+    content.companyId = Constants.COMPANYID;
     // content.webContentId = contentForm.webContentId;
     console.log(content);
     let headers = new Headers({ 'Content-Type': 'application/json' });

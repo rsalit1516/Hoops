@@ -13,7 +13,7 @@ import { WebContentType } from 'app/domain/webContentType';
 @Component({
   selector: 'csbc-content-edit',
   templateUrl: './content-edit.component.html',
-  styleUrls: ['./content-edit.component.scss']
+  styleUrls: ['./content-edit.component.scss', '../../../admin.component.scss']
 })
 export class ContentEditComponent implements OnInit {
   @ViewChildren(FormControlName, { read: ElementRef })
@@ -56,18 +56,15 @@ export class ContentEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.contentForm = this.fb.group({
-      title: [
-        '',
-        [Validators.required, Validators.minLength(3), Validators.maxLength(50)]
-      ],
-      subTitle: '',
+      title: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
+      subTitle: ['', [Validators.maxLength(50)]],
       body: '',
       location: '',
       dateAndTime: '',
       webContentId: '',
       webContentTypeControl: null,
       contentSequence: 1,
-      expirationDate: new Date()
+      expirationDate: [new Date(), Validators.required ]
     });
     this.pageTitle = 'Edit Web Content Messages';
     this.hideId = true;
@@ -100,9 +97,9 @@ export class ContentEditComponent implements OnInit {
     }
 
     if (content.webContentId === 0) {
-      this.pageTitle = 'Add Content';
+      this.pageTitle = 'Add Notice';
     } else {
-      this.pageTitle = `Edit Content: ${content.title}`;
+      this.pageTitle = `Edit Notice: ${content.title}`;
     }
 
     // // Update the data on the form

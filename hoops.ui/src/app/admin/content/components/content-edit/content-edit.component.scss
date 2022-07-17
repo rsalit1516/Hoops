@@ -1,34 +1,5 @@
 @import '../../../../../Content/variables';
 
-fieldset {
-  background-color: lighten($card-background-color, 25%);
-  border-radius: 10px;
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-top: 16px;
-  padding-bottom: 16px;
-  color: $field-label;
-}
-h2 {
-  color: $field-label;
-  font-size: 1.5em;
-  padding-bottom: 6px;
-  padding-left: 12px;
-}
-
-input, textarea.mat-input-element{
-  background-color: lighten($card-background-color, 25%);
-  padding-top: 12px;
-  padding-bottom:12px;
-  padding-left: 12px;
-}
-textarea {
-  background-color: $card-background-color;
-  padding-top: 12px;
-  padding-bottom:12px;
-  padding-left: 12px;
-}
-
 .standard-field-width {
   padding-right: 12px;
 }
@@ -42,36 +13,9 @@ button {
   padding-right: 12px;
 
 }
-.mat-card {
-  background-color: $card-background-color;
-  color: $card-color;
-}
 .mat-icon-button {
   background-color: $card-background-color;
   color: $card-color;
 }
 
-.mat-form-field-appearance-legacy .mat-form-field-label .mat-select-placeholder {
-  color: $field-label !important;
-}
-.mat-form-field-label-wrapper {
-  color: $field-label;
-}
-.mat-form-field {
-  color: $field-label;
-  font-size: 1.2em;
-  background-color: lighten($card-background-color, 25%);
-}
-.mat-input {
-  color: $field-label !important;
-}
-.mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
-  color: $field-label !important;
-}
-label {
-  font-size: 1.2em;
-  color: white;
-}
-.mat-label {
-  color: white;
-}
+

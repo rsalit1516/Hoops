@@ -14,22 +14,50 @@
 .main {
   padding: 10px 10px 0 10px;
 }
-input {
+input, textarea {
   font-size: $table-font-size;
-  font-weight: 700;
+  padding-top: 12px;
+  padding-bottom:12px;
+  padding-left: 12px;
+  background-color: lighten($admin-background-color, 5%);
+  color: $field-label;
 }
 
-.mat-label, .mat-form-field, .mat-form-field-label {
-  font-size: 1.1em;
-  color: $card-title-font-size;
-  background-color: $admin-background-color;
+.mat-form-field.mat-label,  .mat-form-field.mat-form-field-label {
+  font-size: 1.1rem;
+  color: $field-label;
+}
+
+.mat-form-field + .mat-form-field.mat-form-field-label {
+  color: $field-label;
+  font-size: 1.4rem;
+}
+
+.mat-input {
+  color: $field-label !important;
+  background-color: lighten($admin-background-color, 5%);
+}
+.mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+  color: $field-label !important;
+}
+label {
+  font-size: 1.2rem;
+  color: $field-label;
+}
+.mat-label {
+  color: $field-label;
 }
 
 .mat-table {
   width: 100%;
 }
 fieldset {
-  background-color: $admin-table-background-color;
+  border-radius: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  color: $field-label;
 }
 button {
   margin-right: 12px;
@@ -206,7 +234,10 @@ div {
   background-color: $admin-card-background-color
 }
 .mat-card-title, h2 {
-  color: $card-color;
+  color: $field-label;
+  font-size: 1.5em;
+  padding-bottom: 6px;
+  padding-left: 12px;
 }
 .mat-raised-button .mat-button {
   background-color: $brand-color;

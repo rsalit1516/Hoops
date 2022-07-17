@@ -35,7 +35,7 @@ export class TeamService {
             teamNumber: team.teamNumber,
             teamColorId: team.teamColorId,
           };
-          console.log(t);
+          // console.log(t);
           filteredTeams = [...filteredTeams, t]; // .push(t);
         }
       });
@@ -50,9 +50,7 @@ export class TeamService {
     return of(filteredTeams);
   }
   saveTeam(team: Team): void {
-    console.log('saving');
     console.log(team);
-    team.createdDate = new Date();
 
     if (team.teamId === 0) {
       this.addTeam(team).subscribe((team) => {
