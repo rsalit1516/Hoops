@@ -13,4 +13,10 @@ describe('TeamService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+  // it('add New Team', (done: DoneFn) => {
+  //   service.newTeam().then((response) => {
+  //     expect(response).toBeTruthy();
+  //     done();
+  //   });
+  // })
 });

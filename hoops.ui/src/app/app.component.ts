@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: [
-    '../../node_modules/font-awesome/css/font-awesome.css',
     './app.component.scss'
   ]
 })
