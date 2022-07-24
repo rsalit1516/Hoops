@@ -28,8 +28,7 @@ body {
   padding-right: 12px;
   padding-top: 12px;
   color: $admin-font-color;
-  background-color: $admin-card-background-color;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
 }
 
 .mat-select {
@@ -143,6 +142,19 @@ small {
   color: #b7b7b7;
 }
 
+/* material definitions */
+.mat-select-value-text {
+  color: $admin-font-color;
+  font-size: .9rem !important;
+}
+.mat-option-text {
+  color: $admin-font-color;
+  font-size: .9rem !important;
+  background-color: $admin-background-color;
+}
+.mat-select-panel {
+  background-color: $admin-background-color;
+}
 .page-title-subtle {
   color: white;
 }

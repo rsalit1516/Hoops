@@ -9,7 +9,6 @@ import { GameService } from '../game.service';
 import { TeamService } from 'app/services/team.service';
 import { getCurrentDivision, getCurrentTeam } from './';
 import { SeasonService } from 'app/services/season.service';
-import { DivisionService } from 'app/services/division.service';
 import { HttpClient } from '@angular/common/http';
 import { DataService } from 'app/services/data.service';
 import { Game } from 'app/domain/game';
@@ -79,7 +78,7 @@ export class GameEffects {
     concatMap((action) =>
       of(action).pipe(
         withLatestFrom(this.store.pipe(select(fromGames.getCurrentSeason))),
-        tap((divisions) => console.log(divisions))
+        // tap((divisions) => console.log(divisions))
       )
     ),
     tap(([action, t]) => {

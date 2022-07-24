@@ -19,16 +19,13 @@ export class DivisionSelectComponent implements OnInit {
 
   constructor(private store: Store<fromAdmin.State>, private fb: UntypedFormBuilder) {
     this.selectForm = this.fb.group({
-      division: new UntypedFormControl(''),
+      divisionControl: new UntypedFormControl(''),
     });
-    // const selectForm = new FormGroup({
-    //   division: new FormControl('', { nonNullable: true }),
-    // })
     this.divisions$ = this.store.select(fromAdmin.getSeasonDivisions);
   }
 
   ngOnInit(): void {
-    this.divisionComponent = this.selectForm.get('division') as UntypedFormControl;
+    this.divisionComponent = this.selectForm.get('divisionControl') as UntypedFormControl;
     this.divisionComponent?.valueChanges.subscribe((value) => {
       this.store.dispatch(new adminActions.SetSelectedDivision(value));
     });
@@ -38,7 +35,6 @@ export class DivisionSelectComponent implements OnInit {
 
   }
   onClick(division: Division) {
-    // this.selectedDivision.emit(division);
     console.log(division);
   }
 }

@@ -106,7 +106,7 @@ export class GamesShellComponent implements OnInit {
     this.store.select(fromGames.getCurrentDivision).subscribe((division) => {
       this.currentDivision = division;
       const divId = division?.divisionId as number;
-      console.log(division);
+      // console.log(division);
       this.store.dispatch(new gameActions.LoadFilteredTeams());
       this.store.dispatch(new gameActions.LoadFilteredGames);
       this.store.select(fromGames.getFilteredTeams).subscribe((teams) => {

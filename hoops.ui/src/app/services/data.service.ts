@@ -18,7 +18,7 @@ export class DataService {
   seasonDivisionsUrl = this.baseUrl + '/api/division/GetSeasonDivisions/';
   playoffGameUrl = this.baseUrl + '/api/schedulegame/getSeasonPlayoffGames';
   getCurrentSeasonUrl = this.baseUrl + '/api/season/getCurrentSeason';
-  getSeasonTeamsUrl = this.baseUrl + '/api/Team/getSeasonTeams/';
+  getSeasonTeamsUrl = this.baseUrl + '/api/Team/GetSeasonTeams/';
   getColorUrl = this.baseUrl + '/api/Color';
   teamPostUrl = this.baseUrl + '/api/Team';
   teamPutUrl = this.baseUrl + '/api/Team/';

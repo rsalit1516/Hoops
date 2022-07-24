@@ -29,16 +29,6 @@ export class AdminGamesShellComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
-      console.log(season);
-      if (season !== undefined) {
-        // this.store.dispatch(new adminActions.LoadGames());
-        // this.store.dispatch(new adminActions.LoadDivisions());
-        this.store.dispatch(new adminActions.LoadSeasonTeams());
-        this.store.dispatch(new adminActions.LoadPlayoffGames());
-      }
-    });
-
     this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
       console.log(division);
       if (division !== undefined) {
@@ -47,7 +37,6 @@ export class AdminGamesShellComponent implements OnInit {
       }
     });
     this.store.select(fromAdmin.getGameType).subscribe((gameType) => {
-      console.log(gameType);
       this.showPlayoffs = (gameType == 'Playoffs');
       this.showRegularSeason = (gameType == 'Regular Season');
       if (gameType !== undefined) {
@@ -57,13 +46,11 @@ export class AdminGamesShellComponent implements OnInit {
       }
     });
     this.store.select(fromAdmin.getFilteredGames).subscribe((games) => {
-      console.log(games);
       this.games = games;
     });
 
   }
   selectedSeason(season: Season) {
-    console.log(season);
     // this.store.dispatch(new adminActions.SetCurrentSeason(season));
   }
   clickedDivision(division: MouseEvent) {

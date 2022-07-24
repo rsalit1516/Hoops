@@ -28,7 +28,7 @@ export class GamesResolver implements Resolve<boolean> {
     this.store.select(fromGames.getCurrentSeason).subscribe((season) => {
       const t = this._gameService.currentSeason$; // = season.seasonID;
       // this.store.dispatch(new gameActions.LoadDivisions());
-      this.store.dispatch(new gameActions.LoadPlayoffGames());
+      // this.store.dispatch(new gameActions.LoadPlayoffGames());
       this.store.dispatch(new gameActions.LoadStandings());
     });
     return of(true);

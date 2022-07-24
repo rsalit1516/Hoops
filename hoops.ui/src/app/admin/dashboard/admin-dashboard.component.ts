@@ -50,7 +50,7 @@ export class AdminDashboardComponent implements OnInit {
   setStateSubscriptions() {
     this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
       this.currentSeason = season as Season;
-      this.store.dispatch(new gameActions.LoadDivisions());
+      // this.store.dispatch(new gameActions.LoadDivisions());
     });
     this.store.select(fromAdmin.getSeasonDivisions).subscribe((divisions) => {
       this.divisions = divisions;

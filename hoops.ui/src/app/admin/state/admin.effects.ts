@@ -66,7 +66,7 @@ export class AdminEffects {
       concatMap(action =>
         of(action).pipe(
           withLatestFrom(this.store.pipe(select(fromAdmin.getSelectedSeason))),
-          tap(season => console.log(season))
+          // tap(season => console.log(season))
         )
       ),
       tap(([action, t]) => {
@@ -94,7 +94,7 @@ export class AdminEffects {
     concatMap(action =>
       of(action).pipe(
         withLatestFrom(this.store.pipe(select(fromAdmin.getSelectedSeason))),
-        tap(divisions => console.log(divisions))
+        // tap(divisions => console.log(divisions))
       )
     ),
     tap(([action, t]) => {
@@ -110,7 +110,7 @@ export class AdminEffects {
         // tap(data => console.log('All admin games: ' + JSON.stringify(data))),
         shareReplay(1),
         map(games => new adminActions.LoadGamesSuccess(games)),
-        tap(games => console.log(games)),
+        // tap(games => console.log(games)),
         catchError(err => of(new adminActions.LoadGamesFail(err)))
       )
     )
@@ -121,7 +121,7 @@ export class AdminEffects {
       mergeMap(action =>
         this.seasonService.currentSeason$.pipe(
           map(season => new adminActions.SetSelectedSeason(season as Season)),
-          tap(data => console.log(data)),
+          // tap(data => console.log(data)),
           catchError(err => of(new adminActions.LoadDivisionsFail(err)))
         )
       )
@@ -136,7 +136,6 @@ export class AdminEffects {
       ),
       tap(([action, t]) => {
         if (t) {
-          console.log(t);
           this.divisionId = t.divisionId;
         } else {
           this.divisionId = 0;
@@ -155,7 +154,7 @@ export class AdminEffects {
       concatMap(action =>
         of(action).pipe(
           withLatestFrom(this.store.pipe(select(fromAdmin.getSelectedSeason))),
-          tap(divisions => console.log(divisions))
+          // tap(divisions => console.log(divisions))
         )
       ),
       tap(([action, t]) => {
@@ -171,7 +170,7 @@ export class AdminEffects {
           // tap(data => console.log('All admin teams:' + JSON.stringify(data))),
           shareReplay(1),
           map(teams => new adminActions.LoadSeasonTeamsSuccess(teams)),
-          tap(teams => console.log(teams)),
+          // tap(teams => console.log(teams)),
           catchError(err => of(new adminActions.LoadSeasonTeamsFail(err)))
         )
       )
@@ -204,7 +203,7 @@ export class AdminEffects {
       concatMap((action) =>
         of(action).pipe(
           withLatestFrom(this.store.pipe(select(fromAdmin.getSelectedSeason))),
-          tap((divisions) => console.log(divisions))
+          // tap((divisions) => console.log(divisions))
         )
       ),
       tap(([action, t]) => {

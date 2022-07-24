@@ -38,11 +38,12 @@ export class AdminShellComponent implements OnInit {
       });
     });
     this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
-      if (season !== undefined) {
+      if (season.seasonId !== undefined) {
+        // console.log(season);
         this.store.dispatch(new adminActions.LoadDivisions());
         this.store.dispatch(new adminActions.LoadSeasonTeams());
         this.store.dispatch(new adminActions.LoadGames());
-        this.store.dispatch(new adminActions.LoadPlayoffGames());
+        // this.store.dispatch(new adminActions.LoadPlayoffGames());
       }
     });
 

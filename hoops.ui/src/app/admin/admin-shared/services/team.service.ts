@@ -22,9 +22,9 @@ export class TeamService {
 
   filterTeamsByDivision(div: number): Observable<Team[]> {
     let filteredTeams: Team[] = [];
-    console.log(filteredTeams);
+    // console.log(filteredTeams);
     this.store.pipe(select(fromAdmin.getSeasonTeams)).subscribe((teams) => {
-      console.log(teams);
+      //console.log(teams);
       teams?.forEach((team) => {
         if (team.divisionId === div) {
           const t: Team = {
