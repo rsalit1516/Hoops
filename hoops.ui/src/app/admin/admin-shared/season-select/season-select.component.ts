@@ -48,10 +48,7 @@ export class SeasonSelectComponent implements OnInit {
       }
     });
     this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
-      console.log(season);
-      console.log(this.selectedSeason);
       if (season.seasonId !== undefined && season !== this.selectedSeason) {
-        console.log(season);
         this.selectedSeason = season;
         this.seasonComponent?.setValue(season.seasonId);
       }
