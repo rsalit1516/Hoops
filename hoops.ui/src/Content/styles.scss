@@ -1,6 +1,8 @@
-﻿@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+﻿@use "_variables" as v;
+@import "_material.scss";
+
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
 @import "~bootstrap/dist/css/bootstrap.css";
-@import "_variables";
 
 
 // @import './_mixins';
@@ -12,48 +14,9 @@ body {
   font: Roboto, Arial, Helvetica, sans-serif;
   font-size: 12px;
   color: ghostwhite;
-  background: $background-color;
+  background: v.$background-color;
 }
 
-.mat-toolbar {
-  background: $background-color;
-  color: $font-color-text;
-}
-.mat-select-value {
-  color: $font-color-text;
-}
-
-.mat-form-field {
-  padding-left: 12px;
-  padding-right: 12px;
-  padding-top: 12px;
-  color: $admin-font-color;
-  font-size: 1.1rem;
-}
-
-.mat-select {
-  color: $admin-font-color;
-  background-color: $admin-card-background-color;
-}
-
-.mat-select-arrow-wrapper {
-  color: $admin-font-color;
-  background-color: $admin-card-background-color;
-}
-
-.mat-form-field-empty.mat-form-field-label, .mat-form-field-label {
-  font-size: 1.3rem !important;
-  color: $field-label !important;
-}
-.mat-datepicker-toggle {
-  color: $admin-input-hint-color !important;
-}
-.mat-datepicker-toggle-default-icon {
-  width: 1rem;
-}
-.mat-checkbox-background {
-  background-color: $brand-color !important;
-}
 
 /*For Bootstrap 3*/
 .nav,
@@ -75,7 +38,7 @@ body {
 
 h2 {
   font-size: 1.2em;
-  color: $panel-default-heading-background;
+  color: v.$panel-default-heading-background;
 }
 
 /*#endregion */
@@ -144,16 +107,16 @@ small {
 
 /* material definitions */
 .mat-select-value-text {
-  color: $admin-font-color;
+  color: v.$admin-font-color;
   font-size: .9rem !important;
 }
 .mat-option-text {
-  color: $admin-font-color;
+  color: v.$admin-font-color;
   font-size: .9rem !important;
-  background-color: $admin-background-color;
+  background-color: v.$admin-background-color;
 }
 .mat-select-panel {
-  background-color: $admin-background-color;
+  background-color: v.$admin-background-color;
 }
 .page-title-subtle {
   color: white;
@@ -234,23 +197,23 @@ small {
 }
 .panel-default .panel-heading,
 .card {
-  background-color: $panel-default-heading-background;
+  background-color: v.$panel-default-heading-background;
   color: white;
 }
 
 .panel,
 .card {
-  box-shadow: 0px 1px 4px $app-bar-background;
+  box-shadow: 0px 1px 4px v.$app-bar-background;
   border: none;
   border-radius: 2px;
-  background-color: $card-background-color;
+  background-color: v.$card-background-color;
   margin-bottom: 8px;
 }
 
 .panel-body,
 .card-block {
-  background-color: $card-background-color;
-  color: $color;
+  background-color: v.$card-background-color;
+  color: v.$color;
   padding-top: 0.25rem;
   padding-left: 0.75rem;
   padding-right: 0.75rem;
@@ -347,19 +310,19 @@ table th > a {
 }
 
 .table {
-  // background-color:$table-body-color;
-  color: $table-font-color;
+  // background-color:v.$table-body-color;
+  color: v.$table-font-color;
   border-radius: 5px;
 }
 
 .table > thead {
-  background-color: $panel-default-heading-background;
-  color: $table-font-color;
+  background-color: v.$panel-default-heading-background;
+  color: v.$table-font-color;
 }
 
 .table > tbody {
-  background-color: $table-body-color;
-  color: $table-font-color;
+  background-color: v.$table-body-color;
+  color: v.$table-font-color;
 }
 
 .table-striped {

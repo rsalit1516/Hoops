@@ -1,0 +1,42 @@
+@use '_variables' as v;
+/* @import '~@angular/material/prebuilt-themes/indigo-pink.css'; */
+
+.mat-toolbar {
+  background: v.$background-color;
+  color: v.$font-color-text;
+}
+.mat-select-value {
+  color: v.$font-color-text;
+}
+
+.mat-form-field {
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 12px;
+  color: v.$admin-font-color;
+  font-size: 1.1rem;
+}
+
+.mat-select {
+  color: v.$admin-font-color;
+  background-color: v.$admin-card-background-color;
+}
+
+.mat-select-arrow-wrapper {
+  color: v.$admin-font-color;
+  background-color: v.$admin-card-background-color;
+}
+
+.mat-form-field-empty.mat-form-field-label, .mat-form-field-label {
+  font-size: 1.3rem !important;
+  color: v.$field-label !important;
+}
+.mat-datepicker-toggle {
+  color: v.$admin-input-hint-color !important;
+}
+.mat-datepicker-toggle-default-icon {
+  width: 1rem;
+}
+.mat-checkbox-background {
+  background-color: v.$brand-color !important;
+}
