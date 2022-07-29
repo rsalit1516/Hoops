@@ -1,11 +1,12 @@
 ﻿@use "_variables" as v;
-@import "_material.scss";
+@use "_material.scss";
+
+@use './_mixins';
 
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 @import "~bootstrap/dist/css/bootstrap.css";
 
 
-// @import './_mixins';
 /*#region Override background color theme */
 
 body {
