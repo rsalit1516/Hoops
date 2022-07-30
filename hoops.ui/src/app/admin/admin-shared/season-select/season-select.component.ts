@@ -13,6 +13,7 @@ import {
   UntypedFormGroup,
 } from '@angular/forms';
 import { subscribeOn } from 'rxjs-compat/operator/subscribeOn';
+import { SeasonService } from '../services/season.service';
 
 @Component({
   selector: 'season-select',
@@ -32,7 +33,8 @@ export class SeasonSelectComponent implements OnInit {
 
   constructor(
     private store: Store<fromAdmin.State>,
-    private fb: UntypedFormBuilder
+    private fb: UntypedFormBuilder,
+    private seasonService: SeasonService
   ) {
     this.selectForm = this.fb.group({
       seasonControl: new UntypedFormControl(''),
@@ -43,9 +45,10 @@ export class SeasonSelectComponent implements OnInit {
   ngOnInit() {
     this.seasonComponent = this.selectForm.get('seasonControl') as UntypedFormControl;
     this.seasonComponent?.valueChanges.subscribe((value) => {
-      if (value !== this.selectedSeason) {
-        this.store.dispatch(new adminActions.SetSelectedSeason(value));
-      }
+      // if (value !== this.selectedSeason) {
+      const selectedSeason = this.seasonService.getSeason(value);
+      console.log(selectedSeason);
+      this.store.dispatch(new adminActions.SetSelectedSeason(selectedSeason));
     });
     this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
       if (season.seasonId !== undefined && season !== this.selectedSeason) {
