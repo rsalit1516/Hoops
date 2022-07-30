@@ -16,6 +16,9 @@ export enum AdminActionTypes {
   LoadFilteredGames = '[Admin] Load Filtered Games',
   LoadFilteredGamesSuccess = '[Admin] Load Filtered Games Success',
   LoadFilteredGamesFail = '[Admin] Load Filtered Games Fail',
+  LoadTeamGames = '[Admin] Load Team Games',
+  LoadTeamGamesSuccess = '[Admin] Load Team Games Success',
+  LoadTeamGamesFail = '[Admin] Load Team Games Fail',
   LoadSeasons = '[Admin] Load Seasons',
   LoadSeasonsSuccess = '[Admin] Load Seasons Success',
   LoadSeasonsFail = '[Admin] Load Seasons Fail',
@@ -67,6 +70,18 @@ export class LoadFilteredGamesFail implements Action {
   readonly type = AdminActionTypes.LoadFilteredGamesFail;
   constructor(public payload: string) {}
 }
+export class LoadTeamGames implements Action {
+  readonly type = AdminActionTypes.LoadTeamGames;
+}
+export class LoadTeamGamesSuccess implements Action {
+  readonly type = AdminActionTypes.LoadTeamGamesSuccess;
+  constructor(public payload: Game[]) {}
+}
+export class LoadTeamGamesFail implements Action {
+  readonly type = AdminActionTypes.LoadTeamGamesFail;
+  constructor(public payload: string) {}
+}
+
 export class LoadSeasons implements Action {
   readonly type = AdminActionTypes.LoadSeasons;
 }
@@ -189,6 +204,9 @@ export type AdminActions =
   | LoadFilteredGames
   | LoadFilteredGamesSuccess
   | LoadFilteredGamesFail
+  | LoadTeamGames
+  | LoadTeamGamesSuccess
+  | LoadTeamGamesFail
   | LoadSeasons
   | LoadSeasonsSuccess
   | LoadSeasonsFail

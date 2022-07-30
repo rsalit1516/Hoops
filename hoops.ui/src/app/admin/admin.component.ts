@@ -73,6 +73,10 @@ export class AdminComponent  implements OnInit {
       this.store.dispatch(new adminActions.SetSelectedDivision(divisions[0]));
       this.store.dispatch(new adminActions.LoadDivisionTeams);
     });
+    this.store.select(fromAdmin.getSelectedTeam).subscribe((team) => {
+      console.log(team);
+      this.store.dispatch(new adminActions.LoadTeamGames);
+    });
   }
     menu() {
     this.menuItems = new Array<MenuItem>();

@@ -24,7 +24,6 @@ export interface AdminState {
   showOnlyActiveWebContent: boolean;
   gameType: string;
   playoffGames: PlayoffGame[];
-
 }
 
 const initialState: AdminState = {
@@ -82,6 +81,11 @@ export function reducer(
         ...state,
         filteredGames: action.payload,
       };
+    case AdminActionTypes.LoadTeamGamesSuccess:
+      return {
+        ...state,
+        filteredGames: action.payload,
+      };
     case AdminActionTypes.LoadDivisionsSuccess:
       return {
         ...state,
@@ -107,13 +111,13 @@ export function reducer(
         ...state,
         seasonTeams: action.payload,
       };
-      case AdminActionTypes.SetGameType:
-        return {
-          ...state,
-          gameType: action.payload,
-        };
+    case AdminActionTypes.SetGameType:
+      return {
+        ...state,
+        gameType: action.payload,
+      };
 
-      default: {
+    default: {
       return state;
     }
   }

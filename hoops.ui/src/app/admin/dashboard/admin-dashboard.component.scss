@@ -27,8 +27,12 @@
   color: $brand-color;
   padding-top: 4px;
   padding-bottom: 4px;
+  height: 32px;
 }
-
+.mat-list-item.active a:active{
+color: white;
+background-color: purple;
+}
 .heading {
   font-size: 1.4em;
   color: white;

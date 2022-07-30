@@ -45,6 +45,31 @@ export class GameService {
     });
     return of(sortedDate);
   }
+
+  filterGamesByTeam(team: number): Observable<Game[]> {
+    let games: Game[] = [];
+    let sortedDate: Game[] = [];
+    console.log(team);
+    this.store.pipe(select(fromGames.getSeasonGames)).subscribe((allGames) => {
+      this.allGames = allGames;
+      this.setCanEdit(team);
+      if (allGames) {
+        for (let i = 0; i < this.allGames.length; i++) {
+          if (this.allGames[i].homeTeamId === team || this.allGames[i].visitingTeamId === team) {
+            let game = allGames[i];
+            games.push(game);
+          }
+        }
+        games.sort();
+        sortedDate = games.sort((a, b) => {
+          return this.compare(a.gameDate!, b.gameDate!, true);
+        });
+        return of(sortedDate);
+      }
+      return of(sortedDate);
+    });
+    return of(sortedDate);
+  }
   compare(a: Date | string, b: Date | string, isAsc: boolean) {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }

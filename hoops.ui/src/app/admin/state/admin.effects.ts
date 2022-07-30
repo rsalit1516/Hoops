@@ -35,6 +35,7 @@ export class AdminEffects {
   private playoffGameUrl = this.dataService.playoffGameUrl;
   divisionId!: number;
   division!: Division;
+  teamId!: number;
 
   constructor(
     private actions$: Actions,
@@ -142,10 +143,33 @@ export class AdminEffects {
         }
       }),
       switchMap((action) =>
-        this.gameService.filterGamesByDivision(this.divisionId).pipe(
-          map((games) => new adminActions.LoadFilteredGamesSuccess(games)),
+        this.gameService.filterGamesByTeam(this.teamId).pipe(
+          map((games) => new adminActions.LoadTeamGamesSuccess(games)),
+          tap(response => console.log(response)),
+          catchError((err) => of(new adminActions.LoadTeamGamesFail(err)))
+        )
+      )
+    ));
+
+    loadTeamGames$: Observable<Action> = createEffect(() => this.actions$.pipe(
+      ofType(adminActions.AdminActionTypes.LoadTeamGames),
+      concatMap((action) =>
+        of(action).pipe(
+          withLatestFrom(this.store.pipe(select(fromAdmin.getSelectedTeam)))
+        )
+      ),
+      tap(([action, t]) => {
+        if (t) {
+          this.teamId = t.teamId;
+        } else {
+          this.teamId = 0;
+        }
+      }),
+      switchMap((action) =>
+        this.gameService.filterGamesByTeam(this.teamId).pipe(
+          map((games) => new adminActions.LoadTeamGamesSuccess(games)),
           // tap(response => console.log(response)),
-          catchError((err) => of(new adminActions.LoadFilteredGamesFail(err)))
+          catchError((err) => of(new adminActions.LoadTeamGamesFail(err)))
         )
       )
     ));

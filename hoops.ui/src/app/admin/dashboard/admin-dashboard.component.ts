@@ -29,6 +29,8 @@ export class AdminDashboardComponent implements OnInit {
   seasonGames: Game[] | undefined;
   seasonGameCount: number | undefined;
   divisionTeams!: Team[] | null;
+  selectedDivision!: Division | null;
+  filteredGames!: Game[];
 
   constructor(
     private store: Store<fromAdmin.State>,
@@ -49,6 +51,9 @@ export class AdminDashboardComponent implements OnInit {
       this.store.select(fromAdmin.getSeasonDivisions).subscribe((divisions) => {
         this.divisions = divisions;
         this.divisionCount = divisions.length;
+        if (divisions.length > 0) {
+          this.selectedDivision = divisions[ 0 ];
+        }
       });
       this.store.select(fromAdmin.getSeasonTeams).subscribe((teams) => {
           this.teams = teams;
@@ -61,20 +66,30 @@ export class AdminDashboardComponent implements OnInit {
       });
     });
     this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
-
       this.store.select(fromAdmin.getDivisionTeams).subscribe((teams) => {
         this.divisionTeams = teams;
         this.teamCount = (teams === null ? 0 : teams.length);
       });
   });
+  this.store.select(fromAdmin.getSelectedTeam).subscribe((team) => {
+    console.log(team);
+    this.store.dispatch(new adminActions.LoadTeamGames);
+  });
+  this.store.select(fromAdmin.getFilteredGames).subscribe((games) => {
+    console.log(games);
+    this.filteredGames = games;
+    // this.store.dispatch(new adminActions.LoadTeamGames);
+  });
 
   }
   goToDivision(division: Division) {
     this.store.dispatch(new adminActions.SetSelectedDivision(division));
+    this.selectedDivision = division;
     // this.router.navigate(['/admin/division']);
   }
   setTeam(team: Team) {
     this.store.dispatch(new adminActions.SetSelectedTeam(team));
+
     // this.router.navigate(['/admin/division']);
   }
 

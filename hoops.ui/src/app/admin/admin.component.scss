@@ -1,4 +1,4 @@
-@import '../../Content/variables';
+@use '../../Content/variables' as v;
 
 .mat-sidenav {
   color: white;
@@ -16,37 +16,37 @@
   padding: 10px 10px 0 10px;
 }
 input, textarea {
-  font-size: $table-font-size;
+  font-size: v.$table-font-size;
   padding-top: 12px;
   padding-bottom:12px;
   padding-left: 12px;
-  background-color: lighten($admin-background-color, 5%);
-  color: $field-label;
+  background-color: lighten(v.$admin-background-color, 5%);
+  color: v.$field-label;
 }
 
 .mat-form-field.mat-label,  input.mat-form-field-label {
   font-size: 1.1rem !important;
-  color: $field-label;
+  color: v.$field-label;
 }
 
 .mat-form-field + .mat-form-field.mat-form-field-label {
-  color: $field-label;
+  color: v.$field-label;
   font-size: 1.4rem;
 }
 
 .mat-input {
-  color: $field-label !important;
-  background-color: lighten($admin-background-color, 5%);
+  color: v.$field-label !important;
+  background-color: lighten(v.$admin-background-color, 5%);
 }
 .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
-  color: $field-label !important;
+  color: v.$field-label !important;
 }
 label {
   font-size: 1.2rem;
-  color: $field-label;
+  color: v.$field-label;
 }
 .mat-label {
-  color: $field-label;
+  color: v.$field-label;
 }
 
 .mat-table {
@@ -58,14 +58,14 @@ fieldset {
   padding-right: 20px;
   padding-top: 16px;
   padding-bottom: 16px;
-  color: $field-label;
+  color: v.$field-label;
 }
 button {
   margin-right: 12px;
 }
 
 nav.sidebar {
-  background-color: lighten($background-color, 12%);
+  background-color: lighten(v.$background-color, 12%);
   color: white;
   border: 0;
   height: 100%;
@@ -96,7 +96,7 @@ li > th {
 }
 tbody {
   color: white;
-  background-color: $table-body-color;
+  background-color: v.$table-body-color;
 }
 td {
   color: white;
@@ -202,7 +202,7 @@ section {
 }
 
 div {
-  color: $brand-color;
+  color: v.$brand-color;
 }
 .sectionTitle {
   font-size: 1.2em;
@@ -211,7 +211,7 @@ div {
   padding-left: 20px;
   padding-top: 12px;
   padding-bottom: 12px;
-  background-color: $card-background-color;
+  background-color: v.$card-background-color;
 }
 .content-wrapper {
   margin-right: 12px;
@@ -229,19 +229,19 @@ table .table .table-responsive .table-condensed {
   border-radius: 5px;
 }
 div {
-  color: $brand-color;
+  color: v.$brand-color;
 }
 .mat-card {
-  background-color: $admin-card-background-color
+  background-color: v.$admin-card-background-color
 }
 .mat-card-title, h2 {
-  color: $field-label;
+  color: v.$field-label;
   font-size: 1.5em;
   padding-bottom: 6px;
   padding-left: 12px;
 }
 .mat-raised-button .mat-button {
-  background-color: $brand-color;
+  background-color: v.$brand-color;
   color: white;
 }
 .mat-cell,
@@ -255,32 +255,32 @@ div {
 }
 
 .mat-select-value {
-  color: $admin-font-color;
+  color: v.$admin-font-color;
   font-size: .9rem !important;
 }
 
 .mat-select-value-text {
-  color: $admin-font-color;
+  color: v.$admin-font-color;
   font-size: .9rem !important;
 }
 
 .ng-star-inserted {
-  color: $basketball-color;
+  color: v.$basketball-color;
 }
 .mat-checkbox {
-  background-color: $card-background-color;
-  color: $admin-font-color;
+  background-color: v.$card-background-color;
+  color: v.$admin-font-color;
 }
 
 .mat-raised-button {
-  background-color: $brand-color;
+  background-color: v.$brand-color;
   color:white;
 }
 
 .form-control {
-  background-color: $admin-table-background-color;
-  color: $admin-font-color;
-  border-color: $admin-table-background-color-border;
+  background-color: v.$admin-table-background-color;
+  color: v.$admin-font-color;
+  border-color: v.$admin-table-background-color-border;
   font-size:1.2em;
 }
 .row-is-clicked {
@@ -302,9 +302,9 @@ tr.mat-row {
   margin-bottom:40px;
 }
 .mat-hint {
-  font-size: $admin-input-hint-font-size;
-  color: $admin-input-hint-color;
+  font-size: v.$admin-input-hint-font-size;
+  color: v.$admin-input-hint-color;
 }
 .mat-datepicker {
-  color: $admin-input-hint-color;
+  color: v.$admin-input-hint-color;
 }

@@ -12,14 +12,14 @@
       <mat-card-header>
         <!-- <div mat-card-avatar class="example-header-image"></div> -->
         <mat-card-title>Divisions</mat-card-title>
-        <mat-card-subtitle class="heading">No.: {{ divisionCount }}</mat-card-subtitle>
+        <mat-card-subtitle class="heading">{{ divisionCount }} divisions</mat-card-subtitle>
 
     </mat-card-header>
       <mat-card-content>
-        <mat-list role="list">
-            <mat-list-item role="listitem" *ngFor="let division of divisions" (click)="goToDivision(division)">
-              {{ division.divisionDescription }}</mat-list-item>
-          </mat-list>
+        <mat-selection-list [multiple]="false">
+            <mat-list-option role="listitem" *ngFor="let division of divisions" (click)="goToDivision(division)">
+              {{ division.divisionDescription }}</mat-list-option>
+          </mat-selection-list>
       </mat-card-content>
     </mat-card>
   </div>
@@ -35,11 +35,12 @@
       </mat-card-header>
       <mat-card-content>
 
-        <!-- <div class="heading">Current Season</div> -->
-        <mat-list role="list">
-          <mat-list-item role="listitem" *ngFor="let team of divisionTeams">
-            {{ team.teamName }}</mat-list-item>
-        </mat-list>
+        <div class="heading">{{selectedDivision?.divisionDescription}}</div>
+        <mat-selection-list [multiple] = "false">
+          <mat-list-option *ngFor="let team of divisionTeams" (click)="setTeam(team)">
+            {{ team.teamName }} </mat-list-option>
+
+        </mat-selection-list>
 
       </mat-card-content>
     </mat-card>
@@ -49,12 +50,14 @@
       <mat-card-header>
         <mat-card-title>Games</mat-card-title>
         <mat-card-subtitle class="heading">
-          Season Games: {{ seasonGameCount }}
+          {{ seasonGameCount }} season games
         </mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
+        <div>{{filteredGames.length}} team games</div>
         <!-- <div class="heading">Current Season</div> -->
       </mat-card-content>
+
     </mat-card>
   </div>
 </div>
