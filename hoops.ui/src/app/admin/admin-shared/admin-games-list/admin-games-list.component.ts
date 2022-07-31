@@ -4,15 +4,15 @@ import { MatDialog } from '@angular/material/dialog';
 import { MediaObserver } from '@angular/flex-layout';
 import { MatTableDataSource } from '@angular/material/table';
 import { Game } from 'app/domain/game';
-import * as fromAdmin from '../../../state';
-import * as adminActions from '../../../state/admin.actions';
+import * as fromAdmin from '../../state';
+import * as adminActions from '../../state/admin.actions';
 import { Observable } from 'rxjs';
 @Component({
   selector: 'admin-games-list',
   templateUrl: './admin-games-list.component.html',
   styleUrls: [
     './admin-games-list.component.scss',
-    '../../../admin.component.scss',
+    '../../admin.component.scss',
   ],
 })
 export class AdminGamesListComponent implements OnInit {

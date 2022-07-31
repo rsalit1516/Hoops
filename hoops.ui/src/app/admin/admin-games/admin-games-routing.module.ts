@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { PageNotFoundComponent } from 'app/app.not-found.component';
 import { AdminGamesShellComponent } from './containers/admin-games-shell/admin-games-shell.component';
 import { AuthGuard } from 'app/auth/auth.guard';
-import { AdminGamesListComponent } from './components/admin-games-list/admin-games-list.component';
+import { AdminGamesListComponent } from '../admin-shared/admin-games-list/admin-games-list.component';
 import { AdminGameDetailComponent } from './components/admin-game-detail/admin-game-detail.component';
 
 const adminGamesRoutes: Routes = [

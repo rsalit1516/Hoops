@@ -6,6 +6,7 @@ import { SeasonSelectComponent } from './season-select/season-select.component';
 import { AdminTeamListComponent } from './admin-team-list/admin-team-list.component';
 import { AdminTeamDetailComponent } from './admin-team-detail/admin-team-detail.component';
 import { GameTypeSelectComponent } from './game-type-select/game-type-select.component';
+import { AdminGamesListComponent } from './admin-games-list/admin-games-list.component';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { GameTypeSelectComponent } from './game-type-select/game-type-select.com
     AdminTeamListComponent,
     AdminTeamDetailComponent,
     GameTypeSelectComponent,
+    AdminGamesListComponent
   ],
   imports: [CommonModule, CoreModule],
   exports: [
@@ -22,6 +24,7 @@ import { GameTypeSelectComponent } from './game-type-select/game-type-select.com
     AdminTeamDetailComponent,
     AdminTeamListComponent,
     GameTypeSelectComponent,
+    AdminGamesListComponent
   ],
 })
 export class AdminSharedModule {}

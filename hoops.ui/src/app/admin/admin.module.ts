@@ -11,7 +11,6 @@ import { SeasonDetailComponent } from './season/seasonDetail.component';
 import { SeasonListComponent } from './season/seasonList.component';
 import { DivisionDetailComponent } from './division/divisionDetail.component';
 import { DivisionListComponent } from './division/divisionList.component';
-import { TeamListComponent } from './team/teamList.component';
 import { PlayerListComponent } from './player/player-list.component';
 
 import { DivisionMasterComponent } from './division-master/division-master.component';
@@ -33,7 +32,6 @@ import { DirectorModule } from './director/director.module';
 
 import { ImportScheduleComponent } from './import-schedule/import-schedule.component';
 import { SeasonSetupComponent } from './containers/season-setup/season-setup.component';
-import { RegistrationPaymentsComponent } from './registrations-and-payments/containers/registration-payments/registration-payments.component';
 import { SeasonRegistrationsComponent } from './registrations-and-payments/components/season-registrations/season-registrations.component';
 import { PaymentsComponent } from './registrations-and-payments/components/payments/payments.component';
 import { AdminGamesModule } from './admin-games/admin-games.module';
@@ -53,7 +51,6 @@ import { AdminSharedModule } from './admin-shared/admin-shared.module';
     DirectorModule,
     AdminGamesModule,
     RegistrationsAndPaymentsModule,
-    AdminSharedModule,
     StoreModule.forFeature('admin', reducer),
     EffectsModule.forFeature([AdminEffects]),
   ],
