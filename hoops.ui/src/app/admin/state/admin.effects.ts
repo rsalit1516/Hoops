@@ -143,10 +143,10 @@ export class AdminEffects {
         }
       }),
       switchMap((action) =>
-        this.gameService.filterGamesByTeam(this.teamId).pipe(
-          map((games) => new adminActions.LoadTeamGamesSuccess(games)),
+        this.gameService.filterGamesByDivision(this.divisionId).pipe(
+          map((games) => new adminActions.LoadFilteredGamesSuccess(games)),
           tap(response => console.log(response)),
-          catchError((err) => of(new adminActions.LoadTeamGamesFail(err)))
+          catchError((err) => of(new adminActions.LoadFilteredGamesFail(err)))
         )
       )
     ));
