@@ -21,7 +21,12 @@
           placeholder="06:00"
           formControlName="gameTime"
         />
+        <ngx-mat-timepicker value="gameTime" [showSpinners]="true">
+
+        </ngx-mat-timepicker>
+
       </mat-form-field>
+
       <mat-form-field class="form-control" appearance="fill">
         <mat-label>Location</mat-label>
         <input matInput value="locationName" formControlName="locationName" />

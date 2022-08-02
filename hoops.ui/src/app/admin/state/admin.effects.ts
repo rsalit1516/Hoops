@@ -129,7 +129,7 @@ export class AdminEffects {
     ));
 
     loadFilteredGames$: Observable<Action> = createEffect(() => this.actions$.pipe(
-      ofType(adminActions.AdminActionTypes.LoadFilteredGames),
+      ofType(adminActions.AdminActionTypes.LoadDivisionGames),
       concatMap((action) =>
         of(action).pipe(
           withLatestFrom(this.store.pipe(select(fromAdmin.getSelectedDivision)))
@@ -144,9 +144,9 @@ export class AdminEffects {
       }),
       switchMap((action) =>
         this.gameService.filterGamesByDivision(this.divisionId).pipe(
-          map((games) => new adminActions.LoadFilteredGamesSuccess(games)),
+          map((games) => new adminActions.LoadDivisionGamesSuccess(games)),
           tap(response => console.log(response)),
-          catchError((err) => of(new adminActions.LoadFilteredGamesFail(err)))
+          catchError((err) => of(new adminActions.LoadDivisionGamesFail(err)))
         )
       )
     ));
@@ -218,7 +218,7 @@ export class AdminEffects {
         this.teamService.filterTeamsByDivision(this.divisionId).pipe(
           map((teams) => new adminActions.LoadDivisionTeamsSuccess(teams)),
           // tap(response => console.log(response)),
-          catchError((err) => of(new adminActions.LoadFilteredGamesFail(err)))
+          catchError((err) => of(new adminActions.LoadTeamGamesFail(err)))
         )
       )
     ));

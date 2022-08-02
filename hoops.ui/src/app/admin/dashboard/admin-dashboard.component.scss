@@ -3,6 +3,7 @@
 .dashboard-card {
   min-height: 100px;
 }
+
 .card {
   background-color: $table-body-color;
   color: $table-font-color;
@@ -10,11 +11,13 @@
   padding: 4px 8px 4px 8px;
   border-radius: 10px;
 }
+
 .mat-card-subtitle {
-    font-size: 1em;
-    color: $brand-color;
-    font-weight: 700;
+  font-size: 1em;
+  color: $brand-color;
+  font-weight: 700;
 }
+
 .mat-card {
   background-color: $table-body-color;
   color: $table-font-color;
@@ -23,16 +26,19 @@
   border-radius: 10px;
   margin-bottom: 20px;
 }
+
 .mat-list-item {
   color: $brand-color;
   padding-top: 4px;
   padding-bottom: 4px;
   height: 32px;
 }
-.mat-list-item.active a:active{
-color: white;
-background-color: purple;
+
+.mat-list-item.active a:active {
+  color: white;
+  background-color: purple;
 }
+
 .heading {
   font-size: 1.4em;
   color: white;
@@ -43,7 +49,7 @@ background-color: purple;
 .dashboard-header {
   font-size: 1.4rem;
   text-align: center;
-  color:$admin-font-color;
+  color: $admin-font-color;
   padding-top: 20px;
   padding-bottom: 20px;
 }
@@ -51,9 +57,19 @@ background-color: purple;
 .body {
   font-size: 1.1rem;
   text-align: center;
-  color:$admin-font-color;
+  color: $admin-font-color;
 }
 
 tbody {
   color: white;
+}
+
+.showOptions {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 20px;
+}
+
+.counter-wrapper {
+  padding-bottom: 20px;
 }

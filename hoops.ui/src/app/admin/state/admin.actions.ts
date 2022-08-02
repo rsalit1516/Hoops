@@ -13,12 +13,13 @@ export enum AdminActionTypes {
   LoadGames = '[Admin] Load Games',
   LoadGamesSuccess = '[Admin] Load Games Success',
   LoadGamesFail = '[Admin] Load GamesFail',
-  LoadFilteredGames = '[Admin] Load Filtered Games',
-  LoadFilteredGamesSuccess = '[Admin] Load Filtered Games Success',
-  LoadFilteredGamesFail = '[Admin] Load Filtered Games Fail',
+  LoadDivisionGames = '[Admin] Load Division Games',
+  LoadDivisionGamesSuccess = '[Admin] Load Division Games Success',
+  LoadDivisionGamesFail = '[Admin] Load Division Games Fail',
   LoadTeamGames = '[Admin] Load Team Games',
   LoadTeamGamesSuccess = '[Admin] Load Team Games Success',
   LoadTeamGamesFail = '[Admin] Load Team Games Fail',
+  SetFilteredGames = '[Admin] Set Filtered Games',
   LoadSeasons = '[Admin] Load Seasons',
   LoadSeasonsSuccess = '[Admin] Load Seasons Success',
   LoadSeasonsFail = '[Admin] Load Seasons Fail',
@@ -39,10 +40,10 @@ export enum AdminActionTypes {
   SetSelectedGame = '[Admin] Set SelectedGame',
   SetColors = '[Admin] Set Colors',
   SetGameType = '[Admin] Set Game Type',
-  SetShowOnlyActiveWebContent =  '[Admin] Set Show Only Active Web Content',
-  LoadPlayoffGames = "[Game] Load Playoff Games",
-  LoadPlayoffGamesSuccess = "[Game] Load Playoff Games Success",
-  LoadPlayoffGamesFail = "[Game] Load Playoff Games Fail",
+  SetShowOnlyActiveWebContent = '[Admin] Set Show Only Active Web Content',
+  LoadPlayoffGames = '[Game] Load Playoff Games',
+  LoadPlayoffGamesSuccess = '[Game] Load Playoff Games Success',
+  LoadPlayoffGamesFail = '[Game] Load Playoff Games Fail',
 }
 export class LoadCurrentSeason implements Action {
   readonly type = AdminActionTypes.LoadCurrentSeason;
@@ -59,15 +60,15 @@ export class LoadGamesFail implements Action {
   readonly type = AdminActionTypes.LoadGamesFail;
   constructor(public payload: string) {}
 }
-export class LoadFilteredGames implements Action {
-  readonly type = AdminActionTypes.LoadFilteredGames;
+export class LoadDivisionGames implements Action {
+  readonly type = AdminActionTypes.LoadDivisionGames;
 }
-export class LoadFilteredGamesSuccess implements Action {
-  readonly type = AdminActionTypes.LoadFilteredGamesSuccess;
+export class LoadDivisionGamesSuccess implements Action {
+  readonly type = AdminActionTypes.LoadDivisionGamesSuccess;
   constructor(public payload: Game[]) {}
 }
-export class LoadFilteredGamesFail implements Action {
-  readonly type = AdminActionTypes.LoadFilteredGamesFail;
+export class LoadDivisionGamesFail implements Action {
+  readonly type = AdminActionTypes.LoadDivisionGamesFail;
   constructor(public payload: string) {}
 }
 export class LoadTeamGames implements Action {
@@ -82,6 +83,10 @@ export class LoadTeamGamesFail implements Action {
   constructor(public payload: string) {}
 }
 
+export class SetFilteredGames implements Action {
+  readonly type = AdminActionTypes.SetFilteredGames;
+  constructor(public payload: Game[]) {}
+}
 export class LoadSeasons implements Action {
   readonly type = AdminActionTypes.LoadSeasons;
 }
@@ -100,8 +105,7 @@ export class LoadSeasonsFail implements Action {
 // }
 export class SetSelectedSeason implements Action {
   readonly type = AdminActionTypes.SetSelectedSeason;
-  constructor(public payload: Season) {
-  }
+  constructor(public payload: Season) {}
 }
 export class SetCurrentSeason implements Action {
   readonly type = AdminActionTypes.SetCurrentSeason;
@@ -201,12 +205,13 @@ export type AdminActions =
   | LoadGames
   | LoadGamesSuccess
   | LoadGamesFail
-  | LoadFilteredGames
-  | LoadFilteredGamesSuccess
-  | LoadFilteredGamesFail
+  | LoadDivisionGames
+  | LoadDivisionGamesSuccess
+  | LoadDivisionGamesFail
   | LoadTeamGames
   | LoadTeamGamesSuccess
   | LoadTeamGamesFail
+  | SetFilteredGames
   | LoadSeasons
   | LoadSeasonsSuccess
   | LoadSeasonsFail
@@ -225,7 +230,7 @@ export type AdminActions =
   | SetSelectedTeam
   | SetSelectedGame
   | SetColors
-| SetGameType
+  | SetGameType
   | SetShowOnlyActiveWebContent
   | LoadPlayoffGames
   | LoadPlayoffGamesSuccess

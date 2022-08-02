@@ -1,64 +1,82 @@
-<div class="row justify-content-end" >
+<div class="row justify-content-end">
   <div class="col-8">
-        <!-- <div class="dashboard-header" *ngIf="currentSeason">
+    <!-- <div class="dashboard-header" *ngIf="currentSeason">
           Current Season: {{ currentSeason.description }}
         </div> -->
-        <season-select></season-select>
+    <season-select></season-select>
   </div>
-  </div>
-  <div class="row">
-  <div class="col-3">
-    <mat-card class = "dashboard-card">
+</div>
+<div class="row">
+  <div class="col-2">
+    <mat-card class="dashboard-card">
       <mat-card-header>
-        <!-- <div mat-card-avatar class="example-header-image"></div> -->
         <mat-card-title>Divisions</mat-card-title>
-        <mat-card-subtitle class="heading">{{ divisionCount }} divisions</mat-card-subtitle>
-
-    </mat-card-header>
+      </mat-card-header>
       <mat-card-content>
+        <div class="counter-wrapper">
+          <div class="counter">{{ divisionCount }} divisions</div>
+        </div>
+
         <mat-selection-list [multiple]="false">
-            <mat-list-option role="listitem" *ngFor="let division of divisions" (click)="goToDivision(division)">
-              {{ division.divisionDescription }}</mat-list-option>
-          </mat-selection-list>
-      </mat-card-content>
-    </mat-card>
-  </div>
-
-  <div class="col-4">
-    <mat-card class="dashboard-card">
-      <mat-card-header>
-        <mat-card-title>Teams</mat-card-title>
-        <mat-card-subtitle class="heading">
-          {{ teamCount }} Teams:
-        </mat-card-subtitle>
-
-      </mat-card-header>
-      <mat-card-content>
-
-        <div class="heading">{{selectedDivision?.divisionDescription}}</div>
-        <mat-selection-list [multiple] = "false">
-          <mat-list-option *ngFor="let team of divisionTeams" (click)="setTeam(team)">
-            {{ team.teamName }} </mat-list-option>
-
+          <mat-list-option
+            role="listitem"
+            *ngFor="let division of divisions"
+            (click)="goToDivision(division)"
+          >
+            {{ division.divisionDescription }}</mat-list-option
+          >
         </mat-selection-list>
-
       </mat-card-content>
     </mat-card>
   </div>
-  <div class="col-4">
+
+  <div class="col-3">
     <mat-card class="dashboard-card">
       <mat-card-header>
-        <mat-card-title>Games</mat-card-title>
-        <mat-card-subtitle class="heading">
-          {{ seasonGameCount }} season games
-        </mat-card-subtitle>
+        <mat-card-title
+          >{{ selectedDivision?.divisionDescription }} Teams</mat-card-title
+        >
       </mat-card-header>
       <mat-card-content>
-        <div>{{filteredGames.length}} team games</div>
-        <!-- <div class="heading">Current Season</div> -->
-        <admin-games-list ></admin-games-list>
+        <div class="counter-wrapper">
+          <div class="counter">{{ teamCount }} Teams:</div>
+        </div>
+        <mat-selection-list [multiple]="false">
+          <mat-list-option
+            *ngFor="let team of divisionTeams"
+            (click)="setTeam(team)"
+          >
+            {{ team.teamName }}
+          </mat-list-option>
+        </mat-selection-list>
       </mat-card-content>
-
+    </mat-card>
+  </div>
+  <div class="col-7">
+    <mat-card class="dashboard-card">
+      <mat-card-header>
+        <mat-card-title>Season Games</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="counter-wrapper">
+          <div class="counter">
+            {{ seasonGameCount }} {{ currentSeason.description }} games
+          </div>
+          <div class="counter">
+            <!-- <div>{{divisionGames.length}} division games</div> -->
+          </div>
+          <div class="counter">
+            {{ teamGames.length }} {{ selectedTeam?.teamName }} games
+          </div>
+        </div>
+        <!-- <div class="showOptions">
+          <mat-radio-group aria-label="Select an option">
+            <mat-radio-button value="1">Division Games</mat-radio-button>
+            <mat-radio-button value="2">Team Games</mat-radio-button>
+          </mat-radio-group>
+        </div> -->
+        <admin-games-list></admin-games-list>
+      </mat-card-content>
     </mat-card>
   </div>
 </div>

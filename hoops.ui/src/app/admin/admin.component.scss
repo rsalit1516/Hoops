@@ -49,9 +49,6 @@ label {
   color: v.$field-label;
 }
 
-.mat-table {
-  width: 100%;
-}
 fieldset {
   border-radius: 10px;
   padding-left: 20px;
@@ -217,8 +214,9 @@ div {
   margin-right: 12px;
 }
 .mat-table {
-  background-color: black;
+  background-color: transparent;
   font-size: 1em;
+  width: 100%;
 }
 
 tbody {
@@ -290,12 +288,12 @@ div {
 tr.mat-header-row {
   height:24px;
   border-bottom: .5px solid gray;
-  font-size: 1.4em;
+  font-size: 1.1em;
   font-weight: 800;
 }
 tr.mat-row {
   height:24px;
-  font-size: 1.1em;
+  font-size: .9em;
   font-weight: 500;
   padding-bottom: 8px;
   padding-top: 8px;
@@ -307,4 +305,8 @@ tr.mat-row {
 }
 .mat-datepicker {
   color: v.$admin-input-hint-color;
+}
+
+.counter {
+  padding-left: 20px;
 }

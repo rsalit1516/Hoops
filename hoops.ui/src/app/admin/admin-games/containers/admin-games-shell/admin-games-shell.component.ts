@@ -32,7 +32,7 @@ export class AdminGamesShellComponent implements OnInit {
     this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
       console.log(division);
       if (division !== undefined) {
-        this.store.dispatch(new adminActions.LoadFilteredGames());
+        this.store.dispatch(new adminActions.LoadDivisionGames());
         this.store.dispatch(new adminActions.LoadDivisionTeams());
       }
     });
@@ -48,7 +48,7 @@ export class AdminGamesShellComponent implements OnInit {
       this.showRegularSeason = (gameType == 'Regular Season');
       if (gameType !== undefined) {
         console.log('Calling filtered games');
-        this.store.dispatch(new adminActions.LoadFilteredGames());
+        this.store.dispatch(new adminActions.LoadDivisionGames());
         this.store.dispatch(new adminActions.LoadDivisionTeams());
       }
     });

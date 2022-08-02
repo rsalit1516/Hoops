@@ -7,6 +7,12 @@ import { AdminTeamListComponent } from './admin-team-list/admin-team-list.compon
 import { AdminTeamDetailComponent } from './admin-team-detail/admin-team-detail.component';
 import { GameTypeSelectComponent } from './game-type-select/game-type-select.component';
 import { AdminGamesListComponent } from './admin-games-list/admin-games-list.component';
+import { AdminGameDetailComponent } from './admin-game-detail/admin-game-detail.component';
+import {
+  NgxMatDatetimePickerModule,
+  NgxMatTimepickerModule,
+} from '@angular-material-components/datetime-picker';
+import { NgxMatMomentModule } from '@angular-material-components/moment-adapter';
 
 @NgModule({
   declarations: [
@@ -15,16 +21,24 @@ import { AdminGamesListComponent } from './admin-games-list/admin-games-list.com
     AdminTeamListComponent,
     AdminTeamDetailComponent,
     GameTypeSelectComponent,
-    AdminGamesListComponent
+    AdminGamesListComponent,
+    AdminGameDetailComponent,
   ],
-  imports: [CommonModule, CoreModule],
+  imports: [
+    CommonModule,
+    CoreModule,
+    NgxMatTimepickerModule,
+    NgxMatDatetimePickerModule,
+    NgxMatMomentModule,
+  ],
   exports: [
     SeasonSelectComponent,
     DivisionSelectComponent,
     AdminTeamDetailComponent,
     AdminTeamListComponent,
     GameTypeSelectComponent,
-    AdminGamesListComponent
+    AdminGamesListComponent,
+    AdminGameDetailComponent,
   ],
 })
 export class AdminSharedModule {}

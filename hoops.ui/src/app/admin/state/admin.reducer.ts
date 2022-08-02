@@ -8,6 +8,8 @@ import { Color } from '@app/domain/color';
 import { PlayoffGame } from '@app/domain/playoffGame';
 
 export interface AdminState {
+  divisionGames: Game[] | null;
+  teamGames: Game[] | null;
   selectedSeason: Season;
   selectedDivision: Division | null;
   currentTeamId: number | null;
@@ -32,6 +34,8 @@ const initialState: AdminState = {
   currentTeamId: null,
   games: [],
   filteredGames: [],
+  divisionGames: [],
+  teamGames: [],
   seasons: [],
   divisions: [],
   divisionTeams: [],
@@ -76,12 +80,17 @@ export function reducer(
         ...state,
         games: action.payload,
       };
-    case AdminActionTypes.LoadFilteredGamesSuccess:
+    case AdminActionTypes.LoadDivisionGamesSuccess:
       return {
         ...state,
-        filteredGames: action.payload,
+        divisionGames: action.payload,
       };
     case AdminActionTypes.LoadTeamGamesSuccess:
+      return {
+        ...state,
+        teamGames: action.payload,
+      };
+    case AdminActionTypes.SetFilteredGames:
       return {
         ...state,
         filteredGames: action.payload,

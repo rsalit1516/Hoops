@@ -18,7 +18,7 @@ import { Game } from '@app/domain/game';
 @Component({
   selector: 'csbc-admin-dashboard',
   templateUrl: './admin-dashboard.component.html',
-  styleUrls: ['./admin-dashboard.component.scss'],
+  styleUrls: ['./admin-dashboard.component.scss', '../admin.component.scss'],
 })
 export class AdminDashboardComponent implements OnInit {
   currentSeason!: Season;
@@ -31,6 +31,9 @@ export class AdminDashboardComponent implements OnInit {
   divisionTeams!: Team[] | null;
   selectedDivision!: Division | null;
   filteredGames!: Game[];
+  divisionGames!: Game[];
+  teamGames!: Game[];
+  selectedTeam!: Team | null;
 
   constructor(
     private store: Store<fromAdmin.State>,
@@ -70,15 +73,34 @@ export class AdminDashboardComponent implements OnInit {
         this.divisionTeams = teams;
         this.teamCount = (teams === null ? 0 : teams.length);
       });
+      console.log(division);
+      this.selectedDivision = division;
+      this.store.dispatch(new adminActions.LoadDivisionGames);
+      // this.store.dispatch(new adminActions.SetFilteredGames()
+
   });
   this.store.select(fromAdmin.getSelectedTeam).subscribe((team) => {
     console.log(team);
+    this.selectedTeam = team;
     this.store.dispatch(new adminActions.LoadTeamGames);
   });
-  this.store.select(fromAdmin.getFilteredGames).subscribe((games) => {
+  this.store.select(fromAdmin.getDivisionGames).subscribe((games) => {
     console.log(games);
-    this.filteredGames = games;
+    if (games !== null) {
+      this.divisionGames = games;
+    }
+    // if (games !== null) {
+    //   this.store.dispatch(new adminActions.SetFilteredGames(games));
+    // }
     // this.store.dispatch(new adminActions.LoadTeamGames);
+  });
+
+  this.store.select(fromAdmin.getTeamGames).subscribe((games) => {
+    console.log(games);
+    if (games !== null) {
+      this.teamGames = games;
+      this.store.dispatch(new adminActions.SetFilteredGames(games));
+    }
   });
 
   }

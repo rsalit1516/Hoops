@@ -29,38 +29,46 @@ export class ContentEffects {
     private store: Store<fromContent.State>
   ) {}
 
+  public loadContent$ = this.loadContent();
+  public loadActiveContent$ = this.loadActiveContent();
+  public loadAllContent$ = this.loadAllContent();
+
   // tslint:disable-next-line:member-ordering
-  loadContent$: Observable<Action> = createEffect(() => this.actions$.pipe(
-    ofType(contentActions.ContentActionTypes.Load),
-    mergeMap(action =>
-      this.contentService.getContents().pipe(
-        map(content => new contentActions.LoadSuccess(content)),
-        // tap(content => console.log(content)),
-        catchError(err => of(new contentActions.LoadFail(err)))
+  private loadContent() {
+    return createEffect(() => this.actions$.pipe(
+      ofType(contentActions.ContentActionTypes.Load),
+      mergeMap(action =>
+        this.contentService.getContents().pipe(
+          map(content => new contentActions.LoadSuccess(content)),
+          // tap(content => console.log(content)),
+          catchError(err => of(new contentActions.LoadFail(err)))
+        )
       )
-    )
-  ));
+    ));
+  }
 
-
-  loadActiveContent$: Observable<Action> = createEffect(() => this.actions$.pipe(
-    ofType(contentActions.ContentActionTypes.SetActiveContent),
-    switchMap(action =>
-      this.contentService.getActiveContents().pipe(
-        map(content => new contentActions.SetActiveContentSuccess(content)),
-        tap(response => console.log(response)),
-        catchError(err => of(new contentActions.SetActiveContentFail(err)))
+  private loadActiveContent() {
+    return createEffect(() => this.actions$.pipe(
+      ofType(contentActions.ContentActionTypes.SetActiveContent),
+      switchMap(action =>
+        this.contentService.getActiveContents().pipe(
+          map(content => new contentActions.SetActiveContentSuccess(content)),
+          tap(response => console.log(response)),
+          catchError(err => of(new contentActions.SetActiveContentFail(err)))
+        )
       )
-    )
-  ));
-
-  loadAllContent$: Observable<Action> = createEffect(() => this.actions$.pipe(
-    ofType(contentActions.ContentActionTypes.SetAllContent),
-    switchMap(action =>
-      this.contentService.getAllContents().pipe(
-        map(content => new contentActions.SetAllContentSuccess(content)),
-        tap(response => console.log(response)),
-        catchError(err => of(new contentActions.SetAllContentFail(err)))
+    ));
+  }
+  private loadAllContent() {
+    return createEffect(() => this.actions$.pipe(
+      ofType(contentActions.ContentActionTypes.SetAllContent),
+      switchMap(action =>
+        this.contentService.getAllContents().pipe(
+          map(content => new contentActions.SetAllContentSuccess(content)),
+          tap(response => console.log(response)),
+          catchError(err => of(new contentActions.SetAllContentFail(err)))
+        )
       )
-    )
-  ));
+    ));
+  }
 }

@@ -69,7 +69,11 @@ export const getGameType = createSelector(
   getAdminFeatureState,
   state => state.gameType
 );
-export const getTeamsGames = createSelector(
+export const getDivisionGames = createSelector(
   getAdminFeatureState,
-  state => state.filteredGames
+  state => state.divisionGames
+);
+export const getTeamGames = createSelector(
+  getAdminFeatureState,
+  state => state.teamGames
 );

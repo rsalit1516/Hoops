@@ -4,15 +4,15 @@ import { Team } from '@app/domain/team';
 import { select, Store } from '@ngrx/store';
 import { from, Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import * as fromAdmin from '../../../state';
-import * as adminActions from '../../../state/admin.actions';
+import * as fromAdmin from '../../state';
+import * as adminActions from '../../state/admin.actions';
 
 @Component({
   selector: 'admin-game-detail',
   templateUrl: './admin-game-detail.component.html',
   styleUrls: [
     './admin-game-detail.component.scss',
-    '../../../admin.component.scss',
+    '../../admin.component.scss',
   ],
 })
 export class AdminGameDetailComponent implements OnInit {

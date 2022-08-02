@@ -1,5 +1,12 @@
-@use '../../../../content/_variables';
+@use '../../../../content/_variables' as v;
 
 th.mat-header-cell {
   padding-right: 12px;
+}
+.table-wrapper {
+  padding-top: 12px;
+}
+th {
+  background-color: v.$brand-color;
+  color: v.$admin-font-color !important;
 }
