@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { MatDialog } from '@angular/material/dialog';
 import { MediaObserver } from '@angular/flex-layout';
@@ -16,6 +16,7 @@ import { Observable } from 'rxjs';
   ],
 })
 export class AdminGamesListComponent implements OnInit {
+  @Input() showScores: boolean = false;
   dataSource!: MatTableDataSource<Game>;
   games!: Game[];
   games$: Observable<Game[]> | undefined;
@@ -56,19 +57,31 @@ export class AdminGamesListComponent implements OnInit {
     this.setupTable();
     this.store.select(fromAdmin.getFilteredGames).subscribe((games) => {
       console.log(games);
+      this.games = games;
       this.dataSource = new MatTableDataSource<Game>(games);
     });
   }
+
   setupTable() {
-    this.displayedColumns = [
-      'gameDate',
-      'gameTime',
-      'locationName',
-      'homeTeamName',
-      'visitingTeamName',
-      'homeTeamScore',
-      'visitingTeamScore',
-    ];
+    if (this.showScores) {
+      this.displayedColumns = [
+        'gameDate',
+        'gameTime',
+        'locationName',
+        'homeTeamName',
+        'visitingTeamName',
+        'homeTeamScore',
+        'visitingTeamScore',
+      ];
+    } else {
+      this.displayedColumns = [
+        'gameDate',
+        'gameTime',
+        'locationName',
+        'homeTeamName',
+        'visitingTeamName',
+      ];
+    }
     if (this.currentScreenWidth === 'xs') {
       // only display internalId on larger screens
       //this.displayedColumns.shift(); // remove 'internalId'
@@ -87,5 +100,8 @@ export class AdminGamesListComponent implements OnInit {
   selectRow(row: any) {
     console.log(row);
     this.store.dispatch(new adminActions.SetSelectedGame(row));
+  }
+  dataExists(): boolean {
+    return this.games.length > 0;
   }
 }

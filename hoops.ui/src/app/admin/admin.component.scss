@@ -3,48 +3,56 @@
 .mat-sidenav {
   color: white;
 }
+
 .mat-list-item-content {
   color: white;
   font-size: 1.1em;
 }
+
 .mat-toolbar {
   background-color: transparent;
   padding-bottom: 20px;
- }
+}
 
 .main {
   padding: 10px 10px 0 10px;
 }
-input, textarea {
+
+input,
+textarea {
   font-size: v.$table-font-size;
   padding-top: 12px;
-  padding-bottom:12px;
+  padding-bottom: 12px;
   padding-left: 12px;
   background-color: lighten(v.$admin-background-color, 5%);
   color: v.$field-label;
 }
 
-.mat-form-field.mat-label,  input.mat-form-field-label {
+.mat-form-field.mat-label,
+input.mat-form-field-label {
   font-size: 1.1rem !important;
   color: v.$field-label;
 }
 
-.mat-form-field + .mat-form-field.mat-form-field-label {
+.mat-form-field+.mat-form-field.mat-form-field-label {
   color: v.$field-label;
   font-size: 1.4rem;
 }
 
 .mat-input {
-  color: v.$field-label !important;
+  color: v.$field-label  !important;
   background-color: lighten(v.$admin-background-color, 5%);
 }
+
 .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
-  color: v.$field-label !important;
+  color: v.$field-label  !important;
 }
+
 label {
   font-size: 1.2rem;
   color: v.$field-label;
 }
+
 .mat-label {
   color: v.$field-label;
 }
@@ -57,6 +65,7 @@ fieldset {
   padding-bottom: 16px;
   color: v.$field-label;
 }
+
 button {
   margin-right: 12px;
 }
@@ -67,11 +76,12 @@ nav.sidebar {
   border: 0;
   height: 100%;
 }
-.navbar-default > li a {
+
+.navbar-default>li a {
   color: white;
 }
 
-.navbar-nav > li > a {
+.navbar-nav>li>a {
   padding-top: 2px;
   padding-bottom: 2px;
   color: white;
@@ -87,14 +97,16 @@ li.subheading {
   background-color: gray;
 }
 
-li > th {
+li>th {
   background-color: black;
   color: white;
 }
+
 tbody {
   color: white;
   background-color: v.$table-body-color;
 }
+
 td {
   color: white;
 }
@@ -110,17 +122,19 @@ table .table .table-responsive .table-condensed {
     margin-left: 40px;
     float: right;
   }
-  .navbar-nav > li > a {
+
+  .navbar-nav>li>a {
     padding-top: 2px;
     padding-bottom: 2px;
     color: white;
   }
-  nav.sidebar:hover + .main {
+
+  nav.sidebar:hover+.main {
     margin-left: 200px;
   }
 
-  nav.sidebar.navbar.sidebar > .container .navbar-brand,
-  .navbar > .container-fluid .navbar-brand {
+  nav.sidebar.navbar.sidebar>.container .navbar-brand,
+  .navbar>.container-fluid .navbar-brand {
     margin-left: 0px;
   }
 
@@ -135,7 +149,7 @@ table .table .table-responsive .table-condensed {
     padding-right: 13px;
   }
 
-  nav.sidebar .navbar-nav > li {
+  nav.sidebar .navbar-nav>li {
     // border-bottom: 1px #e5e5e5 solid;
     padding-top: 2px;
     padding-bottom: 2px;
@@ -146,7 +160,7 @@ table .table .table-responsive .table-condensed {
     padding: 0 0px 0 0px;
   }
 
-  .navbar-inverse .navbar-nav .open .dropdown-menu > li > a {
+  .navbar-inverse .navbar-nav .open .dropdown-menu>li>a {
     color: #777;
   }
 
@@ -186,14 +200,15 @@ table .table .table-responsive .table-condensed {
   }
 }
 
-nav.sidebar .navbar-nav .open .dropdown-menu > li > a:hover,
-nav.sidebar .navbar-nav .open .dropdown-menu > li > a:focus {
+nav.sidebar .navbar-nav .open .dropdown-menu>li>a:hover,
+nav.sidebar .navbar-nav .open .dropdown-menu>li>a:focus {
   color: #ccc;
 }
 
 nav:hover .forAnimate {
   opacity: 1;
 }
+
 section {
   padding-left: 15px;
 }
@@ -201,6 +216,7 @@ section {
 div {
   color: v.$brand-color;
 }
+
 .sectionTitle {
   font-size: 1.2em;
   font-weight: 700px;
@@ -210,13 +226,17 @@ div {
   padding-bottom: 12px;
   background-color: v.$card-background-color;
 }
+
 .content-wrapper {
   margin-right: 12px;
 }
+
 .mat-table {
-  background-color: transparent;
   font-size: 1em;
   width: 100%;
+  border-spacing: 0 12px !important;
+  border-collapse: separate;
+  background-color: transparent;
 }
 
 tbody {
@@ -226,31 +246,38 @@ tbody {
 table .table .table-responsive .table-condensed {
   border-radius: 5px;
 }
+
 div {
   color: v.$brand-color;
 }
+
 .mat-card {
-  background-color: v.$admin-card-background-color
+  background-color: v.$admin-card-background-color;
 }
-.mat-card-title, h2 {
+
+.mat-card-title,
+h2 {
   color: v.$field-label;
   font-size: 1.5em;
   padding-bottom: 6px;
   padding-left: 12px;
 }
+
 .mat-raised-button .mat-button {
   background-color: v.$brand-color;
   color: white;
 }
+
 .mat-cell,
 .mat-header-cell {
   font-size: 1.1em;
 }
-.mat-cell {
-  // display:block; // flex prevents padding from working
-  // min-height:auto; // overrides the 'inherit' that set the min height of the row
-  padding: 12px 8px 12px 4px;
-}
+
+// .mat-cell {
+//   // display:block; // flex prevents padding from working
+//   // min-height:auto; // overrides the 'inherit' that set the min height of the row
+//   padding: 12px 8px 12px 4px;
+// }
 
 .mat-select-value {
   color: v.$admin-font-color;
@@ -265,6 +292,7 @@ div {
 .ng-star-inserted {
   color: v.$basketball-color;
 }
+
 .mat-checkbox {
   background-color: v.$card-background-color;
   color: v.$admin-font-color;
@@ -272,37 +300,85 @@ div {
 
 .mat-raised-button {
   background-color: v.$brand-color;
-  color:white;
+  color: white;
 }
 
 .form-control {
   background-color: v.$admin-table-background-color;
   color: v.$admin-font-color;
   border-color: v.$admin-table-background-color-border;
-  font-size:1.2em;
+  font-size: 1.2em;
+}
+.table-wrapper {
+  background-color: v.$table-body-color;
 }
 .row-is-clicked {
   font-weight: bold;
 }
-
+th.mat-row {
+  background-color: transparent;
+}
+th.mat-header-cell {
+  background-color: transparent;
+}
 tr.mat-header-row {
-  height:24px;
+  height: 24px;
   border-bottom: .5px solid gray;
   font-size: 1.1em;
   font-weight: 800;
 }
+
 tr.mat-row {
-  height:24px;
+  // height: 24px;
   font-size: .9em;
   font-weight: 500;
-  padding-bottom: 8px;
-  padding-top: 8px;
-  margin-bottom:40px;
+  padding-bottom: 4px;
+  padding-top: 4px;
+
 }
+tr.mat-row:hover {
+  box-shadow: 4px 4px 4px -2px darken(v.$admin-background-color, 20%);
+  // background-color: darken(v.$table-body-color, 10%);
+}
+
+td.mat-cell {
+  padding: 8px 0 8px 0;
+  background-color: lighten(v.$admin-background-color, 10%);
+}
+.no-data {
+  color: v.$admin-font-color;
+  font-size: 1.1rem;
+}
+// td.mat-cell:hover {
+//   background-color: lighten(v.$admin-background-color, 30%);
+// }
+
+td.mat-cell:first-child {
+  // border-left: .5px solid v.$brand-color;
+  border-bottom-left-radius: 10px;
+  border-top-left-radius: 10px;
+  padding-left: 10px;
+  margin-left: 10px;
+}
+td.mat-cell:last-child {
+  // border-right: .5px solid v.$brand-color;
+  border-bottom-right-radius: 10px;
+  border-top-right-radius: 10px;
+  margin-right: 10px;
+}
+
+table {
+  border-spacing: 0 12px !important;
+  border-collapse: separate;
+  width: 100%;
+  background-color:  transparent;
+}
+
 .mat-hint {
   font-size: v.$admin-input-hint-font-size;
   color: v.$admin-input-hint-color;
 }
+
 .mat-datepicker {
   color: v.$admin-input-hint-color;
 }

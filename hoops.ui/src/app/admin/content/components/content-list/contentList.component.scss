@@ -1,14 +1,8 @@
 @import '../../../../../content/_variables';
 
-.panel .panel-default .panel-heading {
-  background-color: black;
-}
-.mat-table {
-  background-color: black;
-  font-size: 1em;
-}
+
 th {
-  background-color: $card-background-color;
+  // background-color: $card-background-color;
   color: white;
   font-weight: 600;
   padding-top: 6px;
@@ -28,8 +22,8 @@ div {
 .mat-header-cell {
   font-size: 1.1em;
 }
-.mat-cell {
-  // display:block; // flex prevents padding from working
-  // min-height:auto; // overrides the 'inherit' that set the min height of the row
-  padding: 12px 8px 12px 4px;
-}
+// .mat-cell {
+//   // display:block; // flex prevents padding from working
+//   // min-height:auto; // overrides the 'inherit' that set the min height of the row
+//   padding: 12px 8px 12px 4px;
+// }
