@@ -15,7 +15,11 @@ import { ColorService } from '@app/admin/admin-shared/services/color.service';
 export class AdminShellComponent implements OnInit {
   events: string[] = [];
   // opened: boolean;
-
+  showDirectors = false;
+  showHouseholds = false;
+  showPeople = false;
+  showColors = false;
+  showUsers = false;
   shouldRun = true;
 
   constructor(private store: Store<fromAdmin.State>, private colorService: ColorService) {}

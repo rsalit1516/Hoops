@@ -11,34 +11,41 @@
               ></span>
             </a>
             <mat-divider></mat-divider>
-            <!-- <a
+            <a
               mat-list-item
+            *ngIf="showDirectors"
               routerLink="/admin/director"
               routerLinkActive="active"
               >Directors</a
-            > -->
-            <!-- <a
+            >
+            <a
               mat-list-item
+              *ngIf = "showHouseholds"
               routerLink="/admin/households"
               routerLinkActive="active"
               >Households</a
-            > -->
-            <!-- <a
+            >
+            <a
               mat-list-item
+              *ngIf = "showPeople"
               routerLink="/admin/people"
               routerLinkActive="active"
               >People</a
-            > -->
-            <!-- <a
+            >
+            <a
               mat-list-item
+              *ngIf = "showColors"
               routerLink="/admin/colors"
               routerLinkActive="active"
               >Uniform Colors</a
-            > -->
-            <!-- <a mat-list-item routerLink="/admin/users" routerLinkActive="active"
+            >
+            <a mat-list-item
+            *ngIf = "showUsers"
+            routerLink="/admin/users" routerLinkActive="active"
               >Users</a
             >
-            <mat-divider></mat-divider> -->
+            <mat-divider *ngIf="showDirectors || showHouseholds || showPeople || showColors || showUsers">
+            </mat-divider>
             <a mat-list-item routerLink="/admin/seasons" routerLinkActive="active">Seasons</a>
             <a mat-list-item routerLink="/admin/division">Divisions</a>
             <a mat-list-item routerLink="/admin/games">Games</a>

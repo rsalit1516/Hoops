@@ -10,7 +10,8 @@
 
 }
 .mat-table {
-  background-color: black;
+  // background-color: black;
+  background-color: $background-color;
   color: $color;
   border-radius: 10px;
   width: 100%;

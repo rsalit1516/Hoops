@@ -5,6 +5,7 @@
   background: v.$background-color;
   color: v.$font-color-text;
 }
+
 .mat-select-value {
   color: v.$font-color-text;
 }
@@ -27,28 +28,39 @@
   background-color: v.$admin-card-background-color;
 }
 
-.mat-form-field-empty.mat-form-field-label, .mat-form-field-label {
+.mat-form-field-empty.mat-form-field-label,
+.mat-form-field-label {
   font-size: 1.3rem !important;
-  color: v.$field-label !important;
+  color: v.$field-label  !important;
 }
+
 .mat-datepicker-toggle {
-  color: v.$admin-input-hint-color !important;
+  color: v.$admin-input-hint-color  !important;
 }
+
 .mat-datepicker-toggle-default-icon {
   width: 1rem;
 }
+
 .mat-checkbox-background {
-  background-color: v.$brand-color !important;
+  background-color: v.$brand-color  !important;
 }
-.mat-list-item.active{
+
+.mat-list-item.active {
   color: white;
-  }
+}
+
+.mat-table {
+  background-color: v.$background-color;
+}
+
 th.mat-header-cell {
-  background-color: v.$brand-color;
+  background-color: transaprent;
   color: v.$admin-font-color;
   padding-top: 4px;
   padding-bottom: 4px;
 }
+
 tr.mat-header-row {
   font-weight: 600 !important;
   font-size: 1.2em !important;

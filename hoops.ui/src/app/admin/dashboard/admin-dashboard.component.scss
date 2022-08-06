@@ -1,12 +1,12 @@
-@import '../../../content/_variables';
+@use '../../../content/_variables' as v;
 
 .dashboard-card {
   min-height: 100px;
 }
 
 .card {
-  background-color: $table-body-color;
-  color: $table-font-color;
+  background-color: v.$table-body-color;
+  color: v.$table-font-color;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
   padding: 4px 8px 4px 8px;
   border-radius: 10px;
@@ -14,23 +14,36 @@
 
 .mat-card-subtitle {
   font-size: 1em;
-  color: $brand-color;
+  color: v.$brand-color;
   font-weight: 700;
 }
 
 .mat-card {
-  color: $table-font-color;
+  color: v.$table-font-color;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
-  padding: 4px 8px 4px 8px;
+  padding: 12px 8px 4px 8px;
   border-radius: 10px;
   margin-bottom: 20px;
 }
 
 .mat-list-item {
-  color: $brand-color;
+  color: v.$brand-color;
   padding-top: 4px;
   padding-bottom: 4px;
-  height: 32px;
+  height: 40px;
+  width: 90%;
+  background-color: lighten(v.$admin-background-color, 10%);
+  border-bottom-left-radius: 10px;
+  border-top-left-radius: 10px;
+  padding-left: 10px;
+  margin-left: 5%;
+  border-bottom-right-radius: 10px;
+  border-top-right-radius: 10px;
+  margin-right: 5%;
+  margin-bottom: 8px;
+}
+.mat-list-item:hover {
+  box-shadow: 4px 4px 6px -2px darken(v.$admin-background-color, 10%);
 }
 
 .mat-list-item.active a:active {
@@ -48,7 +61,7 @@
 .dashboard-header {
   font-size: 1.4rem;
   text-align: center;
-  color: $admin-font-color;
+  color: v.$admin-font-color;
   padding-top: 20px;
   padding-bottom: 20px;
 }
@@ -56,7 +69,7 @@
 .body {
   font-size: 1.1rem;
   text-align: center;
-  color: $admin-font-color;
+  color: v.$admin-font-color;
 }
 
 tbody {

@@ -234,7 +234,8 @@ div {
 .mat-table {
   font-size: 1em;
   width: 100%;
-  border-spacing: 0 12px !important;
+  display: table;
+  border-spacing: 0 8px !important;
   border-collapse: separate;
   background-color: transparent;
 }
@@ -253,6 +254,7 @@ div {
 
 .mat-card {
   background-color: v.$admin-card-background-color;
+  padding-top: 12px;
 }
 
 .mat-card-title,
@@ -270,14 +272,8 @@ h2 {
 
 .mat-cell,
 .mat-header-cell {
-  font-size: 1.1em;
+  font-size: 1.1rem;
 }
-
-// .mat-cell {
-//   // display:block; // flex prevents padding from working
-//   // min-height:auto; // overrides the 'inherit' that set the min height of the row
-//   padding: 12px 8px 12px 4px;
-// }
 
 .mat-select-value {
   color: v.$admin-font-color;
@@ -311,6 +307,8 @@ h2 {
 }
 .table-wrapper {
   background-color: v.$table-body-color;
+  padding: 12px;
+  border-radius: 5px;
 }
 .row-is-clicked {
   font-weight: bold;
@@ -319,6 +317,7 @@ th.mat-row {
   background-color: transparent;
 }
 th.mat-header-cell {
+  text-align: center !important;
   background-color: transparent;
 }
 tr.mat-header-row {
@@ -329,7 +328,7 @@ tr.mat-header-row {
 }
 
 tr.mat-row {
-  // height: 24px;
+  height: 36px;
   font-size: .9em;
   font-weight: 500;
   padding-bottom: 4px;
@@ -337,7 +336,7 @@ tr.mat-row {
 
 }
 tr.mat-row:hover {
-  box-shadow: 4px 4px 4px -2px darken(v.$admin-background-color, 20%);
+  box-shadow: 4px 4px 6px -2px darken(v.$admin-background-color, 10%);
   // background-color: darken(v.$table-body-color, 10%);
 }
 
@@ -368,7 +367,7 @@ td.mat-cell:last-child {
 }
 
 table {
-  border-spacing: 0 12px !important;
+  border-spacing: 0 8px !important;
   border-collapse: separate;
   width: 100%;
   background-color:  transparent;

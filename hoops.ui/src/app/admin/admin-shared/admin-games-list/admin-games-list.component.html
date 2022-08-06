@@ -1,6 +1,6 @@
 <!-- <h2>{{title}}</h2> -->
 <form formName="gameForm">
-  <div id="panelGames" flexLayout="row">
+  <div id="panelGames" flexLayout="row" class="table-wrapper">
     <div>
       <div class="table-wrapper" *ngIf="dataSource.data.length > 0">
         <mat-table #table id="grdSchedule" [dataSource]="dataSource">
