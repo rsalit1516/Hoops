@@ -42,13 +42,17 @@
   margin-right: 5%;
   margin-bottom: 8px;
 }
+
 .mat-list-item:hover {
   box-shadow: 4px 4px 6px -2px darken(v.$admin-background-color, 10%);
+  font-weight: 800;
 }
 
-.mat-list-item.active a:active {
-  color: white;
-  background-color: purple;
+.mat-list-iten:active, .mat-list-iten:focus {
+  box-shadow: 4px 4px 6px -2px darken(v.$admin-background-color, 10%);
+}
+.mat-list-text:active {
+  font-weight: 800;
 }
 
 .heading {

@@ -50,15 +50,21 @@ h2 {
   font-variant: small-caps;
   font-size: $heading-font-size;
   font-weight: 700;
-  text-align: right;
-  padding-top: 12px;
+  text-align: left;
+  padding-top: 8px;
+  padding-bottom: 4px;
   padding-right: 20px;
 }
-
-
+.seasonDescription {
+  height: 30px;
+  padding-left: 20px;
+}
 .top-menu-wrapper {
-  margin-bottom: 2vh;
-  padding-bottom: 2vh;
+  margin-bottom: 8px;
+  padding-bottom: 24px;
   border-bottom: 2px solid $brand-color;
   font-size: $wrapper-font-size;
+}
+.mat-form-field-wrapper {
+  height:40px;
 }

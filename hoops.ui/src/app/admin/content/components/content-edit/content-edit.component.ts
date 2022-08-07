@@ -1,5 +1,16 @@
-import { Component, OnInit, ViewChildren, ElementRef, Inject } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators, FormControlName } from '@angular/forms';
+import {
+  Component,
+  OnInit,
+  ViewChildren,
+  ElementRef,
+  Inject,
+} from '@angular/core';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+  FormControlName,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Content } from '../../../../domain/content';
@@ -13,7 +24,7 @@ import { WebContentType } from 'app/domain/webContentType';
 @Component({
   selector: 'csbc-content-edit',
   templateUrl: './content-edit.component.html',
-  styleUrls: ['./content-edit.component.scss', '../../../admin.component.scss']
+  styleUrls: ['./content-edit.component.scss', '../../../admin.component.scss'],
 })
 export class ContentEditComponent implements OnInit {
   @ViewChildren(FormControlName, { read: ElementRef })
@@ -32,16 +43,16 @@ export class ContentEditComponent implements OnInit {
   contentTypes: WebContentType[] = [
     {
       webContentTypeId: 1,
-      webContentTypeDescription: 'Season Info'
+      webContentTypeDescription: 'Season Info',
     },
     {
       webContentTypeId: 2,
-      webContentTypeDescription: 'Events'
+      webContentTypeDescription: 'Events',
     },
     {
       webContentTypeId: 3,
-      webContentTypeDescription: 'Meeting Notice'
-    }
+      webContentTypeDescription: 'Meeting Notice',
+    },
   ];
   selected!: WebContentType;
 
@@ -50,13 +61,20 @@ export class ContentEditComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<fromContent.State>,
-    // private http: Http,
     private contentService: ContentService
   ) {}
 
+
   ngOnInit(): void {
     this.contentForm = this.fb.group({
-      title: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
+      title: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(50),
+        ],
+      ],
       subTitle: ['', [Validators.maxLength(50)]],
       body: '',
       location: '',
@@ -64,7 +82,7 @@ export class ContentEditComponent implements OnInit {
       webContentId: '',
       webContentTypeControl: null,
       contentSequence: 1,
-      expirationDate: [new Date(), Validators.required ]
+      expirationDate: [new Date(), Validators.required],
     });
     this.pageTitle = 'Edit Web Content Messages';
     this.hideId = true;
@@ -85,7 +103,7 @@ export class ContentEditComponent implements OnInit {
   getContent(): void {
     this.store
       .pipe(select(fromContent.getSelectedContent))
-      .subscribe(content => {
+      .subscribe((content) => {
         this.selectedContent = content;
         this.onContentRetrieved(content);
       });
@@ -111,7 +129,7 @@ export class ContentEditComponent implements OnInit {
       location: content.location,
       expirationDate: content.expirationDate,
       webContentId: content.webContentId,
-      webContentTypeControl: content.webContentType
+      webContentTypeControl: content.webContentType,
     });
     this.selected = content.webContentType;
     console.log(this.selected);
