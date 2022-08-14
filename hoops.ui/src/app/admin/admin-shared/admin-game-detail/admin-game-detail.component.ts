@@ -27,6 +27,7 @@ export class AdminGameDetailComponent implements OnInit {
   homeTeam: Team | undefined;
   divisionTeams$: Observable<Team[]>;
   visitorComponent: UntypedFormControl | null | undefined;
+  gameTimeFormatted: string | undefined;
 
   constructor(private store: Store<fromAdmin.State>, private fb: UntypedFormBuilder) {
     this.divisionTeams$ = this.store.select(fromAdmin.getDivisionTeams);
@@ -36,6 +37,9 @@ export class AdminGameDetailComponent implements OnInit {
     this.visitorComponent = this.gameEditForm.get('visitorTeam') as UntypedFormControl;
     this.store.select(fromAdmin.getSelectedGame).subscribe((game) => {
       console.log(game);
+      // const gametime = new Date(game.gameTime);
+      this.gameTimeFormatted = game?.gameTime?.getHours + ':' + game?.gameTime?.getMinutes();
+      console.log(this.gameTimeFormatted);
       this.getTeam(game?.homeTeamId as number).subscribe(team => {
         // console.log(team);
         this.homeTeam = team;

@@ -56,7 +56,7 @@ export class AdminGamesListComponent implements OnInit {
   ngOnInit(): void {
     this.setupTable();
     this.store.select(fromAdmin.getFilteredGames).subscribe((games) => {
-      console.log(games);
+      // console.log(games);
       this.games = games;
       this.dataSource = new MatTableDataSource<Game>(games);
     });

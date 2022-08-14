@@ -58,7 +58,7 @@ label {
 }
 
 fieldset {
-  border-radius: 10px;
+  border-radius: 0px;
   padding-left: 20px;
   padding-right: 20px;
   padding-top: 16px;
@@ -235,7 +235,7 @@ div {
   font-size: 1em;
   width: 100%;
   display: table;
-  border-spacing: 0 8px !important;
+  border-spacing: 0 2px !important;
   border-collapse: separate;
   background-color: transparent;
 }
@@ -354,20 +354,20 @@ td.mat-cell {
 
 td.mat-cell:first-child {
   // border-left: .5px solid v.$brand-color;
-  border-bottom-left-radius: 10px;
-  border-top-left-radius: 10px;
+  // border-bottom-left-radius: 10px;
+  // border-top-left-radius: 10px;
   padding-left: 10px;
   margin-left: 10px;
 }
 td.mat-cell:last-child {
   // border-right: .5px solid v.$brand-color;
-  border-bottom-right-radius: 10px;
-  border-top-right-radius: 10px;
+  // border-bottom-right-radius: 10px;
+  // border-top-right-radius: 10px;
   margin-right: 10px;
 }
 
 table {
-  border-spacing: 0 8px !important;
+  border-spacing: 0 1px !important;
   border-collapse: separate;
   width: 100%;
   background-color:  transparent;
