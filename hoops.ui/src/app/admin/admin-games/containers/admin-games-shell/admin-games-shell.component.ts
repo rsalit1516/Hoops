@@ -44,13 +44,18 @@ export class AdminGamesShellComponent implements OnInit {
       }
     });
     this.store.select(fromAdmin.getGameType).subscribe((gameType) => {
-      this.showPlayoffs = (gameType == 'Playoffs');
-      this.showRegularSeason = (gameType == 'Regular Season');
+      console.log(gameType);
+      console.log((gameType === 'Regular Season'));
+      this.showPlayoffs = (gameType === 'Playoffs');
+      this.showRegularSeason = (gameType === 'Regular Season');
       if (gameType !== undefined) {
         console.log('Calling filtered games');
         this.store.dispatch(new adminActions.LoadDivisionGames());
         this.store.dispatch(new adminActions.LoadDivisionTeams());
       }
+    });
+    this.store.select(fromAdmin.getDivisionGames).subscribe((games) => {
+      this.store.dispatch(new adminActions.SetFilteredGames(games as Game[]));
     });
     this.store.select(fromAdmin.getFilteredGames).subscribe((games) => {
       this.games = games;

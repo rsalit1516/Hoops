@@ -38,7 +38,7 @@ export class AdminGameDetailComponent implements OnInit {
     this.store.select(fromAdmin.getSelectedGame).subscribe((game) => {
       console.log(game);
       // const gametime = new Date(game.gameTime);
-      this.gameTimeFormatted = game?.gameTime?.getHours + ':' + game?.gameTime?.getMinutes();
+      this.gameTimeFormatted = game?.gameTime?.getHours + ':' + game?.gameTime?.getMinutes;
       console.log(this.gameTimeFormatted);
       this.getTeam(game?.homeTeamId as number).subscribe(team => {
         // console.log(team);
