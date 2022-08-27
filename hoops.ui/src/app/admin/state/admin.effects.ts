@@ -95,7 +95,6 @@ export class AdminEffects {
     concatMap(action =>
       of(action).pipe(
         withLatestFrom(this.store.pipe(select(fromAdmin.getSelectedSeason))),
-        // tap(divisions => console.log(divisions))
       )
     ),
     tap(([action, t]) => {
@@ -111,7 +110,6 @@ export class AdminEffects {
         // tap(data => console.log('All admin games: ' + JSON.stringify(data))),
         shareReplay(1),
         map(games => new adminActions.LoadGamesSuccess(games)),
-        // tap(games => console.log(games)),
         catchError(err => of(new adminActions.LoadGamesFail(err)))
       )
     )
@@ -122,7 +120,6 @@ export class AdminEffects {
       mergeMap(action =>
         this.seasonService.currentSeason$.pipe(
           map(season => new adminActions.SetSelectedSeason(season as Season)),
-          // tap(data => console.log(data)),
           catchError(err => of(new adminActions.LoadDivisionsFail(err)))
         )
       )
@@ -145,7 +142,6 @@ export class AdminEffects {
       switchMap((action) =>
         this.gameService.filterGamesByDivision(this.divisionId).pipe(
           map((games) => new adminActions.LoadDivisionGamesSuccess(games)),
-          tap(response => console.log(response)),
           catchError((err) => of(new adminActions.LoadDivisionGamesFail(err)))
         )
       )

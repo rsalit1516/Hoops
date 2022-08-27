@@ -199,7 +199,7 @@ namespace Hoops.Data
                         counter++;
                         await TeamRepo.InsertAsync(new Team
                         {
-                            CompanyId = 1,
+                            // CompanyId = 1,
                             SeasonId = season.SeasonId,
                             DivisionId = division.DivisionId,
                             TeamNumber = i.ToString(),

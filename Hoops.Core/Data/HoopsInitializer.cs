@@ -562,7 +562,7 @@ namespace Hoops.Core.Data
                             DivisionId = division.DivisionId,
                             SeasonId = season.SeasonId,
                             TeamName = "T-" + i.ToString() + "-" + division.DivisionDescription.Trim(),
-                            CompanyId = CompanyId,
+                            // CompanyId = CompanyId,
                             TeamNumber = i.ToString(),
                             TeamColor = ColorNames[i],
                             TeamColorId = color.ColorId
@@ -660,7 +660,7 @@ namespace Hoops.Core.Data
             using (var db = new hoopsContext())
             {
                 var rep = new TeamRepository(db);
-                foreach (Team team in rep.GetAll(CompanyId))
+                foreach (Team team in rep.GetAll())
                 {
                     rep.Delete(team);
                 }

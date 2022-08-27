@@ -98,7 +98,7 @@ namespace Hoops.Controllers
             //     var div = _context.Divisions.FirstOrDefault(d => d.DivisionId == team.DivisionId);
             //     team.SeasonId = div.SeasonId;
             // }
-            team.CompanyId = 1;
+            // team.CompanyId = 1;
             repository.Insert(team);
             await repository.SaveChangesAsync();
 

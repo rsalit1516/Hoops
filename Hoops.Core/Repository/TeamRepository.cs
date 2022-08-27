@@ -24,10 +24,10 @@ namespace Hoops.Infrastructure.Repository
         }
         #region IRepository<T> Members
 
-        public IEnumerable<Team> GetAll(int companyId)
-        {
-            return context.Set<Team>().Where(t => t.CompanyId == companyId);
-        }
+        // public IEnumerable<Team> GetAll(int companyId)
+        // {
+        //     return context.Set<Team>().Where(t => t.CompanyId == companyId);
+        // }
 
 
         #endregion
@@ -65,7 +65,17 @@ namespace Hoops.Infrastructure.Repository
             var teams = new List<Team>();
             foreach (Division division in divisions)
             {
-                var teamDiv = context.Teams.Where(team => team.DivisionId == division.DivisionId);
+                var teamDiv = context.Teams
+                .Where(team => team.DivisionId == division.DivisionId);
+                var test = from team in teamDiv 
+                select new Team() { SeasonId = team.SeasonId,
+                DivisionId = team.DivisionId,
+                TeamName = team.TeamName,
+                TeamColor = team.TeamColor,
+                TeamColorId = team.TeamColorId,
+                TeamNumber = team.TeamNumber 
+                };
+
                 foreach (Team team in teamDiv)
                 {
                     teams.Add(ConvertRecordForTeamNumber(team, colors));

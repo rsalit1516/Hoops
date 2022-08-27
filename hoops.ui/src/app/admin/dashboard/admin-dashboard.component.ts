@@ -73,7 +73,6 @@ export class AdminDashboardComponent implements OnInit {
         this.divisionTeams = teams;
         this.teamCount = (teams === null ? 0 : teams.length);
       });
-      console.log(division);
       this.selectedDivision = division;
       this.store.dispatch(new adminActions.LoadDivisionGames);
       // this.store.dispatch(new adminActions.SetFilteredGames()
@@ -85,7 +84,6 @@ export class AdminDashboardComponent implements OnInit {
     this.store.dispatch(new adminActions.LoadTeamGames);
   });
   this.store.select(fromAdmin.getDivisionGames).subscribe((games) => {
-    console.log(games);
     if (games !== null) {
       this.divisionGames = games;
     }

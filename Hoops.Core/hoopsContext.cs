@@ -1038,7 +1038,7 @@ public partial class hoopsContext : DbContext
 
             entity.Property(e => e.CoachId).HasColumnName("CoachID");
 
-            entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
+            // entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
 
             entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime").HasDefaultValue(DateTime.Now);
 

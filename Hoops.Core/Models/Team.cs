@@ -13,8 +13,8 @@ namespace Hoops.Core.Models
         public int TeamId { get; set; }
         [Column("DivisionID")]
         public int DivisionId { get; set; }
-        [Column("CompanyID")]
-        public Nullable<int> CompanyId { get; set; }
+        // [Column("CompanyID")]
+        // public Nullable<int> CompanyId { get; set; }
         [Column("SeasonID")]
         public Nullable<int> SeasonId { get; set; }
         [Column("CoachID")]

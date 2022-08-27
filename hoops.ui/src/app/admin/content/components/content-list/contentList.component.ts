@@ -24,7 +24,7 @@ export class ContentListComponent implements OnInit {
   errorMessage: string|undefined;
   pageTitle: string|undefined;
   public dialog!: MatDialog;
-  displayedColumns = ['title', 'expirationDate', 'dateAndTime', 'actions'];
+  displayedColumns = ['title', 'expirationDate', 'dateAndTime', 'location'];
   dataSource!: MatTableDataSource<WebContent>;
   constructor(
     private _contentService: ContentService,

@@ -24,14 +24,15 @@ export class GameService {
   filterGamesByDivision(div: number): Observable<Game[]> {
     let games: Game[] = [];
     let sortedDate: Game[] = [];
-    console.log(div);
     this.store.pipe(select(fromGames.getSeasonGames)).subscribe((allGames) => {
       this.allGames = allGames;
       this.setCanEdit(div);
-      if (allGames) {
+      if (allGames && div !== 0) {
+        console.log(div);
         for (let i = 0; i < this.allGames.length; i++) {
           if (this.allGames[i].divisionId === div) {
-            let game = allGames[i];
+            let game = allGames[ i ];
+            console.log(game);
             games.push(game);
           }
         }
@@ -56,7 +57,8 @@ export class GameService {
       if (allGames) {
         for (let i = 0; i < this.allGames.length; i++) {
           if (this.allGames[i].homeTeamId === team || this.allGames[i].visitingTeamId === team) {
-            let game = allGames[i];
+            let game = allGames[ i ];
+            console.log(game);
             games.push(game);
           }
         }

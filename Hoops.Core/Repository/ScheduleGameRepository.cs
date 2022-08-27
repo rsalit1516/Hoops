@@ -403,10 +403,10 @@ namespace Hoops.Infrastructure.Repository
                 var afterGettingTeamNames = DateTime.Now;
                 // _logger.LogInformation("ScheduledGames: GetGames - after getting team Names" + afterGettingTeamNames + ", " + (afterBasicQuery - afterGettingTeamNames));
                 _logger.LogInformation("Retrieved " + games.Count.ToString() + " season games");
-                var playoffGames = GetSeasonPlayoffGames(seasonId);
-                _logger.LogInformation("Retrieved " + playoffGames.Count.ToString() + " playoff games");
-                games.AddRange(playoffGames);
-                _logger.LogInformation("Retrieved " + games.Count.ToString() + " total season games");
+                // var playoffGames = GetSeasonPlayoffGames(seasonId);
+                // _logger.LogInformation("Retrieved " + playoffGames.Count.ToString() + " playoff games");
+                // games.AddRange(playoffGames);
+                // _logger.LogInformation("Retrieved " + games.Count.ToString() + " total season games");
                 return games;
             }
         }

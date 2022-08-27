@@ -10,7 +10,7 @@ namespace Hoops.Core.ViewModel
     {
         [Key]
         public int TeamID { get; set; }
-        public Nullable<int> CompanyID { get; set; }
+        // public Nullable<int> CompanyID { get; set; }
         public int SeasonID { get; set; }
         public int DivisionId { get; set; }
         public Nullable<int> CoachID { get; set; }
@@ -30,7 +30,7 @@ namespace Hoops.Core.ViewModel
             var newTeam = new vmTeam
             {
                 TeamID = team.TeamId,
-                CompanyID = team.CompanyId,
+                // CompanyID = team.CompanyId,
                 SeasonID = (int)team.SeasonId,
                 DivisionId = (int)team.DivisionId,
                 CoachID = team.CoachId,

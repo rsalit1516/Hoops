@@ -58,7 +58,6 @@ export class HomeEffects {
       // const id = currentSeason?.seasonId;
         return this.http.get<Sponsor[]>(this.dataService.getCurrentSponsors + currentSeason?.seasonId).pipe(
           map(sponsors => new homeActions.LoadSponsorsSuccess(sponsors)),
-          tap(content => console.log(content)),
           catchError((err) => of(new homeActions.LoadSponsorsFail(err)))
         );
       }

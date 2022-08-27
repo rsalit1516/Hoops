@@ -7,7 +7,7 @@ namespace Hoops.Infrastructure.Interface
 {
     public interface ITeamRepository : IRepository<Team>
     {
-        IEnumerable<Team> GetAll(int companyId);
+        // IEnumerable<Team> GetAll(int companyId);
         IQueryable<Team> GetTeams(int divisionId);
         int GetNumberofDivisionTeams(int divisionId);
         bool DeleteById(int id);
