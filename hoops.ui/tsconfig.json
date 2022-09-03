@@ -46,7 +46,7 @@
   "exclude": [
     "./node_modules",
     "typings",
-    "e2e",
-    "**/*.spec.ts"
+    "e2e"
+    // "**/*.spec.ts"
   ]
 }

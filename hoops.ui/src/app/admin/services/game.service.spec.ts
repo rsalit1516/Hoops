@@ -13,4 +13,9 @@ describe('GameService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+
+  it('should return some games', () => {
+    expect(service.filterGamesByDivision(4148)).toBeTruthy();
+  });
+
 });
