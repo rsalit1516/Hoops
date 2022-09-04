@@ -2,6 +2,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
+ import { ContentService } from '@app/services/content.service';
 
 import { HomeComponent } from './home.component';
 

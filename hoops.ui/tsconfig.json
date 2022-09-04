@@ -20,6 +20,9 @@
       "es2020",
       "dom"
     ],
+    "types": [
+      "jasmine", "node"
+    ],
     "paths": {
       "@app/*": [
         "app/*"

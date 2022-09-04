@@ -29,7 +29,7 @@ export class SeasonService {
     catchError(this.dataService.handleError('getCurrentSeason', null))
   );
 
-  constructor(private http: HttpClient, public dataService: DataService) {
+  constructor(private http: HttpClient, private dataService: DataService) {
 
     // .currentSeason = this.getCurrent();
     this.selectedSeason$ = this.currentSeason;

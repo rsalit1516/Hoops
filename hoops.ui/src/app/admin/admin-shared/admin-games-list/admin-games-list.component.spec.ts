@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { StoreModule, Store } from '@ngrx/store';
 import { AdminGamesListComponent } from './admin-games-list.component';
 
 describe('AdminGamesListComponent', () => {

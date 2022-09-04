@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SidenavListComponent } from './sidenav-list.component';
+import { Store, StoreModule } from '@ngrx/store';
 
 describe('SidenavListComponent', () => {
   let component: SidenavListComponent;

@@ -22,7 +22,7 @@ canEdit = false;
 
 displayedColumns!: string[];
   flexMediaWatcher: any;
-  constructor(    private store: Store<fromAdmin.State>,
+  constructor(  private store: Store<fromAdmin.State>,
     public dialog: MatDialog,
     private media: MediaObserver
 ) {

@@ -4,6 +4,7 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
 import { StandingsComponent } from './standings.component';
+import { DataService } from '@app/services/data.service';
 
 describe('CsbcStandingsComponent', () => {
   let component: StandingsComponent;
@@ -11,7 +12,8 @@ describe('CsbcStandingsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ StandingsComponent ]
+      declarations: [ StandingsComponent ],
+      providers: [DataService]
     })
     .compileComponents();
   }));

@@ -1,5 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import {
+  UntypedFormControl,
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  FormControlDirective,
+} from '@angular/forms';
 import { GameFilterComponent } from './game-filter.component';
 
 describe('GameFilterComponent', () => {

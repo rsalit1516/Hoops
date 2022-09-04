@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 })
 export class AppComponent implements OnInit {
   @Output() public sidenavToggle = new EventEmitter();
+  title = 'App is Initialized';
 
   constructor(private router: Router) {}
   ngOnInit() {
