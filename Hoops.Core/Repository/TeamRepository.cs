@@ -75,7 +75,7 @@ namespace Hoops.Infrastructure.Repository
                 TeamColorId = team.TeamColorId,
                 TeamNumber = team.TeamNumber 
                 };
-
+                // logger.LogInformation("Division: " + division.DivisionId.ToString() + ": " + division.DivisionDescription);
                 foreach (Team team in teamDiv)
                 {
                     teams.Add(ConvertRecordForTeamNumber(team, colors));

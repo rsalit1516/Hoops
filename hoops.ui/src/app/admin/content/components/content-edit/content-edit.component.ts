@@ -10,6 +10,9 @@ import {
   UntypedFormGroup,
   Validators,
   FormControlName,
+  FormControl,
+  FormBuilder,
+  FormGroup,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -33,7 +36,6 @@ export class ContentEditComponent implements OnInit {
 
   // @Input()
   content!: Content;
-  contentForm!: UntypedFormGroup;
   errorMessage: string | undefined;
   pageTitle: string | undefined;
   hideId: boolean | undefined;
@@ -55,35 +57,44 @@ export class ContentEditComponent implements OnInit {
     },
   ];
   selected!: WebContentType;
+  webContent = 'Web Content';
+  expirationDate = 'Expiration Date';
+  location = 'Location';
+  contentSequence = 'Content Order';
+
+  contentForm = new FormGroup({
+    title: new FormControl<string | null>('',
+      {
+        validators:
+          [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.maxLength(50),
+          ],
+        nonNullable: true
+      }),
+
+    subTitle: new FormControl('', [Validators.maxLength(50)]),
+    body: new FormControl<string | null>(''),
+    location: new FormControl<string | null>(''),
+    dateAndTime: new FormControl<string | null>(''),
+    webContentId: new FormControl<number>(0),
+    webContentTypeControl: new FormControl(''),
+    contentSequence: new FormControl<number>(1),
+    expirationDate: new FormControl<Date | null>(new Date(), Validators.required),
+  });
 
   constructor(
-    private fb: UntypedFormBuilder,
+    private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<fromContent.State>,
     private contentService: ContentService
-  ) {}
+) {
+  }
 
 
   ngOnInit(): void {
-    this.contentForm = this.fb.group({
-      title: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(3),
-          Validators.maxLength(50),
-        ],
-      ],
-      subTitle: ['', [Validators.maxLength(50)]],
-      body: '',
-      location: '',
-      dateAndTime: '',
-      webContentId: '',
-      webContentTypeControl: null,
-      contentSequence: 1,
-      expirationDate: [new Date(), Validators.required],
-    });
     this.pageTitle = 'Edit Web Content Messages';
     this.hideId = true;
     this.getContent();
@@ -91,13 +102,13 @@ export class ContentEditComponent implements OnInit {
 
   update(): void {
     this.contentForm.patchValue({
-      title: this.content.title,
-      subTitle: this.content.subTitle,
+      title: this.selectedContent.title,
+      subTitle: this.selectedContent.subTitle,
       body: this.content.body,
       dateAndTime: this.content.dateAndTime,
       location: this.content.location,
       expirationDate: this.content.expirationDate,
-      webContentTypeControl: this.content.webContentType,
+      // webContentTypeControl: this.content.webContentType,
     });
   }
   getContent(): void {
@@ -129,7 +140,7 @@ export class ContentEditComponent implements OnInit {
       location: content.location,
       expirationDate: content.expirationDate,
       webContentId: content.webContentId,
-      webContentTypeControl: content.webContentType,
+      // webContentTypeControl: content.webContentType,
     });
     this.selected = content.webContentType;
     console.log(this.selected);
@@ -168,6 +179,7 @@ export class ContentEditComponent implements OnInit {
     return webContentType;
   }
   public hasError = (controlName: string, errorName: string) => {
-    return this.contentForm.controls[controlName].hasError(errorName);
+    return '';
+    // this.contentForm.controls[ controlName ].hasError(errorName);
   };
 }

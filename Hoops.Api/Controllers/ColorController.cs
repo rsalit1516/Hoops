@@ -29,7 +29,9 @@ namespace Hoops.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Color>> Get()
         {
-            return Ok(repository.GetAll());
+            return Ok(repository.GetAll()
+            .Where(c => c.Discontinued == false)
+            .OrderBy(c => c.ColorName));
         }
     }
 }

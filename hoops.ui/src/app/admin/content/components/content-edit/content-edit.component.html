@@ -5,8 +5,8 @@
       <mat-card-content>
         <fieldset>
           <mat-form-field class="full-width">
-            <!-- <mat-label>Title</mat-label> -->
-            <input matInput placeholder="Title" formControlName="title" />
+            <mat-label>Title</mat-label>
+            <input matInput formControlName="title" />
             <mat-hint>Not more then 50 characters long.</mat-hint>
             <mat-error *ngIf="hasError('title', 'required')"
               >Name is required</mat-error
@@ -17,8 +17,8 @@
           </mat-form-field>
 
           <mat-form-field class="full-width">
+            <mat-label>Sub-title</mat-label>
             <input matInput
-              placeholder="Sub Title"
               formControlName="subTitle"
             />
             <mat-hint>Add a sub-title. Not more then 50 characters long.</mat-hint>
@@ -27,10 +27,10 @@
             >
           </mat-form-field>
           <mat-form-field class="full-width">
+            <mat-label>Body</mat-label>
             <textarea
               matInput
               type="text"
-              placeholder="Body"
               rows="6"
               formControlName="body"
             ></textarea>
@@ -38,7 +38,8 @@
 
           </mat-form-field>
           <mat-form-field class="full-width">
-            <input matInput placeholder="location" formControlName="location" />
+            <mat-label>{{location}}</mat-label>
+            <input matInput formControlName="location" />
           </mat-form-field>
           <mat-form-field class="full-width">
             <mat-label>Date and Time</mat-label>
@@ -51,6 +52,7 @@
           </mat-form-field>
           <mat-divider></mat-divider>
           <mat-form-field type="date" class="standard-field-width">
+            <mat-label>{{webContent}}</mat-label>
             <mat-select
               [value]="selected"
               formControlName="webContentTypeControl"
@@ -64,10 +66,10 @@
             <mat-hint>Enter the type of notice from the dropdown</mat-hint>
           </mat-form-field>
           <mat-form-field class="sequenceWidth">
+            <mat-label>{{expirationDate}}</mat-label>
             <input
               matInput
               [matDatepicker]="picker"
-              placeholder="Notice Expiration date"
               formControlName="expirationDate"
             />
             <mat-datepicker-toggle
@@ -78,9 +80,9 @@
             <mat-hint>Select the expiration date for the notice</mat-hint>
           </mat-form-field>
           <mat-form-field class="sequenceWidth">
+            <mat-label>{{contentSequence}}</mat-label>
             <input
               matInput
-              placeholder="NoticeSequence"
               formControlName="contentSequence"
               type="number"
             />
