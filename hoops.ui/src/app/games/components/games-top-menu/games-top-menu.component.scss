@@ -35,9 +35,30 @@ button {
   margin-right: 12px;
   color: $navbar-color;
 }
+button:active {
+  font-weight: 800;
+}
 
 .games-button {
-  color: $navbar-color;
+  font-size: $button-font-size;
+  font-variant-caps: small-caps;
+  font-weight: 500;
+  padding-right: 8px;
+  padding-left: 8px;
+  margin-right: 12px;
+  background-color: $brand-color;
+  color: black;
+}
+.mat-button-toggle-appearance-standard  {
+  line-height: 30px !important;
+}
+.mat-button-toggle-group {
+  background-color: $brand-color;
+  line-height: 30px;
+}
+
+.games-button button:active{
+  font-weight: 800;
 }
 
 .fill-space {

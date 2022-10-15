@@ -366,3 +366,5 @@ hoops.ui/.angular/cache/**
 .DS_Store
 Hoops.Api/.DS_Store
 Hoops.Core/.DS_Store
+.DS_Store
+.DS_Store
