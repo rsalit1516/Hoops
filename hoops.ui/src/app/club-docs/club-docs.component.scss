@@ -11,9 +11,18 @@
 
 a {
   background-color: $card-background-color;
-  color: whitesmoke;
+  color: $link-color;
+  font-size: 1.2rem;
+  font-style: normal;
+  text-decoration: none;
+}
+a:hover {
+  font-size: 1.3rem;
 }
 .mat-card {
   background-color: $card-background-color;
   color: whitesmoke;
+}
+.mat-card-title {
+  font-size: 1.2rem;
 }

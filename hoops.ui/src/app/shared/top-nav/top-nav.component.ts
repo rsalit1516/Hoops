@@ -38,7 +38,7 @@ export class TopNavComponent implements OnInit {
 
   ngOnInit() {
     this.env = environment.environment;
-    // console.log(this.env);
+    console.log(this.env);
     this.store.pipe(select(fromUser.getCurrentUser)).subscribe((user) => {
       // console.log(user);
       console.log(this.env);
