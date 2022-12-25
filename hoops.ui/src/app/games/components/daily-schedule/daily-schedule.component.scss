@@ -1,4 +1,10 @@
 @import '../../../../content/_variables';
+
+:root {
+  --color-primary: blue;
+  --background-color: blue;
+
+}
 .gamedate {
   color: $brand-color;
   font-weight: 600;
@@ -10,8 +16,8 @@
 
 }
 .mat-table {
-  // background-color: black;
-  background-color: $background-color;
+  background-color: red;
+  background-color: var(--background-color); //$background-color;
   color: $color;
   border-radius: 10px;
   width: 100%;
