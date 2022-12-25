@@ -89,3 +89,9 @@ h2 {
 .mat-form-field-wrapper {
   height:40px;
 }
+
+.mat-tab-label.label .mat-tab-label-content.label{
+  color:$color !important;
+  font-size: 1.1rem;
+}
+

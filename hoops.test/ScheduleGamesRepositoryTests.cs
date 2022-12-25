@@ -1,8 +1,6 @@
-using System;
-using Hoops.Core;
-using Hoops.Core.Models;
-using Hoops.Infrastructure.Repository;
 using Microsoft.Extensions.Logging;
+using Hoops.Core;
+using Hoops.Infrastructure.Repository;
 using Xunit;
 
 namespace csbc_server_test

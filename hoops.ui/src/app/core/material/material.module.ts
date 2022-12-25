@@ -25,6 +25,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { NgxMatDatetimePickerModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
+import {MatTabsModule} from '@angular/material/tabs';
 
 @NgModule({
   imports: [
@@ -52,6 +53,7 @@ import { NgxMatDatetimePickerModule, NgxMatTimepickerModule } from '@angular-mat
     MatProgressSpinnerModule,
     MatButtonToggleModule,
     MatTooltipModule,
+    MatTabsModule,
     NgxMatDatetimePickerModule,
   ],
   exports: [
@@ -78,6 +80,7 @@ import { NgxMatDatetimePickerModule, NgxMatTimepickerModule } from '@angular-mat
     MatProgressSpinnerModule,
     MatDialogModule,
     MatTooltipModule,
+    MatTabsModule,
     NgxMatDatetimePickerModule,
     NgxMatTimepickerModule,
   ],

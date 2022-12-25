@@ -2,9 +2,11 @@
 @use "_material.scss";
 
 @use './_mixins';
+@use "_menu.scss";
 
-@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+// @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 @import "~bootstrap/dist/css/bootstrap.css";
+
 
 
 /*#region Override background color theme */
@@ -119,6 +121,7 @@ small {
 .mat-select-panel {
   background-color: v.$admin-background-color;
 }
+
 .page-title-subtle {
   color: white;
 }
@@ -594,4 +597,7 @@ a {
   font-size: 1em !important;
 }
 /*#endregion */
-
+.mat-tab-label .mat-tab-label-content{
+  color:v.$color !important;
+  font-size: 1.1rem;
+}

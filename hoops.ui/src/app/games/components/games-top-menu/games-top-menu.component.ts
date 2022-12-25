@@ -10,6 +10,8 @@ import { SeasonService } from '@app/services/season.service';
 import { GameService } from '@app/games/game.service';
 import { Season } from '@app/domain/season';
 import { Team } from '@app/domain/team';
+import { MatTabChangeEvent } from '@angular/material/tabs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'csbc-games-top-menu',
@@ -31,7 +33,8 @@ export class GamesTopMenuComponent implements OnInit {
     // private fb: FormBuilder,
     private store: Store<fromGames.State>,
     private gameService: GameService,
-    private seasonService: SeasonService
+    private seasonService: SeasonService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -39,5 +42,16 @@ export class GamesTopMenuComponent implements OnInit {
       this.seasonDescription = currentSeason?.description;
     });
 
+  }
+  onTabChanged(event: MatTabChangeEvent): void {
+    switch (event.index) {
+      case 0: // index of the tab
+        // this is our stub tab for link
+        this.router.navigate([ '/games/schedule' ]);
+        break;
+      case 1:
+        this.router.navigate([ '/games/standings' ]);
+        break;
+    }
   }
 }
