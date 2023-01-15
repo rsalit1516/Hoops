@@ -11,8 +11,8 @@ import { WebContentType } from 'app/domain/webContentType';
 import { WebContent } from '../../../domain/webContent';
 
 export interface ContentState {
-  currentContentId: number;
-  selectedContent: Content;
+  currentContentId: number | null;
+  selectedContent: Content | null;
   contentList: WebContent[];
   isActiveOnly: boolean;
   filteredList: WebContent[];

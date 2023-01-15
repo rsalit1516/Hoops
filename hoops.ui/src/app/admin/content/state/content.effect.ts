@@ -7,17 +7,10 @@ import {
   switchMap,
   mergeMap,
   catchError,
-  tap,
-  mapTo,
-  withLatestFrom,
-  exhaustMap,
-  concatMap,
-  shareReplay
-} from 'rxjs/operators';
-import { Store, Action, select } from '@ngrx/store';
-import { Observable, of } from 'rxjs';
+  tap} from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { of } from 'rxjs';
 import { ContentService } from '../content.service';
-import { WebContent } from '../../../domain/webContent';
 
 @Injectable()
 export class ContentEffects {

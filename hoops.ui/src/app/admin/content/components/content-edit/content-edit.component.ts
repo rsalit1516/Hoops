@@ -79,7 +79,7 @@ export class ContentEditComponent implements OnInit {
     location: new FormControl<string | null>(''),
     dateAndTime: new FormControl<string | null>(''),
     webContentId: new FormControl<number>(0),
-    webContentTypeControl: new FormControl(''),
+    webContentTypeControl: new FormControl<number>(1),
     contentSequence: new FormControl<number>(1),
     expirationDate: new FormControl<Date | null>(new Date(), Validators.required),
   });
@@ -140,7 +140,8 @@ export class ContentEditComponent implements OnInit {
       location: content.location,
       expirationDate: content.expirationDate,
       webContentId: content.webContentId,
-      // webContentTypeControl: content.webContentType,
+      contentSequence: content.contentSequence,
+      webContentTypeControl: content.webContentTypeId,
     });
     this.selected = content.webContentType;
     console.log(this.selected);

@@ -28,10 +28,15 @@ export class ContentListToolbarComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    this.store.dispatch(new contentActions.SetIsActiveOnly(true));
-    this.store.dispatch(new contentActions.SetActiveContent());
+    this.store.select(fromContent.getIsActiveOnly).subscribe(isActiveContent => {
+      console.log(isActiveContent);
+      this.filterForm.controls.activeContent.value(isActiveContent);
+      // this.store.dispatch(new contentActions.SetIsActiveOnly(data));
+      isActiveContent ? this.store.dispatch(new contentActions.SetActiveContent()):
+      this.store.dispatch(new contentActions.SetAllContent());
+    });
   }
+
   addContent() {
     const content = new Content();
     this.store.dispatch(new contentActions.SetSelectedContent(content));
@@ -39,6 +44,7 @@ export class ContentListToolbarComponent implements OnInit {
   }
   filterContent() {
     const isActive = this.filterForm.value.activeContent !== true;
+    console.log(isActive);
     this.store.dispatch(new contentActions.SetIsActiveOnly(isActive));
     isActive
       ? this.store.dispatch(new contentActions.SetActiveContent())

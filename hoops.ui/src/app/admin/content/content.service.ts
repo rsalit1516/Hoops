@@ -132,7 +132,7 @@ export class ContentService {
     content.expirationDate = contentForm.expirationDate;
     content.contentSequence = contentForm.contentSequence;
     content.companyId = Constants.COMPANYID;
-    // content.webContentId = contentForm.webContentId;
+    content.webContentTypeId = contentForm.webContentTypeControl;
     console.log(content);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = { headers: new HttpParams() };
@@ -169,8 +169,10 @@ export class ContentService {
     // const url = `${this.baseUrl}/${content.webContentId}`;
     console.log(this.data.putContentUrl);
     console.log(content);
+    let url = this.data.putContentUrl + content.webContentId;
+    console.log(url);
     return this.http
-      .put<WebContent>(this.data.putContentUrl + content.webContentId, content, this.data.httpOptions)
+      .put<WebContent>(url,  content, this.data.httpOptions)
       .pipe(
         tap((data) => console.log('updateContent: ' + JSON.stringify(data))),
         catchError(this.data.handleError('updateContent', content))

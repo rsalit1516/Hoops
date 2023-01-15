@@ -35,14 +35,6 @@ export class ContentListComponent implements OnInit {
   ngOnInit() {
     this.pageTitle = 'Web Site Messages';
 
-    // this.store.select(fromContent.getIsActiveOnly).subscribe(isActive => {
-    //   if (isActive) {
-    //     this.store.dispatch(new contentActions.SetActiveContent());
-    //   } else {
-    //     this.store.dispatch(new contentActions.SetAllContent());
-    //   }
-    // });
-
     this.store.select(fromContent.getfilteredList).subscribe(data => {
       // console.log(data);
       this.dataSource = new MatTableDataSource(data);
@@ -53,7 +45,7 @@ export class ContentListComponent implements OnInit {
     console.log(content);
   }
 
-  editContent(content: any) {
+  editContent(content: Content) {
     this.store.dispatch(new contentActions.SetSelectedContent(content));
     this.router.navigate(['./admin/content/edit']);
   }

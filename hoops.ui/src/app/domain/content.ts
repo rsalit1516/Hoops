@@ -16,13 +16,13 @@ export class Content {
     public webContentId!: number;
     public companyId!: number;
     public title!: string;
-    public subTitle!: string;
-    public body!: string | null;
-    public location!: string;
-    public dateAndTime!: string;
-    public expirationDate!: Date;
-    public webContentTypeId!: number;
-    public contentSequence!: number;
+    public subTitle: string = '';
+    public body: string = '';
+    public location: string = '';
+    public dateAndTime: string = '';
+    public expirationDate: Date = new Date();
+    public webContentTypeId: number = 1;
+    public contentSequence: number = 1;
     public webContentType!: WebContentType;
     constructor() {
     }
