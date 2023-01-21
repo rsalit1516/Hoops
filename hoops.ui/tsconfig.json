@@ -14,14 +14,15 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "es2020",
+    "target": "ES2022",
     "module": "es2020",
     "lib": [
       "es2020",
       "dom"
     ],
     "types": [
-      "jasmine", "node"
+      "jasmine",
+      "node"
     ],
     "paths": {
       "@app/*": [
@@ -36,8 +37,9 @@
       "@content": [
         "content/*"
       ]
-    }
-},
+    },
+    "useDefineForClassFields": false
+  },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
