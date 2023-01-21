@@ -18,9 +18,7 @@ export class ContentListToolbarComponent implements OnInit {
   checked = true;
   isActiveContent$ = this.store.select(fromContent.getIsActiveOnly);
   filterForm = this.fb.group({
-    activeContent: async (params:boolean) => {
-      this.isActiveContent$
-}
+    activeContent: true
   });
 
 
@@ -35,13 +33,6 @@ export class ContentListToolbarComponent implements OnInit {
   ngOnInit() {
     this.isActiveContent$.subscribe(isActiveContent => {
       console.log(isActiveContent);
-      this.fb.group({
-        activeContent: isActiveContent
-      });
-      // this.filterForm.controls.activeContent.value(isActiveContent);
-      // this.store.dispatch(new contentActions.SetIsActiveOnly(data));
-      // isActiveContent ? this.store.dispatch(new contentActions.SetActiveContent()):
-      // this.store.dispatch(new contentActions.SetAllContent());
     });
   }
 
@@ -53,9 +44,6 @@ export class ContentListToolbarComponent implements OnInit {
   filterContent() {
     const isActive = this.filterForm.value.activeContent !== true;
     console.log(isActive);
-    // this.store.dispatch(new contentActions.SetIsActiveOnly(isActive));
-    isActive
-      ? this.store.dispatch(new contentActions.SetActiveContent())
-      : this.store.dispatch(new contentActions.SetAllContent());
+    this.store.dispatch(new contentActions.SetIsActiveOnly(isActive));
   }
 }
