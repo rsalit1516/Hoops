@@ -12,7 +12,7 @@ import { User } from '@app/domain/user';
 @Injectable({
   providedIn: 'root'
 })
-export class GameService {
+export class AdminGameService {
   allGames: Game[] | undefined;
 
   constructor(private dataService: DataService,
@@ -32,7 +32,6 @@ export class GameService {
         for (let i = 0; i < this.allGames.length; i++) {
           if (this.allGames[i].divisionId === div) {
             let game = allGames[ i ];
-            console.log(game);
             games.push(game);
           }
         }

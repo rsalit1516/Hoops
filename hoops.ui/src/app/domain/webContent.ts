@@ -22,7 +22,7 @@ export class WebContent {
     public dateAndTime: string | undefined;
     public webContentTypeDescription: string | undefined;
     public expirationDate: Date | undefined;
-  public webContentTypeId!: number;
+  public webContentTypeId!: number | null;
     constructor() {
     }
 }

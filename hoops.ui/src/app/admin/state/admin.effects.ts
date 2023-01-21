@@ -24,7 +24,7 @@ import { DataService } from 'app/services/data.service';
 import { Division } from 'app/domain/division';
 import { Season } from '@app/domain/season';
 import { Team } from '@app/domain/team';
-import { GameService } from '../services/game.service';
+import { AdminGameService } from '../services/adminGame.service';
 import { PlayoffGame } from '@app/domain/playoffGame';
 
 @Injectable()
@@ -42,7 +42,7 @@ export class AdminEffects {
     private seasonService: SeasonService,
     private divisionService: DivisionService,
     private http: HttpClient,
-    private gameService: GameService,
+    private gameService: AdminGameService,
     private teamService: TeamService,
     private dataService: DataService,
     private store: Store<fromAdmin.State>

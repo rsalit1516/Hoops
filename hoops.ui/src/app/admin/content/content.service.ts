@@ -33,7 +33,7 @@ export class ContentService {
   public set selectedContent(value: any) {
     this._selectedContent = value;
     this.selectedContent$ = of(value);
-    console.log(value);
+    // console.log(value);
   }
   content$ = this.http.get<WebContent[]>(this.data.getContentUrl).pipe(
     tap((data) => console.log('All: ' + JSON.stringify(data))),
