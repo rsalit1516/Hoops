@@ -21,7 +21,7 @@ import { ContentService } from '../../content.service';
 import { Store, select } from '@ngrx/store';
 
 import * as fromContent from '../../state';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
 import { WebContentType } from 'app/domain/webContentType';
 
 @Component({

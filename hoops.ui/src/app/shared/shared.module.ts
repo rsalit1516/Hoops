@@ -5,7 +5,7 @@ import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 
 import { CoreModule } from '@app/core/core.module';
 import { PageNotFoundComponent } from '@app/app.not-found.component';
-import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
+import { MAT_LEGACY_DIALOG_DEFAULT_OPTIONS as MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/legacy-dialog';
 import { CsbcSeasonSelectComponent } from './season-select/csbc-season-select.component';
 import { CsbcCardComponent } from './csbc-card/csbc-card.component';
 

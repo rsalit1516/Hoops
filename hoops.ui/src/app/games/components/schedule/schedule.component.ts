@@ -13,8 +13,8 @@ import * as moment from 'moment';
 import { User } from 'app/domain/user';
 import { GameScoreDialogComponent } from '../game-score-dialog/game-score-dialog.component';
 import { MediaObserver } from '@angular/flex-layout';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { GameService } from '@app/games/game.service';
 
 @Component({

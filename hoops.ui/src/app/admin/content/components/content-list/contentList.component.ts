@@ -9,8 +9,8 @@ import { ContentEditComponent } from '../content-edit/content-edit.component';
 
 import * as fromContent from '../../state';
 import * as contentActions from '../../state/content.actions';
-import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { WebContent } from '../../../../domain/webContent';
 
 @Component({
