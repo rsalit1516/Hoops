@@ -24,7 +24,7 @@ export class ContentListComponent implements OnInit {
   errorMessage: string|undefined;
   pageTitle: string|undefined;
   public dialog!: MatDialog;
-  displayedColumns = ['title', 'expirationDate', 'dateAndTime', 'location'];
+  displayedColumns = ['title', 'expirationDate', 'dateAndTime', 'location', 'actions'];
   dataSource!: MatTableDataSource<WebContent>;
   constructor(
     private _contentService: ContentService,
@@ -49,6 +49,11 @@ export class ContentListComponent implements OnInit {
     this.store.dispatch(new contentActions.SetSelectedContent(content));
     this.router.navigate(['./admin/content/edit']);
   }
+  cloneContent(content: Content) {
+    this.store.dispatch(new contentActions.SetSelectedContent(content));
+    this.router.navigate(['./admin/content/edit']);
+  }
+
   addContent() {
     this.router.navigate(['./admin/content/edit']);
   }
