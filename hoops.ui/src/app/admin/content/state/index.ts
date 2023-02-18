@@ -1,8 +1,6 @@
 import {
   createFeatureSelector,
-  createSelector,
-  ActionReducerMap
-} from '@ngrx/store';
+  createSelector} from '@ngrx/store';
 import * as fromRoot from '@app/state/app.state';
 import * as fromContent from './content.reducer';
 

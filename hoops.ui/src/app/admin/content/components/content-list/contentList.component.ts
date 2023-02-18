@@ -50,7 +50,7 @@ export class ContentListComponent implements OnInit {
     this.router.navigate(['./admin/content/edit']);
   }
   cloneContent(content: Content) {
-    this.store.dispatch(new contentActions.SetSelectedContent(content));
+    this.store.dispatch(new contentActions.CloneSelectedContent(content));
     this.router.navigate(['./admin/content/edit']);
   }
 

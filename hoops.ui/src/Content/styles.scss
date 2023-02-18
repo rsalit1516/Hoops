@@ -121,7 +121,10 @@ small {
 .mat-select-panel {
   background-color: v.$admin-background-color;
 }
-
+.mat-form-field {
+  display: inline-flex;
+  margin-top:20px;
+}
 .page-title-subtle {
   color: white;
 }

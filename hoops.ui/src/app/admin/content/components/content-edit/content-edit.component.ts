@@ -6,8 +6,6 @@ import {
   Inject,
 } from '@angular/core';
 import {
-  UntypedFormBuilder,
-  UntypedFormGroup,
   Validators,
   FormControlName,
   FormControl,
@@ -32,7 +30,6 @@ import { WebContentType } from 'app/domain/webContentType';
 export class ContentEditComponent implements OnInit {
   @ViewChildren(FormControlName, { read: ElementRef })
   @Inject(MAT_DIALOG_DATA)
-  // formInputElements: ElementRef[];
 
   // @Input()
   content!: Content;
@@ -93,7 +90,6 @@ export class ContentEditComponent implements OnInit {
 ) {
   }
 
-
   ngOnInit(): void {
     this.pageTitle = 'Edit Web Content Messages';
     this.hideId = true;
@@ -115,8 +111,10 @@ export class ContentEditComponent implements OnInit {
     this.store
       .pipe(select(fromContent.getSelectedContent))
       .subscribe((content) => {
-        this.selectedContent = content;
-        this.onContentRetrieved(content);
+        if (content !== null) {
+          this.selectedContent = content;
+          this.onContentRetrieved(content);
+        }
       });
   }
   onContentRetrieved(content: Content): void {
