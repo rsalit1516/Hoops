@@ -33,4 +33,8 @@ export const getfilteredList = createSelector(
   state => state.filteredList
 );
 
+export const getClonedContent = createSelector(
+  getContentFeatureState,
+  state => state.clonedContent
+);
 

@@ -39,8 +39,8 @@
 
           </mat-form-field>
           <mat-form-field class="full-width">
-            <mat-label>{{location}}</mat-label>
-            <input matInput formControlName="location" />
+            <label mat-label>{{location}}</label >
+            <input matInput title="location" formControlName="location" />
           </mat-form-field>
           <mat-form-field class="full-width">
             <mat-label>Date and Time</mat-label>
@@ -70,6 +70,7 @@
             <mat-label>{{expirationDate}}</mat-label>
             <input
               matInput
+              title="expirationDate"
               [matDatepicker]="picker"
               formControlName="expirationDate"
             />
@@ -84,6 +85,7 @@
             <mat-label>{{contentSequence}}</mat-label>
             <input
               matInput
+              title="contentSequence"
               formControlName="contentSequence"
               type="number"
             />
@@ -91,6 +93,7 @@
           </mat-form-field>
           <input
             id="webContentId"
+            title="weCOntentId"
             class="form-control"
             [hidden]="hideId"
             type="text"

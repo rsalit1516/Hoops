@@ -16,7 +16,8 @@ export interface ContentState {
   contentList: WebContent[];
   isActiveOnly: boolean;
   filteredList: WebContent[];
-contentTypeList: WebContentType[];
+  contentTypeList: WebContentType[];
+  clonedContent: Content;
 }
 
 const initialState: ContentState = {
@@ -25,7 +26,8 @@ const initialState: ContentState = {
   contentList: [],
   isActiveOnly: true,
   filteredList: [],
-  contentTypeList: []
+  contentTypeList: [],
+  clonedContent: new Content()
 };
 
 export function reducer(
@@ -58,6 +60,11 @@ export function reducer(
         ...state,
         filteredList: action.payload
       };
+      case ContentActionTypes.SetClonedContent:
+        return {
+          ...state,
+          clonedContent: action.payload
+        };
 case ContentActionTypes.LoadContentTypeListSuccess:
   return {
     ...state,

@@ -9,7 +9,7 @@ export enum ContentActionTypes {
   LoadSuccess = '[Content] Load Success',
   LoadFail = '[Content] Load Fail',
   SetSelectedContent = '[Content] Set Selected Content',
-  CloneSelectedContent = '[Content] Clone Selected Content',
+  SetClonedContent = '[Content] Clone Selected Content',
   SetAllContent = '[Content] Set all content',
   SetAllContentSuccess = '[Content] Set all content success',
   SetAllContentFail = '[Content] Set all content faile',
@@ -58,8 +58,8 @@ export class SetActiveContentFail implements Action {
   constructor(public payload: String) {}
 }
 
-export class CloneSelectedContent implements Action {
-  readonly type = ContentActionTypes.CloneSelectedContent;
+export class SetClonedContent implements Action {
+  readonly type = ContentActionTypes.SetClonedContent;
   constructor(public payload: Content) {}
 }
 export class SetSelectedContent implements Action {
@@ -87,7 +87,7 @@ export type ContentActions =
   | LoadSuccess
   | LoadFail
   | SetSelectedContent
-  | CloneSelectedContent
+  | SetClonedContent
   | SetAllContent
   | SetAllContentSuccess
   | SetAllContentFail
