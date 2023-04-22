@@ -15,7 +15,6 @@ namespace Hoops.Infrastructure.Repository
     public class ScheduleGameRepository : EFRepository<ScheduleGame>, IScheduleGameRepository
     {
         private readonly ILogger<ScheduleGameRepository> _logger;
-
         public ScheduleGameRepository(Hoops.Core.hoopsContext context, ILogger<ScheduleGameRepository> logger) : base(context)
         {
             _logger = logger;
