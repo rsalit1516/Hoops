@@ -50,8 +50,11 @@ export class ContentListComponent implements OnInit {
     this.router.navigate(['./admin/content/edit']);
   }
   cloneContent(content: Content) {
-    this.store.dispatch(new contentActions.SetClonedContent(content));
-    this.router.navigate(['./admin/content/edit']);
+    // this.store.dispatch(new contentActions.SetClonedContent(content));
+    content.webContentId = undefined;
+    this.store.dispatch(new contentActions.SetSelectedContent(content));
+
+    this.router.navigate([ './admin/content/edit' ]);
   }
 
   addContent(): void {

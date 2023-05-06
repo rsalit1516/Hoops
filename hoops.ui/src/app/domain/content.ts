@@ -13,7 +13,7 @@ import { WebContentType } from './webContentType';
 // }
 
 export class Content {
-    public webContentId!: number;
+    public webContentId?: number;
     public companyId!: number;
     public title!: string;
     public subTitle: string = '';
