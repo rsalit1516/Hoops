@@ -2,7 +2,7 @@
 @use "_material.scss";
 
 @use './_mixins';
-@use "_menu.scss";
+@use "./../app//shared/scss/menu";
 
 // @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 @import "~bootstrap/dist/css/bootstrap.css";

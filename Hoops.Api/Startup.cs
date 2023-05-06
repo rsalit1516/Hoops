@@ -44,7 +44,8 @@ namespace Hoops.Api
                         options
                             .UseSqlServer(Configuration
                                 .GetConnectionString("hoopsContext"),
-                            builder => {
+                            builder =>
+                            {
                                 builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
                             }));
             }
@@ -55,7 +56,8 @@ namespace Hoops.Api
                         options
                            .UseSqlServer(Configuration
                                 .GetConnectionString("hoopsContext"),
-                            builder => {
+                            builder =>
+                            {
                                 builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
                             }));
             }
@@ -78,7 +80,8 @@ namespace Hoops.Api
                                          builder =>
                                          {
                                              builder.WithOrigins("http://localhost:4200",
-                                                                 "http://localhost50364")
+                                                                 "http://localhost50364",
+                                                                 "https://csbchoops.com")
                                               .AllowAnyHeader()
                                         .AllowAnyMethod();
                                          });
@@ -119,7 +122,6 @@ namespace Hoops.Api
                         Path.Combine(AppContext.BaseDirectory, xmlFile);
                     // c.IncludeXmlComments(xmlPath);
                 });
-            // services.AddCors();
             services.AddControllers();
 
             // call data initializer
@@ -152,9 +154,6 @@ namespace Hoops.Api
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseCors(MyAllowSpecificOrigins);
-            // app
-            //     .UseCors(x =>
-            //         x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseAuthorization();
 
             app
