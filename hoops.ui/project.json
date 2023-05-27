@@ -96,63 +96,13 @@
               "with": "src/environments/environment.staging.ts"
             }
           ]
-        },
-        "test": {
-          "buildOptimizer": false,
-          "optimization": false,
-          "vendorChunk": true,
-          "extractLicenses": false,
-          "sourceMap": true,
-          "namedChunks": true,
-          "fileReplacements": [
-            {
-              "replace": "src/environments/environment.ts",
-              "with": "src/environments/environment.test.ts"
-            }
-          ]
         }
       },
       "defaultConfiguration": "production",
       "outputs": [
         "{options.outputPath}"
       ]
-    },
-    "serve": {
-      "executor": "@angular-devkit/build-angular:dev-server",
-      "configurations": {
-        "production": {
-          "browserTarget": "csbc:build:production"
-        },
-        "development": {
-          "browserTarget": "csbc:build:development"
-        }
-      },
-      "defaultConfiguration": "development"
-    },
-    "extract-i18n": {
-      "executor": "@angular-devkit/build-angular:extract-i18n",
-      "options": {
-        "browserTarget": "test:build"
-      }
-    },
-    "test": {
-      "executor": "@angular-devkit/build-angular:karma",
-      "options": {
-        "main": "src/test.ts",
-        "polyfills": "src/polyfills.ts",
-        "tsConfig": "tsconfig.spec.json",
-        "karmaConfig": "karma.conf.js",
-        "inlineStyleLanguage": "scss",
-        "assets": [
-          "src/favicon.ico",
-          "src/assets"
-        ],
-        "styles": [
-          "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-          "src/styles.scss"
-        ],
-        "scripts": []
-      }
     }
+
   }
 }
