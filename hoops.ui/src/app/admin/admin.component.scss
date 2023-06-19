@@ -10,7 +10,7 @@
 
 .mat-list-item-content {
   color: white;
-  font-size: 1.1em;
+  font-size: 1rem;
 }
 
 .mat-toolbar {
@@ -24,7 +24,7 @@
 
 input,
 textarea {
-  font-size: v.$table-font-size;
+  font-size: v.$input-font-size;
   padding-top: 12px;
   padding-bottom: 12px;
   padding-left: 12px;
@@ -34,7 +34,7 @@ textarea {
 
 .mat-form-field.mat-label,
 input.mat-form-field-label {
-  font-size: 1.1rem !important;
+  font-size: .7rem !important;
   color: v.$field-label;
 }
 
@@ -264,7 +264,7 @@ div {
 .mat-card-title,
 h2 {
   color: v.$field-label;
-  font-size: 1.5em;
+  font-size: 1.2rem;
   padding-bottom: 6px;
   padding-left: 12px;
 }

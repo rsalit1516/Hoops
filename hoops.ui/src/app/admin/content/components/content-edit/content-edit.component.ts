@@ -21,6 +21,8 @@ import { Store, select } from '@ngrx/store';
 import * as fromContent from '../../state';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
 import { WebContentType } from 'app/domain/webContentType';
+import { LegacyFloatLabelType } from '@angular/material/legacy-form-field';
+import { FloatLabelType } from '@angular/material/form-field';
 
 @Component({
   selector: 'csbc-content-edit',
@@ -80,6 +82,7 @@ export class ContentEditComponent implements OnInit {
     contentSequence: new FormControl<number>(1),
     expirationDate: new FormControl<Date | null>(new Date(), Validators.required),
   });
+  floatLabelType: FloatLabelType = 'auto';
 
   constructor(
     private fb: FormBuilder,
@@ -181,4 +184,8 @@ export class ContentEditComponent implements OnInit {
     return '';
     // this.contentForm.controls[ controlName ].hasError(errorName);
   };
+
+  getFloatLabelValue(): FloatLabelType {
+    return this.floatLabelType;
+  }
 }
