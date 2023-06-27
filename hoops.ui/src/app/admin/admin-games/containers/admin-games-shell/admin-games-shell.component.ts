@@ -8,6 +8,7 @@ import * as fromUser from '../../../../user/state';
 import { GameService } from 'app/games/game.service';
 import { Season } from '../../../../domain/season';
 import { Game } from '@app/domain/game';
+import { AdminGameDetailComponent } from '@app/admin/admin-shared/admin-game-detail/admin-game-detail.component';
 @Component({
   selector: 'csbc-admin-games-shell',
   templateUrl: './admin-games-shell.component.html',

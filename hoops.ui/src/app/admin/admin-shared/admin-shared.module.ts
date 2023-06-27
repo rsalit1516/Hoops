@@ -22,7 +22,6 @@ import { NgxMatMomentModule } from '@angular-material-components/moment-adapter'
     AdminTeamDetailComponent,
     GameTypeSelectComponent,
     AdminGamesListComponent,
-    AdminGameDetailComponent,
   ],
   imports: [
     CommonModule,
@@ -38,7 +37,6 @@ import { NgxMatMomentModule } from '@angular-material-components/moment-adapter'
     AdminTeamListComponent,
     GameTypeSelectComponent,
     AdminGamesListComponent,
-    AdminGameDetailComponent,
   ],
 })
 export class AdminSharedModule {}

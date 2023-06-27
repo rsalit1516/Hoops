@@ -276,7 +276,7 @@ h2 {
 
 .mat-cell,
 .mat-header-cell {
-  font-size: 1.1rem;
+  font-size: .9rem;
 }
 
 .mat-select-value {
@@ -307,7 +307,7 @@ h2 {
   background-color: v.$admin-table-background-color;
   color: v.$admin-font-color;
   border-color: v.$admin-table-background-color-border;
-  font-size: 1.2em;
+  font-size: 1.1rem;
 }
 .table-wrapper {
   background-color: v.$table-body-color;
@@ -327,13 +327,13 @@ th.mat-header-cell {
 tr.mat-header-row {
   height: 24px;
   border-bottom: .5px solid gray;
-  font-size: 1.1em;
+  font-size: 1.0em;
   font-weight: 800;
 }
 
 tr.mat-row {
   height: 36px;
-  font-size: .9em;
+  font-size: .9rem;
   font-weight: 500;
   padding-bottom: 4px;
   padding-top: 4px;
