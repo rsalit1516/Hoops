@@ -15,7 +15,7 @@ body {
   padding: 0 0px 0px 0px;
   margin: 0px;
   font: Roboto, Arial, Helvetica, sans-serif;
-  font-size: 12px;
+  font-size: 1rem;
   color: ghostwhite;
   background: v.$background-color;
 }
@@ -35,12 +35,12 @@ body {
   border-bottom-style: solid;
   border-bottom-width: 1px;
   padding-bottom: 4px;
-  font-size: 1.4em;
+  font-size: 1.2rem;
   font-weight: 800;
 }
 
 h2 {
-  font-size: 1.2em;
+  font-size: 1.2rem;
   color: v.$panel-default-heading-background;
 }
 
@@ -68,7 +68,7 @@ select > option {
 .widget .padd {
   /*margin-bottom: 0;*/
   /*padding: 1em 0;*/
-  height: 12em;
+  height: 12rem;
 }
 
 .widget .padd.padd-tight {
@@ -125,6 +125,9 @@ small {
   display: inline-flex;
   margin-top:12px;
 }
+.mat-form-field-label-wrapper {
+  position: relative !important;
+  }
 .page-title-subtle {
   color: white;
 }

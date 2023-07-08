@@ -31,10 +31,10 @@
   font-size: $table-font-size;
 }
 .mat-table  .mat-header-row {
-  border-bottom-width: thin;
-  border-bottom-style: solid;
-  border-bottom-color: white;
-  height: 30px;
+  // border-bottom-width: thin;
+  // border-bottom-style: solid;
+  // border-bottom-color: white;
+  height: 32px;
   border-collapse: collapse;
   border-spacing: 2px;
   background-color: $card-background-color;
@@ -42,11 +42,11 @@
   // line-height
 }
 .mat-row {
-  height: 30px;
+  height: 40px;
 }
 .mat-table tr td {
   color: $color;
-  font-weight: 500;
+  font-weight: 400;
   font-size: $table-font-size;
 }
 

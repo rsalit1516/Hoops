@@ -6,8 +6,6 @@ import { Observable } from 'rxjs';
 import { Season } from 'app/domain/season';
 import * as adminActions from '../../state/admin.actions';
 import {
-  FormControl,
-  FormGroup,
   UntypedFormBuilder,
   UntypedFormControl,
   UntypedFormGroup,

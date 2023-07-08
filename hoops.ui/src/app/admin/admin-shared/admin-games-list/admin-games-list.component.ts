@@ -7,8 +7,13 @@ import { Game } from 'app/domain/game';
 import * as fromAdmin from '../../state';
 import * as adminActions from '../../state/admin.actions';
 import { Observable } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MaterialModule } from '@app/core/material/material.module';
 @Component({
   selector: 'admin-games-list',
+  standalone: true,
+  imports: [CommonModule, MaterialModule, ReactiveFormsModule],
   templateUrl: './admin-games-list.component.html',
   styleUrls: [
     './admin-games-list.component.scss',
