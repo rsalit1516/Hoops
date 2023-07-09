@@ -101,7 +101,7 @@ select > option {
 }
 
 small {
-  font-size: 14px;
+  font-size: .6rem;
 }
 
 .text-subtle {
@@ -111,7 +111,8 @@ small {
 /* material definitions */
 .mat-select-value-text {
   color: v.$admin-font-color;
-  font-size: .9rem !important;
+  font-size: v.$select-font-size !important;
+  font-weight:400;
 }
 .mat-option-text {
   color: v.$admin-font-color;
