@@ -2,7 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import * as fromUser from '../../user/state';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { User } from 'app/domain/user';
+import { User } from '@app/domain/user';
 
 @Component({
   selector: 'csbc-sidenav-list',

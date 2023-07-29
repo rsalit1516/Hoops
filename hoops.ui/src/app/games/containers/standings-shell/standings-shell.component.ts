@@ -1,9 +1,8 @@
 import { Component, OnInit, Output } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Standing } from 'app/domain/standing';
-import { Season } from 'app/domain/season';
-import { Division } from 'app/domain/division';
-import { Team } from 'app/domain/team';
+import { Standing } from '@app/domain/standing';
+import { Season } from '@app/domain/season';
+import { Division } from '@app/domain/division';
 import { Store, select } from '@ngrx/store';
 
 import * as fromGames from '../../state';
@@ -22,7 +21,7 @@ export class StandingsShellComponent implements OnInit {
   selectedDivisionId$: Observable<number> | undefined;
   errorMessage$: Observable<string> | undefined;
   selectedDivision$: Observable<any> | undefined;
-  
+
   constructor( private store: Store<fromGames.State>) { }
 
   ngOnInit() {

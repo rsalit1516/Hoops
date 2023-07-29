@@ -1,14 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  MatLegacyDialog as MatDialog,
-  MatLegacyDialogRef as MatDialogRef,
-  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA
-} from '@angular/material/legacy-dialog';
-import { AuthService } from 'app/user/auth.service';
+  MatLegacyDialogRef as MatDialogRef} from '@angular/material/legacy-dialog';
+import { AuthService } from '@app/user/auth.service';
 import {
-  FormControl,
-  FormGroup,
-  FormArray,
   UntypedFormBuilder,
   Validators
 } from '@angular/forms';

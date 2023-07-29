@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { getDirectors } from 'app/admin/director/state/indext';
-import { DirectorService } from 'app/admin/director/director.service';
+import { DirectorService } from '@app/admin/director/director.service';
 
 @Component({
   selector: 'csbc-contacts',

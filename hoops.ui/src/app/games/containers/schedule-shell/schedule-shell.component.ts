@@ -1,20 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, zip, of, from, EMPTY } from 'rxjs';
-import { Season } from 'app/domain/season';
-import { Division } from 'app/domain/division';
-import { Team } from 'app/domain/team';
+import { Season } from '@app/domain/season';
+import { Division } from '@app/domain/division';
+import { Team } from '@app/domain/team';
 import { Store, select } from '@ngrx/store';
 
 import * as fromGames from '../../state';
 import * as fromUser from '../../../user/state';
 
-import { Game } from 'app/domain/game';
+import { Game } from '@app/domain/game';
 import { groupBy, mergeMap, toArray, tap, map, concatMap, catchError, take
 } from 'rxjs/operators';
 import * as moment from 'moment';
-import { User } from 'app/domain/user';
+import { User } from '@app/domain/user';
 import { DivisionService } from './../../../services/division.service';
-import { GameService } from 'app/games/game.service';
+import { GameService } from '@app/games/game.service';
 
 @Component({
   selector: 'csbc-schedule-shell',

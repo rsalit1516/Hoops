@@ -6,8 +6,8 @@ import { ContentShellComponent } from './containers/content-shell/content-shell.
 import { ContentListComponent } from './components/content-list/contentList.component';
 import { ContentEditComponent } from './components/content-edit/content-edit.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { SharedModule } from 'app/shared/shared.module';
-import { CoreModule } from 'app/core/core.module';
+import { SharedModule } from '@app/shared//shared.module';
+import { CoreModule } from '@app/core/core.module';
 
 import { StoreModule } from '@ngrx/store';
 import { reducer } from './state/content.reducer';

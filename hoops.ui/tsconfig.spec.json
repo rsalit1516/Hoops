@@ -4,15 +4,13 @@
   "compilerOptions": {
     "outDir": "./out-tsc/spec",
     "types": [
-      "jasmine",
-      "@angular/localize"
-    ]
+      "jasmine"
+    ],
+    "target": "es2016"
   },
-  "files": [
-    "src/polyfills.ts"
-  ],
+
   "include": [
     "**/*.spec.ts",
-    "**/*.d.ts",
-    "**/*.ts"  ]
+    "**/*.d.ts"
+  ]
 }

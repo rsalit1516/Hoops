@@ -203,7 +203,7 @@ export class ContentService {
   }
   getWebContentType(id: number): WebContentType {
     let webContentType = new WebContentType();
-    console.log(id);
+    // console.log(id);
     switch (id) {
       case 1: {
         webContentType.webContentTypeId = id;

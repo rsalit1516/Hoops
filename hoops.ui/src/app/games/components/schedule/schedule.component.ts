@@ -1,19 +1,12 @@
 import { Component, OnInit, Input, Output } from '@angular/core';
-import { GameActions } from './../../state/games.actions';
-import { FormBuilder } from '@angular/forms';
 import { Game } from '../../../domain/game';
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import * as fromGames from '../../state';
 import * as fromUser from '../../../user/state';
 import * as gameActions from '../../state/games.actions';
 
-import { groupBy, mergeMap, toArray, map, switchMap } from 'rxjs/operators';
-import { from, zip, of } from 'rxjs';
-import * as moment from 'moment';
-import { User } from 'app/domain/user';
 import { GameScoreDialogComponent } from '../game-score-dialog/game-score-dialog.component';
 import { MediaObserver } from '@angular/flex-layout';
-import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { GameService } from '@app/games/game.service';
 

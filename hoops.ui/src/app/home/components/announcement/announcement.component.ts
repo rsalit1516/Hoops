@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { WebContent } from '@app/domain/webContent';
-import { Content } from 'app/domain/content';
 
 @Component({
   selector: 'csbc-announcement',

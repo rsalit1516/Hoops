@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, UntypedFormControl, UntypedFormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, UntypedFormControl, UntypedFormBuilder, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { Team } from '@app/domain/team';
 import { select, Store } from '@ngrx/store';
 import { from, Observable, of } from 'rxjs';
@@ -21,11 +21,11 @@ import { MaterialModule } from '@app/core/material/material.module';
 })
 export class AdminGameDetailComponent implements OnInit {
   gameEditForm = this.fb.group({
-    gameDate: [''],
-    gameTime: [''],
-    locationName: [''],
-    visitorTeam: [''],
-    homeTeam: [''],
+    gameDate: new FormControl('', { nonNullable: true }),
+    gameTime: new FormControl('', { nonNullable: true }),
+    locationName: new FormControl('', { nonNullable: false }),
+    visitorTeam: new FormControl('', { nonNullable: true }),
+    homeTeam: new FormControl('', { nonNullable: true }),
   });
   visitorTeam!: Team | undefined;
   homeTeam: Team | undefined;

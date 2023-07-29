@@ -25,8 +25,8 @@
 input,
 textarea {
   font-size: v.$input-font-size;
-  padding-top: 12px;
-  padding-bottom: 12px;
+  background-color: #1a1a1a;
+  color: rgb(220, 216, 216);
   padding-left: 12px;
   background-color: lighten(v.$admin-background-color, 5%);
   color: v.$field-label;
@@ -40,7 +40,7 @@ input.mat-form-field-label {
 
 .mat-form-field+.mat-form-field.mat-form-field-label {
   color: v.$field-label;
-  font-size: 1.4em;
+  font-size: 1.0rem;
 }
 
 .mat-input {
@@ -53,7 +53,7 @@ input.mat-form-field-label {
 }
 
 label {
-  font-size: 1.2em;
+  font-size: 1.1rem;
   color: v.$field-label;
 }
 
@@ -243,7 +243,10 @@ div {
   border-collapse: separate;
   background-color: transparent;
 }
-
+.mat-selection-list {
+  height: 420px;
+  overflow: auto;
+}
 tbody {
   color: white;
 }
@@ -264,11 +267,16 @@ div {
 .mat-card-title,
 h2 {
   color: v.$field-label;
-  font-size: 1.2rem;
+  font-size: .9rem;
+  font-weight: 800;
   padding-bottom: 6px;
   padding-left: 12px;
-}
 
+}
+.mat-list-text {
+  font-size: .8rem;
+  font-weight: 400;
+}
 .mat-raised-button .mat-button {
   background-color: v.$brand-color;
   color: white;
@@ -276,7 +284,12 @@ h2 {
 
 .mat-cell,
 .mat-header-cell {
-  font-size: .9rem;
+  font-size: .8rem;
+  font-weight: 300;
+}
+
+.mat-header-cell {
+  font-weight: 700;
 }
 
 .mat-select-value {
@@ -310,7 +323,7 @@ h2 {
   font-size: 1.1rem;
 }
 .table-wrapper {
-  background-color: v.$table-body-color;
+  // background-color: v.$table-body-color;
   padding: 12px;
   border-radius: 5px;
 }

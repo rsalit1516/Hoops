@@ -109,6 +109,10 @@ small {
 }
 
 /* material definitions */
+.form-container{
+  margin: 4px;
+}
+
 .mat-select-value-text {
   color: v.$admin-font-color;
   font-size: v.$select-font-size !important;

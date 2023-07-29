@@ -1,6 +1,5 @@
 import { Sponsor } from '@app/domain/sponsor';
 import { Action } from '@ngrx/store';
-import { Content } from 'app/domain/content';
 import { WebContent } from '../../domain/webContent';
 
 export enum HomeActionTypes {

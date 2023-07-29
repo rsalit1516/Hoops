@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { SeasonService } from 'app/services/season.service';
-import { DivisionService } from 'app/services/division.service';
-import { TeamService } from 'app/services/team.service';
+import { SeasonService } from '@app/services/season.service';
+import { DivisionService } from '@app/services/division.service';
+import { TeamService } from '@app/services/team.service';
 import { GameService } from '../../game.service';
 import { Store, select } from '@ngrx/store';
 
@@ -9,21 +9,12 @@ import * as fromGames from '../../state';
 import * as fromUser from '../../../user/state';
 
 import * as gameActions from '../../state/games.actions';
-import { Game } from 'app/domain/game';
-import { Team } from 'app/domain/team';
-import { Division } from 'app/domain/division';
+import { Game } from '@app/domain/game';
+import { Team } from '@app/domain/team';
+import { Division } from '@app/domain/division';
 import { Observable, from, zip, of } from 'rxjs';
-import { Standing } from 'app/domain/standing';
-import {
-  groupBy,
-  mergeMap,
-  toArray,
-  tap,
-  flatMap,
-  concatMap,
-} from 'rxjs/operators';
-import * as moment from 'moment';
-import { User } from 'app/domain/user';
+import { Standing } from '@app/domain/standing';
+import { User } from '@app/domain/user';
 
 @Component({
   selector: 'csbc-games-shell',

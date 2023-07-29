@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 import * as fromAdmin from '../state';
 import * as adminActions from '../state/admin.actions';
 import { Game } from '@app/domain/game';
+import { AdminGamesListComponent } from '../admin-shared/admin-games-list/admin-games-list.component';
 
 @Component({
   selector: 'csbc-admin-dashboard',

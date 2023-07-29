@@ -2,11 +2,11 @@ import { createFeatureSelector, createSelector } from "@ngrx/store";
 
 import { Game } from "../../domain/game";
 import { GameActions, GameActionTypes } from "./games.actions";
-import { Division } from "app/domain/division";
-import { Team } from "app/domain/team";
-import { Season } from "app/domain/season";
-import { Standing } from "app/domain/standing";
-import { PlayoffGame } from 'app/domain/playoffGame';
+import { Division } from "@app/domain/division";
+import { Team } from "@app/domain/team";
+import { Season } from "@app/domain/season";
+import { Standing } from "@app/domain/standing";
+import { PlayoffGame } from '@app/domain/playoffGame';
 
 export interface GameState {
   currentSeason: Season | null;

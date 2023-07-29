@@ -2,7 +2,7 @@
 {
   "compileOnSave": true,
   "compilerOptions": {
-    "baseUrl": "src",
+    "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
@@ -15,28 +15,16 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "target": "ES2022",
-    "module": "es2020",
+    "module": "ES2022",
     "lib": [
-      "es2020",
+      "es2022",
       "dom"
     ],
-    "types": [
-      "jasmine",
-      "node"
-    ],
     "paths": {
-      "@app/*": [
-        "app/*"
-      ],
-      "@domain": [
-        "app/domain/*"
-      ],
-      "@shared": [
-        "app/shared/*"
-      ],
-      "@content": [
-        "content/*"
-      ]
+      "@app/*": ["src/app/*"],
+      "@domain": ["src/app/domain/*"],
+      "@shared": ["src/app/shared/*"],
+      "@content": ["content/*"]
     },
     "useDefineForClassFields": false
   },
