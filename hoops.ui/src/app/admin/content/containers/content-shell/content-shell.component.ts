@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Content } from 'app/domain/content';
+import { Content } from '@app/domain/content';
 import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ContentService } from '../../content.service';
 import { Router } from '@angular/router';

@@ -7,7 +7,7 @@ import { WebContent } from '../../../domain/webContent';
   styleUrls: ['./meeting.component.scss']
 })
 export class MeetingComponent implements OnInit {
-@Input() info: WebContent;
+@Input() info: WebContent | undefined;
   constructor() { }
 
   ngOnInit(): void {

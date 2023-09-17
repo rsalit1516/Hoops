@@ -7,7 +7,7 @@ import { ScheduleCardViewComponent } from './components/schedule-card-view/sched
 import { ScheduleShellComponent } from './containers/schedule-shell/schedule-shell.component';
 import { ScoresComponent } from './components/scores/scores.component';
 import { StandingsShellComponent } from './containers/standings-shell/standings-shell.component';
-import { PageNotFoundComponent } from 'app/app.not-found.component';
+import { PageNotFoundComponent } from '@app/app.not-found.component';
 
 const gamesRoutes: Routes = [
   {

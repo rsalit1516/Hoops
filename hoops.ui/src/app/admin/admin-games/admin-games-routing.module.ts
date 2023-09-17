@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { PageNotFoundComponent } from 'app/app.not-found.component';
+import { PageNotFoundComponent } from '@app/app.not-found.component';
 import { AdminGamesShellComponent } from './containers/admin-games-shell/admin-games-shell.component';
-import { AuthGuard } from 'app/auth/auth.guard';
+import { AuthGuard } from '@app/auth/auth.guard';
 import { AdminGamesListComponent } from '../admin-shared/admin-games-list/admin-games-list.component';
 import { AdminGameDetailComponent } from '../admin-shared/admin-game-detail/admin-game-detail.component';
 

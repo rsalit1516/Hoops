@@ -9,13 +9,13 @@ import { Store, select } from '@ngrx/store';
 
 import * as fromGames from '../../state';
 import * as gameActions from '../../state/games.actions';
-import { Division } from 'app/domain/division';
-import { Team } from 'app/domain/team';
-import { DivisionService } from 'app/services/division.service';
+import { Division } from '@app/domain/division';
+import { Team } from '@app/domain/team';
+import { DivisionService } from '@app/services/division.service';
 import { catchError, tap, map } from 'rxjs/operators';
 import { EMPTY, Observable } from 'rxjs';
-import { GameService } from 'app/games/game.service';
-import { Season } from 'app/domain/season';
+import { GameService } from '@app/games/game.service';
+import { Season } from '@app/domain/season';
 import { Constants } from '@app/shared/constants';
 
 @Component({

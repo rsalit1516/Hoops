@@ -8,22 +8,15 @@
     ]
   },
   "files": [
-    "src/main.ts",
-    "src/polyfills.ts"
+    "src/main.ts"
   ],
   "include": [
     "src/**/*.d.ts"
   ],
   "paths": {
-    "@app/*": [
-      "src/app/*"
-    ],
-    "@domain": [
-      "src/app/domain/*"
-    ],
-    "@shared": ["src/app/shared/*"],
-    "@content": [
-      "content/*"
-    ]
+    "@app/*": ["src/app/*"],
+    "@domain/*": ["src/app/domain/*"],
+    "@shared/*": ["src/app/shared/*"],
+    "@content/*": ["content/*" ]
   },
 }

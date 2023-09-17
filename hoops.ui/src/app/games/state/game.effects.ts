@@ -6,14 +6,14 @@ import { map, switchMap, mergeMap, catchError, tap, mapTo, withLatestFrom, conca
 import { Store, Action, select } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { GameService } from '../game.service';
-import { TeamService } from 'app/services/team.service';
+import { TeamService } from '@app/services/team.service';
 import { getCurrentDivision, getCurrentTeam } from './';
-import { SeasonService } from 'app/services/season.service';
+import { SeasonService } from '@app/services/season.service';
 import { HttpClient } from '@angular/common/http';
-import { DataService } from 'app/services/data.service';
-import { Game } from 'app/domain/game';
-import { PlayoffGame } from 'app/domain/playoffGame';
-import { Division } from 'app/domain/division';
+import { DataService } from '@app/services/data.service';
+import { Game } from '@app/domain/game';
+import { PlayoffGame } from '@app/domain/playoffGame';
+import { Division } from '@app/domain/division';
 import { Team } from '@app/domain/team';
 
 @Injectable()

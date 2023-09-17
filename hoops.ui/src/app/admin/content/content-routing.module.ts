@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ContentShellComponent } from './containers/content-shell/content-shell.component';
 import { ContentListComponent } from './components/content-list/contentList.component';
 import { ContentEditComponent } from './components/content-edit/content-edit.component';
-import { PageNotFoundComponent } from 'app/app.not-found.component';
+import { PageNotFoundComponent } from '@app/app.not-found.component';
 
 const routes: Routes = [
   {
@@ -15,7 +15,7 @@ const routes: Routes = [
         { path: 'list', component: ContentListComponent },
         { path: '**', component: PageNotFoundComponent }
     ]
-    
+
   }
 ];
 

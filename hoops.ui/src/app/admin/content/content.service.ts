@@ -8,18 +8,17 @@ import {
   HttpHeaders,
 } from '@angular/common/http';
 
-import * as moment from 'moment';
-
 import { Content } from '../../domain/content';
 import { DataService } from '../../services/data.service';
 import { ConditionalExpr } from '@angular/compiler';
 
 import * as fromContent from '../../admin/content/state';
 import { Store } from '@ngrx/store';
-import { WebContentType } from 'app/domain/webContentType';
+import { WebContentType } from '@app/domain/webContentType';
 import { WebContent } from '../../domain/webContent';
 import { Observable, of } from 'rxjs';
 import { Constants } from '@app/shared/constants';
+import * as moment from 'moment';
 
 @Injectable()
 export class ContentService {

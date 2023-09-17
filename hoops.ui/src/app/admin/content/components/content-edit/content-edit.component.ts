@@ -20,7 +20,7 @@ import { Store, select } from '@ngrx/store';
 
 import * as fromContent from '../../state';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
-import { WebContentType } from 'app/domain/webContentType';
+import { WebContentType } from '@app/domain/webContentType';
 import { LegacyFloatLabelType } from '@angular/material/legacy-form-field';
 import { FloatLabelType } from '@angular/material/form-field';
 

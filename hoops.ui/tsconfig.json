@@ -17,14 +17,14 @@
     "target": "ES2022",
     "module": "ES2022",
     "lib": [
-      "es2022",
+      "ES2022",
       "dom"
     ],
     "paths": {
       "@app/*": ["src/app/*"],
-      "@domain": ["src/app/domain/*"],
-      "@shared": ["src/app/shared/*"],
-      "@content": ["content/*"]
+      "@domain/*": ["src/app/domain/*"],
+      "@shared/*": ["src/app/shared/*"],
+      "@content/*": ["content/*"]
     },
     "useDefineForClassFields": false
   },

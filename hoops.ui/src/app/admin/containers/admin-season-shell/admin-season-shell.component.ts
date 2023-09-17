@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Season } from 'app/domain/season';
+import { Season } from '@app/domain/season';
 import { select, Store } from '@ngrx/store';
 
 import * as fromAdmin from '../../state';

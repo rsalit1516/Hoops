@@ -62,6 +62,20 @@ namespace Hoops.Controllers
             return Ok(games);
         }
 
+        // GET: api/GetSeasonGames/seasonId
+        /// <summary>
+        /// GetSeasonPlayoffGames - get all playoff games for the season
+        /// </summary>
+        /// <param name="seasonId"></param>
+        /// <returns></returns>
+        [Route("GetSeasonPlayoffGames")]
+        [HttpGet]
+        public IActionResult GetSeasonPlayoffGames(int seasonId)
+        {
+            _logger.LogInformation("Retrieving season playoff games");
+            var games = repository.GetSeasonPlayoffGames(seasonId);
+            return Ok(games);
+        }
 
         ///
         /// GET: api/GetStandings/divisionId

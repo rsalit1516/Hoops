@@ -367,53 +367,52 @@ namespace Hoops.Infrastructure.Repository
         public List<GameSchedulesViewModel> GetGames(int seasonId)
         {
             var startTime = DateTime.Now;
-            _logger.LogInformation("ScheduledGames: GetGames - start basic query" + startTime);
+            // _logger.LogInformation("ScheduledGames: GetGames - start basic query" + startTime);
 
-            using (var db = context)
-            {
-                var result = (from d in db.Divisions
-                              from g in db.ScheduleGames
-                              from l in db.ScheduleLocations
+            using var db = context;
+            var result = from d in db.Divisions
+                         from g in db.ScheduleGames
+                         from l in db.ScheduleLocations
 
-                              where g.SeasonId == seasonId
-                              where g.DivisionId == d.DivisionId
-                              where g.LocationNumber == l.LocationNumber
-                              select new GameSchedulesViewModel
-                              {
-                                  SeasonId = seasonId,
-                                  DivisionDescription = d.DivisionDescription,
-                                  DivisionId = (int)g.DivisionId,
-                                  GameDate = g.GameDate,
-                                  GameTimeString = g.GameTime,
-                                  LocationName = l.LocationName,
-                                  GameNumber = g.GameNumber,
-                                  VisitingTeamNumber = g.VisitingTeamNumber,
-                                  HomeTeamNumber = g.HomeTeamNumber,
-                                  ScheduleNumber = g.ScheduleNumber,
-                                  HomeTeamScore = g.HomeTeamScore == -1 ? 0 : (int)g.HomeTeamScore,
-                                  VisitingTeamScore = g.VisitingTeamScore == -1 ? 0 : (int)g.VisitingTeamScore,
-                                  GameType = GameTypes.Regular
-                              });
+                         where g.SeasonId == seasonId
+                         where g.DivisionId == d.DivisionId
+                         where g.LocationNumber == l.LocationNumber
+                         select new GameSchedulesViewModel
+                         {
+                             SeasonId = seasonId,
+                             DivisionDescription = d.DivisionDescription,
+                             DivisionId = (int)g.DivisionId,
+                             GameDate = g.GameDate,
+                             GameTimeString = g.GameTime,
+                             LocationName = l.LocationName,
+                             GameNumber = g.GameNumber,
+                             VisitingTeamNumber = g.VisitingTeamNumber,
+                             HomeTeamNumber = g.HomeTeamNumber,
+                             ScheduleNumber = g.ScheduleNumber,
+                             HomeTeamScore = g.HomeTeamScore == -1 ? 0 : (int)g.HomeTeamScore,
+                             VisitingTeamScore = g.VisitingTeamScore == -1 ? 0 : (int)g.VisitingTeamScore,
+                             GameType = GameTypes.Regular
+                         };
 
-                var afterBasicQuery = DateTime.Now;
-                // _logger.LogInformation("ScheduledGames: GetGames - basic query" + afterBasicQuery + ", " + (startTime - afterBasicQuery));
-
-                var games = GetTeamNamesFromScheduledGames(result);
-                var afterGettingTeamNames = DateTime.Now;
-                // _logger.LogInformation("ScheduledGames: GetGames - after getting team Names" + afterGettingTeamNames + ", " + (afterBasicQuery - afterGettingTeamNames));
-                _logger.LogInformation("Retrieved " + games.Count.ToString() + " season games");
-                // var playoffGames = GetSeasonPlayoffGames(seasonId);
-                // _logger.LogInformation("Retrieved " + playoffGames.Count.ToString() + " playoff games");
-                // games.AddRange(playoffGames);
-                // _logger.LogInformation("Retrieved " + games.Count.ToString() + " total season games");
-                return games;
-            }
+            var afterBasicQuery = DateTime.Now;
+            _logger.LogInformation("Retrieved " + result.Count().ToString() + " season games");
+            
+            var games = GetTeamNamesFromScheduledGames(result);
+            var afterGettingTeamNames = DateTime.Now;
+            _logger.LogInformation("Retrieved " + games.Count.ToString() + " season games");
+            // var playoffGames = GetSeasonPlayoffGames(seasonId);
+            // _logger.LogInformation("Retrieved " + playoffGames.Count.ToString() + " playoff games");
+            // games.AddRange(playoffGames);
+            // _logger.LogInformation("Retrieved " + games.Count.ToString() + " total season games");
+            return games;
         }
         private List<GameSchedulesViewModel> GetTeamNamesFromScheduledGames(IQueryable<GameSchedulesViewModel> result)
         {
             var db = context;
             List<GameSchedulesViewModel> games = new List<GameSchedulesViewModel>();
+            _logger.LogInformation("Retrieved " + result.Count().ToString() + " season games");
             var seasonId = result.First().SeasonId;
+            _logger.LogInformation("SeasonID=" + seasonId.ToString());
             var teamRepo = new TeamRepository(db);
             //var teams = TeamViewModel.GetDivisionTeams(result.FirstOrDefault<GameSchedulesViewModel>().DivisionId);
             var teams = teamRepo.GetSeasonTeams((int)seasonId);
@@ -458,9 +457,9 @@ namespace Hoops.Infrastructure.Repository
 
         }
 
-        private ScheduleDivTeam GetTeam(List<ScheduleDivTeam> schedDiv, int gameNo, int teamNo, int? seasonId)
+        private ScheduleDivTeam GetTeam(List<ScheduleDivTeam> schedDiv, int scheduleNo, int teamNo, int? seasonId)
         {
-            return schedDiv.FirstOrDefault(s => s.ScheduleNumber == gameNo &&
+            return schedDiv.FirstOrDefault(s => s.ScheduleNumber == scheduleNo &&
                 s.TeamNumber == teamNo &&
                 s.SeasonId == seasonId);
         }
@@ -519,7 +518,7 @@ namespace Hoops.Infrastructure.Repository
                 return schedGames;
             }
         }
-        private List<GameSchedulesViewModel> GetSeasonPlayoffGames(int seasonId)
+        public List<GameSchedulesViewModel> GetSeasonPlayoffGames(int seasonId)
         {
             using (var db = context)
             {
@@ -545,6 +544,8 @@ namespace Hoops.Infrastructure.Repository
                              });
                 var schedGames = new List<GameSchedulesViewModel>();
                 DateTime time;
+                _logger.LogInformation("Retrieved " + games.Count().ToString() + " playoff games");
+                _logger.LogInformation("Playoffs " + games.ToList().ToString());
                 foreach (var g in games)
                 {
                     var game = new GameSchedulesViewModel();
@@ -568,10 +569,10 @@ namespace Hoops.Infrastructure.Repository
 
                 // if (divisionId != 0)
                 // {
-                schedGames = schedGames
-                .OrderBy(g => g.GameDate).ThenBy(g => g.GameTime).ThenBy(g => g.DivisionId).ToList<GameSchedulesViewModel>();
+                // schedGames = schedGames
+                // .OrderBy(g => g.GameDate).ThenBy(g => g.GameTime).ThenBy(g => g.DivisionId).ToList<GameSchedulesViewModel>();
                 // }
-                return schedGames;
+                return schedGames.OrderBy(g => g.GameDate).ThenBy(g => g.GameTime).ThenBy(g => g.DivisionId).ToList<GameSchedulesViewModel>();
             }
         }
         private static DateTime CombineDateAndTime(DateTime date, DateTime time)

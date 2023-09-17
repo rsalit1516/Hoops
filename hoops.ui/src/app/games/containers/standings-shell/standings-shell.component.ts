@@ -6,7 +6,6 @@ import { Division } from '@app/domain/division';
 import { Store, select } from '@ngrx/store';
 
 import * as fromGames from '../../state';
-import * as gameActions from '../../state/games.actions';
 
 
 @Component({
@@ -15,7 +14,7 @@ import * as gameActions from '../../state/games.actions';
   styleUrls: ['./standings-shell.component.scss']
 })
 export class StandingsShellComponent implements OnInit {
-  standings$:  Observable<Standing[]> | undefined;
+  standings$!: Observable<Standing[]>;
   currentSeason$: Observable<Season> | undefined;
   divisions$: Observable<Division[]> | undefined;
   selectedDivisionId$: Observable<number> | undefined;

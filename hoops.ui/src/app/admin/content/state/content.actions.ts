@@ -1,7 +1,7 @@
 /* NgRx */
 import { Action } from '@ngrx/store';
-import { Content } from 'app/domain/content';
-import { WebContentType } from 'app/domain/webContentType';
+import { Content } from '@app/domain/content';
+import { WebContentType } from '@app/domain/webContentType';
 import { WebContent } from '../../../domain/webContent';
 
 export enum ContentActionTypes {

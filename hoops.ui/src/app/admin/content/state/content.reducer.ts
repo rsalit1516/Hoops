@@ -6,8 +6,8 @@ import {
   ContentActionTypes,
   SetActiveContentSuccess
 } from './content.actions';
-import { Content } from 'app/domain/content';
-import { WebContentType } from 'app/domain/webContentType';
+import { Content } from '@app/domain/content';
+import { WebContentType } from '@app/domain/webContentType';
 import { WebContent } from '../../../domain/webContent';
 
 export interface ContentState {

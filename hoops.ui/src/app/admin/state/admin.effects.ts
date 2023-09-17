@@ -12,16 +12,16 @@ import {
 } from 'rxjs/operators';
 import { Store, Action, select } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
-import { SeasonService } from 'app/services/season.service';
-import { DivisionService } from 'app/services/division.service';
+import { SeasonService } from '@app/services/season.service';
+import { DivisionService } from '@app/services/division.service';
 
 import * as adminActions from './admin.actions';
 import * as fromAdmin from './';
-import { Game } from 'app/domain/game';
+import { Game } from '@app/domain/game';
 import { HttpClient } from '@angular/common/http';
 import { TeamService } from '../admin-shared/services/team.service';
-import { DataService } from 'app/services/data.service';
-import { Division } from 'app/domain/division';
+import { DataService } from '@app/services/data.service';
+import { Division } from '@app/domain/division';
 import { Season } from '@app/domain/season';
 import { Team } from '@app/domain/team';
 import { AdminGameService } from '../services/adminGame.service';

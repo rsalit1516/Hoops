@@ -17,5 +17,6 @@ namespace Hoops.Infrastructure.Interface
         new ScheduleGame Insert(ScheduleGame scheduleGame);
         IEnumerable<ScheduleStandingsVM> GetStandings(int divisionId);
         List<GameSchedulesViewModel> GetGames( int seasonId);
+        List<GameSchedulesViewModel> GetSeasonPlayoffGames(int seasonId);
     }
 }
