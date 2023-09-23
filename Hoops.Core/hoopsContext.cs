@@ -6,14 +6,14 @@ namespace Hoops.Core;
 
 public partial class hoopsContext : DbContext
 {
-    public hoopsContext()
-    {
-    }
-
+   public hoopsContext()
+   {}
+   
     public hoopsContext(DbContextOptions<hoopsContext> options)
         : base(options)
     {
     }
+
 
     public virtual DbSet<Coach> Coaches { get; set; }
     public virtual DbSet<Color> Colors { get; set; }
@@ -678,7 +678,8 @@ public partial class hoopsContext : DbContext
 
         modelBuilder.Entity<SchedulePlayoff>(entity =>
         {
-            entity.HasKey(e => e.SchedulePlayoffId);
+            entity.HasKey(e => e.ScheduleNumber);
+            entity.HasKey(e => e.GameNumber);
 
             entity.Property(e => e.Descr).HasMaxLength(50);
 

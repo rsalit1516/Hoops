@@ -14,31 +14,31 @@ namespace Hoops.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ScheduleGameController : ControllerBase
+    public class SchedulePlayoffController : ControllerBase
     {
         private readonly hoopsContext _context;
-        private readonly IScheduleGameRepository repository;
-        private readonly ILogger<ScheduleGameController> _logger;
+        private readonly ISchedulePlayoffRepository repository;
+        private readonly ILogger<SchedulePlayoffController> _logger;
 
-        public ScheduleGameController(IScheduleGameRepository repository, ILogger<ScheduleGameController> logger)
+        public SchedulePlayoffController(ISchedulePlayoffRepository repository, ILogger<SchedulePlayoffController> logger)
         {
             this.repository = repository;
             _logger = logger;
-            _logger.LogDebug(1, "NLog injected into ScheduleGameController");
+            _logger.LogDebug(1, "NLog injected into SchedulePlayoffController");
         }
 
         // GET: api/ScheduleGame
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ScheduleGame>>> GetScheduleGame()
+        public async Task<ActionResult<IEnumerable<SchedulePlayoff>>> GetScheduleGame()
         {
             return Ok(await repository.GetAllAsync());
         }
 
         // GET: api/ScheduleGame/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ScheduleGame>> GetScheduleGame(int id)
+        public async Task<ActionResult<SchedulePlayoff>> GetScheduleGame(int id)
         {
-            var scheduleGame = await _context.ScheduleGames.FindAsync(id);
+            var scheduleGame = await _context.SchedulePlayoffs.FindAsync(id);
 
             if (scheduleGame == null)
             {
@@ -59,32 +59,40 @@ namespace Hoops.Controllers
         public IActionResult GetSeasonGames(int seasonId)
         {
             _logger.LogInformation("Retrieving season games");
-            var games = repository.GetGames(seasonId);
+            var games = repository.GetGamesBySeasonId(seasonId);
             return Ok(games);
         }
-        ///
-        /// GET: api/GetStandings/divisionId
-        [Route("GetStandings")]
+
+        // GET: api/GetSeasonGames/seasonId
+        /// <summary>
+        /// GetSeasonPlayoffGames - get all playoff games for the season
+        /// </summary>
+        /// <param name="seasonId"></param>
+        /// <returns></returns>
+        [Route("GetSeasonPlayoffGames")]
         [HttpGet]
-        public IActionResult GetStandings(int divisionId)
+        public IActionResult GetSeasonPlayoffGames(int seasonId)
         {
-            _logger.LogInformation("Retrieving division standings");
-            return Ok(repository.GetStandings(divisionId));
+            _logger.LogInformation("Retrieving season playoff games");
+            var games = repository.GetGamesBySeasonId(seasonId);
+            return Ok(games);
         }
+
 
         // PUT: api/ScheduleGame/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutScheduleGame(int id, ScheduleGame scheduleGame)
+        public async Task<IActionResult> PutScheduleGame(int id, SchedulePlayoff schedulePlayoff)
         {
             _logger.LogInformation("Retrieving division standings");
-            if (id != scheduleGame.ScheduleGamesId)
-            {
-                return BadRequest();
-            }
+            // TODO: Fix the put !!!
+            // if (id != schedulePlayoff.SchedulePlayoffId)
+            // {
+            //     return BadRequest();
+            // }
 
-            repository.Update(scheduleGame);
+            repository.Update(schedulePlayoff);
 
             try
             {

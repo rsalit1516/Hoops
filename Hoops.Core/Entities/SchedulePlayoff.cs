@@ -5,7 +5,7 @@ namespace Hoops.Core.Entities
 {
     public partial class SchedulePlayoff
     {
-        public int SchedulePlayoffId { get; set; }
+        // public int SchedulePlayoffId { get; set; }
         public int? ScheduleNumber { get; set; }
         public int? GameNumber { get; set; }
         public int? LocationNumber { get; set; }

@@ -50,7 +50,7 @@ namespace Hoops.Core.Data
         {
             get
             {
-                var rep = new SeasonRepository(new hoopsContext());
+                var rep = new SeasonRepository(new Hoops.Core.hoopsContext());
                 return rep.GetCurrentSeason(CompanyId).Result;
             }
         }

@@ -7,9 +7,9 @@ namespace Hoops.Core.Models
 {
     public partial class SchedulePlayoff
     {
-        [Key, Column(Order = 0)]
+        
         public int ScheduleNumber { get; set; }
-        [Key, Column(Order = 1)]
+        
         public int GameNumber { get; set; }
         public Nullable<int> LocationNumber { get; set; }
         public Nullable<System.DateTime> GameDate { get; set; }
@@ -20,6 +20,8 @@ namespace Hoops.Core.Models
         public Nullable<int> VisitingTeamScore { get; set; }
         public Nullable<int> HomeTeamScore { get; set; }
         public int DivisionId { get; set; }
-        public int? SchedulePlayoffId { get; set; }
+        // public int? SchedulePlayoffId { get; set; }
+        
     }
+
 }

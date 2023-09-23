@@ -70,6 +70,7 @@ namespace Hoops.Api
             services.AddTransient<ITeamRepository, TeamRepository>();
             services.AddTransient<IColorRepository, ColorRepository>();
             services.AddTransient<IScheduleGameRepository, ScheduleGameRepository>();
+            services.AddTransient<ISchedulePlayoffRepository, SchedulePlayoffRepository>();
             services.AddTransient<IWebContentRepository, WebContentRepository>();
             services.AddTransient<IWebContentTypeRepository, WebContentTypeRepository>();
             services.AddTransient<ISponsorRepository, SponsorRepository>();
