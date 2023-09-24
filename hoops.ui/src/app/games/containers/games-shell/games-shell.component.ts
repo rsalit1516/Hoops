@@ -15,6 +15,7 @@ import { Division } from '@app/domain/division';
 import { Observable, from, zip, of } from 'rxjs';
 import { Standing } from '@app/domain/standing';
 import { User } from '@app/domain/user';
+import { SchedulePlayoffsComponent } from '@app/games/components/schedule-playoffs/schedule-playoffs.component';
 
 @Component({
   selector: 'csbc-games-shell',

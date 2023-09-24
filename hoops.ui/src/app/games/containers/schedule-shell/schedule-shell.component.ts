@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Observable, zip, of, from, EMPTY } from 'rxjs';
 import { Season } from '@app/domain/season';
 import { Division } from '@app/domain/division';
@@ -15,6 +15,7 @@ import * as moment from 'moment';
 import { User } from '@app/domain/user';
 import { DivisionService } from './../../../services/division.service';
 import { GameService } from '@app/games/game.service';
+import { SchedulePlayoffsComponent } from '@app/games/components/schedule-playoffs/schedule-playoffs.component';
 
 @Component({
   selector: 'csbc-schedule-shell',
@@ -22,6 +23,7 @@ import { GameService } from '@app/games/game.service';
   styleUrls: ['./schedule-shell.component.scss']
 })
 export class ScheduleShellComponent implements OnInit {
+  @Input() games: Game[] | undefined | null;
   filteredGames$: Observable<Game[]> | undefined;
   currentSeason$: Observable<Season> | undefined;
   divisions$: Observable<Division[]> | undefined;
@@ -42,6 +44,7 @@ export class ScheduleShellComponent implements OnInit {
       return EMPTY;
     })
   );
+divisionId: number|undefined;
 
   constructor(
     private store: Store<fromGames.State>,
@@ -51,7 +54,7 @@ export class ScheduleShellComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-
+    this.divisionId = 4183;
   }
 
   groupByDate(games: Game[]) {

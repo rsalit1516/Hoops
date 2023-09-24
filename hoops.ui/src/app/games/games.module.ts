@@ -21,8 +21,8 @@ import { ScheduleShellComponent } from './containers/schedule-shell/schedule-she
 import { ScoresComponent } from './components/scores/scores.component';
 import { StandingsShellComponent } from './containers/standings-shell/standings-shell.component';
 import { GameScoreDialogComponent } from './components/game-score-dialog/game-score-dialog.component';
-import { AppModule } from '@app/app.module';
 import { DailyScheduleComponent } from './components/daily-schedule/daily-schedule.component';
+import { SchedulePlayoffsComponent } from './components/schedule-playoffs/schedule-playoffs.component';
 
 @NgModule({
     imports: [
@@ -31,7 +31,8 @@ import { DailyScheduleComponent } from './components/daily-schedule/daily-schedu
         ReactiveFormsModule,
         CoreModule,
         SharedModule,
-        GamesRoutingModule,
+    GamesRoutingModule,
+        SchedulePlayoffsComponent,
         StoreModule.forFeature('games', reducer),
         EffectsModule.forFeature([GameEffects])
     ],

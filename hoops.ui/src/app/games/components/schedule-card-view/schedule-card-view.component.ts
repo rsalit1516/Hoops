@@ -16,11 +16,11 @@ export class ScheduleCardViewComponent implements OnInit {
     return this._games;
   }
   @Input()
-  set games (games: Game[]) {
+  set games (games: Game[] | null) {
     this._games = games;
     // console.log(games);
   }
-  private _games!: Game[];
+  private _games!: Game[] | null;
 
   constructor(    private store: Store<fromGames.State>,
     private userStore: Store<fromUser.State>) {

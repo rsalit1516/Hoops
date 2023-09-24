@@ -81,7 +81,7 @@ export class GameEffects {
         // tap((divisions) => console.log(divisions))
       )
     ),
-    tap(([action, t]) => {
+    tap(([ action, t ]) => {
       if (t) {
         this.seasonId = t.seasonId;
       } else {
@@ -91,7 +91,7 @@ export class GameEffects {
 
     mergeMap((action) =>
       this.http
-        .get<PlayoffGame[]>(this.playoffGameUrl + '?seasonId=' + this.seasonId)
+        .get<PlayoffGame[]>(this.playoffGameUrl + '?seasonId=' + '2211') // this.seasonId)
         .pipe(
           // tap(data => console.log('All playoff games: ' +this.playoffGameUrl + ' '+ JSON.stringify(data))),
           shareReplay(1),
