@@ -20,7 +20,7 @@ import { Team } from '@app/domain/team';
 export class GameEffects {
   seasonId!: number;
   index!: number;
-  currentSeasonId = 2190;
+  currentSeasonId: number | undefined;
   divisionId$!: Observable<number>;
   divisionId!: number;
   private gameUrl = this.dataService.seasonGamesUrl;
@@ -207,6 +207,31 @@ export class GameEffects {
       )
     )
   ));
+
+  loadDivisionPlayoffGames$: Observable<Action> = createEffect(() => this.actions$.pipe(
+    ofType(gameActions.GameActionTypes.LoadDivisionPlayoffGames),
+    concatMap((action) =>
+      of(action).pipe(
+        withLatestFrom(this.store.pipe(select(getCurrentDivision)))
+      )
+    ),
+    tap(([action, t]) => {
+      if (t) {
+        // console.log(t);
+        this.divisionId = t.divisionId;
+      } else {
+        this.divisionId = 0;
+      }
+    }),
+    switchMap((action) =>
+      this.gameService.divisionPlayoffGames(this.divisionId).pipe(
+        map((games) => new gameActions.LoadDivisionPlayoffGamesSuccess(games)),
+        tap(response => console.log(response)),
+        catchError((err) => of(new gameActions.LoadDivisionPlayoffGamesFail(err)))
+      )
+    )
+  ));
+
 
   // tslint:disable-next-line:member-ordering
 

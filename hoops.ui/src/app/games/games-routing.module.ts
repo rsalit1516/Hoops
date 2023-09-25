@@ -14,11 +14,11 @@ const gamesRoutes: Routes = [
     path: '',
     component: GamesShellComponent,
     children: [
-      { path: '', component: ScheduleComponent },
+      { path: '', component: ScheduleShellComponent },
       { path: 'schedule', component: ScheduleShellComponent },
       { path: 'standings', component: StandingsShellComponent },
       { path: 'card', component: ScheduleCardViewComponent },
-      { path: 'list', component: ScheduleComponent },
+      { path: 'list', component: ScheduleShellComponent },
       { path: 'scores', component: ScoresComponent },
       { path: '**', component: PageNotFoundComponent }
     ]

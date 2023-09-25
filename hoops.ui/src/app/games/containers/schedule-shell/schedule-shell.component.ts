@@ -9,6 +9,7 @@ import * as fromGames from '../../state';
 import * as fromUser from '../../../user/state';
 
 import { Game } from '@app/domain/game';
+import { PlayoffGame } from '@app/domain/playoffGame';
 import { groupBy, mergeMap, toArray, tap, map, concatMap, catchError, take
 } from 'rxjs/operators';
 import * as moment from 'moment';
@@ -23,7 +24,8 @@ import { SchedulePlayoffsComponent } from '@app/games/components/schedule-playof
   styleUrls: ['./schedule-shell.component.scss']
 })
 export class ScheduleShellComponent implements OnInit {
-  @Input() games: Game[] | undefined | null;
+  games: Game[] | undefined | null;
+  playoffGames: PlayoffGame[] | undefined | null;
   filteredGames$: Observable<Game[]> | undefined;
   currentSeason$: Observable<Season> | undefined;
   divisions$: Observable<Division[]> | undefined;
@@ -44,7 +46,10 @@ export class ScheduleShellComponent implements OnInit {
       return EMPTY;
     })
   );
-divisionId: number|undefined;
+  divisionId: number | undefined;
+  hasPlayoffs = false;
+  dailySchedule!: Array<Game[]>;
+  dailyPlayoffSchedule!: PlayoffGame[];
 
   constructor(
     private store: Store<fromGames.State>,
@@ -55,6 +60,25 @@ divisionId: number|undefined;
 
   ngOnInit() {
     this.divisionId = 4183;
+    this.store.select(fromGames.getCurrentDivision).subscribe((division) => {
+      this.store.select(fromGames.getFilteredGames).subscribe((games) => {
+        this.games = games;
+        this.dailySchedule = [];
+
+        this.gameService.groupByDate(games).subscribe((dailyGames) => {
+          this.dailySchedule.push(dailyGames);
+        });
+      });
+      this.store.select(fromGames.getDivisionPlayoffGames).subscribe((playoffGames) => {
+        this.playoffGames = playoffGames;
+        this.dailyPlayoffSchedule = [];
+
+        this.gameService.groupPlayoffsByDate(playoffGames).subscribe((dailyPlayoffGames) => {
+          this.dailyPlayoffSchedule = dailyPlayoffGames;
+        });
+      });
+    });
+
   }
 
   groupByDate(games: Game[]) {

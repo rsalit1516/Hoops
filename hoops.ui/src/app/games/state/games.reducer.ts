@@ -17,9 +17,9 @@ export interface GameState {
   currentTeam: Team | undefined;
   games: Game[];
   playoffGames: PlayoffGame[];
+  divisionPlayoffGames: PlayoffGame[];
   filteredGames: Game[];
   filteredTeams: Team[];
-  filteredPlayoffGames: PlayoffGame[];
   standings: Standing[];
   showListView: boolean;
   divisions: Division[];
@@ -47,10 +47,10 @@ const cd = 0,
     currentTeam: new Team(),
     games: [],
     playoffGames: [],
+    divisionPlayoffGames: [],
     standings: [],
     filteredGames: [],
     filteredTeams: [],
-    filteredPlayoffGames: [],
     divisions: [],
     teams: [],
     showAllteams: true,
@@ -126,6 +126,12 @@ export function reducer(state = initialState, action: GameActions): GameState {
         ...state,
         filteredGames: action.payload,
       };
+    case GameActionTypes.LoadDivisionPlayoffGamesSuccess:
+      return {
+        ...state,
+        divisionPlayoffGames: action.payload,
+      };
+
     case GameActionTypes.LoadFilteredGamesByTeamSuccess:
       return {
         ...state,

@@ -13,6 +13,7 @@ import { User } from '@app/domain/user';
 import { TeamService } from '@app/services/team.service';
 import { Team } from '@app/domain/team';
 import * as moment from 'moment';
+import { PlayoffGame } from '@app/domain/playoffGame';
 
 @Injectable({
   providedIn: 'root',
@@ -44,6 +45,7 @@ export class GameService {
   divisionId: number | undefined;
   teamId: number | undefined;
   allGames: Game[] | undefined;
+  allPlayoffGames: PlayoffGame[] | undefined;
   standing: any[] | undefined;
   // divisions$: Observable<Division>;
   games$ = this.http.get<Game[]>(this.dataService.seasonGamesUrl + '?seasonId=' + '2203').pipe(
@@ -155,6 +157,31 @@ export class GameService {
     return of(sortedDate);
   }
 
+  divisionPlayoffGames(div: number): Observable<PlayoffGame[]> {
+    let games: PlayoffGame[] = [];
+    let sortedDate: PlayoffGame[] = [];
+    // console.log(div);
+    this.store.pipe(select(fromGames.getPlayoffGames)).subscribe((allPlayoffGames) => {
+      this.allPlayoffGames = allPlayoffGames;
+
+      if (allPlayoffGames) {
+        for (let i = 0; i < this.allPlayoffGames.length; i++) {
+          if (this.allPlayoffGames[i].divisionId === div) {
+            let game = allPlayoffGames[i];
+            games.push(game);
+          }
+        }
+        games.sort();
+        sortedDate = games.sort((a, b) => {
+          return this.compare(a.gameDate!, b.gameDate!, true);
+        });
+        return of(sortedDate);
+      }
+      return of(sortedDate);
+    });
+    return of(sortedDate);
+  }
+
   public filterGamesByTeam(currentTeam: Team | undefined): Observable<Game[]> {
     let teamId = currentTeam?.teamId;
     this.store.pipe(select(fromGames.getGames)).subscribe((g) => {
@@ -180,6 +207,20 @@ export class GameService {
   }
 
   groupByDate(games: Game[]) {
+    const source = from(games);
+    const gDate = source.pipe(
+      map(s => (s.gameDate = moment(s.gameDate).toDate()))
+    );
+
+    const gamesByDate = source.pipe(
+      groupBy(game =>
+        moment(game.gameDate).format(moment.HTML5_FMT.DATE)
+        ),
+      mergeMap(group => group.pipe(toArray()))
+    );
+    return gamesByDate;
+  }
+  groupPlayoffsByDate(games: PlayoffGame[]) {
     const source = from(games);
     const gDate = source.pipe(
       map(s => (s.gameDate = moment(s.gameDate).toDate()))

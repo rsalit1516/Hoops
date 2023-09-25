@@ -42,6 +42,10 @@ export const getPlayoffGames = createSelector(
   getGameFeatureState,
   state => state.playoffGames
 );
+export const getDivisionPlayoffGames = createSelector(
+  getGameFeatureState,
+  state => state.divisionPlayoffGames
+);
 
 export const getDivisions = createSelector(
   getGameFeatureState,

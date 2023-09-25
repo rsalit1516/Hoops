@@ -16,13 +16,14 @@ import { GameService } from '@app/games/game.service';
   styleUrls: ['./schedule.component.scss'],
 })
 export class ScheduleComponent implements OnInit {
+  @Input() dailySchedule!: Array<Game[]>;
   groupedGames: Game[] | undefined;
   _gamesByDate: [Date, Game[]] | undefined;
   divisionId: number | undefined;
   flexMediaWatcher: any;
   currentScreenWidth: any;
 
-  dailySchedule!: Array<Game[]>;
+
   get games() {
     return this._games;
   }
@@ -54,16 +55,16 @@ export class ScheduleComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.select(fromGames.getCurrentDivision).subscribe((division) => {
-      this.store.select(fromGames.getFilteredGames).subscribe((games) => {
-        this.games = games;
-        this.dailySchedule = [];
+    // this.store.select(fromGames.getCurrentDivision).subscribe((division) => {
+    //   this.store.select(fromGames.getFilteredGames).subscribe((games) => {
+    //     this.games = games;
+    //     this.dailySchedule = [];
 
-        this.gameService.groupByDate(games).subscribe((dailyGames) => {
-          this.dailySchedule.push(dailyGames);
-        });
-      });
-    });
+    //     this.gameService.groupByDate(games).subscribe((dailyGames) => {
+    //       this.dailySchedule.push(dailyGames);
+    //     });
+    //   });
+    // });
   }
 
   editGame(game: Game) {

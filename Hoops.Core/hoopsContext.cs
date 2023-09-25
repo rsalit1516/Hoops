@@ -672,15 +672,14 @@ public partial class hoopsContext : DbContext
         {
             entity.HasKey(e => e.LocationNumber);
             entity.Property(e => e.LocationName).HasMaxLength(50);
-
             entity.Property(e => e.Notes).HasMaxLength(100);
         });
+
 
         modelBuilder.Entity<SchedulePlayoff>(entity =>
         {
             entity.HasKey(e => e.ScheduleNumber);
             entity.HasKey(e => e.GameNumber);
-
             entity.Property(e => e.Descr).HasMaxLength(50);
 
             entity.Property(e => e.GameDate).HasColumnType("datetime");

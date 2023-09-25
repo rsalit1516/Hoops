@@ -8,6 +8,7 @@ import { Game } from "../../domain/game";
 /* NgRx */
 import { Action, Store } from "@ngrx/store";
 
+
 export enum GameActionTypes {
   ToggleGameCode = "[Game] Toggle Game Code",
   LoadCurrentSeason = "[Games] Load Current Season",
@@ -48,6 +49,9 @@ export enum GameActionTypes {
   LoadPlayoffGames = "[Game] Load Playoff Games",
   LoadPlayoffGamesSuccess = "[Game] Load Playoff Games Success",
   LoadPlayoffGamesFail = "[Game] Load Playoff Games Fail",
+  LoadDivisionPlayoffGames = "[Playoff Game] Load Division Playoff Games",
+  LoadDivisionPlayoffGamesSuccess = "[Playoff Game] Load Division Playoff Games Success",
+  LoadDivisionPlayoffGamesFail = "[Playoff Game] Load Division Playoff Games Fail",
 }
 
 // Action Creators
@@ -174,11 +178,22 @@ export class LoadPlayoffGames implements Action {
 }
 export class LoadPlayoffGamesSuccess implements Action {
   readonly type = GameActionTypes.LoadPlayoffGamesSuccess;
-
   constructor(public payload: PlayoffGame[]) {}
 }
 export class LoadPlayoffGamesFail implements Action {
   readonly type = GameActionTypes.LoadPlayoffGamesFail;
+
+  constructor(public payload: string) {}
+}
+export class LoadDivisionPlayoffGames implements Action {
+  readonly type = GameActionTypes.LoadPlayoffGames;
+}
+export class LoadDivisionPlayoffGamesSuccess implements Action {
+  readonly type = GameActionTypes.LoadDivisionPlayoffGamesSuccess;
+  constructor(public payload: PlayoffGame[]) {}
+}
+export class LoadDivisionPlayoffGamesFail implements Action {
+  readonly type = GameActionTypes.LoadDivisionPlayoffGamesFail;
 
   constructor(public payload: string) {}
 }
@@ -257,6 +272,9 @@ export type GameActions =
   | LoadPlayoffGames
   | LoadPlayoffGamesSuccess
   | LoadPlayoffGamesFail
+  | LoadDivisionPlayoffGames
+  | LoadDivisionPlayoffGamesSuccess
+  | LoadDivisionPlayoffGamesFail
   | SetPlayoffGames
   | LoadDivisions
   | LoadDivisionsSuccess
