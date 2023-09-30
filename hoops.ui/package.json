@@ -13,7 +13,7 @@
     "@angular-material-components/datetime-picker": "^7.0.1",
     "@angular-material-components/moment-adapter": "^8.0.0",
     "@angular/animations": "^16.0.0",
-    "@angular/cdk": "^16.0.0",
+    "@angular/cdk": "^16.2.6",
     "@angular/common": "^16.0.0",
     "@angular/compiler": "^16.0.0",
     "@angular/core": "^16.0.0",
