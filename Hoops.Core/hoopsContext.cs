@@ -681,13 +681,9 @@ public partial class hoopsContext : DbContext
             entity.HasKey(e => e.ScheduleNumber);
             entity.HasKey(e => e.GameNumber);
             entity.Property(e => e.Descr).HasMaxLength(50);
-
             entity.Property(e => e.GameDate).HasColumnType("datetime");
-
             entity.Property(e => e.GameTime).HasMaxLength(20);
-
             entity.Property(e => e.HomeTeam).HasMaxLength(10);
-
             entity.Property(e => e.VisitingTeam).HasMaxLength(10);
         });
 
@@ -696,27 +692,17 @@ public partial class hoopsContext : DbContext
         {
             entity.ToTable("Seasons");
             entity.HasKey(e => e.SeasonId);
-
             entity.Property(e => e.SeasonId).HasColumnName("SeasonID");
-
             entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
-
             entity.Property(e => e.ConvenienceFee).HasColumnType("money");
-
             entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime").HasDefaultValue(DateTime.Now);
-
             entity.Property(e => e.CreatedUser).HasMaxLength(50);
-
             entity.Property(e => e.FromDate).HasColumnType("smalldatetime");
-
             entity.Property(e => e.ParticipationFee).HasColumnType("money");
-
             entity.Property(e => e.Description)
                 .HasColumnName("Sea_Desc")
                 .HasMaxLength(50);
-
             entity.Property(e => e.SignUpsDate).HasColumnType("smalldatetime");
-
             entity.Property(e => e.SignUpsEnd)
                 .HasColumnName("SignUpsEND")
                 .HasColumnType("smalldatetime");
@@ -725,72 +711,6 @@ public partial class hoopsContext : DbContext
 
             entity.Property(e => e.ToDate).HasColumnType("smalldatetime");
         });
-
-        // modelBuilder.Entity<ShoppingCart>(entity =>
-        // {
-        //     entity.HasNoKey();
-
-        //     entity.Property(e => e.CartId).HasColumnName("CartID");
-
-        //     entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
-
-        //     entity.Property(e => e.CreatedDate).HasColumnType("datetime").HasDefaultValue(DateTime.Now);
-
-        //     entity.Property(e => e.CreatedUser).HasMaxLength(20);
-
-        //     entity.Property(e => e.ErrorMessage).HasMaxLength(200);
-
-        //     entity.Property(e => e.HouseId).HasColumnName("HouseID");
-
-        //     entity.Property(e => e.PayerEmail)
-        //         .HasColumnName("Payer_Email")
-        //         .HasMaxLength(50);
-
-        //     entity.Property(e => e.PayerId)
-        //         .HasColumnName("Payer_ID")
-        //         .HasMaxLength(50);
-
-        //     entity.Property(e => e.PaymentFee)
-        //         .HasColumnName("Payment_Fee")
-        //         .HasColumnType("money");
-
-        //     entity.Property(e => e.PaymentGross)
-        //         .HasColumnName("Payment_Gross")
-        //         .HasColumnType("money");
-
-        //     entity.Property(e => e.PaymentStatus)
-        //         .HasColumnName("Payment_status")
-        //         .HasMaxLength(50);
-
-        //     entity.Property(e => e.SeasonId).HasColumnName("SeasonID");
-
-        //     entity.Property(e => e.TxnId)
-        //         .HasColumnName("Txn_ID")
-        //         .HasMaxLength(50);
-        // });
-
-        // modelBuilder.Entity<SpecialUserQuery>(entity =>
-        // {
-        //     entity.HasNoKey();
-
-        //     entity.ToTable("Special User Query");
-
-        //     entity.Property(e => e.GameDate).HasColumnType("datetime");
-
-        //     entity.Property(e => e.HomeTeamName)
-        //         .HasColumnName("Home.TeamName")
-        //         .HasMaxLength(50);
-
-        //     entity.Property(e => e.HomeTeamScheduleTeamNumber).HasColumnName("Home Team.ScheduleTeamNumber");
-
-        //     entity.Property(e => e.ScheduleName).HasMaxLength(50);
-
-        //     entity.Property(e => e.VisitingTeamName)
-        //         .HasColumnName("Visiting.TeamName")
-        //         .HasMaxLength(50);
-
-        //     entity.Property(e => e.VisitingTeamScheduleTeamNumber).HasColumnName("Visiting Team.ScheduleTeamNumber");
-        // });
 
         modelBuilder.Entity<SponsorFee>(entity =>
         {
@@ -810,11 +730,8 @@ public partial class hoopsContext : DbContext
         {
             entity.ToTable("SponsorPayment");
             entity.HasKey(e => e.PaymentId);
-
             entity.Property(e => e.Amount).HasColumnType("decimal(18, 2)");
-
             entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
-
             entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime").HasDefaultValue(DateTime.Now);
 
             entity.Property(e => e.CreatedUser)

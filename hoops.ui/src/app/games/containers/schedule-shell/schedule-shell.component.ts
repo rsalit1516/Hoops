@@ -72,9 +72,10 @@ export class ScheduleShellComponent implements OnInit {
       this.store.select(fromGames.getDivisionPlayoffGames).subscribe((playoffGames) => {
         this.playoffGames = playoffGames;
         this.dailyPlayoffSchedule = [];
-
+        console.log(playoffGames);
         this.gameService.groupPlayoffsByDate(playoffGames).subscribe((dailyPlayoffGames) => {
           this.dailyPlayoffSchedule = dailyPlayoffGames;
+          console.log(dailyPlayoffGames);
         });
       });
     });

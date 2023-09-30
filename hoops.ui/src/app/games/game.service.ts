@@ -160,12 +160,14 @@ export class GameService {
   divisionPlayoffGames(div: number): Observable<PlayoffGame[]> {
     let games: PlayoffGame[] = [];
     let sortedDate: PlayoffGame[] = [];
-    // console.log(div);
+    console.log(div);
     this.store.pipe(select(fromGames.getPlayoffGames)).subscribe((allPlayoffGames) => {
       this.allPlayoffGames = allPlayoffGames;
-
+console.log(allPlayoffGames);
       if (allPlayoffGames) {
         for (let i = 0; i < this.allPlayoffGames.length; i++) {
+          console.log(this.allPlayoffGames[ i ].divisionId);
+
           if (this.allPlayoffGames[i].divisionId === div) {
             let game = allPlayoffGames[i];
             games.push(game);
