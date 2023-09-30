@@ -8,12 +8,12 @@ import * as fromAdmin from '../../state';
 import * as adminActions from '../../state/admin.actions';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+// import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '@app/core/material/material.module';
 @Component({
   selector: 'admin-games-list',
   standalone: true,
-  imports: [CommonModule, MaterialModule, ReactiveFormsModule],
+  imports: [CommonModule, MaterialModule],
   templateUrl: './admin-games-list.component.html',
   styleUrls: [
     './admin-games-list.component.scss',
@@ -38,12 +38,12 @@ export class AdminGamesListComponent implements OnInit {
     public dialog: MatDialog,
     private media: MediaObserver
   ) {
-    this.flexMediaWatcher = media.media$.subscribe((change) => {
-      if (change.mqAlias !== this.currentScreenWidth) {
-        this.currentScreenWidth = change.mqAlias;
+    // this.flexMediaWatcher = media.media$.subscribe((change) => {
+    //   if (change.mqAlias !== this.currentScreenWidth) {
+    //     this.currentScreenWidth = change.mqAlias;
         this.setupTable();
-      }
-    });
+    //   }
+    // });
     this.displayedColumns = [
       'gameDate',
       'gameTime',

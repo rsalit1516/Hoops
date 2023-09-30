@@ -26,12 +26,12 @@ displayedColumns!: string[];
     public dialog: MatDialog,
     private media: MediaObserver
 ) {
-  this.flexMediaWatcher = media.media$.subscribe((change) => {
-    if (change.mqAlias !== this.currentScreenWidth) {
-      this.currentScreenWidth = change.mqAlias;
+  // this.flexMediaWatcher = media.media$.subscribe((change) => {
+  //   if (change.mqAlias !== this.currentScreenWidth) {
+      // this.currentScreenWidth = change.mqAlias;
       this.setupTable();
-    }
-  });
+  //   }
+  // });
 
  }
 
