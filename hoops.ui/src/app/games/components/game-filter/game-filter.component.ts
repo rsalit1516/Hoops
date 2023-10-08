@@ -53,9 +53,7 @@ export class GameFilterComponent implements OnInit {
     this.store.select(fromGames.getCurrentDivision).subscribe((division) => {
       this.currentDivision = division as Division;
       this.divisionComponent?.setValue(this.currentDivision);
-      console.log("Initial Division =" + this.currentDivision.divisionId);
       this.changeDivision(division as Division);
-      // this.criteriaForm.controls['divisions'].setValue(division);
     });
   }
 
@@ -86,13 +84,7 @@ export class GameFilterComponent implements OnInit {
   setStateSubscriptions() {}
 
   changeDivision(val: Division) {
-    // const changedDivision = this.criteriaForm.controls[ 'divisions' ].value;
-
-    console.log("current Divisions =" + this.currentDivision.divisionId);
-    // console.log("control Division =" + changedDivision.divisionId );
-    console.log("argument Division =" + val.divisionId);
     if (val !== undefined && val !== this.currentDivision) {
-      console.log('changing division');
       this.currentDivision = val;
       this.store.dispatch(new gameActions.SetCurrentDivision(val));
       this.store.dispatch(new gameActions.LoadDivisionGames);
