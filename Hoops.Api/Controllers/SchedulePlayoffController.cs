@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Hoops.Core;
 using Hoops.Core.Models;
 using Hoops.Infrastructure.Interface;
+using NLog.Web.LayoutRenderers;
 
 namespace Hoops.Controllers
 {
@@ -59,6 +60,10 @@ namespace Hoops.Controllers
         public IActionResult GetSeasonGames(int seasonId)
         {
             _logger.LogInformation("Retrieving season games");
+            if (seasonId == 0)
+            {
+                return BadRequest();
+            }
             var games = repository.GetGamesBySeasonId(seasonId);
             return Ok(games);
         }

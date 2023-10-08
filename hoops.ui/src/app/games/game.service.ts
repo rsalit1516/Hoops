@@ -89,6 +89,7 @@ export class GameService {
   );
   divisions: Division[] | undefined;
   user: User | undefined;
+  seasonPlayoffGames: PlayoffGame[] | null | undefined;
   // divisionGames$ = this.allGames$.pipe(
   //   map(games => this.getDivisionGames(games, this.divisionId))
   // );
@@ -122,6 +123,14 @@ export class GameService {
     return this.http.get<Game[]>(this.dataService.seasonGamesUrl + this.currentSeason$).pipe(
       map((response) => (this.games = response))
       // tap(data => console.log('All: ' + JSON.stringify(data))),
+      // catchError(this.handleError)
+    );
+  }
+  getSeasonPlayoffGames(): Observable<PlayoffGame[]> {
+    // const seasonId = fromGames.getCurrentSeason;
+    return this.http.get<PlayoffGame[]>(this.dataService.playoffGameUrl + '?seasonId=' + this.seasonId).pipe(
+      map((response) => (this.seasonPlayoffGames = response)),
+      tap(data => console.log('All: ' + JSON.stringify(data.length))),
       // catchError(this.handleError)
     );
   }
@@ -160,14 +169,10 @@ export class GameService {
   divisionPlayoffGames(div: number): Observable<PlayoffGame[]> {
     let games: PlayoffGame[] = [];
     let sortedDate: PlayoffGame[] = [];
-    console.log(div);
     this.store.pipe(select(fromGames.getPlayoffGames)).subscribe((allPlayoffGames) => {
       this.allPlayoffGames = allPlayoffGames;
-console.log(allPlayoffGames);
       if (allPlayoffGames) {
         for (let i = 0; i < this.allPlayoffGames.length; i++) {
-          console.log(this.allPlayoffGames[ i ].divisionId);
-
           if (this.allPlayoffGames[i].divisionId === div) {
             let game = allPlayoffGames[i];
             games.push(game);
@@ -248,7 +253,6 @@ console.log(allPlayoffGames);
     return this.store.select(fromGames.getCurrentSeason).subscribe((season) => {
       if (season !== null) {
         this.seasonId = season.seasonId;
-        // console.log(season);
       }
     });
   }

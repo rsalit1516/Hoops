@@ -88,7 +88,9 @@ export class GamesShellComponent implements OnInit {
     // this.filteredGames$ = this.store.pipe(select(fromGames.getFilteredGames));
     // this.standings$ = this.store.pipe(select(fromGames.getStandings));
     this.store.select(fromGames.getDivisions).subscribe((divisions) => {
-      this.store.dispatch(new gameActions.SetCurrentDivision(divisions[0]));
+      if (divisions[ 0 ]) {
+        this.store.dispatch(new gameActions.SetCurrentDivision(divisions[ 0 ]));
+      }
     });
 
     this.store.pipe(select(fromUser.getCurrentUser)).subscribe((user) => {
