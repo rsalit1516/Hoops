@@ -34,7 +34,7 @@ import { SchedulePlayoffsComponent } from '@app/games/components/schedule-playof
 })
 export class ScheduleShellComponent implements OnInit {
   games: Game[] | undefined | null;
-  playoffGames: PlayoffGame[] | undefined | null;
+  playoffGames!: PlayoffGame[] ;
   filteredGames$: Observable<Game[]> | undefined;
   currentSeason$: Observable<Season> | undefined;
   divisions$: Observable<Division[]> | undefined;
@@ -58,7 +58,7 @@ export class ScheduleShellComponent implements OnInit {
   divisionId: number | undefined;
   hasPlayoffs = false;
   dailySchedule!: Array<Game[]>;
-  dailyPlayoffSchedule!: PlayoffGame[];
+  dailyPlayoffSchedule!: Array<PlayoffGame[]>;
 
   constructor(
     private store: Store<fromGames.State>,
@@ -68,7 +68,7 @@ export class ScheduleShellComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.divisionId = 4183;
+    // this.divisionId = 4183;
     this.store.select(fromGames.getCurrentDivision).subscribe((division) => {
       this.store.select(fromGames.getFilteredGames).subscribe((games) => {
         this.games = games;
@@ -83,11 +83,13 @@ export class ScheduleShellComponent implements OnInit {
         .select(fromGames.getDivisionPlayoffGames)
         .subscribe((playoffGames) => {
           this.playoffGames = playoffGames;
+          // console.log(playoffGames);
           this.dailyPlayoffSchedule = [];
           this.gameService
             .groupPlayoffsByDate(playoffGames)
             .subscribe((dailyPlayoffGames) => {
-              this.dailyPlayoffSchedule = dailyPlayoffGames;
+              this.dailyPlayoffSchedule.push(dailyPlayoffGames);
+              console.log(this.dailyPlayoffSchedule);
             });
         });
     });

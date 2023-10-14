@@ -40,10 +40,8 @@ export class ScheduleComponent implements OnInit {
 
   constructor(
     private store: Store<fromGames.State>,
-    private userStore: Store<fromUser.State>,
     public dialog: MatDialog,
     private media: MediaObserver,
-    private gameService: GameService
   ) {
     this.title = 'Schedule!';
     // this.flexMediaWatcher = media.media$.subscribe((change) => {
@@ -55,16 +53,6 @@ export class ScheduleComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.store.select(fromGames.getCurrentDivision).subscribe((division) => {
-    //   this.store.select(fromGames.getFilteredGames).subscribe((games) => {
-    //     this.games = games;
-    //     this.dailySchedule = [];
-
-    //     this.gameService.groupByDate(games).subscribe((dailyGames) => {
-    //       this.dailySchedule.push(dailyGames);
-    //     });
-    //   });
-    // });
   }
 
   editGame(game: Game) {

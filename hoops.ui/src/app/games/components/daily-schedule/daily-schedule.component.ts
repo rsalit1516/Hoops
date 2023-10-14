@@ -33,7 +33,6 @@ export class DailyScheduleComponent implements OnInit {
   currentScreenWidth: string | undefined;
   constructor(
     private store: Store<fromGames.State>,
-    private userStore: Store<fromUser.State>,
     public dialog: MatDialog,
     private media: MediaObserver
   ) {}
