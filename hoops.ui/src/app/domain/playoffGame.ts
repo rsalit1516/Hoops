@@ -13,6 +13,7 @@ export class PlayoffGame {
   public visitingTeam: string | undefined;
   public homeTeamScore: number | undefined;
   public visitingTeamScore: number | undefined;
+  public locationName: string | undefined;
   // public Description: string;
   constructor() {}
 }

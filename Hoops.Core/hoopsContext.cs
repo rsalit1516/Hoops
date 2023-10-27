@@ -355,7 +355,6 @@ public partial class hoopsContext : DbContext
                 .ValueGeneratedNever();
 
             entity.Property(e => e.Address1).HasMaxLength(50);
-
             entity.Property(e => e.Address2).HasMaxLength(50);
 
             entity.Property(e => e.City).HasMaxLength(50);
@@ -381,17 +380,6 @@ public partial class hoopsContext : DbContext
             entity.Property(e => e.Zip).HasMaxLength(20);
         });
 
-        modelBuilder.Entity<Location>(entity =>
-        {
-            entity.ToTable("Location");
-            entity.HasKey(e => e.Id);
-
-            entity.Property(e => e.LocationName)
-                .IsRequired()
-                .HasMaxLength(50);
-
-            entity.Property(e => e.Notes).IsRequired();
-        });
 
 
         // modelBuilder.Entity<PayErrorLog>(entity =>
@@ -676,16 +664,16 @@ public partial class hoopsContext : DbContext
         });
 
 
-        modelBuilder.Entity<SchedulePlayoff>(entity =>
-        {
-            entity.HasKey(e => e.ScheduleNumber);
-            entity.HasKey(e => e.GameNumber);
-            entity.Property(e => e.Descr).HasMaxLength(50);
-            entity.Property(e => e.GameDate).HasColumnType("datetime");
-            entity.Property(e => e.GameTime).HasMaxLength(20);
-            entity.Property(e => e.HomeTeam).HasMaxLength(10);
-            entity.Property(e => e.VisitingTeam).HasMaxLength(10);
-        });
+        // modelBuilder.Entity<SchedulePlayoff>(entity =>
+        // {
+        //     entity.HasKey(e => e.ScheduleNumber);
+        //     entity.HasKey(e => e.GameNumber);
+        //     entity.Property(e => e.Descr).HasMaxLength(50);
+        //     entity.Property(e => e.GameDate).HasColumnType("datetime");
+        //     entity.Property(e => e.GameTime).HasMaxLength(20);
+        //     entity.Property(e => e.HomeTeam).HasMaxLength(10);
+        //     entity.Property(e => e.VisitingTeam).HasMaxLength(10);
+        // });
 
 
         modelBuilder.Entity<Season>(entity =>
