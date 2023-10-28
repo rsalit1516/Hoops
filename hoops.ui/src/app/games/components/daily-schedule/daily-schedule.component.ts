@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { Game } from 'app/domain/game';
+import { Game } from '@app/domain/game';
 // import { DataSource } from "@angular/cdk/table";
 import { Store, select } from '@ngrx/store';
 import { MediaObserver } from '@angular/flex-layout';
@@ -8,8 +8,7 @@ import { GameScoreDialogComponent } from '../game-score-dialog/game-score-dialog
 import * as fromGames from '../../state';
 import * as fromUser from '../../../user/state';
 import * as gameActions from '../../state/games.actions';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 
 @Component({
   selector: 'daily-schedule',
@@ -34,16 +33,15 @@ export class DailyScheduleComponent implements OnInit {
   currentScreenWidth: string | undefined;
   constructor(
     private store: Store<fromGames.State>,
-    private userStore: Store<fromUser.State>,
     public dialog: MatDialog,
     private media: MediaObserver
   ) {}
 
   ngOnInit() {
     this.data = this.games;
-    this.flexMediaWatcher = this.media.media$.subscribe((change) => {
-      if (change.mqAlias !== this.currentScreenWidth) {
-        this.currentScreenWidth = change.mqAlias;
+    // this.flexMediaWatcher = this.media.media$.subscribe((change) => {
+      // if (change.mqAlias !== this.currentScreenWidth) {
+      //   this.currentScreenWidth = change.mqAlias;
         this.setupTable();
         this.store.select(fromGames.getCanEdit).subscribe((canEdit) => {
           this.canEdit = canEdit;
@@ -51,8 +49,8 @@ export class DailyScheduleComponent implements OnInit {
             this.displayedColumns.push('actions');
           }
         });
-      }
-    });
+      // }
+    // });
     this.gameDate! = this.data[0].gameDate as Date;
   }
   setupTable() {

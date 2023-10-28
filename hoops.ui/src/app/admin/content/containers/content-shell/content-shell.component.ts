@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Content } from 'app/domain/content';
+import { Content } from '@app/domain/content';
 import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ContentService } from '../../content.service';
 import { Router } from '@angular/router';
@@ -42,8 +42,10 @@ export class ContentShellComponent implements OnInit {
   ngOnInit(): void {
     console.log('called content shell');
     this.store.dispatch(new contentActions.Load());
-    this.store.select(fromContent.getContentList).subscribe(content => {
-      this.store.dispatch(new contentActions.SetActiveContent());
+    this.store.select(fromContent.getIsActiveOnly).subscribe(isActiveContent => {
+      console.log(isActiveContent);
+      isActiveContent ? this.store.dispatch(new contentActions.SetActiveContent()):
+      this.store.dispatch(new contentActions.SetAllContent());
     });
   }
 

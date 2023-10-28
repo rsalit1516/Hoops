@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { RouterModule, Routes } from '@angular/router';
 
 import { AdminComponent } from './admin.component';
 import { AdminDashboardComponent } from './dashboard/admin-dashboard.component';
@@ -24,7 +23,6 @@ import { EffectsModule } from '@ngrx/effects';
 import { AdminEffects } from './state/admin.effects';
 import { AdminSeasonShellComponent } from './containers/admin-season-shell/admin-season-shell.component';
 import { AdminSeasonListComponent } from './components/admin-season-list/admin-season-list.component';
-// import { AdminDivisionListComponent } from './components/admin-division-list/admin-division-list.component';
 
 import { AdminDivisionShellComponent } from './containers/admin-division-shell/admin-division-shell.component';
 import { ContentModule } from './content/content.module';
@@ -37,6 +35,7 @@ import { PaymentsComponent } from './registrations-and-payments/components/payme
 import { AdminGamesModule } from './admin-games/admin-games.module';
 import { RegistrationsAndPaymentsModule } from './registrations-and-payments/registrations-and-payments.module';
 import { AdminSharedModule } from './admin-shared/admin-shared.module';
+import { AdminGamesListComponent } from './admin-shared/admin-games-list/admin-games-list.component';
 
 @NgModule({
   imports: [
@@ -51,6 +50,7 @@ import { AdminSharedModule } from './admin-shared/admin-shared.module';
     DirectorModule,
     AdminGamesModule,
     RegistrationsAndPaymentsModule,
+    AdminGamesListComponent,
     StoreModule.forFeature('admin', reducer),
     EffectsModule.forFeature([AdminEffects]),
   ],

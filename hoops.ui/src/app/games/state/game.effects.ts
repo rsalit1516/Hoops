@@ -6,21 +6,21 @@ import { map, switchMap, mergeMap, catchError, tap, mapTo, withLatestFrom, conca
 import { Store, Action, select } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { GameService } from '../game.service';
-import { TeamService } from 'app/services/team.service';
+import { TeamService } from '@app/services/team.service';
 import { getCurrentDivision, getCurrentTeam } from './';
-import { SeasonService } from 'app/services/season.service';
+import { SeasonService } from '@app/services/season.service';
 import { HttpClient } from '@angular/common/http';
-import { DataService } from 'app/services/data.service';
-import { Game } from 'app/domain/game';
-import { PlayoffGame } from 'app/domain/playoffGame';
-import { Division } from 'app/domain/division';
+import { DataService } from '@app/services/data.service';
+import { Game } from '@app/domain/game';
+import { PlayoffGame } from '@app/domain/playoffGame';
+import { Division } from '@app/domain/division';
 import { Team } from '@app/domain/team';
 
 @Injectable()
 export class GameEffects {
   seasonId!: number;
   index!: number;
-  currentSeasonId = 2190;
+  currentSeasonId: number | undefined;
   divisionId$!: Observable<number>;
   divisionId!: number;
   private gameUrl = this.dataService.seasonGamesUrl;
@@ -81,7 +81,7 @@ export class GameEffects {
         // tap((divisions) => console.log(divisions))
       )
     ),
-    tap(([action, t]) => {
+    tap(([ action, t ]) => {
       if (t) {
         this.seasonId = t.seasonId;
       } else {
@@ -90,9 +90,7 @@ export class GameEffects {
     }),
 
     mergeMap((action) =>
-      this.http
-        .get<PlayoffGame[]>(this.playoffGameUrl + '?seasonId=' + this.seasonId)
-        .pipe(
+      this.gameService.getSeasonPlayoffGames().pipe(
           // tap(data => console.log('All playoff games: ' +this.playoffGameUrl + ' '+ JSON.stringify(data))),
           shareReplay(1),
           map((games) => new gameActions.LoadPlayoffGamesSuccess(games)),
@@ -108,9 +106,9 @@ export class GameEffects {
     ofType(gameActions.GameActionTypes.LoadCurrentSeason),
     mergeMap((action) =>
       this.seasonService.currentSeason$.pipe(
-        map((season) => new gameActions.SetCurrentSeason(season)),
-        // tap((data) => console.log(data)),
-        catchError((err) => of(new gameActions.LoadDivisionsFail(err)))
+        map((season) => new gameActions.LoadCurrentSeasonSuccess(season)),
+        tap((data) => console.log(data)),
+        catchError((err) => of(new gameActions.LoadCurrentSeasonFail(err)))
       )
     )
   ));
@@ -145,30 +143,33 @@ export class GameEffects {
   // tslint:disable-next-line:member-ordering
 
   changeDivision$: Observable<Action> = createEffect(() => this.actions$.pipe(
-    ofType(gameActions.GameActionTypes.SetCurrentDivision),
+    ofType(gameActions.GameActionTypes.LoadDivisionGames),
     tap((x) => (this.gameService.divisionId = x)),
     switchMap(m => [
       new gameActions.LoadFilteredGames(),
+    ]),
+    switchMap(m => [
+      new gameActions.LoadDivisionPlayoffGames(),
     ]),
 
     tap(() => 'changed division')
   ));
 
-  filterTeams$: Observable<Action> = createEffect(() => this.actions$.pipe(
-    ofType(gameActions.GameActionTypes.SetCurrentDivision),
-    tap((x) => (this.gameService.divisionId = x)),
-    switchMap(m => [
-      new gameActions.LoadFilteredTeams(),
-    ])
-  ));
+  // filterTeams$: Observable<Action> = createEffect(() => this.actions$.pipe(
+  //   ofType(gameActions.GameActionTypes.SetCurrentDivision),
+  //   tap((x) => (this.gameService.divisionId = x)),
+  //   switchMap(m => [
+  //     new gameActions.LoadFilteredTeams(),
+  //   ])
+  // ));
 
-  updateStandingForDivison$: Observable<Action> = createEffect(() => this.actions$.pipe(
-    ofType(gameActions.GameActionTypes.SetCurrentDivision),
-    tap((x) => (this.gameService.divisionId = x)),
-    switchMap(m => [
-      new gameActions.LoadStandings()
-    ])
-  ));
+  // updateStandingForDivison$: Observable<Action> = createEffect(() => this.actions$.pipe(
+  //   ofType(gameActions.GameActionTypes.SetCurrentDivision),
+  //   tap((x) => (this.gameService.divisionId = x)),
+  //   switchMap(m => [
+  //     new gameActions.LoadStandings()
+  //   ])
+  // ));
 
   // tslint:disable-next-line:member-ordering
 
@@ -207,6 +208,31 @@ export class GameEffects {
       )
     )
   ));
+
+  loadDivisionPlayoffGames$: Observable<Action> = createEffect(() => this.actions$.pipe(
+    ofType(gameActions.GameActionTypes.LoadDivisionPlayoffGames),
+    concatMap((action) =>
+      of(action).pipe(
+        withLatestFrom(this.store.pipe(select(getCurrentDivision)))
+      )
+    ),
+    tap(([action, t]) => {
+      if (t) {
+        // console.log(t);
+        this.divisionId = t.divisionId;
+      } else {
+        this.divisionId = 0;
+      }
+    }),
+    switchMap((action) =>
+      this.gameService.divisionPlayoffGames(this.divisionId).pipe(
+        map((games) => new gameActions.LoadDivisionPlayoffGamesSuccess(games)),
+        tap(response => console.log(response)),
+        catchError((err) => of(new gameActions.LoadDivisionPlayoffGamesFail(err)))
+      )
+    )
+  ));
+
 
   // tslint:disable-next-line:member-ordering
 

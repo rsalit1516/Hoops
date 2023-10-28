@@ -1256,10 +1256,10 @@ namespace Hoops.Core.Migrations
 
             modelBuilder.Entity("Hoops.Core.Entities.SchedulePlayoff", b =>
                 {
-                    b.Property<int>("SchedulePlayoffId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    // b.Property<int>("SchedulePlayoffId")
+                    //     .ValueGeneratedOnAdd()
+                    //     .HasColumnType("int")
+                    //     .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Descr")
                         .HasColumnType("nvarchar(50)")
@@ -1298,7 +1298,7 @@ namespace Hoops.Core.Migrations
                     b.Property<int?>("VisitingTeamScore")
                         .HasColumnType("int");
 
-                    b.HasKey("SchedulePlayoffId");
+                    // b.HasKey("SchedulePlayoffId");
 
                     b.ToTable("SchedulePlayoffs");
                 });

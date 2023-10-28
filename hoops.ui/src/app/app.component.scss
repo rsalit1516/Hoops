@@ -1,4 +1,10 @@
+@use "./shared/scss/menu";
+
 @import "../content/variables";
+
+:root {
+  --color-primary: blue;
+}
 
 /* -------    Page Layout ----------*/
 // body {
@@ -108,30 +114,6 @@ th {
   padding: 1px;
 }
 
-#topMenu {
-  height: 70px;
-  text-align: center;
-  margin-top: 40px;
-  color: #383434;
-  line-height: 45px;
-  text-transform: uppercase;
-  font: 16px/22px "Trebuchet MS", Helvetica, sans-serif;
-}
-
-#topMenu a {
-  color: #383434;
-  padding: 0 4px 0 4px;
-  white-space: nowrap;
-  font-weight: bold;
-  line-height: 45px;
-}
-
-#topMenu a:hover,
-#topMenu a.active {
-  color: #fff;
-  text-decoration: none;
-}
-
 .btn-middle {
   vertical-align: middle;
 }
@@ -215,28 +197,7 @@ th {
   padding-bottom: 24px;
 }
 
-#banner {
-  width: 620px;
-  height: 326px;
-  margin-bottom: 5px;
-  background: url(/images/banner.jpg) top left no-repeat;
-}
 
-#bannerContent {
-  padding: 260px 30px 0 30px;
-  color: #fff;
-  font-size: 11px;
-}
-
-#bannerContent a {
-  color: #ef6c15;
-  text-decoration: underline;
-  font-weight: bold;
-}
-
-#bannerContent a:hover {
-  color: #ffffff;
-}
 
 .colHeader {
   color: #fff;
@@ -360,7 +321,7 @@ th {
 }
 
 #sponsorName {
-  font-size: 2em;
+  font-size: 1.5rem;
   color: #0b3160;
   font-weight: 700;
   font-style: italic;
@@ -376,20 +337,6 @@ th {
 
 .boxPadding {
   padding: 10px 0 10px 10px;
-}
-
-.newsTitle {
-  padding-bottom: 10px;
-  height: 16px;
-}
-
-.newsTitle a {
-  color: #de951b;
-  font-size: 18px;
-}
-
-.newsTitle a:hover {
-  color: #000;
 }
 
 .newsDate {

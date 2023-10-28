@@ -1,15 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA
-} from '@angular/material/dialog';
-import { UntypedFormControl, FormGroup, FormArray, UntypedFormBuilder } from '@angular/forms';
-import { GameService } from 'app/games/game.service';
+  MatLegacyDialogRef as MatDialogRef} from '@angular/material/legacy-dialog';
+import { UntypedFormControl, UntypedFormBuilder } from '@angular/forms';
+import { GameService } from '@app/games/game.service';
 
 import * as fromGames from '../../state';
 import { Store, select } from '@ngrx/store';
-import { Game } from 'app/domain/game';
+import { Game } from '@app/domain/game';
 
 @Component({
   selector: 'game-score-dialog',
@@ -24,7 +21,7 @@ export class GameScoreDialogComponent implements OnInit {
     visitorTeamScore: new UntypedFormControl('')
   });
   game$: any;
-  game: Game;
+  game!: Game;
 
   constructor(
     public dialogRef: MatDialogRef<GameScoreDialogComponent>,

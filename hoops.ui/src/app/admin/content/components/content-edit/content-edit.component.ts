@@ -6,8 +6,6 @@ import {
   Inject,
 } from '@angular/core';
 import {
-  UntypedFormBuilder,
-  UntypedFormGroup,
   Validators,
   FormControlName,
   FormControl,
@@ -21,8 +19,10 @@ import { ContentService } from '../../content.service';
 import { Store, select } from '@ngrx/store';
 
 import * as fromContent from '../../state';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { WebContentType } from 'app/domain/webContentType';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
+import { WebContentType } from '@app/domain/webContentType';
+import { LegacyFloatLabelType } from '@angular/material/legacy-form-field';
+import { FloatLabelType } from '@angular/material/form-field';
 
 @Component({
   selector: 'csbc-content-edit',
@@ -32,7 +32,6 @@ import { WebContentType } from 'app/domain/webContentType';
 export class ContentEditComponent implements OnInit {
   @ViewChildren(FormControlName, { read: ElementRef })
   @Inject(MAT_DIALOG_DATA)
-  // formInputElements: ElementRef[];
 
   // @Input()
   content!: Content;
@@ -79,10 +78,11 @@ export class ContentEditComponent implements OnInit {
     location: new FormControl<string | null>(''),
     dateAndTime: new FormControl<string | null>(''),
     webContentId: new FormControl<number>(0),
-    webContentTypeControl: new FormControl(''),
+    webContentTypeControl: new FormControl<number>(1),
     contentSequence: new FormControl<number>(1),
     expirationDate: new FormControl<Date | null>(new Date(), Validators.required),
   });
+  floatLabelType: FloatLabelType = 'auto';
 
   constructor(
     private fb: FormBuilder,
@@ -92,7 +92,6 @@ export class ContentEditComponent implements OnInit {
     private contentService: ContentService
 ) {
   }
-
 
   ngOnInit(): void {
     this.pageTitle = 'Edit Web Content Messages';
@@ -115,8 +114,10 @@ export class ContentEditComponent implements OnInit {
     this.store
       .pipe(select(fromContent.getSelectedContent))
       .subscribe((content) => {
-        this.selectedContent = content;
-        this.onContentRetrieved(content);
+        if (content !== null) {
+          this.selectedContent = content;
+          this.onContentRetrieved(content);
+        }
       });
   }
   onContentRetrieved(content: Content): void {
@@ -140,7 +141,8 @@ export class ContentEditComponent implements OnInit {
       location: content.location,
       expirationDate: content.expirationDate,
       webContentId: content.webContentId,
-      // webContentTypeControl: content.webContentType,
+      contentSequence: content.contentSequence,
+      webContentTypeControl: content.webContentTypeId,
     });
     this.selected = content.webContentType;
     console.log(this.selected);
@@ -182,4 +184,8 @@ export class ContentEditComponent implements OnInit {
     return '';
     // this.contentForm.controls[ controlName ].hasError(errorName);
   };
+
+  getFloatLabelValue(): FloatLabelType {
+    return this.floatLabelType;
+  }
 }

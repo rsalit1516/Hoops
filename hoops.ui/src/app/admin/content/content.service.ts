@@ -8,18 +8,17 @@ import {
   HttpHeaders,
 } from '@angular/common/http';
 
-import * as moment from 'moment';
-
 import { Content } from '../../domain/content';
 import { DataService } from '../../services/data.service';
 import { ConditionalExpr } from '@angular/compiler';
 
 import * as fromContent from '../../admin/content/state';
 import { Store } from '@ngrx/store';
-import { WebContentType } from 'app/domain/webContentType';
+import { WebContentType } from '@app/domain/webContentType';
 import { WebContent } from '../../domain/webContent';
 import { Observable, of } from 'rxjs';
 import { Constants } from '@app/shared/constants';
+import * as moment from 'moment';
 
 @Injectable()
 export class ContentService {
@@ -33,7 +32,7 @@ export class ContentService {
   public set selectedContent(value: any) {
     this._selectedContent = value;
     this.selectedContent$ = of(value);
-    console.log(value);
+    // console.log(value);
   }
   content$ = this.http.get<WebContent[]>(this.data.getContentUrl).pipe(
     tap((data) => console.log('All: ' + JSON.stringify(data))),
@@ -132,7 +131,7 @@ export class ContentService {
     content.expirationDate = contentForm.expirationDate;
     content.contentSequence = contentForm.contentSequence;
     content.companyId = Constants.COMPANYID;
-    // content.webContentId = contentForm.webContentId;
+    content.webContentTypeId = contentForm.webContentTypeControl;
     console.log(content);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = { headers: new HttpParams() };
@@ -169,8 +168,10 @@ export class ContentService {
     // const url = `${this.baseUrl}/${content.webContentId}`;
     console.log(this.data.putContentUrl);
     console.log(content);
+    let url = this.data.putContentUrl + content.webContentId;
+    console.log(url);
     return this.http
-      .put<WebContent>(this.data.putContentUrl + content.webContentId, content, this.data.httpOptions)
+      .put<WebContent>(url,  content, this.data.httpOptions)
       .pipe(
         tap((data) => console.log('updateContent: ' + JSON.stringify(data))),
         catchError(this.data.handleError('updateContent', content))
@@ -201,7 +202,7 @@ export class ContentService {
   }
   getWebContentType(id: number): WebContentType {
     let webContentType = new WebContentType();
-    console.log(id);
+    // console.log(id);
     switch (id) {
       case 1: {
         webContentType.webContentTypeId = id;

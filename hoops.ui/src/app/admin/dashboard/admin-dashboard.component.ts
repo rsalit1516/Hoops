@@ -5,8 +5,8 @@ import { Store, select } from '@ngrx/store';
 import * as fromGames from '../../games/state';
 import * as gameActions from './../../games/state/games.actions';
 import { Observable } from 'rxjs';
-import { Season } from 'app/domain/season';
-import { Division } from 'app/domain/division';
+import { Season } from '@app/domain/season';
+import { Division } from '@app/domain/division';
 import { TeamService } from '@app/services/team.service';
 import { Team } from '@app/domain/team';
 import { Router } from '@angular/router';
@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 import * as fromAdmin from '../state';
 import * as adminActions from '../state/admin.actions';
 import { Game } from '@app/domain/game';
+import { AdminGamesListComponent } from '../admin-shared/admin-games-list/admin-games-list.component';
 
 @Component({
   selector: 'csbc-admin-dashboard',

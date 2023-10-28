@@ -1,10 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  Router,
-  Resolve,
-  RouterStateSnapshot,
-  ActivatedRouteSnapshot,
-} from '@angular/router';
+import { Router, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 
@@ -15,7 +10,7 @@ import { GameService } from './game.service';
 @Injectable({
   providedIn: 'root',
 })
-export class GamesResolver implements Resolve<boolean> {
+export class GamesResolver  {
   constructor(
     private store: Store<fromGames.State>,
     private _gameService: GameService

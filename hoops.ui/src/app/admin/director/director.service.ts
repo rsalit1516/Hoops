@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DataService } from 'app/services/data.service';
+import { DataService } from '@app/services/data.service';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';

@@ -1,7 +1,7 @@
 /* NgRx */
 import { Action } from '@ngrx/store';
-import { Content } from 'app/domain/content';
-import { WebContentType } from 'app/domain/webContentType';
+import { Content } from '@app/domain/content';
+import { WebContentType } from '@app/domain/webContentType';
 import { WebContent } from '../../../domain/webContent';
 
 export enum ContentActionTypes {
@@ -9,12 +9,13 @@ export enum ContentActionTypes {
   LoadSuccess = '[Content] Load Success',
   LoadFail = '[Content] Load Fail',
   SetSelectedContent = '[Content] Set Selected Content',
-  SetAllContent = '[Content] Show all content',
-  SetAllContentSuccess = '[Content] Show all content success',
-  SetAllContentFail = '[Content] Show all content faile',
-  SetActiveContent = '[Content] Show only active content',
-  SetActiveContentSuccess = '[Content] Show only active content success',
-  SetActiveContentFail = '[Content] Show only active content fail',
+  SetClonedContent = '[Content] Clone Selected Content',
+  SetAllContent = '[Content] Set all content',
+  SetAllContentSuccess = '[Content] Set all content success',
+  SetAllContentFail = '[Content] Set all content faile',
+  SetActiveContent = '[Content] Set only active content',
+  SetActiveContentSuccess = '[Content] Set only active content success',
+  SetActiveContentFail = '[Content] Set only active content fail',
   SetIsActiveOnly = '[Content] Set Is Active Content Only',
   LoadContentTypeList = '[Content] Load Content Type List',
   LoadContentTypeListSuccess = '[Content] Load Content Type List Success',
@@ -57,6 +58,10 @@ export class SetActiveContentFail implements Action {
   constructor(public payload: String) {}
 }
 
+export class SetClonedContent implements Action {
+  readonly type = ContentActionTypes.SetClonedContent;
+  constructor(public payload: Content) {}
+}
 export class SetSelectedContent implements Action {
   readonly type = ContentActionTypes.SetSelectedContent;
   constructor(public payload: Content) {}
@@ -82,6 +87,7 @@ export type ContentActions =
   | LoadSuccess
   | LoadFail
   | SetSelectedContent
+  | SetClonedContent
   | SetAllContent
   | SetAllContentSuccess
   | SetAllContentFail

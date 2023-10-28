@@ -1,7 +1,8 @@
 <form [formGroup]="criteriaForm" class="filter-wrapper">
   <div class="filter-divisions">
     <mat-form-field>
-      <mat-select placeholder="Divisions" formControlName="divisions">
+      <mat-label>Divisions</mat-label>
+      <mat-select formControlName="divisions">
         <mat-option
           *ngFor="let division of divisions"
           [value]="division"
@@ -12,7 +13,8 @@
     </mat-form-field>
 
     <mat-form-field>
-      <mat-select placeholder="Teams" formControlName="teams">
+      <mat-label>Teams</mat-label>
+      <mat-select formControlName="teams">
         <mat-option *ngFor="let team of teams" [value]="team">
           {{ team.teamName }}
         </mat-option>

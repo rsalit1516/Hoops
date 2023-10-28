@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
-import { Standing } from 'app/domain/standing';
+import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
+import { Standing } from '@domain/standing';
 import { GameService } from './../../game.service';
 
 @Component({
@@ -15,13 +15,13 @@ export class StandingsComponent implements OnInit {
   public title: string;
   @Input() teams!: any[];
 
-  private _standings: Standing[] | undefined;
+  private _standings: Standing[] | undefined | null;
   get standings() {
     return this._standings as Standing[];
   }
   @Input()
   set standings(standings: Standing[]) {
-    this._standings = standings;
+    this._standings! = standings;
     console.log(standings);
     this.dataSource = new MatTableDataSource(standings);
   }

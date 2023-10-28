@@ -1,54 +1,61 @@
-import { Game } from "../../domain/game";
-import * as fromGames from "./index";
+import { Division } from 'src/app/domain/division';
+import { PlayoffGame } from 'src/app/domain/playoffGame';
+import { Season } from 'src/app/domain/season';
+import { Standing } from 'src/app/domain/standing';
+import { Team } from 'src/app/domain/team';
+import { Game } from '../../domain/game';
 
 /* NgRx */
-import { Action, Store } from "@ngrx/store";
-import { Division } from "app/domain/division";
-import { Team } from "app/domain/team";
-import { Season } from "app/domain/season";
-import { Standing } from "app/domain/standing";
-import { PlayoffGame } from "app/domain/playoffGame";
+import { Action, Store } from '@ngrx/store';
 
 export enum GameActionTypes {
-  ToggleGameCode = "[Game] Toggle Game Code",
-  LoadCurrentSeason = "[Games] Load Current Season",
-  SetCurrentSeason = "[Games] Set Current Season",
-  SetCurrentDivision = "[Game] Set Current Division",
-  SetCurrentDivisionId = "[Game] Set Current DivisionId",
-  SetCurrentTeam = "[Game] Set Current Team",
-  ClearCurrentGame = "[Game] Clear Current Game",
-  SetGames = "[Games] Set Games",
-  SetPlayoffGames = "[Games] Set Playoff Games",
-  SetDivisions = "[Games] Set Divisions",
-  SetTeams = "[Games] Set Teams",
-  SetAllTeams = "[Games] Set AllTeams",
-  InitializeCurrentGame = "[Game] Initialize Current Game",
-  Load = "[Game] All Games Load",
-  LoadSuccess = "[Game] Load All Games Success",
-  LoadFail = "[Game] Load All Games Fail",
-  LoadFilteredGames = "[Game] Load Filtered Games",
-  LoadFilteredGamesSuccess = "[Game] Load Filtered Game Success",
-  LoadFilteredGamesFail = "[Game] Load Filtered Games Fail",
-  LoadFilteredGamesByTeam = "[Game] Load Filtered Games by Team",
-  LoadFilteredGamesByTeamSuccess = "[Game] Load Filtered Game by Team Success",
-  LoadFilteredGamesByTeamFail = "[Game] Load Filtered Games by Team Fail",
-  LoadStandings = "[Game] Load Standings",
-  LoadStandingsSuccess = "[Game] Load Standings Success",
-  LoadStandingsFail = "[Game] Load Standings Fail",
-  LoadDivisions = "[Game] Load Divisions",
-  LoadDivisionsSuccess = "[Game] Load Divisions Success",
-  LoadDivisionsFail = "[Game] Load Divisions Fail",
-  LoadTeams = "[Game] Load Teams",
-  LoadTeamsSuccess = "[Game] Load Teams Success",
-  LoadTeamsFail = "[Game] Load Teams Fail",
-  LoadFilteredTeams = "[Game] Load Filtered Teams",
-  LoadFilteredTeamsSuccess = "[Game] Load Filtered Teams Success",
-  LoadFilteredTeamsFail = "[Game] Load Filtered Teams Fail",
-  SetCanEdit = "[Game] Set Can Edit Scores",
-  SetCurrentGame = "[Game] Set Current Game",
-  LoadPlayoffGames = "[Game] Load Playoff Games",
-  LoadPlayoffGamesSuccess = "[Game] Load Playoff Games Success",
-  LoadPlayoffGamesFail = "[Game] Load Playoff Games Fail",
+  ToggleGameCode = '[Game] Toggle Game Code',
+  LoadCurrentSeason = '[Games] Load Current Season',
+  LoadCurrentSeasonSuccess = '[Games] Load Current Season Success',
+  LoadCurrentSeasonFail = '[Games] Load Current Season Fail',
+  SetCurrentSeason = '[Games] Set Current Season',
+  SetCurrentDivision = '[Game] Set Current Division',
+  SetCurrentDivisionId = '[Game] Set Current DivisionId',
+  SetCurrentTeam = '[Game] Set Current Team',
+  ClearCurrentGame = '[Game] Clear Current Game',
+  SetGames = '[Games] Set Games',
+  SetPlayoffGames = '[Games] Set Playoff Games',
+  SetDivisions = '[Games] Set Divisions',
+  SetTeams = '[Games] Set Teams',
+  SetAllTeams = '[Games] Set AllTeams',
+  InitializeCurrentGame = '[Game] Initialize Current Game',
+  Load = '[Game] All Games Load',
+  LoadSuccess = '[Game] Load All Games Success',
+  LoadFail = '[Game] Load All Games Fail',
+  LoadFilteredGames = '[Game] Load Filtered Games',
+  LoadFilteredGamesSuccess = '[Game] Load Filtered Game Success',
+  LoadFilteredGamesFail = '[Game] Load Filtered Games Fail',
+  LoadFilteredGamesByTeam = '[Game] Load Filtered Games by Team',
+  LoadFilteredGamesByTeamSuccess = '[Game] Load Filtered Game by Team Success',
+  LoadFilteredGamesByTeamFail = '[Game] Load Filtered Games by Team Fail',
+  LoadStandings = '[Game] Load Standings',
+  LoadStandingsSuccess = '[Game] Load Standings Success',
+  LoadStandingsFail = '[Game] Load Standings Fail',
+  LoadDivisions = '[Game] Load Divisions',
+  LoadDivisionsSuccess = '[Game] Load Divisions Success',
+  LoadDivisionsFail = '[Game] Load Divisions Fail',
+  LoadTeams = '[Game] Load Teams',
+  LoadTeamsSuccess = '[Game] Load Teams Success',
+  LoadTeamsFail = '[Game] Load Teams Fail',
+  LoadFilteredTeams = '[Game] Load Filtered Teams',
+  LoadFilteredTeamsSuccess = '[Game] Load Filtered Teams Success',
+  LoadFilteredTeamsFail = '[Game] Load Filtered Teams Fail',
+  SetCanEdit = '[Game] Set Can Edit Scores',
+  SetCurrentGame = '[Game] Set Current Game',
+  LoadPlayoffGames = '[Game] Load Playoff Games',
+  LoadPlayoffGamesSuccess = '[Game] Load Playoff Games Success',
+  LoadPlayoffGamesFail = '[Game] Load Playoff Games Fail',
+  LoadDivisionPlayoffGames = '[Playoff Game] Load Division Playoff Games',
+  LoadDivisionPlayoffGamesSuccess = '[Playoff Game] Load Division Playoff Games Success',
+  LoadDivisionPlayoffGamesFail = '[Playoff Game] Load Division Playoff Games Fail',
+  LoadDivisionGames = '[Game] Load Division Games',
+  LoadDivisionGamesSuccess = '[Game] Load Division Games Success',
+  LoadDivisionGamesFail = '[Game] Load Division Games Fail',
 }
 
 // Action Creators
@@ -59,23 +66,33 @@ export class ToggleActionList implements Action {
 export class LoadCurrentSeason implements Action {
   readonly type = GameActionTypes.LoadCurrentSeason;
 }
+export class LoadCurrentSeasonSuccess implements Action {
+  readonly type = GameActionTypes.LoadCurrentSeasonSuccess;
+  constructor(public payload: Season | null) {}
+}
+export class LoadCurrentSeasonFail implements Action {
+  readonly type = GameActionTypes.LoadCurrentSeasonFail;
+  constructor(public payload: string) {}
+}
 export class SetCurrentSeason implements Action {
   readonly type = GameActionTypes.SetCurrentSeason;
-  constructor(public payload: Season | null) {
-  }
+  constructor(public payload: Season | null) {}
 }
 export class SetCurrentDivision implements Action {
   readonly type = GameActionTypes.SetCurrentDivision;
   constructor(public payload: Division) {
+    console.log('set current division');
   }
 }
 
 export class SetCurrentDivisionId implements Action {
   readonly type = GameActionTypes.SetCurrentDivisionId;
-  constructor(public payload: number) {
-  }
+  constructor(public payload: number) {}
 }
 
+export class LoadDivisionGames implements Action {
+  readonly type = GameActionTypes.LoadDivisionGames;
+}
 export class SetCurrentTeam implements Action {
   readonly type = GameActionTypes.SetCurrentTeam;
   constructor(public payload: Team) {}
@@ -167,19 +184,32 @@ export class LoadDivisions implements Action {
 }
 export class LoadDivisionsSuccess implements Action {
   readonly type = GameActionTypes.LoadDivisionsSuccess;
-  constructor(public payload: Division[]) {
-  }
+  constructor(public payload: Division[]) {}
 }
 export class LoadPlayoffGames implements Action {
   readonly type = GameActionTypes.LoadPlayoffGames;
 }
 export class LoadPlayoffGamesSuccess implements Action {
   readonly type = GameActionTypes.LoadPlayoffGamesSuccess;
-
   constructor(public payload: PlayoffGame[]) {}
 }
 export class LoadPlayoffGamesFail implements Action {
   readonly type = GameActionTypes.LoadPlayoffGamesFail;
+
+  constructor(public payload: string) {}
+}
+export class LoadDivisionPlayoffGames implements Action {
+  readonly type = GameActionTypes.LoadDivisionPlayoffGames;
+}
+export class LoadDivisionPlayoffGamesSuccess implements Action {
+  readonly type = GameActionTypes.LoadDivisionPlayoffGamesSuccess;
+  constructor(public payload: PlayoffGame[]) {
+    console.log('load division playoff games success');
+    console.log(payload);
+  }
+}
+export class LoadDivisionPlayoffGamesFail implements Action {
+  readonly type = GameActionTypes.LoadDivisionPlayoffGamesFail;
 
   constructor(public payload: string) {}
 }
@@ -233,6 +263,8 @@ export class SetCurrentGame implements Action {
 export type GameActions =
   | ToggleActionList
   | LoadCurrentSeason
+  | LoadCurrentSeasonSuccess
+  | LoadCurrentSeasonFail
   | SetCurrentSeason
   | SetCurrentDivision
   | SetCurrentDivisionId
@@ -258,6 +290,9 @@ export type GameActions =
   | LoadPlayoffGames
   | LoadPlayoffGamesSuccess
   | LoadPlayoffGamesFail
+  | LoadDivisionPlayoffGames
+  | LoadDivisionPlayoffGamesSuccess
+  | LoadDivisionPlayoffGamesFail
   | SetPlayoffGames
   | LoadDivisions
   | LoadDivisionsSuccess

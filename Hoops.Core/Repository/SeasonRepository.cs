@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Microsoft.EntityFrameworkCore;
-using Hoops.Core.Models;
+
 using Hoops.Core;
+using Hoops.Core.Models;
 using Hoops.Infrastructure.Interface;
 
 namespace Hoops.Infrastructure.Repository

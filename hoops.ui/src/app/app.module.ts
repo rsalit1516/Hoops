@@ -84,7 +84,12 @@ import { SponsorsModule } from './admin/sponsors/sponsors.module';
     }),
     // StoreModule.forRoot(reducers, { metaReducers }),
     EffectsModule.forRoot([]),
-    StoreModule.forRoot({}, {}),
+    StoreModule.forRoot({}, {
+      runtimeChecks: {
+        strictStateImmutability: false,
+        strictActionImmutability: false,
+      },
+    }),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
 
   ],

@@ -8,14 +8,14 @@
     >
       <div fxFlex="20%">
         <!-- <button mat-raised-button (click)="addContent()"> -->
-          <button mat-raised-button (click)="addContent()">
+          <button mat-raised-button type="button" (click)="addContent()">
           New
         </button>
       </div>
       <!-- <span fxFlex="5%"></span> -->
       <div fxFlex="25%" class="activeContentCheckbox">
         <mat-checkbox
-          value="checked"
+
           formControlName="activeContent"
           (click)="filterContent()"
           >Active only</mat-checkbox

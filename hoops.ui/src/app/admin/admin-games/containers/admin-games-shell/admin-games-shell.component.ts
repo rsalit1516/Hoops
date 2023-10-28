@@ -3,9 +3,8 @@ import { Store } from '@ngrx/store';
 
 import * as adminActions from '../../../state/admin.actions';
 import * as fromAdmin from '../../../state';
-import * as fromUser from '../../../../user/state';
 
-import { GameService } from 'app/games/game.service';
+import { GameService } from '@app/games/game.service';
 import { Season } from '../../../../domain/season';
 import { Game } from '@app/domain/game';
 @Component({

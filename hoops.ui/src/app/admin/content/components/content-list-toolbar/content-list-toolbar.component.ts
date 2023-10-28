@@ -15,9 +15,12 @@ import { UntypedFormBuilder, FormGroup } from '@angular/forms';
   styleUrls: ['./content-list-toolbar.component.scss', '../../../admin.component.scss']
 })
 export class ContentListToolbarComponent implements OnInit {
+  checked = true;
+  isActiveContent$ = this.store.select(fromContent.getIsActiveOnly);
   filterForm = this.fb.group({
     activeContent: true
   });
+
 
   constructor(
     private router: Router,
@@ -28,10 +31,11 @@ export class ContentListToolbarComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    this.store.dispatch(new contentActions.SetIsActiveOnly(true));
-    this.store.dispatch(new contentActions.SetActiveContent());
+    this.isActiveContent$.subscribe(isActiveContent => {
+      console.log(isActiveContent);
+    });
   }
+
   addContent() {
     const content = new Content();
     this.store.dispatch(new contentActions.SetSelectedContent(content));
@@ -39,9 +43,7 @@ export class ContentListToolbarComponent implements OnInit {
   }
   filterContent() {
     const isActive = this.filterForm.value.activeContent !== true;
+    console.log(isActive);
     this.store.dispatch(new contentActions.SetIsActiveOnly(isActive));
-    isActive
-      ? this.store.dispatch(new contentActions.SetActiveContent())
-      : this.store.dispatch(new contentActions.SetAllContent());
   }
 }

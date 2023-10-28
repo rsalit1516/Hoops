@@ -1,0 +1,57 @@
+<form formName="gameForm">
+  <div class="gamedate">{{ gameDate | date: 'EEEE, MMMM d' }}</div>
+
+  <div id="panelGames" flexLayout="row" >
+    <div class="table-wrapper">
+      <div *ngIf="playoffGames !== undefined">
+        <div *ngIf="playoffGames.length > 0">
+          <mat-table #table id="grdSchedule" [dataSource]="playoffGames">
+            <ng-container matColumnDef="gameTime">
+              <th mat-header-cell *matHeaderCellDef>Time</th>
+              <td mat-cell *matCellDef="let game" class="gametime">
+                {{ game.gameTime | date : "shortTime"}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="Descr">
+              <th mat-header-cell *matHeaderCellDef>Location</th>
+              <td mat-cell *matCellDef="let game">
+                {{ game.descr }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="locationName">
+              <th mat-header-cell *matHeaderCellDef>Location</th>
+              <td mat-cell *matCellDef="let game" class="location">
+                {{ game.locationName }}
+              </td> </ng-container
+            ><ng-container matColumnDef="homeTeam">
+              <th mat-header-cell *matHeaderCellDef>Home</th>
+              <td mat-cell *matCellDef="let game" class="teamName">
+                {{ game.homeTeam }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="visitingTeam">
+              <th mat-header-cell *matHeaderCellDef>Visitor</th>
+              <td mat-cell *matCellDef="let game" class="teamName">
+                {{ game.visitingTeam }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef>Actions</th>
+              <td mat-cell *matCellDef="let game"></td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            <!-- Row shown when there is no matching data that will be provided to the wrapper table. -->
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" colspan="7">No data</td>
+            </tr>
+          </mat-table>
+        </div>
+          <div class="table-wrapper" *ngIf="playoffGames.length === 0">
+        <div class="no-data">No data</div>
+          </div>
+      </div>
+    </div>
+  </div>
+</form>
+

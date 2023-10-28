@@ -1,8 +1,8 @@
-import { Season } from "./season";
+import { Season } from './season';
 
 export class PlayoffGame {
-public scheduleNumber!: number;
-public gameNumber!: number;
+  public scheduleNumber!: number;
+  public gameNumber!: number;
   public descr: string | undefined;
   public divisionId: number | undefined;
   public gameId: number | undefined;
@@ -13,7 +13,7 @@ public gameNumber!: number;
   public visitingTeam: string | undefined;
   public homeTeamScore: number | undefined;
   public visitingTeamScore: number | undefined;
+  public locationName: string | undefined;
   // public Description: string;
   constructor() {}
 }
-

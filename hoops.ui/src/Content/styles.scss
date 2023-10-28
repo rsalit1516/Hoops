@@ -2,9 +2,11 @@
 @use "_material.scss";
 
 @use './_mixins';
+@use "./../app//shared/scss/menu";
 
-@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+// @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 @import "~bootstrap/dist/css/bootstrap.css";
+
 
 
 /*#region Override background color theme */
@@ -13,11 +15,10 @@ body {
   padding: 0 0px 0px 0px;
   margin: 0px;
   font: Roboto, Arial, Helvetica, sans-serif;
-  font-size: 12px;
+  font-size: 1rem;
   color: ghostwhite;
   background: v.$background-color;
 }
-
 
 /*For Bootstrap 3*/
 .nav,
@@ -33,12 +34,12 @@ body {
   border-bottom-style: solid;
   border-bottom-width: 1px;
   padding-bottom: 4px;
-  font-size: 1.4em;
+  font-size: 1.2rem;
   font-weight: 800;
 }
 
 h2 {
-  font-size: 1.2em;
+  font-size: 1.2rem;
   color: v.$panel-default-heading-background;
 }
 
@@ -66,7 +67,7 @@ select > option {
 .widget .padd {
   /*margin-bottom: 0;*/
   /*padding: 1em 0;*/
-  height: 12em;
+  height: 12rem;
 }
 
 .widget .padd.padd-tight {
@@ -99,7 +100,7 @@ select > option {
 }
 
 small {
-  font-size: 14px;
+  font-size: .6rem;
 }
 
 .text-subtle {
@@ -107,9 +108,14 @@ small {
 }
 
 /* material definitions */
+.form-container{
+  margin: 4px;
+}
+
 .mat-select-value-text {
   color: v.$admin-font-color;
-  font-size: .9rem !important;
+  font-size: v.$select-font-size !important;
+  font-weight:400;
 }
 .mat-option-text {
   color: v.$admin-font-color;
@@ -119,6 +125,13 @@ small {
 .mat-select-panel {
   background-color: v.$admin-background-color;
 }
+.mat-form-field {
+  display: inline-flex;
+  margin-top:12px;
+}
+.mat-form-field-label-wrapper {
+  position: relative !important;
+  }
 .page-title-subtle {
   color: white;
 }
@@ -594,4 +607,7 @@ a {
   font-size: 1em !important;
 }
 /*#endregion */
-
+.mat-tab-label .mat-tab-label-content{
+  color:v.$color !important;
+  font-size: 1.1rem;
+}

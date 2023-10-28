@@ -13,7 +13,7 @@ import { WebContentType } from './webContentType';
 // }
 
 export class WebContent {
-    public webContentId!: number;
+    public webContentId?: number;
     public contentSequence: number = 1;
     public title: string | undefined;
     public subTitle: string | undefined;
@@ -22,7 +22,7 @@ export class WebContent {
     public dateAndTime: string | undefined;
     public webContentTypeDescription: string | undefined;
     public expirationDate: Date | undefined;
-  public webContentTypeId!: number;
+    public webContentTypeId!: number | null;
     constructor() {
     }
 }

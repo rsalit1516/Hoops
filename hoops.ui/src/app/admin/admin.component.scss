@@ -1,12 +1,16 @@
 @use '../../Content/variables' as v;
 
+:host {
+  font-size: 1rem;
+}
+
 .mat-sidenav {
   color: white;
 }
 
 .mat-list-item-content {
   color: white;
-  font-size: 1.1em;
+  font-size: 1rem;
 }
 
 .mat-toolbar {
@@ -20,9 +24,9 @@
 
 input,
 textarea {
-  font-size: v.$table-font-size;
-  padding-top: 12px;
-  padding-bottom: 12px;
+  font-size: v.$input-font-size;
+  background-color: #1a1a1a;
+  color: rgb(220, 216, 216);
   padding-left: 12px;
   background-color: lighten(v.$admin-background-color, 5%);
   color: v.$field-label;
@@ -30,13 +34,13 @@ textarea {
 
 .mat-form-field.mat-label,
 input.mat-form-field-label {
-  font-size: 1.1rem !important;
+  font-size: .7rem !important;
   color: v.$field-label;
 }
 
 .mat-form-field+.mat-form-field.mat-form-field-label {
   color: v.$field-label;
-  font-size: 1.4rem;
+  font-size: 1.0rem;
 }
 
 .mat-input {
@@ -49,7 +53,7 @@ input.mat-form-field-label {
 }
 
 label {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   color: v.$field-label;
 }
 
@@ -239,7 +243,10 @@ div {
   border-collapse: separate;
   background-color: transparent;
 }
-
+.mat-selection-list {
+  height: 420px;
+  overflow: auto;
+}
 tbody {
   color: white;
 }
@@ -260,11 +267,16 @@ div {
 .mat-card-title,
 h2 {
   color: v.$field-label;
-  font-size: 1.5em;
+  font-size: .9rem;
+  font-weight: 800;
   padding-bottom: 6px;
   padding-left: 12px;
-}
 
+}
+.mat-list-text {
+  font-size: .8rem;
+  font-weight: 400;
+}
 .mat-raised-button .mat-button {
   background-color: v.$brand-color;
   color: white;
@@ -272,7 +284,12 @@ h2 {
 
 .mat-cell,
 .mat-header-cell {
-  font-size: 1.1rem;
+  font-size: .8rem;
+  font-weight: 300;
+}
+
+.mat-header-cell {
+  font-weight: 700;
 }
 
 .mat-select-value {
@@ -303,10 +320,10 @@ h2 {
   background-color: v.$admin-table-background-color;
   color: v.$admin-font-color;
   border-color: v.$admin-table-background-color-border;
-  font-size: 1.2em;
+  font-size: 1.1rem;
 }
 .table-wrapper {
-  background-color: v.$table-body-color;
+  // background-color: v.$table-body-color;
   padding: 12px;
   border-radius: 5px;
 }
@@ -323,13 +340,13 @@ th.mat-header-cell {
 tr.mat-header-row {
   height: 24px;
   border-bottom: .5px solid gray;
-  font-size: 1.1em;
+  font-size: 1.0em;
   font-weight: 800;
 }
 
 tr.mat-row {
   height: 36px;
-  font-size: .9em;
+  font-size: .9rem;
   font-weight: 500;
   padding-bottom: 4px;
   padding-top: 4px;

@@ -11,7 +11,7 @@ import * as adminActions from '../state/admin.actions';
 
 import { LoadDivisions } from './../state/admin.actions';
 import { Observable } from 'rxjs';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { Router } from '@angular/router';
 
 @Component({

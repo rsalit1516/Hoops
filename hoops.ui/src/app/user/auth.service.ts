@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { User } from '../domain/user';
 import { HttpClient } from '@angular/common/http';
-import { DataService } from 'app/services/data.service';
+import { DataService } from '@app/services/data.service';
 import * as userActions from '../user/state/user.actions';
 import * as fromUser from '../user/state';
 import { Store } from '@ngrx/store';

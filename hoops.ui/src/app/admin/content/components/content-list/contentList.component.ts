@@ -9,9 +9,9 @@ import { ContentEditComponent } from '../content-edit/content-edit.component';
 
 import * as fromContent from '../../state';
 import * as contentActions from '../../state/content.actions';
+import { WebContent } from '../../../../domain/webContent';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { WebContent } from '../../../../domain/webContent';
 
 @Component({
   selector: 'csbc-content-list',
@@ -24,7 +24,7 @@ export class ContentListComponent implements OnInit {
   errorMessage: string|undefined;
   pageTitle: string|undefined;
   public dialog!: MatDialog;
-  displayedColumns = ['title', 'expirationDate', 'dateAndTime', 'location'];
+  displayedColumns = ['title', 'expirationDate', 'dateAndTime', 'location', 'actions'];
   dataSource!: MatTableDataSource<WebContent>;
   constructor(
     private _contentService: ContentService,
@@ -34,14 +34,6 @@ export class ContentListComponent implements OnInit {
 
   ngOnInit() {
     this.pageTitle = 'Web Site Messages';
-
-    // this.store.select(fromContent.getIsActiveOnly).subscribe(isActive => {
-    //   if (isActive) {
-    //     this.store.dispatch(new contentActions.SetActiveContent());
-    //   } else {
-    //     this.store.dispatch(new contentActions.SetAllContent());
-    //   }
-    // });
 
     this.store.select(fromContent.getfilteredList).subscribe(data => {
       // console.log(data);
@@ -53,11 +45,19 @@ export class ContentListComponent implements OnInit {
     console.log(content);
   }
 
-  editContent(content: any) {
+  editContent(content: Content) {
     this.store.dispatch(new contentActions.SetSelectedContent(content));
     this.router.navigate(['./admin/content/edit']);
   }
-  addContent() {
+  cloneContent(content: Content) {
+    // this.store.dispatch(new contentActions.SetClonedContent(content));
+    content.webContentId = undefined;
+    this.store.dispatch(new contentActions.SetSelectedContent(content));
+
+    this.router.navigate([ './admin/content/edit' ]);
+  }
+
+  addContent(): void {
     this.router.navigate(['./admin/content/edit']);
   }
   openDialog(): void {

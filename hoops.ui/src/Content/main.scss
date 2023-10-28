@@ -1,4 +1,5 @@
 ﻿﻿@import '_variables';
+@import '_menu.scss';
 
 /* -------    Page Layout ----------*/
 
@@ -158,6 +159,7 @@ h4 {
 .whiteBg {
     background: #fff;
 }
+
 /*-------------------       Layout      --------------*/
 #header {
     /*margin-left: 60px;*/
@@ -191,37 +193,9 @@ h4 {
             padding: 1px;
         }
 
-#topMenu {
-    height: 70px;
-    text-align: center;
-    margin-top: 40px;
-    color: #383434;
-    line-height: 45px;
-    text-transform: uppercase;
-    font: 16px/22px "Trebuchet MS", Helvetica, sans-serif;
-}
-
-    #topMenu a {
-        color: #383434;
-        padding: 0 4px 0 4px;
-        white-space: nowrap;
-        font-weight: bold;
-        line-height: 45px;
-    }
-
-        #topMenu a:hover,
-        #topMenu a.active {
-            color: #fff;
-            text-decoration: none;
-        }
 
 .btn-middle {
     vertical-align: middle;
-}
-
-
-#menuHeader {
-    /*margin-top: 52px;*/
 }
 
 #mainCol {
@@ -382,7 +356,7 @@ h4 {
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
     color: #B7AFAF;
-   
+
 }
 
 .well {
@@ -392,7 +366,7 @@ h4 {
     -moz-background-clip: padding-box;
     -webkit-background-clip: padding-box;
     background-clip: padding-box;
-     
+
 }
 .list-group-item {
     background-color: #0d0d0d;
@@ -430,19 +404,6 @@ h4 {
     padding: 10px 0 10px 10px;
 }
 
-.newsTitle {
-    padding-bottom: 10px;
-    height: 16px;
-}
-
-    .newsTitle a {
-        color: #DE951B;
-        font-size: 18px;
-    }
-
-        .newsTitle a:hover {
-            color: #000;
-        }
 
 .newsDate {
     width: 80px;
@@ -582,7 +543,7 @@ h4 {
 
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
-     
+
 $fontConfig: (
   display-4: mat-typography-level(112px, 112px, 300, 'Roboto', -0.0134em),
   display-3: mat-typography-level(56px, 56px, 400, 'Roboto', -0.0089em),
@@ -778,4 +739,8 @@ $altTheme: mat-light-theme($theme-primary, $theme-accent, $theme-warn);
 .mat-standard-chip {
   padding: .5em .85em;
   min-height: 2.5em;
+}
+.mat-tab-label .mat-tab-label-content {
+  color:$color;
+  font-size: 1.1rem;
 }

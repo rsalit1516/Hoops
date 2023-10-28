@@ -23,7 +23,7 @@ namespace Hoops.Controllers
         {
             this.repository = repository;
             _logger = logger;
-            _logger.LogDebug(1, "NLog injected into ScheduleGameController");
+            _logger.LogDebug(1, "NLog injected into ColorController");
         }
         // GET: api/Colors
         [HttpGet]

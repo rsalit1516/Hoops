@@ -17,7 +17,7 @@ import {
 import { Store, Action, select } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { DataService } from 'app/services/data.service';
+import { DataService } from '@app/services/data.service';
 
 @Injectable()
 export class AppEffects {

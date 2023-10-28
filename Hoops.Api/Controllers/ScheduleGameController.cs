@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Hoops.Infrastructure.Interface;
-using Hoops.Core.Models;
-using Hoops.Core;
-using Hoops.Core.ViewModels;
 using Microsoft.Extensions.Logging;
+
+using Hoops.Core;
+using Hoops.Core.Models;
+using Hoops.Infrastructure.Interface;
 
 namespace Hoops.Controllers
 {
@@ -61,8 +62,6 @@ namespace Hoops.Controllers
             var games = repository.GetGames(seasonId);
             return Ok(games);
         }
-
-
         ///
         /// GET: api/GetStandings/divisionId
         [Route("GetStandings")]

@@ -1,12 +1,10 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
-import * as userActions from '../../user/state/user.actions';
 import * as fromUser from '../../user/state';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { User } from 'app/domain/user';
+import { User } from '@app/domain/user';
 import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
 import { Constants } from '../constants';

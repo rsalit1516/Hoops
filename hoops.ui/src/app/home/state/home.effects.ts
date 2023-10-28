@@ -19,9 +19,9 @@ import { Store, Action, select, ActionType } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 // import { ContentService } from '../../services/content.service';
 import { DataService } from '../../services/data.service';
-import { Content } from 'app/domain/content';
+import { Content } from '@app/domain/content';
 import { HttpClient } from '@angular/common/http';
-import { WebContent } from 'app/domain/webContent';
+import { WebContent } from '@app/domain/webContent';
 import { Sponsor } from '@app/domain/sponsor';
 import { Season } from '@app/domain/season';
 

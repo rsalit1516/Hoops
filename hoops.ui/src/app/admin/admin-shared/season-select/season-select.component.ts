@@ -3,11 +3,9 @@ import { Store, select } from '@ngrx/store';
 
 import * as fromAdmin from '../../state';
 import { Observable } from 'rxjs';
-import { Season } from 'app/domain/season';
+import { Season } from '@app/domain/season';
 import * as adminActions from '../../state/admin.actions';
 import {
-  FormControl,
-  FormGroup,
   UntypedFormBuilder,
   UntypedFormControl,
   UntypedFormGroup,

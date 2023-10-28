@@ -1,14 +1,14 @@
 <mat-card>
-  <mat-card-title>Game</mat-card-title>
+  <mat-card-title>Game Details</mat-card-title>
   <mat-card-content>
-    <form [formGroup]="gameEditForm">
+    <form [formGroup]="gameEditForm" class="form-container">
       <mat-form-field class="form-control" appearance="fill">
-        <mat-label>Game Date</mat-label>
         <input
           matInput
           [matDatepicker]="picker"
           value="gameDate"
           formControlName="gameDate"
+          placeholder="Game Date"
         />
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
@@ -20,6 +20,7 @@
           value="gameTime"
           placeholder="06:00"
           formControlName="gameTime"
+          placeholder="Game Time"
         />
         <!-- <ngx-mat-timepicker value="gameTime" [showSpinners]="true">
 
@@ -60,7 +61,7 @@
     </form>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-raised-button color="Primary">Save</button>
+    <button mat-raised-button color="Primary" (click)="save()">Save</button>
     <button mat-raised-button color="Primary">Cancel</button>
   </mat-card-actions>
 </mat-card>

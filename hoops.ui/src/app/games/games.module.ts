@@ -21,37 +21,40 @@ import { ScheduleShellComponent } from './containers/schedule-shell/schedule-she
 import { ScoresComponent } from './components/scores/scores.component';
 import { StandingsShellComponent } from './containers/standings-shell/standings-shell.component';
 import { GameScoreDialogComponent } from './components/game-score-dialog/game-score-dialog.component';
-import { AppModule } from 'app/app.module';
 import { DailyScheduleComponent } from './components/daily-schedule/daily-schedule.component';
+import { SchedulePlayoffsComponent } from './components/schedule-playoffs/schedule-playoffs.component';
+import { DailyPlayoffScheduleComponent } from './components/daily-playoff-schedule/daily-playoff-schedule.component';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        FormsModule,
-        ReactiveFormsModule,
-        CoreModule,
-        SharedModule,
-        GamesRoutingModule,
-        StoreModule.forFeature('games', reducer),
-        EffectsModule.forFeature([GameEffects])
-    ],
-    exports: [GamesRoutingModule],
-    declarations: [
-        // GamesComponent,
-        ScheduleComponent,
-        StandingsComponent,
-        ScheduleCardViewComponent,
-        GameCardComponent,
-        GameFilterComponent,
-        GamesShellComponent,
-        GameSortPipe,
-        GamesTopMenuComponent,
-        ScheduleShellComponent,
-        ScoresComponent,
-        StandingsShellComponent,
-        GameScoreDialogComponent,
-        DailyScheduleComponent
-    ],
-    providers: [GameService]
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    CoreModule,
+    SharedModule,
+    GamesRoutingModule,
+    SchedulePlayoffsComponent,
+    DailyPlayoffScheduleComponent,
+    StoreModule.forFeature('games', reducer),
+    EffectsModule.forFeature([GameEffects]),
+  ],
+  exports: [GamesRoutingModule],
+  declarations: [
+    // GamesComponent,
+    ScheduleComponent,
+    StandingsComponent,
+    ScheduleCardViewComponent,
+    GameCardComponent,
+    GameFilterComponent,
+    GamesShellComponent,
+    GameSortPipe,
+    GamesTopMenuComponent,
+    ScheduleShellComponent,
+    ScoresComponent,
+    StandingsShellComponent,
+    GameScoreDialogComponent,
+    DailyScheduleComponent,
+  ],
+  providers: [GameService],
 })
 export class GamesModule {}

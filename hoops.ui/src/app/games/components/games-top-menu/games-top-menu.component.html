@@ -6,13 +6,24 @@
     <div class="col-sm-4 col-12">
       <mat-toolbar>
         <div>
-          <button mat-button class="games-button" routerLink="/games/schedule">
+          <!-- <button mat-button class="games-button" routerLink="/games/schedule">
             Schedule
           </button>
           <button mat-button class="games-button" routerLink="/games/standings">
             Standings
-          </button>
+          </button>-->
+          <!-- <mat-button-toggle-group name="gameView" aria-label="Favorite Color">
+            <mat-button-toggle class = "games-button"  value="red">Schedule</mat-button-toggle>
+            <mat-button-toggle class = "games-button" routerLink="/games/standings" value="green">Standings</mat-button-toggle>
+          </mat-button-toggle-group> -->
+
+          <mat-tab-group animationDuration="2000ms" (selectedTabChange)="onTabChanged($event)">
+            <mat-tab label="Schedule" class="label" routerLink="/games/schedule"></mat-tab>
+            <mat-tab label="Standings" routerLink="/games/standings"></mat-tab>
+          </mat-tab-group>
         </div>
+
+
       </mat-toolbar>
     </div>
     <div class="col-sm-2 col-0"></div>

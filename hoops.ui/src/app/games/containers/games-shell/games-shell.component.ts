@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { SeasonService } from 'app/services/season.service';
-import { DivisionService } from 'app/services/division.service';
-import { TeamService } from 'app/services/team.service';
+import { SeasonService } from '@app/services/season.service';
+import { DivisionService } from '@app/services/division.service';
+import { TeamService } from '@app/services/team.service';
 import { GameService } from '../../game.service';
 import { Store, select } from '@ngrx/store';
 
@@ -9,21 +9,13 @@ import * as fromGames from '../../state';
 import * as fromUser from '../../../user/state';
 
 import * as gameActions from '../../state/games.actions';
-import { Game } from 'app/domain/game';
-import { Team } from 'app/domain/team';
-import { Division } from 'app/domain/division';
+import { Game } from '@app/domain/game';
+import { Team } from '@app/domain/team';
+import { Division } from '@app/domain/division';
 import { Observable, from, zip, of } from 'rxjs';
-import { Standing } from 'app/domain/standing';
-import {
-  groupBy,
-  mergeMap,
-  toArray,
-  tap,
-  flatMap,
-  concatMap,
-} from 'rxjs/operators';
-import * as moment from 'moment';
-import { User } from 'app/domain/user';
+import { Standing } from '@app/domain/standing';
+import { User } from '@app/domain/user';
+import { SchedulePlayoffsComponent } from '@app/games/components/schedule-playoffs/schedule-playoffs.component';
 
 @Component({
   selector: 'csbc-games-shell',
@@ -95,10 +87,11 @@ export class GamesShellComponent implements OnInit {
 
     // this.filteredGames$ = this.store.pipe(select(fromGames.getFilteredGames));
     // this.standings$ = this.store.pipe(select(fromGames.getStandings));
-    this.store.select(fromGames.getDivisions).subscribe(divisions => {
-      this.store.dispatch(new gameActions.SetCurrentDivision(divisions[0]));
-
-    })
+    this.store.select(fromGames.getDivisions).subscribe((divisions) => {
+      if (divisions[ 0 ]) {
+        this.store.dispatch(new gameActions.SetCurrentDivision(divisions[ 0 ]));
+      }
+    });
 
     this.store.pipe(select(fromUser.getCurrentUser)).subscribe((user) => {
       this.user = user;
@@ -106,12 +99,15 @@ export class GamesShellComponent implements OnInit {
     this.store.select(fromGames.getCurrentDivision).subscribe((division) => {
       this.currentDivision = division;
       const divId = division?.divisionId as number;
-      // console.log(division);
-      this.store.dispatch(new gameActions.LoadFilteredTeams());
-      this.store.dispatch(new gameActions.LoadFilteredGames);
-      this.store.select(fromGames.getFilteredTeams).subscribe((teams) => {
-        this.filteredTeams = teams;
-      });
+      console.log(division);
+      if (division) {
+        this.store.dispatch(new gameActions.LoadFilteredTeams());
+        this.store.dispatch(new gameActions.LoadFilteredGames());
+        this.store.dispatch(new gameActions.LoadDivisionPlayoffGames());
+        this.store.select(fromGames.getFilteredTeams).subscribe((teams) => {
+          this.filteredTeams = teams;
+        });
+      }
     });
     // this.store.select(fromGames.getFilteredGames).subscribe(games => {
     //   this.filteredGames = games;
