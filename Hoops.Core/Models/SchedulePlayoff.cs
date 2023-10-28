@@ -1,14 +1,13 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Reflection.Emit;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hoops.Core.Models
 {
     public partial class SchedulePlayoff
     {
+    [Key]
         public int ScheduleNumber { get; set; }
         public int GameNumber { get; set; }
         [ForeignKey("Location")]
