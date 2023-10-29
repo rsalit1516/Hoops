@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { Game } from '@app/domain/game';
+import { Game } from '@domain/game';
 // import { DataSource } from "@angular/cdk/table";
 import { Store, select } from '@ngrx/store';
 import { MediaObserver } from '@angular/flex-layout';

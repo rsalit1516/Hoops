@@ -3,10 +3,10 @@ import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import * as fromGames from '../../state';
 import * as fromUser from '../../../user/state';
-import { Game } from '@app/domain/game';
+import { Game } from '@domain/game';
 import { MaterialModule } from '@app/core/material/material.module';
 import { MatTableDataSource } from '@angular/material/table';
-import { PlayoffGame } from '@app/domain/playoffGame';
+import { PlayoffGame } from '@domain/playoffGame';
 import { DailyPlayoffScheduleComponent } from "../daily-playoff-schedule/daily-playoff-schedule.component";
 
 @Component({

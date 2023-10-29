@@ -1,9 +1,9 @@
-import { Division } from 'src/app/domain/division';
-import { PlayoffGame } from 'src/app/domain/playoffGame';
-import { Season } from 'src/app/domain/season';
-import { Standing } from 'src/app/domain/standing';
-import { Team } from 'src/app/domain/team';
-import { Game } from '../../domain/game';
+import { Division } from '@domain/division';
+import { PlayoffGame } from '@domain/playoffGame';
+import { Season } from '@domain/season';
+import { Standing } from '@domain/standing';
+import { Team } from '@domain/team';
+import { Game } from '@domain/game';
 
 /* NgRx */
 import { Action, Store } from '@ngrx/store';

@@ -2,7 +2,7 @@
 {
   "compileOnSave": true,
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": "./src",
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
@@ -21,10 +21,10 @@
       "dom"
     ],
     "paths": {
-      "@app/*": ["src/app/*"],
-      "@domain/*": ["src/app/domain/*"],
-      "@shared/*": ["src/app/shared/*"],
-      "@content/*": ["content/*"]
+      "@app/*": ["app/*"],
+      "@domain/*": ["app/domain/*"],
+      "@shared/*": ["app/shared/*"],
+      "@content/*": ["app/services/*"]
     },
     "useDefineForClassFields": false
   },

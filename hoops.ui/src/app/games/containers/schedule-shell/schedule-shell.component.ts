@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable, zip, of, from, EMPTY } from 'rxjs';
-import { Season } from '@app/domain/season';
+import { Season } from '@domain/season';
 import { Division } from '@app/domain/division';
 import { Team } from '@app/domain/team';
 import { Store, select } from '@ngrx/store';
