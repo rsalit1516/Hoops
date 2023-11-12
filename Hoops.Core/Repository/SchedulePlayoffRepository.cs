@@ -6,11 +6,13 @@ using Hoops.Core.Models;
 using Hoops.Core.ViewModels;
 using Hoops.Infrastructure.Interface;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Hoops.Infrastructure.Repository
 {
     public class SchedulePlayoffRepository : EFRepository<SchedulePlayoff>, ISchedulePlayoffRepository
     {
+        private readonly ILogger<SchedulePlayoffRepository> _logger;
         public SchedulePlayoffRepository(hoopsContext context) : base(context) { }
 
         #region IRepository<T> Members
@@ -30,16 +32,20 @@ namespace Hoops.Infrastructure.Repository
         public List<PlayoffGameVm> GetGamesBySeasonId(int seasonId)
         {
             var div = context.Set<Division>().Where(d => d.SeasonId == seasonId);
+            // _logger.LogInformation("Retrieved " + div.Count().ToString() + " divisions");
+
             List<SchedulePlayoff> games = new();
             List<PlayoffGameVm> gamesVm = new();
 
             var locations = context.Set<Location>();
+            // _logger.LogInformation("Retrieved " + locations.Count().ToString() + " locations");
 
             foreach (var d in div)
             {
                 var divGames = context.Set<SchedulePlayoff>()
                 .Where(g => g.DivisionId == d.DivisionId);
-             
+                // _logger.LogInformation("Retrieved " + divGames.Count().ToString() + " division playoff games");
+
                 games.AddRange(divGames);
             }
             foreach (var game in games)
@@ -64,8 +70,9 @@ namespace Hoops.Infrastructure.Repository
                 VisitingTeamScore = divGame.VisitingTeamScore,
                 HomeTeamScore = divGame.HomeTeamScore,
                 DivisionId = divGame.DivisionId,
-                LocationName = locations.FirstOrDefault(l => l.LocationNumber == divGame.LocationNumber)?.LocationName
+                // LocationName = locations.FirstOrDefault(l => l.LocationNumber == divGame.LocationNumber)?.LocationName
             };
+            _logger.LogInformation(playoffGame.ToString());
             return playoffGame;
         }
 

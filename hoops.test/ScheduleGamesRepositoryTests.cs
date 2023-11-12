@@ -2,18 +2,24 @@ using Microsoft.Extensions.Logging;
 using Hoops.Core;
 using Hoops.Infrastructure.Repository;
 using Xunit;
+using Microsoft.EntityFrameworkCore;
 
-namespace csbc_server_test
+
+namespace hoops_test
 {
     public class ScheduleGamesRepositoryTests
     {
-        public hoopsContext context;
+        private readonly hoopsContext _context;
+        // public hoopsContext context;
         public ScheduleGameRepository repo;
         private readonly ILogger<ScheduleGameRepository> _logger;
         public ScheduleGamesRepositoryTests()
         {
-            context = new hoopsContext();
-            repo = new ScheduleGameRepository(context, _logger);
+            var options = new DbContextOptionsBuilder<hoopsContext>()
+            .UseInMemoryDatabase(databaseName: "hoops")
+            .Options;
+            _context = new hoopsContext(options);
+            repo = new ScheduleGameRepository(_context, _logger);
         //     // _context = contex
         }
         [Fact]

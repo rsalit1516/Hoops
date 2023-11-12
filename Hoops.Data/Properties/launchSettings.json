@@ -19,7 +19,7 @@
     "Hoops.data": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:51778;http://localhost:9485",
+      "applicationUrl": "https://localhost:43088;http://localhost:64431",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

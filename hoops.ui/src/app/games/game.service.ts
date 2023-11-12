@@ -127,7 +127,7 @@ export class GameService {
     );
   }
   getSeasonPlayoffGames(): Observable<PlayoffGame[]> {
-    // const seasonId = fromGames.getCurrentSeason;
+    const seasonId = fromGames.getCurrentSeason;
     return this.http.get<PlayoffGame[]>(this.dataService.playoffGameUrl + '?seasonId=' + this.seasonId).pipe(
       map((response) => (this.seasonPlayoffGames = response)),
       tap(data => console.log('All: ' + JSON.stringify(data.length))),

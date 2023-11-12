@@ -78,7 +78,7 @@ namespace Hoops.Controllers
         [HttpGet]
         public IActionResult GetSeasonPlayoffGames(int seasonId)
         {
-            _logger.LogInformation("Retrieving season playoff games");
+            _logger.LogInformation("Retrieving season playoff gamaaes");
             var games = repository.GetGamesBySeasonId(seasonId);
             return Ok(games);
         }

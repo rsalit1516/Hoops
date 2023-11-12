@@ -75,26 +75,13 @@ export class GameEffects {
 
   loadPlayoffGames$: Observable<Action> = createEffect(() => this.actions$.pipe(
     ofType(gameActions.GameActionTypes.LoadPlayoffGames),
-    concatMap((action) =>
-      of(action).pipe(
-        withLatestFrom(this.store.pipe(select(fromGames.getCurrentSeason))),
-        // tap((divisions) => console.log(divisions))
-      )
-    ),
-    tap(([ action, t ]) => {
-      if (t) {
-        this.seasonId = t.seasonId;
-      } else {
-        this.seasonId = 0;
-      }
-    }),
 
     mergeMap((action) =>
       this.gameService.getSeasonPlayoffGames().pipe(
           // tap(data => console.log('All playoff games: ' +this.playoffGameUrl + ' '+ JSON.stringify(data))),
           shareReplay(1),
           map((games) => new gameActions.LoadPlayoffGamesSuccess(games)),
-          // tap(games => console.log(games)),
+          tap(games => console.log(games)),
           catchError((err) => of(new gameActions.LoadPlayoffGamesFail(err)))
         )
     )

@@ -25,7 +25,7 @@ export class SeasonService {
   currentSeason$ =
   this.http.get<Season>(this.dataService.getCurrentSeasonUrl).pipe(
     map(season => season as Season),
-    // tap(data => console.log('All: ' + JSON.stringify(data))),
+    tap(data => console.log('All: ' + JSON.stringify(data))),
     catchError(this.dataService.handleError('getCurrentSeason', null))
   );
 
