@@ -10,7 +10,6 @@ namespace hoops_test
     public class ScheduleGamesRepositoryTests
     {
         private readonly hoopsContext _context;
-        // public hoopsContext context;
         public ScheduleGameRepository repo;
         private readonly ILogger<ScheduleGameRepository> _logger;
 

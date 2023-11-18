@@ -10,45 +10,34 @@ namespace Hoops.Test
 {
     public class WebContentTypeTest
     {
-                private readonly hoopsContext _context;
+        private readonly hoopsContext _context;
         // public hoopsContext context;
         public WebContentTypeRepository repo;
+        public WebContentRepository repoWebContent;
 
-         public WebContentTypeTest()
-         {
-                        var options = new DbContextOptionsBuilder<hoopsContext>()
-            .UseInMemoryDatabase(databaseName: "hoops")
-            .Options;
+        public WebContentTypeTest()
+        {
+            var options = new DbContextOptionsBuilder<hoopsContext>()
+.UseInMemoryDatabase(databaseName: "hoops")
+.Options;
             _context = new hoopsContext(options);
             repo = new WebContentTypeRepository(_context);
 
-         }
+        }
+
         [Fact]
         public async void GetByWebContentTypeDescription()
         {
-            using (var db = new hoopsContext())
-            {
-                var inserted = await repo.InsertAsync(new WebContentType { WebContentTypeDescription = "Test" });
-                await db.SaveChangesAsync();
-                var result = await repo.GetByDescriptionAsync("Test");
-                Assert.True(result != null);
-                await repo.DeleteAsync(result.WebContentTypeId);
-            }
-        }
-    }
 
-    public class WebContentTypeTests : WebContentTypeTest
-    {
-        public hoopsContext db { get; set; }
-        public WebContentTypeRepository repo { get; set; }
-        public WebContentTypeTests()
-        {
-            var repoWebContent = new WebContentRepository(_context);
-            var util = new TestUtilities();
-            util.DeleteAllWebContentAsync(repoWebContent).GetAwaiter();
-            var repo = new WebContentTypeRepository(db);
-            DeleteAllAsync(repo).GetAwaiter();
+            var inserted = await repo.InsertAsync(new WebContentType { WebContentTypeDescription = "Test" });
+            _ = await _context.SaveChangesAsync();
+            var result = await repo.GetByDescriptionAsync("Test");
+            Assert.True(result != null);
+            await repo.DeleteAsync(result.WebContentTypeId);
+
         }
+
+
         [Fact]
         public async void AddAsyncWebContentTypeTest1()
         {
@@ -61,7 +50,7 @@ namespace Hoops.Test
                     WebContentTypeDescription = "Meeting"
                 };
                 var actual = await repo.InsertAsync(entity);
-                await db.SaveChangesAsync();
+                await _context.SaveChangesAsync();
                 Assert.True(actual != null);
             }
 
@@ -69,23 +58,21 @@ namespace Hoops.Test
         [Fact]
         public async void AddAllAsyncWebContentTypeTest1()
         {
-            using (var db = new hoopsContext())
-            {
-                var repo = new WebContentTypeRepository(db);
+                // var repo = new WebContentTypeRepository(_context);
                 await DeleteAllAsync(repo);
-                var records = db.WebContentTypes;
+                var records = _context.WebContentTypes;
                 foreach (var record in records)
                 {
                     repo.Delete(record.WebContentTypeId);
                 }
-                await db.SaveChangesAsync();
+                await _context.SaveChangesAsync();
 
                 var actual = repo.Insert(new WebContentType { WebContentTypeDescription = "Meeting" });
                 actual = repo.Insert(new WebContentType { WebContentTypeDescription = "Event" });
                 repo.Insert(new WebContentType { WebContentTypeDescription = "Season Info" });
-                db.SaveChanges();
+                _context.SaveChanges();
                 Assert.True(records.Count() == 3);
-            }
+
         }
 
         private async Task DeleteAllAsync(WebContentTypeRepository repo)
