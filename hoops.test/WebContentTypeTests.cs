@@ -4,17 +4,30 @@ using System.Threading.Tasks;
 using Hoops.Core.Models;
 using Hoops.Infrastructure.Repository;
 using Hoops.Core;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hoops.Test
 {
-    public class NewBaseType
+    public class WebContentTypeTest
     {
+                private readonly hoopsContext _context;
+        // public hoopsContext context;
+        public WebContentTypeRepository repo;
+
+         public WebContentTypeTest()
+         {
+                        var options = new DbContextOptionsBuilder<hoopsContext>()
+            .UseInMemoryDatabase(databaseName: "hoops")
+            .Options;
+            _context = new hoopsContext(options);
+            repo = new WebContentTypeRepository(_context);
+
+         }
         [Fact]
         public async void GetByWebContentTypeDescription()
         {
             using (var db = new hoopsContext())
             {
-                var repo = new WebContentTypeRepository(db);
                 var inserted = await repo.InsertAsync(new WebContentType { WebContentTypeDescription = "Test" });
                 await db.SaveChangesAsync();
                 var result = await repo.GetByDescriptionAsync("Test");
@@ -24,14 +37,13 @@ namespace Hoops.Test
         }
     }
 
-    public class WebContentTypeTests : NewBaseType
+    public class WebContentTypeTests : WebContentTypeTest
     {
         public hoopsContext db { get; set; }
         public WebContentTypeRepository repo { get; set; }
         public WebContentTypeTests()
         {
-            db = new hoopsContext();
-            var repoWebContent = new WebContentRepository(db);
+            var repoWebContent = new WebContentRepository(_context);
             var util = new TestUtilities();
             util.DeleteAllWebContentAsync(repoWebContent).GetAwaiter();
             var repo = new WebContentTypeRepository(db);

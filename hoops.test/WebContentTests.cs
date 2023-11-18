@@ -5,33 +5,43 @@ using System.Threading.Tasks;
 using Hoops.Infrastructure.Repository;
 using Hoops.Core.Models;
 using Hoops.Core;
+using Microsoft.EntityFrameworkCore;
 
 namespace csbc_server_test
 {
-    public class WebContents
+    public class WebContentsTest
     {
-        public WebContents()
+             private readonly hoopsContext _context;
+
+        public WebContentRepository repo;
+        public WebContentTypeRepository repoType;
+
+                public WebContentsTest()
         {
+                   var options = new DbContextOptionsBuilder<hoopsContext>()
+            .UseInMemoryDatabase(databaseName: "hoops")
+            .Options;
+            _context = new hoopsContext(options);
+            repo = new WebContentRepository(_context);
+repoType = new WebContentTypeRepository(_context);
+
             Task task = CreateData();
         }
 
         [Fact]
-        public void GetActiveWebContentAsyncTest1()
+        public async void GetActiveWebContentAsyncTest1()
         {
-            var repo = new WebContentRepository(new hoopsContext());
-            var actual = repo.GetActiveWebContentAsync(1);
-            Assert.True(actual.Result.Count() == 3);
+            var actual = await repo.GetActiveWebContentAsync(1);
+            Assert.True(actual.Count() == 3);
         }
         [Fact]
         public async void AddAllAsyncWebContentTypeTest()
         {
-            using (var db = new hoopsContext())
-            {
-                var repoType = new WebContentTypeRepository(db);
                 var seasonInfo = await repoType.GetByDescriptionAsync("Season Info");
                 var meeting = await repoType.GetByDescriptionAsync("Meeting");
-                var repo = new WebContentRepository(db);
+                // var repo = new WebContentRepository(db);
                 await DeleteAllAsync(repo);
+                
                 await repo.InsertAsync(new WebContent
                 {
                     // WebContentId
@@ -90,9 +100,8 @@ namespace csbc_server_test
                     ExpirationDate = DateTime.Now.AddDays(-3)
                 });
 
-                await db.SaveChangesAsync();
-                Assert.True(db.WebContents.Count() == 4);
-        }
+                await _context.SaveChangesAsync();
+                Assert.True(_context.WebContents.Count() == 4);
         }
 
         private async Task CreateData()
