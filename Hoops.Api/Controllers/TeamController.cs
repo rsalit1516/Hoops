@@ -24,6 +24,7 @@ namespace Hoops.Controllers
 
         public TeamController(ITeamRepository repository, ILogger<TeamController> logger)
         {
+            _context = new hoopsContext();
             this.repository = repository;
             _logger = logger;
             _logger.LogDebug(1, "NLog injected into TeamTroller");

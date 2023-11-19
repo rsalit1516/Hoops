@@ -23,6 +23,7 @@ namespace Hoops.Controllers
 
         public SchedulePlayoffController(ISchedulePlayoffRepository repository, ILogger<SchedulePlayoffController> logger)
         {
+            _context = new hoopsContext();
             this.repository = repository;
             _logger = logger;
             _logger.LogDebug(1, "NLog injected into SchedulePlayoffController");

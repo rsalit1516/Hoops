@@ -5,6 +5,7 @@ using Hoops.Core;
 using Hoops.Core.Models;
 using Hoops.Core.ViewModels;
 using Hoops.Infrastructure.Interface;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -13,7 +14,9 @@ namespace Hoops.Infrastructure.Repository
     public class SchedulePlayoffRepository : EFRepository<SchedulePlayoff>, ISchedulePlayoffRepository
     {
         private readonly ILogger<SchedulePlayoffRepository> _logger;
-        public SchedulePlayoffRepository(hoopsContext context) : base(context) { }
+        public SchedulePlayoffRepository(hoopsContext context) : base(context) {
+            _logger = new Logger<SchedulePlayoffRepository>(new LoggerFactory());
+         }
 
         #region IRepository<T> Members
         public IQueryable<SchedulePlayoff> GetByDate(DateTime date)
@@ -44,7 +47,7 @@ namespace Hoops.Infrastructure.Repository
             {
                 var divGames = context.Set<SchedulePlayoff>()
                 .Where(g => g.DivisionId == d.DivisionId);
-                // _logger.LogInformation("Retrieved " + divGames.Count().ToString() + " division playoff games");
+                 _logger.LogInformation("Retrieved " + divGames.Count().ToString() + " division playoff games");
 
                 games.AddRange(divGames);
             }
@@ -70,7 +73,19 @@ namespace Hoops.Infrastructure.Repository
                 VisitingTeamScore = divGame.VisitingTeamScore,
                 HomeTeamScore = divGame.HomeTeamScore,
                 DivisionId = divGame.DivisionId,
-                // LocationName = locations.FirstOrDefault(l => l.LocationNumber == divGame.LocationNumber)?.LocationName
+            };
+            _logger.LogInformation(playoffGame.ToString());
+            _logger.LogInformation("Location number " + divGame.LocationNumber.ToString());
+            var location = locations.First(l => l.LocationNumber == divGame.LocationNumber);
+
+            if (location != null)
+            {
+                playoffGame.LocationName = location.LocationName;
+            }
+            else
+            {
+                playoffGame.LocationName = "no location";
+                _logger.LogInformation("Location not found for game " + divGame.GameNumber.ToString());
             };
             _logger.LogInformation(playoffGame.ToString());
             return playoffGame;

@@ -1,5 +1,6 @@
 ﻿using Hoops.Core.Models;
 using Hoops.Infrastructure.Interface;
+using Hoops.Infrastructure.Repository;
 
 namespace Hoops.Core.Infrastructure
 {
@@ -8,16 +9,17 @@ namespace Hoops.Core.Infrastructure
         IRepository<Season> SeasonRepository { get; }
         void SaveChanges();
     }
-    public class UnitOfWork: IUnitofWork
+    public class UnitOfWork : IUnitofWork
     {
         private hoopsContext context;
+        private IRepository<Season> seasonRepository;
 
         public UnitOfWork(hoopsContext context)
         {
             this.context = context;
+            seasonRepository = new SeasonRepository(context);
         }
 
-        private IRepository<Season> seasonRepository;
         public IRepository<Season> SeasonRepository
         {
             get
@@ -29,7 +31,7 @@ namespace Hoops.Core.Infrastructure
                 return seasonRepository;
             }
         }
-        
+
         public void SaveChanges()
         {
             context.SaveChanges();

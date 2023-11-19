@@ -14,7 +14,7 @@ import { DailyPlayoffScheduleComponent } from "../daily-playoff-schedule/daily-p
     standalone: true,
     templateUrl: './schedule-playoffs.component.html',
     styleUrls: ['./schedule-playoffs.component.scss'],
-    imports: [CommonModule, MaterialModule, DailyPlayoffScheduleComponent]
+    imports: [CommonModule, DailyPlayoffScheduleComponent]
 })
 export class SchedulePlayoffsComponent {
   @Input() playoffGames!: Array<PlayoffGame[]>;
