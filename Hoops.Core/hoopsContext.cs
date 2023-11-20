@@ -6,9 +6,9 @@ namespace Hoops.Core;
 
 public partial class hoopsContext : DbContext
 {
-   public hoopsContext()
-   {}
-   
+    public hoopsContext()
+    { }
+
     public hoopsContext(DbContextOptions<hoopsContext> options)
         : base(options)
     {
@@ -17,90 +17,32 @@ public partial class hoopsContext : DbContext
 
     public virtual DbSet<Coach> Coaches { get; set; }
     public virtual DbSet<Color> Colors { get; set; }
-    // public virtual DbSet<Comments> Comments { get; set; }
     public virtual DbSet<Company> Companies { get; set; }
     public virtual DbSet<Content> Content { get; set; }
-    // public virtual DbSet<ConversionErrors> ConversionErrors { get; set; }
     public virtual DbSet<Director> Directors { get; set; }
     public virtual DbSet<Division> Divisions { get; set; }
-    // public virtual DbSet<Dtproperties> Dtproperties { get; set; }
     public virtual DbSet<Household> Households { get; set; }
     public virtual DbSet<Location> Location { get; set; }
-    // public virtual DbSet<PayErrorLog> PayErrorLog { get; set; }
     public virtual DbSet<Person> People { get; set; }
     public virtual DbSet<Player> Players { get; set; }
     public virtual DbSet<Role> Roles { get; set; }
     public virtual DbSet<ScheduleDivTeam> ScheduleDivTeams { get; set; }
     public virtual DbSet<ScheduleGame> ScheduleGames { get; set; }
-    // public virtual DbSet<ScheduleGamesStats> ScheduleGamesStats { get; set; }
     public virtual DbSet<ScheduleLocation> ScheduleLocations { get; set; }
     public virtual DbSet<SchedulePlayoff> SchedulePlayoffs { get; set; }
     public virtual DbSet<Season> Seasons { get; set; }
-    // public virtual DbSet<ShoppingCart> ShoppingCart { get; set; }
-    // public virtual DbSet<SpecialUserQuery> SpecialUserQuery { get; set; }
     public virtual DbSet<SponsorFee> SponsorFees { get; set; }
     public virtual DbSet<SponsorPayment> SponsorPayments { get; set; }
     public virtual DbSet<SponsorProfile> SponsorProfiles { get; set; }
     public virtual DbSet<Sponsor> Sponsors { get; set; }
-    // public virtual DbSet<TeamRosters> TeamRosters { get; set; }
     public virtual DbSet<Team> Teams { get; set; }
     public virtual DbSet<User> Users { get; set; }
     public virtual DbSet<Version> Version { get; set; }
     public virtual DbSet<WebContent> WebContents { get; set; }
     public virtual DbSet<WebContentType> WebContentTypes { get; set; }
 
-    // Views 
-    // public virtual DbSet<VwAllSponsors> VwAllSponsors { get; set; }
-    // public virtual DbSet<VwBatchPlayers> VwBatchPlayers { get; set; }
-    // public virtual DbSet<VwCheckEmail> VwCheckEmail { get; set; }
-    // public virtual DbSet<VwCheckEncryption> VwCheckEncryption { get; set; }
-    // public virtual DbSet<VwCheckLogin> VwCheckLogin { get; set; }
     public virtual DbSet<VwCoach> VwCoaches { get; set; }
-    // public virtual DbSet<VwComments> VwComments { get; set; }
-    // public virtual DbSet<VwContent> VwContent { get; set; }
     public virtual DbSet<VwDirector> VwDirectors { get; set; }
-    // public virtual DbSet<VwDivision> VwDivisions { get; set; }
-    // public virtual DbSet<VwGetBatchPlayers> VwGetBatchPlayers { get; set; }
-    // public virtual DbSet<VwGetBoardInf> VwGetBoardInf { get; set; }
-    // public virtual DbSet<VwGetBoardMembers> VwGetBoardMembers { get; set; }
-    // public virtual DbSet<VwGetContent> VwGetContent { get; set; }
-    // public virtual DbSet<VwGetHousePlayers> VwGetHousePlayers { get; set; }
-    // public virtual DbSet<VwGetPlayers> VwGetPlayers { get; set; }
-    // public virtual DbSet<VwGetRegistratedPlayers> VwGetRegistratedPlayers { get; set; }
-    // public virtual DbSet<VwGetTryoutsInfo> VwGetTryoutsInfo { get; set; }
-    // public virtual DbSet<VwGetUsers> VwGetUsers { get; set; }
-    // public virtual DbSet<VwHouseholds> VwHouseholds { get; set; }
-    // public virtual DbSet<VwPeople> VwPeople { get; set; }
-    // public virtual DbSet<VwPlayersList> VwPlayersList { get; set; }
-    // public virtual DbSet<VwRoles> VwRoles { get; set; }
-    // public virtual DbSet<VwSeason> VwSeason { get; set; }
-    // public virtual DbSet<VwSeasonCounts> VwSeasonCounts { get; set; }
-    // public virtual DbSet<VwSeasonSponsors> VwSeasonSponsors { get; set; }
-    // public virtual DbSet<VwSponsorPayments> VwSponsorPayments { get; set; }
-    // public virtual DbSet<VwSponsoredTeams> VwSponsoredTeams { get; set; }
-    // public virtual DbSet<VwSponsors> VwSponsors { get; set; }
-    // public virtual DbSet<VwTeam> VwTeams { get; set; }
-    // public virtual DbSet<VwUsers> VwUsers { get; set; }
-
-    // Tables used for importing form scheduler 
-    // public virtual DbSet<SchDivisions> SchDivisions { get; set; }
-    // public virtual DbSet<SchExceptions> SchExceptions { get; set; }
-    // public virtual DbSet<SchGameTimes> SchGameTimes { get; set; }
-    // public virtual DbSet<SchGames> SchGames { get; set; }
-    // public virtual DbSet<SchLocations> SchLocations { get; set; }
-    // public virtual DbSet<SchOptions> SchOptions { get; set; }
-    // public virtual DbSet<SchTeams> SchTeams { get; set; }
-
-    // protected void OnConfiguring() {}
-    // {
-    // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    // {
-    //     // if (!optionsBuilder.IsConfigured)
-    //     // {
-    //     //     string conn = this.Database.GetConnectionString();
-    //     //     optionsBuilder.UseSqlServer(conn);
-    //     // }
-    // }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -151,30 +93,6 @@ public partial class hoopsContext : DbContext
                 .IsUnicode(false)
                 .IsFixedLength();
         });
-
-        // modelBuilder.Entity<Comments>(entity =>
-        // {
-        //     entity.ToTable("Comment");
-        //     entity.HasKey(e => e.CommentId);
-
-        //     entity.Property(e => e.Comment).HasColumnType("ntext");
-
-        //     entity.Property(e => e.CommentId).HasColumnName("CommentID");
-
-        //     entity.Property(e => e.CommentType).HasMaxLength(50);
-
-        //     entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
-
-        //     entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime");
-
-        //     entity.Property(e => e.CreatedUser)
-        //         .HasColumnName("CreatedUSer")
-        //         .HasMaxLength(50);
-
-        //     entity.Property(e => e.LinkId).HasColumnName("LinkID");
-
-        //     entity.Property(e => e.UserId).HasColumnName("UserID");
-        // });
 
         modelBuilder.Entity<Company>(entity =>
         {
@@ -234,42 +152,18 @@ public partial class hoopsContext : DbContext
         //     entity.Property(e => e.StartDate).HasColumnType("datetime");
         // });
 
-        // modelBuilder.Entity<ConversionErrors>(entity =>
-        // {
-        //     entity.HasNoKey();
-
-        //     entity.ToTable("Conversion Errors");
-
-        //     entity.Property(e => e.ErrorDescription).HasColumnName("Error Description");
-
-        //     entity.Property(e => e.ObjectName)
-        //         .HasColumnName("Object Name")
-        //         .HasMaxLength(255);
-
-        //     entity.Property(e => e.ObjectType)
-        //         .HasColumnName("Object Type")
-        //         .HasMaxLength(255);
-        // });
 
         modelBuilder.Entity<Director>(entity =>
         {
             entity.ToTable("Directors");
             entity.HasKey(e => e.DirectorId);
-
             entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
-
             entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime").HasDefaultValue(DateTime.Now);
-
             entity.Property(e => e.CreatedUser).HasMaxLength(50);
-
             entity.Property(e => e.DirectorId).HasColumnName("ID");
-
             entity.Property(e => e.PersonId).HasColumnName("PeopleID");
-
             entity.Property(e => e.PhonePref).HasMaxLength(10);
-
             entity.Property(e => e.Photo).HasColumnType("image");
-
             entity.Property(e => e.Title).HasMaxLength(50);
         });
 
@@ -379,25 +273,6 @@ public partial class hoopsContext : DbContext
 
             entity.Property(e => e.Zip).HasMaxLength(20);
         });
-
-
-
-        // modelBuilder.Entity<PayErrorLog>(entity =>
-        // {
-        //     entity.HasNoKey();
-
-        //     entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
-
-        //     entity.Property(e => e.CreatedDate).HasColumnType("datetime").HasDefaultValue(DateTime.Now);
-
-        //     entity.Property(e => e.ErrorMsg)
-        //         .HasColumnName("ErrorMSG")
-        //         .HasMaxLength(300);
-
-        //     entity.Property(e => e.HouseId).HasColumnName("HouseID");
-
-        //     entity.Property(e => e.SeasonId).HasColumnName("SeasonID");
-        // });
 
         modelBuilder.Entity<Person>(entity =>
         {
@@ -550,6 +425,22 @@ public partial class hoopsContext : DbContext
 
             entity.Property(e => e.UserId)
                 .HasColumnName("UserID");
+        });
+
+        modelBuilder.Entity<Location>(entity =>
+        {
+            entity.ToTable("Location");
+            // TO DO: Add the following to the Location table:
+            // entity.HasKey(e => e.Id);
+
+            entity.Property(e => e.LocationNumber)
+                            .IsRequired();
+
+            entity.Property(e => e.LocationName)
+            .IsRequired()
+            .HasMaxLength(50);
+
+            // entity.Property(e => e.Notes).IsRequired();
         });
 
         // modelBuilder.Entity<SchDivisions>(entity =>
@@ -990,7 +881,7 @@ public partial class hoopsContext : DbContext
             // .WithOne(w => w..WebContentType)
             // .HasForeignKey<WebContent>(w => w.WebContentTypeId);
         });
-        
+
         modelBuilder.Entity<User>(entity =>
         {
             entity.ToTable("Users");

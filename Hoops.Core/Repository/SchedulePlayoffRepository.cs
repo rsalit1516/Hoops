@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Hoops.Core;
 using Hoops.Core.Models;
 using Hoops.Core.ViewModels;
@@ -14,9 +15,15 @@ namespace Hoops.Infrastructure.Repository
     public class SchedulePlayoffRepository : EFRepository<SchedulePlayoff>, ISchedulePlayoffRepository
     {
         private readonly ILogger<SchedulePlayoffRepository> _logger;
-        public SchedulePlayoffRepository(hoopsContext context) : base(context) {
+        public SchedulePlayoffRepository(hoopsContext context) : base(context)
+        {
             _logger = new Logger<SchedulePlayoffRepository>(new LoggerFactory());
-         }
+        }
+
+        public SchedulePlayoffRepository()
+        {
+            context = new hoopsContext();
+        }
 
         #region IRepository<T> Members
         public IQueryable<SchedulePlayoff> GetByDate(DateTime date)
@@ -34,32 +41,53 @@ namespace Hoops.Infrastructure.Repository
 
         public List<PlayoffGameVm> GetGamesBySeasonId(int seasonId)
         {
+            _logger.LogInformation("Retrieved " + seasonId.ToString() + " season");
+
             var div = context.Set<Division>().Where(d => d.SeasonId == seasonId);
-            // _logger.LogInformation("Retrieved " + div.Count().ToString() + " divisions");
+            _logger.LogInformation("Retrieved " + div.Count().ToString() + " divisions");
+            var locations = context.Set<ScheduleLocation>();
+            // var locations = context.Set<Location>();
+            _logger.LogInformation("Retrieved " + locations.Count().ToString() + " locations");
 
             List<SchedulePlayoff> games = new();
             List<PlayoffGameVm> gamesVm = new();
-
-            var locations = context.Set<Location>();
-            // _logger.LogInformation("Retrieved " + locations.Count().ToString() + " locations");
 
             foreach (var d in div)
             {
                 var divGames = context.Set<SchedulePlayoff>()
                 .Where(g => g.DivisionId == d.DivisionId);
-                 _logger.LogInformation("Retrieved " + divGames.Count().ToString() + " division playoff games");
+                _logger.LogInformation("Retrieved " + divGames.Count().ToString() + " division playoff games");
 
                 games.AddRange(divGames);
             }
             foreach (var game in games)
             {
-                gamesVm.Add(GetGameLocation(game, locations));
+                gamesVm.Add(ConvertGameToGameVm(game));
             }
+
+            gamesVm = GetLocationNames(gamesVm, locations);
             return gamesVm; ;
         }
 
-        private PlayoffGameVm GetGameLocation(SchedulePlayoff divGame, DbSet<Location> locations)
+        private List<PlayoffGameVm> GetLocationNames(List<PlayoffGameVm> gamesVm, IQueryable<ScheduleLocation> locations)
         {
+            foreach (var game in gamesVm)
+            {
+                if (locations.Any())
+                {
+                    if (game.LocationNumber != null)
+                    {
+                        game.LocationName = GetGameLocation((int)game.LocationNumber, locations);
+                    }
+                }
+                game.LocationName ??= "no location";
+            }
+            return gamesVm;
+        }
+
+        private PlayoffGameVm ConvertGameToGameVm(SchedulePlayoff divGame)
+        {
+            _logger.LogInformation(divGame.ToString());
             var playoffGame = new PlayoffGameVm
             {
                 ScheduleNumber = divGame.ScheduleNumber,
@@ -75,20 +103,22 @@ namespace Hoops.Infrastructure.Repository
                 DivisionId = divGame.DivisionId,
             };
             _logger.LogInformation(playoffGame.ToString());
-            _logger.LogInformation("Location number " + divGame.LocationNumber.ToString());
-            var location = locations.First(l => l.LocationNumber == divGame.LocationNumber);
+            return playoffGame;
+        }
+
+        private string GetGameLocation(Int32 locationNumber, IQueryable<ScheduleLocation> locations)
+        {
+            var location = locations.First(l => l.LocationNumber == locationNumber);
 
             if (location != null)
             {
-                playoffGame.LocationName = location.LocationName;
+                return location.LocationName;
             }
             else
             {
-                playoffGame.LocationName = "no location";
-                _logger.LogInformation("Location not found for game " + divGame.GameNumber.ToString());
+                return "no location";
             };
-            _logger.LogInformation(playoffGame.ToString());
-            return playoffGame;
+            // return "";
         }
 
         public IQueryable<SchedulePlayoff> GetGamesByDivisionId(int divisionId)

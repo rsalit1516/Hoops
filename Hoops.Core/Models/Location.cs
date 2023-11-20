@@ -1,29 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 
 namespace Hoops.Core.Models
 {
+    [Table("Location")]
     public partial class Location
     {
         public int LocationNumber { get; set; }
         public string LocationName { get; set; }
         public string Notes { get; set; }
         public int? Id { get; set; }
-        protected void OnModelCreating(ModelBuilder modelBuilder)
-        {
-
-            modelBuilder.Entity<Location>(entity =>
-    {
-        entity.ToTable("Location");
-        entity.HasKey(e => e.Id);
-
-        entity.Property(e => e.LocationName)
-            .IsRequired()
-            .HasMaxLength(50);
-
-        entity.Property(e => e.Notes).IsRequired();
-    });
-        }
+        
     }
 }

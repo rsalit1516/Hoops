@@ -157,6 +157,8 @@ namespace Hoops.Infrastructure.Repository
 
         public IEnumerable<ScheduleStandingsVM> GetStandings(int divisionId)
         {
+            var games = new List<ScheduleStandingsVM>();
+
             var colors = context.Colors.Where(c => c.CompanyId == 1).ToList();
             _logger.LogInformation("Retrieved colors: " + colors.Count().ToString());
 
@@ -164,19 +166,21 @@ namespace Hoops.Infrastructure.Repository
             _logger.LogInformation("Retrieved Teams: " + teams.Count().ToString());
 
             var division = context.Divisions.FirstOrDefault(d => d.DivisionId == divisionId);
-            _logger.LogInformation("Retrieved divisions: " + division.DivisionId.ToString());
-
-            var divTeams = context.ScheduleDivTeams.Where(div => div.SeasonId == division.SeasonId).ToList();
-            _logger.LogInformation("Retrieved division teams: " + divTeams.Count().ToString());
-
-            var seasonGames = this.GetSeasonGames(divisionId).ToList();
-            _logger.LogInformation("Retrieved season Games: " + seasonGames.Count().ToString());
-
-            // ScheduleStandingsVM g = new ScheduleStandingsVM();
-            var games = new List<ScheduleStandingsVM>();
-            if (seasonGames.Any() && colors.Any() && teams.Any()) // && divTeams.Any())
+            if (division != null)
             {
-                games = CalculateStandings(seasonGames, colors, teams, divTeams, divisionId);
+                _logger.LogInformation("Retrieved divisions: " + division.DivisionId.ToString());
+
+                var divTeams = context.ScheduleDivTeams.Where(div => div.SeasonId == division.SeasonId).ToList();
+                _logger.LogInformation("Retrieved division teams: " + divTeams.Count().ToString());
+
+                var seasonGames = this.GetSeasonGames(divisionId).ToList();
+                _logger.LogInformation("Retrieved season Games: " + seasonGames.Count().ToString());
+
+                // ScheduleStandingsVM g = new ScheduleStandingsVM();
+                if (seasonGames.Any() && colors.Any() && teams.Any()) // && divTeams.Any())
+                {
+                    games = CalculateStandings(seasonGames, colors, teams, divTeams, divisionId);
+                }
             }
             return games;
         }
@@ -567,15 +571,9 @@ namespace Hoops.Infrastructure.Repository
                     GameType = GameTypes.Playoff,
                     GameTime = gameTime
                 };
-
                 schedGames.Add(game);
             }
 
-            // if (divisionId != 0)
-            // {
-            // schedGames = schedGames
-            // .OrderBy(g => g.GameDate).ThenBy(g => g.GameTime).ThenBy(g => g.DivisionId).ToList<GameSchedulesViewModel>();
-            // }
             return schedGames.OrderBy(g => g.GameDate).ThenBy(g => g.GameTime).ThenBy(g => g.DivisionId).ToList<GameSchedulesViewModel>();
         }
         private static DateTime CombineDateAndTime(DateTime date, DateTime time)

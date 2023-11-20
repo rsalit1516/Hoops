@@ -8,7 +8,7 @@
         "name": "C#: hoops.api Debug",
         "type": "dotnet",
         "request": "launch",
-        "projectPath": "${workspaceFolder}/<relative-path-to-project-folder>hoops.api.csproj"
+        "projectPath": "${workspaceFolder}/hoops.api/hoops.api.csproj"
     },
         {
             "name": ".NET Core Launch (web)",
