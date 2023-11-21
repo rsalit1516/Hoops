@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Hoops.Core;
 using Hoops.Core.Models;
 using Hoops.Core.ViewModels;
 using Hoops.Infrastructure.Interface;
-using Microsoft.AspNetCore.Mvc.Razor;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.Logging;
 
 namespace Hoops.Infrastructure.Repository
@@ -15,6 +13,7 @@ namespace Hoops.Infrastructure.Repository
     public class SchedulePlayoffRepository : EFRepository<SchedulePlayoff>, ISchedulePlayoffRepository
     {
         private readonly ILogger<SchedulePlayoffRepository> _logger;
+
         public SchedulePlayoffRepository(hoopsContext context) : base(context)
         {
             _logger = new Logger<SchedulePlayoffRepository>(new LoggerFactory());
@@ -39,7 +38,7 @@ namespace Hoops.Infrastructure.Repository
 
         #endregion
 
-        public List<PlayoffGameVm> GetGamesBySeasonId(int seasonId)
+        public IQueryable<PlayoffGameVm> GetGamesBySeasonId(int seasonId)
         {
             _logger.LogInformation("Retrieved " + seasonId.ToString() + " season");
 
@@ -49,24 +48,46 @@ namespace Hoops.Infrastructure.Repository
             // var locations = context.Set<Location>();
             _logger.LogInformation("Retrieved " + locations.Count().ToString() + " locations");
 
-            List<SchedulePlayoff> games = new();
+            var games = new List<SchedulePlayoff>();
             List<PlayoffGameVm> gamesVm = new();
 
-            foreach (var d in div)
-            {
-                var divGames = context.Set<SchedulePlayoff>()
-                .Where(g => g.DivisionId == d.DivisionId);
-                _logger.LogInformation("Retrieved " + divGames.Count().ToString() + " division playoff games");
+            var gamesl = from sp in context.SchedulePlayoffs
+                         join d in context.Divisions on sp.DivisionId equals d.DivisionId
+                         join l in context.ScheduleLocations on sp.LocationNumber equals l.LocationNumber
+                         where d.SeasonId == seasonId
+                         orderby sp.GameDate, sp.GameTime
+                         select new PlayoffGameVm
+                         {
+                             GameNumber = sp.GameNumber,
+                             LocationNumber = sp.LocationNumber,
+                             GameDate = sp.GameDate,
+                             GameTime = sp.GameTime,
+                             VisitingTeam = sp.VisitingTeam,
+                             HomeTeam = sp.HomeTeam,
+                             Descr = sp.Descr,
+                             VisitingTeamScore = sp.VisitingTeamScore,
+                             HomeTeamScore = sp.HomeTeamScore,
+                             DivisionId = sp.DivisionId,
+                             LocationName = l.LocationName
+                         };
 
-                games.AddRange(divGames);
-            }
-            foreach (var game in games)
-            {
-                gamesVm.Add(ConvertGameToGameVm(game));
-            }
 
-            gamesVm = GetLocationNames(gamesVm, locations);
-            return gamesVm; ;
+            // foreach (var d in div)
+            // {
+            //     var divGames = context.SchedulePlayoffs
+            //     .Where(sp => sp.DivisionId == d.DivisionId)
+            //     .OrderBy(sp => sp.GameDate)
+            //     .ThenBy(sp => sp.GameTime);
+            //     // _logger.LogInformation("Retrieved " + divGames.Count.ToString() + " division playoff games");
+            //     games.AddRange(divGames);
+            // }
+            // foreach (var game in games)
+            // {
+            //     gamesVm.Add(ConvertGameToGameVm(game));
+            // }
+
+            // gamesVm = GetLocationNames(gamesVm, locations);
+            return gamesl; ;
         }
 
         private List<PlayoffGameVm> GetLocationNames(List<PlayoffGameVm> gamesVm, IQueryable<ScheduleLocation> locations)

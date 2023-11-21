@@ -5,14 +5,9 @@
   --background-color: blue;
 
 }
-.gamedate {
-  color: $brand-color;
-  font-weight: 600;
-  font-size: 1.4em;
-  padding-left: 24px;
-  padding-top: 10px;
-  padding-bottom: 8px;
 
+.table-wrapper {
+  width:100;
 }
 
 .gametime {
@@ -30,7 +25,6 @@
   background-color: var(--background-color); //$background-color;
   color: $color;
   border-radius: 10px;
-  width: 100%;
 }
 .mat-table tr {
   color: $color;
@@ -58,7 +52,6 @@
   color: $color;
   font-weight: 400;
   font-size: $table-font-size;
-  width: 100%;
 }
 
 .mat-column-gameTime, .mat-column-locationName, .mat-column-homeTeamScore, .mat-column-visitingTeamScore, .mat-column-actions     {
@@ -87,12 +80,12 @@
   -webkit-hyphens: auto;
   hyphens: auto;
 }
-.mat_column-gameDescription {
+.mat-column-gameDescription {
   color: $brand-color;
   font-weight: 400;
   font-size: 1.4em;
   padding-left: 24px;
   padding-top: 10px;
   padding-bottom: 8px;
-  min-width: 25%;
+  width: 25%;
 }

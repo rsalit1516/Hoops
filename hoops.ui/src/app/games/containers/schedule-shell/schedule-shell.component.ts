@@ -74,7 +74,8 @@ export class ScheduleShellComponent implements OnInit {
         this.games = games;
         this.dailySchedule = [];
 
-        this.gameService.groupByDate(games).subscribe((dailyGames) => {
+        this.gameService.groupByDate(games)
+          .subscribe((dailyGames) => {
           this.dailySchedule.push(dailyGames);
         });
       });

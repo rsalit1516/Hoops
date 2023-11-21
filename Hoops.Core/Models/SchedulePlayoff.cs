@@ -26,8 +26,8 @@ namespace Hoops.Core.Models
         {
             modelBuilder.Entity<SchedulePlayoff>(entity =>
         {
-            entity.HasKey(e => e.ScheduleNumber);
-            entity.HasKey(e => e.GameNumber);
+            // entity.HasKey(e => e.ScheduleNumber);
+            // entity.HasKey(e => e.GameNumber);
             entity.Property(e => e.Descr).HasMaxLength(50);
             entity.Property(e => e.GameDate).HasColumnType("datetime");
             entity.Property(e => e.GameTime).HasMaxLength(20);

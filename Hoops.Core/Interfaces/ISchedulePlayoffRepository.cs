@@ -11,7 +11,7 @@ namespace Hoops.Infrastructure.Interface
     {
         IQueryable<SchedulePlayoff> GetByDate(DateTime date);
         SchedulePlayoff GetByScheduleAndGameNo(int scheduleNo, int gameNo);
-        List<PlayoffGameVm> GetGamesBySeasonId(int seasonId);
+        IQueryable<PlayoffGameVm> GetGamesBySeasonId(int seasonId);
         IQueryable<SchedulePlayoff> GetGamesByDivisionId(int divisionId);
         new void Delete(SchedulePlayoff entity);
         
