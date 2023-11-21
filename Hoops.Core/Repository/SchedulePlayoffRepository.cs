@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Hoops.Core;
 using Hoops.Core.Models;
@@ -61,7 +62,7 @@ namespace Hoops.Infrastructure.Repository
                              GameNumber = sp.GameNumber,
                              LocationNumber = sp.LocationNumber,
                              GameDate = sp.GameDate,
-                             GameTime = sp.GameTime,
+                             GameTime = ConvertTime((DateTime)sp.GameDate, sp.GameTime),
                              VisitingTeam = sp.VisitingTeam,
                              HomeTeam = sp.HomeTeam,
                              Descr = sp.Descr,
@@ -71,25 +72,23 @@ namespace Hoops.Infrastructure.Repository
                              LocationName = l.LocationName
                          };
 
-
-            // foreach (var d in div)
-            // {
-            //     var divGames = context.SchedulePlayoffs
-            //     .Where(sp => sp.DivisionId == d.DivisionId)
-            //     .OrderBy(sp => sp.GameDate)
-            //     .ThenBy(sp => sp.GameTime);
-            //     // _logger.LogInformation("Retrieved " + divGames.Count.ToString() + " division playoff games");
-            //     games.AddRange(divGames);
-            // }
-            // foreach (var game in games)
-            // {
-            //     gamesVm.Add(ConvertGameToGameVm(game));
-            // }
-
-            // gamesVm = GetLocationNames(gamesVm, locations);
             return gamesl; ;
         }
 
+        private string ConvertTime(DateTime gameDate, string gameTime)
+        {
+            var timeString = gameDate.ToShortDateString() + " " + gameTime;
+            DateTime dateTime;
+
+            if (DateTime.TryParseExact(timeString, "HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateTime))
+            {
+                return dateTime.ToString("hh:mm tt");
+            }
+            else
+            {
+                return gameTime;
+            }
+        }
         private List<PlayoffGameVm> GetLocationNames(List<PlayoffGameVm> gamesVm, IQueryable<ScheduleLocation> locations)
         {
             foreach (var game in gamesVm)

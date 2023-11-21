@@ -53,7 +53,7 @@
 .mat-column-gameTime, .mat-column-locationName, .mat-column-homeTeamScore, .mat-column-visitingTeamScore, .mat-column-actions     {
   word-wrap: break-word !important;
   flex: 0 0 28% !important;
-  width: 10% !important;
+  width: 15% !important;
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
@@ -62,6 +62,7 @@
   -moz-hyphens: auto;
   -webkit-hyphens: auto;
   hyphens: auto;
+  padding-right: 10px;
 }
 .mat-column-visitingTeam, .mat-column-homeTeam {
   word-wrap: break-word !important;

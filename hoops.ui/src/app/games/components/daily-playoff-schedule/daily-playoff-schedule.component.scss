@@ -10,6 +10,15 @@
   width:100;
 }
 
+.gamedate {
+  color: $brand-color;
+  font-weight: 600;
+  font-size: 1.4em;
+  padding-left: 24px;
+  padding-top: 24px;
+  padding-bottom: 8px;
+}
+
 .gametime {
   color: $brand-color;
   font-weight: 600;
@@ -47,6 +56,7 @@
 }
 .mat-row {
   height: 40px;
+  width: 100%
 }
 .mat-table tr td {
   color: $color;
@@ -56,36 +66,19 @@
 
 .mat-column-gameTime, .mat-column-locationName, .mat-column-homeTeamScore, .mat-column-visitingTeamScore, .mat-column-actions     {
   word-wrap: break-word !important;
-  flex: 0 0 28% !important;
   width: 15%;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
-
-  -ms-hyphens: auto;
-  -moz-hyphens: auto;
-  -webkit-hyphens: auto;
-  hyphens: auto;
 }
+
 .mat-column-visitingTeam, .mat-column-homeTeam {
   word-wrap: break-word !important;
-  flex: 0 0 28% !important;
   width: 15% !important;
   overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
-
-  -ms-hyphens: auto;
-  -moz-hyphens: auto;
-  -webkit-hyphens: auto;
-  hyphens: auto;
 }
+
 .mat-column-gameDescription {
   color: $brand-color;
   font-weight: 400;
   font-size: 1.4em;
-  padding-left: 24px;
-  padding-top: 10px;
-  padding-bottom: 8px;
   width: 25%;
+  text-align: center;
 }

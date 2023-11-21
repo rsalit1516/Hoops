@@ -28,6 +28,7 @@ export class GamesTopMenuComponent implements OnInit {
   seasonDescription: string | undefined;
   selectedDivisionId$: Observable<number> | undefined;
   season: Season | undefined;
+  hasPlayoffs = true;
 
   constructor(
     // private fb: FormBuilder,
@@ -50,8 +51,12 @@ export class GamesTopMenuComponent implements OnInit {
         this.router.navigate([ '/games/schedule' ]);
         break;
       case 1:
-        this.router.navigate([ '/games/standings' ]);
+        this.router.navigate([ '/games/playoffs' ]);
         break;
+        case 2:
+          this.router.navigate([ '/games/standings' ]);
+          break;
+
     }
   }
 }

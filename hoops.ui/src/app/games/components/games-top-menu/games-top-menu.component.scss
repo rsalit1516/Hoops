@@ -98,4 +98,10 @@ h2 {
   color:$color !important;
   font-size: 1.1rem;
 }
+.mat-ink-bar {
+  background-color: $brand-color !important;
+}
 
+.mat-ink-bar.mat-ink-bar {
+  background-color: $brand-color !important;
+}

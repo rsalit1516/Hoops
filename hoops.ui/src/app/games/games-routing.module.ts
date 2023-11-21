@@ -8,6 +8,7 @@ import { ScheduleShellComponent } from './containers/schedule-shell/schedule-she
 import { ScoresComponent } from './components/scores/scores.component';
 import { StandingsShellComponent } from './containers/standings-shell/standings-shell.component';
 import { PageNotFoundComponent } from '@app/app.not-found.component';
+import { PlayoffsShellComponent } from './containers/playoffs-shell/playoffs-shell.component';
 
 const gamesRoutes: Routes = [
   {
@@ -20,6 +21,7 @@ const gamesRoutes: Routes = [
       { path: 'card', component: ScheduleCardViewComponent },
       { path: 'list', component: ScheduleShellComponent },
       { path: 'scores', component: ScoresComponent },
+      { path: 'playoffs', component: PlayoffsShellComponent },
       { path: '**', component: PageNotFoundComponent }
     ]
   }
