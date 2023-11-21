@@ -42,21 +42,22 @@ export class GamesTopMenuComponent implements OnInit {
     this.store.select(fromGames.getCurrentSeason).subscribe((currentSeason) => {
       this.seasonDescription = currentSeason?.description;
     });
-
+    this.store.select(fromGames.getDivisionPlayoffGames).subscribe((playoffs) => {
+      this.hasPlayoffs = playoffs.length > 0;
+    });
   }
   onTabChanged(event: MatTabChangeEvent): void {
     switch (event.index) {
       case 0: // index of the tab
         // this is our stub tab for link
-        this.router.navigate([ '/games/schedule' ]);
+        this.router.navigate(['/games/schedule']);
         break;
       case 1:
-        this.router.navigate([ '/games/playoffs' ]);
+        this.router.navigate(['/games/playoffs']);
         break;
-        case 2:
-          this.router.navigate([ '/games/standings' ]);
-          break;
-
+      case 2:
+        this.router.navigate(['/games/standings']);
+        break;
     }
   }
 }

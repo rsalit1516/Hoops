@@ -29,6 +29,11 @@ body {
   cursor: pointer;
 }
 
+h1 {
+  padding-top: 20px;
+  color: v.$brand-color;
+  text-align: center;
+}
 .card-title {
   border-bottom-color: white;
   border-bottom-style: solid;

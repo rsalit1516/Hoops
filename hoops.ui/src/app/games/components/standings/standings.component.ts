@@ -2,9 +2,13 @@ import { Component, OnInit, Input } from '@angular/core';
 import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { Standing } from '@domain/standing';
 import { GameService } from './../../game.service';
+import { CommonModule } from '@angular/common';
+import { MatTableModule } from '@angular/material/table';
 
 @Component({
   selector: 'csbc-standings',
+  standalone: true,
+  imports: [CommonModule, MatTableModule],
   templateUrl: './standings.component.html',
   styleUrls: [
     './standings.component.scss',
@@ -36,34 +40,8 @@ export class StandingsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.teams = this.getStandings();
-
     this.dataSource = new MatTableDataSource(this.standings);
     console.log(this.teams);
     console.log(this.standings);
-  }
-
-  getStandings() {
-    // this.gameService.getStandingsByDivision()..subscribe(standings => {
-    //   console.log(standings);
-    //   this.standings = standings;
-    // });
-    // console.log(standings);
-    return [
-      {
-        teamName: 'Blue(01)',
-        wins: 2,
-        losses: 1,
-        pct: 66,
-        gamesBehind: '1'
-      },
-      {
-        teamName: 'Gray(02)',
-        wins: 3,
-        losses: 0,
-        pct: 100,
-        gamesBehind: '_'
-      }
-    ];
   }
 }

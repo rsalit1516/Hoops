@@ -88,6 +88,8 @@ export class GameFilterComponent implements OnInit {
       this.currentDivision = val;
       this.store.dispatch(new gameActions.SetCurrentDivision(val));
       this.store.dispatch(new gameActions.LoadDivisionGames);
+      this.store.dispatch(new gameActions.LoadDivisionPlayoffGames);
+      this.store.dispatch(new gameActions.LoadStandings);
     }
   }
 

@@ -29,12 +29,20 @@ import { SchedulePlayoffsComponent } from '@app/games/components/schedule-playof
 
 @Component({
   selector: 'csbc-schedule-shell',
-  templateUrl: './schedule-shell.component.html',
+  template: `
+    <div class="container">
+      <h1>{{ title }}</h1>
+      <div class="row">
+        <csbc-schedule [dailySchedule]="dailySchedule"></csbc-schedule>
+      </div>
+    </div>
+  `,
   styleUrls: ['./schedule-shell.component.scss'],
 })
 export class ScheduleShellComponent implements OnInit {
   games: Game[] | undefined | null;
-  playoffGames!: PlayoffGame[] ;
+  playoffGames!: PlayoffGame[];
+  title = 'Regular Season Schedule';
   filteredGames$: Observable<Game[]> | undefined;
   currentSeason$: Observable<Season> | undefined;
   divisions$: Observable<Division[]> | undefined;
@@ -74,8 +82,7 @@ export class ScheduleShellComponent implements OnInit {
         this.games = games;
         this.dailySchedule = [];
 
-        this.gameService.groupByDate(games)
-          .subscribe((dailyGames) => {
+        this.gameService.groupByDate(games).subscribe((dailyGames) => {
           this.dailySchedule.push(dailyGames);
         });
       });

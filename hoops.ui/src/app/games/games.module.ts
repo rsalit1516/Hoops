@@ -4,7 +4,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CoreModule } from '../core/core.module';
 import { SharedModule } from '../shared/shared.module';
 import { ScheduleComponent } from './components/schedule/schedule.component';
-import { StandingsComponent } from './components/standings/standings.component';
 import { ScheduleCardViewComponent } from './components/schedule-card-view/schedule-card-view.component';
 import { GameCardComponent } from './components/game-card/game-card.component';
 import { GamesRoutingModule } from './games-routing.module';
@@ -19,7 +18,6 @@ import { GameSortPipe } from './game-sort.pipe';
 import { GamesTopMenuComponent } from './components/games-top-menu/games-top-menu.component';
 import { ScheduleShellComponent } from './containers/schedule-shell/schedule-shell.component';
 import { ScoresComponent } from './components/scores/scores.component';
-import { StandingsShellComponent } from './containers/standings-shell/standings-shell.component';
 import { GameScoreDialogComponent } from './components/game-score-dialog/game-score-dialog.component';
 import { DailyScheduleComponent } from './components/daily-schedule/daily-schedule.component';
 import { SchedulePlayoffsComponent } from './components/schedule-playoffs/schedule-playoffs.component';
@@ -42,7 +40,6 @@ import { DailyPlayoffScheduleComponent } from './components/daily-playoff-schedu
   declarations: [
     // GamesComponent,
     ScheduleComponent,
-    StandingsComponent,
     ScheduleCardViewComponent,
     GameCardComponent,
     GameFilterComponent,
@@ -51,7 +48,6 @@ import { DailyPlayoffScheduleComponent } from './components/daily-playoff-schedu
     GamesTopMenuComponent,
     ScheduleShellComponent,
     ScoresComponent,
-    StandingsShellComponent,
     GameScoreDialogComponent,
     DailyScheduleComponent,
   ],

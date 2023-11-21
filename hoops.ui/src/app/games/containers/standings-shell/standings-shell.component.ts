@@ -6,22 +6,34 @@ import { Division } from '@app/domain/division';
 import { Store, select } from '@ngrx/store';
 
 import * as fromGames from '../../state';
+import { CommonModule } from '@angular/common';
+import { StandingsComponent } from '@app/games/components/standings/standings.component';
 
 
 @Component({
   selector: 'csbc-standings-shell',
-  templateUrl: './standings-shell.component.html',
-  styleUrls: ['./standings-shell.component.scss']
+  standalone: true,
+  imports: [CommonModule, StandingsComponent],
+  template: `<div class="container" >
+  <div>
+    <h1>Standings</h1>
+    <csbc-standings [standings]="standings$ | async"></csbc-standings>
+  </div>
+</div>
+`,
+  styleUrls: ['./standings-shell.component.scss', '../../../../Content/styles.scss']
 })
 export class StandingsShellComponent implements OnInit {
-  standings$!: Observable<Standing[]>;
+  standings$: Observable<Standing[]>;
   currentSeason$: Observable<Season> | undefined;
   divisions$: Observable<Division[]> | undefined;
   selectedDivisionId$: Observable<number> | undefined;
   errorMessage$: Observable<string> | undefined;
   selectedDivision$: Observable<any> | undefined;
 
-  constructor( private store: Store<fromGames.State>) { }
+  constructor(private store: Store<fromGames.State>) {
+    this.standings$ = this.store.pipe(select(fromGames.getStandings));
+  }
 
   ngOnInit() {
     this.setStateSubscriptions();
@@ -29,12 +41,7 @@ export class StandingsShellComponent implements OnInit {
 
   setStateSubscriptions() {
     console.log('ScheduleShell - set subscriptions');
-    this.standings$ = this.store.pipe(select(fromGames.getStandings));
+    // this.standings$ = this.store.pipe(select(fromGames.getStandings));
   }
-  // divisionSelected(division: Division): void {
-  //   this.store.dispatch(new gameActions.SetCurrentDivision(division));
-  //   console.log(division);
-  //   this.store.dispatch(new gameActions.LoadStandings());
-  // }
 
 }
