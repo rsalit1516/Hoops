@@ -7,7 +7,7 @@
 }
 
 .table-wrapper {
-  width:100;
+  width: 100;
 }
 
 .gamedate {
@@ -19,66 +19,66 @@
   padding-bottom: 8px;
 }
 
-.gametime {
-  color: $brand-color;
-  font-weight: 600;
-  font-size: 1.4em;
-  padding-left: 24px;
-  padding-top: 10px;
-  padding-bottom: 8px;
-  min-width: 30px;
-}
-
 .mat-table {
   background-color: red;
   background-color: var(--background-color); //$background-color;
   color: $color;
   border-radius: 10px;
 }
+
 .mat-table tr {
   color: $color;
+  color: $color;
+  font-weight: 400;
+  font-size: $table-font-size;
+  width: 100%
 }
+
 .mat-table tr th {
   color: $color;
   font-weight: 700;
   font-size: $table-font-size;
+  text-align: center;
 }
-.mat-table  .mat-header-row {
-  // border-bottom-width: thin;
-  // border-bottom-style: solid;
-  // border-bottom-color: white;
+
+.mat-table .mat-header-row {
   height: 32px;
   border-collapse: collapse;
   border-spacing: 2px;
   background-color: $card-background-color;
   position: static;
-  // line-height
 }
+
 .mat-row {
   height: 40px;
   width: 100%
 }
-.mat-table tr td {
-  color: $color;
-  font-weight: 400;
-  font-size: $table-font-size;
-}
 
-.mat-column-gameTime, .mat-column-locationName, .mat-column-homeTeamScore, .mat-column-visitingTeamScore, .mat-column-actions     {
+.mat-column-gameTime,
+.mat-column-locationName,
+.mat-column-homeTeamScore,
+.mat-column-visitingTeamScore,
+.mat-column-actions {
   word-wrap: break-word !important;
   width: 15%;
+  text-align: center;
 }
 
-.mat-column-visitingTeam, .mat-column-homeTeam {
+.mat-column-visitingTeam,
+.mat-column-homeTeam {
   word-wrap: break-word !important;
   width: 15% !important;
   overflow-wrap: break-word;
+  text-align: center;
 }
 
-.mat-column-gameDescription {
+.gametime {
+  font-weight: 600;
+  min-width: 30px;
+}
+
+.gameDescription {
   color: $brand-color;
-  font-weight: 400;
-  font-size: 1.4em;
-  width: 25%;
+  width: 40%;
   text-align: center;
 }

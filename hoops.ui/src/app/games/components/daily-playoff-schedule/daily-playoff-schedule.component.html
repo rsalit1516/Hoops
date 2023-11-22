@@ -1,6 +1,5 @@
 <form formName="gameForm">
   <div class="gamedate">{{ gameDate | date: 'EEEE, MMMM d' }}</div>
-
   <div id="panelGames" flexLayout="row" >
     <div class="table-wrapper">
       <div *ngIf="playoffGames !== undefined">
@@ -13,8 +12,8 @@
               </td>
             </ng-container>
             <ng-container matColumnDef="Descr">
-              <th mat-header-cell class="gameDescription" *matHeaderCellDef>Description</th>
-              <td mat-cell *matCellDef="let game">
+              <th mat-header-cell *matHeaderCellDef>Description</th>
+              <td mat-cell *matCellDef="let game" class="gameDescription">
                 {{ game.descr }}
               </td>
             </ng-container>

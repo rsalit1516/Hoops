@@ -14,10 +14,10 @@ import { StandingsComponent } from '@app/games/components/standings/standings.co
   selector: 'csbc-standings-shell',
   standalone: true,
   imports: [CommonModule, StandingsComponent],
-  template: `<div class="container" >
+  template: `<div class="container">
   <div>
     <h1>Standings</h1>
-    <csbc-standings [standings]="standings$ | async"></csbc-standings>
+    <csbc-standings [standings]="(standings$ | async) ?? []"></csbc-standings>
   </div>
 </div>
 `,
