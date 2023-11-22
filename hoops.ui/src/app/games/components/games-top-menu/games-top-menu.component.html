@@ -1,17 +1,26 @@
 <div class="top-menu-wrapper">
   <div class="seasonDescription">
-    <h2 class="col-12" >{{ seasonDescription }}</h2>
+    <h2 class="col-12">{{ seasonDescription }}</h2>
   </div>
   <div class="row mt-2">
     <div class="col-sm-4 col-12">
       <mat-toolbar>
         <div>
-          <mat-tab-group animationDuration="2000ms" (selectedTabChange)="onTabChanged($event)">
-            <mat-tab label="Schedule" class="label" routerLink="/games/schedule"></mat-tab>
+          <mat-tab-group
+            animationDuration="2000ms"
+            (selectedTabChange)="onTabChanged($event)"
+          >
+            <mat-tab
+              label="Schedule"
+              class="label"
+            ></mat-tab>
             @if (hasPlayoffs) {
-              <mat-tab label="Playoffs" routerLink="/games/playoffs"></mat-tab>
+            <mat-tab label="Playoffs"
+            ></mat-tab>
+            } @if (hasStandings) {
+            <mat-tab label="Standings"
+            ></mat-tab>
             }
-            <mat-tab label="Standings" routerLink="/games/standings"></mat-tab>
           </mat-tab-group>
         </div>
       </mat-toolbar>

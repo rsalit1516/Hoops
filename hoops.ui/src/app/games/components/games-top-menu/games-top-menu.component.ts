@@ -29,6 +29,7 @@ export class GamesTopMenuComponent implements OnInit {
   selectedDivisionId$: Observable<number> | undefined;
   season: Season | undefined;
   hasPlayoffs = true;
+  hasStandings = true;
 
   constructor(
     // private fb: FormBuilder,
@@ -45,17 +46,23 @@ export class GamesTopMenuComponent implements OnInit {
     this.store.select(fromGames.getDivisionPlayoffGames).subscribe((playoffs) => {
       this.hasPlayoffs = playoffs.length > 0;
     });
+    this.store.select(fromGames.getStandings).subscribe((standings) => {
+      this.hasStandings = standings.length > 0;
+    });
+
   }
   onTabChanged(event: MatTabChangeEvent): void {
-    switch (event.index) {
-      case 0: // index of the tab
+    console.log(event.index);
+    console.log(event.tab.textLabel);
+    switch (event.tab.textLabel) {
+      case 'Schedule': // index of the tab
         // this is our stub tab for link
         this.router.navigate(['/games/schedule']);
         break;
-      case 1:
+      case 'Playoffs':
         this.router.navigate(['/games/playoffs']);
         break;
-      case 2:
+      case 'Standings':
         this.router.navigate(['/games/standings']);
         break;
     }
