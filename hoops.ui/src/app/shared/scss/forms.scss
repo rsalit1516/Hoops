@@ -1,0 +1,5 @@
+@use "../../../Content/variables" as v;
+
+.mat-mdc-card {
+  background-color: lighten(v.$card-background-color, 10%);
+}

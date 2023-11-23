@@ -1,0 +1,27 @@
+@import '../../../Content/variables.scss';
+
+.mat-table tr {
+  color: $color;
+}
+.mat-table tr th {
+  color: $color;
+  font-weight: 700;
+  font-size: $table-font-size;
+}
+.mat-table tr td {
+  color: $color;
+  font-weight: 400;
+  font-size: $table-font-size;
+}
+
+.mat-table  .mat-header-row {
+  height: 32px;
+  border-collapse: collapse;
+  border-spacing: 2px;
+  background-color: $card-background-color;
+  position: static;
+  // line-height
+}
+.mat-row {
+  height: 40px;
+}

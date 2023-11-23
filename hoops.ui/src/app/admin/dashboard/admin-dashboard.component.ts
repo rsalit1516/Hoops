@@ -15,6 +15,7 @@ import * as fromAdmin from '../state';
 import * as adminActions from '../state/admin.actions';
 import { Game } from '@app/domain/game';
 import { AdminGamesListComponent } from '../admin-shared/admin-games-list/admin-games-list.component';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'csbc-admin-dashboard',

@@ -1,8 +1,11 @@
 ﻿@use "_variables" as v;
 @use "_material.scss";
 
+
 @use './_mixins';
 @use "./../app//shared/scss/menu";
+@use "./../app//shared/scss/tables";
+@use "./../app//shared/scss/forms";
 
 // @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 @import "~bootstrap/dist/css/bootstrap.css";
@@ -11,7 +14,7 @@
 
 /*#region Override background color theme */
 
-body {
+body{
   padding: 0 0px 0px 0px;
   margin: 0px;
   font: Roboto, Arial, Helvetica, sans-serif;

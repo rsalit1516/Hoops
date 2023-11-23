@@ -4,12 +4,19 @@
     <form novalidate (ngSubmit)="saveContent()" [formGroup]="contentForm">
       <mat-card-content>
         <fieldset>
-          <mat-form-field class="full-width" appearance = "fill"
-          [floatLabel]="getFloatLabelValue()">
-            <mat-label >Title</mat-label>
-            <input matInput formControlName="title" title="title"
-            placeholder="Enter the event title - (not more then 50 characters long)">
-<mat-hint></mat-hint>
+          <mat-form-field
+            class="full-width"
+            appearance="fill"
+            [floatLabel]="getFloatLabelValue()"
+          >
+            <mat-label>Title</mat-label>
+            <input
+              matInput
+              formControlName="title"
+              title="Title"
+              placeholder="Enter the event title - (not more then 50 characters long)"
+            />
+            <mat-hint></mat-hint>
             <mat-error *ngIf="hasError('title', 'required')"
               >Name is required</mat-error
             >
@@ -18,10 +25,10 @@
             >
           </mat-form-field>
 
-          <mat-form-field appearance = "fill"
-          class="full-width" >
+          <mat-form-field appearance="fill" class="full-width">
             <mat-label htmlFor="subtitle">Sub-title</mat-label>
-            <input matInput
+            <input
+              matInput
               formControlName="subTitle"
               title="subtitle"
               placeholder="Add a sub-title. Not more then 50 characters long."
@@ -41,7 +48,7 @@
               rows="6"
               formControlName="body"
               title="body"
-              placeholder = "Enter the main text to show on the notice"
+              placeholder="Enter the main text to show on the notice"
             ></textarea>
           </mat-form-field>
 
@@ -51,14 +58,18 @@
             appearance="fill"
             [floatLabel]="getFloatLabelValue()"
           >
-            <mat-label for="location">{{location}}</mat-label >
-            <input matInput
+            <mat-label for="location">{{ location }}</mat-label>
+            <input
+              matInput
               title="location"
               placeholder="Enter the location for the event"
-              formControlName="location" />
+              formControlName="location"
+            />
           </mat-form-field>
 
-          <mat-form-field class="full-width" appearance="fill"
+          <mat-form-field
+            class="full-width"
+            appearance="fill"
             [floatLabel]="getFloatLabelValue()"
           >
             <mat-label>Date and Time</mat-label>
@@ -73,10 +84,10 @@
           <mat-divider></mat-divider>
 
           <!-- web content -->
-          <mat-form-field >
-            <label for="webContent">{{webContent}}</label>
+          <mat-form-field>
+            <label for="webContent">{{ webContent }}</label>
             <mat-select
-            title="webContent"
+              title="webContent"
               formControlName="webContentTypeControl"
             >
               <mat-option
@@ -90,7 +101,7 @@
 
           <!-- expiration date field -->
           <mat-form-field class="sequenceWidth" type="date">
-            <mat-label>{{expirationDate}}</mat-label>
+            <mat-label>{{ expirationDate }}</mat-label>
             <input
               matInput
               title="expirationDate"
@@ -105,7 +116,7 @@
             <!-- <mat-hint>Select the expiration date for the notice</mat-hint> -->
           </mat-form-field>
           <mat-form-field class="sequenceWidth">
-            <mat-label>{{contentSequence}}</mat-label>
+            <mat-label>{{ contentSequence }}</mat-label>
             <input
               matInput
               title="contentSequence"

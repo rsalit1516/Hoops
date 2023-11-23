@@ -26,12 +26,14 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { NgxMatDatetimePickerModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
 import {MatLegacyTabsModule as MatTabsModule} from '@angular/material/legacy-tabs';
+import { MatCard } from '@angular/material/card';
 
 @NgModule({
   imports: [
     CommonModule,
     MatButtonModule,
     // MatButtonToggleModule,
+    MatCardModule,
     MatCardModule,
     MatToolbarModule,
     MatSidenavModule,

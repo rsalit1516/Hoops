@@ -11,8 +11,9 @@ import {
   FormControl,
   FormBuilder,
   FormGroup,
+  ReactiveFormsModule,
 } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 import { Content } from '../../../../domain/content';
 import { ContentService } from '../../content.service';
@@ -23,11 +24,32 @@ import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/leg
 import { WebContentType } from '@app/domain/webContentType';
 import { LegacyFloatLabelType } from '@angular/material/legacy-form-field';
 import { FloatLabelType } from '@angular/material/form-field';
+import { CommonModule } from '@angular/common';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCardModule } from '@angular/material/card';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatOptionModule } from '@angular/material/core';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'csbc-content-edit',
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatCardModule,
+    MatDatepickerModule,
+    MatDividerModule,
+    MatOptionModule,
+    MatButtonModule
+  ],
   templateUrl: './content-edit.component.html',
-  styleUrls: ['./content-edit.component.scss', '../../../admin.component.scss'],
+  styleUrls: ['./content-edit.component.scss', '../../../admin.component.scss', '../../../../../Content/styles.scss'],
 })
 export class ContentEditComponent implements OnInit {
   @ViewChildren(FormControlName, { read: ElementRef })
@@ -62,16 +84,14 @@ export class ContentEditComponent implements OnInit {
   contentSequence = 'Content Order';
 
   contentForm = new FormGroup({
-    title: new FormControl<string | null>('',
-      {
-        validators:
-          [
-            Validators.required,
-            Validators.minLength(3),
-            Validators.maxLength(50),
-          ],
-        nonNullable: true
-      }),
+    title: new FormControl<string | null>('', {
+      validators: [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(50),
+      ],
+      nonNullable: true,
+    }),
 
     subTitle: new FormControl('', [Validators.maxLength(50)]),
     body: new FormControl<string | null>(''),
@@ -80,7 +100,10 @@ export class ContentEditComponent implements OnInit {
     webContentId: new FormControl<number>(0),
     webContentTypeControl: new FormControl<number>(1),
     contentSequence: new FormControl<number>(1),
-    expirationDate: new FormControl<Date | null>(new Date(), Validators.required),
+    expirationDate: new FormControl<Date | null>(
+      new Date(),
+      Validators.required
+    ),
   });
   floatLabelType: FloatLabelType = 'auto';
 
@@ -90,8 +113,7 @@ export class ContentEditComponent implements OnInit {
     private router: Router,
     private store: Store<fromContent.State>,
     private contentService: ContentService
-) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.pageTitle = 'Edit Web Content Messages';
