@@ -1,33 +1,38 @@
-
-<div class="table-wrapper">
-  <table mat-table id="grdSchedule" [dataSource]="dataSource">
-    <ng-container matColumnDef="teamName">
-      <th mat-header-cell *matHeaderCellDef>Team</th>
-      <td mat-cell *matCellDef="let game" class="teamName">
-        {{ game.teamName }}
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="won">
-      <th mat-header-cell *matHeaderCellDef>W</th>
-      <td mat-cell *matCellDef="let game">{{ game.won }}</td>
-    </ng-container>
-    <ng-container matColumnDef="lost">
-      <th mat-header-cell *matHeaderCellDef>L</th>
-      <td mat-cell *matCellDef="let game">{{ game.lost }}</td>
-    </ng-container>
-    <ng-container matColumnDef="pct">
-      <th mat-header-cell *matHeaderCellDef>PCT</th>
-      <td mat-cell *matCellDef="let game">{{ game.pct | number: '1.2-2' }}</td>
-    </ng-container>
-    <ng-container matColumnDef="pf">
-      <th mat-header-cell *matHeaderCellDef>PF</th>
-      <td mat-cell *matCellDef="let game">{{ game.pf }}</td>
-    </ng-container>
-    <ng-container matColumnDef="pa">
-      <th mat-header-cell *matHeaderCellDef>PA</th>
-      <td mat-cell *matCellDef="let game">{{ game.pa }}</td>
-    </ng-container>
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-  </table>
-</div>
+<section name="gameForm">
+  <div id="panelGames" flexLayout="row">
+    <div class="table-wrapper">
+      <table mat-table id="grdSchedule" [dataSource]="dataSource">
+        <ng-container matColumnDef="teamName">
+          <th mat-header-cell *matHeaderCellDef>Team</th>
+          <td mat-cell *matCellDef="let game" class="teamName">
+            {{ game.teamName }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="won">
+          <th mat-header-cell *matHeaderCellDef>W</th>
+          <td mat-cell *matCellDef="let game">{{ game.won }}</td>
+        </ng-container>
+        <ng-container matColumnDef="lost">
+          <th mat-header-cell *matHeaderCellDef>L</th>
+          <td mat-cell *matCellDef="let game">{{ game.lost }}</td>
+        </ng-container>
+        <ng-container matColumnDef="pct">
+          <th mat-header-cell *matHeaderCellDef>PCT</th>
+          <td mat-cell *matCellDef="let game">
+            {{ game.pct | number : "1.2-2" }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="pf">
+          <th mat-header-cell *matHeaderCellDef>PF</th>
+          <td mat-cell *matCellDef="let game">{{ game.pf }}</td>
+        </ng-container>
+        <ng-container matColumnDef="pa">
+          <th mat-header-cell *matHeaderCellDef>PA</th>
+          <td mat-cell *matCellDef="let game">{{ game.pa }}</td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+  </div>
+</section>

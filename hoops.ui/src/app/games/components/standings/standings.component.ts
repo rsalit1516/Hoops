@@ -12,7 +12,9 @@ import { MatTableModule } from '@angular/material/table';
   templateUrl: './standings.component.html',
   styleUrls: [
     './standings.component.scss',
-    '../../containers/games-shell/games-shell.component.scss'
+    '../../containers/games-shell/games-shell.component.scss',
+    '../../../../Content/styles.scss'
+
   ]
 })
 export class StandingsComponent implements OnInit {
