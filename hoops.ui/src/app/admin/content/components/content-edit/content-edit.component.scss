@@ -1,4 +1,7 @@
-@import '../../../../../Content/variables';
+// @use '../../../../../Content/variables' as v;
+
+@use '../../../../shared/scss/forms.scss';
+@import '../../../../../Content/variables' ;
 
 :host {
   font-size: 1rem;
@@ -19,4 +22,10 @@ button {
 .mat-icon-button {
   background-color: $card-background-color;
   color: $card-color;
+}
+.example-container mat-form-field + mat-form-field {
+  margin-left: 8px;
+}
+h2 {
+  color: $color;
 }

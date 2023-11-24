@@ -84,7 +84,7 @@ export class ContentEditComponent implements OnInit {
   contentSequence = 'Content Order';
 
   contentForm = new FormGroup({
-    title: new FormControl<string | null>('', {
+    title: new FormControl('', {
       validators: [
         Validators.required,
         Validators.minLength(3),

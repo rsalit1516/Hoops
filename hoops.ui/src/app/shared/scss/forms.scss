@@ -1,5 +1,64 @@
 @use "../../../Content/variables" as v;
 
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
 .mat-mdc-card {
   background-color: lighten(v.$card-background-color, 10%);
 }
+
+form {
+  background-color: lighten(v.$card-background-color, 10%);
+  padding: 12px;
+  border-radius: 10px;
+  margin-left: 20px;
+  margin-right: 20px;
+  width: 80%;
+}
+
+h2 {
+  color: v.$color;
+}
+
+.form-heading {
+  color: v.$color;
+  font-size: 1.2em;
+  font-weight: 700;
+  padding-top: 24px;
+  padding-bottom: 12px;
+  padding-left: 12px;
+}
+.ng-valid[required], .ng-valid.required  {
+  border-left: 5px solid #42A948; /* green */
+}
+.ng-invalid:not(form)  {
+  border-left: 5px solid #a94442; /* red */
+}
+.alert div {
+  background-color: #fed3d3;
+  color: #820000;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.form-group {
+  margin-bottom: 1rem;
+}
+label {
+  display: block;
+  margin-bottom: .9rem;
+  color: pink
+}
+select {
+  width: 100%;
+  padding: .9rem;
+  color: green;
+}
+input, textarea, select {
+  width:100%;
+}
+ input {
+  height: 3rem;
+ }
