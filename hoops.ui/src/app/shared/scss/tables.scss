@@ -8,6 +8,12 @@
   font-weight: 700;
   font-size: $table-font-size;
 }
+th {
+  color: $color;
+  font-weight: 700;
+  font-size: $table-font-size;
+}
+
 .mat-table tr td {
   color: $color;
   font-weight: 400;
