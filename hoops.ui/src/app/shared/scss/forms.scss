@@ -13,11 +13,7 @@
 form {
   background-color: lighten(v.$card-background-color, 10%);
   padding: 12px;
-  border-radius: 10px;
-  margin-left: 20px;
-  margin-right: 20px;
   width: 80%;
-  margin-bottom: 20px;
 }
 
 h2 {
@@ -55,11 +51,64 @@ label {
 select {
   width: 100%;
   padding: .9rem;
-  color: green;
 }
 input, textarea, select {
   width:100%;
 }
  input {
   height: 3rem;
+ }
+ .mdc-text-field {
+  background-color: v.$card-background-color;
+ }
+ .mdc-text-field--filled:not {
+  background-color: v.$card-background-color !important;
+ }
+ .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background-color: v.$background-color !important;
+ }
+ .mat-label {
+  color: v.$field-label;
+  font-size: .9rem;
+  font-weight: 800;
+  padding-bottom: 6px;
+  padding-left: 12px;
+ }
+
+ .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-text-field__input {
+  color: v.$field-label !important;
+  font-size: v.$input-font-size;
+  font-weight: 700;
+  padding-bottom: 6px;
+  padding-left: 12px;
+ }
+ div.mat-mdc-select-panel {
+  background-color: v.$card-background-color !important;
+ }
+ .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-floating-label, .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-floating-label--float-above {
+  color: v.$field-label !important;
+  font-size: v.$input-font-size;
+  font-weight: 500;
+ }
+.mdc-list-item__primary-text {
+  color: darken(v.$field-label, 50%) !important;
+ }
+
+ .mdc-list-item__primary-text {
+  color: v.$field-label !important;
+ }
+ .mdc-list-item__primary-text:selected {
+  color: yellow !important;
+ }
+ .mat-mdc-raised-button:not(:disabled) {
+  background-color: v.$brand-color !important;
+ }
+ .mat-mdc-form-field {
+  padding-right: 12px;
+ }
+ .button-row {
+  margin-right: 8px;
+ }
+ button {
+  margin-right: 12px;
  }

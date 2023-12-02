@@ -1,7 +1,5 @@
 // @use '../../../../../Content/variables' as v;
-
-@use '../../../../shared/scss/forms.scss';
-@import '../../../../../Content/variables' ;
+@use '../../../../../Content/variables' as v; ;
 
 :host {
   font-size: 1rem;
@@ -20,12 +18,15 @@ button {
   padding-right: 12px;
 }
 .mat-icon-button {
-  background-color: $card-background-color;
-  color: $card-color;
+  background-color: v.$card-background-color;
+  color: v.$card-color;
 }
 .example-container mat-form-field + mat-form-field {
   margin-left: 8px;
 }
 h2 {
-  color: $color;
+  color: v.$color;
+}
+input {
+  background-color: v.$card-background-color;
 }

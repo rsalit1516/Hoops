@@ -32,6 +32,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatOptionModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSelect, MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'csbc-content-edit',
@@ -46,10 +47,12 @@ import { MatButtonModule } from '@angular/material/button';
     MatDatepickerModule,
     MatDividerModule,
     MatOptionModule,
-    MatButtonModule
+    MatButtonModule,
+    MatSelectModule
   ],
   templateUrl: './content-edit.component.html',
-  styleUrls: ['./content-edit.component.scss', '../../../admin.component.scss', '../../../../../Content/styles.scss'],
+  styleUrls: [ './content-edit.component.scss', '../../../admin.component.scss', '../../../../shared/scss/forms.scss',
+    '../../../../../Content/styles.scss' ],
 })
 export class ContentEditComponent implements OnInit {
   @ViewChildren(FormControlName, { read: ElementRef })

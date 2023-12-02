@@ -23,7 +23,8 @@ export class ContentShellComponent implements OnInit {
     private fb: UntypedFormBuilder,
     private _contentService: ContentService,
     private router: Router,
-    private store: Store<fromContent.State>
+    private store: Store<fromContent.State>,
+    private contentService: ContentService
   ) {
     this.contentForm = this.fb.group({
       title: [
@@ -47,6 +48,8 @@ export class ContentShellComponent implements OnInit {
       isActiveContent ? this.store.dispatch(new contentActions.SetActiveContent()):
       this.store.dispatch(new contentActions.SetAllContent());
     });
+    this.contentService.saveContent(this.contentForm.value);
+
   }
 
   update(): void {

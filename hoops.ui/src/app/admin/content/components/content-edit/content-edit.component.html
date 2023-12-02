@@ -86,16 +86,17 @@
 
         <!-- web content -->
         <mat-form-field>
-          <label for="webContent">{{ webContent }}</label>
+          <mat-label for="webContent">{{ webContent }}</mat-label>
           <mat-select
             title="webContent"
             formControlName="webContentTypeControl"
           >
+          @for (webContentType of contentTypes; track webContentType) {
             <mat-option
-              *ngFor="let webContentType of contentTypes"
               [value]="webContentType.webContentTypeId"
               >{{ webContentType.webContentTypeDescription }}</mat-option
             >
+          }
           </mat-select>
           <!-- <mat-hint>Enter the type of notice from the dropdown</mat-hint> -->
         </mat-form-field>
@@ -136,7 +137,7 @@
         />
       </mat-card-content>
       <mat-card-actions>
-        <div class="input-group-btn">
+        <div class="button-row">
           <button
             type="button"
             mat-raised-button

@@ -13,6 +13,8 @@ import { DataService } from '../../services/data.service';
 import { ConditionalExpr } from '@angular/compiler';
 
 import * as fromContent from '../../admin/content/state';
+import * as contentActions from '../../admin/content/state/content.actions';
+
 import { Store } from '@ngrx/store';
 import { WebContentType } from '@app/domain/webContentType';
 import { WebContent } from '../../domain/webContent';
@@ -137,12 +139,16 @@ export class ContentService {
     let options = { headers: new HttpParams() };
 
     if (contentForm.webContentId === undefined) {
-      return this.createContent(content, options.headers).subscribe((x) =>
+      return this.createContent(content, options.headers).subscribe(x => {
         console.log(x)
-      );
+        this.store.dispatch(new contentActions.Load());
+      });
     } else {
-      return this.updateContent(content, options.headers).subscribe((x) =>
-        console.log(x)
+      return this.updateContent(content, options.headers).subscribe((x) => {
+        console.log(x);
+        this.store.dispatch(new contentActions.Load());
+      }
+
       );
     }
   }
