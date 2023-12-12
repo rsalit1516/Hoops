@@ -44,6 +44,7 @@ export class SeasonSelectComponent implements OnInit {
     this.seasonComponent = this.selectForm.get('seasonControl') as UntypedFormControl;
     this.seasonComponent?.valueChanges.subscribe((value) => {
       const selectedSeason = this.seasonService.getSeason(value);
+      console.log(selectedSeason);
       this.store.dispatch(new adminActions.SetSelectedSeason(selectedSeason));
     });
     this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
