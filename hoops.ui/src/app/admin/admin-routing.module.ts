@@ -12,6 +12,7 @@ import { PageNotFoundComponent } from '@app/app.not-found.component';
 
 import { AuthGuard } from '../auth/auth.guard';
 import { SeasonSetupComponent } from './containers/season-setup/season-setup.component';
+import { ContentShellComponent } from './content/containers/content-shell/content-shell.component';
 
 const adminRoutes: Routes = [
   {
@@ -25,11 +26,11 @@ const adminRoutes: Routes = [
       { path: 'division', component: AdminDivisionShellComponent },
 
       { path: 'season-setup', component: SeasonSetupComponent },
-      {
-        path: 'content',
-        loadChildren: () =>
-          import('./content/content.module').then((mod) => mod.ContentModule),
-      },
+      // {
+      //   path: 'content', component: ContentShellComponent,
+      //   // loadChildren: () =>
+      //   //   import('./content/containers/content-shell/content-shell.component).then(mod => mod.ContentShellComponent')
+      // },
       { path: 'teams', component: TeamListComponent },
       {
         path: 'games',

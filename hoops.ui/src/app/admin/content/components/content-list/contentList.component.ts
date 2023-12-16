@@ -4,19 +4,24 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import { Content } from '../../../../domain/content';
-import { ContentService } from '../../content.service';
+// import { ContentService } from '../../content.service';
 import { ContentEditComponent } from '../content-edit/content-edit.component';
 
 import * as fromContent from '../../state';
 import * as contentActions from '../../state/content.actions';
 import { WebContent } from '../../../../domain/webContent';
-import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { ContentListToolbarComponent } from '../content-list-toolbar/content-list-toolbar.component';
 
 @Component({
   selector: 'csbc-content-list',
+  standalone: true,
   templateUrl: './contentList.component.html',
-  styleUrls: ['./contentList.component.scss', '../../../admin.component.scss']
+  styleUrls: [ './contentList.component.scss', '../../../admin.component.scss' ],
+  imports: [ CommonModule, MatDialogModule, MatTableModule, MatIconModule, ContentListToolbarComponent]
 })
 export class ContentListComponent implements OnInit {
   @Output() selectedContent = new EventEmitter<Content>();
@@ -27,7 +32,7 @@ export class ContentListComponent implements OnInit {
   displayedColumns = ['title', 'expirationDate', 'dateAndTime', 'location', 'actions'];
   dataSource!: MatTableDataSource<WebContent>;
   constructor(
-    private _contentService: ContentService,
+    // private _contentService: ContentService,
     private router: Router,
     private store: Store<fromContent.State>
   ) {}

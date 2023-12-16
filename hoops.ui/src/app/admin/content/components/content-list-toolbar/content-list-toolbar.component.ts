@@ -7,12 +7,18 @@ import { ContentService } from '../../content.service';
 
 import * as fromContent from '../../state';
 import * as contentActions from '../../state/content.actions';
-import { UntypedFormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
   selector: 'content-list-toolbar',
+  standalone: true,
   templateUrl: './content-list-toolbar.component.html',
-  styleUrls: ['./content-list-toolbar.component.scss', '../../../admin.component.scss']
+  styleUrls: [ './content-list-toolbar.component.scss', '../../../admin.component.scss' ],
+  imports: [ MatFormFieldModule, ReactiveFormsModule, MatButtonModule, MatToolbarModule, MatCheckboxModule ]
 })
 export class ContentListToolbarComponent implements OnInit {
   checked = true;

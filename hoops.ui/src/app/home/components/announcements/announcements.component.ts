@@ -9,11 +9,15 @@ import * as fromHome from '../../state/';
 //import * as homeActions from '../../state/home.actions';
 import { map, tap, groupBy } from 'rxjs/operators';
 import { WebContent } from '../../../domain/webContent';
+import { CommonModule } from '@angular/common';
+import { AnnouncementComponent } from '../announcement/announcement.component';
 
 @Component({
   selector: 'csbc-announcements',
+  standalone: true,
   templateUrl: './announcements.component.html',
-  styleUrls: ['./announcements.component.scss'],
+  styleUrls: [ './announcements.component.scss' ],
+  imports: [CommonModule, AnnouncementComponent]
 })
 export class CsbcAnnouncementsComponent implements OnInit {
 @Input() info!: string;

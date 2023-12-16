@@ -36,6 +36,7 @@ import { AdminGamesModule } from './admin-games/admin-games.module';
 import { RegistrationsAndPaymentsModule } from './registrations-and-payments/registrations-and-payments.module';
 import { AdminSharedModule } from './admin-shared/admin-shared.module';
 import { AdminGamesListComponent } from './admin-shared/admin-games-list/admin-games-list.component';
+import { ContentShellComponent } from './content/containers/content-shell/content-shell.component';
 
 @NgModule({
   imports: [
@@ -46,7 +47,8 @@ import { AdminGamesListComponent } from './admin-shared/admin-games-list/admin-g
     CoreModule,
     AdminSharedModule,
     AdminRoutingModule,
-    ContentModule,
+    // ContentModule,
+    // ContentShellComponent,
     DirectorModule,
     AdminGamesModule,
     RegistrationsAndPaymentsModule,
