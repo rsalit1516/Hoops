@@ -51,37 +51,37 @@ const adminRoutes: Routes = [
       },
       {
         path: 'content',
-        component: ContentShellComponent,
-        children: [
-          {
-            path: 'edit',
-            // component: ContentEditComponent,
-            loadComponent: () =>
-              import('./content/components/content-edit/content-edit.component').then(
-                (mod) => mod.ContentEditComponent
-              ),
-          },
-          {
-            path: 'list',
-            // component: ContentListComponent,
-            loadComponent: () =>
-              import('./content/components/content-list/contentList.component').then(
-                (mod) => mod.ContentListComponent
-              ),
-          },
-          {
-            path: '',
-            redirectTo: '/list',
-            pathMatch: 'full',
-          },
-
-          { path: '**', component: PageNotFoundComponent },
-        ],
+        loadChildren: () =>
+          import('./content/content-routing').then((m) => m.CONTENT_ROUTES),
       },
-      { path: '', redirectTo: '/dashboard', pathMatch: 'full'},
+      // children: [
+      //   {
+      //     path: 'edit',
+      //     // component: ContentEditComponent,
+      //     loadComponent: () =>
+      //       import('./content/components/content-edit/content-edit.component').then(
+      //         (mod) => mod.ContentEditComponent
+      //       ),
+      //   },
+      //   {
+      //     path: 'list',
+      //     // component: ContentListComponent,
+      //     loadComponent: () =>
+      //       import('./content/components/content-list/contentList.component').then(
+      //         (mod) => mod.ContentListComponent
+      //       ),
+      //  },
+      {
+        path: '',
+        redirectTo: '/list',
+        pathMatch: 'full',
+      },
+
       { path: '**', component: PageNotFoundComponent },
     ],
   },
+  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  { path: '**', component: PageNotFoundComponent },
 ];
 
 @NgModule({
