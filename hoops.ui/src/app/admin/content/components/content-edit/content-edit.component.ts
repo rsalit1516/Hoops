@@ -20,9 +20,7 @@ import { ContentService } from '../../content.service';
 import { Store, select } from '@ngrx/store';
 
 import * as fromContent from '../../state';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
 import { WebContentType } from '@app/domain/webContentType';
-import { LegacyFloatLabelType } from '@angular/material/legacy-form-field';
 import { FloatLabelType } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
@@ -32,7 +30,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatOptionModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatSelect, MatSelectModule } from '@angular/material/select';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'csbc-content-edit',
@@ -56,7 +54,6 @@ import { MatSelect, MatSelectModule } from '@angular/material/select';
 })
 export class ContentEditComponent implements OnInit {
   @ViewChildren(FormControlName, { read: ElementRef })
-  @Inject(MAT_DIALOG_DATA)
 
   // @Input()
   content!: Content;

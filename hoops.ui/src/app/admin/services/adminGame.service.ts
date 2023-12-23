@@ -57,7 +57,7 @@ export class AdminGameService {
         for (let i = 0; i < this.allGames.length; i++) {
           if (this.allGames[i].homeTeamId === team || this.allGames[i].visitingTeamId === team) {
             let game = allGames[ i ];
-            console.log(game);
+            // console.log(game);
             games.push(game);
           }
         }

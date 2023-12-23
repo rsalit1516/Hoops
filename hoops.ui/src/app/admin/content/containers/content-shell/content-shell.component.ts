@@ -1,34 +1,34 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Content } from '@app/domain/content';
-import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ContentService } from '../../content.service';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import * as fromContent from '../../state';
 import * as contentActions from '../../state/content.actions';
-import { ContentListToolbarComponent } from '../../components/content-list-toolbar/content-list-toolbar.component';
-import { ContentRoutingModule } from '../../content-routing.module';
-import { ContentListComponent } from '../../components/content-list/contentList.component';
 import { CommonModule } from '@angular/common';
+import { ContentListComponent } from '../../components/content-list/contentList.component';
+import { ContentEditComponent } from '../../components/content-edit/content-edit.component';
+import { AdminGamesRoutingModule } from '@app/admin/admin-games/admin-games-routing.module';
 
 @Component({
   selector: 'csbc-content-shell',
   standalone: true,
-  templateUrl: './content-shell.component.html',
-  styleUrls: [ './content-shell.component.scss' ],
-  imports: [ CommonModule, ContentRoutingModule ]
+  template: `<section class="container-fluid">
+    <router-outlet></router-outlet>
+  </section>`,
+  styleUrls: ['./content-shell.component.scss'],
+  imports: [CommonModule, AdminGamesRoutingModule, ContentListComponent, ContentEditComponent],
 })
-
 export class ContentShellComponent implements OnInit {
   content!: Content;
 
   // contentForm: UntypedFormGroup;
-  title = 'Web Site Messages';
+  title = 'Web Site Notifications';
 
   constructor(
     // private fb: UntypedFormBuilder,
-    private _contentService: ContentService,
+    // private _contentService: ContentService,
     private router: Router,
     private store: Store<fromContent.State>,
     private contentService: ContentService
@@ -50,13 +50,15 @@ export class ContentShellComponent implements OnInit {
   ngOnInit(): void {
     console.log('called content shell');
     this.store.dispatch(new contentActions.Load());
-    this.store.select(fromContent.getIsActiveOnly).subscribe(isActiveContent => {
-      console.log(isActiveContent);
-      isActiveContent ? this.store.dispatch(new contentActions.SetActiveContent()):
-      this.store.dispatch(new contentActions.SetAllContent());
-    });
+    this.store
+      .select(fromContent.getIsActiveOnly)
+      .subscribe((isActiveContent) => {
+        console.log(isActiveContent);
+        isActiveContent
+          ? this.store.dispatch(new contentActions.SetActiveContent())
+          : this.store.dispatch(new contentActions.SetAllContent());
+      });
     // this.contentService.saveContent(this.contentForm.value);
-
   }
 
   update(): void {

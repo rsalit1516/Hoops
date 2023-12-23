@@ -25,7 +25,6 @@ import { AdminSeasonShellComponent } from './containers/admin-season-shell/admin
 import { AdminSeasonListComponent } from './components/admin-season-list/admin-season-list.component';
 
 import { AdminDivisionShellComponent } from './containers/admin-division-shell/admin-division-shell.component';
-import { ContentModule } from './content/content.module';
 import { DirectorModule } from './director/director.module';
 
 import { ImportScheduleComponent } from './import-schedule/import-schedule.component';

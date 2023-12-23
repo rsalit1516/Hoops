@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 
 import { Content } from '../../../../domain/content';
 // import { ContentService } from '../../content.service';
-import { ContentEditComponent } from '../content-edit/content-edit.component';
+// import { ContentEditComponent } from '../content-edit/content-edit.component';
 
 import * as fromContent from '../../state';
 import * as contentActions from '../../state/content.actions';
@@ -21,7 +21,8 @@ import { ContentListToolbarComponent } from '../content-list-toolbar/content-lis
   standalone: true,
   templateUrl: './contentList.component.html',
   styleUrls: [ './contentList.component.scss', '../../../admin.component.scss' ],
-  imports: [ CommonModule, MatDialogModule, MatTableModule, MatIconModule, ContentListToolbarComponent]
+  imports: [ CommonModule, MatDialogModule, MatTableModule, MatIconModule,
+    ContentListToolbarComponent ]
 })
 export class ContentListComponent implements OnInit {
   @Output() selectedContent = new EventEmitter<Content>();
@@ -31,6 +32,7 @@ export class ContentListComponent implements OnInit {
   public dialog!: MatDialog;
   displayedColumns = ['title', 'expirationDate', 'dateAndTime', 'location', 'actions'];
   dataSource!: MatTableDataSource<WebContent>;
+
   constructor(
     // private _contentService: ContentService,
     private router: Router,
@@ -65,10 +67,10 @@ export class ContentListComponent implements OnInit {
   addContent(): void {
     this.router.navigate(['./admin/content/edit']);
   }
-  openDialog(): void {
-    const dialogRef = this.dialog.open(ContentEditComponent, {
-      height: '600px',
-      width: '700px'
-    });
-  }
+  // openDialog(): void {
+  //   const dialogRef = this.dialog.open(ContentEditComponent, {
+  //     height: '600px',
+  //     width: '700px'
+  //   });
+  // }
 }
