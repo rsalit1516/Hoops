@@ -6,11 +6,11 @@ import * as fromGames from '../../state';
 import * as fromUser from '../../../user/state';
 import * as gameActions from '../../state/games.actions';
 
-import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Game } from '@app/domain/game';
 import { User } from '@app/domain/user';
 import { MediaObserver } from '@angular/flex-layout';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'csbc-scores',
@@ -84,8 +84,8 @@ export class ScoresComponent implements OnInit {
             if (this.user.userType === 3) {
               this.canEdit = true;
             } else {
-              for (let i = 0; i < this.user.divisions.length; i++) {
-                if (this.user.divisions[i].divisionId === this.divisionId) {
+              for (let i = 0; i < this.user.divisions!.length!; i++) {
+                if (this.user.divisions![i].divisionId === this.divisionId) {
                   this.canEdit = true;
                   console.log('Found division');
                   break;

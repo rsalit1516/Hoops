@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  MatLegacyDialogRef as MatDialogRef} from '@angular/material/legacy-dialog';
 import { UntypedFormControl, UntypedFormBuilder } from '@angular/forms';
 import { GameService } from '@app/games/game.service';
 
 import * as fromGames from '../../state';
 import { Store, select } from '@ngrx/store';
 import { Game } from '@app/domain/game';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'game-score-dialog',

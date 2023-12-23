@@ -1,5 +1,4 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
 import * as fromUser from '../../user/state';
 import { Store, select } from '@ngrx/store';
@@ -8,6 +7,7 @@ import { User } from '@app/domain/user';
 import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
 import { Constants } from '../constants';
+import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'csbc-top-nav',
   templateUrl: './top-nav.component.html',

@@ -1,8 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { MediaObserver } from '@angular/flex-layout';
-import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { Game } from '@app/domain/game';
 import * as fromAdmin from '../../state';
 import * as adminActions from '../../state/admin.actions';
@@ -10,6 +8,8 @@ import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 // import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '@app/core/material/material.module';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
 @Component({
   selector: 'admin-games-list',
   standalone: true,

@@ -8,7 +8,7 @@ import { GameScoreDialogComponent } from '../game-score-dialog/game-score-dialog
 import * as fromGames from '../../state';
 import * as fromUser from '../../../user/state';
 import * as gameActions from '../../state/games.actions';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'daily-schedule',

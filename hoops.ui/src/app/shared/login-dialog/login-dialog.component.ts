@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  MatLegacyDialogRef as MatDialogRef} from '@angular/material/legacy-dialog';
 import { AuthService } from '@app/user/auth.service';
 import {
   UntypedFormBuilder,
@@ -9,6 +7,7 @@ import {
 import * as userActions from '../../user/state/user.actions';
 import * as fromUser from '../../user/state';
 import { Store } from '@ngrx/store';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'csbc-login-dialog',
