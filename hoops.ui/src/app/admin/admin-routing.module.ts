@@ -22,7 +22,7 @@ const adminRoutes: Routes = [
   {
     path: '',
     component: AdminShellComponent,
-    canActivate: [AuthGuard],
+    canActivate: [ AuthGuard ],
 
     children: [
       { path: 'dashboard', component: AdminDashboardComponent },
@@ -71,17 +71,19 @@ const adminRoutes: Routes = [
       //         (mod) => mod.ContentListComponent
       //       ),
       //  },
-      {
-        path: '',
-        redirectTo: '/list',
-        pathMatch: 'full',
-      },
+      // {
+      //   path: '',
+      //   redirectTo: '/list',
+      //   pathMatch: 'full',
+      // },
 
+      //   { path: '**', component: PageNotFoundComponent },
+      // ],
+      // },
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: '**', component: PageNotFoundComponent },
-    ],
-  },
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
-  { path: '**', component: PageNotFoundComponent },
+    ]
+  }
 ];
 
 @NgModule({
