@@ -1,10 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { Store, select } from '@ngrx/store';
 
 import * as fromAdmin from '../../state';
 import * as adminActions from '../../state/admin.actions';
 import { Season } from '@app/domain/season';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'csbc-admin-season-list',

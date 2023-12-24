@@ -10,7 +10,6 @@ import { SeasonService } from '@app/services/season.service';
 import { GameService } from '@app/games/game.service';
 import { Season } from '@app/domain/season';
 import { Team } from '@app/domain/team';
-import { MatLegacyTabChangeEvent as MatTabChangeEvent } from '@angular/material/legacy-tabs';
 import { Router } from '@angular/router';
 
 @Component({

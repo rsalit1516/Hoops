@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { SeasonService } from '../../services/season.service';
 import { Season } from '../../domain/season';
-import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
     selector: 'csbc-season-list',
