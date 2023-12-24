@@ -28,7 +28,7 @@ export class AdminGameService {
       this.allGames = allGames;
       this.setCanEdit(div);
       if (allGames && div !== 0) {
-        console.log(div);
+        // console.log(div);
         for (let i = 0; i < this.allGames.length; i++) {
           if (this.allGames[i].divisionId === div) {
             let game = allGames[ i ];

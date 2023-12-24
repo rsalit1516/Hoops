@@ -1,6 +1,6 @@
 <h1 mat-dialog-title>Login</h1>
 <div mat-dialog-content>
-  <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmitClick()">
+  <form class="login-form" formGroupName="loginForm" (ngSubmit)="onSubmitClick()">
     <!-- <mat-error *ngIf="!isFormValid" class="error"
       >User Name or password is not valid
     </mat-error> -->
@@ -32,7 +32,6 @@
     (click)="onSubmitClick()"
     cdkFocusInitial
     color="primary"
-    style="margin-right: 10px"
   >
     Ok
   </button>

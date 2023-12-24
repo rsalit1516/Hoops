@@ -5,13 +5,21 @@ import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { User } from '@app/domain/user';
 import { environment } from '../../../environments/environment';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { Constants } from '../constants';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { CommonModule } from '@angular/common';
+import { FlexModule } from '@angular/flex-layout';
 @Component({
   selector: 'csbc-top-nav',
+  standalone: true,
   templateUrl: './top-nav.component.html',
-  styleUrls: ['./top-nav.component.scss'],
+  styleUrls: [ './top-nav.component.scss', './../../shared/scss/menu.scss' ],
+  imports: [ CommonModule, MatDialogModule, MatToolbarModule,
+    MatButtonModule, MatIconModule, RouterModule, FlexModule ],
 })
 export class TopNavComponent implements OnInit {
   @Output() public sidenavToggle = new EventEmitter();

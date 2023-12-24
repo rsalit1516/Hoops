@@ -49,7 +49,6 @@ import { SponsorsModule } from './admin/sponsors/sponsors.module';
 @NgModule({
   declarations: [
     AppComponent,
-    TopNavComponent,
     SidenavListComponent,
     CsbcPhotosComponent,
     ContactsComponent,
@@ -65,6 +64,7 @@ import { SponsorsModule } from './admin/sponsors/sponsors.module';
     BrowserAnimationsModule,
     CoreModule,
     HttpClientModule,
+TopNavComponent,
     HomeModule,
     GamesModule,
     CsbcClubDocsModule,

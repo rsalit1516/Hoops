@@ -7,12 +7,23 @@ import {
 import * as userActions from '../../user/state/user.actions';
 import * as fromUser from '../../user/state';
 import { Store } from '@ngrx/store';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { CommonModule } from '@angular/common';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'csbc-login-dialog',
+  standalone: true,
   templateUrl: './login-dialog.component.html',
-  styleUrls: ['./login-dialog.component.scss']
+  styleUrls: [ './login-dialog.component.scss' ],
+  imports: [ CommonModule, MatDialogModule, MatFormFieldModule,
+    MatInputModule, MatButtonModule ],
+    providers: [
+      { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } }
+  ]
+
 })
 export class LoginDialogComponent implements OnInit {
   loginForm = this.fb.group({
