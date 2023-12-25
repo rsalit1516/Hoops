@@ -8,8 +8,8 @@ import { PageNotFoundStandAloneComponent } from '@app/app.not-found-standalone.c
 
 export const CONTENT_ROUTES: Routes = [
   {
-    path: '',
-    component: ContentShellComponent,
+    path: 'content',
+    pathMatch: 'prefix',
     children: [
       {
         path: 'edit',
@@ -28,8 +28,17 @@ export const CONTENT_ROUTES: Routes = [
           ),
       },
       {
+        path: '/list',
+        //      component: ContentListComponent,
+        loadComponent: () =>
+          import('./components/content-list/contentList.component').then(
+            (mod) => mod.ContentListComponent
+          ),
+      },
+
+      {
         path: '',
-        redirectTo: '/list',
+        redirectTo: 'list',
         pathMatch: 'full',
       },
 

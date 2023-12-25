@@ -5,7 +5,7 @@ import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { User } from '@app/domain/user';
 import { environment } from '../../../environments/environment';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterLinkActive, RouterModule } from '@angular/router';
 import { Constants } from '../constants';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -19,7 +19,7 @@ import { FlexModule } from '@angular/flex-layout';
   templateUrl: './top-nav.component.html',
   styleUrls: [ './top-nav.component.scss', './../../shared/scss/menu.scss' ],
   imports: [ CommonModule, MatDialogModule, MatToolbarModule,
-    MatButtonModule, MatIconModule, RouterModule, FlexModule ],
+    MatButtonModule, MatIconModule, RouterModule, FlexModule, RouterLinkActive ],
 })
 export class TopNavComponent implements OnInit {
   @Output() public sidenavToggle = new EventEmitter();
@@ -44,10 +44,9 @@ export class TopNavComponent implements OnInit {
 
   ngOnInit() {
     this.env = environment.environment;
-    console.log(this.env);
+    // console.log(this.env);
     this.store.pipe(select(fromUser.getCurrentUser)).subscribe((user) => {
       // console.log(user);
-      console.log(this.env);
       if (this.env === 'Production') {
         if (user !== null && user.userId !== 0) {
           this.currentUser = user;

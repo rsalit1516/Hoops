@@ -9,13 +9,20 @@ import { Season } from '@app/domain/season';
 import { Division } from '@app/domain/division';
 import { TeamService } from '@app/services/team.service';
 import { Team } from '@app/domain/team';
-import { Router } from '@angular/router';
+import {
+  Router,
+  RouterLinkWithHref,
+  RouterOutlet,
+  provideRouter,
+} from '@angular/router';
 
 import * as fromAdmin from '../state';
 import * as adminActions from '../state/admin.actions';
 import { Game } from '@app/domain/game';
 import { AdminGamesListComponent } from '../admin-shared/admin-games-list/admin-games-list.component';
 import { MatCardModule } from '@angular/material/card';
+import { CommonModule } from '@angular/common';
+import { CONTENT_ROUTES } from '../content/content-routing';
 
 @Component({
   selector: 'csbc-admin-dashboard',
@@ -46,7 +53,7 @@ export class AdminDashboardComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(new adminActions.LoadCurrentSeason());
     this.setStateSubscriptions();
-
+    this.router.navigate(['/admin/content/list']);
   }
   setStateSubscriptions() {
     this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
@@ -57,12 +64,12 @@ export class AdminDashboardComponent implements OnInit {
         this.divisions = divisions;
         this.divisionCount = divisions.length;
         if (divisions.length > 0) {
-          this.selectedDivision = divisions[ 0 ];
+          this.selectedDivision = divisions[0];
         }
       });
       this.store.select(fromAdmin.getSeasonTeams).subscribe((teams) => {
-          this.teams = teams;
-          this.teamCount = (teams === null? 0 : teams.length);
+        this.teams = teams;
+        this.teamCount = teams === null ? 0 : teams.length;
       });
 
       this.store.select(fromAdmin.getSeasonGames).subscribe((games) => {
@@ -73,36 +80,34 @@ export class AdminDashboardComponent implements OnInit {
     this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
       this.store.select(fromAdmin.getDivisionTeams).subscribe((teams) => {
         this.divisionTeams = teams;
-        this.teamCount = (teams === null ? 0 : teams.length);
+        this.teamCount = teams === null ? 0 : teams.length;
       });
       this.selectedDivision = division;
-      this.store.dispatch(new adminActions.LoadDivisionGames);
+      this.store.dispatch(new adminActions.LoadDivisionGames());
       // this.store.dispatch(new adminActions.SetFilteredGames()
+    });
+    this.store.select(fromAdmin.getSelectedTeam).subscribe((team) => {
+      // console.log(team);
+      this.selectedTeam = team;
+      this.store.dispatch(new adminActions.LoadTeamGames());
+    });
+    this.store.select(fromAdmin.getDivisionGames).subscribe((games) => {
+      if (games !== null) {
+        this.divisionGames = games;
+      }
+      // if (games !== null) {
+      //   this.store.dispatch(new adminActions.SetFilteredGames(games));
+      // }
+      // this.store.dispatch(new adminActions.LoadTeamGames);
+    });
 
-  });
-  this.store.select(fromAdmin.getSelectedTeam).subscribe((team) => {
-    console.log(team);
-    this.selectedTeam = team;
-    this.store.dispatch(new adminActions.LoadTeamGames);
-  });
-  this.store.select(fromAdmin.getDivisionGames).subscribe((games) => {
-    if (games !== null) {
-      this.divisionGames = games;
-    }
-    // if (games !== null) {
-    //   this.store.dispatch(new adminActions.SetFilteredGames(games));
-    // }
-    // this.store.dispatch(new adminActions.LoadTeamGames);
-  });
-
-  this.store.select(fromAdmin.getTeamGames).subscribe((games) => {
-    console.log(games);
-    if (games !== null) {
-      this.teamGames = games;
-      this.store.dispatch(new adminActions.SetFilteredGames(games));
-    }
-  });
-
+    this.store.select(fromAdmin.getTeamGames).subscribe((games) => {
+      // console.log(games);
+      if (games !== null) {
+        this.teamGames = games;
+        this.store.dispatch(new adminActions.SetFilteredGames(games));
+      }
+    });
   }
   goToDivision(division: Division) {
     this.store.dispatch(new adminActions.SetSelectedDivision(division));
@@ -114,5 +119,4 @@ export class AdminDashboardComponent implements OnInit {
 
     // this.router.navigate(['/admin/division']);
   }
-
 }

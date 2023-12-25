@@ -11,6 +11,7 @@ import { GameService } from '@app/games/game.service';
 import { Season } from '@app/domain/season';
 import { Team } from '@app/domain/team';
 import { Router } from '@angular/router';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 
 @Component({
   selector: 'csbc-games-top-menu',

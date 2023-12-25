@@ -23,11 +23,11 @@
 }
 a.mat-list-item {
   color: $font-color-text;
-  font-size: 1.1rem;
+  font-size: 1.1em;
 }
 .mat-list-text {
   color: $font-color-text;
-  font-size: 1.2rem;
+  font-size: 1.2em;
 }
 
 .container {
@@ -43,4 +43,8 @@ a.mat-list-item {
 }
 .nav-wrapper {
   margin-bottom: 12px
+}
+.active {
+  background-color: $brand-color;
+  color: $font-color-text;
 }

@@ -13,7 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'daily-schedule',
   templateUrl: './daily-schedule.component.html',
-  styleUrls: ['./daily-schedule.component.scss'],
+  styleUrls: ['./daily-schedule.component.scss', './../../../shared/scss/tables.scss'],
 })
 export class DailyScheduleComponent implements OnInit {
   @Input() games!: Game[];

@@ -16,7 +16,7 @@ export class SeasonSetupComponent implements OnInit {
 
   ngOnInit() {
     this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
-      console.log(division);
+      // console.log(division);
       if (division !== undefined) {
         this.store.dispatch(new adminActions.LoadDivisionTeams());
       }

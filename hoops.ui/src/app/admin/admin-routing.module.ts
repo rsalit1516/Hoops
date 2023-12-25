@@ -13,8 +13,8 @@ import { PageNotFoundComponent } from '@app/app.not-found.component';
 import { AuthGuard } from '../auth/auth.guard';
 import { SeasonSetupComponent } from './containers/season-setup/season-setup.component';
 import { ContentShellComponent } from './content/containers/content-shell/content-shell.component';
-import { ContentEditComponent } from './content/components/content-edit/content-edit.component';
-import { ContentListComponent } from './content/components/content-list/contentList.component';
+// import { ContentEditComponent } from './content/components/content-edit/content-edit.component';
+// import { ContentListComponent } from './content/components/content-list/contentList.component';
 // import { ContentShellComponent } from './content/containers/content-shell/content-shell.component';
 // import { LoadChildren } from '@angular/router';
 
@@ -51,8 +51,8 @@ const adminRoutes: Routes = [
       },
       {
         path: 'content',
-        loadChildren: () =>
-          import('./content/content-routing').then((m) => m.CONTENT_ROUTES),
+        loadComponent: () =>
+          import('./content/containers/content-shell/content-shell.component').then((m) => m.ContentShellComponent),
       },
       // children: [
       //   {

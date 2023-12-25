@@ -9,19 +9,42 @@
     </button>
   </div>
   <div fxFlex fxLayout fxHide.xs>
-    <a routerLink="/home" mat-button>Home</a>
-    <a routerLink="/games" mat-button>{{constants.GAMESMENU}}</a>
-    <a routerLink="/photos" mat-button>{{constants.PHOTOMENU}}</a>
-    <a routerLink="/contacts" mat-button>{{constants.CONTACTSMENU}}</a>
-    <a routerLink="/clubDocs" mat-button>{{constants.CLUBDOCSMENU}}</a>
-    <a *ngIf="showAdminMenu" routerLink="/admin" mat-button>{{constants.ADMINMENU}}</a>
+    <a routerLink="/home" 
+    routerLinkActive="activelink"
+    mat-button>Home</a>
+    <a routerLink="/games"
+    routerLinkActive="activelink"
+    mat-button
+    routerLinkActive="activelink"
+    >{{ constants.GAMESMENU }}</a>
+    <a routerLink="/photos" 
+    routerLinkActive="activelink"
+    mat-button>{{ constants.PHOTOMENU }}</a>
+    <a routerLink="/contacts" 
+    routerLinkActive="activelink"
+    mat-button>{{ constants.CONTACTSMENU }}</a>
+    <a routerLink="/clubDocs" 
+    routerLinkActive="activelink"
+    mat-button>{{ constants.CLUBDOCSMENU }}</a>
+    <a
+      *ngIf="showAdminMenu"
+      routerLink="/admin"
+      mat-button
+      routerLinkActive="activelink"
+    >
+      {{ constants.ADMINMENU }}
+    </a>
     <!-- <a *ngIf="showAdminMenu" routerLink="/dashboard" mat-button>Dashboard</a> -->
     <span class="fill-space"></span>
   </div>
   <div fxFlex fxLayout fxLayoutAlign="end">
-    <button mat-raised-button *ngIf="!currentUser" (click)="openDialog()"
-    matTooltip="Login for division directors"
-    matTooltipClass="tooltip">
+    <button
+      mat-raised-button
+      *ngIf="!currentUser"
+      (click)="openDialog()"
+      matTooltip="Login for division directors"
+      matTooltipClass="tooltip"
+    >
       Login
     </button>
     <p readonly *ngIf="currentUser">Hello {{ userName }}</p>
