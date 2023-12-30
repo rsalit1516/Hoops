@@ -7,13 +7,14 @@ import * as adminActions from '../../state/admin.actions';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 // import { ReactiveFormsModule } from '@angular/forms';
-import { MaterialModule } from '@app/core/material/material.module';
+
 import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
 @Component({
   selector: 'admin-games-list',
   standalone: true,
-  imports: [CommonModule, MaterialModule],
+  imports: [CommonModule, MatIconModule, MatTableModule],
   templateUrl: './admin-games-list.component.html',
   styleUrls: [
     './admin-games-list.component.scss',

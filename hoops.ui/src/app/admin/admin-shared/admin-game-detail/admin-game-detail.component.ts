@@ -7,12 +7,19 @@ import { map, tap } from 'rxjs/operators';
 import * as fromAdmin from '../../state';
 import * as adminActions from '../../state/admin.actions';
 import { CommonModule } from '@angular/common';
-import { MaterialModule } from '@app/core/material/material.module';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
+import { MatOptionModule } from '@angular/material/core';
+
 
 @Component({
   selector: 'admin-game-detail',
   standalone: true,
-  imports: [CommonModule, MaterialModule, ReactiveFormsModule],
+  imports: [ CommonModule, ReactiveFormsModule, MatFormFieldModule,
+    MatCardModule, MatOptionModule,
+  MatDatepickerModule, MatInputModule],
   templateUrl: './admin-game-detail.component.html',
   styleUrls: [
     './admin-game-detail.component.scss',

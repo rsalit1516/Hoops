@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CoreModule } from '../core/core.module';
-import { SharedModule } from '../shared/shared.module';
+
+
 import { ContentService } from '../services/content.service';
 import { HomeComponent } from './home.component';
 
@@ -19,20 +19,18 @@ import { CsbcAnnouncementsComponent } from './components/announcements/announcem
 
 @NgModule({
     imports: [
-        CommonModule,
-        SharedModule,
-        CoreModule,
-        NgbModule,
-        CsbcAnnouncementsComponent,
-        StoreModule.forFeature('home', reducer),
-        EffectsModule.forFeature([HomeEffects]),
-        HomeComponent,
-        HomeCenterComponent,
-        CsbcHomeSidebarComponent,
-        MeetingComponent,
-        SponsorListingComponent,
-        SponsorListComponent
-    ],
+    CommonModule,
+    NgbModule,
+    CsbcAnnouncementsComponent,
+    StoreModule.forFeature('home', reducer),
+    EffectsModule.forFeature([HomeEffects]),
+    HomeComponent,
+    HomeCenterComponent,
+    CsbcHomeSidebarComponent,
+    MeetingComponent,
+    SponsorListingComponent,
+    SponsorListComponent
+],
     providers: [
         ContentService
     ]

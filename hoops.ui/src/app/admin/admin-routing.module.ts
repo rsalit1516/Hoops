@@ -42,13 +42,13 @@ const adminRoutes: Routes = [
         loadChildren: () =>
           import('./director/director.module').then((m) => m.DirectorModule),
       },
-      {
-        path: 'registrations',
-        loadChildren: () =>
-          import(
-            './registrations-and-payments/registrations-and-payments.module'
-          ).then((m) => m.RegistrationsAndPaymentsModule),
-      },
+      // {
+      //   path: 'registrations',
+      //   loadChildren: () =>
+      //     import(
+      //       './registrations-and-payments/registrations-and-payments.module'
+      //     ).then((m) => m.RegistrationsAndPaymentsModule),
+      // },
       {
         path: 'content',
         loadComponent: () =>

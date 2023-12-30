@@ -14,8 +14,8 @@ import { PlayerListComponent } from './player/player-list.component';
 
 import { DivisionMasterComponent } from './division-master/division-master.component';
 
-import { CoreModule } from '../core/core.module';
-import { SharedModule } from '../shared/shared.module';
+
+
 import { AdminShellComponent } from './containers/admin-shell/admin-shell.component';
 import { StoreModule } from '@ngrx/store';
 import { reducer } from './state/admin.reducer';
@@ -32,44 +32,40 @@ import { SeasonSetupComponent } from './containers/season-setup/season-setup.com
 import { SeasonRegistrationsComponent } from './registrations-and-payments/components/season-registrations/season-registrations.component';
 import { PaymentsComponent } from './registrations-and-payments/components/payments/payments.component';
 import { AdminGamesModule } from './admin-games/admin-games.module';
-import { RegistrationsAndPaymentsModule } from './registrations-and-payments/registrations-and-payments.module';
-import { AdminSharedModule } from './admin-shared/admin-shared.module';
+
+
 import { AdminGamesListComponent } from './admin-shared/admin-games-list/admin-games-list.component';
 import { ContentShellComponent } from './content/containers/content-shell/content-shell.component';
 
 @NgModule({
     imports: [
-        CommonModule,
-        ReactiveFormsModule,
-        FormsModule,
-        SharedModule,
-        CoreModule,
-        AdminSharedModule,
-        AdminRoutingModule,
-        // ContentModule,
-        ContentShellComponent,
-        DirectorModule,
-        AdminGamesModule,
-        RegistrationsAndPaymentsModule,
-        AdminGamesListComponent,
-        StoreModule.forFeature('admin', reducer),
-        EffectsModule.forFeature([AdminEffects]),
-        AdminComponent,
-        AdminDashboardComponent,
-        SeasonDetailComponent,
-        SeasonListComponent,
-        DivisionDetailComponent,
-        DivisionListComponent,
-        PlayerListComponent,
-        DivisionMasterComponent,
-        AdminShellComponent,
-        AdminSeasonShellComponent,
-        AdminSeasonListComponent,
-        AdminDivisionShellComponent,
-        ImportScheduleComponent,
-        SeasonSetupComponent,
-        SeasonRegistrationsComponent,
-        PaymentsComponent,
-    ],
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    AdminRoutingModule,
+    // ContentModule,
+    ContentShellComponent,
+    DirectorModule,
+    AdminGamesModule,
+    AdminGamesListComponent,
+    StoreModule.forFeature('admin', reducer),
+    EffectsModule.forFeature([AdminEffects]),
+    AdminComponent,
+    AdminDashboardComponent,
+    SeasonDetailComponent,
+    SeasonListComponent,
+    DivisionDetailComponent,
+    DivisionListComponent,
+    PlayerListComponent,
+    DivisionMasterComponent,
+    AdminShellComponent,
+    AdminSeasonShellComponent,
+    AdminSeasonListComponent,
+    AdminDivisionShellComponent,
+    ImportScheduleComponent,
+    SeasonSetupComponent,
+    SeasonRegistrationsComponent,
+    PaymentsComponent,
+],
 })
 export class AdminModule {}
