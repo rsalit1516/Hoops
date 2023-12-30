@@ -4,11 +4,19 @@ import { Store } from '@ngrx/store';
 import { TeamService } from '../../admin-shared/services/team.service';
 import * as fromAdmin from '../../state';
 import * as adminActions from '../../state/admin.actions';
+import { AdminTeamDetailComponent } from '../../admin-shared/admin-team-detail/admin-team-detail.component';
+import { AdminTeamListComponent } from '../../admin-shared/admin-team-list/admin-team-list.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { DivisionSelectComponent } from '../../admin-shared/division-select/division-select.component';
+import { SeasonSelectComponent } from '../../admin-shared/season-select/season-select.component';
 
 @Component({
-  selector: 'season-setup',
-  templateUrl: './season-setup.component.html',
-  styleUrls: ['./season-setup.component.scss', '../../admin.component.scss']
+    selector: 'season-setup',
+    templateUrl: './season-setup.component.html',
+    styleUrls: ['./season-setup.component.scss', '../../admin.component.scss'],
+    standalone: true,
+    imports: [SeasonSelectComponent, DivisionSelectComponent, MatToolbarModule, MatButtonModule, AdminTeamListComponent, AdminTeamDetailComponent]
 })
 export class SeasonSetupComponent implements OnInit {
 

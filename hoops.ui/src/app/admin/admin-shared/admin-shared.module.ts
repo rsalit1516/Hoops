@@ -13,26 +13,24 @@ import {
 import { NgxMatMomentModule } from '@angular-material-components/moment-adapter';
 
 @NgModule({
-  declarations: [
-    SeasonSelectComponent,
-    DivisionSelectComponent,
-    AdminTeamListComponent,
-    AdminTeamDetailComponent,
-    GameTypeSelectComponent,
-  ],
-  imports: [
-    CommonModule,
-    CoreModule,
-    NgxMatTimepickerModule,
-    NgxMatDatetimePickerModule,
-    NgxMatMomentModule,
-  ],
-  exports: [
-    SeasonSelectComponent,
-    DivisionSelectComponent,
-    AdminTeamDetailComponent,
-    AdminTeamListComponent,
-    GameTypeSelectComponent,
-  ],
+    imports: [
+        CommonModule,
+        CoreModule,
+        NgxMatTimepickerModule,
+        NgxMatDatetimePickerModule,
+        NgxMatMomentModule,
+        SeasonSelectComponent,
+        DivisionSelectComponent,
+        AdminTeamListComponent,
+        AdminTeamDetailComponent,
+        GameTypeSelectComponent,
+    ],
+    exports: [
+        SeasonSelectComponent,
+        DivisionSelectComponent,
+        AdminTeamDetailComponent,
+        AdminTeamListComponent,
+        GameTypeSelectComponent,
+    ],
 })
 export class AdminSharedModule {}

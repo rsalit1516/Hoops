@@ -17,8 +17,9 @@ class MenuItem {
 }
 const SMALL_WIDTH_BREAKPOINT = 720;
 @Component({
-  templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.scss']
+    templateUrl: './admin.component.html',
+    styleUrls: ['./admin.component.scss'],
+    standalone: true
 })
 
 

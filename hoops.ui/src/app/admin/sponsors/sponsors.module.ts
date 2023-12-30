@@ -6,9 +6,9 @@ import { SponsorInfoComponent } from './components/sponsor-info/sponsor-info.com
 import { CurrentSeasonSponsorsComponent } from './components/current-season-sponsors/current-season-sponsors.component';
 
 @NgModule({
-  declarations: [SponsorShellComponent, SponsorListComponent, SponsorInfoComponent, CurrentSeasonSponsorsComponent],
-  imports: [
-    CommonModule
-  ]
+    imports: [
+        CommonModule,
+        SponsorShellComponent, SponsorListComponent, SponsorInfoComponent, CurrentSeasonSponsorsComponent
+    ]
 })
 export class SponsorsModule { }

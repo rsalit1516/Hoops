@@ -9,12 +9,9 @@ import { CsbcSeasonSelectComponent } from './season-select/csbc-season-select.co
 import { CsbcCardComponent } from './csbc-card/csbc-card.component';
 
 @NgModule({
-    imports: [CommonModule, FormsModule, CoreModule],
-    exports: [CsbcSeasonSelectComponent],
-    declarations: [
-        PageNotFoundComponent,
+    imports: [CommonModule, FormsModule, CoreModule, PageNotFoundComponent,
         CsbcSeasonSelectComponent,
-        CsbcCardComponent
-    ]
+        CsbcCardComponent],
+    exports: [CsbcSeasonSelectComponent]
 })
 export class SharedModule {}

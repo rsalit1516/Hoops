@@ -13,19 +13,17 @@ import { CoreModule } from '../../core/core.module';
 import { SharedModule } from '@app/shared/shared.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    SharedModule,
-    CoreModule,
-    DirectorRoutingModule,
-    StoreModule.forFeature('director', reducer)
-  ],
-  declarations: [
-    DirectorShellComponent,
-    DirectorListComponent,
-    DirectorEditComponent
-  ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        SharedModule,
+        CoreModule,
+        DirectorRoutingModule,
+        StoreModule.forFeature('director', reducer),
+        DirectorShellComponent,
+        DirectorListComponent,
+        DirectorEditComponent
+    ]
 })
 export class DirectorModule {}

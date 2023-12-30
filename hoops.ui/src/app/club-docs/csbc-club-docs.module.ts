@@ -4,12 +4,10 @@ import { SharedModule } from '../shared/shared.module';
 import { CsbcClubDocsComponent } from './csbc-club-docs.component';
 
 @NgModule({
-  imports: [
-    SharedModule,
-    CoreModule
-  ],
-  declarations: [
-    CsbcClubDocsComponent
-  ]
+    imports: [
+        SharedModule,
+        CoreModule,
+        CsbcClubDocsComponent
+    ]
 })
 export class CsbcClubDocsModule { }

@@ -16,11 +16,15 @@ import { Observable, from, zip, of } from 'rxjs';
 import { Standing } from '@app/domain/standing';
 import { User } from '@app/domain/user';
 import { SchedulePlayoffsComponent } from '@app/games/components/schedule-playoffs/schedule-playoffs.component';
+import { RouterOutlet } from '@angular/router';
+import { GamesTopMenuComponent } from '../../components/games-top-menu/games-top-menu.component';
 
 @Component({
-  selector: 'csbc-games-shell',
-  templateUrl: './games-shell.component.html',
-  styleUrls: ['./games-shell.component.scss'],
+    selector: 'csbc-games-shell',
+    templateUrl: './games-shell.component.html',
+    styleUrls: ['./games-shell.component.scss'],
+    standalone: true,
+    imports: [GamesTopMenuComponent, RouterOutlet],
 })
 export class GamesShellComponent implements OnInit {
   @Input() showAllTeams: boolean | undefined;

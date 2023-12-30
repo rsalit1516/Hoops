@@ -7,11 +7,25 @@ import * as contentActions from '../../state/admin.actions';
 import * as fromAdmin from '../../state';
 import * as fromUser from '../../../user/state';
 import { ColorService } from '@app/admin/admin-shared/services/color.service';
+import { NgIf } from '@angular/common';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatListModule } from '@angular/material/list';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @Component({
-  selector: 'csbc-admin-shell',
-  templateUrl: './admin-shell.component.html',
-  styleUrls: ['./admin-shell.component.scss'],
+    selector: 'csbc-admin-shell',
+    templateUrl: './admin-shell.component.html',
+    styleUrls: ['./admin-shell.component.scss'],
+    standalone: true,
+    imports: [
+        MatSidenavModule,
+        MatListModule,
+        RouterLink,
+        RouterLinkActive,
+        MatDividerModule,
+        NgIf,
+        RouterOutlet,
+    ],
 })
 export class AdminShellComponent implements OnInit {
   events: string[] = [];

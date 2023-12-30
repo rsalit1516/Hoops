@@ -9,11 +9,22 @@ import * as fromGames from '../../state';
 import * as fromUser from '../../../user/state';
 import * as gameActions from '../../state/games.actions';
 import { MatDialog } from '@angular/material/dialog';
+import { DatePipe } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTableModule } from '@angular/material/table';
 
 @Component({
-  selector: 'daily-schedule',
-  templateUrl: './daily-schedule.component.html',
-  styleUrls: ['./daily-schedule.component.scss', './../../../shared/scss/tables.scss'],
+    selector: 'daily-schedule',
+    templateUrl: './daily-schedule.component.html',
+    styleUrls: ['./daily-schedule.component.scss', './../../../shared/scss/tables.scss'],
+    standalone: true,
+    imports: [
+        MatTableModule,
+        MatButtonModule,
+        MatIconModule,
+        DatePipe,
+    ],
 })
 export class DailyScheduleComponent implements OnInit {
   @Input() games!: Game[];

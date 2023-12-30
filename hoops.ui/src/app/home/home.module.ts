@@ -18,26 +18,23 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CsbcAnnouncementsComponent } from './components/announcements/announcements.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    SharedModule,
-    CoreModule,
-    NgbModule,
-    CsbcAnnouncementsComponent,
-    StoreModule.forFeature('home', reducer),
-    EffectsModule.forFeature([HomeEffects])
-  ],
-  declarations: [
-    HomeComponent,
-    HomeCenterComponent,
-    CsbcHomeSidebarComponent,
-    MeetingComponent,
-    SponsorListingComponent,
-    SponsorListComponent,
-
-  ],
-  providers: [
-     ContentService
-  ]
+    imports: [
+        CommonModule,
+        SharedModule,
+        CoreModule,
+        NgbModule,
+        CsbcAnnouncementsComponent,
+        StoreModule.forFeature('home', reducer),
+        EffectsModule.forFeature([HomeEffects]),
+        HomeComponent,
+        HomeCenterComponent,
+        CsbcHomeSidebarComponent,
+        MeetingComponent,
+        SponsorListingComponent,
+        SponsorListComponent
+    ],
+    providers: [
+        ContentService
+    ]
 })
 export class HomeModule { }

@@ -5,12 +5,18 @@ import * as fromAdmin from '../../../state';
 import * as adminActions from '../../../state/admin.actions';
 import { MediaObserver } from '@angular/flex-layout';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { NgIf, DatePipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-admin-games-playoffs-list',
-  templateUrl: './admin-games-playoffs-list.component.html',
-  styleUrls: ['./admin-games-playoffs-list.component.scss', ]
+    selector: 'app-admin-games-playoffs-list',
+    templateUrl: './admin-games-playoffs-list.component.html',
+    styleUrls: ['./admin-games-playoffs-list.component.scss',],
+    standalone: true,
+    imports: [FormsModule, NgIf, MatTableModule, MatButtonModule, MatIconModule, DatePipe]
 })
 export class AdminGamesPlayoffsListComponent implements OnInit {
 title = 'Playoff Games';

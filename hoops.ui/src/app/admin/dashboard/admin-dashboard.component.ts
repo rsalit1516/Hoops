@@ -21,13 +21,23 @@ import * as adminActions from '../state/admin.actions';
 import { Game } from '@app/domain/game';
 import { AdminGamesListComponent } from '../admin-shared/admin-games-list/admin-games-list.component';
 import { MatCardModule } from '@angular/material/card';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgFor } from '@angular/common';
 import { CONTENT_ROUTES } from '../content/content-routing';
+import { MatListModule } from '@angular/material/list';
+import { SeasonSelectComponent } from '../admin-shared/season-select/season-select.component';
 
 @Component({
-  selector: 'csbc-admin-dashboard',
-  templateUrl: './admin-dashboard.component.html',
-  styleUrls: ['./admin-dashboard.component.scss', '../admin.component.scss'],
+    selector: 'csbc-admin-dashboard',
+    templateUrl: './admin-dashboard.component.html',
+    styleUrls: ['./admin-dashboard.component.scss', '../admin.component.scss'],
+    standalone: true,
+    imports: [
+        SeasonSelectComponent,
+        MatCardModule,
+        MatListModule,
+        NgFor,
+        AdminGamesListComponent,
+    ],
 })
 export class AdminDashboardComponent implements OnInit {
   currentSeason!: Season;

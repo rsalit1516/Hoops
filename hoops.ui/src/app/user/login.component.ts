@@ -4,10 +4,13 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { AuthService } from './auth.service';
 import { Store, select } from '@ngrx/store';
+import { NgIf } from '@angular/common';
 
 @Component({
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.scss'],
+    standalone: true,
+    imports: [NgIf]
 })
 export class LoginComponent implements OnInit {
   pageTitle = 'Log In';

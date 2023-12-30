@@ -6,12 +6,11 @@ import { DraftInfoComponent } from './components/draft-info/draft-info.component
 
 
 @NgModule({
-  declarations: [    DraftedPlayersComponent,
-    PlayerInfoComponent,
-    DraftInfoComponent,
-],
-  imports: [
-    CommonModule
-  ]
+    imports: [
+        CommonModule,
+        DraftedPlayersComponent,
+        PlayerInfoComponent,
+        DraftInfoComponent
+    ]
 })
 export class RegistrationsAndPaymentsModule { }

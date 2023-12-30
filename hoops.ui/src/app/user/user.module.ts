@@ -11,15 +11,13 @@ import { UserComponent } from './user.component';
 import { AuthService } from '../auth.service';
 
 @NgModule({
-  exports: [],
-  imports: [
-    CommonModule,
-    StoreModule.forFeature('user', reducer)
-  ],
-  declarations: [
-    LoginComponent,
-    UserComponent
-  ],
-  providers: [AuthService]
+    exports: [],
+    imports: [
+        CommonModule,
+        StoreModule.forFeature('user', reducer),
+        LoginComponent,
+        UserComponent
+    ],
+    providers: [AuthService]
 })
 export class UserModule {}

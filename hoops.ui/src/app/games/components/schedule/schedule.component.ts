@@ -9,11 +9,15 @@ import { GameScoreDialogComponent } from '../game-score-dialog/game-score-dialog
 import { MediaObserver } from '@angular/flex-layout';
 import { GameService } from '@app/games/game.service';
 import { MatDialog } from '@angular/material/dialog';
+import { DailyScheduleComponent } from '../daily-schedule/daily-schedule.component';
+import { NgFor } from '@angular/common';
 
 @Component({
-  selector: 'csbc-schedule',
-  templateUrl: './schedule.component.html',
-  styleUrls: ['./schedule.component.scss'],
+    selector: 'csbc-schedule',
+    templateUrl: './schedule.component.html',
+    styleUrls: ['./schedule.component.scss'],
+    standalone: true,
+    imports: [NgFor, DailyScheduleComponent],
 })
 export class ScheduleComponent implements OnInit {
   @Input() dailySchedule!: Array<Game[]>;

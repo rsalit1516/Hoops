@@ -47,60 +47,56 @@ import { SidenavListComponent } from './shared/sidenav-list/sidenav-list.compone
 import { SponsorsModule } from './admin/sponsors/sponsors.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    SidenavListComponent,
-    CsbcPhotosComponent,
-    ContactsComponent,
-    LoginComponent,
-    GamesPipe,
-    CsbcDashboardComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    ReactiveFormsModule,
-    FormsModule,
-    BrowserAnimationsModule,
-    CoreModule,
-    HttpClientModule,
-TopNavComponent,
-    HomeModule,
-    GamesModule,
-    CsbcClubDocsModule,
-    SharedModule,
-    AdminModule,
-    LoginRoutingModule,
-    LayoutModule,
-    UserModule,
-    SponsorsModule,
-    UserModule,
-    StoreModule.forRoot(reducers, { metaReducers }),
-    // StoreModule.forRoot({}),
-    StoreDevtoolsModule.instrument({
-      name: 'CSBC Site',
-      maxAge: 25,
-      logOnly: environment.production
-    }),
-    // StoreModule.forRoot(reducers, { metaReducers }),
-    EffectsModule.forRoot([]),
-    StoreModule.forRoot({}, {
-      runtimeChecks: {
-        strictStateImmutability: false,
-        strictActionImmutability: false,
-      },
-    }),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
-
-  ],
-
-  providers: [
-    SeasonService,
-    DivisionService,
-    TeamService,
-    // GameService,
-    DataService
-  ],
-  bootstrap: [AppComponent]
+    declarations: [AppComponent],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        ReactiveFormsModule,
+        FormsModule,
+        BrowserAnimationsModule,
+        CoreModule,
+        HttpClientModule,
+        TopNavComponent,
+        HomeModule,
+        GamesModule,
+        CsbcClubDocsModule,
+        SharedModule,
+        AdminModule,
+        LoginRoutingModule,
+        LayoutModule,
+        UserModule,
+        SponsorsModule,
+        UserModule,
+        StoreModule.forRoot(reducers, { metaReducers }),
+        // StoreModule.forRoot({}),
+        StoreDevtoolsModule.instrument({
+            name: 'CSBC Site',
+            maxAge: 25,
+            logOnly: environment.production
+        }),
+        // StoreModule.forRoot(reducers, { metaReducers }),
+        EffectsModule.forRoot([]),
+        StoreModule.forRoot({}, {
+            runtimeChecks: {
+                strictStateImmutability: false,
+                strictActionImmutability: false,
+            },
+        }),
+        StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
+        SidenavListComponent,
+        CsbcPhotosComponent,
+        ContactsComponent,
+        LoginComponent,
+        GamesPipe,
+        CsbcDashboardComponent,
+    ],
+    providers: [
+        SeasonService,
+        DivisionService,
+        TeamService,
+        // GameService,
+        DataService
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule {}

@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { Game } from './domain/game';
 @Pipe({
-  name: 'games'
+    name: 'games',
+    standalone: true
 })
 export class GamesPipe implements PipeTransform {
 

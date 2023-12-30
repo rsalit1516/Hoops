@@ -11,19 +11,17 @@ import { AdminGameDetailComponent } from '../admin-shared/admin-game-detail/admi
 import { AdminGamesListComponent } from '../admin-shared/admin-games-list/admin-games-list.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    AdminGamesRoutingModule,
-    CoreModule,
-    SharedModule,
-    AdminSharedModule,
-    AdminGameDetailComponent,
-    AdminGamesListComponent
-  ],
-  declarations: [
-    AdminGamesShellComponent,
-    AdminGamesPlayoffsDetailComponent,
-    AdminGamesPlayoffsListComponent,
-  ],
+    imports: [
+        CommonModule,
+        AdminGamesRoutingModule,
+        CoreModule,
+        SharedModule,
+        AdminSharedModule,
+        AdminGameDetailComponent,
+        AdminGamesListComponent,
+        AdminGamesShellComponent,
+        AdminGamesPlayoffsDetailComponent,
+        AdminGamesPlayoffsListComponent
+    ],
 })
 export class AdminGamesModule {}

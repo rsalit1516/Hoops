@@ -1,13 +1,17 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { Season } from '../../domain/season';
 import { Division } from '../../domain/division';
+import { ExtendedModule } from '@angular/flex-layout/extended';
+import { NgClass } from '@angular/common';
 
 @Component({
     selector: 'csbc-division-detail',
     templateUrl: './divisionDetail.component.html',
-    styleUrls: ['../admin.component.scss']
+    styleUrls: ['../admin.component.scss'],
+    standalone: true,
+    imports: [FormsModule, ReactiveFormsModule, NgClass, ExtendedModule]
 })
 
 export class DivisionDetailComponent implements OnInit {

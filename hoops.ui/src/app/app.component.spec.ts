@@ -8,12 +8,10 @@ import { MatSidenav, MatSidenavContainer } from '@angular/material/sidenav';
 describe('AppComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        AppComponent,
+    declarations: [AppComponent,
         MatSidenavContainer,
-        MatSidenav
-      ],
-    });
+        MatSidenav],
+});
   });
 
   it('should create the app', async(() => {

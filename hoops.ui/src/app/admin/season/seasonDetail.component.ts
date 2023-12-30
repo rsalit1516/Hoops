@@ -1,11 +1,15 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { Season } from '../../domain/season';
+import { ExtendedModule } from '@angular/flex-layout/extended';
+import { NgClass } from '@angular/common';
 
 @Component({
     selector: 'csbc-season-detail',
-    templateUrl: './seasonDetail.component.html'
+    templateUrl: './seasonDetail.component.html',
+    standalone: true,
+    imports: [FormsModule, ReactiveFormsModule, NgClass, ExtendedModule]
 })
 
 export class SeasonDetailComponent implements OnInit {

@@ -1,15 +1,18 @@
 import { Component }   from '@angular/core';
 import { Router }      from '@angular/router';
 import { AuthService } from './auth.service';
+import { NgIf } from '@angular/common';
 
 @Component({
-  template: `
+    template: `
     <h2>LOGIN</h2>
     <p>{{message}}</p>
     <p>
       <button (click)="login()"  *ngIf="!authService.isLoggedIn">Login</button>
       <button (click)="logout()" *ngIf="authService.isLoggedIn">Logout</button>
-    </p>`
+    </p>`,
+    standalone: true,
+    imports: [NgIf]
 })
 export class LoginComponent {
   message: string;

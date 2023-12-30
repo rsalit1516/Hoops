@@ -10,12 +10,25 @@ import { EMPTY } from 'rxjs';
 import { GameService } from '@app/games/game.service';
 import { Season } from '@app/domain/season';
 import { Constants } from '@app/shared/constants';
-import { FormBuilder, FormControl } from '@angular/forms';
+import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatOptionModule } from '@angular/material/core';
+import { NgFor } from '@angular/common';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
-  selector: 'csbc-game-filter',
-  templateUrl: './game-filter.component.html',
-  styleUrls: ['./game-filter.component.scss'],
+    selector: 'csbc-game-filter',
+    templateUrl: './game-filter.component.html',
+    styleUrls: ['./game-filter.component.scss'],
+    standalone: true,
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        NgFor,
+        MatOptionModule,
+    ],
 })
 export class GameFilterComponent implements OnInit {
   @Input( { required: true } )divisions!: Division[];
