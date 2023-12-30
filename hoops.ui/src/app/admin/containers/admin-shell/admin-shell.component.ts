@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { RouterLink, RouterLinkActive, RouterOutlet, provideRouter } from '@angular/router';
 
 import * as adminActions from '../../state/admin.actions';
 import * as contentActions from '../../state/admin.actions';

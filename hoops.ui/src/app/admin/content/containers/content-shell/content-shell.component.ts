@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, makeEnvironmentProviders } from '@angular/core';
+import { Component, OnInit, Input, makeEnvironmentProviders, signal } from '@angular/core';
 import { Content } from '@app/domain/content';
 import { ContentService } from '../../content.service';
 import { Router, RouterLinkWithHref, RouterOutlet, provideRouter } from '@angular/router';
@@ -31,7 +31,7 @@ export class ContentShellComponent implements OnInit {
 
   // contentForm: UntypedFormGroup;
   title = 'Web Site Notifications';
-
+  content1 = signal(10);
   constructor(
     // private fb: UntypedFormBuilder,
     // private _contentService: ContentService,
@@ -55,7 +55,8 @@ export class ContentShellComponent implements OnInit {
     const environmentProviders = makeEnvironmentProviders([
       { provide: CONTENT_ROUTES, useValue: CONTENT_ROUTES  },
     ]);
-    console.log('called content shell');
+
+    console.log('called content shell' + this.content1());
     this.store.dispatch(new contentActions.LoadAdminContent());
     this.store
       .select(fromContent.getIsActiveOnly)
