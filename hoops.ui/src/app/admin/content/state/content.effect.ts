@@ -29,12 +29,12 @@ export class ContentEffects {
   // tslint:disable-next-line:member-ordering
   private loadContent() {
     return createEffect(() => this.actions$.pipe(
-      ofType(contentActions.ContentActionTypes.Load),
+      ofType(contentActions.ContentActionTypes.LoadAdminContent),
       mergeMap(action =>
         this.contentService.getContents().pipe(
-          map(content => new contentActions.LoadSuccess(content)),
+          map(content => new contentActions.LoadAdminContentSuccess(content)),
           // tap(content => console.log(content)),
-          catchError(err => of(new contentActions.LoadFail(err)))
+          catchError(err => of(new contentActions.LoadAdminContentFail(err)))
         )
       )
     ));

@@ -7,8 +7,8 @@ import { Content } from '../../../../domain/content';
 // import { ContentService } from '../../content.service';
 // import { ContentEditComponent } from '../content-edit/content-edit.component';
 
-import * as fromContent from '../../state';
-import * as contentActions from '../../state/content.actions';
+import * as fromContent from '../../../state';
+import * as contentActions from '../../../state/admin.actions';
 import { WebContent } from '../../../../domain/webContent';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';

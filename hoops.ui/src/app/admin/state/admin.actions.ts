@@ -6,6 +6,9 @@ import { Season } from '@app/domain/season';
 import { Game } from '@app/domain/game';
 import { Color } from '@app/domain/color';
 import { PlayoffGame } from '@app/domain/playoffGame';
+import { WebContent } from '@app/domain/webContent';
+import { Content } from '@app/domain/content';
+import { WebContentType } from '@app/domain/webContentType';
 
 export enum AdminActionTypes {
   LoadCurrentSeason = '[Admin] Load Current Season',
@@ -44,6 +47,22 @@ export enum AdminActionTypes {
   LoadPlayoffGames = '[Game] Load Playoff Games',
   LoadPlayoffGamesSuccess = '[Game] Load Playoff Games Success',
   LoadPlayoffGamesFail = '[Game] Load Playoff Games Fail',
+  LoadAdminContent = '[Content] Load Admin Content',
+  LoadAdminContentSuccess = '[Content] Load Success',
+  LoadAdminContentFail = '[Content] Load Fail',
+  SetSelectedContent = '[Content] Set Selected Content',
+  SetClonedContent = '[Content] Clone Selected Content',
+  SetAllContent = '[Content] Set all content',
+  SetAllContentSuccess = '[Content] Set all content success',
+  SetAllContentFail = '[Content] Set all content faile',
+  SetActiveContent = '[Content] Set only active content',
+  SetActiveContentSuccess = '[Content] Set only active content success',
+  SetActiveContentFail = '[Content] Set only active content fail',
+  SetIsActiveOnly = '[Content] Set Is Active Content Only',
+  LoadContentTypeList = '[Content] Load Content Type List',
+  LoadContentTypeListSuccess = '[Content] Load Content Type List Success',
+  LoadContentTypeListFail = '[Content] Load Content Type List Fail',
+
 }
 export class LoadCurrentSeason implements Action {
   readonly type = AdminActionTypes.LoadCurrentSeason;
@@ -198,6 +217,65 @@ export class LoadPlayoffGamesFail implements Action {
 
   constructor(public payload: string) {}
 }
+export class LoadAdminContent implements Action {
+  readonly type = AdminActionTypes.LoadAdminContent;
+}
+export class LoadAdminContentSuccess implements Action {
+  readonly type = AdminActionTypes.LoadAdminContentSuccess;
+  constructor(public payload: WebContent[]) {}
+}
+export class LoadAdminContentFail implements Action {
+  readonly type = AdminActionTypes.LoadAdminContentFail;
+  constructor(public payload: string) {}
+}
+
+export class SetAllContent implements Action {
+  readonly type = AdminActionTypes.SetAllContent;
+}
+export class SetAllContentSuccess implements Action {
+  readonly type = AdminActionTypes.SetAllContentSuccess;
+  constructor(public payload: WebContent[]) {}
+}
+export class SetAllContentFail implements Action {
+  readonly type = AdminActionTypes.SetAllContentFail;
+  constructor(public payload: String) {}
+}
+
+export class SetActiveContent implements Action {
+  readonly type = AdminActionTypes.SetActiveContent;
+}
+export class SetActiveContentSuccess implements Action {
+  readonly type = AdminActionTypes.SetActiveContentSuccess;
+  constructor(public payload: WebContent[]) {}
+}
+export class SetActiveContentFail implements Action {
+  readonly type = AdminActionTypes.SetActiveContentFail;
+  constructor(public payload: String) {}
+}
+
+export class SetClonedContent implements Action {
+  readonly type = AdminActionTypes.SetClonedContent;
+  constructor(public payload: Content) {}
+}
+export class SetSelectedContent implements Action {
+  readonly type = AdminActionTypes.SetSelectedContent;
+  constructor(public payload: Content) {}
+}
+export class SetIsActiveOnly implements Action {
+  readonly type = AdminActionTypes.SetIsActiveOnly;
+  constructor(public payload: boolean) {}
+}
+export class LoadContentTypeList implements Action {
+  readonly type = AdminActionTypes.LoadContentTypeList;
+}
+export class LoadContentTypeListSuccess implements Action {
+  readonly type = AdminActionTypes.LoadContentTypeListSuccess;
+  constructor(public payload: WebContentType[]) {}
+}
+export class LoadContentTypeListFail implements Action {
+  readonly type = AdminActionTypes.LoadContentTypeListFail;
+  constructor(public payload: string) {}
+}
 
 export type AdminActions =
   | LoadCurrentSeason
@@ -234,4 +312,20 @@ export type AdminActions =
   | SetShowOnlyActiveWebContent
   | LoadPlayoffGames
   | LoadPlayoffGamesSuccess
-  | LoadPlayoffGamesFail;
+  | LoadPlayoffGamesFail
+  | LoadAdminContent
+  | LoadAdminContentSuccess
+  | LoadAdminContentFail
+  | SetSelectedContent
+  | SetClonedContent
+  | SetAllContent
+  | SetAllContentSuccess
+  | SetAllContentFail
+  | SetActiveContent
+  | SetActiveContentSuccess
+  | SetActiveContentFail
+  | SetIsActiveOnly
+  | LoadContentTypeList
+  | LoadContentTypeListSuccess
+  | LoadContentTypeListFail
+

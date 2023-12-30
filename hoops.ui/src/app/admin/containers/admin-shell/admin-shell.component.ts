@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import * as adminActions from '../../state/admin.actions';
-import * as contentActions from '../../content/state/content.actions';
+import * as contentActions from '../../state/admin.actions';
 import * as fromAdmin from '../../state';
 import * as fromUser from '../../../user/state';
 import { ColorService } from '@app/admin/admin-shared/services/color.service';
@@ -25,7 +25,7 @@ export class AdminShellComponent implements OnInit {
   constructor(private store: Store<fromAdmin.State>, private colorService: ColorService) {}
 
   ngOnInit() {
-    this.store.dispatch(new contentActions.Load());
+    this.store.dispatch(new contentActions.LoadAdminContent());
     this.store.dispatch(new adminActions.LoadSeasons());
     this.store.select(fromAdmin.getSeasons).subscribe((seasons) => {
       this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {

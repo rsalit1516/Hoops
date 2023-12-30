@@ -19,7 +19,7 @@ import { Content } from '../../../../domain/content';
 import { ContentService } from '../../content.service';
 import { Store, select } from '@ngrx/store';
 
-import * as fromContent from '../../state';
+import * as fromContent from '../../../state';
 import { WebContentType } from '@app/domain/webContentType';
 import { FloatLabelType } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';

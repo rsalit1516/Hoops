@@ -49,7 +49,7 @@ export class AdminGameService {
   filterGamesByTeam(team: number): Observable<Game[]> {
     let games: Game[] = [];
     let sortedDate: Game[] = [];
-    console.log(team);
+    // console.log(team);
     this.store.pipe(select(fromGames.getSeasonGames)).subscribe((allGames) => {
       this.allGames = allGames;
       this.setCanEdit(team);

@@ -5,8 +5,8 @@ import { Store } from '@ngrx/store';
 import { Content } from '../../../../domain/content';
 import { ContentService } from '../../content.service';
 
-import * as fromContent from '../../state';
-import * as contentActions from '../../state/content.actions';
+import * as fromContent from '../../../state';
+import * as contentActions from '../../../state/admin.actions';
 import { UntypedFormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';

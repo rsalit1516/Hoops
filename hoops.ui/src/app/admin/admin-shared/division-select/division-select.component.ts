@@ -27,7 +27,7 @@ export class DivisionSelectComponent implements OnInit {
   ngOnInit(): void {
     this.divisionComponent = this.selectForm.get('divisionControl') as UntypedFormControl;
     this.divisionComponent?.valueChanges.subscribe((value) => {
-      console.log(value);
+      // console.log(value);
       this.store.dispatch(new adminActions.SetSelectedDivision(value));
     });
     this.store.pipe(select(fromAdmin.getSelectedDivision)).subscribe((division) => {
@@ -36,6 +36,6 @@ export class DivisionSelectComponent implements OnInit {
 
   }
   onClick(division: Division) {
-    console.log(division);
+    // console.log(division);
   }
 }

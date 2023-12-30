@@ -47,7 +47,7 @@ import { ContentShellComponent } from './content/containers/content-shell/conten
     AdminSharedModule,
     AdminRoutingModule,
     // ContentModule,
-    // ContentShellComponent,
+    ContentShellComponent,
     DirectorModule,
     AdminGamesModule,
     RegistrationsAndPaymentsModule,

@@ -53,7 +53,7 @@ export class AdminDashboardComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(new adminActions.LoadCurrentSeason());
     this.setStateSubscriptions();
-    this.router.navigate(['/admin/content/list']);
+    // this.router.navigate(['/admin/content/list']);
   }
   setStateSubscriptions() {
     this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {

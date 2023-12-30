@@ -1,11 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, makeEnvironmentProviders } from '@angular/core';
 import { Content } from '@app/domain/content';
 import { ContentService } from '../../content.service';
 import { Router, RouterLinkWithHref, RouterOutlet, provideRouter } from '@angular/router';
 import { Store } from '@ngrx/store';
 
-import * as fromContent from '../../state';
-import * as contentActions from '../../state/content.actions';
+import * as fromContent from '../../../state';
+import * as contentActions from '../../../state/admin.actions';
 import { CommonModule } from '@angular/common';
 import { ContentListComponent } from '../../components/content-list/contentList.component';
 import { ContentEditComponent } from '../../components/content-edit/content-edit.component';
@@ -16,14 +16,16 @@ import { CONTENT_ROUTES } from '../../content-routing';
   selector: 'csbc-content-shell',
   standalone: true,
   template: `<section class="container-fluid">
-    <h2>Test</h2>
+    <h2>{{title}}</h2>
     <router-outlet></router-outlet>
   </section>`,
-  styleUrls: ['./content-shell.component.scss'],
+  styleUrls: [ './content-shell.component.scss' ],
   imports: [ CommonModule, AdminGamesRoutingModule, ContentListComponent, ContentEditComponent,
     RouterOutlet, RouterLinkWithHref ],
-  // providers: [provideRouter(CONTENT_ROUTES)],
+  // providers: [
+  //   provideRouter( CONTENT_ROUTES ]
 })
+
 export class ContentShellComponent implements OnInit {
   content!: Content;
 
@@ -46,12 +48,15 @@ export class ContentShellComponent implements OnInit {
     //   dateAndTime: '',
     //   webContentTypeId: ''
     // });
-    router.navigate(['./admin/content/list']);
+    // router.navigate(['./admin/content/list']);
   }
 
   ngOnInit(): void {
+    const environmentProviders = makeEnvironmentProviders([
+      { provide: CONTENT_ROUTES, useValue: CONTENT_ROUTES  },
+    ]);
     console.log('called content shell');
-    this.store.dispatch(new contentActions.Load());
+    this.store.dispatch(new contentActions.LoadAdminContent());
     this.store
       .select(fromContent.getIsActiveOnly)
       .subscribe((isActiveContent) => {
