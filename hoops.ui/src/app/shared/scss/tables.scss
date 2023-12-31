@@ -1,42 +1,54 @@
-@import '../../../Content/variables.scss';
+@use '../../../Content/variables.scss' as v;
 
+.mat-mdc-table, .mat-table {
+  background-color: v.$background-color;
+  color: v.$table-font-color;
+  border-radius: 12px !important;
+  padding: 8px !important;
+  width: 100%;
+  border: 1px solid v.$table-border-color;
+  margin:1px
+}
+.mat-table-header {
+  position: sticky;
+  top: 0;
+}
 .mat-table tr {
-  color: $color;
+  color: v.$color;
 }
+
 .mat-table tr th {
-  color: $color;
+  color: v.$color;
   font-weight: 700;
-  font-size: $table-font-size;
+  font-size: v.$table-font-size;
 }
+
 th {
-  color: $color;
+  color: v.$color;
   font-weight: 700;
-  font-size: $table-font-size;
+  font-size: v.$table-font-size;
 }
 
 .mat-table tr td {
-  color: $color;
+  color: v.$color;
   font-weight: 400;
-  font-size: $table-font-size;
+  font-size: v.$table-font-size;
 }
 
-.mat-table  .mat-header-row {
+
+.mat-table .mat-header-row {
   height: 32px;
   border-collapse: collapse;
   border-spacing: 2px;
-  background-color: $card-background-color;
+  background-color: v.$card-background-color;
   position: static;
   // line-height
 }
+
 .mat-row {
   height: 40px;
 }
-.mat-mdc-table {
-  background-color: $card-background-color;
-  color: $table-font-color;
-  border-radius: 10px;
-  width: 100%;
-}
+
 .mat-mdc-row {
-  color: $table-font-color;
+  color: v.$table-font-color;
 }

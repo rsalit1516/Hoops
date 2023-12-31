@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, UntypedFormControl, UntypedFormBuilder, ReactiveFormsModule, FormControl } from '@angular/forms';
+import {
+  FormGroup,
+  UntypedFormControl,
+  UntypedFormBuilder,
+  ReactiveFormsModule,
+  FormControl,
+} from '@angular/forms';
 import { Team } from '@app/domain/team';
 import { select, Store } from '@ngrx/store';
 import { from, Observable, of } from 'rxjs';
@@ -13,18 +19,22 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatOptionModule } from '@angular/material/core';
 
-
 @Component({
   selector: 'admin-game-detail',
   standalone: true,
-  imports: [ CommonModule, ReactiveFormsModule, MatFormFieldModule,
-    MatCardModule, MatOptionModule,
-  MatDatepickerModule, MatInputModule],
-  templateUrl: './admin-game-detail.component.html',
-  styleUrls: [
-    './admin-game-detail.component.scss',
-    '../../admin.component.scss',
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatCardModule,
+    MatOptionModule,
+    MatDatepickerModule,
+    MatInputModule,
   ],
+  templateUrl: './admin-game-detail.component.html',
+  styleUrls: [ '../../admin.component.scss',
+    '../../../shared/scss/cards.scss',
+    '../../../shared/scss/forms.scss' ],
 })
 export class AdminGameDetailComponent implements OnInit {
   gameEditForm = this.fb.group({
@@ -40,23 +50,29 @@ export class AdminGameDetailComponent implements OnInit {
   visitorComponent: UntypedFormControl | null | undefined;
   gameTimeFormatted: string | undefined;
 
-  constructor(private store: Store<fromAdmin.State>, private fb: UntypedFormBuilder) {
+  constructor(
+    private store: Store<fromAdmin.State>,
+    private fb: UntypedFormBuilder
+  ) {
     this.divisionTeams$ = this.store.select(fromAdmin.getDivisionTeams);
   }
 
   ngOnInit(): void {
-    this.visitorComponent = this.gameEditForm.get('visitorTeam') as UntypedFormControl;
+    this.visitorComponent = this.gameEditForm.get(
+      'visitorTeam'
+    ) as UntypedFormControl;
     this.store.select(fromAdmin.getSelectedGame).subscribe((game) => {
       console.log(game);
       // const gametime = new Date(game.gameTime);
-      this.gameTimeFormatted = game?.gameTime?.getHours + ':' + game?.gameTime?.getMinutes;
+      this.gameTimeFormatted =
+        game?.gameTime?.getHours + ':' + game?.gameTime?.getMinutes;
       console.log(this.gameTimeFormatted);
-      this.getTeam(game?.homeTeamId as number).subscribe(team => {
+      this.getTeam(game?.homeTeamId as number).subscribe((team) => {
         // console.log(team);
         this.homeTeam = team;
       });
       console.log(this.homeTeam);
-      this.getTeam(game?.visitingTeamId as number).subscribe(team => {
+      this.getTeam(game?.visitingTeamId as number).subscribe((team) => {
         // console.log(team);
         this.visitorTeam = team;
       });
@@ -78,8 +94,5 @@ export class AdminGameDetailComponent implements OnInit {
     );
   }
 
-  save() {
-
-  }
+  save() {}
 }
-

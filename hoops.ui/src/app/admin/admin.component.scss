@@ -28,7 +28,6 @@ textarea {
   background-color: #1a1a1a;
   color: rgb(220, 216, 216);
   padding-left: 12px;
-  background-color: lighten(v.$admin-background-color, 5%);
   color: v.$field-label;
 }
 
@@ -247,24 +246,11 @@ div {
   height: 420px;
   overflow: auto;
 }
-tbody {
-  color: white;
-}
-
-table .table .table-responsive .table-condensed {
-  border-radius: 5px;
-}
 
 div {
   color: v.$brand-color;
 }
 
-.mat-card {
-  background-color: v.$admin-card-background-color;
-  padding-top: 12px;
-}
-
-.mat-card-title,
 h2 {
   color: v.$field-label;
   font-size: .9rem;
@@ -282,28 +268,6 @@ h2 {
   color: white;
 }
 
-.mat-cell,
-.mat-header-cell {
-  font-size: 1.1em;
-  font-weight: 400;
-}
-.mat-cell:hover {
-  font-weight: 600;
-}
-
-.mat-header-cell {
-  font-weight: 700;
-}
-
-.mat-select-value {
-  color: v.$admin-font-color;
-  font-size: .9rem !important;
-}
-
-.mat-select-value-text {
-  color: v.$admin-font-color;
-  font-size: .9rem !important;
-}
 
 .ng-star-inserted {
   color: v.$basketball-color;
@@ -333,37 +297,6 @@ h2 {
 .row-is-clicked {
   font-weight: bold;
 }
-th.mat-row {
-  background-color: transparent;
-}
-th.mat-header-cell {
-  text-align: center !important;
-  background-color: transparent;
-}
-tr.mat-header-row {
-  height: 24px;
-  border-bottom: .5px solid gray;
-  font-size: 1.0em;
-  font-weight: 800;
-}
-
-tr.mat-row {
-  height: 36px;
-  font-size: .9rem;
-  font-weight: 500;
-  padding-bottom: 4px;
-  padding-top: 4px;
-
-}
-tr.mat-row:hover {
-  box-shadow: 4px 4px 6px -2px darken(v.$admin-background-color, 10%);
-  // background-color: darken(v.$table-body-color, 10%);
-}
-
-td.mat-cell {
-  padding: 8px 0 8px 0;
-  background-color: lighten(v.$admin-background-color, 10%);
-}
 .no-data {
   color: v.$admin-font-color;
   font-size: 1.1rem;
@@ -372,7 +305,11 @@ td.mat-cell {
 //   background-color: lighten(v.$admin-background-color, 30%);
 // }
 
-td.mat-cell:first-child {
+.mat-mdc-card-content {
+  display: block;
+  padding: 0;
+}
+  td.mat-cell:first-child {
   // border-left: .5px solid v.$brand-color;
   // border-bottom-left-radius: 10px;
   // border-top-left-radius: 10px;

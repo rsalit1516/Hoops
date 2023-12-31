@@ -7,13 +7,12 @@
 }
 
 .mat-mdc-card {
-  background-color: lighten(v.$card-background-color, 10%);
+  background-color: lighten(v.$card-background-color, 5%);
 }
 
 form {
   background-color: lighten(v.$card-background-color, 10%);
-  padding: 12px;
-  width: 80%;
+  padding: 4px;
 }
 
 h2 {
