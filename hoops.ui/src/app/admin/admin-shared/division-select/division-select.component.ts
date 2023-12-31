@@ -13,7 +13,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 @Component({
     selector: 'division-select',
     templateUrl: './division-select.component.html',
-    styleUrls: ['./division-select.component.scss', '../../admin.component.scss'],
+    styleUrls: ['./../../../shared/scss/select.scss'],
     standalone: true,
     imports: [
         FormsModule,
