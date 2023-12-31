@@ -7,7 +7,8 @@ import { WebContent } from '@app/domain/webContent';
   selector: 'csbc-announcement',
   standalone: true,
   templateUrl: './announcement.component.html',
-  styleUrls: [ '../../home.component.scss', './../../../../Content/styles.scss'],
+  styleUrls: [ './../../../../Content/styles.scss',
+    '../../home.component.scss'],
   imports: [CommonModule, MatCardModule]
 })
 export class AnnouncementComponent implements OnInit {

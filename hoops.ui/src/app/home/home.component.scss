@@ -53,9 +53,10 @@ em {
   padding-top: 20px;
 }
 
-.mat-card {
+.mat-mdc-card {
   border-radius: 10px;
-  background-color: $card-background-color;
+  background-color: lighten($card-background-color, 20%);
+  color: $font-color-text;
   margin-bottom: 16px;
   padding-top: 18px;
   padding-bottom: 20px;
