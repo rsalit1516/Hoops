@@ -13,11 +13,11 @@
   </mat-toolbar>
   </div>
   <div class="row">
-    <div class="col-7">
+    <div class="col-8">
       <admin-games-list *ngIf="showRegularSeason" [showScores]="true"></admin-games-list>
       <app-admin-games-playoffs-list *ngIf="showPlayoffs"></app-admin-games-playoffs-list>
     </div>
-    <div class="col-5">
+    <div class="col-4">
       <admin-game-detail></admin-game-detail>
     </div>
   </div>

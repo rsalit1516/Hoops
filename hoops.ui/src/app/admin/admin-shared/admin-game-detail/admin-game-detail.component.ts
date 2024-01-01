@@ -18,6 +18,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'admin-game-detail',
@@ -27,14 +28,16 @@ import { MatOptionModule } from '@angular/material/core';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatCardModule,
+    MatSelectModule,
     MatOptionModule,
     MatDatepickerModule,
     MatInputModule,
   ],
   templateUrl: './admin-game-detail.component.html',
-  styleUrls: [ '../../admin.component.scss',
+  styleUrls: [
     '../../../shared/scss/cards.scss',
-    '../../../shared/scss/forms.scss' ],
+    '../../../shared/scss/forms.scss',
+    '../../admin.component.scss',],
 })
 export class AdminGameDetailComponent implements OnInit {
   gameEditForm = this.fb.group({

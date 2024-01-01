@@ -25,11 +25,10 @@ namespace hoops_test
         public ScheduleGamesRepositoryTests()
         {
             var options = new DbContextOptionsBuilder<hoopsContext>()
-            // .UseInMemoryDatabase(databaseName: "hoops")
-            .Options;
+                .UseInMemoryDatabase(databaseName: "hoops")
+                .Options;
             _context = new hoopsContext(options);
             repo = new ScheduleGameRepository(_context, _logger);
-        //     // _context = contex
         }
         /// <summary>
         /// Test method for the ScheduleGamesRepository.

@@ -41,7 +41,9 @@ input.mat-form-field-label {
   color: v.$field-label;
   font-size: 1.0rem;
 }
-
+.mdc-icon-button {
+  color: v.$field-label;
+}
 .mat-input {
   color: v.$field-label  !important;
   background-color: lighten(v.$admin-background-color, 5%);

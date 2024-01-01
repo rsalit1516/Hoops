@@ -5,7 +5,6 @@ namespace Hoops.Infrastructure.Interface
 {
     public interface ILocationRepository : IRepository<Location>
     {
-        List<VwDirector> GetAll(int companyId);
-        List<VwDirector> GetDirectorVolunteers(int companyId);
+        new IEnumerable<Location> GetAll();
     }
 }

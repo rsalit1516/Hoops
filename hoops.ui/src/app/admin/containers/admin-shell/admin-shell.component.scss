@@ -56,3 +56,13 @@ a.mat-list-item {
   transform: scale(1.1);
   transition: border-bottom 0.3s ease color 0.3s ease, transform 0.3s ease;
 }
+.mat-drawer-content {
+  overflow: hidden;
+}
+.mat-mdc-icon-button:disabled {
+  color: $color;
+}
+
+.mat-mdc-icon-button:disabled {
+  color: darken($color , 20%);
+}
