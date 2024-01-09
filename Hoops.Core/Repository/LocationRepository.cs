@@ -4,6 +4,8 @@ using Hoops.Core.Models;
 using Csbc.Infrastructure;
 using Hoops.Infrastructure.Interface;
 using Hoops.Core;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hoops.Infrastructure.Repository
 {
@@ -17,15 +19,16 @@ namespace Hoops.Infrastructure.Repository
             return location;
         }
 
-        public new IEnumerable<Location> GetAll()
+        public new async Task<IEnumerable<Location>> GetAll()
         {
-            return context.Location
-            .OrderBy(c => c.LocationName);
+            return await context.Location
+                .OrderBy(c => c.LocationName)
+                .ToListAsync();
         }
         public override Location Insert(Location entity)
         {
-            if (entity.Id == 0)
-                entity.Id = context.Set<Location>().Any() ? context.Set<Location>().Max(c => c.Id) + 1 : 1;
+            //if (entity.Id == 0)
+            //     entity.Id = context.Set<Location>().Any() ? context.Set<Location>().Max(c => c.Id) + 1 : 1;
             return base.Insert(entity);
         }
     }

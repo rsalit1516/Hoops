@@ -429,15 +429,14 @@ public partial class hoopsContext : DbContext
 
         modelBuilder.Entity<Location>(entity =>
         {
-            entity.ToTable("Location");
+            entity.ToTable("Location")
+            .HasNoKey();
             // TO DO: Add the following to the Location table:
             // entity.HasKey(e => e.Id);
 
-            entity.Property(e => e.LocationNumber)
-                            .IsRequired();
+            entity.Property(e => e.LocationNumber);
 
             entity.Property(e => e.LocationName)
-            .IsRequired()
             .HasMaxLength(50);
 
             // entity.Property(e => e.Notes).IsRequired();

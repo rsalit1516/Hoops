@@ -27,11 +27,11 @@ namespace Hoops.Api.Controllers
             _logger.LogDebug(1, "NLog injected into ScheduleGameController");
         }
 
-        // GET: api/ScheduleGame
+        // GET: api/Locations
         [HttpGet]
-        public ActionResult<IEnumerable<Location>> GetScheduleGame()
+        public async Task<IActionResult> GetAll()
         {
-            return Ok(repository.GetAll());
+            return Ok(await repository.GetAll());
         }
     }
 }

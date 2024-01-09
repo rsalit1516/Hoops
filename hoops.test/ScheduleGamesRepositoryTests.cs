@@ -34,11 +34,11 @@ namespace hoops_test
         /// Test method for the ScheduleGamesRepository.
         /// </summary>
         [Fact]
-        public void ScheduleGamesRepositoryTest1()
+        public async void ScheduleGamesRepositoryTest1()
         {
             // var repo = new ScheduleGameRepository(new hoopsContext());
-            var actual = repo.GetSeasonGamesAsync(2203);
-            Assert.True(actual.Result != null);
+            var actual = await repo.GetSeasonGamesAsync(2203);
+            Assert.True(actual != null);
         }
         [Fact]
         public void ScheduleGamesRepositoryGetStandings()
