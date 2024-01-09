@@ -5,6 +5,7 @@ import { Division } from '@app/domain/division';
 import { Game } from '@app/domain/game';
 import { Team } from '@app/domain/team';
 import { Color } from '@app/domain/color';
+import { Location } from '@app/domain/location';
 import { PlayoffGame } from '@app/domain/playoffGame';
 import { Content } from '@app/domain/content';
 import { WebContent } from '@app/domain/webContent';
@@ -26,6 +27,7 @@ export interface AdminState {
   seasonTeams: Team[] | null;
   selectedTeam: Team | null;
   colors: Color[];
+  locations: Location[];
   showOnlyActiveWebContent: boolean;
   gameType: string;
   playoffGames: PlayoffGame[];
@@ -54,6 +56,7 @@ const initialState: AdminState = {
   seasonTeams: [],
   selectedTeam: null,
   colors: [],
+  locations: [],
   showOnlyActiveWebContent: true,
   gameType: 'Regular Season',
   playoffGames: [],

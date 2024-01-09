@@ -1,6 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { RouterLink, RouterLinkActive, RouterOutlet, provideRouter } from '@angular/router';
+import {
+  RouterLink,
+  RouterLinkActive,
+  RouterOutlet,
+  provideRouter,
+} from '@angular/router';
 
 import * as adminActions from '../../state/admin.actions';
 import * as contentActions from '../../state/admin.actions';
@@ -11,21 +16,22 @@ import { NgIf } from '@angular/common';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { LocationService } from '@app/admin/admin-shared/services/location.service';
 
 @Component({
-    selector: 'csbc-admin-shell',
-    templateUrl: './admin-shell.component.html',
-    styleUrls: ['./admin-shell.component.scss'],
-    standalone: true,
-    imports: [
-        MatSidenavModule,
-        MatListModule,
-        RouterLink,
-        RouterLinkActive,
-        MatDividerModule,
-        NgIf,
-        RouterOutlet,
-    ],
+  selector: 'csbc-admin-shell',
+  templateUrl: './admin-shell.component.html',
+  styleUrls: ['./admin-shell.component.scss'],
+  standalone: true,
+  imports: [
+    MatSidenavModule,
+    MatListModule,
+    RouterLink,
+    RouterLinkActive,
+    MatDividerModule,
+    NgIf,
+    RouterOutlet,
+  ],
 })
 export class AdminShellComponent implements OnInit {
   events: string[] = [];
@@ -36,8 +42,10 @@ export class AdminShellComponent implements OnInit {
   showColors = false;
   showUsers = false;
   shouldRun = true;
+  colorService = inject(ColorService);
+  locationService = inject(LocationService);
 
-  constructor(private store: Store<fromAdmin.State>, private colorService: ColorService) {}
+  constructor(private store: Store<fromAdmin.State>) { }
 
   ngOnInit() {
     this.store.dispatch(new contentActions.LoadAdminContent());
@@ -67,7 +75,7 @@ export class AdminShellComponent implements OnInit {
     });
 
     this.store.select(fromAdmin.getSeasonDivisions).subscribe((divisions) => {
-      this.store.dispatch(new adminActions.SetSelectedDivision(divisions[ 0 ]));
+      this.store.dispatch(new adminActions.SetSelectedDivision(divisions[0]));
     });
 
     this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
@@ -84,9 +92,18 @@ export class AdminShellComponent implements OnInit {
         if (division !== undefined) {
           this.store.dispatch(new adminActions.LoadDivisionTeams());
         }
-      })});
+      });
+    });
 
-    this.colorService.getColors().subscribe(colors =>
-    this.store.dispatch(new adminActions.SetColors(colors)));
+    this.colorService
+      .getColors()
+      .subscribe((colors) =>
+        this.store.dispatch(new adminActions.SetColors(colors))
+      );
+    this.locationService
+      .get()
+      .subscribe((locations) =>
+        this.store.dispatch(new adminActions.SetLocations(locations))
+      );
   }
 }

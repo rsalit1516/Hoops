@@ -20,6 +20,7 @@ export class DataService {
   getCurrentSeasonUrl = this.baseUrl + '/api/season/getCurrentSeason';
   getSeasonTeamsUrl = this.baseUrl + '/api/Team/GetSeasonTeams/';
   getColorUrl = this.baseUrl + '/api/Color';
+  getLocationUrl = this.baseUrl + '/api/Location';
   teamPostUrl = this.baseUrl + '/api/Team';
   teamPutUrl = this.baseUrl + '/api/Team/';
   getContentUrl = this.baseUrl + '/api/webcontent';

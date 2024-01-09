@@ -5,6 +5,7 @@ import { Team } from '@app/domain/team';
 import { Season } from '@app/domain/season';
 import { Game } from '@app/domain/game';
 import { Color } from '@app/domain/color';
+import { Location } from '@app/domain/location';
 import { PlayoffGame } from '@app/domain/playoffGame';
 import { WebContent } from '@app/domain/webContent';
 import { Content } from '@app/domain/content';
@@ -42,6 +43,7 @@ export enum AdminActionTypes {
   SetSelectedTeam = '[Admin] Set Selected Team',
   SetSelectedGame = '[Admin] Set SelectedGame',
   SetColors = '[Admin] Set Colors',
+  SetLocations = '[Admin] Set Locations',
   SetGameType = '[Admin] Set Game Type',
   SetShowOnlyActiveWebContent = '[Admin] Set Show Only Active Web Content',
   LoadPlayoffGames = '[Game] Load Playoff Games',
@@ -195,6 +197,11 @@ export class SetColors implements Action {
   constructor(public payload: Color[]) {}
 }
 
+export class SetLocations implements Action {
+  readonly type = AdminActionTypes.SetLocations;
+  constructor(public payload: Location[]) {}
+}
+
 export class SetShowOnlyActiveWebContent implements Action {
   readonly type = AdminActionTypes.SetShowOnlyActiveWebContent;
   constructor(public payload: boolean) {}
@@ -308,6 +315,7 @@ export type AdminActions =
   | SetSelectedTeam
   | SetSelectedGame
   | SetColors
+  | SetLocations
   | SetGameType
   | SetShowOnlyActiveWebContent
   | LoadPlayoffGames
