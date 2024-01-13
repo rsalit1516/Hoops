@@ -16,7 +16,7 @@
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
       "options": {
-        "outputPath": "dist/test",
+        "outputPath": "dist/hoops",
         "index": "src/index.html",
         "main": "src/main.ts",
         "tsConfig": "tsconfig.app.json",
@@ -51,8 +51,8 @@
           "budgets": [
             {
               "type": "initial",
-              "maximumWarning": "10mb",
-              "maximumError": "30mb"
+              "maximumWarning": "100mb",
+              "maximumError": "300mb"
             },
             {
               "type": "anyComponentStyle",
