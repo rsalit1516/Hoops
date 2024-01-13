@@ -11,14 +11,28 @@ import * as adminActions from '../state/admin.actions';
 
 import { LoadDivisions } from './../state/admin.actions';
 import { Observable } from 'rxjs';
-import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { Router } from '@angular/router';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { DatePipe } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { FlexModule } from '@angular/flex-layout/flex';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
-  selector: 'csbc-division-list',
-  templateUrl: './divisionList.component.html',
-  styleUrls: ['../admin.component.scss'],
-  providers: [SeasonService],
+    selector: 'csbc-division-list',
+    templateUrl: './divisionList.component.html',
+    styleUrls: ['../admin.component.scss'],
+    providers: [SeasonService],
+    standalone: true,
+    imports: [
+        MatToolbarModule,
+        FlexModule,
+        MatButtonModule,
+        MatTableModule,
+        MatIconModule,
+        DatePipe,
+    ],
 })
 export class DivisionListComponent implements OnInit, OnChanges {
   @Input() selectedSeason!: Season;

@@ -1,13 +1,12 @@
 <form [formGroup]="selectForm">
+  <h4>Division</h4>
   <mat-form-field>
-    <mat-label>Division</mat-label>
     <mat-select formControlName="divisionControl" class="form-control" >
-      <mat-option
-        *ngFor="let division of divisions$ | async"
-        [value]="division"
-      >
+      @for( division of divisions$ | async; track division) {
+      <mat-option [value]="division">
         {{ division.divisionDescription }}
       </mat-option>
+    }
     </mat-select>
   </mat-form-field>
 </form>

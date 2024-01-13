@@ -1,18 +1,22 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { Store, select } from '@ngrx/store';
 
 import * as fromAdmin from '../../state';
 import * as adminActions from '../../state/admin.actions';
 import { Season } from '@app/domain/season';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { DatePipe } from '@angular/common';
+import { FlexModule } from '@angular/flex-layout/flex';
 
 @Component({
-  selector: 'csbc-admin-season-list',
-  templateUrl: './admin-season-list.component.html',
-  styleUrls: [
-    './admin-season-list.component.scss',
-    '../../admin.component.scss'
-  ]
+    selector: 'csbc-admin-season-list',
+    templateUrl: './admin-season-list.component.html',
+    styleUrls: [
+        './admin-season-list.component.scss',
+        '../../admin.component.scss'
+    ],
+    standalone: true,
+    imports: [FlexModule, MatTableModule, DatePipe]
 })
 export class AdminSeasonListComponent implements OnInit {
   private _seasons: Season[] | undefined;

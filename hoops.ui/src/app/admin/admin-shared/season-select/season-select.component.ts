@@ -5,18 +5,27 @@ import * as fromAdmin from '../../state';
 import { Observable } from 'rxjs';
 import { Season } from '@app/domain/season';
 import * as adminActions from '../../state/admin.actions';
-import {
-  UntypedFormBuilder,
-  UntypedFormControl,
-  UntypedFormGroup,
-} from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { subscribeOn } from 'rxjs-compat/operator/subscribeOn';
 import { SeasonService } from '../services/season.service';
+import { AsyncPipe } from '@angular/common';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
-  selector: 'season-select',
-  templateUrl: './season-select.component.html',
-  styleUrls: ['./season-select.component.scss', '../../admin.component.scss'],
+    selector: 'season-select',
+    templateUrl: './season-select.component.html',
+    styleUrls: ['./../../../shared/scss/select.scss'],
+    standalone: true,
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        MatOptionModule,
+        AsyncPipe,
+    ],
 })
 export class SeasonSelectComponent implements OnInit {
   seasons$!: Observable<Season[]>;
@@ -44,6 +53,7 @@ export class SeasonSelectComponent implements OnInit {
     this.seasonComponent = this.selectForm.get('seasonControl') as UntypedFormControl;
     this.seasonComponent?.valueChanges.subscribe((value) => {
       const selectedSeason = this.seasonService.getSeason(value);
+      // console.log(selectedSeason);
       this.store.dispatch(new adminActions.SetSelectedSeason(selectedSeason));
     });
     this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {

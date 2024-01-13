@@ -12,24 +12,23 @@ import { PageNotFoundComponent } from '@app/app.not-found.component';
 
 import { AuthGuard } from '../auth/auth.guard';
 import { SeasonSetupComponent } from './containers/season-setup/season-setup.component';
+import { ContentShellComponent } from './content/containers/content-shell/content-shell.component';
+// import { ContentEditComponent } from './content/components/content-edit/content-edit.component';
+// import { ContentListComponent } from './content/components/content-list/contentList.component';
+// import { ContentShellComponent } from './content/containers/content-shell/content-shell.component';
+// import { LoadChildren } from '@angular/router';
 
 const adminRoutes: Routes = [
   {
     path: '',
     component: AdminShellComponent,
-    canActivate: [AuthGuard],
+    canActivate: [ AuthGuard ],
 
     children: [
-      { path: '', component: AdminDashboardComponent },
+      { path: 'dashboard', component: AdminDashboardComponent },
       { path: 'seasons', component: AdminSeasonShellComponent },
       { path: 'division', component: AdminDivisionShellComponent },
-
       { path: 'season-setup', component: SeasonSetupComponent },
-      {
-        path: 'content',
-        loadChildren: () =>
-          import('./content/content.module').then((mod) => mod.ContentModule),
-      },
       { path: 'teams', component: TeamListComponent },
       {
         path: 'games',
@@ -38,22 +37,53 @@ const adminRoutes: Routes = [
             (g) => g.AdminGamesModule
           ),
       },
-      { path: 'dashboard', component: AdminDashboardComponent },
       {
         path: 'director',
         loadChildren: () =>
-          import('./director/director.module').then(m => m.DirectorModule),
+          import('./director/director.module').then((m) => m.DirectorModule),
       },
+      // {
+      //   path: 'registrations',
+      //   loadChildren: () =>
+      //     import(
+      //       './registrations-and-payments/registrations-and-payments.module'
+      //     ).then((m) => m.RegistrationsAndPaymentsModule),
+      // },
       {
-        path: 'registrations',
-        loadChildren: () =>
-          import(
-            './registrations-and-payments/registrations-and-payments.module'
-          ).then((m) => m.RegistrationsAndPaymentsModule),
+        path: 'content',
+        loadComponent: () =>
+          import('./content/containers/content-shell/content-shell.component').then((m) => m.ContentShellComponent),
       },
+      // children: [
+      //   {
+      //     path: 'edit',
+      //     // component: ContentEditComponent,
+      //     loadComponent: () =>
+      //       import('./content/components/content-edit/content-edit.component').then(
+      //         (mod) => mod.ContentEditComponent
+      //       ),
+      //   },
+      //   {
+      //     path: 'list',
+      //     // component: ContentListComponent,
+      //     loadComponent: () =>
+      //       import('./content/components/content-list/contentList.component').then(
+      //         (mod) => mod.ContentListComponent
+      //       ),
+      //  },
+      // {
+      //   path: '',
+      //   redirectTo: '/list',
+      //   pathMatch: 'full',
+      // },
+
+      //   { path: '**', component: PageNotFoundComponent },
+      // ],
+      // },
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: '**', component: PageNotFoundComponent },
-    ],
-  },
+    ]
+  }
 ];
 
 @NgModule({

@@ -49,15 +49,7 @@
 .mat-table tr td.teamName:first-letter {
   text-transform: uppercase;
 }
-.table-wrapper {
-  padding-left: 20px;
-  padding-right: 20px;
-  border-radius: $border-radius;
-  margin-left: 20px;
-  margin-right: 20px;
-  background-color: $card-background-color;
-  font: 0.9rem;
-}
+
 @media screen and (max-width: 600px) {
   .table-wrapper {
     padding-left: 2px;

@@ -5,7 +5,11 @@ import { Division } from '@app/domain/division';
 import { Game } from '@app/domain/game';
 import { Team } from '@app/domain/team';
 import { Color } from '@app/domain/color';
+import { Location } from '@app/domain/location';
 import { PlayoffGame } from '@app/domain/playoffGame';
+import { Content } from '@app/domain/content';
+import { WebContent } from '@app/domain/webContent';
+import { WebContentType } from '@app/domain/webContentType';
 
 export interface AdminState {
   divisionGames: Game[] | null;
@@ -23,9 +27,17 @@ export interface AdminState {
   seasonTeams: Team[] | null;
   selectedTeam: Team | null;
   colors: Color[];
+  locations: Location[];
   showOnlyActiveWebContent: boolean;
   gameType: string;
   playoffGames: PlayoffGame[];
+  currentContentId: number | null;
+  selectedContent: Content | null;
+  contentList: WebContent[];
+  isActiveOnly: boolean;
+  filteredList: WebContent[];
+  contentTypeList: WebContentType[];
+  clonedContent: Content;
 }
 
 const initialState: AdminState = {
@@ -44,9 +56,17 @@ const initialState: AdminState = {
   seasonTeams: [],
   selectedTeam: null,
   colors: [],
+  locations: [],
   showOnlyActiveWebContent: true,
   gameType: 'Regular Season',
   playoffGames: [],
+  currentContentId: null,
+  selectedContent: null,
+  contentList: [],
+  isActiveOnly: true,
+  filteredList: [],
+  contentTypeList: [],
+  clonedContent: new Content(),
 };
 
 export function reducer(
@@ -124,6 +144,41 @@ export function reducer(
       return {
         ...state,
         gameType: action.payload,
+      };
+    case AdminActionTypes.SetSelectedContent:
+      return {
+        ...state,
+        selectedContent: action.payload,
+      };
+    case AdminActionTypes.SetAllContentSuccess:
+      return {
+        ...state,
+        filteredList: action.payload,
+      };
+    case AdminActionTypes.SetIsActiveOnly:
+      return {
+        ...state,
+        isActiveOnly: action.payload,
+      };
+    case AdminActionTypes.LoadAdminContentSuccess:
+      return {
+        ...state,
+        contentList: action.payload,
+      };
+    case AdminActionTypes.SetActiveContentSuccess:
+      return {
+        ...state,
+        filteredList: action.payload,
+      };
+    case AdminActionTypes.SetClonedContent:
+      return {
+        ...state,
+        clonedContent: action.payload,
+      };
+    case AdminActionTypes.LoadContentTypeListSuccess:
+      return {
+        ...state,
+        contentTypeList: action.payload,
       };
 
     default: {

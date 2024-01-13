@@ -1,9 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { Standing } from '@domain/standing';
 import { GameService } from './../../game.service';
 import { CommonModule } from '@angular/common';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 
 @Component({
   selector: 'csbc-standings',
@@ -12,7 +11,9 @@ import { MatTableModule } from '@angular/material/table';
   templateUrl: './standings.component.html',
   styleUrls: [
     './standings.component.scss',
-    '../../containers/games-shell/games-shell.component.scss'
+    '../../containers/games-shell/games-shell.component.scss',
+    '../../../../Content/styles.scss'
+
   ]
 })
 export class StandingsComponent implements OnInit {

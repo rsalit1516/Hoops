@@ -9,23 +9,19 @@ import { DirectorListComponent } from './component/director-list/director-list.c
 import { DirectorEditComponent } from './component/director-edit/director-edit.component';
 import { EffectsModule } from '@ngrx/effects';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CoreModule } from '../../core/core.module';
-import { SharedModule } from '@app/shared/shared.module';
+
+
 
 @NgModule({
-  imports: [
+    imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    SharedModule,
-    CoreModule,
     DirectorRoutingModule,
-    StoreModule.forFeature('director', reducer)
-  ],
-  declarations: [
+    StoreModule.forFeature('director', reducer),
     DirectorShellComponent,
     DirectorListComponent,
     DirectorEditComponent
-  ]
+]
 })
 export class DirectorModule {}

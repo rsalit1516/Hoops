@@ -25,21 +25,20 @@ namespace hoops_test
         public ScheduleGamesRepositoryTests()
         {
             var options = new DbContextOptionsBuilder<hoopsContext>()
-            // .UseInMemoryDatabase(databaseName: "hoops")
-            .Options;
+                .UseInMemoryDatabase(databaseName: "hoops")
+                .Options;
             _context = new hoopsContext(options);
             repo = new ScheduleGameRepository(_context, _logger);
-        //     // _context = contex
         }
         /// <summary>
         /// Test method for the ScheduleGamesRepository.
         /// </summary>
         [Fact]
-        public void ScheduleGamesRepositoryTest1()
+        public async void ScheduleGamesRepositoryTest1()
         {
             // var repo = new ScheduleGameRepository(new hoopsContext());
-            var actual = repo.GetSeasonGamesAsync(2203);
-            Assert.True(actual.Result != null);
+            var actual = await repo.GetSeasonGamesAsync(2203);
+            Assert.True(actual != null);
         }
         [Fact]
         public void ScheduleGamesRepositoryGetStandings()

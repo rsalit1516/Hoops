@@ -1,17 +1,25 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
 import * as fromUser from '../../user/state';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { User } from '@app/domain/user';
 import { environment } from '../../../environments/environment';
-import { Router } from '@angular/router';
+import { Router, RouterLinkActive, RouterModule } from '@angular/router';
 import { Constants } from '../constants';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { CommonModule } from '@angular/common';
+import { FlexModule } from '@angular/flex-layout';
 @Component({
   selector: 'csbc-top-nav',
+  standalone: true,
   templateUrl: './top-nav.component.html',
-  styleUrls: ['./top-nav.component.scss'],
+  styleUrls: [ './top-nav.component.scss', './../../shared/scss/menu.scss' ],
+  imports: [ CommonModule, MatDialogModule, MatToolbarModule,
+    MatButtonModule, MatIconModule, RouterModule, FlexModule, RouterLinkActive ],
 })
 export class TopNavComponent implements OnInit {
   @Output() public sidenavToggle = new EventEmitter();
@@ -36,10 +44,9 @@ export class TopNavComponent implements OnInit {
 
   ngOnInit() {
     this.env = environment.environment;
-    console.log(this.env);
+    // console.log(this.env);
     this.store.pipe(select(fromUser.getCurrentUser)).subscribe((user) => {
       // console.log(user);
-      console.log(this.env);
       if (this.env === 'Production') {
         if (user !== null && user.userId !== 0) {
           this.currentUser = user;

@@ -26,10 +26,11 @@ import { User } from '@app/domain/user';
 import { DivisionService } from './../../../services/division.service';
 import { GameService } from '@app/games/game.service';
 import { SchedulePlayoffsComponent } from '@app/games/components/schedule-playoffs/schedule-playoffs.component';
+import { ScheduleComponent } from '../../components/schedule/schedule.component';
 
 @Component({
-  selector: 'csbc-schedule-shell',
-  template: `
+    selector: 'csbc-schedule-shell',
+    template: `
     <div class="container">
       <h1>{{ title }}</h1>
       <div class="row">
@@ -37,7 +38,9 @@ import { SchedulePlayoffsComponent } from '@app/games/components/schedule-playof
       </div>
     </div>
   `,
-  styleUrls: ['./schedule-shell.component.scss'],
+    styleUrls: ['./schedule-shell.component.scss'],
+    standalone: true,
+    imports: [ScheduleComponent],
 })
 export class ScheduleShellComponent implements OnInit {
   games: Game[] | undefined | null;

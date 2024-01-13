@@ -4,8 +4,8 @@ import { Router } from '@angular/router';
 import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 import { Store } from '@ngrx/store';
 
-import * as fromContent from './content/state';
-import * as contentActions from './content/state/content.actions';
+import * as fromContent from './state';
+import * as contentActions from './state/admin.actions';
 import { MatSidenav } from '@angular/material/sidenav';
 import * as adminActions from './state/admin.actions';
 import * as fromAdmin from './state';
@@ -17,8 +17,9 @@ class MenuItem {
 }
 const SMALL_WIDTH_BREAKPOINT = 720;
 @Component({
-  templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.scss']
+    templateUrl: './admin.component.html',
+    styleUrls: ['./admin.component.scss'],
+    standalone: true
 })
 
 
@@ -42,7 +43,7 @@ export class AdminComponent  implements OnInit {
     });
   }
   ngOnInit() {
-    this.store.dispatch(new contentActions.Load());
+    this.store.dispatch(new contentActions.LoadAdminContent());
 
     // this.userService.isLoggedIn.subscribe(f => {
     //   console.log(f);

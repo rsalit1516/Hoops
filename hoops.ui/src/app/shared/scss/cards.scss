@@ -1,0 +1,22 @@
+@use '../../../Content/variables' as v;
+
+.mat-card {
+  background-color: v.$admin-card-background-color;
+  padding-top: 12px;
+  border-radius: 5%;
+  border: 1px solid v.$table-border-color;
+}
+.mat-mdc-card-title {
+  color: v.$brand-color;
+  font-size: 1.1em;
+  font-weight: 800;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-left: 20px;
+
+}
+
+.mat-mdc-card-content {
+  display: block;
+  padding: 0;
+}

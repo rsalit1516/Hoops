@@ -12,11 +12,26 @@ import { WebContent } from '../domain/webContent';
 
 import * as gameActions from '../games/state/games.actions';
 import * as fromGames from '../games/state';
+import { SponsorListComponent } from './components/sponsor-list/sponsor-list.component';
+import { CsbcAnnouncementsComponent } from './components/announcements/announcements.component';
+import { CsbcHomeSidebarComponent } from './components/home-sidebar/home-sidebar.component';
+import { ExtendedModule } from '@angular/flex-layout/extended';
+import { NgClass } from '@angular/common';
+import { HomeCenterComponent } from './components/home-center/home-center.component';
 
 @Component({
-  selector: 'csbc-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
+    selector: 'csbc-home',
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.scss'],
+    standalone: true,
+    imports: [
+        HomeCenterComponent,
+        NgClass,
+        ExtendedModule,
+        CsbcHomeSidebarComponent,
+        CsbcAnnouncementsComponent,
+        SponsorListComponent,
+    ],
 })
 export class HomeComponent implements OnInit {
   coverImage: string;

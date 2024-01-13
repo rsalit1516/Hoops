@@ -1,0 +1,160 @@
+@use "../../../Content/variables" as v;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.mat-mdc-card {
+  background-color: lighten(v.$card-background-color, 5%);
+}
+
+form {
+  background-color: lighten(v.$card-background-color, 10%);
+  padding: 4px;
+}
+
+h2 {
+  color: v.$color;
+}
+
+.form-heading {
+  color: v.$color;
+  font-size: 1.2em;
+  font-weight: 700;
+  padding-top: 24px;
+  padding-bottom: 12px;
+  padding-left: 12px;
+}
+
+.ng-valid[required],
+.ng-valid.required {
+  border-left: 5px solid #42A948;
+  /* green */
+}
+
+.ng-invalid:not(form) {
+  border-left: 5px solid #a94442;
+  /* red */
+}
+
+.alert div {
+  background-color: #fed3d3;
+  color: #820000;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+label {
+  display: block;
+  margin-bottom: .9rem;
+  padding-bottom: 12px;
+  color: pink
+}
+
+select {
+  width: 100%;
+  padding: .9rem;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+}
+
+input {
+  height: 3rem;
+}
+
+.mdc-text-field {
+  background-color: v.$card-background-color;
+}
+
+.mdc-text-field--filled:not {
+  background-color: v.$card-background-color !important;
+}
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background-color: v.$background-color !important;
+}
+
+.mat-label {
+  color: v.$field-label;
+  font-size: .9rem;
+  font-weight: 800;
+  padding-bottom: 6px;
+  padding-left: 12px;
+}
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-text-field__input {
+  color: v.$field-label !important;
+  font-size: v.$input-font-size;
+  font-weight: 700;
+  padding-bottom: 6px;
+  padding-left: 12px;
+}
+
+div.mat-mdc-select-panel {
+  background-color: v.$card-background-color !important;
+}
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-floating-label,
+.mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-floating-label--float-above {
+  color: v.$field-label !important;
+  font-size: v.$input-font-size;
+  font-weight: 500;
+}
+
+.mdc-list-item__primary-text {
+  color: darken(v.$field-label, 50%) !important;
+}
+
+.mdc-list-item__primary-text {
+  color: v.$field-label !important;
+}
+
+.mdc-list-item__primary-text:selected {
+  color: yellow !important;
+}
+
+.mat-mdc-raised-button:not(:disabled) {
+  background-color: v.$brand-color !important;
+}
+
+.mat-mdc-form-field {
+  padding-right: 12px;
+}
+
+.button-row {
+  margin-right: 8px;
+}
+
+button {
+  margin-right: 12px;
+}
+
+.mat-select-value-text {
+  color: v.$admin-font-color;
+  font-size: v.$select-font-size !important;
+  font-weight: 500;
+}
+
+.mat-option-text {
+  color: v.$admin-font-color;
+  font-size: .9rem !important;
+  background-color: v.$admin-background-color;
+}
+
+.mat-select-panel {
+  background-color: v.$admin-background-color;
+}
+
+.mat-form-field {
+  display: inline-flex;
+}

@@ -6,28 +6,36 @@
 
 .mat-toolbar.top-nav-toolbar {
   background-color: $background-color;
+  color: $brand-color;
   text-align: right;
   border-bottom: 2px solid $brand-color;
 }
 
 a {
   font-size: 1.5em;
-  font-weight: 600;
+  font-weight: 400;
   color: $navbar-color;
 }
 
-ul > li {
+.activelink {
+  background-color: $navbar-background-color;
+  font-weight: 900;
+  color: lighten($navbar-color, 50%);
+}
+
+ul>li {
   display: inline-block;
   padding: 4% 4%;
   width: 30%;
 }
+
 .fill-space {
   flex: 1 1 auto;
 }
 
 .navbar-brand {
   color: $brand-color;
-  font-size: 1.4em;
+  font-size: 1.5em;
   font-weight: 800;
 }
 
@@ -44,17 +52,21 @@ ul > li {
 .navbar-inverse .navbar-brand {
   color: $navbar-background-color;
 }
+
 .navbar-inverse .navbar-nav li a {
   color: $navbar-color;
 }
-.navbar-inverse .navbar-nav .active > a {
+
+.navbar-inverse .navbar-nav .active>a {
   background-color: $navbar-background-color;
   color: white;
 }
-.navbar-inverse .navbar-nav .active:hover > a {
+
+.navbar-inverse .navbar-nav .active:hover>a {
   background-color: $navbar-background-color;
   color: white;
 }
+
 .navbar .brand-title {
   margin-left: 2em;
   color: $navbar-color;
@@ -63,18 +75,22 @@ ul > li {
 .navbar-logo img {
   height: 20px;
 }
+
 .mat-toolbar {
   font-size: 0.9em;
 }
+
 p {
   color: white;
   font-weight: 600;
   font-size: 1.2rem;
 }
+
 button {
   background-color: $navbar-color;
   font-weight: 600;
 }
+
 .menu-button {
   margin-right: 24px;
   min-width: 0;
@@ -89,6 +105,7 @@ a.brand {
   font-variant: small-caps;
   text-decoration: none;
 }
+
 .menu-spacer {
   width: 80px;
 }

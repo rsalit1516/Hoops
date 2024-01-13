@@ -74,6 +74,7 @@ namespace Hoops.Api
             services.AddTransient<IWebContentRepository, WebContentRepository>();
             services.AddTransient<IWebContentTypeRepository, WebContentTypeRepository>();
             services.AddTransient<ISponsorRepository, SponsorRepository>();
+            services.AddTransient<ILocationRepository, LocationRepository>();
 
             services.AddCors(options =>
                    {

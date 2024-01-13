@@ -7,13 +7,32 @@ import * as fromAdmin from '../../../state';
 import { GameService } from '@app/games/game.service';
 import { Season } from '../../../../domain/season';
 import { Game } from '@app/domain/game';
+import { AdminGameDetailComponent } from '../../../admin-shared/admin-game-detail/admin-game-detail.component';
+import { AdminGamesPlayoffsListComponent } from '../../components/admin-games-playoffs-list/admin-games-playoffs-list.component';
+import { AdminGamesListComponent } from '../../../admin-shared/admin-games-list/admin-games-list.component';
+import { NgIf } from '@angular/common';
+import { DivisionSelectComponent } from '../../../admin-shared/division-select/division-select.component';
+import { GameTypeSelectComponent } from '../../../admin-shared/game-type-select/game-type-select.component';
+import { SeasonSelectComponent } from '../../../admin-shared/season-select/season-select.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
 @Component({
-  selector: 'csbc-admin-games-shell',
-  templateUrl: './admin-games-shell.component.html',
-  styleUrls: [
-    './admin-games-shell.component.scss',
-    '../../../admin.component.scss',
-  ],
+    selector: 'csbc-admin-games-shell',
+    templateUrl: './admin-games-shell.component.html',
+    styleUrls: [
+        './admin-games-shell.component.scss',
+        '../../../admin.component.scss',
+    ],
+    standalone: true,
+    imports: [
+        MatToolbarModule,
+        SeasonSelectComponent,
+        GameTypeSelectComponent,
+        DivisionSelectComponent,
+        NgIf,
+        AdminGamesListComponent,
+        AdminGamesPlayoffsListComponent,
+        AdminGameDetailComponent,
+    ],
 })
 export class AdminGamesShellComponent implements OnInit {
   seasons$ = this.store.select(fromAdmin.getSeasons);

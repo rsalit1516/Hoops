@@ -1,17 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  MatLegacyDialogRef as MatDialogRef} from '@angular/material/legacy-dialog';
-import { UntypedFormControl, UntypedFormBuilder } from '@angular/forms';
+import { UntypedFormControl, UntypedFormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GameService } from '@app/games/game.service';
 
 import * as fromGames from '../../state';
 import { Store, select } from '@ngrx/store';
 import { Game } from '@app/domain/game';
+import { MatDialogRef, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
-  selector: 'game-score-dialog',
-  templateUrl: './game-score-dialog.component.html',
-  styleUrls: ['./game-score-dialog.component.scss']
+    selector: 'game-score-dialog',
+    templateUrl: './game-score-dialog.component.html',
+    styleUrls: ['./game-score-dialog.component.scss'],
+    standalone: true,
+    imports: [MatDialogTitle, MatDialogContent, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatDialogActions, MatButtonModule, MatDialogClose]
 })
 export class GameScoreDialogComponent implements OnInit {
   gameScoreForm = this.fb.group({

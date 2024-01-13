@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CoreModule } from '../core/core.module';
-import { SharedModule } from '../shared/shared.module';
+
+
 import { ScheduleComponent } from './components/schedule/schedule.component';
 import { ScheduleCardViewComponent } from './components/schedule-card-view/schedule-card-view.component';
 import { GameCardComponent } from './components/game-card/game-card.component';
@@ -22,22 +22,18 @@ import { GameScoreDialogComponent } from './components/game-score-dialog/game-sc
 import { DailyScheduleComponent } from './components/daily-schedule/daily-schedule.component';
 import { SchedulePlayoffsComponent } from './components/schedule-playoffs/schedule-playoffs.component';
 import { DailyPlayoffScheduleComponent } from './components/daily-playoff-schedule/daily-playoff-schedule.component';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
-  imports: [
+    imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    CoreModule,
-    SharedModule,
     GamesRoutingModule,
     SchedulePlayoffsComponent,
     DailyPlayoffScheduleComponent,
     StoreModule.forFeature('games', reducer),
     EffectsModule.forFeature([GameEffects]),
-  ],
-  exports: [GamesRoutingModule],
-  declarations: [
     // GamesComponent,
     ScheduleComponent,
     ScheduleCardViewComponent,
@@ -50,7 +46,9 @@ import { DailyPlayoffScheduleComponent } from './components/daily-playoff-schedu
     ScoresComponent,
     GameScoreDialogComponent,
     DailyScheduleComponent,
-  ],
-  providers: [GameService],
+    MatNativeDateModule
+],
+    exports: [GamesRoutingModule],
+    providers: [GameService],
 })
 export class GamesModule {}

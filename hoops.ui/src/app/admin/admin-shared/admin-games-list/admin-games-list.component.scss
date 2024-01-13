@@ -1,7 +1,13 @@
 @use '../../../../content/_variables' as v;
+@use '../../../shared/scss/tables.scss' as t;
+
+form {
+  background-color: transparent;
+}
 
 .table-wrapper {
-  padding-top: 12px;
-  max-height: 500px;
-  overflow: auto;
+  padding-top: 2px;
+  max-height: 96%;
+  overflow-y: auto;
+  overflow-x: hidden;
 }

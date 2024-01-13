@@ -77,3 +77,30 @@ export const getTeamGames = createSelector(
   getAdminFeatureState,
   state => state.teamGames
 );
+export const getCurrentContentId = createSelector(
+  getAdminFeatureState,
+  state => state.currentContentId
+);
+export const getSelectedContent = createSelector(
+  getAdminFeatureState,
+  state => state.selectedContent
+);
+export const getContentList = createSelector(
+  getAdminFeatureState,
+  state => state.contentList
+);
+export const getIsActiveOnly = createSelector(
+  getAdminFeatureState,
+  state => state.isActiveOnly
+);
+export const getfilteredList = createSelector(
+  getAdminFeatureState,
+  state => state.filteredList
+);
+
+export const getClonedContent = createSelector(
+  getAdminFeatureState,
+  state => state.clonedContent
+);
+
+

@@ -6,11 +6,19 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import * as fromHome from '../../state';
 import { WebContent } from '../../../domain/webContent';
+import { MeetingComponent } from '../meeting/meeting.component';
+import { NgFor, AsyncPipe } from '@angular/common';
 
 @Component({
-  selector: 'csbc-home-sidebar',
-  templateUrl: './home-sidebar.component.html',
-  styleUrls: ['./home-sidebar.component.scss'],
+    selector: 'csbc-home-sidebar',
+    templateUrl: './home-sidebar.component.html',
+    styleUrls: ['./home-sidebar.component.scss'],
+    standalone: true,
+    imports: [
+        NgFor,
+        MeetingComponent,
+        AsyncPipe,
+    ],
 })
 export class CsbcHomeSidebarComponent implements OnInit {
   boardMeetingMessage: string;

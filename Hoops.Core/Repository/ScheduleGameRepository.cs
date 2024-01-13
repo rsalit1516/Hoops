@@ -418,7 +418,6 @@ namespace Hoops.Infrastructure.Repository
             var seasonId = result.First().SeasonId;
             _logger.LogInformation("SeasonID=" + seasonId.ToString());
             var teamRepo = new TeamRepository(db);
-            //var teams = TeamViewModel.GetDivisionTeams(result.FirstOrDefault<GameSchedulesViewModel>().DivisionId);
             var teams = teamRepo.GetSeasonTeams((int)seasonId);
             var schedDiv = db.Set<ScheduleDivTeam>().Where(s => s.SeasonId == seasonId).ToList();
 

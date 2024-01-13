@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 
 import { Content } from '../../../domain/content';
 import { ContentService } from '../../../admin/content/content.service';
@@ -9,11 +9,16 @@ import * as fromHome from '../../state/';
 //import * as homeActions from '../../state/home.actions';
 import { map, tap, groupBy } from 'rxjs/operators';
 import { WebContent } from '../../../domain/webContent';
+import { CommonModule } from '@angular/common';
+import { AnnouncementComponent } from '../announcement/announcement.component';
 
 @Component({
   selector: 'csbc-announcements',
+  standalone: true,
   templateUrl: './announcements.component.html',
-  styleUrls: ['./announcements.component.scss'],
+  styleUrls: [ './announcements.component.scss' ],
+  imports: [ CommonModule, AnnouncementComponent ],
+  providers: [ ContentService ]
 })
 export class CsbcAnnouncementsComponent implements OnInit {
 @Input() info!: string;
@@ -26,11 +31,13 @@ export class CsbcAnnouncementsComponent implements OnInit {
     map(result => result.filter(c => c.webContentTypeDescription === 'Season Info' || c.webContentTypeDescription === 'Event')),
     map(t => t.sort(this.sortByContentSequence))
   );
+  _webContentService: ContentService;
 
   constructor(
-    private _webContentService: ContentService,
     private store: Store<fromHome.State>
   ) {
+    this._webContentService = inject(ContentService);
+
   }
 
   ngOnInit() {

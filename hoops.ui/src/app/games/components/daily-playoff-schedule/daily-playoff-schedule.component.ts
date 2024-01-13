@@ -1,12 +1,14 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PlayoffGame } from '@app/domain/playoffGame';
-import { MaterialModule } from '@app/core/material/material.module';
+import { MatTab } from '@angular/material/tabs';
+import { MatTableModule } from '@angular/material/table';
+
 
 @Component({
   selector: 'csbc-daily-playoff-schedule',
   standalone: true,
-  imports: [CommonModule, MaterialModule],
+  imports: [CommonModule, MatTableModule],
   templateUrl: './daily-playoff-schedule.component.html',
   styleUrls: ['./daily-playoff-schedule.component.scss']
 })

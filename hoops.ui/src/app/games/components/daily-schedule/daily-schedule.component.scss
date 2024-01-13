@@ -1,4 +1,4 @@
-@import '../../../../content/_variables';
+@import '../../../../content/variables';
 
 :root {
   --color-primary: blue;
@@ -31,9 +31,6 @@
   font-size: $table-font-size;
 }
 .mat-table  .mat-header-row {
-  // border-bottom-width: thin;
-  // border-bottom-style: solid;
-  // border-bottom-color: white;
   height: 32px;
   border-collapse: collapse;
   border-spacing: 2px;

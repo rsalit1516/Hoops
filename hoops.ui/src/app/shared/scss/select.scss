@@ -1,0 +1,22 @@
+@use "../../../Content/variables" as v;
+
+form {
+  background-color: transparent !important;
+}
+h4 {
+  margin-bottom: 0px;
+}
+.mat-form-field {
+  padding-top: 2px;
+}
+.mat-select-value-text {
+  font-size: 1rem !important;
+  font-weight: 500;
+}
+.mat-mdc-select {
+  color: v.$field-label;
+  background-color: v.$admin-background-color;
+}
+.mat-mdc-select-arrow {
+  color: v.$brand-color;
+}

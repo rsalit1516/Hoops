@@ -28,7 +28,7 @@ export class AdminGameService {
       this.allGames = allGames;
       this.setCanEdit(div);
       if (allGames && div !== 0) {
-        console.log(div);
+        // console.log(div);
         for (let i = 0; i < this.allGames.length; i++) {
           if (this.allGames[i].divisionId === div) {
             let game = allGames[ i ];
@@ -49,7 +49,7 @@ export class AdminGameService {
   filterGamesByTeam(team: number): Observable<Game[]> {
     let games: Game[] = [];
     let sortedDate: Game[] = [];
-    console.log(team);
+    // console.log(team);
     this.store.pipe(select(fromGames.getSeasonGames)).subscribe((allGames) => {
       this.allGames = allGames;
       this.setCanEdit(team);
@@ -57,7 +57,7 @@ export class AdminGameService {
         for (let i = 0; i < this.allGames.length; i++) {
           if (this.allGames[i].homeTeamId === team || this.allGames[i].visitingTeamId === team) {
             let game = allGames[ i ];
-            console.log(game);
+            // console.log(game);
             games.push(game);
           }
         }

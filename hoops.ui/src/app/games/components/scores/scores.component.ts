@@ -1,24 +1,29 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormsModule } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
 
 import * as fromGames from '../../state';
 import * as fromUser from '../../../user/state';
 import * as gameActions from '../../state/games.actions';
 
-import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Game } from '@app/domain/game';
 import { User } from '@app/domain/user';
 import { MediaObserver } from '@angular/flex-layout';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { NgIf, DatePipe } from '@angular/common';
 
 @Component({
-  selector: 'csbc-scores',
-  templateUrl: './scores.component.html',
-  styleUrls: [
-    './scores.component.scss',
-    '../../containers/games-shell/games-shell.component.scss'
-  ]
+    selector: 'csbc-scores',
+    templateUrl: './scores.component.html',
+    styleUrls: [
+        './scores.component.scss',
+        '../../containers/games-shell/games-shell.component.scss'
+    ],
+    standalone: true,
+    imports: [FormsModule, MatTableModule, NgIf, MatButtonModule, MatIconModule, DatePipe]
 })
 export class ScoresComponent implements OnInit {
   dataSource!: MatTableDataSource<Game>;
@@ -84,8 +89,8 @@ export class ScoresComponent implements OnInit {
             if (this.user.userType === 3) {
               this.canEdit = true;
             } else {
-              for (let i = 0; i < this.user.divisions.length; i++) {
-                if (this.user.divisions[i].divisionId === this.divisionId) {
+              for (let i = 0; i < this.user.divisions!.length!; i++) {
+                if (this.user.divisions![i].divisionId === this.divisionId) {
                   this.canEdit = true;
                   console.log('Found division');
                   break;

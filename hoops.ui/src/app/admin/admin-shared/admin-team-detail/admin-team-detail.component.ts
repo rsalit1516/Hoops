@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder } from '@angular/forms';
+import { UntypedFormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Color } from '@app/domain/color';
 import { Division } from '@app/domain/division';
 import { Team } from '@app/domain/team';
@@ -11,14 +11,34 @@ import * as adminActions from '../../state/admin.actions';
 import * as fromUser from '../../../user/state';
 import { TeamService } from './../services/team.service';
 import { User } from '@app/domain/user';
+import { MatButtonModule } from '@angular/material/button';
+import { MatOptionModule } from '@angular/material/core';
+import { NgFor, AsyncPipe } from '@angular/common';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
-  selector: 'app-admin-team-detail',
-  templateUrl: './admin-team-detail.component.html',
-  styleUrls: [
-    './admin-team-detail.component.scss',
-    '../../admin.component.scss',
-  ],
+    selector: 'app-admin-team-detail',
+    templateUrl: './admin-team-detail.component.html',
+    styleUrls: [
+        './admin-team-detail.component.scss',
+        '../../admin.component.scss',
+    ],
+    standalone: true,
+    imports: [
+        MatCardModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        NgFor,
+        MatOptionModule,
+        MatButtonModule,
+        AsyncPipe,
+    ],
 })
 export class AdminTeamDetailComponent implements OnInit {
   editTeamForm = this.fb.group({
