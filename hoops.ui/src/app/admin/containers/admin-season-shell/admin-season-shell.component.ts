@@ -4,7 +4,6 @@ import { Season } from '@app/domain/season';
 import { select, Store } from '@ngrx/store';
 
 import * as fromAdmin from '../../state';
-import * as adminActions from '../../state/admin.actions';
 import { AdminSeasonListComponent } from '../../components/admin-season-list/admin-season-list.component';
 import { FlexModule } from '@angular/flex-layout/flex';
 
@@ -17,8 +16,8 @@ import { FlexModule } from '@angular/flex-layout/flex';
     imports: [FlexModule, AdminSeasonListComponent]
 })
 export class AdminSeasonShellComponent implements OnInit {
-  currentSeason$: Observable<Season>;
-  seasons$: Observable<Season[]>;
+  currentSeason$!: Observable<Season>;
+  seasons$!: Observable<Season[]>;
   constructor(private store: Store<fromAdmin.State>) { }
 
   ngOnInit() {

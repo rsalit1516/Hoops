@@ -35,6 +35,11 @@ th {
   font-size: v.$table-font-size;
 }
 
+td {
+  color: v.$color;
+  font-weight: 400;
+  font-size: v.$table-font-size;
+}
 
 .mat-table .mat-header-row {
   height: 32px;

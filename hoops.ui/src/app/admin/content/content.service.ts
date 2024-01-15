@@ -22,6 +22,9 @@ import { Observable, of } from 'rxjs';
 import { Constants } from '@app/shared/constants';
 import * as moment from 'moment';
 
+@Injectable({
+  providedIn: 'root',
+})
 @Injectable()
 export class ContentService {
   private _selectedContent: any;

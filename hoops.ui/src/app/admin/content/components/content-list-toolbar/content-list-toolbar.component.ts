@@ -48,7 +48,7 @@ export class ContentListToolbarComponent implements OnInit {
     this.router.navigate(['./admin/content/edit']);
   }
   filterContent() {
-    const isActive = this.filterForm.value.activeContent !== true;
+    const isActive = this.filterForm.value.activeContent === true;
     console.log(isActive);
     this.store.dispatch(new contentActions.SetIsActiveOnly(isActive));
   }

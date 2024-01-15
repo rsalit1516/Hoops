@@ -49,8 +49,10 @@ import { MatSelectModule } from '@angular/material/select';
     MatSelectModule
   ],
   templateUrl: './content-edit.component.html',
-  styleUrls: [ './content-edit.component.scss', '../../../admin.component.scss', '../../../../shared/scss/forms.scss',
-    '../../../../../Content/styles.scss' ],
+  styleUrls: [ './content-edit.component.scss',
+    '../../../admin.component.scss',
+    '../../../../shared/scss/forms.scss',
+    '../../../../shared/scss/cards.scss' ],
 })
 export class ContentEditComponent implements OnInit {
   @ViewChildren(FormControlName, { read: ElementRef })

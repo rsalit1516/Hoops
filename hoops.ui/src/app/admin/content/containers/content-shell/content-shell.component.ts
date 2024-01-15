@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, makeEnvironmentProviders, signal } from '@angular/core';
 import { Content } from '@app/domain/content';
 import { ContentService } from '../../content.service';
-import { Router, RouterLinkWithHref, RouterOutlet, provideRouter } from '@angular/router';
+import { ActivatedRoute, Router, RouterLinkWithHref, RouterOutlet, provideRouter } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import * as fromContent from '../../../state';
@@ -22,8 +22,7 @@ import { CONTENT_ROUTES } from '../../content-routing';
   styleUrls: [ './content-shell.component.scss' ],
   imports: [ CommonModule, AdminGamesRoutingModule, ContentListComponent, ContentEditComponent,
     RouterOutlet, RouterLinkWithHref ],
-  // providers: [
-  //   provideRouter( CONTENT_ROUTES ]
+
 })
 
 export class ContentShellComponent implements OnInit {
@@ -36,7 +35,8 @@ export class ContentShellComponent implements OnInit {
     // private fb: UntypedFormBuilder,
     // private _contentService: ContentService,
     private router: Router,
-    private store: Store<fromContent.State>  ) {
+    private store: Store<fromContent.State>,
+    private route: ActivatedRoute) {
     // this.contentForm = this.fb.group({
     //   title: [
     //     'Test',
@@ -48,14 +48,14 @@ export class ContentShellComponent implements OnInit {
     //   dateAndTime: '',
     //   webContentTypeId: ''
     // });
-    // router.navigate(['./admin/content/list']);
+    // router.navigate(['/list']);
   }
 
   ngOnInit(): void {
     const environmentProviders = makeEnvironmentProviders([
       { provide: CONTENT_ROUTES, useValue: CONTENT_ROUTES  },
     ]);
-
+    console.log(this.route.snapshot.data.form);
     console.log('called content shell' + this.content1());
     this.store.dispatch(new contentActions.LoadAdminContent());
     this.store

@@ -10,7 +10,6 @@ import {
 import * as adminActions from '../../state/admin.actions';
 import * as contentActions from '../../state/admin.actions';
 import * as fromAdmin from '../../state';
-import * as fromUser from '../../../user/state';
 import { ColorService } from '@app/admin/admin-shared/services/color.service';
 import { NgIf } from '@angular/common';
 import { MatDividerModule } from '@angular/material/divider';
@@ -44,8 +43,9 @@ export class AdminShellComponent implements OnInit {
   shouldRun = true;
   colorService = inject(ColorService);
   locationService = inject(LocationService);
+  store = inject(Store<fromAdmin.State>);
 
-  constructor(private store: Store<fromAdmin.State>) { }
+  constructor() {}
 
   ngOnInit() {
     this.store.dispatch(new contentActions.LoadAdminContent());

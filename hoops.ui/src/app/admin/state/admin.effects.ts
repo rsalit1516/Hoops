@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   map,
@@ -26,6 +26,7 @@ import { Season } from '@app/domain/season';
 import { Team } from '@app/domain/team';
 import { AdminGameService } from '../services/adminGame.service';
 import { PlayoffGame } from '@app/domain/playoffGame';
+import { ContentService } from '../content/content.service';
 
 @Injectable()
 export class AdminEffects {
@@ -37,10 +38,17 @@ export class AdminEffects {
   division!: Division;
   teamId!: number;
 
+  contentService = inject(ContentService);
+  seasonService = inject(SeasonService);
+
+  public loadContent$ = this.loadContent();
+  public loadActiveContent$ = this.loadActiveContent();
+  public loadAllContent$ = this.loadAllContent();
+
   constructor(
     private actions$: Actions,
-    private seasonService: SeasonService,
-    private divisionService: DivisionService,
+    // private seasonService: SeasonService,
+    // private divisionService: DivisionService,
     private http: HttpClient,
     private gameService: AdminGameService,
     private teamService: TeamService,
@@ -246,5 +254,44 @@ export class AdminEffects {
           )
       )
     ));
+
+  // tslint:disable-next-line:member-ordering
+  private loadContent() {
+    return createEffect(() => this.actions$.pipe(
+      ofType(adminActions.AdminActionTypes.LoadAdminContent),
+      mergeMap(action =>
+        this.contentService.getContents().pipe(
+          map(content => new adminActions.LoadAdminContentSuccess(content)),
+          // tap(content => console.log(content)),
+          catchError(err => of(new adminActions.LoadAdminContentFail(err)))
+        )
+      )
+    ));
+  }
+
+  private loadActiveContent() {
+    return createEffect(() => this.actions$.pipe(
+      ofType(adminActions.AdminActionTypes.SetActiveContent),
+      switchMap(action =>
+        this.contentService.getActiveContents().pipe(
+          map(content => new adminActions.SetActiveContentSuccess(content)),
+          tap(response => console.log(response)),
+          catchError(err => of(new adminActions.SetActiveContentFail(err)))
+        )
+      )
+    ));
+  }
+  private loadAllContent() {
+    return createEffect(() => this.actions$.pipe(
+      ofType(adminActions.AdminActionTypes.SetAllContent),
+      switchMap(action =>
+        this.contentService.getAllContents().pipe(
+          map(content => new adminActions.SetAllContentSuccess(content)),
+          tap(response => console.log(response)),
+          catchError(err => of(new adminActions.SetAllContentFail(err)))
+        )
+      )
+    ));
+  }
 
 }
