@@ -17,7 +17,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
   selector: 'content-list-toolbar',
   standalone: true,
   templateUrl: './content-list-toolbar.component.html',
-  styleUrls: [ './content-list-toolbar.component.scss', '../../../admin.component.scss' ],
+  styleUrls: [ './content-list-toolbar.component.scss',
+    '../../../admin.component.scss' ],
   imports: [ MatFormFieldModule, ReactiveFormsModule, MatButtonModule, MatToolbarModule, MatCheckboxModule ]
 })
 export class ContentListToolbarComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, WritableSignal, signal } from '@angular/core';
 import { map, tap, shareReplay } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
 import {
@@ -57,6 +57,13 @@ export class ContentService {
       catchError(this.data.handleError('getContents', []))
     );
   }
+
+  contentsS: WritableSignal<WebContent[]> = signal([]);
+  private test = this.content$.subscribe((data) => {
+    this.contentsS.set(data);
+    console.log(this.contentsS);
+  });
+
   getActiveContents(): Observable<WebContent[]> {
     let filteredContent: WebContent[] = [];
 
@@ -73,6 +80,9 @@ export class ContentService {
         }
       }
     });
+    this.contentsS.set(filteredContent);
+    console.log(this.contentsS);
+
     return of(filteredContent);
   }
 
