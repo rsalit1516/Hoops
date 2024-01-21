@@ -6,13 +6,10 @@ $sidebar-pill-background: $brand-color;
 $panel-default-heading-background: #000000;
 $basketball-color: #b86850;
 
-$table-body-color: #424242;
-$table-font-color: #fce9cd;
-$table-header-background-color: #b86850;
-
+/* navbar */
 $navbar-background-color: #212121;
-
 $navbar-color: lighten($brand-color, 10%);
+
 $sidebar-menu: lighten( black, 12%);
 $card-background-color: rgb(27, 24, 24);
 $card-background-color-shadow: darken(#3f3f3f, 40%);
@@ -27,9 +24,15 @@ $border-radius: 10px;
 $font-color-text: rgb(238, 231, 231);
 $field-label:rgb(220, 216, 216);
 $link-color:lighten(#d17b00, 20%);
-$table-border-color: darken(#d17b00, 12%);
-/* font sizes */
+
+/* table settings */
+$table-body-color: #424242;
+$table-font-color: #fce9cd;
+$table-header-background-color: #424242;
+$table-border-color: lighten(#d17b00, 12%);
 $table-font-size: 1.1rem;
+
+/* font sizes */
 $input-font-size: 1.1rem;
 $heading-font-size: 1.1rem;
 $card-body: .9rem;

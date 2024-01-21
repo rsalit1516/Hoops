@@ -5,7 +5,8 @@
   color: v.$table-font-color;
   padding: 8px !important;
   width: 100%;
-  margin:1px
+  margin:1px;
+  border-collapse: collapse;
 }
 .mat-table-header {
   position: sticky;
@@ -22,6 +23,10 @@
   font-size: v.$table-font-size;
 }
 
+table {
+  border-collapse: collapse;
+}
+
 th {
   background-color: v.$table-header-background-color !important;
   color: v.$table-font-color !important;
@@ -29,9 +34,11 @@ th {
   font-size: v.$table-font-size;
 }
 
-.mat-table tr td {
+tr  {
   font-weight: 400;
   font-size: v.$table-font-size;
+  border-bottom: 1px solid v.$table-border-color !important;
+  padding-bottom: 2px;
 }
 
 td {
@@ -39,22 +46,22 @@ td {
   font-size: v.$table-font-size;
 }
 
+
 .mat-table .mat-header-row {
   height: 32px;
   border-collapse: collapse;
   border-spacing: 2px;
   background-color: v.$card-background-color;
   position: static;
-  // line-height
-}
-
-.mat-row {
-  height: 40px;
+  font-weight: 400;
+  font-size: v.$table-font-size;
 }
 
 .mat-mdc-row {
   color: v.$table-font-color;
+  border-bottom: v.$table-border-color solid 1px !important;
 }
+
 .mat-mdc-paginator {
   background-color: v.$card-background-color;
   color: v.$table-font-color;;

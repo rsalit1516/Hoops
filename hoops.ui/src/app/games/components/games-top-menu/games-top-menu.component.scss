@@ -1,11 +1,11 @@
-@import '../../../../Content/variables';
+@use '../../../../Content/variables' as v;
 
 :host {
   font-size: 1rem;
 }
 
 .mat-sidenav-container {
-  background-color: $background-color;
+  background-color: v.$background-color;
 }
 
 .mat-form-field {
@@ -13,51 +13,56 @@
 }
 
 .top-nav-toolbar {
-  background-color: $card-background-color;
+  background-color: v.$card-background-color;
 }
 
 .mat-toolbar {
   padding-top: 4px;
-  background-color: $background-color;
-  color: $navbar-color;
-  font-size: $wrapper-font-size;
+  background-color: v.$background-color;
+  color: v.$navbar-color;
+  font-size: v.$wrapper-font-size;
 }
 
 a {
   font-size: 1.2em;
   font-weight: 600;
-  color: $navbar-color;
+  color: v.$navbar-color;
+}
+
+.mat-mdc-tab.mdc-tab--active .mdc-tab__text-label {
+  color: v.$brand-color;
+
 }
 
 button {
-  font-size: $button-font-size;
+  font-size: v.$button-font-size;
   font-variant-caps: small-caps;
   font-weight: 500;
-  background-color: $card-background-color;
+  background-color: v.$card-background-color;
   padding-right: 8px;
   padding-left: 8px;
   margin-right: 12px;
-  color: $navbar-color;
+  color: v.$navbar-color;
 }
 button:active {
   font-weight: 800;
 }
 
 .games-button {
-  font-size: $button-font-size;
+  font-size: v.$button-font-size;
   font-variant-caps: small-caps;
   font-weight: 500;
   padding-right: 8px;
   padding-left: 8px;
   margin-right: 12px;
-  background-color: $brand-color;
+  background-color: v.$brand-color;
   color: black;
 }
 .mat-button-toggle-appearance-standard  {
   line-height: 30px !important;
 }
 .mat-button-toggle-group {
-  background-color: $brand-color;
+  background-color: v.$brand-color;
   line-height: 30px;
 }
 
@@ -70,10 +75,10 @@ button:active {
 }
 
 h2 {
-  color: $brand-color;
+  color: v.$brand-color;
   background-color: transparent; //$background-color;
   font-variant: small-caps;
-  font-size: $heading-font-size;
+  font-size: v.$heading-font-size;
   font-weight: 700;
   text-align: left;
   padding-top: 8px;
@@ -87,21 +92,34 @@ h2 {
 .top-menu-wrapper {
   margin-bottom: 8px;
   padding-bottom: 24px;
-  border-bottom: 2px solid $brand-color;
-  font-size: $wrapper-font-size;
+  border-bottom: 2px solid v.$brand-color;
+  font-size: v.$wrapper-font-size;
 }
 .mat-form-field-wrapper {
   height:40px;
 }
 
 .mat-tab-label.label .mat-tab-label-content.label{
-  color:$color !important;
+  color: v.$brand-color !important;
   font-size: 1.1rem;
 }
 .mat-ink-bar {
-  background-color: $brand-color !important;
+  background-color: v.$brand-color !important;
 }
 
 .mat-ink-bar.mat-ink-bar {
-  background-color: $brand-color !important;
+  background-color: v.$brand-color !important;
+}
+
+.mat-mdc-tab.mdc-tab--active .mdc-tab__text-label {
+  color: v.$brand-color !important;
+}
+
+.mat-mdc-tab.mdc-tab--active .mdc-tab-indicator {
+  background-color: v.$brand-color !important;
+}
+.mat-tab {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: v.$navbar-color;
 }

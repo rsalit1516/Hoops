@@ -16,15 +16,11 @@ import { GameFilterComponent } from '../game-filter/game-filter.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
-    selector: 'csbc-games-top-menu',
-    templateUrl: './games-top-menu.component.html',
-    styleUrls: ['./games-top-menu.component.scss'],
-    standalone: true,
-    imports: [
-        MatToolbarModule,
-        MatTabsModule,
-        GameFilterComponent,
-    ],
+  selector: 'csbc-games-top-menu',
+  templateUrl: './games-top-menu.component.html',
+  styleUrls: ['./games-top-menu.component.scss'],
+  standalone: true,
+  imports: [MatToolbarModule, MatTabsModule, GameFilterComponent],
 })
 export class GamesTopMenuComponent implements OnInit {
   @Input() divisions!: Division[];
@@ -51,13 +47,14 @@ export class GamesTopMenuComponent implements OnInit {
     this.store.select(fromGames.getCurrentSeason).subscribe((currentSeason) => {
       this.seasonDescription = currentSeason?.description;
     });
-    this.store.select(fromGames.getDivisionPlayoffGames).subscribe((playoffs) => {
-      this.hasPlayoffs = playoffs.length > 0;
-    });
+    this.store
+      .select(fromGames.getDivisionPlayoffGames)
+      .subscribe((playoffs) => {
+        this.hasPlayoffs = playoffs.length > 0;
+      });
     this.store.select(fromGames.getStandings).subscribe((standings) => {
       this.hasStandings = standings.length > 0;
     });
-
   }
   onTabChanged(event: MatTabChangeEvent): void {
     console.log(event.index);
