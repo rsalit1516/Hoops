@@ -3,7 +3,8 @@
 .dashboard-card {
   min-height: 100px;
   height: 90%;
-
+  background-color: v.$table-body-color;
+  color: v.$table-font-color;
 }
 
 .card {
