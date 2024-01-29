@@ -40,7 +40,7 @@ export class ContentService {
     // console.log(value);
   }
   content$ = this.http.get<WebContent[]>(this.data.getContentUrl).pipe(
-    tap((data) => console.log('All: ' + JSON.stringify(data))),
+    // tap((data) => console.log('All: ' + JSON.stringify(data))),
     shareReplay(1),
     catchError(this.data.handleError('getContents', []))
   );
@@ -61,7 +61,7 @@ export class ContentService {
   contentsS: WritableSignal<WebContent[]> = signal([]);
   private test = this.content$.subscribe((data) => {
     this.contentsS.set(data);
-    console.log(this.contentsS);
+    // console.log(this.contentsS);
   });
 
   getActiveContents(): Observable<WebContent[]> {

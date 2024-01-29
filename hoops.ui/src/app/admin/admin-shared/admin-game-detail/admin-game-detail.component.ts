@@ -5,6 +5,7 @@ import {
   UntypedFormBuilder,
   ReactiveFormsModule,
   FormControl,
+  FormsModule,
 } from '@angular/forms';
 import { Team } from '@app/domain/team';
 import { select, Store } from '@ngrx/store';
@@ -19,12 +20,14 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
+import { NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
 
 @Component({
   selector: 'admin-game-detail',
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatCardModule,
@@ -32,17 +35,20 @@ import { MatSelectModule } from '@angular/material/select';
     MatOptionModule,
     MatDatepickerModule,
     MatInputModule,
+    NgxMatTimepickerModule,
   ],
   templateUrl: './admin-game-detail.component.html',
   styleUrls: [
     '../../../shared/scss/cards.scss',
     '../../../shared/scss/forms.scss',
-    '../../admin.component.scss',],
+    '../../admin.component.scss',
+  ],
 })
 export class AdminGameDetailComponent implements OnInit {
   gameEditForm = this.fb.group({
     gameDate: new FormControl('', { nonNullable: true }),
     gameTime: new FormControl('', { nonNullable: true }),
+    gameTime2: new FormControl('', { nonNullable: true }),
     locationName: new FormControl('', { nonNullable: false }),
     visitorTeam: new FormControl('', { nonNullable: true }),
     homeTeam: new FormControl('', { nonNullable: true }),
@@ -52,6 +58,9 @@ export class AdminGameDetailComponent implements OnInit {
   divisionTeams$: Observable<Team[]>;
   visitorComponent: UntypedFormControl | null | undefined;
   gameTimeFormatted: string | undefined;
+  gameTime: string | undefined;
+  gameTime2: Date = new Date();
+  pickerA: any;
 
   constructor(
     private store: Store<fromAdmin.State>,
@@ -66,10 +75,18 @@ export class AdminGameDetailComponent implements OnInit {
     ) as UntypedFormControl;
     this.store.select(fromAdmin.getSelectedGame).subscribe((game) => {
       console.log(game);
-      // const gametime = new Date(game.gameTime);
-      this.gameTimeFormatted =
-        game?.gameTime?.getHours + ':' + game?.gameTime?.getMinutes;
-      console.log(this.gameTimeFormatted);
+      const gameTime = new Date(game?.gameTime ?? '');
+      console.log(gameTime);
+      const time =
+        gameTime.toLocaleTimeString([], {
+          hour: '2-digit',
+          minute: '2-digit',
+        }) ?? '';
+      console.log(time);
+      this.gameTime = time;
+      this.gameTime2 = gameTime;
+      // this.gameTimeFormatted = game?.gameTime?.getHours + ':' + game?.gameTime?.getMinutes;
+      // console.log(this.gameTimeFormatted);
       this.getTeam(game?.homeTeamId as number).subscribe((team) => {
         // console.log(team);
         this.homeTeam = team;
@@ -83,7 +100,7 @@ export class AdminGameDetailComponent implements OnInit {
 
       this.gameEditForm.patchValue({
         gameDate: game?.gameDate as Date,
-        gameTime: game?.gameTime,
+        gameTime: this.gameTime,
         locationName: game?.locationName,
         homeTeam: this.homeTeam?.teamId,
         visitorTeam: this.visitorTeam?.teamId,

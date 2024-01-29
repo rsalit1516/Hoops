@@ -28,6 +28,7 @@ export class DataService {
   postContentUrl = this.baseUrl + '/api/WebContent';
   putContentUrl = this.baseUrl + '/api/WebContent/';
   getCurrentSponsors = this.baseUrl + '/api/Sponsor/GetSeasonSponsors/';
+  getLocations = this.baseUrl + '/api/Locations/';
 
   httpOptions = {
     headers: new HttpHeaders({
