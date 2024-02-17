@@ -12,9 +12,9 @@
 }
 
 a {
-  font-size: 1.5em;
+  font-size: 1.6em;
   font-weight: 400;
-  color: $navbar-color;
+  color: $navbar-color !important;
 }
 
 .activelink {

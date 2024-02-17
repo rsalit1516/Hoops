@@ -30,7 +30,7 @@ a {
 }
 
 .mat-mdc-tab.mdc-tab--active .mdc-tab__text-label {
-  color: v.$brand-color;
+  color: v.$brand-color !important;
 
 }
 
@@ -75,10 +75,10 @@ button:active {
 }
 
 h2 {
-  color: v.$brand-color;
+  color: v.$brand-color !important;
   background-color: transparent; //$background-color;
   font-variant: small-caps;
-  font-size: v.$heading-font-size;
+  font-size: v.$heading-font-size !important;
   font-weight: 700;
   text-align: left;
   padding-top: 8px;
@@ -103,6 +103,11 @@ h2 {
   color: v.$brand-color !important;
   font-size: 1.1rem;
 }
+.mat-mdc-tab.mdc-tab--active .mdc-tab__text-label {
+  color: v.$brand-color !important;
+  font-size: 1.1rem;
+}
+
 .mat-ink-bar {
   background-color: v.$brand-color !important;
 }

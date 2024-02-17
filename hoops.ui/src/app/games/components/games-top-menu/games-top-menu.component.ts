@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, inject } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
 import * as fromGames from '../../state';
@@ -14,13 +14,16 @@ import { Router } from '@angular/router';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { GameFilterComponent } from '../game-filter/game-filter.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 @Component({
   selector: 'csbc-games-top-menu',
   templateUrl: './games-top-menu.component.html',
-  styleUrls: ['./games-top-menu.component.scss'],
+  styleUrls: [ './games-top-menu.component.scss',
+  '../../../../Content/styles.scss'],
   standalone: true,
-  imports: [MatToolbarModule, MatTabsModule, GameFilterComponent],
+  imports: [ MatToolbarModule, MatTabsModule,
+    MatGridListModule, GameFilterComponent ],
 })
 export class GamesTopMenuComponent implements OnInit {
   @Input() divisions!: Division[];
@@ -34,13 +37,13 @@ export class GamesTopMenuComponent implements OnInit {
   season: Season | undefined;
   hasPlayoffs = true;
   hasStandings = true;
+  router =  inject(Router);
+  store =  inject(Store<fromGames.State>);
 
   constructor(
-    // private fb: FormBuilder,
-    private store: Store<fromGames.State>,
     private gameService: GameService,
     private seasonService: SeasonService,
-    private router: Router
+
   ) {}
 
   ngOnInit() {
