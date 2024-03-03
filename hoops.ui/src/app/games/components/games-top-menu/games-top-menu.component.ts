@@ -18,7 +18,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 @Component({
   selector: 'csbc-games-top-menu',
   templateUrl: './games-top-menu.component.html',
-  styleUrls: ['./games-top-menu.component.scss'],
+  styleUrls: ['./games-top-menu.component.scss',
+  '../../../shared/scss/select.scss'],
   standalone: true,
   imports: [MatToolbarModule, MatTabsModule, GameFilterComponent],
 })

@@ -19,7 +19,7 @@
 .mat-toolbar {
   padding-top: 4px;
   background-color: v.$background-color;
-  color: v.$navbar-color;
+  color: v.$navbar-color !important;
   font-size: v.$wrapper-font-size;
 }
 
@@ -32,6 +32,10 @@ a {
 .mat-mdc-tab.mdc-tab--active .mdc-tab__text-label {
   color: v.$brand-color;
 
+}
+
+.mat-mdc-tab .mdc-tab__text-label {
+  color: v.$navbar-color;
 }
 
 button {
