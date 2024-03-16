@@ -38,14 +38,14 @@ bootstrapApplication(AppComponent, {
             name: 'CSBC Site',
             maxAge: 25,
             logOnly: environment.production
-        }), 
+        , connectInZone: true}), 
         // StoreModule.forRoot(reducers, { metaReducers }),
         EffectsModule.forRoot([]), StoreModule.forRoot({}, {
             runtimeChecks: {
                 strictStateImmutability: false,
                 strictActionImmutability: false,
             },
-        }), StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })),
+        }), StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production , connectInZone: true})),
         SeasonService,
         DivisionService,
         TeamService,
