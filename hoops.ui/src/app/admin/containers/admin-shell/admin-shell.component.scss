@@ -66,3 +66,8 @@ a.mat-list-item {
 .mat-mdc-icon-button:disabled {
   color: darken($color , 20%);
 }
+
+.mdc-list-item__primary-text {
+  color: $brand-color !important;
+  font-size: 1.2em;
+}
