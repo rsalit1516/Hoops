@@ -1,4 +1,4 @@
-@import "../../../../content/_variables.scss";
+@use "../../../../content/_variables.scss" as v;
 
 .filter-wrapper {
   padding-left: 12px;
@@ -15,15 +15,15 @@
 }
 
 .mat-toolbar {
-  background-color: $background-color;
+  background-color: v.$background-color;
 }
 .mat-form-field {
   padding-bottom: 2px;
   padding-right: 12px;
-  background-color: $background-color;
+  background-color: v.$background-color;
   color: white;
   width: 240px;
-  font-size:$button-font-size;
+  font-size:v.$button-font-size;
 }
 .mat-form-field-infix {
   width:100px;
@@ -43,7 +43,7 @@ label {
 ::ng-deep .mat-select-content {
   width: 20px;
   background-color: rgb(156, 72, 16);
-  font-size: $table-font-size;
+  font-size: v.$table-font-size;
 }
 .mat-button,
 .mat-raised-button {
@@ -54,7 +54,7 @@ label {
   font-size: 0.7em;
 }
 .mat-form-field-label .mat-select-placeholder {
-  color: $font-color-text;
+  color: v.$font-color-text;
 }
 .mat-checkbox-checked.mat-accent .mat-checkbox-background,
 .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
@@ -68,7 +68,10 @@ label {
 
 .mat-button-toggle {
   color: white;
-  background-color: $background-color;
+  background-color: v.$background-color;
   margin-left: 8px;
 }
 
+.mat-mdc-select {
+  color: v.$font-color-text !important;
+}

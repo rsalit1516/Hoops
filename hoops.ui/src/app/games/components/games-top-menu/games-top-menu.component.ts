@@ -1,10 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import * as fromGames from '../../state';
-import * as gameActions from '../../state/games.actions';
-import { take, tap, first } from 'rxjs/operators';
-import { Subject, EMPTY, Observable } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { Division } from '@app/domain/division';
 import { SeasonService } from '@app/services/season.service';
 import { GameService } from '@app/games/game.service';
