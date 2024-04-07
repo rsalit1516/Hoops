@@ -4,27 +4,22 @@
   </div>
   <div class="row mt-2">
     <div class="col-sm-4 col-12">
-      <mat-toolbar>
-        <div>
-          <mat-tab-group
-            animationDuration="2000ms"
-            (selectedTabChange)="onTabChanged($event)"
-          >
-            <mat-tab
-              label="Schedule"
-              class="label"
-            ></mat-tab>
-            @if (hasPlayoffs) {
-            <mat-tab label="Playoffs"
-            ></mat-tab>
-            } @if (hasStandings) {
-            <mat-tab label="Standings"
-            ></mat-tab>
-            }
-          </mat-tab-group>
-        </div>
+      <<mat-toolbar>
+        <a
+          mat-button
+          routerLink="/games/schedule"
+          routerLinkActive="/games/schedule"
+          >Schedule</a
+        >
+        @if (hasStandings) {
+        <a mat-button routerLink="/games/standings">Standings</a>
+        } @if (hasPlayoffs) {
+        <a mat-button routerLink="/games/playoffs">Playoffs</a>
+        }
       </mat-toolbar>
+      <div></div>
     </div>
+
     <div class="col-sm-2 col-0"></div>
     <div class="col-sm-6 col-12">
       <mat-toolbar>

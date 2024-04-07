@@ -122,8 +122,42 @@ h2 {
 .mat-mdc-tab.mdc-tab--active .mdc-tab-indicator {
   background-color: v.$brand-color !important;
 }
+
+.mat-mdc-tab.mdc-tab--active .mdc-tab__text-label {
+  color: v.$brand-color !important;
+}
+
 .mat-tab {
   font-size: 1.1rem;
   font-weight: 600;
   color: v.$navbar-color;
+}
+.mdc-tab__content {
+  color: v.$navbar-color !important;
+}
+
+.mdc-tab__text-label{
+  color: v.$brand-color !important;
+}
+label {
+  color: v.$navbar-color !important;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+a {
+  font-size: 1.1em;
+  font-weight: 400;
+  color: lighten(v.$navbar-color, 20%) !important;
+  padding-right:12px;
+  font-variant: small-caps;
+  font-style: normal;
+  text-decoration: none;
+}
+a:hover {
+  font-weight: 800;
+}
+a:active {
+  font-weight: 600;
+  color: v.$navbar-color !important;
 }

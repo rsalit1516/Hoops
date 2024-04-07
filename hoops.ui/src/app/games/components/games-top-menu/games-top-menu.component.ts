@@ -7,18 +7,21 @@ import { SeasonService } from '@app/services/season.service';
 import { GameService } from '@app/games/game.service';
 import { Season } from '@app/domain/season';
 import { Team } from '@app/domain/team';
-import { Router } from '@angular/router';
+import { Router, RouterLinkActive, RouterModule } from '@angular/router';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { GameFilterComponent } from '../game-filter/game-filter.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'csbc-games-top-menu',
   templateUrl: './games-top-menu.component.html',
-  styleUrls: ['./games-top-menu.component.scss',
-  '../../../shared/scss/select.scss'],
+  styleUrls: ['../../../shared/scss/select.scss',
+    './games-top-menu.component.scss'
+  ],
   standalone: true,
-  imports: [MatToolbarModule, MatTabsModule, GameFilterComponent],
+  imports: [CommonModule, RouterModule, RouterLinkActive,
+    MatToolbarModule, MatTabsModule, GameFilterComponent],
 })
 export class GamesTopMenuComponent implements OnInit {
   @Input() divisions!: Division[];

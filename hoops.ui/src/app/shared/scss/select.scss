@@ -20,3 +20,6 @@ h4 {
 .mat-mdc-select-arrow {
   color: v.$brand-color;
 }
+.mat-mdc-tab.mdc-tab--active .mdc-tab__text-label {
+  color: green !important;
+}
