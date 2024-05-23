@@ -3,8 +3,8 @@
         <csbc-season-select (setSeason) = "setSeason()" ></csbc-season-select>
     </div>
 </div>
-<div class="row" style="padding-top:16px;">
-    <div class="col-sm-5">
-      <csbc-division-list  ></csbc-division-list>
+<div class="row">
+    <div class="col-5 col-xs-12">
+      <csbc-division-list [selectedSeason]="selectedSeason" ></csbc-division-list>
     </div>
 </div>

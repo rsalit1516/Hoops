@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, input } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import * as fromAdmin from '../../state';
@@ -6,6 +6,7 @@ import * as adminActions from '../../state/admin.actions';
 import { DivisionListComponent } from '../../division/divisionList.component';
 import { SeasonSelectComponent } from '../../admin-shared/season-select/season-select.component';
 import { DivisionSelectComponent } from '@app/admin/admin-shared/division-select/division-select.component';
+import { Season } from '@app/domain/season';
 
 @Component({
     selector: 'csbc-admin-division-shell',
@@ -20,7 +21,8 @@ import { DivisionSelectComponent } from '@app/admin/admin-shared/division-select
     DivisionSelectComponent]
 })
 export class AdminDivisionShellComponent implements OnInit {
-  constructor(private store: Store<fromAdmin.State>) {}
+season = input(new Season())
+  constructor(private store: Store<fromAdmin.State>) { }
 
   ngOnInit() {
     this.store.dispatch(new adminActions.LoadSeasons());

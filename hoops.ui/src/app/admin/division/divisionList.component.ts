@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, Input } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, input } from '@angular/core';
 
 import { SeasonService } from '../../services/season.service';
 import { DivisionService } from '../../services/division.service';
@@ -35,7 +35,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     ],
 })
 export class DivisionListComponent implements OnInit, OnChanges {
-  @Input() selectedSeason!: Season;
+   selectedSeason = input< Season>() ;
   //  set selectedSeason(value: Season) {
   //     console.log(value);
   //     if (value !== undefined) {
