@@ -27,7 +27,13 @@ export class DivisionService {
   }
   // divisions: Division[];
   private selectedSeason$ = this.store.pipe(select(fromAdmin.getSeasons));
-  currentDivision = signal<Division>;
+  currentDivision = signal<Division>({
+    seasonId: 1,
+    divisionId: 1,
+    divisionDescription: '',
+    minDate: new Date(),
+    maxDate: new Date(),
+  });
   divisions = signal<Division[]>([]);
   // private _divisions$ = this._http
   //   .get<Division[]>(this.divisionUrl + this.selectedSeason$)
@@ -45,19 +51,16 @@ export class DivisionService {
   //   );
   divisions$ =
     // return this._divisions$;
-    this._http
-      .get<Division[]>(this.divisionUrl + this.selectedSeason$)
-      .pipe(
-        map((divisions) => {
-          divisions.map(
-            division =>
+    this._http.get<Division[]>(this.divisionUrl + this.selectedSeason$).pipe(
+      map((divisions) => {
+        divisions.map(
+          (division) =>
             ({
-              ...division
+              ...division,
             } as Division)
-          ), this.divisions.set(divisions)
-        },
-
-      ),
+        ),
+          this.divisions.set(divisions);
+      }),
       // tap(data => console.log('All: ' + JSON.stringify(data))),
       catchError(this.dataService.handleError('getSeasonDivisions', null))
     );
@@ -98,7 +101,7 @@ export class DivisionService {
   getSeasonDivisions(season: Observable<Season>): Observable<Division[]> {
     // console.log(season);
     season.subscribe(
-      d =>
+      (d) =>
         (this.divisionUrl =
           this.dataService.webUrl +
           '/api/division/GetSeasonDivisions/' +
@@ -109,7 +112,7 @@ export class DivisionService {
       if (this.season !== undefined && this.season.seasonId == undefined) {
         this.seasonId = 2193;
       } else {
-        season.subscribe(s => (this.seasonId = s.seasonId));
+        season.subscribe((s) => (this.seasonId = s.seasonId));
       }
     }
     if (this.seasonId === undefined) {
@@ -124,10 +127,10 @@ export class DivisionService {
     );
   }
   getSelectedSeasonDivisions() {
-    this.selectedSeason$.subscribe(season => {
+    this.selectedSeason$.subscribe((season) => {
       return this._http.get<Division[]>(this.divisionUrl + season);
       // tap(data => console.log('All: ' + JSON.stringify(data))),
-        catchError(this.dataService.handleError('getSeasonDivisions', null));
+      catchError(this.dataService.handleError('getSeasonDivisions', null));
     });
   }
 }

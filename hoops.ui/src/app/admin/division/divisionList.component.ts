@@ -130,7 +130,7 @@ export class DivisionListComponent implements OnInit, OnChanges {
   }
   getRecord(division: any) {
     console.log(division);
-    this._divisionService.currentDivision = division;
+    this._divisionService.currentDivision.set(division);
     this.router.navigate(['./admin/division-detail']);
   }
 }
