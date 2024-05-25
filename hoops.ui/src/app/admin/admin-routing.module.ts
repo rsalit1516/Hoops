@@ -13,10 +13,8 @@ import { PageNotFoundComponent } from '@app/app.not-found.component';
 import { AuthGuard } from '../auth/auth.guard';
 import { SeasonSetupComponent } from './containers/season-setup/season-setup.component';
 import { ContentShellComponent } from './content/containers/content-shell/content-shell.component';
-// import { ContentEditComponent } from './content/components/content-edit/content-edit.component';
-// import { ContentListComponent } from './content/components/content-list/contentList.component';
-// import { ContentShellComponent } from './content/containers/content-shell/content-shell.component';
-// import { LoadChildren } from '@angular/router';
+import { DivisionDetailComponent } from './division/divisionDetail.component';
+
 
 const adminRoutes: Routes = [
   {
@@ -28,6 +26,7 @@ const adminRoutes: Routes = [
       { path: 'dashboard', component: AdminDashboardComponent },
       { path: 'seasons', component: AdminSeasonShellComponent },
       { path: 'division', component: AdminDivisionShellComponent },
+      { path: 'division-detail', component: DivisionDetailComponent },
       { path: 'season-setup', component: SeasonSetupComponent },
       { path: 'teams', component: TeamListComponent },
       {

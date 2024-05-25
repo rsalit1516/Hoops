@@ -19,7 +19,7 @@
 .mat-table thead{
   background-color: v.$table-header-background-color !important;
   color: v.$table-font-color !important;
-  font-weight: 700;
+  font-weight: 800;
   font-size: v.$table-font-size;
 }
 
@@ -35,14 +35,14 @@ th {
 }
 
 tr  {
-  font-weight: 400;
+  font-weight: 600;
   font-size: v.$table-font-size;
   border-bottom: 1px solid v.$table-border-color !important;
   padding-bottom: 2px;
 }
 
 td {
-  font-weight: 400;
+  font-weight: 600;
   font-size: v.$table-font-size;
 }
 
@@ -53,7 +53,7 @@ td {
   border-spacing: 2px;
   background-color: v.$card-background-color;
   position: static;
-  font-weight: 400;
+  font-weight: 900;
   font-size: v.$table-font-size;
 }
 

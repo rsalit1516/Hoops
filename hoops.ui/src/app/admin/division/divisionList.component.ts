@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, Input, input } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, input, inject } from '@angular/core';
 
 import { SeasonService } from '../../services/season.service';
 import { DivisionService } from '../../services/division.service';
@@ -23,7 +23,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     selector: 'csbc-division-list',
     templateUrl: './divisionList.component.html',
     styleUrls: ['../admin.component.scss'],
-    providers: [SeasonService],
+    providers: [SeasonService, DivisionService],
     standalone: true,
     imports: [
         MatToolbarModule,
@@ -35,7 +35,12 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     ],
 })
 export class DivisionListComponent implements OnInit, OnChanges {
-   selectedSeason = input< Season>() ;
+  selectedSeason = input<Season>();
+  private _divisionService = inject(DivisionService);
+  private seasonService = inject(SeasonService);
+  private store = inject(Store<fromAdmin.State>);
+  private router = inject(Router);
+
   //  set selectedSeason(value: Season) {
   //     console.log(value);
   //     if (value !== undefined) {
@@ -56,16 +61,13 @@ export class DivisionListComponent implements OnInit, OnChanges {
     'divisionDescription',
     'minDate',
     'maxDate',
-    'actions',
-    'viewActions',
+    'view',
+    'teams'
   ];
-  dataSource: MatTableDataSource<Division> | undefined;
+  dataSource!: MatTableDataSource<Division>;
   divisions$: Observable<Division[]> | undefined;
+
   constructor(
-    private _divisionService: DivisionService,
-    public seasonService: SeasonService,
-    private store: Store<fromAdmin.State>,
-    private router: Router
   ) {}
 
   ngOnInit() {
@@ -128,5 +130,7 @@ export class DivisionListComponent implements OnInit, OnChanges {
   }
   getRecord(division: any) {
     console.log(division);
+    this._divisionService.currentDivision = division;
+    this.router.navigate(['./admin/division-detail']);
   }
 }

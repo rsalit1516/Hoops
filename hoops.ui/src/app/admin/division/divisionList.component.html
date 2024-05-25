@@ -25,7 +25,7 @@
         {{ game.maxDate | date: 'MM/dd/yyyy' }}
       </td>
     </ng-container>
-    <ng-container matColumnDef="viewActions">
+    <ng-container matColumnDef="view">
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let row">
         <button class="edit" (click)="getRecord(row)" mat-icon-button>
@@ -34,7 +34,7 @@
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="actions">
+    <ng-container matColumnDef="teams">
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let row">
         <button mat-button (click)="viewTeams(row)">Teams</button>

@@ -5,7 +5,7 @@ import { Season } from '../domain/season';
 import { DataService } from './data.service';
 import { SeasonService } from './season.service';
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 
@@ -27,7 +27,8 @@ export class DivisionService {
   }
   // divisions: Division[];
   private selectedSeason$ = this.store.pipe(select(fromAdmin.getSeasons));
-
+  currentDivision = signal<Division>;
+  divisions = signal<Division[]>([]);
   // private _divisions$ = this._http
   //   .get<Division[]>(this.divisionUrl + this.selectedSeason$)
   //   .pipe(
@@ -45,15 +46,17 @@ export class DivisionService {
   divisions$ =
     // return this._divisions$;
     this._http
-    .get<Division[]>(this.divisionUrl + this.selectedSeason$)
-    .pipe(
-      map(divisions =>
-        divisions.map(
-          division =>
+      .get<Division[]>(this.divisionUrl + this.selectedSeason$)
+      .pipe(
+        map((divisions) => {
+          divisions.map(
+            division =>
             ({
               ...division
             } as Division)
-        )
+          ), this.divisions.set(divisions)
+        },
+
       ),
       // tap(data => console.log('All: ' + JSON.stringify(data))),
       catchError(this.dataService.handleError('getSeasonDivisions', null))
