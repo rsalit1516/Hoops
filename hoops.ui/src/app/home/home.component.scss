@@ -58,19 +58,21 @@ em {
   background-color: lighten($card-background-color, 20%);
   color: $font-color-text;
   margin-bottom: 16px;
-  padding-top: 18px;
-  padding-bottom: 20px;
+  padding-top: 0px;
+  padding-bottom: 12px;
+  width: 100%;
+  text-align: center;
+
 }
 
-.mat-card-title {
+.mat-card-title, .mat-mdc-card-title {
   font-size: $card-title-font-size;
   font-weight: 750;
   font-variant: small-caps;
-  color: $navbar-color;
+  color: $color;
   text-align: center;
-  padding-left: auto;
-  padding-right: auto;
-  margin: auto;
+  margin-right: 4vw;
+  margin-left: 4vw;
 }
 .mat-card-header {
   // border-bottom: 1px solid lighten($card-background-color, 20%);
@@ -88,8 +90,6 @@ em {
   padding-left: auto;
   padding-right: auto;
   padding-top: 4px;
-  margin-left: 3em;
-  margin-right: 3em;
 }
 .top-padding {
   margin-top: 24px;

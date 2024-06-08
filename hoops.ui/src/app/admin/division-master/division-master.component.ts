@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 // import { CsbcSeasonSelectComponent } from '../../shared/season-select/csbc-season-select.component';
 import { Season } from '../../domain/season';
 import { SeasonService } from '../../services/season.service';
-import { DivisionListComponent } from '../division/divisionList.component';
+import { DivisionListComponent } from '../components/admin-division-list/divisionList.component';
 import { CsbcSeasonSelectComponent } from '../../shared/season-select/csbc-season-select.component';
 
 @Component({

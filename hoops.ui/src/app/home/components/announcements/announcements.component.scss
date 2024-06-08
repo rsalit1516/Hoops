@@ -13,7 +13,7 @@
   font-size: 1.2em;
   font-weight: 720;
   font-variant: small-caps;
-  color: $navbar-color;
+  color: $color;
   text-align: center;
   padding-left: auto;
   padding-right: auto;
@@ -42,7 +42,7 @@
   font-weight: 700;
   font-size: 1.1em;
 }
-#contentText {
+.contentText {
   padding-top:12px;
   padding-bottom:12px;
 }

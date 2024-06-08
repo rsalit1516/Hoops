@@ -1,15 +1,15 @@
 import { Component, OnInit, OnChanges, Input, input, inject } from '@angular/core';
 
-import { SeasonService } from '../../services/season.service';
-import { DivisionService } from '../../services/division.service';
-import { Division } from '../../domain/division';
-import { Season } from '../../domain/season';
+import { SeasonService } from '../../../services/season.service';
+import { DivisionService } from '../../../services/division.service';
+import { Division } from '../../../domain/division';
+import { Season } from '../../../domain/season';
 import { Store, select } from '@ngrx/store';
 // import { CsbcSeasonSelectComponent } from '../../shared/season-select/csbc-season-select.component';
-import * as fromAdmin from '../state';
-import * as adminActions from '../state/admin.actions';
+import * as fromAdmin from '../../state';
+import * as adminActions from '../../state/admin.actions';
 
-import { LoadDivisions } from './../state/admin.actions';
+import { LoadDivisions } from '../../state/admin.actions';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -22,7 +22,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 @Component({
     selector: 'csbc-division-list',
     templateUrl: './divisionList.component.html',
-    styleUrls: ['../admin.component.scss'],
+    styleUrls: ['../../admin.component.scss'],
     providers: [SeasonService, DivisionService],
     standalone: true,
     imports: [
@@ -130,7 +130,7 @@ export class DivisionListComponent implements OnInit, OnChanges {
   }
   getRecord(division: any) {
     console.log(division);
-    this._divisionService.currentDivision.set(division);
+    this._divisionService.updateSelectedDivision(division);
     this.router.navigate(['./admin/division-detail']);
   }
 }

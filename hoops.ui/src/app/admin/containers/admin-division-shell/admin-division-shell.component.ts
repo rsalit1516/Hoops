@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 
 import * as fromAdmin from '../../state';
 import * as adminActions from '../../state/admin.actions';
-import { DivisionListComponent } from '../../division/divisionList.component';
+import { DivisionListComponent } from '../../components/admin-division-list/divisionList.component';
 import { SeasonSelectComponent } from '../../admin-shared/season-select/season-select.component';
 import { DivisionSelectComponent } from '@app/admin/admin-shared/division-select/division-select.component';
 import { Season } from '@app/domain/season';

@@ -12,8 +12,8 @@ import { PageNotFoundComponent } from '@app/app.not-found.component';
 
 import { AuthGuard } from '../auth/auth.guard';
 import { SeasonSetupComponent } from './containers/season-setup/season-setup.component';
-import { ContentShellComponent } from './content/containers/content-shell/content-shell.component';
-import { DivisionDetailComponent } from './division/divisionDetail.component';
+import { ContentShellComponent } from './web-content/containers/content-shell/content-shell.component';
+import { DivisionDetailComponent } from './components/admin-division-detail/divisionDetail.component';
 
 
 const adminRoutes: Routes = [
@@ -26,7 +26,7 @@ const adminRoutes: Routes = [
       { path: 'dashboard', component: AdminDashboardComponent },
       { path: 'seasons', component: AdminSeasonShellComponent },
       { path: 'division', component: AdminDivisionShellComponent },
-      { path: 'division-detail', component: DivisionDetailComponent },
+      { path: 'division-detail', component: DivisionDetailComponent},
       { path: 'season-setup', component: SeasonSetupComponent },
       { path: 'teams', component: TeamListComponent },
       {
@@ -56,7 +56,7 @@ const adminRoutes: Routes = [
           path: 'edit',
           // component: ContentEditComponent,
           loadComponent: () =>
-            import('./content/components/content-edit/content-edit.component').then(
+            import('./web-content/components/content-edit/content-edit.component').then(
               (mod) => mod.ContentEditComponent
             ),
         },
@@ -64,7 +64,7 @@ const adminRoutes: Routes = [
           path: 'list',
           // component: ContentListComponent,
           loadComponent: () =>
-            import('./content/components/content-list/contentList.component').then(
+            import('./web-content/components/content-list/contentList.component').then(
               (mod) => mod.ContentListComponent
             ),
        },

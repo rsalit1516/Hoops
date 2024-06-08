@@ -12,8 +12,8 @@ import { Content } from '../../domain/content';
 import { DataService } from '../../services/data.service';
 import { ConditionalExpr } from '@angular/compiler';
 
-import * as fromContent from '../../admin/state';
-import * as contentActions from '../../admin/state/admin.actions';
+import * as fromContent from '../state';
+import * as contentActions from '../state/admin.actions';
 
 import { Store } from '@ngrx/store';
 import { WebContentType } from '@app/domain/webContentType';

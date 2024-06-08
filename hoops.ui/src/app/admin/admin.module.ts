@@ -8,8 +8,8 @@ import { AdminDashboardComponent } from './dashboard/admin-dashboard.component';
 import { AdminRoutingModule } from './admin-routing.module';
 import { SeasonDetailComponent } from './season/seasonDetail.component';
 import { SeasonListComponent } from './season/seasonList.component';
-import { DivisionDetailComponent } from './division/divisionDetail.component';
-import { DivisionListComponent } from './division/divisionList.component';
+import { DivisionDetailComponent } from './components/admin-division-detail/divisionDetail.component';
+import { DivisionListComponent } from './components/admin-division-list/divisionList.component';
 import { PlayerListComponent } from './player/player-list.component';
 
 import { DivisionMasterComponent } from './division-master/division-master.component';
@@ -34,7 +34,7 @@ import { PaymentsComponent } from './registrations-and-payments/components/payme
 import { AdminGamesModule } from './admin-games/admin-games.module';
 
 import { AdminGamesListComponent } from './admin-shared/admin-games-list/admin-games-list.component';
-import { ContentShellComponent } from './content/containers/content-shell/content-shell.component';
+import { ContentShellComponent } from './web-content/containers/content-shell/content-shell.component';
 
 @NgModule({
     imports: [

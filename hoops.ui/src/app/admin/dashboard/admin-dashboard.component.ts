@@ -22,7 +22,7 @@ import { Game } from '@app/domain/game';
 import { AdminGamesListComponent } from '../admin-shared/admin-games-list/admin-games-list.component';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule, NgFor } from '@angular/common';
-import { CONTENT_ROUTES } from '../content/content-routing';
+import { CONTENT_ROUTES } from '../web-content/content-routing';
 import { MatListModule } from '@angular/material/list';
 import { SeasonSelectComponent } from '../admin-shared/season-select/season-select.component';
 

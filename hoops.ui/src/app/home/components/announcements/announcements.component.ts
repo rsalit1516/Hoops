@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
 
 import { Content } from '../../../domain/content';
-import { ContentService } from '../../../admin/content/content.service';
+import { ContentService } from '../../../admin/web-content/content.service';
 import * as moment from 'moment';
 import { Store } from '@ngrx/store';
 

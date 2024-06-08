@@ -4,8 +4,6 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import { Content } from '../../../../domain/content';
-// import { ContentService } from '../../content.service';
-// import { ContentEditComponent } from '../content-edit/content-edit.component';
 
 import * as fromContent from '../../../state';
 import * as contentActions from '../../../state/admin.actions';
@@ -43,7 +41,6 @@ export class ContentListComponent implements OnInit {
     this.pageTitle = 'Web Site Messages';
 
     this.store.select(fromContent.getfilteredList).subscribe(data => {
-      // console.log(data);
       this.dataSource = new MatTableDataSource(data);
     });
   }
@@ -67,10 +64,4 @@ export class ContentListComponent implements OnInit {
   addContent(): void {
     this.router.navigate(['./admin/content/edit']);
   }
-  // openDialog(): void {
-  //   const dialogRef = this.dialog.open(ContentEditComponent, {
-  //     height: '600px',
-  //     width: '700px'
-  //   });
-  // }
 }

@@ -7,8 +7,8 @@ import {
   Validators,
 } from '@angular/forms';
 
-import { Season } from '../../domain/season';
-import { Division } from '../../domain/division';
+import { Season } from '../../../domain/season';
+import { Division } from '../../../domain/division';
 import { DivisionService } from '@app/services/division.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -17,7 +17,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'csbc-division-detail',
   templateUrl: './divisionDetail.component.html',
-  styleUrls: ['../admin.component.scss'],
+  styleUrls: ['../../admin.component.scss'],
   standalone: true,
   imports: [ CommonModule,
     FormsModule,
@@ -26,15 +26,18 @@ import { CommonModule } from '@angular/common';
     MatInputModule ],
 })
 export class DivisionDetailComponent implements OnInit {
-  division = signal(new Division());
+  selectedDivision = input<Division>();
+  division = input<Division>();
+
   // seasonForm: UntypedFormGroup;
   divisionForm: UntypedFormGroup;
   divisionService = inject(DivisionService);
+  test = input(this.divisionService.currentDivision());
 
   constructor(private fb: UntypedFormBuilder) {
-    // effect(() => {
-    //   this.division = this.divisionService.currentDivision;
-    // })
+    effect(() => {
+      console.log(this.test); // = this.divisionService.currentDivision;
+     })
     // // this.seasonForm = this.fb.group({
     //   // id: this.season.id,
     //   name: this.division.divisionDescription,
@@ -52,9 +55,9 @@ export class DivisionDetailComponent implements OnInit {
     });
     effect(() => {
       console.log(this.divisionService.currentDivision());// this.division.update(this.divisionService.currentDivision);
-      this.divisionForm.get('name')?.setValue(this.divisionService.currentDivision().divisionDescription);
-      this.divisionForm.get('maxDate')?.setValue(this.divisionService.currentDivision().maxDate);
-      this.divisionForm.get('minDate')?.setValue(this.divisionService.currentDivision().minDate);
+      //this.divisionForm.get('name')?.setValue(this.divisionService.currentDivision().divisionDescription);
+      //this.divisionForm.get('maxDate')?.setValue(this.divisionService.currentDivision().maxDate);
+      //this.divisionForm.get('minDate')?.setValue(this.divisionService.currentDivision().minDate);
     });
 
   }

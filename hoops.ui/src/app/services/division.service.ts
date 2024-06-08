@@ -5,7 +5,7 @@ import { Season } from '../domain/season';
 import { DataService } from './data.service';
 import { SeasonService } from './season.service';
 import { HttpClient } from '@angular/common/http';
-import { Injectable, signal } from '@angular/core';
+import { Injectable, effect, signal } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 
@@ -27,13 +27,7 @@ export class DivisionService {
   }
   // divisions: Division[];
   private selectedSeason$ = this.store.pipe(select(fromAdmin.getSeasons));
-  currentDivision = signal<Division>({
-    seasonId: 1,
-    divisionId: 1,
-    divisionDescription: '',
-    minDate: new Date(),
-    maxDate: new Date(),
-  });
+  readonly currentDivision = signal({} as Division);
   divisions = signal<Division[]>([]);
   // private _divisions$ = this._http
   //   .get<Division[]>(this.divisionUrl + this.selectedSeason$)
@@ -74,6 +68,9 @@ export class DivisionService {
     public seasonService: SeasonService,
     private store: Store<fromAdmin.State>
   ) {
+    // effect(() => {
+    //   console.log(this.currentDivision());
+    // });
     //      SeasonService.getCurrent().subscribe(season => (this.season = season));
     //  SeasonService.selectedSeason..currentSeason.subscribe(
     //  season =>
@@ -132,5 +129,8 @@ export class DivisionService {
       // tap(data => console.log('All: ' + JSON.stringify(data))),
       catchError(this.dataService.handleError('getSeasonDivisions', null));
     });
+  }
+  updateSelectedDivision(division: Division) {
+    this.currentDivision.set(division);
   }
 }

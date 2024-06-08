@@ -26,7 +26,7 @@ import { Season } from '@app/domain/season';
 import { Team } from '@app/domain/team';
 import { AdminGameService } from '../services/adminGame.service';
 import { PlayoffGame } from '@app/domain/playoffGame';
-import { ContentService } from '../content/content.service';
+import { ContentService } from '../web-content/content.service';
 
 @Injectable()
 export class AdminEffects {
