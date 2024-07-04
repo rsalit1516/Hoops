@@ -27,6 +27,7 @@ import { Team } from '@app/domain/team';
 import { AdminGameService } from '../services/adminGame.service';
 import { PlayoffGame } from '@app/domain/playoffGame';
 import { ContentService } from '../web-content/content.service';
+import { LocationService } from '../admin-shared/services/location.service';
 
 @Injectable()
 export class AdminEffects {
@@ -40,6 +41,7 @@ export class AdminEffects {
 
   contentService = inject(ContentService);
   seasonService = inject(SeasonService);
+  locationService = inject(LocationService);
 
   public loadContent$ = this.loadContent();
   public loadActiveContent$ = this.loadActiveContent();
@@ -294,4 +296,14 @@ export class AdminEffects {
     ));
   }
 
+  loadLocations$: Observable<Action> = createEffect(() => this.actions$.pipe(
+    ofType(adminActions.AdminActionTypes.LoadLocations),
+    mergeMap(action =>
+      this.locationService.get().pipe(
+        map(location => new adminActions.LoadLocationsSuccess(location)),
+        // tap(content => console.log(content)),
+        catchError(err => of(new adminActions.LoadAdminContentFail(err)))
+      )
+    )
+  ));
 }

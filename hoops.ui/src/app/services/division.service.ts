@@ -5,20 +5,21 @@ import { Season } from '../domain/season';
 import { DataService } from './data.service';
 import { SeasonService } from './season.service';
 import { HttpClient } from '@angular/common/http';
-import { Injectable, effect, signal } from '@angular/core';
+import { Injectable, Signal, effect, signal } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 
 import * as fromAdmin from '../admin/state';
 
-@Injectable()
+@Injectable({
+  providedIn:'root'
+})
 export class DivisionService {
   private divisionUrl =
     this.dataService.webUrl + '/api/division/GetSeasonDivisions/';
 
   private season: Season | undefined;
   private _seasonId!: number;
-  // divisionUrl: string;
   get seasonId() {
     return this._seasonId;
   }
@@ -27,7 +28,14 @@ export class DivisionService {
   }
   // divisions: Division[];
   private selectedSeason$ = this.store.pipe(select(fromAdmin.getSeasons));
-  readonly currentDivision = signal({} as Division);
+
+  private divisionSignal = signal<Division>(new Division());
+  readonly currentDivision = this.divisionSignal.asReadonly();
+
+  setCurrentDivision(currentDivision: Division): void {
+    this.divisionSignal.update(div => div = currentDivision);
+  }
+
   divisions = signal<Division[]>([]);
   // private _divisions$ = this._http
   //   .get<Division[]>(this.divisionUrl + this.selectedSeason$)
@@ -44,8 +52,8 @@ export class DivisionService {
   //     catchError(this.dataService.handleError('getSeasonDivisions', null))
   //   );
   divisions$ =
-    // return this._divisions$;
-    this._http.get<Division[]>(this.divisionUrl + this.selectedSeason$).pipe(
+    this._http.get<Division[]>(this.divisionUrl + this.selectedSeason$)
+      .pipe(
       map((divisions) => {
         divisions.map(
           (division) =>
@@ -68,17 +76,7 @@ export class DivisionService {
     public seasonService: SeasonService,
     private store: Store<fromAdmin.State>
   ) {
-    // effect(() => {
-    //   console.log(this.currentDivision());
-    // });
-    //      SeasonService.getCurrent().subscribe(season => (this.season = season));
-    //  SeasonService.selectedSeason..currentSeason.subscribe(
-    //  season =>
-    // this.seasonId = SeasonService.selectedSeason.seasonID;
-    // this._divisionUrl =
-    //   this.DataService.webUrl +
-    //   '/api/division/GetSeasonDivisions/' +
-    //   this.season.seasonID;
+    effect(() => { console.log(this.currentDivision()); });
   }
 
   getDivisions(seasonId: number): Observable<Division[]> {
@@ -131,6 +129,7 @@ export class DivisionService {
     });
   }
   updateSelectedDivision(division: Division) {
-    this.currentDivision.set(division);
+    console.log(division);
+    // this.currentDivision.set(division);
   }
 }

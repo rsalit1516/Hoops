@@ -84,7 +84,7 @@ input {
 }
 
 .mat-label {
-  color: v.$field-label;
+  color: v.$field-label !important;
   font-size: .9rem;
   font-weight: 800;
   padding-bottom: 6px;

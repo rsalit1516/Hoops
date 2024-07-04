@@ -103,4 +103,8 @@ export const getClonedContent = createSelector(
   state => state.clonedContent
 );
 
+export const getLocations = createSelector(
+  getAdminFeatureState,
+  state => state.locations
+);
 

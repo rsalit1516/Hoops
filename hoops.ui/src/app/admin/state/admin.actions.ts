@@ -64,6 +64,9 @@ export enum AdminActionTypes {
   LoadContentTypeList = '[Content] Load Content Type List',
   LoadContentTypeListSuccess = '[Content] Load Content Type List Success',
   LoadContentTypeListFail = '[Content] Load Content Type List Fail',
+  LoadLocations = '[Location] Load Locations',
+  LoadLocationsSuccess = '[Location] Load Locations Success',
+  LoadLocationsFail = '[Location] Load Location Fail',
 
 }
 export class LoadCurrentSeason implements Action {
@@ -284,6 +287,18 @@ export class LoadContentTypeListFail implements Action {
   constructor(public payload: string) {}
 }
 
+export class LoadLocations implements Action {
+  readonly type = AdminActionTypes.LoadLocations;
+}
+export class LoadLocationsSuccess implements Action {
+  readonly type = AdminActionTypes.LoadLocationsSuccess;
+  constructor(public payload: Location[]) {}
+}
+export class LoadLocationsFail implements Action {
+  readonly type = AdminActionTypes.LoadLocationsFail;
+  constructor(public payload: string) {}
+}
+
 export type AdminActions =
   | LoadCurrentSeason
   | SetCurrentSeason
@@ -336,4 +351,7 @@ export type AdminActions =
   | LoadContentTypeList
   | LoadContentTypeListSuccess
   | LoadContentTypeListFail
+  | LoadLocations
+  | LoadLocationsSuccess
+  | LoadLocationsFail
 

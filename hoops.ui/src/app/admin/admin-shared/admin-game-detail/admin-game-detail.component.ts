@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import {
   FormGroup,
   UntypedFormControl,
@@ -21,6 +21,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
+import { LocationService } from '../services/location.service';
+import { Division } from '@app/domain/division';
+import { Location } from '@app/domain/location';
 
 @Component({
   selector: 'admin-game-detail',
@@ -56,17 +59,22 @@ export class AdminGameDetailComponent implements OnInit {
   visitorTeam!: Team | undefined;
   homeTeam: Team | undefined;
   divisionTeams$: Observable<Team[]>;
+  locations$!: Observable<Location[]>;
   visitorComponent: UntypedFormControl | null | undefined;
   gameTimeFormatted: string | undefined;
   gameTime: string | undefined;
   gameTime2: Date = new Date();
   pickerA: any;
+  locationService = inject(LocationService);
 
   constructor(
     private store: Store<fromAdmin.State>,
     private fb: UntypedFormBuilder
   ) {
     this.divisionTeams$ = this.store.select(fromAdmin.getDivisionTeams);
+    // this.locations$ = this.locationService.locations$;
+
+    // test = toSignal(this.locationService.locations$);
   }
 
   ngOnInit(): void {

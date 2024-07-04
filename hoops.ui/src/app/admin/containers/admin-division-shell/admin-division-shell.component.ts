@@ -21,11 +21,13 @@ import { Season } from '@app/domain/season';
     DivisionSelectComponent]
 })
 export class AdminDivisionShellComponent implements OnInit {
-season = input(new Season())
+  season = input(new Season())
+
   constructor(private store: Store<fromAdmin.State>) { }
 
   ngOnInit() {
     this.store.dispatch(new adminActions.LoadSeasons());
+    this.store.dispatch(new adminActions.LoadLocations());
   }
   addDivision () {
     console.log('Add Division');

@@ -1,4 +1,11 @@
-import { Component, OnInit, OnChanges, Input, input, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnChanges,
+  Input,
+  input,
+  inject,
+} from '@angular/core';
 
 import { SeasonService } from '../../../services/season.service';
 import { DivisionService } from '../../../services/division.service';
@@ -18,21 +25,27 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { FlexModule } from '@angular/flex-layout/flex';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
-    selector: 'csbc-division-list',
-    templateUrl: './divisionList.component.html',
-    styleUrls: ['../../admin.component.scss'],
-    providers: [SeasonService, DivisionService],
-    standalone: true,
-    imports: [
-        MatToolbarModule,
-        FlexModule,
-        MatButtonModule,
-        MatTableModule,
-        MatIconModule,
-        DatePipe,
-    ],
+  selector: 'csbc-division-list',
+  templateUrl: './divisionList.component.html',
+  styleUrls: ['../../admin.component.scss'],
+  providers: [SeasonService, DivisionService],
+  standalone: true,
+  imports: [
+    MatToolbarModule,
+    FlexModule,
+    MatButtonModule,
+    MatTableModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatRadioModule,
+    DatePipe,
+  ],
 })
 export class DivisionListComponent implements OnInit, OnChanges {
   selectedSeason = input<Season>();
@@ -62,13 +75,12 @@ export class DivisionListComponent implements OnInit, OnChanges {
     'minDate',
     'maxDate',
     'view',
-    'teams'
+    'teams',
   ];
   dataSource!: MatTableDataSource<Division>;
   divisions$: Observable<Division[]> | undefined;
 
-  constructor(
-  ) {}
+  constructor() {}
 
   ngOnInit() {
     this.store.pipe(select(fromAdmin.getSelectedSeason)).subscribe((season) => {
@@ -100,6 +112,7 @@ export class DivisionListComponent implements OnInit, OnChanges {
   }
   onSelect(division: Division): void {
     this.selectedDivision = division;
+    this._divisionService.setCurrentDivision(division);
   }
   setDivisionData(data: any[]): Division[] {
     let divisions: Division[] = [];
@@ -129,8 +142,10 @@ export class DivisionListComponent implements OnInit, OnChanges {
     this.router.navigate(['./admin/season-setup']);
   }
   getRecord(division: any) {
-    console.log(division);
-    this._divisionService.updateSelectedDivision(division);
+    // console.log(division);
+    this._divisionService.setCurrentDivision(division);
+    // console.log(this._divisionService.currentDivision());
+
     this.router.navigate(['./admin/division-detail']);
   }
 }

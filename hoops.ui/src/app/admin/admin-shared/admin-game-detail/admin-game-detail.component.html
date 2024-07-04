@@ -31,7 +31,15 @@
 
       <mat-form-field class="form-control" appearance="fill">
         <mat-label>Location</mat-label>
-        <input matInput value="locationName" formControlName="locationName" />
+        <!-- <input matInput value="locationName" formControlName="locationName" />
+          -->
+          <mat-select formControlName="locationName" class="form-control">
+            @for(location of locations$ | async; track location) {
+            <mat-option [value]="location.locationNumber">
+              {{ location.locationName }}
+            </mat-option>
+          }
+          </mat-select>
       </mat-form-field>
       <mat-form-field
         class="form-control"

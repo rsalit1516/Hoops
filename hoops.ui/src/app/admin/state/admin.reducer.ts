@@ -180,6 +180,11 @@ export function reducer(
         ...state,
         contentTypeList: action.payload,
       };
+      case AdminActionTypes.LoadLocationsSuccess:
+        return {
+          ...state,
+          locations: action.payload,
+        };
 
     default: {
       return state;
