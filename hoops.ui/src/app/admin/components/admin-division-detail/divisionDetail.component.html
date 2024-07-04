@@ -9,156 +9,175 @@
       (ngSubmit)="save()"
       [formGroup]="divisionForm"
     >
-      <!-- <fieldset> -->
+      <fieldset>
+        <div class="row">
+          <div class="col-10">
+            <mat-form-field floatLabel="always">
+              <mat-label for="name">Division</mat-label>
+              <input
+                matInput
+                id="name"
+                type="text"
+                placeholder="Division Name"
+                formControlName="name"
+                [ngClass]="{
+                  'has-error':
+                    (divisionForm.get('name')?.touched ||
+                      divisionForm.get('name')?.dirty) &&
+                    !divisionForm.get('name')?.valid
+                }"
+              />
+            </mat-form-field>
+          </div>
+        </div>
+      </fieldset>
       <div class="row">
-        <div class="col-10">
-          <mat-form-field floatLabel="always">
-            <mat-label for="name">Division</mat-label>
+          <div class="col-5">
+            <fieldset>
+
+            <div>
+              <mat-form-field floatLabel="always">
+                <mat-label for="divisionForm.get('minDate')"
+                  >min Date</mat-label
+                >
+                <input
+                  matInput
+                  id="divisionForm.get('minDate1')"
+                  required
+                  type="text"
+                  placeholder="min Date"
+                  formControlName="minDate1"
+                />
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field
+                class="form-group"
+                [ngClass]="{
+                  'has-error':
+                    (divisionForm.get('maxDate1')?.touched ||
+                      divisionForm.get('maxDate1')?.dirty) &&
+                    !divisionForm.get('minDate1')?.valid
+                }"
+              >
+                <mat-label for="divisionForm.get('maxDate1')"
+                  >max Date</mat-label
+                >
+                <input
+                  matInput
+                  id="divisionForm.get('maxDate1')"
+                  class="form-control"
+                  required
+                  type="text"
+                  placeholder="max Date"
+                  formControlName="maxDate1"
+                />
+              </mat-form-field>
+            </div>
+            <div>
+              <!-- <mat-form-field> -->
+              <mat-label class="control-label">Gender</mat-label>
+              <mat-radio-group
+                aria-labelledby="example-radio-group-label"
+                class="example-radio-group"
+                formControlName="gender1"
+              >
+                @for (gender of genders; track gender) {
+                <mat-radio-button class="example-radio-button" [value]="gender">
+                  {{ gender }}
+                </mat-radio-button>
+                }
+              </mat-radio-group>
+              <!-- </mat-form-field> -->
+            </div>
+          </fieldset>
+
+          </div>
+
+          <!-- male dates -->
+          <div class="col-5">
+            <fieldset>
+            <div>
+              <mat-form-field
+                [ngClass]="{
+                  'has-error':
+                    (divisionForm.get('minDate1')?.touched ||
+                      divisionForm.get('minDate1')?.dirty) &&
+                    !divisionForm.get('minDate1')?.valid
+                }"
+              >
+                <mat-label
+                  class="control-label"
+                  for="divisionForm.get('minDate2')"
+                  >min Date</mat-label
+                >
+                <input
+                  matInput
+                  id="divisionForm.get('minDate2')"
+                  required
+                  type="text"
+                  placeholder="min Date"
+                  formControlName="minDate2"
+                />
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field
+                class="form-group"
+                [ngClass]="{
+                  'has-error':
+                    (divisionForm.get('maxDate2')?.touched ||
+                      divisionForm.get('maxDate2')?.dirty) &&
+                    !divisionForm.get('minDate2')?.valid
+                }"
+              >
+                <mat-label for="divisionForm.get('maxDate2')"
+                  >max Date</mat-label
+                >
+                <input
+                  matInput
+                  id="divisionForm.get('maxDate2')"
+                  class="form-control"
+                  required
+                  type="text"
+                  placeholder="max Date"
+                  formControlName="maxDate2"
+                />
+              </mat-form-field>
+            </div>
+            <div>
+              <!-- <mat-form-field> -->
+              <mat-label>Gender</mat-label>
+              <mat-radio-group
+                aria-labelledby="example-radio-group-label"
+                class="example-radio-group"
+                formControlName="gender2"
+              >
+                @for (gender of genders; track gender) {
+                <mat-radio-button class="example-radio-button" [value]="gender">
+                  {{ gender }}
+                </mat-radio-button>
+                }
+              </mat-radio-group>
+              <!-- </mat-form-field> -->
+            </div>
+          </fieldset>
+          </div>
+
+      </div>
+      <div class="row">
+        <fieldset>
+          <mat-form-field>
+            <mat-label for="divisionForm.get('director')">Director</mat-label>
             <input
               matInput
-              id="name"
               type="text"
-              placeholder="Division Name"
-              formControlName="name"
-              [ngClass]="{
-                'has-error':
-                  (divisionForm.get('name')?.touched ||
-                    divisionForm.get('name')?.dirty) &&
-                  !divisionForm.get('name')?.valid
-              }"
+              placeholder="director"
+              formControlName="director"
             />
           </mat-form-field>
-        </div>
-        <div class="col-6">
-          <div>
-            <mat-form-field floatLabel="always">
-              <mat-label for="divisionForm.get('minDate')">min Date</mat-label>
-              <input
-                matInput
-                id="divisionForm.get('minDate1')"
-                required
-                type="text"
-                placeholder="min Date"
-                formControlName="minDate1"
-              />
-            </mat-form-field>
-          </div>
-          <div class="col-10">
-            <mat-form-field
-              class="form-group"
-              [ngClass]="{
-                'has-error':
-                  (divisionForm.get('maxDate1')?.touched ||
-                    divisionForm.get('maxDate1')?.dirty) &&
-                  !divisionForm.get('minDate1')?.valid
-              }"
-            >
-              <mat-label for="divisionForm.get('maxDate1')">max Date</mat-label>
-              <input
-                matInput
-                id="divisionForm.get('maxDate1')"
-                class="form-control"
-                required
-                type="text"
-                placeholder="max Date"
-                formControlName="maxDate1"
-              />
-            </mat-form-field>
-          </div>
-          <div>
-            <!-- <mat-form-field> -->
-            <mat-label class="control-label">Gender</mat-label>
-            <mat-radio-group
-              aria-labelledby="example-radio-group-label"
-              class="example-radio-group"
-              formControlName="gender1"
-            >
-              @for (gender of genders; track gender) {
-              <mat-radio-button class="example-radio-button" [value]="gender">
-                {{ gender }}
-              </mat-radio-button>
-              }
-            </mat-radio-group>
-            <!-- </mat-form-field> -->
-          </div>
-        </div>
-        <div class="col-6">
-          <div>
-            <mat-form-field
-              [ngClass]="{
-                'has-error':
-                  (divisionForm.get('minDate1')?.touched ||
-                    divisionForm.get('minDate1')?.dirty) &&
-                  !divisionForm.get('minDate1')?.valid
-              }"
-            >
-              <mat-label
-                class="control-label"
-                for="divisionForm.get('minDate2')"
-                >min Date</mat-label
-              >
-              <input
-                matInput
-                id="divisionForm.get('minDate2')"
-                required
-                type="text"
-                placeholder="min Date"
-                formControlName="minDate2"
-              />
-            </mat-form-field>
-          </div>
-          <div class="col-10">
-            <mat-form-field
-              class="form-group"
-              [ngClass]="{
-                'has-error':
-                  (divisionForm.get('maxDate2')?.touched ||
-                    divisionForm.get('maxDate2')?.dirty) &&
-                  !divisionForm.get('minDate2')?.valid
-              }"
-            >
-              <mat-label for="divisionForm.get('maxDate2')">max Date</mat-label>
-              <input
-                matInput
-                id="divisionForm.get('maxDate2')"
-                class="form-control"
-                required
-                type="text"
-                placeholder="max Date"
-                formControlName="maxDate2"
-              />
-            </mat-form-field>
-          </div>
-          <div>
-            <!-- <mat-form-field> -->
-            <mat-label>Gender</mat-label>
-            <mat-radio-group
-              aria-labelledby="example-radio-group-label"
-              class="example-radio-group"
-              formControlName="gender2"
-            >
-              @for (gender of genders; track gender) {
-              <mat-radio-button class="example-radio-button" [value]="gender">
-                {{ gender }}
-              </mat-radio-button>
-              }
-            </mat-radio-group>
-            <!-- </mat-form-field> -->
-          </div>
-        </div>
+        </fieldset>
       </div>
-      <div class="row">
-        <mat-form-field>
-          <mat-label for="divisionForm.get('director')">Director</mat-label>
-          <input
-            matInput
-            type="text"
-            placeholder="director"
-            formControlName="director"
-          />
-        </mat-form-field>
-      </div>
-      <!-- </fieldset> -->
     </form>
   </mat-card-content>
   <mat-card-actions>
