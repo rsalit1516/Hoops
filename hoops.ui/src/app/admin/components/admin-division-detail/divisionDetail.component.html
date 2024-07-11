@@ -12,14 +12,14 @@
       <fieldset>
         <div class="row">
           <div class="col-10">
-            <mat-form-field floatLabel="always">
+            <mat-form-field >
               <mat-label for="name">Division</mat-label>
               <input
                 matInput
                 id="name"
                 type="text"
-                placeholder="Division Name"
                 formControlName="name"
+                value="selectedDivision().divisionDescription"
                 [ngClass]="{
                   'has-error':
                     (divisionForm.get('name')?.touched ||
@@ -36,7 +36,7 @@
             <fieldset>
 
             <div>
-              <mat-form-field floatLabel="always">
+              <mat-form-field floatLabel="auto">
                 <mat-label for="divisionForm.get('minDate')"
                   >min Date</mat-label
                 >
@@ -52,7 +52,7 @@
             </div>
             <div>
               <mat-form-field
-                class="form-group"
+                floatLabel="auto"
                 [ngClass]="{
                   'has-error':
                     (divisionForm.get('maxDate1')?.touched ||

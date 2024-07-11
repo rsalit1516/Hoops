@@ -12,7 +12,7 @@ import { select, Store } from '@ngrx/store';
 import * as fromAdmin from '../admin/state';
 
 @Injectable({
-  providedIn:'root'
+  providedIn: 'root',
 })
 export class DivisionService {
   private divisionUrl =
@@ -28,12 +28,16 @@ export class DivisionService {
   }
   // divisions: Division[];
   private selectedSeason$ = this.store.pipe(select(fromAdmin.getSeasons));
+  private currentDivision = signal<Division>(new Division(), undefined);
 
-  private divisionSignal = signal<Division>(new Division());
-  readonly currentDivision = this.divisionSignal.asReadonly();
+  setCurrentDivision(division: Division): void {
+    this.currentDivision.set(division);
 
-  setCurrentDivision(currentDivision: Division): void {
-    this.divisionSignal.update(div => div = currentDivision);
+    console.log(this.currentDivision());
+  }
+  getCurrentDivision(): Division {
+    console.log(this.currentDivision());
+    return this.currentDivision();
   }
 
   divisions = signal<Division[]>([]);
@@ -51,9 +55,9 @@ export class DivisionService {
   //     tap(data => console.log('All: ' + JSON.stringify(data))),
   //     catchError(this.dataService.handleError('getSeasonDivisions', null))
   //   );
-  divisions$ =
-    this._http.get<Division[]>(this.divisionUrl + this.selectedSeason$)
-      .pipe(
+  divisions$ = this._http
+    .get<Division[]>(this.divisionUrl + this.selectedSeason$)
+    .pipe(
       map((divisions) => {
         divisions.map(
           (division) =>
@@ -76,7 +80,9 @@ export class DivisionService {
     public seasonService: SeasonService,
     private store: Store<fromAdmin.State>
   ) {
-    effect(() => { console.log(this.currentDivision()); });
+    // effect(() => {
+    //   console.log(this.currentDivision());
+    // });
   }
 
   getDivisions(seasonId: number): Observable<Division[]> {
@@ -128,8 +134,8 @@ export class DivisionService {
       catchError(this.dataService.handleError('getSeasonDivisions', null));
     });
   }
-  updateSelectedDivision(division: Division) {
-    console.log(division);
-    // this.currentDivision.set(division);
-  }
+  // updateSelectedDivision(division: Division) {
+  //   console.log(division);
+  //   // this.currentDivision.set(division);
+  // }
 }

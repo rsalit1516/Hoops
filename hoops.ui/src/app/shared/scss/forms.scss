@@ -157,3 +157,34 @@ button {
 .mat-form-field {
   display: inline-flex;
 }
+
+fieldset {
+  border: 1px solid v.$color;
+  border-radius: v.$border-radius;
+  margin-left: 2rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+}
+
+input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: red;
+}
+input::-moz-placeholder { /* Firefox 19+ */
+  color: red;
+}
+input:-ms-input-placeholder { /* IE 10+ */
+  color: red;
+}
+input:-moz-placeholder { /* Firefox 18- */
+  color: red;
+}
+
+input::placeholder {
+   opacity: 1 !important;
+   color: #FFF !important;
+}
+
+mat-form-field input::placeholder {
+   opacity: 1 !important;
+   color: v.$admin-input-hint-color !important;
+}

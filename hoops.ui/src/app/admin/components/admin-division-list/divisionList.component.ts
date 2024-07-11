@@ -111,8 +111,7 @@ export class DivisionListComponent implements OnInit, OnChanges {
     //          () => console.log('Help'));
   }
   onSelect(division: Division): void {
-    this.selectedDivision = division;
-    this._divisionService.setCurrentDivision(division);
+    // this._divisionService.setCurrentDivision(division);
   }
   setDivisionData(data: any[]): Division[] {
     let divisions: Division[] = [];
@@ -142,10 +141,9 @@ export class DivisionListComponent implements OnInit, OnChanges {
     this.router.navigate(['./admin/season-setup']);
   }
   getRecord(division: any) {
-    // console.log(division);
     this._divisionService.setCurrentDivision(division);
-    // console.log(this._divisionService.currentDivision());
-
+    // console.log(this._divisionService.getCurrentDivision());
+    this.store.dispatch(new adminActions.SetSelectedDivision(division));
     this.router.navigate(['./admin/division-detail']);
   }
 }

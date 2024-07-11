@@ -27,7 +27,7 @@ export class AdminDivisionShellComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(new adminActions.LoadSeasons());
-    this.store.dispatch(new adminActions.LoadLocations());
+    //this.store.dispatch(new adminActions.LoadLocations());
   }
   addDivision () {
     console.log('Add Division');

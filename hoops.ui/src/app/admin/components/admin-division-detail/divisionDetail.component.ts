@@ -27,13 +27,18 @@ import { MatRadioModule } from '@angular/material/radio';
 import { CommonModule } from '@angular/common';
 import { LocationService } from '../../admin-shared/services/location.service';
 import { MatCardModule } from '@angular/material/card';
+import { Store, select } from '@ngrx/store';
+import * as fromAdmin from '../../state';
+import * as adminActions from '../../state/admin.actions';
 
 @Component({
   selector: 'csbc-division-detail',
   templateUrl: './divisionDetail.component.html',
-  styleUrls: [ '../../admin.component.scss',
+  styleUrls: [
+    '../../admin.component.scss',
     '../../../shared/scss/forms.scss',
-  '../../../shared/scss/cards.scss' ],
+    '../../../shared/scss/cards.scss',
+  ],
   standalone: true,
   imports: [
     CommonModule,
@@ -42,38 +47,29 @@ import { MatCardModule } from '@angular/material/card';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatRadioModule
+    MatRadioModule,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [DivisionService],
 })
 export class DivisionDetailComponent implements OnInit {
-  selectedDivision = input<Division>();
-  // division = input<Division>();
+  selectedDivision = signal<Division>(new Division());
+  private store = inject(Store<fromAdmin.State>);
 
-  // seasonForm: UntypedFormGroup;
   divisionForm: UntypedFormGroup;
+
+  genders = [ 'M', 'F' ];
+
+  get division(){
+      //this will do the trick
+          return this.divisionService.getCurrentDivision();
+        }
+
   divisionService = inject(DivisionService);
-  locationService = inject(LocationService);
-  test = this.divisionService.currentDivision();
-  locations = this.locationService.locations();
-  genders = [ 'male', 'female' ];
-  constructor(
-    private fb: UntypedFormBuilder,
-    ) {
-    console.log(this.divisionService.currentDivision());
-    effect(() => {
-      console.log(this.divisionService.currentDivision());
-    });
-    // effect(() => {
-    //   console.log(this.test); // = this.divisionService.currentDivision;
-    //  })
-    // // this.seasonForm = this.fb.group({
-    //   // id: this.season.id,
-    //   name: this.division.divisionDescription,
-    //   maxDate: this.division.maxDate,
-    //   minDate: this.division.minDate,
-    //   seasonId: this.division.seasonId,
-    // });
+  constructor(private fb: UntypedFormBuilder) {
+
+    console.log(this.divisionService.getCurrentDivision());
+    // this.division = this.divisionService.getCurrentDivision();
     this.divisionForm = this.fb.group({
       name: ['', Validators.required], //this.division.divisionDescription,
       maxDate1: ['', Validators.required], //this.division.maxDate,
@@ -94,11 +90,20 @@ export class DivisionDetailComponent implements OnInit {
     // });
   }
   ngOnInit(): void {
-    console.log(this.divisionService.currentDivision());
-    console.log(this.test);
-    console.log(this.selectedDivision());
-    console.log(this.locations);
+    console.log(this.divisionService.getCurrentDivision());
+    this.division = this.divisionService.getCurrentDivision();
+    console.log(this.division);
+    this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
+      if (division !== null) {
+        this.selectedDivision.update(() => division);
+        console.log(this.selectedDivision());
+        this.divisionForm.get('name')?.setValue(division.divisionDescription);
+        this.divisionForm.get('maxDate1')?.setValue(new Date(division.maxDate));
+        this.divisionForm.get('minDate1')?.setValue(new Date(division.minDate));
+      }
+    });
   }
+
   save() {}
 
   updateErrorMessage() {
@@ -110,4 +115,5 @@ export class DivisionDetailComponent implements OnInit {
     //   this.errorMessage = '';
     // }
   }
+
 }
