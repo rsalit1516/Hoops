@@ -120,11 +120,15 @@ export class DivisionListComponent implements OnInit, OnChanges {
       console.log(data[i]);
       if (data[i] !== undefined) {
         let division: Division = {
-          seasonId: data[i].seasonId,
-          divisionId: data[i].divisionId,
-          divisionDescription: data[i].divisionDescription,
-          minDate: data[i].minDate,
-          maxDate: data[i].maxDate,
+          seasonId: data[ i ].seasonId,
+          divisionId: data[ i ].divisionId,
+          divisionDescription: data[ i ].divisionDescription,
+          minDate: data[ i ].minDate,
+          maxDate: data[ i ].maxDate,
+          gender: data[ i ].gender,
+          minDate2: data[ i ].minDate2,
+          maxDate2: data[ i ].maxDate2,
+          gender2: data[ i ].gender2
         };
         divisions.push(division);
       }

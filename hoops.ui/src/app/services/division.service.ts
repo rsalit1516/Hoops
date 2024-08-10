@@ -28,13 +28,36 @@ export class DivisionService {
   }
   // divisions: Division[];
   private selectedSeason$ = this.store.pipe(select(fromAdmin.getSeasons));
-  private currentDivision = signal<Division>(new Division(), undefined);
+  private currentDivision = signal<Division>({
+    divisionId: 0,
+    divisionDescription: '',
+    minDate: new Date(),
+    maxDate: new Date(),
+    gender: 'M',
+    minDate2: new Date(),
+    maxDate2: new Date(),
+    gender2: 'M',
+    seasonId: 0
+  });
 
   setCurrentDivision(division: Division): void {
-    this.currentDivision.set(division);
+    //this.currentDivision.set(division(
+console.log(division);
+    this.currentDivision.update(division => ({
+      ...division as Division,
+      divisionId: division.divisionId,
+      divisionDescription: division.divisionDescription,
+      minDate: division.minDate,
+      maxDate: division.maxDate,
+      gender: division.gender,
+      // minDate2: division.minDate2,
+      // maxDate2: division.maxDate2,
+      // gender2: division.gender2,
+    }));
 
     console.log(this.currentDivision());
   }
+
   getCurrentDivision(): Division {
     console.log(this.currentDivision());
     return this.currentDivision();

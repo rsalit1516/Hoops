@@ -1,7 +1,7 @@
 @use '../../../Content/variables.scss' as v;
 
 .mat-mdc-table, .mat-table {
-  background-color: v.$background-color;
+  background-color: v.$admin-card-background-color;
   color: v.$table-font-color;
   padding: 8px !important;
   width: 100%;
@@ -45,7 +45,7 @@ tr  {
 }
 
 td {
-  font-weight: 600;
+  font-weight: 400;
   font-size: v.$table-font-size;
 }
 

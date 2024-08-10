@@ -4,6 +4,8 @@ import {
   ViewChildren,
   ElementRef,
   Inject,
+  signal,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import {
   Validators,
@@ -46,8 +48,9 @@ import { MatSelectModule } from '@angular/material/select';
     MatDividerModule,
     MatOptionModule,
     MatButtonModule,
-    MatSelectModule
+    MatSelectModule,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './content-edit.component.html',
   styleUrls: [ './content-edit.component.scss',
     '../../../admin.component.scss',
@@ -108,6 +111,7 @@ export class ContentEditComponent implements OnInit {
     ),
   });
   floatLabelType: FloatLabelType = 'auto';
+  protected readonly value = signal('');
 
   constructor(
     private fb: FormBuilder,
@@ -212,4 +216,7 @@ export class ContentEditComponent implements OnInit {
   getFloatLabelValue(): FloatLabelType {
     return this.floatLabelType;
   }
-}
+  protected onInput(event: Event) {
+    this.value.set((event.target as HTMLInputElement).value);
+  }
+  }

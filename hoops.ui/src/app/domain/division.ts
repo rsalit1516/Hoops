@@ -6,5 +6,9 @@ export class Division {
   public divisionDescription!: string;
   public minDate!: Date;
   public maxDate!: Date;
-  
+  gender : string = 'M';
+  public minDate2!: Date;
+  public maxDate2!: Date;
+  gender2 : string = 'M';
+
 }

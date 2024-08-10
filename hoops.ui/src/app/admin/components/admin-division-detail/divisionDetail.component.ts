@@ -64,6 +64,8 @@ export class DivisionDetailComponent implements OnInit {
       //this will do the trick
           return this.divisionService.getCurrentDivision();
         }
+  set division(value) {
+  }
 
   divisionService = inject(DivisionService);
   constructor(private fb: UntypedFormBuilder) {
@@ -100,6 +102,7 @@ export class DivisionDetailComponent implements OnInit {
         this.divisionForm.get('name')?.setValue(division.divisionDescription);
         this.divisionForm.get('maxDate1')?.setValue(new Date(division.maxDate));
         this.divisionForm.get('minDate1')?.setValue(new Date(division.minDate));
+        this.divisionForm.get('gender1')?.setValue(this.selectedDivision().gender);
       }
     });
   }
