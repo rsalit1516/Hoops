@@ -2,7 +2,6 @@ import {
   Component,
   OnInit,
   Input,
-  input,
   inject,
   effect,
   computed,
@@ -24,7 +23,7 @@ import { DivisionService } from '@app/services/division.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
-import { CommonModule } from '@angular/common';
+import { CommonModule, formatDate } from '@angular/common';
 import { LocationService } from '../../admin-shared/services/location.service';
 import { MatCardModule } from '@angular/material/card';
 import { Store, select } from '@ngrx/store';
@@ -59,6 +58,12 @@ export class DivisionDetailComponent implements OnInit {
   divisionForm: UntypedFormGroup;
 
   genders = [ 'M', 'F' ];
+  minDateHint = 'Enter the min birthday - (mm//dd/yyyy)';
+  maxDateHint = 'Enter the max birthday - (mm//dd/yyyy)';
+
+  protected readonly divisionNameValue = signal('');
+  dateFormat = 'MM/dd/yyyy';
+  languageFormat = 'en';
 
   get division(){
       //this will do the trick
@@ -74,8 +79,9 @@ export class DivisionDetailComponent implements OnInit {
     // this.division = this.divisionService.getCurrentDivision();
     this.divisionForm = this.fb.group({
       name: ['', Validators.required], //this.division.divisionDescription,
-      maxDate1: ['', Validators.required], //this.division.maxDate,
-      minDate1: ['', Validators.required], //this.division.minDate,
+      maxDate1: [ formatDate(this.division.maxDate, 'yyyy-MM-dd', 'en'), [ Validators.required ] ],
+      //this.division.maxDate,
+      minDate1: [formatDate(this.division.minDate, 'yyyy-MM-dd', 'en'), Validators.required], //this.division.minDate,
       gender1: [''],
       maxDate2: [''], //this.division.maxDate,
       minDate2: [''], //this.division.minDate,
@@ -100,9 +106,13 @@ export class DivisionDetailComponent implements OnInit {
         this.selectedDivision.update(() => division);
         console.log(this.selectedDivision());
         this.divisionForm.get('name')?.setValue(division.divisionDescription);
-        this.divisionForm.get('maxDate1')?.setValue(new Date(division.maxDate));
-        this.divisionForm.get('minDate1')?.setValue(new Date(division.minDate));
+        this.divisionForm.get('maxDate1')?.setValue(formatDate(division.maxDate,this.dateFormat, this.languageFormat));
+        this.divisionForm.get('minDate1')?.setValue(formatDate(division.minDate, this.dateFormat, this.languageFormat));
         this.divisionForm.get('gender1')?.setValue(this.selectedDivision().gender);
+        this.divisionForm.get('maxDate2')?.setValue(formatDate(division.maxDate2,this.dateFormat, this.languageFormat));
+        this.divisionForm.get('minDate2')?.setValue(formatDate(division.minDate2, this.dateFormat, this.languageFormat));
+        this.divisionForm.get('gender2')?.setValue(this.selectedDivision().gender2);
+
       }
     });
   }
@@ -117,6 +127,9 @@ export class DivisionDetailComponent implements OnInit {
     // } else {
     //   this.errorMessage = '';
     // }
+  }
+  protected onInputDivisionName(event: Event) {
+    this.divisionNameValue.set((event.target as HTMLInputElement).value);
   }
 
 }
