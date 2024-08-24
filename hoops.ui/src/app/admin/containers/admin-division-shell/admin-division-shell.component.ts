@@ -7,6 +7,11 @@ import { DivisionListComponent } from '../../components/admin-division-list/divi
 import { SeasonSelectComponent } from '../../admin-shared/season-select/season-select.component';
 import { DivisionSelectComponent } from '@app/admin/admin-shared/division-select/division-select.component';
 import { Season } from '@app/domain/season';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
     selector: 'csbc-admin-division-shell',
@@ -18,7 +23,10 @@ import { Season } from '@app/domain/season';
     standalone: true,
   imports: [SeasonSelectComponent,
     DivisionListComponent,
-    DivisionSelectComponent]
+    DivisionSelectComponent
+    , MatToolbarModule,
+    MatButtonModule,
+    MatIconModule, MatFormFieldModule, MatInputModule],
 })
 export class AdminDivisionShellComponent implements OnInit {
   season = input(new Season())

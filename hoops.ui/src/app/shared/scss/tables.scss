@@ -48,7 +48,15 @@ td {
   font-weight: 400;
   font-size: v.$table-font-size;
 }
-
+// tr:hover {
+//   font-weight: 700;
+//   border: white .5px solid;
+tr:hover td
+{
+    // border:.5px solid white;
+    font-weight: 700;
+    background-color: lighten(v.$admin-table-background-color, 20%) !important;
+  }
 
 .mat-table .mat-header-row {
   height: 32px;

@@ -104,15 +104,21 @@ export class DivisionDetailComponent implements OnInit {
     this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
       if (division !== null) {
         this.selectedDivision.update(() => division);
-        console.log(this.selectedDivision());
+        console.log(division);
         this.divisionForm.get('name')?.setValue(division.divisionDescription);
         this.divisionForm.get('maxDate1')?.setValue(formatDate(division.maxDate,this.dateFormat, this.languageFormat));
         this.divisionForm.get('minDate1')?.setValue(formatDate(division.minDate, this.dateFormat, this.languageFormat));
         this.divisionForm.get('gender1')?.setValue(this.selectedDivision().gender);
-        this.divisionForm.get('maxDate2')?.setValue(formatDate(division.maxDate2,this.dateFormat, this.languageFormat));
-        this.divisionForm.get('minDate2')?.setValue(formatDate(division.minDate2, this.dateFormat, this.languageFormat));
-        this.divisionForm.get('gender2')?.setValue(this.selectedDivision().gender2);
-
+        if (division.maxDate2 !== null) {
+          this.divisionForm.get('maxDate2')?.setValue(formatDate(division.maxDate2, this.dateFormat, this.languageFormat));
+        }
+        // this.divisionForm.get('maxDate2')?.setValue(formatDate(division.maxDate2, this.dateFormat, this.languageFormat));
+        if (division.minDate2 !== null) {
+          this.divisionForm.get('minDate2')?.setValue(formatDate(division.minDate2, this.dateFormat, this.languageFormat));
+        }
+        if (division.maxDate2 !== null || division.minDate2 !== null) {
+          this.divisionForm.get('gender2')?.setValue(this.selectedDivision().gender2);
+        }
       }
     });
   }
