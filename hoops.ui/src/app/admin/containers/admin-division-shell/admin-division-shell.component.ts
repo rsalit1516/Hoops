@@ -1,4 +1,4 @@
-import { Component, OnInit, input } from '@angular/core';
+import { Component, OnInit, inject, input } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import * as fromAdmin from '../../state';
@@ -12,6 +12,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { Router } from '@angular/router';
+import { Division } from '@app/domain/division';
+import { DivisionService } from '@app/services/division.service';
 
 @Component({
     selector: 'csbc-admin-division-shell',
@@ -23,13 +26,18 @@ import { MatInputModule } from '@angular/material/input';
     standalone: true,
   imports: [SeasonSelectComponent,
     DivisionListComponent,
-    DivisionSelectComponent
-    , MatToolbarModule,
+    DivisionSelectComponent,
+    MatToolbarModule,
     MatButtonModule,
-    MatIconModule, MatFormFieldModule, MatInputModule],
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule ],
 })
+
 export class AdminDivisionShellComponent implements OnInit {
   season = input(new Season())
+  private router = inject(Router);
+  private _divisionService = inject(DivisionService);
 
   constructor(private store: Store<fromAdmin.State>) { }
 
@@ -39,6 +47,12 @@ export class AdminDivisionShellComponent implements OnInit {
   }
   addDivision () {
     console.log('Add Division');
+    let division = new Division();
+    this._divisionService.setCurrentDivision(division);
+    this.store.dispatch(new adminActions.SetSelectedDivision(division));
+
+    this.router.navigate(['./admin/division-detail']);
+
   }
 
 }

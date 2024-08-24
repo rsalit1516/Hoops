@@ -1,5 +1,5 @@
 export class Division {
-
+  public companyId: number = 1;
   public seasonId!: number;
   public divisionId!: number;
     // public divisionName: string,

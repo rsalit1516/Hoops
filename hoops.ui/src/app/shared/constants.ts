@@ -10,6 +10,19 @@ export class Constants {
   public static CLUBDOCSMENU = 'Club Docs';
   public static ADMINMENU = 'Admin';
 
+  // standard divisions
+  public static TR2COED = 'Trainee 2 Coed';
+  public static TR4 = 'Trainee 4 Boys';
+  public static SIBOYS = 'SI Boys';
+  public static INTGIRLS = 'Int Girls';
+  public static JVGIRLS = 'JV Girls';
+  public static SJVBOYS = 'SJV Boys';
+  public static HSGIRLS = 'JV Girls';
+  public static HSBOYS = 'JV Girls';
+  public static MEN = 'Men 18+';
+  public static WOMEN = 'Women';
+
+
   /* company */
   public static COMPANYID = 1;
 }

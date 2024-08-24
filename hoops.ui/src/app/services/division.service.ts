@@ -10,6 +10,7 @@ import { Observable, of } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 
 import * as fromAdmin from '../admin/state';
+import { Constants } from '@app/shared/constants';
 
 @Injectable({
   providedIn: 'root',
@@ -37,12 +38,13 @@ export class DivisionService {
     minDate2: new Date(),
     maxDate2: new Date(),
     gender2: 'M',
-    seasonId: 0
+    seasonId: 0,
+    companyId: 1,
   });
 
   setCurrentDivision(division: Division): void {
     //this.currentDivision.set(division(
-console.log(division);
+    console.log(division);
     this.currentDivision.update(division => ({
       ...division as Division,
       divisionId: division.divisionId,
@@ -56,6 +58,16 @@ console.log(division);
     }));
 
     console.log(this.currentDivision());
+    this.getDefaultDivision(Constants.TR2COED);
+    this.getDefaultDivision(Constants.TR4);
+    this.getDefaultDivision(Constants.SIBOYS);
+    this.getDefaultDivision(Constants.INTGIRLS);
+    this.getDefaultDivision(Constants.JVGIRLS);
+    this.getDefaultDivision(Constants.SJVBOYS);
+    this.getDefaultDivision(Constants.HSGIRLS);
+    this.getDefaultDivision(Constants.HSBOYS);
+    this.getDefaultDivision(Constants.MEN);
+    this.getDefaultDivision(Constants.WOMEN);
   }
 
   getCurrentDivision(): Division {
@@ -84,9 +96,9 @@ console.log(division);
       map((divisions) => {
         divisions.map(
           (division) =>
-            ({
-              ...division,
-            } as Division)
+          ({
+            ...division,
+          } as Division)
         ),
           this.divisions.set(divisions);
       }),
@@ -126,10 +138,10 @@ console.log(division);
     // console.log(season);
     season.subscribe(
       (d) =>
-        (this.divisionUrl =
-          this.dataService.webUrl +
-          '/api/division/GetSeasonDivisions/' +
-          d.seasonId)
+      (this.divisionUrl =
+        this.dataService.webUrl +
+        '/api/division/GetSeasonDivisions/' +
+        d.seasonId)
     );
     this.seasonId = 2193;
     if (season !== undefined) {
@@ -161,4 +173,103 @@ console.log(division);
   //   console.log(division);
   //   // this.currentDivision.set(division);
   // }
+
+
+  getDefaultDivision(name: string): Division {
+    let division = new Division();
+    division.companyId = 1;
+    division.seasonId = this.seasonId;
+
+    switch (name) {
+      case Constants.TR2COED: {
+        division.divisionDescription = Constants.TR2COED;
+        division.minDate = this.getDivisionMinDate(9);
+        division.maxDate = this.getDivisionMaxDate(6);
+        division.gender = 'M';
+        division.minDate2 = this.getDivisionMinDate(9);
+        division.maxDate2 = this.getDivisionMaxDate(6);
+        division.gender2 = 'F';
+        break
+      }
+      case Constants.TR4: {
+        division.divisionDescription = Constants.TR4;
+        division.minDate = this.getDivisionMinDate(11);
+        division.maxDate = this.getDivisionMaxDate(9);
+        division.gender = 'M';
+        break;
+      }
+      case Constants.SIBOYS: {
+        division.divisionDescription = Constants.SIBOYS;
+        division.minDate = this.getDivisionMinDate(13);
+        division.maxDate = this.getDivisionMaxDate(11);
+        division.gender = 'M';
+        break;
+      }
+      case Constants.INTGIRLS: {
+        division.divisionDescription = Constants.INTGIRLS;
+        division.minDate = this.getDivisionMinDate(13);
+        division.maxDate = this.getDivisionMaxDate(11);
+        division.gender = 'F';
+        break;
+      }
+      case Constants.JVGIRLS: {
+        division.divisionDescription = Constants.JVGIRLS;
+        division.minDate = this.getDivisionMinDate(15);
+        division.maxDate = this.getDivisionMaxDate(13);
+        division.gender = 'F';
+        break;
+      }
+      case Constants.SJVBOYS: {
+        division.divisionDescription = Constants.SJVBOYS;
+        division.minDate = this.getDivisionMinDate(17);
+        division.maxDate = this.getDivisionMaxDate(15);
+        division.gender = 'M';
+        break;
+      }
+      case Constants.HSGIRLS: {
+        division.divisionDescription = Constants.HSGIRLS;
+        division.minDate = this.getDivisionMinDate(19);
+        division.maxDate = this.getDivisionMaxDate(17);
+        division.gender = 'F';
+        break;
+      }
+      case Constants.HSBOYS: {
+        division.divisionDescription = Constants.HSBOYS;
+        division.minDate = this.getDivisionMinDate(19);
+        division.maxDate = this.getDivisionMaxDate(17);
+        division.gender = 'M';
+        break;
+      }
+      case Constants.MEN: {
+        division.divisionDescription = Constants.MEN;
+        division.minDate = this.getDivisionMinDate(40);
+        division.maxDate = this.getDivisionMaxDate(19);
+        division.gender = 'M';
+        break;
+      }
+      case Constants.WOMEN: {
+        division.divisionDescription = Constants.WOMEN;
+        division.minDate = this.getDivisionMinDate(40);
+        division.maxDate = this.getDivisionMaxDate(19);
+        division.gender = 'F';
+        break;
+      }
+    }
+    console.log(division);
+    return division;
+  }
+
+  getDivisionMinDate(years: number): Date {
+    let year = new Date().getFullYear() - years;
+    let date = new Date('09/01/' + year);
+    // console.log(date);
+    // date.setFullYear(date.getFullYear() - years);
+    return date;
+  }
+  getDivisionMaxDate(years: number): Date {
+    let year = new Date().getFullYear() - years;
+    let date = new Date('08/31/' + year);
+    // console.log(date);
+    return date;
+  }
 }

@@ -47,6 +47,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     DatePipe,
   ],
 })
+
 export class DivisionListComponent implements OnInit, OnChanges {
   selectedSeason = input<Season>();
   private _divisionService = inject(DivisionService);
@@ -85,7 +86,6 @@ export class DivisionListComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.store.pipe(select(fromAdmin.getSelectedSeason)).subscribe((season) => {
       this.seasonId = season.seasonId;
-      console.log(this.seasonId);
       this.store.select(fromAdmin.getSeasonDivisions).subscribe((divisions) => {
         this.divisions = divisions;
         this.dataSource = new MatTableDataSource(divisions);
@@ -95,6 +95,7 @@ export class DivisionListComponent implements OnInit, OnChanges {
       });
     });
   }
+
   ngOnChanges(): void {
     if (this.selectedSeason !== undefined) {
       // this._divisionService.getSeasonDivisions(this.selectedSeason).subscribe(
@@ -120,6 +121,7 @@ export class DivisionListComponent implements OnInit, OnChanges {
       console.log(data[i]);
       if (data[i] !== undefined) {
         let division: Division = {
+          companyId: 1,
           seasonId: data[ i ].seasonId,
           divisionId: data[ i ].divisionId,
           divisionDescription: data[ i ].divisionDescription,
@@ -146,7 +148,6 @@ export class DivisionListComponent implements OnInit, OnChanges {
   }
   getRecord(division: any) {
     this._divisionService.setCurrentDivision(division);
-    // console.log(this._divisionService.getCurrentDivision());
     this.store.dispatch(new adminActions.SetSelectedDivision(division));
     this.router.navigate(['./admin/division-detail']);
   }
