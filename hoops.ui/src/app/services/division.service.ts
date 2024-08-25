@@ -28,7 +28,7 @@ export class DivisionService {
     this._seasonId = seasonId;
   }
   // divisions: Division[];
-  private selectedSeason$ = this.store.pipe(select(fromAdmin.getSeasons));
+  private selectedSeason$ = this.store.pipe(select(fromAdmin.getSelectedSeason)).subscribe( season => this.season == season);
   private currentDivision = signal<Division>({
     divisionId: 0,
     divisionDescription: '',
@@ -115,9 +115,10 @@ export class DivisionService {
     public seasonService: SeasonService,
     private store: Store<fromAdmin.State>
   ) {
-    // effect(() => {
-    //   console.log(this.currentDivision());
-    // });
+    this.store.pipe(select(fromAdmin.getSelectedSeason)).subscribe(season => {
+      this.season = season;
+      console.log(this.season);
+    });
   }
 
   getDivisions(seasonId: number): Observable<Division[]> {
@@ -163,11 +164,10 @@ export class DivisionService {
     );
   }
   getSelectedSeasonDivisions() {
-    this.selectedSeason$.subscribe((season) => {
-      return this._http.get<Division[]>(this.divisionUrl + season);
+    this._http.get<Division[]>(this.divisionUrl + this.seasonId);
       // tap(data => console.log('All: ' + JSON.stringify(data))),
-      catchError(this.dataService.handleError('getSeasonDivisions', null));
-    });
+    //   catchError(this.dataService.handleError('getSeasonDivisions', null));
+    // });
   }
   // updateSelectedDivision(division: Division) {
   //   console.log(division);
@@ -178,7 +178,7 @@ export class DivisionService {
   getDefaultDivision(name: string): Division {
     let division = new Division();
     division.companyId = 1;
-    division.seasonId = this.seasonId;
+    division.seasonId = this.season!.seasonId;
 
     switch (name) {
       case Constants.TR2COED: {

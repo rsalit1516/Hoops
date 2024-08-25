@@ -1,0 +1,28 @@
+<div>
+  <mat-form-field>
+    <mat-select placeholder="Select Division" [(value)]="selectedDivision" (selectionChange)="divisionSelected($event)">
+      <mat-option *ngFor="let division of divisions" [value]="division">
+        {{ division.divisionDescription }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <!-- <button mat-raised-button color="primary" (click)="addDivision()">Add Division</button>
+  <button mat-raised-button color="primary" (click)="editDivision()">Edit Division</button>
+  <button mat-raised-button color="primary" (click)="deleteDivision()">Delete Division</button>
+  <button mat-raised-button color="primary" (click)="viewTeams()">View Teams</button>
+  <button mat-raised-button color="primary" (click)="viewGames()">View Games</button>
+  <button mat-raised-button color="primary" (click)="viewStandings()">View Standings</button>
+  <button mat-raised-button color="primary" (click)="viewRosters()">View Rosters</button>
+  <button mat-raised-button color="primary" (click)="viewPlayers()">View Players</button>
+  <button mat-raised-button color="primary" (click)="viewCoaches()">View Coaches</button>
+  <button mat-raised-button color="primary" (click)="viewOfficials()">View Officials</button>
+  <button mat-raised-button color="primary" (click)="viewReferees()">View Referees</button>
+  <button mat-raised-button color="primary" (click)="viewSponsors()">View Sponsors</button>
+  <button mat-raised-button color="primary" (click)="viewLocations()">View Locations</button>
+  <button mat-raised-button color="primary" (click)="viewSeasons()">View Seasons</button>
+  <button mat-raised-button color="primary" (click)="viewDivisions()">View Divisions</button>
+  <button mat-raised-button color="primary" (click)="viewGames()">View Games</button>
+  <button mat-raised-button color="primary" (click)="viewStandings()">View Standings</button>
+  <button mat-raised-button color="primary" (click)="viewRosters()">View Rosters</button>
+  <button mat-raised-button color -->
+</div>
