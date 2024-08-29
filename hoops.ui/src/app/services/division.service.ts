@@ -174,6 +174,20 @@ export class DivisionService {
   //   // this.currentDivision.set(division);
   // }
 
+  standardDivisions() {
+    return [
+      Constants.TR2COED,
+      Constants.TR4,
+      Constants.SIBOYS,
+      Constants.INTGIRLS,
+      Constants.JVGIRLS,
+      Constants.SJVBOYS,
+      Constants.HSGIRLS,
+      Constants.HSBOYS,
+      Constants.MEN,
+      Constants.WOMEN
+    ];
+  }
 
   getDefaultDivision(name: string): Division {
     let division = new Division();

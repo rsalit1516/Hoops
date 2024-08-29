@@ -4,6 +4,10 @@
   display: flex;
   flex-direction: column;
 }
+body{
+  color: ghostwhite;
+  background-color: lighten(v.$background-color, 10%);
+}
 
 .mat-mdc-card {
   background-color: lighten(v.$card-background-color, 5%);
@@ -187,4 +191,10 @@ input::placeholder {
 mat-form-field input::placeholder {
    opacity: 1 !important;
    color: v.$admin-input-hint-color !important;
+}
+.mat-mdc-select-arrow svg {
+  color: v.$admin-font-color;
+}
+.mat-select {
+  background-color: lighten(v.$admin-background-color, 20%);
 }

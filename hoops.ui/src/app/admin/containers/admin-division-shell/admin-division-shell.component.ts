@@ -15,44 +15,46 @@ import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
 import { Division } from '@app/domain/division';
 import { DivisionService } from '@app/services/division.service';
+import { NewDivisionSelectorComponent } from '../../admin-shared/new-division-selector/new-division-selector.component';
 
 @Component({
-    selector: 'csbc-admin-division-shell',
-    templateUrl: './admin-division-shell.component.html',
-    styleUrls: [
-        './admin-division-shell.component.scss',
-        '../../admin.component.scss'
-    ],
-    standalone: true,
-  imports: [SeasonSelectComponent,
+  selector: 'csbc-admin-division-shell',
+  templateUrl: './admin-division-shell.component.html',
+  styleUrls: [
+    '../../../shared/scss/forms.scss',
+    '../../admin.component.scss',
+    './admin-division-shell.component.scss',
+  ],
+  standalone: true,
+  imports: [
+    SeasonSelectComponent,
     DivisionListComponent,
     DivisionSelectComponent,
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
     MatFormFieldModule,
-    MatInputModule ],
+    MatInputModule,
+    NewDivisionSelectorComponent,
+  ],
 })
-
 export class AdminDivisionShellComponent implements OnInit {
-  season = input(new Season())
+  season = input(new Season());
   private router = inject(Router);
   private _divisionService = inject(DivisionService);
 
-  constructor(private store: Store<fromAdmin.State>) { }
+  constructor(private store: Store<fromAdmin.State>) {}
 
   ngOnInit() {
     this.store.dispatch(new adminActions.LoadSeasons());
     //this.store.dispatch(new adminActions.LoadLocations());
   }
-  addDivision () {
+  addDivision() {
     console.log('Add Division');
     let division = new Division();
     this._divisionService.setCurrentDivision(division);
     this.store.dispatch(new adminActions.SetSelectedDivision(division));
 
     this.router.navigate(['./admin/division-detail']);
-
   }
-
 }

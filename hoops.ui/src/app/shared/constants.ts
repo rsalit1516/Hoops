@@ -17,8 +17,8 @@ export class Constants {
   public static INTGIRLS = 'Int Girls';
   public static JVGIRLS = 'JV Girls';
   public static SJVBOYS = 'SJV Boys';
-  public static HSGIRLS = 'JV Girls';
-  public static HSBOYS = 'JV Girls';
+  public static HSGIRLS = 'HS Girls';
+  public static HSBOYS = 'HS Boys';
   public static MEN = 'Men 18+';
   public static WOMEN = 'Women';
 
