@@ -1,7 +1,12 @@
+// default colors
+$black: #000 !default;
+$brand: #d17b00;
+$default-lighten: 10%;
+
 $sidebar-background-color: #232323;
 $brand-color: #d17b00; //#ff5600
 $sidebar-color: #d17b00;
-$background-color: rgb(27, 24, 24);
+$background-color: lighten($black, $default-lighten);
 $sidebar-pill-background: $brand-color;
 $panel-default-heading-background: #000000;
 $basketball-color: #b86850;
@@ -10,11 +15,11 @@ $basketball-color: #b86850;
 $navbar-background-color: #212121;
 $navbar-color: lighten($brand-color, 10%);
 
-$sidebar-menu: lighten( black, 12%);
-$card-background-color: rgb(27, 24, 24);
+$sidebar-menu: lighten( black, 10%);
+$card-background-color: lighten($black, $default-lighten); ;
 $card-background-color-shadow: darken(#3f3f3f, 40%);
 $card-color: lighten(#d17b00, 20%);
-$status-bar-background: #000000;
+$status-bar-background: Lighten(#000000, 10%);
 $app-bar-background: #212121;
 $color: #d17b00;
 $card-sub-title-color: #3a5794;
@@ -28,7 +33,7 @@ $link-color:lighten(#d17b00, 20%);
 /* table settings */
 $table-body-color: #424242;
 $table-font-color: #fce9cd;
-$table-header-background-color: #424242;
+$table-header-background-color: lighten($black, $default-lighten );
 $table-border-color: lighten(#d17b00, 12%);
 $table-font-size: 1.0rem;
 
@@ -44,8 +49,8 @@ $select-font-size: .8rem;
 /* admin */
 $admin-background-color: lighten(black, 15%);
 $admin-font-color: white;
-$admin-table-background-color: lighten(black, 5%);
-$admin-card-background-color: lighten(black, 5%);
+$admin-table-background-color: $black;
+$admin-card-background-color: lighten($black, $default-lighten);
 $admin-table-background-color-border: lighten(black, 5%);
 $admin-input-hint-color: rgb(208, 208, 191);
 $admin-input-hint-font-size: .8rem;

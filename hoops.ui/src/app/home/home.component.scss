@@ -55,7 +55,7 @@ em {
 
 .mat-mdc-card {
   border-radius: 10px;
-  background-color: lighten($card-background-color, 20%);
+  background-color: $card-background-color;
   color: $font-color-text;
   margin-bottom: 16px;
   padding-top: 0px;
@@ -106,6 +106,7 @@ em {
   font-size: 1.2em;
 }
 .home-wrapper {
+  background-color: $black;
   font-size: $wrapper-font-size;
   height:100%;
 }

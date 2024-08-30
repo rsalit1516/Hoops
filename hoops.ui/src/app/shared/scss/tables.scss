@@ -29,6 +29,7 @@ table {
 
 th {
   // background-color: v.$table-header-background-color !important;
+  background-color: v.$table-header-background-color !important;
   color: v.$table-font-color !important;
   font-weight: 700;
   font-size: v.$table-font-size;
@@ -41,7 +42,7 @@ tr  {
   padding-bottom: 2px;
   margin-bottom: 4px;
   border-bottom: 1px solid v.$table-border-color !important;
-  background-color: lighten(v.$admin-table-background-color, 10%) !important;
+  background-color: v.$admin-table-background-color !important;
 }
 
 td {
