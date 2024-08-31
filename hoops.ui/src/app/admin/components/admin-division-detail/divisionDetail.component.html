@@ -14,6 +14,7 @@
           <div class="col-10">
             <mat-form-field
               hintLabel="Enter the Division - (max 50 characters)"
+              hidden = "hideName"
             >
               <mat-label for="name">Division</mat-label>
               <input
@@ -31,6 +32,7 @@
                 (input)="onInputDivisionName($event)"
               />
             </mat-form-field>
+            <csbc-new-division-selector></csbc-new-division-selector>
           </div>
         </div>
       </fieldset>

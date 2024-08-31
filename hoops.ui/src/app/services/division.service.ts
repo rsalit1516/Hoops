@@ -16,6 +16,12 @@ import { Constants } from '@app/shared/constants';
   providedIn: 'root',
 })
 export class DivisionService {
+  division = signal<Division>(new Division());
+  createTemporaryDivision(divisionName: string) {
+    console.log(divisionName);
+    this.division.set(this.getDefaultDivision(divisionName));
+    console.log(this.division());
+  }
   private divisionUrl =
     this.dataService.webUrl + '/api/division/GetSeasonDivisions/';
 

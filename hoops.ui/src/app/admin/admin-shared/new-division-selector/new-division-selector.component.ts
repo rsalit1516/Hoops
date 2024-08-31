@@ -26,6 +26,9 @@ export class NewDivisionSelectorComponent {
   selectedDivision: Division | undefined;
 
   divisionSelected($event: any) {
+    console.log($event);
+    this.divisionService.createTemporaryDivision($event.value);
+
   }
   addDivision() {
   }

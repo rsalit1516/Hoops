@@ -9,6 +9,7 @@
     @for (division of divisionService.standardDivisions(); track division) {
       <mat-option [value]="division"> {{ division}} </mat-option>
     }
+    <mat-option value="other">Other</mat-option>
     </mat-select>
   </mat-form-field>
   <mat-form-field>

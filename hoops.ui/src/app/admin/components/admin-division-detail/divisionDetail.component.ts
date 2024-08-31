@@ -29,6 +29,7 @@ import { MatCardModule } from '@angular/material/card';
 import { Store, select } from '@ngrx/store';
 import * as fromAdmin from '../../state';
 import * as adminActions from '../../state/admin.actions';
+import { NewDivisionSelectorComponent } from '@app/admin/admin-shared/new-division-selector/new-division-selector.component';
 
 @Component({
   selector: 'csbc-division-detail',
@@ -47,6 +48,7 @@ import * as adminActions from '../../state/admin.actions';
     MatFormFieldModule,
     MatInputModule,
     MatRadioModule,
+    NewDivisionSelectorComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [DivisionService],
@@ -64,6 +66,7 @@ export class DivisionDetailComponent implements OnInit {
   protected readonly divisionNameValue = signal('');
   dateFormat = 'MM/dd/yyyy';
   languageFormat = 'en';
+  hideName = false;
 
   get division(){
       //this will do the trick
@@ -103,21 +106,25 @@ export class DivisionDetailComponent implements OnInit {
     console.log(this.division);
     this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
       if (division !== null) {
-        this.selectedDivision.update(() => division);
-        console.log(division);
-        this.divisionForm.get('name')?.setValue(division.divisionDescription);
-        this.divisionForm.get('maxDate1')?.setValue(formatDate(division.maxDate,this.dateFormat, this.languageFormat));
-        this.divisionForm.get('minDate1')?.setValue(formatDate(division.minDate, this.dateFormat, this.languageFormat));
-        this.divisionForm.get('gender1')?.setValue(this.selectedDivision().gender);
-        if (division.maxDate2 !== null) {
-          this.divisionForm.get('maxDate2')?.setValue(formatDate(division.maxDate2, this.dateFormat, this.languageFormat));
-        }
-        // this.divisionForm.get('maxDate2')?.setValue(formatDate(division.maxDate2, this.dateFormat, this.languageFormat));
-        if (division.minDate2 !== null) {
-          this.divisionForm.get('minDate2')?.setValue(formatDate(division.minDate2, this.dateFormat, this.languageFormat));
-        }
-        if (division.maxDate2 !== null || division.minDate2 !== null) {
-          this.divisionForm.get('gender2')?.setValue(this.selectedDivision().gender2);
+        if (division?.divisionDescription !== undefined) {
+          this.selectedDivision.update(() => division);
+          console.log(division);
+          this.divisionForm.get('name')?.setValue(division.divisionDescription);
+          this.divisionForm.get('maxDate1')?.setValue(formatDate(division.maxDate, this.dateFormat, this.languageFormat));
+          this.divisionForm.get('minDate1')?.setValue(formatDate(division.minDate, this.dateFormat, this.languageFormat));
+          this.divisionForm.get('gender1')?.setValue(this.selectedDivision().gender);
+          if (division.maxDate2 !== null) {
+            this.divisionForm.get('maxDate2')?.setValue(formatDate(division.maxDate2, this.dateFormat, this.languageFormat));
+          }
+          // this.divisionForm.get('maxDate2')?.setValue(formatDate(division.maxDate2, this.dateFormat, this.languageFormat));
+          if (division.minDate2 !== null) {
+            this.divisionForm.get('minDate2')?.setValue(formatDate(division.minDate2, this.dateFormat, this.languageFormat));
+          }
+          if (division.maxDate2 !== null || division.minDate2 !== null) {
+            this.divisionForm.get('gender2')?.setValue(this.selectedDivision().gender2);
+          }
+        } else {
+          this.hideName = true;
         }
       }
     });
