@@ -12,7 +12,7 @@
     <mat-option value="other">Other</mat-option>
     </mat-select>
   </mat-form-field>
-  <mat-form-field>
+  <mat-form-field [hidden]="hideNameInput()">
     <input
       matInput
       id="name"

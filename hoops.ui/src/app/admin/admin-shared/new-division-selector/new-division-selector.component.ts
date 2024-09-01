@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatOptionModule } from '@angular/material/core';
 import { MatFormField } from '@angular/material/form-field';
@@ -24,12 +24,13 @@ import { DivisionService } from '@app/services/division.service';
 export class NewDivisionSelectorComponent {
   divisionService = inject(DivisionService);
   selectedDivision: Division | undefined;
+  hideNameInput = signal<boolean>(true);
 
   divisionSelected($event: any) {
-    console.log($event);
     this.divisionService.createTemporaryDivision($event.value);
-
+    this.hideNameInput.set( $event.value !== 'other');
   }
+
   addDivision() {
   }
   cancel() {
