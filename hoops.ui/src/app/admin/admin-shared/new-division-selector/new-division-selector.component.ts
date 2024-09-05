@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatOptionModule } from '@angular/material/core';
 import { MatFormField } from '@angular/material/form-field';
@@ -19,7 +19,9 @@ import { DivisionService } from '@app/services/division.service';
   styleUrls: [ '../../admin.component.scss',
     '../../../shared/scss/forms.scss',
     '../../../shared/scss/cards.scss',
-    './new-division-selector.component.scss']
+    './new-division-selector.component.scss'],
+  providers: [DivisionService],
+  //changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NewDivisionSelectorComponent {
   divisionService = inject(DivisionService);

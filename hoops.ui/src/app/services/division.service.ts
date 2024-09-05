@@ -5,7 +5,7 @@ import { Season } from '../domain/season';
 import { DataService } from './data.service';
 import { SeasonService } from './season.service';
 import { HttpClient } from '@angular/common/http';
-import { Injectable, Signal, effect, signal } from '@angular/core';
+import { Injectable, Signal, computed, effect, signal } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 
@@ -16,12 +16,30 @@ import { Constants } from '@app/shared/constants';
   providedIn: 'root',
 })
 export class DivisionService {
-  division = signal<Division>(new Division());
-  createTemporaryDivision(divisionName: string) {
-    console.log(divisionName);
-    this.division.set(this.getDefaultDivision(divisionName));
-    console.log(this.division());
+  _division = signal<Division>(new Division());
+  get division () {
+    return this._division;
   }
+
+  updateDivision (division: Division) {
+    this._division.set(division);
+  }
+
+  createTemporaryDivision (divisionName: string) {
+    const division = this.getDefaultDivision(divisionName);
+    console.log(division);
+    // this.division.set(division);
+    this.updateDivision(division);
+    console.log(this.division());
+    this.currentDivision
+    // effect(() => {
+    //   console.log(this.division());
+    // });
+  }
+  // public divisiona = computed(() => {
+  //   return this.division()
+  // });
+
   private divisionUrl =
     this.dataService.webUrl + '/api/division/GetSeasonDivisions/';
 
@@ -77,7 +95,7 @@ export class DivisionService {
   }
 
   getCurrentDivision(): Division {
-    console.log(this.currentDivision());
+    // console.log(this.currentDivision());
     return this.currentDivision();
   }
 

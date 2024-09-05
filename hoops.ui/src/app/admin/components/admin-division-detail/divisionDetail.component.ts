@@ -1,13 +1,10 @@
 import {
   Component,
   OnInit,
-  Input,
   inject,
-  effect,
-  computed,
   signal,
-  model,
   ChangeDetectionStrategy,
+  effect,
 } from '@angular/core';
 import {
   UntypedFormGroup,
@@ -17,19 +14,18 @@ import {
   Validators,
 } from '@angular/forms';
 
-import { Season } from '../../../domain/season';
 import { Division } from '../../../domain/division';
 import { DivisionService } from '@app/services/division.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { CommonModule, formatDate } from '@angular/common';
-import { LocationService } from '../../admin-shared/services/location.service';
 import { MatCardModule } from '@angular/material/card';
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import * as fromAdmin from '../../state';
-import * as adminActions from '../../state/admin.actions';
 import { NewDivisionSelectorComponent } from '@app/admin/admin-shared/new-division-selector/new-division-selector.component';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
 
 @Component({
   selector: 'csbc-division-detail',
@@ -48,9 +44,11 @@ import { NewDivisionSelectorComponent } from '@app/admin/admin-shared/new-divisi
     MatFormFieldModule,
     MatInputModule,
     MatRadioModule,
+    MatSelectModule,
+    MatOptionModule,
     NewDivisionSelectorComponent
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [DivisionService],
 })
 export class DivisionDetailComponent implements OnInit {
@@ -60,8 +58,11 @@ export class DivisionDetailComponent implements OnInit {
   divisionForm: UntypedFormGroup;
 
   genders = [ 'M', 'F' ];
-  minDateHint = 'Enter the min birthday - (mm//dd/yyyy)';
-  maxDateHint = 'Enter the max birthday - (mm//dd/yyyy)';
+  minDateHint = 'Min date: mm//dd/yyyy';
+  maxDateHint = 'Max date: mm//dd/yyyy';
+
+  newDivision = signal<Division>(new Division());
+  hideNameInput = signal<boolean>(true);
 
   protected readonly divisionNameValue = signal('');
   dateFormat = 'MM/dd/yyyy';
@@ -93,12 +94,20 @@ export class DivisionDetailComponent implements OnInit {
       seasonId: [''], //this.division.seasonId,
       divisionId: [''], //this.division.seasonId,
     });
-    // effect(() => {
-    //   console.log(this.divisionService.currentDivision());// this.division.update(this.divisionService.currentDivision);
-    //   //this.divisionForm.get('name')?.setValue(this.divisionService.currentDivision().divisionDescription);
-    //   //this.divisionForm.get('maxDate')?.setValue(this.divisionService.currentDivision().maxDate);
-    //   //this.divisionForm.get('minDate')?.setValue(this.divisionService.currentDivision().minDate);
-    // });
+    effect(() => {
+      // console.log(this.divisionService.division());// this.division.update(this.divisionService.currentDivision);
+      this.divisionForm.get('name')?.setValue(this.divisionService.division().divisionDescription);
+      if (this.divisionService.division().maxDate !== undefined) {
+        this.divisionForm.get('maxDate1')?.setValue(formatDate(this.divisionService.division().maxDate, this.dateFormat, this.languageFormat));
+        this.divisionForm.get('minDate1')?.setValue(formatDate(this.divisionService.division().minDate, this.dateFormat, this.languageFormat));
+        this.divisionForm.get('gender1')?.setValue(this.divisionService.division().gender);
+      }
+      if (this.divisionService.division().maxDate2 !== undefined) {
+        this.divisionForm.get('maxDate2')?.setValue(formatDate(this.divisionService.division().maxDate2, this.dateFormat, this.languageFormat));
+        this.divisionForm.get('minDate2')?.setValue(formatDate(this.divisionService.division().minDate2, this.dateFormat, this.languageFormat));
+        this.divisionForm.get('gender2')?.setValue(this.divisionService.division().gender2);
+      }
+    });
   }
   ngOnInit(): void {
     console.log(this.divisionService.getCurrentDivision());
@@ -108,7 +117,7 @@ export class DivisionDetailComponent implements OnInit {
       if (division !== null) {
         if (division?.divisionDescription !== undefined) {
           this.selectedDivision.update(() => division);
-          console.log(division);
+          // console.log(division);
           this.divisionForm.get('name')?.setValue(division.divisionDescription);
           this.divisionForm.get('maxDate1')?.setValue(formatDate(division.maxDate, this.dateFormat, this.languageFormat));
           this.divisionForm.get('minDate1')?.setValue(formatDate(division.minDate, this.dateFormat, this.languageFormat));
@@ -128,6 +137,13 @@ export class DivisionDetailComponent implements OnInit {
         }
       }
     });
+    // this.division = this.divisionService.division.subscribe(data =>
+
+    // console.log(data);
+    // Subscribe to the signal to get updated values
+    //this.newDivision.update(x => this.divisionService.division());
+    //console.log(this.newDivision());
+
   }
 
   save() {}
@@ -144,5 +160,8 @@ export class DivisionDetailComponent implements OnInit {
   protected onInputDivisionName(event: Event) {
     this.divisionNameValue.set((event.target as HTMLInputElement).value);
   }
-
+  divisionSelected ($event: any) {
+    this.divisionService.createTemporaryDivision($event.value);
+    this.hideNameInput.set($event.value !== 'other');
+  }
 }

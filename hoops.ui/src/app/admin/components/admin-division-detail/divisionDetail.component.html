@@ -12,7 +12,29 @@
       <fieldset>
         <div class="row">
           <div class="col-10">
-            <mat-form-field
+            <mat-form-field>
+    <mat-label>Division</mat-label>
+    <mat-select
+      placeholder="Select Division"
+      [(value)]="selectedDivision"
+        (selectionChange)="divisionSelected($event)"
+    >
+    @for (division of divisionService.standardDivisions(); track division) {
+      <mat-option [value]="division"> {{ division}} </mat-option>
+    }
+    <mat-option value="other">Other</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field [hidden]="hideNameInput()">
+    <input
+      matInput
+      id="optionalname"
+      type="text"
+      formControlName="name"
+      value="selectedDivision().divisionDescription"
+    />
+  </mat-form-field>
+            <!-- <mat-form-field
               hintLabel="Enter the Division - (max 50 characters)"
               hidden = "hideName"
             >
@@ -32,7 +54,7 @@
                 (input)="onInputDivisionName($event)"
               />
             </mat-form-field>
-            <csbc-new-division-selector></csbc-new-division-selector>
+            <csbc-new-division-selector></csbc-new-division-selector> -->
           </div>
         </div>
       </fieldset>
@@ -164,6 +186,7 @@
         </div>
       </div>
       <div class="row">
+         <div class="col-5">
         <fieldset>
           <mat-form-field floatLabel="auto">
             <mat-label for="divisionForm.get('director')">Director</mat-label>
@@ -174,6 +197,7 @@
             />
           </mat-form-field>
         </fieldset>
+         </div>
       </div>
     </form>
   </mat-card-content>
