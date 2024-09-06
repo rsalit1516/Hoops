@@ -97,6 +97,7 @@ export class DivisionDetailComponent implements OnInit {
     effect(() => {
       // console.log(this.divisionService.division());// this.division.update(this.divisionService.currentDivision);
       this.divisionForm.get('name')?.setValue(this.divisionService.division().divisionDescription);
+      // this.divisionForm.get('name')?
       if (this.divisionService.division().maxDate !== undefined) {
         this.divisionForm.get('maxDate1')?.setValue(formatDate(this.divisionService.division().maxDate, this.dateFormat, this.languageFormat));
         this.divisionForm.get('minDate1')?.setValue(formatDate(this.divisionService.division().minDate, this.dateFormat, this.languageFormat));
@@ -117,7 +118,7 @@ export class DivisionDetailComponent implements OnInit {
       if (division !== null) {
         if (division?.divisionDescription !== undefined) {
           this.selectedDivision.update(() => division);
-          // console.log(division);
+          console.log(division);
           this.divisionForm.get('name')?.setValue(division.divisionDescription);
           this.divisionForm.get('maxDate1')?.setValue(formatDate(division.maxDate, this.dateFormat, this.languageFormat));
           this.divisionForm.get('minDate1')?.setValue(formatDate(division.minDate, this.dateFormat, this.languageFormat));
