@@ -3,13 +3,13 @@
 <mat-toolbar class="top-nav-toolbar" color="default" fxShow="true">
   <a routerLink="/home" class="brand">Coral Springs Basketball Club</a>
   <div class="menu-spacer"></div>
-  <div fxHide.gt-xs>
+  <div class="d-block d-sm-none">
     <button mat-button (click)="onToggleSidenav()" class="menu-button">
       <mat-icon>menu</mat-icon>
     </button>
   </div>
-  <div fxFlex fxLayout fxHide.xs>
-    <a routerLink="/home" 
+  <div class="d-none d-sm-block" fxFlex fxLayout fxHide.xs>
+    <a routerLink="/home"
     routerLinkActive="activelink"
     mat-button>Home</a>
     <a routerLink="/games"
@@ -17,13 +17,13 @@
     mat-button
     routerLinkActive="activelink"
     >{{ constants.GAMESMENU }}</a>
-    <a routerLink="/photos" 
+    <a routerLink="/photos"
     routerLinkActive="activelink"
     mat-button>{{ constants.PHOTOMENU }}</a>
-    <a routerLink="/contacts" 
+    <a routerLink="/contacts"
     routerLinkActive="activelink"
     mat-button>{{ constants.CONTACTSMENU }}</a>
-    <a routerLink="/clubDocs" 
+    <a routerLink="/clubDocs"
     routerLinkActive="activelink"
     mat-button>{{ constants.CLUBDOCSMENU }}</a>
     <a
