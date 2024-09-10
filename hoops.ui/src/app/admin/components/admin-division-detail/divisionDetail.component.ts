@@ -77,7 +77,12 @@ export class DivisionDetailComponent implements OnInit {
   }
 
   divisionService = inject(DivisionService);
-  constructor(private fb: UntypedFormBuilder) {
+  selectedItem: string ='';
+
+  selectItem (item: string) {
+    this.selectedItem = item;
+  }
+  constructor (private fb: UntypedFormBuilder) {
 
     console.log(this.divisionService.getCurrentDivision());
     // this.division = this.divisionService.getCurrentDivision();

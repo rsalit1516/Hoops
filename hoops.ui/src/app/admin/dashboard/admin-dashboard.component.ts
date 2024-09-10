@@ -1,35 +1,28 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Content } from '../../domain/content';
-import { Store, select } from '@ngrx/store';
+import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 
-import * as fromGames from '../../games/state';
-import * as gameActions from './../../games/state/games.actions';
-import { Observable } from 'rxjs';
 import { Season } from '@app/domain/season';
 import { Division } from '@app/domain/division';
 import { TeamService } from '@app/services/team.service';
 import { Team } from '@app/domain/team';
-import {
-  Router,
-  RouterLinkWithHref,
-  RouterOutlet,
-  provideRouter,
-} from '@angular/router';
+import { Router } from '@angular/router';
 
 import * as fromAdmin from '../state';
 import * as adminActions from '../state/admin.actions';
 import { Game } from '@app/domain/game';
 import { AdminGamesListComponent } from '../admin-shared/admin-games-list/admin-games-list.component';
 import { MatCardModule } from '@angular/material/card';
-import { CommonModule, NgFor } from '@angular/common';
-import { CONTENT_ROUTES } from '../web-content/content-routing';
+import { NgFor } from '@angular/common';
 import { MatListModule } from '@angular/material/list';
 import { SeasonSelectComponent } from '../admin-shared/season-select/season-select.component';
 
 @Component({
     selector: 'csbc-admin-dashboard',
     templateUrl: './admin-dashboard.component.html',
-    styleUrls: ['./admin-dashboard.component.scss', '../admin.component.scss'],
+  styleUrls: [
+    '../../shared/scss/cards.scss',
+    './admin-dashboard.component.scss',
+    '../admin.component.scss'],
     standalone: true,
     imports: [
         SeasonSelectComponent,
