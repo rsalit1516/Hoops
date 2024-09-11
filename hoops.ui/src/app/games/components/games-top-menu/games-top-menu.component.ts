@@ -51,6 +51,7 @@ export class GamesTopMenuComponent implements OnInit {
     this.store
       .select(fromGames.getDivisionPlayoffGames)
       .subscribe((playoffs) => {
+        console.log('playoffs', playoffs);
         this.hasPlayoffs = playoffs.length > 0;
       });
     this.store.select(fromGames.getStandings).subscribe((standings) => {

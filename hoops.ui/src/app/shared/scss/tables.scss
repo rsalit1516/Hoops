@@ -35,7 +35,7 @@ thead {
 th {
   background-color: v.$table-header-background-color !important;
   color: v.$table-font-color !important;
-  font-weight: 700;
+  font-weight: 600;
   font-size: v.$table-font-size;
 }
 
@@ -46,6 +46,7 @@ tr  {
   margin-bottom: 2px;
   border-bottom: 1px solid v.$table-border-color !important;
   background-color: v.$table-background-color !important;
+  transition: box-shadow 0.3s ease-in-out;
 }
 
 td {
@@ -58,23 +59,44 @@ td {
 tr:hover td
 {
     // border:.5px solid white;
-    font-weight: 700;
+    font-weight: 600;
     background-color: lighten(v.$admin-table-background-color, 20%) !important;
+    box-shadow: 0 4px 8px rgba(102, 52, 52, 0.2);
+
   }
 
+/* Initial style for the row */
+.mat-row {
+  transition: box-shadow 0.3s ease-in-out;
+  border-bottom: 1px solid pink !important;
+  padding-bottom: 2px;
+  padding-top: 2px;
+}
+
+/* Style for the row when hovered */
+.mat-row:hover {
+  box-shadow: 0 4px 8px rgba(110, 52, 52, 0.2) !important;
+}
+
 .mat-table .mat-header-row {
-  height: 32px;
+  // height: 32px;
   border-collapse: collapse;
   border-spacing: 2px;
   background-color: v.$card-background-color;
-  position: static;
+  // position: static;
   font-weight: 900;
   font-size: v.$table-font-size;
+  height: v.$table-border-height;
+  border-bottom: 2px solid v.$table-border-color;
 }
 
 .mat-mdc-row {
   color: v.$table-font-color;
   border-bottom: v.$table-border-color solid 1px !important;
+  border-spacing: 1px;
+  height: v.$table-border-height;
+  padding-top: 4px;
+  padding-bottom: 4px;
 }
 
 .mat-mdc-paginator {
@@ -94,4 +116,7 @@ tr:hover td
 
 .mat-mdc-paginator .mat-mdc-select-value {
   color: v.$table-font-color;;
+}
+.mat-mdc-header-row {
+  height: 24px;
 }

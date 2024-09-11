@@ -23,6 +23,7 @@ import { TeamService } from '@app/services/team.service';
 import { Team } from '@app/domain/team';
 import * as moment from 'moment';
 import { PlayoffGame } from '@app/domain/playoffGame';
+import { getCurrentSeason } from './state/index';
 
 @Injectable({
   providedIn: 'root',
@@ -140,11 +141,8 @@ export class GameService {
       );
   }
   getSeasonPlayoffGames(): Observable<PlayoffGame[]> {
-    const seasonId = fromGames.getCurrentSeason;
-    console.log(seasonId);
-    console.log(this.seasonId);
     const url = this.dataService.playoffGameUrl + '?seasonId=' + this.seasonId;
-    console.log(url);
+    // console.log(url);
     return this.http.get<PlayoffGame[]>(url).pipe(
       map((response) => (this.seasonPlayoffGames = response)),
       tap((data) => console.log('All: ' + JSON.stringify(data.length)))

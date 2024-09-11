@@ -10,7 +10,11 @@ import { MatTableModule } from '@angular/material/table';
   standalone: true,
   imports: [CommonModule, MatTableModule],
   templateUrl: './daily-playoff-schedule.component.html',
-  styleUrls: ['./daily-playoff-schedule.component.scss']
+  styleUrls: [
+    // '../../../shared/scss/tables.scss',
+    './daily-playoff-schedule.component.scss',
+    '../../../../Content/styles.scss'
+]
 })
 export class DailyPlayoffScheduleComponent {
   @Input() playoffGames!: PlayoffGame[];

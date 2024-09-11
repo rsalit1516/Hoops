@@ -34,9 +34,10 @@ $link-color:lighten(#d17b00, 20%);
 $table-body-color: #292929;
 $table-font-color: #fce9cd;
 $table-header-background-color: lighten($black, 10% );
-$table-border-color: lighten($black, 40%);
+$table-border-color: white;
 $table-font-size: 1.0rem;
 $table-background-color: lighten($black, 10%);
+$table-border-height: 40px;
 
 /* font sizes */
 $input-font-size: 1.1rem;

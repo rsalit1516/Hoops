@@ -10,6 +10,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
   imports: [CommonModule, MatTableModule],
   templateUrl: './standings.component.html',
   styleUrls: [
+    '../../../shared/scss/tables.scss',
     './standings.component.scss',
     '../../containers/games-shell/games-shell.component.scss',
     '../../../../Content/styles.scss'

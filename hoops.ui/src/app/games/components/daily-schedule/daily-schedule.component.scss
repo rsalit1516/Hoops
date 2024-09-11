@@ -9,7 +9,7 @@
 .gamedate {
   color: $brand-color;
   font-weight: 600;
-  font-size: 1.4rem;
+  font-size: 1.1rem;
   padding-left: 24px;
   padding-top: 10px;
   padding-bottom: 8px;
@@ -72,11 +72,15 @@
   padding-right: 10px;
 }
 
+.mat-column-gameTime {
+  width: 10% !important;
+}
+
 .mat-column-visitingTeam,
 .mat-column-homeTeam {
   word-wrap: break-word !important;
   flex: 0 0 28% !important;
-  width: 15% !important;
+  width: 20% !important;
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;

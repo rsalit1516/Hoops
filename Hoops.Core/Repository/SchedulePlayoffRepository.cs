@@ -75,7 +75,7 @@ namespace Hoops.Infrastructure.Repository
             return gamesl; ;
         }
 
-        private string ConvertTime(DateTime gameDate, string gameTime)
+        private static string ConvertTime(DateTime gameDate, string gameTime)
         {
             var timeString = gameDate.ToShortDateString() + " " + gameTime;
             DateTime dateTime;
