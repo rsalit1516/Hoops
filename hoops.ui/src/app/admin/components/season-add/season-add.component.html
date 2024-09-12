@@ -1,0 +1,33 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Division Detail</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form
+      class="form-horizontal"
+      novalidate
+      (ngSubmit)="save()"
+      [formGroup]="divisionForm"
+    >
+      <fieldset>
+        <div class="row">
+          <div class="col-10">
+            <mat-form-field>
+              <mat-label>{{ title }}</mat-label>
+            </mat-form-field>
+              <mat-form-field >
+    <input
+      matInput
+      id="optionalname"
+      type="text"
+      formControlName="name"
+      value="season.name"
+    />
+  </mat-form-field>
+
+          </div>
+        </div>
+      </fieldset>
+    </form>
+  </mat-card-content>
+</mat-card>
