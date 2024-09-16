@@ -32,13 +32,9 @@ export class DivisionService {
     this.updateDivision(division);
     console.log(this.division());
     this.currentDivision
-    // effect(() => {
-    //   console.log(this.division());
-    // });
+
   }
-  // public divisiona = computed(() => {
-  //   return this.division()
-  // });
+
 
   private divisionUrl =
     this.dataService.webUrl + '/api/division/GetSeasonDivisions/';
@@ -100,20 +96,7 @@ export class DivisionService {
   }
 
   divisions = signal<Division[]>([]);
-  // private _divisions$ = this._http
-  //   .get<Division[]>(this.divisionUrl + this.selectedSeason$)
-  //   .pipe(
-  //     map(divisions =>
-  //       divisions.map(
-  //         division =>
-  //           ({
-  //             ...division
-  //           } as Division)
-  //       )
-  //     ),
-  //     tap(data => console.log('All: ' + JSON.stringify(data))),
-  //     catchError(this.dataService.handleError('getSeasonDivisions', null))
-  //   );
+
   divisions$ = this._http
     .get<Division[]>(this.divisionUrl + this.selectedSeason$)
     .pipe(
@@ -130,9 +113,6 @@ export class DivisionService {
       catchError(this.dataService.handleError('getSeasonDivisions', null))
     );
 
-  // public set divisions$(value) {
-  //   this._divisions$ = value;
-  // }
   constructor(
     private _http: HttpClient,
     public dataService: DataService,
@@ -146,21 +126,15 @@ export class DivisionService {
   }
 
   getDivisions(seasonId: number): Observable<Division[]> {
-    // console.log(seasonId);
     if (seasonId === undefined) {
       seasonId = 2202;
     }
-    // this._divisionUrl =
-    //   this.dataService.webUrl + '/api/division/GetSeasonDivisions/' + seasonId;
     return this._http.get<Division[]>(this.divisionUrl + seasonId).pipe(
-      // map((response: Response) => <Division[]>),
-      // tap(data => console.log('All: ' + JSON.stringify(data))),
       catchError(this.dataService.handleError('getSeasonDivisions', []))
     );
   }
 
   getSeasonDivisions(season: Observable<Season>): Observable<Division[]> {
-    // console.log(season);
     season.subscribe(
       (d) =>
       (this.divisionUrl =
@@ -182,22 +156,12 @@ export class DivisionService {
     this.divisionUrl =
       this.dataService.webUrl + '/api/division/GetSeasonDivisions/2083'; // + this.seasonId;
     return this._http.get<Division[]>(this.divisionUrl).pipe(
-      // map((response: Response) => <Division[]>),
-      // tap(data => console.log('All: ' + JSON.stringify(data))),
       catchError(this.dataService.handleError('getSeasonDivisions', []))
     );
   }
   getSelectedSeasonDivisions() {
     this._http.get<Division[]>(this.divisionUrl + this.seasonId);
-      // tap(data => console.log('All: ' + JSON.stringify(data))),
-    //   catchError(this.dataService.handleError('getSeasonDivisions', null));
-    // });
   }
-  // updateSelectedDivision(division: Division) {
-  //   console.log(division);
-  //   // this.currentDivision.set(division);
-  // }
-
   standardDivisions() {
     return [
       Constants.TR2COED,

@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PlayoffGame } from '@app/domain/playoffGame';
-import { MatTab } from '@angular/material/tabs';
 import { MatTableModule } from '@angular/material/table';
 
 

@@ -6,6 +6,7 @@ import { SeasonService } from '@app/services/season.service';
   selector: 'app-season-add',
   standalone: true,
   imports: [],
+  providers: [SeasonService],
   templateUrl: './season-add.component.html',
   styleUrls: ['../../../shared/scss/forms.scss',
     './season-add.component.scss'
