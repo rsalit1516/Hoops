@@ -27,6 +27,7 @@ export class NewDivisionSelectorComponent {
   divisionService = inject(DivisionService);
   selectedDivision: Division | undefined;
   hideNameInput = signal<boolean>(true);
+  title = 'New Division';
 
   divisionSelected($event: any) {
     this.divisionService.createTemporaryDivision($event.value);

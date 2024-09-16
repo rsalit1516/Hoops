@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { concatLatestFrom } from '@ngrx/operators';
+
 import * as homeActions from './home.actions';
 import * as fromHome from './';
 import * as fromGames from '../../games/state';

@@ -2,9 +2,6 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import * as fromGames from '../../state';
-import * as fromUser from '../../../user/state';
-import { Game } from '@domain/game';
-import { MatTableDataSource } from '@angular/material/table';
 import { PlayoffGame } from '@domain/playoffGame';
 import { DailyPlayoffScheduleComponent } from '../daily-playoff-schedule/daily-playoff-schedule.component';
 
@@ -20,7 +17,8 @@ import { DailyPlayoffScheduleComponent } from '../daily-playoff-schedule/daily-p
     </section>
   `,
   styleUrls: ['./schedule-playoffs.component.scss'],
-  imports: [CommonModule, DailyPlayoffScheduleComponent],
+  imports: [ CommonModule, DailyPlayoffScheduleComponent ],
+  providers: [ Store ]
 })
 export class SchedulePlayoffsComponent {
   @Input() playoffGames!: Array<PlayoffGame[]>;
@@ -28,11 +26,7 @@ export class SchedulePlayoffsComponent {
 
 
   constructor(private store: Store<fromGames.State>) {
-    // this.store.select(fromGames.getPlayoffGames).subscribe((games) => {
-    //  this.dataSource = new MatTableDataSource(this.playoffGames);
-    // });
   }
 
-  ngOnIt() {
-  }
+
 }

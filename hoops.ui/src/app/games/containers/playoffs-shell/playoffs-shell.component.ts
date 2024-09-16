@@ -9,7 +9,8 @@ import { PlayoffGame } from '@app/domain/playoffGame';
 @Component({
   selector: 'csbc-playoffs-shell',
   standalone: true,
-  imports: [CommonModule, SchedulePlayoffsComponent],
+  imports: [ CommonModule, SchedulePlayoffsComponent ],
+  providers: [ GameService, Store],
   template: `
     <div class="row">
     <h1>Playoffs</h1>
