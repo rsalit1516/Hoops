@@ -5,7 +5,9 @@ import { Team } from '../../domain/team';
 @Component({
     selector: 'csbc-team-list',
     templateUrl: './teamList.component.html',
-    styleUrls: ['./team.component.scss', '../admin.component.scss']
+  styleUrls: ['../../shared/scss/tables.scss',
+    './team.component.scss',
+    '../admin.component.scss']
 
 })
 export class TeamListComponent implements OnInit {
