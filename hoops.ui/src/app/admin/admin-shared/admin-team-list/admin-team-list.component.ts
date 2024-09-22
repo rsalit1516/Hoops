@@ -14,7 +14,11 @@ import { FormsModule } from '@angular/forms';
 @Component({
     selector: 'app-admin-team-list',
     templateUrl: './admin-team-list.component.html',
-    styleUrls: ['./admin-team-list.component.scss', '../../admin.component.scss'],
+  styleUrls: [
+    '../../../shared/scss/cards.scss',
+    '../../../shared/scss/tables.scss',
+    './admin-team-list.component.scss',
+    '../../admin.component.scss'],
     standalone: true,
     imports: [
         FormsModule,

@@ -1,6 +1,6 @@
 @use '../../../Content/variables' as v;
 
-.mat-card {
+.mat-card, .mat-mdc-card {
   background-color: v.$admin-card-background-color;
   padding-top: 12px;
   border-radius: 5%;

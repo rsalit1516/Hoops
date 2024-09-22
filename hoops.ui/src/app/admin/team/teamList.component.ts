@@ -1,10 +1,16 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, inject } from '@angular/core';
 import { TeamService } from '../../services/team.service';
 import { Team } from '../../domain/team';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { CommonModule } from '@angular/common';
 
 @Component({
-    selector: 'csbc-team-list',
-    templateUrl: './teamList.component.html',
+  selector: 'csbc-team-list',
+  standalone: true,
+  templateUrl: './teamList.component.html',
+  imports: [CommonModule,
+    MatTableModule,
+],
   styleUrls: ['../../shared/scss/tables.scss',
     './team.component.scss',
     '../admin.component.scss']
@@ -13,9 +19,15 @@ import { Team } from '../../domain/team';
 export class TeamListComponent implements OnInit {
     @Input() teams: Team[] | undefined;
     errorMessage: string | undefined;
-    selectedTeam: Team | undefined;
-
-    constructor(private _teamService: TeamService) { }
+  selectedTeam: Team | undefined;
+  private _teamService = inject(TeamService);
+  displayedColumns = [
+    'teamId',
+    'name',
+    'teamColorId',
+  ];
+  dataSource!: MatTableDataSource<Team>;
+    constructor() { }
 
     ngOnInit() {
          this._teamService.getTeams()
