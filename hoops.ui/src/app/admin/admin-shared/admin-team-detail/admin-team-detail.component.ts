@@ -22,8 +22,10 @@ import { MatCardModule } from '@angular/material/card';
 @Component({
     selector: 'app-admin-team-detail',
     templateUrl: './admin-team-detail.component.html',
-    styleUrls: [
-        './admin-team-detail.component.scss',
+  styleUrls: [
+      './../../../shared/scss/forms.scss',
+    './../../../shared/scss/cards.scss',
+    './admin-team-detail.component.scss',
         '../../admin.component.scss',
     ],
     standalone: true,

@@ -18,7 +18,9 @@ class MenuItem {
 const SMALL_WIDTH_BREAKPOINT = 720;
 @Component({
     templateUrl: './admin.component.html',
-    styleUrls: ['./admin.component.scss'],
+  styleUrls: ['./admin.component.scss',
+    '../shared/scss/forms.scss',
+    ],
     standalone: true
 })
 

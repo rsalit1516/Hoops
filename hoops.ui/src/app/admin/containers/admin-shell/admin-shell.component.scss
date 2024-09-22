@@ -1,7 +1,7 @@
-@import '../../../../Content/variables';
+@use '../../../../Content/variables' as v;
 
 body {
-  background-color: $black;
+  background-color: v.$admin-background-color;
 
 }
 
@@ -11,8 +11,8 @@ body {
   padding-right: 10px;
   margin-right: 4px;
   margin-left: 4px;
-  background-color: $black;
-  color: $table-body-color;
+  background-color: v.$black;
+  color: v.$table-body-color;
   // border-right: $brand-color solid 1px; ;
   font-size: 1.2rem;
 }
@@ -29,12 +29,12 @@ body {
 }
 
 a.mat-list-item {
-  color: $font-color-text;
+  color: v.$font-color-text;
   font-size: 1.1em;
 }
 
 .mat-list-text {
-  color: $font-color-text;
+  color: v.$font-color-text;
   font-size: 1.2em;
 }
 
@@ -45,7 +45,7 @@ a.mat-list-item {
 }
 
 .mat-divider {
-  background-color: $color;
+  background-color: v.$color;
 }
 
 .row {
@@ -57,7 +57,7 @@ a.mat-list-item {
 }
 
 .active {
-  border-bottom: $brand-color;
+  border-bottom: v.$brand-color;
   transform: scale(1.1);
   transition: border-bottom 0.3s ease color 0.3s ease, transform 0.3s ease;
 }
@@ -65,9 +65,9 @@ a.mat-list-item {
   overflow: hidden;
 }
 .mat-mdc-icon-button:disabled {
-  color: $color;
+  color: v.$color;
 }
 
 .mat-mdc-icon-button:disabled {
-  color: darken($color , 20%);
+  color: darken(v.$color , 20%);
 }
