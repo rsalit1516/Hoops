@@ -12,9 +12,9 @@
   position: sticky;
   top: 0;
 }
-.mat-table tbody {
-  color: v.$table-font-color;
-}
+// .mat-table tbody {
+//   color: v.$table-font-color;
+// }
 
 // .mat-table thead{
 //   background-color: v.$table-header-background-color !important;
@@ -30,13 +30,17 @@ table {
 
 thead {
   background-color: v.$table-header-background-color !important;
+  font-weight: 300;
 }
 
 th {
-  background-color: v.$table-header-background-color !important;
+  background-color: lighten(v.$table-header-background-color, 5%) !important;
   color: v.$table-font-color !important;
-  font-weight: 600;
+  font-weight: 300;
   font-size: v.$table-font-size;
+  border-bottom: 1px solid v.$table-border-color !important;
+  padding-bottom: 8px;
+  padding-top: 8px;
 }
 
 tr  {
@@ -44,9 +48,11 @@ tr  {
   font-size: v.$table-font-size;
   padding-bottom: 2px;
   margin-bottom: 2px;
-  border-bottom: 1px solid v.$table-border-color !important;
   background-color: v.$table-background-color !important;
   transition: box-shadow 0.3s ease-in-out;
+}
+tr:nth-child(even) {
+  background-color: lighten(v.$table-background-color, 5%) !important;
 }
 
 td {
@@ -84,7 +90,7 @@ tr:hover td
   border-spacing: 2px;
   background-color: v.$card-background-color;
   // position: static;
-  font-weight: 900;
+  font-weight: 300;
   font-size: v.$table-font-size;
   height: v.$table-border-height;
   border-bottom: 2px solid v.$table-border-color;
