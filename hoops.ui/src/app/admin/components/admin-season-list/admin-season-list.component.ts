@@ -17,7 +17,7 @@ import { Router } from '@angular/router';
       './../../../shared/scss/tables.scss',
         './admin-season-list.component.scss',
         '../../admin.component.scss'
-    ],        
+    ],
     standalone: true,
   imports: [ FlexModule, MatTableModule, DatePipe,
     AdminSeasonsToolbarComponent,
