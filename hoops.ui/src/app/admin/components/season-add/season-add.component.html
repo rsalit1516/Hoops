@@ -7,7 +7,7 @@
       class="form-horizontal"
       novalidate
       (ngSubmit)="save()"
-      [formGroup]="divisionForm"
+      [formGroup]="form"
     >
       <fieldset>
         <div class="row">
@@ -15,16 +15,15 @@
             <mat-form-field>
               <mat-label>{{ title }}</mat-label>
             </mat-form-field>
-              <mat-form-field >
-    <input
-      matInput
-      id="optionalname"
-      type="text"
-      formControlName="name"
-      value="season.name"
-    />
-  </mat-form-field>
-
+            <mat-form-field>
+              <input
+                matInput
+                id="optionalname"
+                type="text"
+                formControlName="name"
+                value="season.name"
+              />
+            </mat-form-field>
           </div>
         </div>
       </fieldset>
