@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UntypedFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { SeasonAddComponent } from './season-add.component';
 import { SeasonService } from '@app/services/season.service';
+import { CommonModule } from '@angular/common';
 
 describe('SeasonAddComponent', () => {
   let component: SeasonAddComponent;
@@ -12,12 +13,14 @@ describe('SeasonAddComponent', () => {
     const seasonServiceSpy = jasmine.createSpyObj('SeasonService', ['getCurrentDivision']);
 
     await TestBed.configureTestingModule({
-      declarations: [SeasonAddComponent],
+      declarations: [ ],
       providers: [
         { provide: SeasonService, useValue: seasonServiceSpy },
-        UntypedFormBuilder
       ],
-      imports: [ReactiveFormsModule, SeasonAddComponent]
+      imports: [ CommonModule,
+        ReactiveFormsModule,
+        UntypedFormBuilder,
+        SeasonAddComponent ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(SeasonAddComponent);

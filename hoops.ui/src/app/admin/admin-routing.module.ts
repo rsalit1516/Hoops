@@ -16,15 +16,44 @@ import { ContentShellComponent } from './web-content/containers/content-shell/co
 import { DivisionDetailComponent } from './components/admin-division-detail/divisionDetail.component';
 
 
-const adminRoutes: Routes = [
+export const adminRoutes: Routes = [
   {
     path: '',
+    title: 'Admin Module',
     component: AdminShellComponent,
     canActivate: [ AuthGuard ],
 
     children: [
-      { path: 'dashboard', component: AdminDashboardComponent },
-      { path: 'seasons', component: AdminSeasonShellComponent },
+      { path: 'dashboard',  title: 'Admin Dashboard', component: AdminDashboardComponent },
+      {
+        path: 'seasons', component: AdminSeasonShellComponent,
+        children: [
+          {
+            path: 'edit',
+            loadComponent: () =>
+              import('./components/admin-season-list/admin-season-list.component').then(
+                (mod) => mod.AdminSeasonListComponent
+              ),
+          },
+          {
+            path: 'list',
+            loadComponent: () =>
+              import('./components/admin-season-list/admin-season-list.component').then(
+                (mod) => mod.AdminSeasonListComponent
+              ),
+         },
+        {
+          path: '',
+          loadComponent: () =>
+            import('./components/admin-season-list/admin-season-list.component').then(
+              (mod) => mod.AdminSeasonListComponent
+            ),
+          pathMatch: 'full',
+        },
+
+          { path: '**', component: PageNotFoundComponent },
+        ],
+       },
       { path: 'division', component: AdminDivisionShellComponent },
       { path: 'division-detail', component: DivisionDetailComponent},
       { path: 'season-setup', component: SeasonSetupComponent },

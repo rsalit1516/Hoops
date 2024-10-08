@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
+
 import { AppComponent } from './app.component';
 import { TopNavComponent } from './shared/top-nav/top-nav.component';
 import { SidenavListComponent } from './shared/sidenav-list/sidenav-list.component';
@@ -7,6 +9,9 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatNativeDateModule } from '@angular/material/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
+import { provideMockStore } from '@ngrx/store/testing';
+import { StoreModule } from '@ngrx/store';
+
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -15,20 +20,29 @@ describe('AppComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [],
+      declarations: [
+      ],
       imports: [
         CommonModule,
         MatSidenavModule,
         MatNativeDateModule,
         AppComponent,
-        NoopAnimationsModule
+        NoopAnimationsModule,
+        // RouterLink, RouterOutlet,
+        RouterModule,
+        StoreModule.forRoot(provideMockStore)
       ],
       providers: [
         { provide: TopNavComponent, useValue: {} },
-        { provide: SidenavListComponent, useValue: {} }
+        { provide: SidenavListComponent, useValue: {} },
+        { provide: Router, useValue: {} },
+        { provide: ActivatedRoute, useValue: {} },
+        provideMockStore({}),
+        // {provide: Router, useClass: MockRouter}
       ]
     }).compileComponents();
 
+    // const mockRouter = new MockRouter();
     fixture = TestBed.createComponent(AppComponent);
     component = fixture.componentInstance;
     router = TestBed.inject(Router);

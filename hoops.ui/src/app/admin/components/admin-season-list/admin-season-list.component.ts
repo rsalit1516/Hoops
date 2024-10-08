@@ -11,10 +11,11 @@ import { FlexModule } from '@angular/flex-layout/flex';
 @Component({
     selector: 'csbc-admin-season-list',
     templateUrl: './admin-season-list.component.html',
-    styleUrls: [
+  styleUrls: [
+      './../../../shared/scss/tables.scss',
         './admin-season-list.component.scss',
         '../../admin.component.scss'
-    ],
+    ],        
     standalone: true,
     imports: [FlexModule, MatTableModule, DatePipe]
 })

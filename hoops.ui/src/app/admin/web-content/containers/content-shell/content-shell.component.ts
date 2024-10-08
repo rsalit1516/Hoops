@@ -20,9 +20,12 @@ import { CONTENT_ROUTES } from '../../content-routing';
     <router-outlet></router-outlet>
   </section>`,
   styleUrls: [ './content-shell.component.scss' ],
-  imports: [ CommonModule, AdminGamesRoutingModule, ContentListComponent, ContentEditComponent,
-    RouterOutlet, RouterLinkWithHref ],
-
+  imports: [
+    CommonModule,
+    ContentListComponent,
+    ContentEditComponent,
+    RouterOutlet,
+    RouterLinkWithHref ],
 })
 
 export class ContentShellComponent implements OnInit {
