@@ -8,6 +8,8 @@ import { HomeComponent } from './home/home.component';
 import { PageNotFoundComponent } from './app.not-found.component';
 import { CsbcDashboardComponent } from './csbc-dashboard/csbc-dashboard.component';
 import { GamesResolver } from './games/games.resolver';
+import { adminRoutes, AdminRoutingModule } from './admin/admin-routing.module';
+
 
 const appRoutes: Routes = [
   {
@@ -35,13 +37,14 @@ const appRoutes: Routes = [
 
   {
     path: 'admin',
-    loadChildren: () =>
-      import('./admin/admin.module').then(mod => mod.AdminModule)
+    // loadComponent: () =>
+    //   import('./admin/admin.component').then(c => c.AdminComponent),
+    children: adminRoutes,
   },
-  {
-    path: 'dashboard',
-    component: CsbcDashboardComponent
-  },
+  // {
+  //   path: 'dashboard',
+  //   component: CsbcDashboardComponent
+  // },
 
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }

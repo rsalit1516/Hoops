@@ -6,18 +6,29 @@ import { select, Store } from '@ngrx/store';
 import * as fromAdmin from '../../state';
 import { AdminSeasonListComponent } from '../../components/admin-season-list/admin-season-list.component';
 import { FlexModule } from '@angular/flex-layout/flex';
+import { CommonModule } from '@angular/common';
+import { RouterOutlet } from '@angular/router';
+import { AdminGamesRoutingModule } from '@app/admin/admin-games/admin-games-routing.module';
+import { ContentEditComponent } from '@app/admin/web-content/components/content-edit/content-edit.component';
+import { ContentListComponent } from '@app/admin/web-content/components/content-list/contentList.component';
 
 
 @Component({
     selector: 'csbc-admin-season-shell',
-    templateUrl: './admin-season-shell.component.html',
+    template: `<section class="container-fluid">
+    <h2>{{title}}</h2>
+    <router-outlet></router-outlet>
+  </section>`,
     styleUrls: ['./admin-season-shell.component.scss'],
     standalone: true,
-    imports: [FlexModule, AdminSeasonListComponent]
+    imports: [CommonModule, AdminGamesRoutingModule,
+      RouterOutlet, AdminSeasonListComponent]
 })
 export class AdminSeasonShellComponent implements OnInit {
   currentSeason$!: Observable<Season>;
   seasons$!: Observable<Season[]>;
+  title = 'Seasons';
+
   constructor(private store: Store<fromAdmin.State>) { }
 
   ngOnInit() {

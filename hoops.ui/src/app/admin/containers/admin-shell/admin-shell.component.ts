@@ -4,14 +4,13 @@ import {
   RouterLink,
   RouterLinkActive,
   RouterOutlet,
-  provideRouter,
 } from '@angular/router';
 
 import * as adminActions from '../../state/admin.actions';
 import * as contentActions from '../../state/admin.actions';
 import * as fromAdmin from '../../state';
 import { ColorService } from '@app/admin/admin-shared/services/color.service';
-import { NgIf } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -23,6 +22,7 @@ import { LocationService } from '@app/admin/admin-shared/services/location.servi
   styleUrls: ['./admin-shell.component.scss'],
   standalone: true,
   imports: [
+    CommonModule,
     MatSidenavModule,
     MatListModule,
     RouterLink,

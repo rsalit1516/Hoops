@@ -14,8 +14,11 @@ describe('SchedulePlayoffsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SchedulePlayoffsComponent, DailyPlayoffScheduleComponent],
-      imports: [CommonModule, StoreModule.forRoot({})],
+      declarations: [],
+      imports: [ CommonModule,
+        StoreModule.forRoot({}),
+        SchedulePlayoffsComponent,
+        DailyPlayoffScheduleComponent],
       providers: [Store]
     }).compileComponents();
 

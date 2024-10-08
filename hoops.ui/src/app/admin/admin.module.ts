@@ -14,8 +14,6 @@ import { PlayerListComponent } from './player/player-list.component';
 
 import { DivisionMasterComponent } from './division-master/division-master.component';
 
-
-
 import { AdminShellComponent } from './containers/admin-shell/admin-shell.component';
 import { StoreModule } from '@ngrx/store';
 import { reducer } from './state/admin.reducer';

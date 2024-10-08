@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { SeasonService } from '@app/services/season.service';
@@ -5,7 +6,7 @@ import { SeasonService } from '@app/services/season.service';
 @Component({
   selector: 'app-season-add',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   providers: [SeasonService],
   templateUrl: './season-add.component.html',
   styleUrls: ['../../../shared/scss/forms.scss',
@@ -18,8 +19,6 @@ export class SeasonAddComponent {
   form: any;
   constructor (private fb: UntypedFormBuilder) {
 
-    // console.log(this.seasonService.getCurrentDivision());
-    // this.division = this.divisionService.getCurrentDivision();
     this.form = this.fb.group({
       name: ['', Validators.required], //this.division.divisionDescription,
             seasonId: [''], //this.division.seasonId,

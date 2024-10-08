@@ -1,9 +1,4 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { ContentShellComponent } from './containers/content-shell/content-shell.component';
-import { PageNotFoundComponent } from '@app/app.not-found.component';
-import { ContentEditComponent } from './components/content-edit/content-edit.component';
-import { ContentListComponent } from './components/content-list/contentList.component';
+import { Routes } from '@angular/router';
 import { PageNotFoundStandAloneComponent } from '@app/app.not-found-standalone.component';
 
 export const CONTENT_ROUTES: Routes = [

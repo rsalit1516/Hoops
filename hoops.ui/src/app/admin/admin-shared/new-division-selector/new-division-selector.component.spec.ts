@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { NewDivisionSelectorComponent } from './new-division-selector.component';
 import { DivisionService } from '@app/services/division.service';
 
