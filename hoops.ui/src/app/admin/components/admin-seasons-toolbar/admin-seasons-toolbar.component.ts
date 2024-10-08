@@ -12,14 +12,17 @@ import { Store } from '@ngrx/store';
   standalone: true,
   imports: [MatFormFieldModule, ReactiveFormsModule, MatButtonModule, MatToolbarModule, MatCheckboxModule ],
   templateUrl: './admin-seasons-toolbar.component.html',
-  styleUrl: './admin-seasons-toolbar.component.scss'
+  styleUrls: [
+    './../../../shared/scss/forms.scss',
+    './../../admin.component.scss',
+    './admin-seasons-toolbar.component.scss']
 })
 export class AdminSeasonsToolbarComponent implements OnInit {
     checked = true;
         filterForm = this.fb.group({
       activeContent: true
     });
-
+  title = 'Seasons List';
 
     constructor(
       private router: Router,
