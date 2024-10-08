@@ -1,67 +1,8 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-2 nav-wrapper">
-      <mat-sidenav-container class="admin-container">
-        <mat-sidenav-content>
-          <mat-nav-list >
-            <a mat-list-item routerLink="/admin/dashboard"
-            routerLinkActive="active"
-              >Dashboard
-              <span
-                class="pull-right hidden-xs showopacity glyphicon glyphicon-home"
-              ></span>
-            </a>
-            <mat-divider></mat-divider>
-            <a
-              mat-list-item
-            *ngIf="showDirectors"
-              routerLink="/admin/director"
-              routerLinkActive="active"
-              >Directors</a
-            >
-            <a
-              mat-list-item
-              *ngIf = "showHouseholds"
-              routerLink="/admin/households"
-              routerLinkActive="active"
-              >Households</a
-            >
-            <a
-              mat-list-item
-              *ngIf = "showPeople"
-              routerLink="/admin/people"
-              routerLinkActive="active"
-              >People</a
-            >
-            <a
-              mat-list-item
-              *ngIf = "showColors"
-              routerLink="/admin/colors"
-              routerLinkActive="active"
-              >Uniform Colors</a
-            >
-            <a mat-list-item
-            *ngIf = "showUsers"
-            routerLink="/admin/users" routerLinkActive="active"
-              >Users</a
-            >
-            <mat-divider *ngIf="showDirectors || showHouseholds || showPeople || showColors || showUsers">
-            </mat-divider>
-            <a mat-list-item routerLink="/admin/seasons" routerLinkActive="active">Seasons</a>
-            <a mat-list-item routerLink="/admin/division"  routerLinkActive="active">Divisions</a>
-            <a mat-list-item routerLink="/admin/games"  routerLinkActive="active">Games</a>
-            <a mat-list-item routerLink="/season-setup"  routerLinkActive="active">Teams</a>
-            <!--<a mat-list-item routerLink="/admin/teams" routerLinkActive="active">Teams</a>
-          <a mat-list-item routerLink="/admin/games" routerLinkActive="active">Games</a> -->
-            <mat-divider></mat-divider>
-            <a mat-list-item routerLink="/admin/content">Notices</a
-            >
-            <!-- <a mat-list-item routerLink="./director" routerLinkActive="active">Directors</a> -->
-          </mat-nav-list>
-          <!-- <p><button mat-button (click)="sidenav.toggle()">sidenav.toggle()</button></p>
-    <p>Events:</p> -->
-        </mat-sidenav-content>
-      </mat-sidenav-container>
+  <app-admin-shell-sidebar></app-admin-shell-sidebar>
+
     </div>
     <div class="col-10">
       <router-outlet></router-outlet>

@@ -15,15 +15,27 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { LocationService } from '@app/admin/admin-shared/services/location.service';
+import { AdminShellSidebarComponent } from '@app/admin/components/admin-shell-sidebar/admin-shell-sidebar.component';
 
 @Component({
   selector: 'csbc-admin-shell',
-  templateUrl: './admin-shell.component.html',
+  template: `
+  <div class="container-fluid">
+  <div class="row">
+    <div class="col-2 nav-wrapper">
+  <app-admin-shell-sidebar></app-admin-shell-sidebar>
+
+    </div>
+    <div class="col-10">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>`,
   styleUrls: ['./admin-shell.component.scss'],
   standalone: true,
   imports: [
     CommonModule,
-    MatSidenavModule,
+    AdminShellSidebarComponent,
     MatListModule,
     RouterLink,
     RouterLinkActive,
