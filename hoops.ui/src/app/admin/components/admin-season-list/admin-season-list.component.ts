@@ -7,6 +7,7 @@ import { Season } from '@app/domain/season';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { DatePipe } from '@angular/common';
 import { FlexModule } from '@angular/flex-layout/flex';
+import { AdminSeasonsToolbarComponent } from '../admin-seasons-toolbar/admin-seasons-toolbar.component';
 
 @Component({
     selector: 'csbc-admin-season-list',
@@ -15,9 +16,11 @@ import { FlexModule } from '@angular/flex-layout/flex';
       './../../../shared/scss/tables.scss',
         './admin-season-list.component.scss',
         '../../admin.component.scss'
-    ],        
+    ],
     standalone: true,
-    imports: [FlexModule, MatTableModule, DatePipe]
+  imports: [ FlexModule, MatTableModule, DatePipe,
+    AdminSeasonsToolbarComponent,
+    ]
 })
 export class AdminSeasonListComponent implements OnInit {
   private _seasons: Season[] | undefined;

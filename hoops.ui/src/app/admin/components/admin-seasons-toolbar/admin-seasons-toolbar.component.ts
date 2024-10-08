@@ -1,12 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder } from '@angular/forms';
+import { ReactiveFormsModule, UntypedFormBuilder } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-admin-seasons-toolbar',
   standalone: true,
-  imports: [],
+  imports: [MatFormFieldModule, ReactiveFormsModule, MatButtonModule, MatToolbarModule, MatCheckboxModule ],
   templateUrl: './admin-seasons-toolbar.component.html',
   styleUrl: './admin-seasons-toolbar.component.scss'
 })
@@ -27,5 +31,7 @@ export class AdminSeasonsToolbarComponent implements OnInit {
   ngOnInit(): void {
     throw new Error('Method not implemented.');
   }
+  addContent() {
 
+}
 }
