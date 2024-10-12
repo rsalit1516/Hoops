@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import { Content } from '../../../../domain/content';
-import { ContentService } from '../../content.service';
 
 import * as fromContent from '../../../state';
 import * as contentActions from '../../../state/admin.actions';
