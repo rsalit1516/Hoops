@@ -1,6 +1,6 @@
 <mat-card>
   <mat-card-header>
-    <mat-card-title>Division Detail</mat-card-title>
+    <mat-card-title>Season Detail</mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <form
@@ -8,22 +8,25 @@
       novalidate
       (ngSubmit)="save()"
       [formGroup]="form"
+      [formGroup]="form"
     >
       <fieldset>
         <div class="row">
           <div class="col-10">
-            <mat-form-field>
-              <mat-label>{{ title }}</mat-label>
-            </mat-form-field>
-            <mat-form-field>
-              <input
-                matInput
-                id="optionalname"
-                type="text"
-                formControlName="name"
-                value="season.name"
-              />
-            </mat-form-field>
+            <!-- <mat-form-field> -->
+              <!-- <mat-label>{{ title }}</mat-label> -->
+              <h2>{{ title }}</h2>
+            <!-- </mat-form-field> -->
+              <mat-form-field >
+    <input
+      matInput
+      id="optionalname"
+      type="text"
+      formControlName="name"
+      value="season.name"
+    />
+  </mat-form-field>
+
           </div>
         </div>
       </fieldset>

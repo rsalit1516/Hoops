@@ -6,10 +6,8 @@ import { ContactsComponent } from './contacts/contacts.component';
 import { CsbcClubDocsComponent } from './club-docs/csbc-club-docs.component';
 import { HomeComponent } from './home/home.component';
 import { PageNotFoundComponent } from './app.not-found.component';
-import { CsbcDashboardComponent } from './csbc-dashboard/csbc-dashboard.component';
 import { GamesResolver } from './games/games.resolver';
-import { adminRoutes, AdminRoutingModule } from './admin/admin-routing.module';
-
+import { ADMINROUTES } from './admin/admin-routing.module';
 
 const appRoutes: Routes = [
   {
@@ -37,14 +35,8 @@ const appRoutes: Routes = [
 
   {
     path: 'admin',
-    // loadComponent: () =>
-    //   import('./admin/admin.component').then(c => c.AdminComponent),
-    children: adminRoutes,
+    children: ADMINROUTES,
   },
-  // {
-  //   path: 'dashboard',
-  //   component: CsbcDashboardComponent
-  // },
 
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }
