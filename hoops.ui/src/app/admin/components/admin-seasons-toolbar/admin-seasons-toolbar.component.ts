@@ -45,7 +45,6 @@ export class AdminSeasonsToolbarComponent implements OnInit {
   ngOnInit(): void {
     // throw new Error('Method not implemented.');
   }
-  addContent() {
 
   addContent () {
     const season = new Season();
