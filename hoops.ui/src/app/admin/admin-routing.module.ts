@@ -16,7 +16,7 @@ import { ContentShellComponent } from './web-content/containers/content-shell/co
 import { DivisionDetailComponent } from './components/admin-division-detail/divisionDetail.component';
 
 
-export const adminRoutes: Routes = [
+export const ADMINROUTES: Routes = [
   {
     path: '',
     title: 'Admin Module',
@@ -27,13 +27,14 @@ export const adminRoutes: Routes = [
       { path: 'dashboard',  title: 'Admin Dashboard', component: AdminDashboardComponent },
       {
         path: 'seasons', component: AdminSeasonShellComponent,
+        title: 'Seasons Module',
         children: [
           {
             path: 'edit',
             loadComponent: () =>
-              import('./components/admin-season-list/admin-season-list.component').then(
-                (mod) => mod.AdminSeasonListComponent
-              ),
+              import('./components/season-add/season-add.component')
+                .then(
+                (mod) => mod.SeasonAddComponent),
           },
           {
             path: 'list',
@@ -113,7 +114,7 @@ export const adminRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(adminRoutes)],
+  imports: [RouterModule.forChild(ADMINROUTES)],
   exports: [RouterModule],
 })
 export class AdminRoutingModule {}

@@ -21,7 +21,8 @@ import { SeasonService } from '@app/services/season.service';
   ],
   providers: [SeasonService],
   templateUrl: './season-add.component.html',
-  styleUrls: ['../../../shared/scss/forms.scss',
+  styleUrls: [ '../../../shared/scss/forms.scss',
+    '../../../shared/scss/cards.scss',
     './season-add.component.scss'
   ]
 })

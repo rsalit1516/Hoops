@@ -8,6 +8,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { DatePipe } from '@angular/common';
 import { FlexModule } from '@angular/flex-layout/flex';
 import { AdminSeasonsToolbarComponent } from '../admin-seasons-toolbar/admin-seasons-toolbar.component';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'csbc-admin-season-list',
@@ -36,7 +37,7 @@ export class AdminSeasonListComponent implements OnInit {
 
   displayColumns: string[];
 
-  constructor(private store: Store<fromAdmin.State>) {
+  constructor(private router: Router, private store: Store<fromAdmin.State>) {
     this.displayColumns = [];
   }
 
@@ -56,7 +57,10 @@ export class AdminSeasonListComponent implements OnInit {
     this.displayColumns.push('fromDate');
     this.displayColumns.push('toDate');
   }
-  selectRow(row: any) {
-    console.log('Row' + row);
+  edit(row: Season) {
+    console.log(row);
+    this.store.dispatch(new adminActions.SetSelectedSeason(row));
+    this.router.navigate(['./admin/seasons/edit']);
+
   }
 }
