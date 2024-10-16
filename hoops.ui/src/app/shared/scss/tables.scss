@@ -37,6 +37,10 @@ th {
   color: v.$table-font-color !important;
   font-weight: 600;
   font-size: v.$table-font-size;
+  border-bottom: .5px solid v.$table-border-color;
+  border-top: .5px solid v.$table-border-color;
+  padding-top: 4px;
+  padding-bottom: 4px;
 }
 
 tr  {
@@ -47,6 +51,11 @@ tr  {
   border-bottom: 1px solid v.$table-border-color !important;
   background-color: v.$table-background-color !important;
   transition: box-shadow 0.3s ease-in-out;
+}
+
+tr:nth-child(even)
+{
+  background-color: v.$table-alternate-background-color !important;
 }
 
 td {

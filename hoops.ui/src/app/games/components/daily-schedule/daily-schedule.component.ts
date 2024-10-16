@@ -17,7 +17,8 @@ import { MatTableModule } from '@angular/material/table';
 @Component({
     selector: 'daily-schedule',
     templateUrl: './daily-schedule.component.html',
-    styleUrls: ['./daily-schedule.component.scss', './../../../shared/scss/tables.scss'],
+  styleUrls: [ './daily-schedule.component.scss',
+    './../../../shared/scss/tables.scss' ],
     standalone: true,
     imports: [
         MatTableModule,

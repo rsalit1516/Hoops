@@ -198,3 +198,11 @@ mat-form-field input::placeholder {
 .mat-select {
   background-color: lighten(v.$admin-background-color, 20%);
 }
+
+.mat-datepicker-content {
+  background-color: lighten(v.$admin-background-color, 20%) !important;
+}
+
+.mat-calendar-body-cell-content {
+  color: v.$admin-font-color !important;
+}
