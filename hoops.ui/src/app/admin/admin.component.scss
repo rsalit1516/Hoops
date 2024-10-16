@@ -345,3 +345,8 @@ table {
 .counter {
   padding-left: 20px;
 }
+
+.container {
+  background-color: v.$table-background-color;
+  border-radius: v.$border-radius;
+ }
