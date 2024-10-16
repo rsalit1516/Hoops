@@ -1,6 +1,11 @@
-@import '../../../../content/_variables';
+@use '../../../../content/_variables' as v;
 h1 {
   padding-top: 20px;
-  color: $brand-color;
+  color: v.$brand-color;
   text-align: center;
+}
+
+.container {
+ background-color: v.$table-background-color;
+ border-radius: v.$border-radius;
 }
