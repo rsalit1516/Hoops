@@ -41,10 +41,12 @@
                     [for]="startDatePicker"
                   ></mat-datepicker-toggle>
                   <mat-datepicker #startDatePicker></mat-datepicker>
+                  <mat-hint>Select the start date for the season</mat-hint>
                 </mat-form-field>
               </div>
               <div class="col-5">
                 <mat-form-field>
+                  <mat-label>Season End</mat-label>
                   <input
                     matInput
                     [matDatepicker]="endDatePicker"
@@ -110,7 +112,6 @@
                 </mat-form-field>
               </div>
               <div class="col-5">
-                <div>Online Stops</div>
                 <mat-form-field>
                   <mat-label>Online Stop</mat-label>
                   <input
@@ -128,9 +129,9 @@
               </div>
                 <div class="col-5">
                   <div class="col-8">
-                    <div>Game Schedules</div>
-                    <div>Current Season</div>
-                    <div>Online Registration</div>
+                    <p><mat-checkbox formControlName="gameSchedules">Game Schedules</mat-checkbox></p>
+                    <p><mat-checkbox formControlName="currentSeason">Current Season</mat-checkbox></p>
+                    <p><mat-checkbox formControlName="onlineRegistration">Online Registration</mat-checkbox></p>
                   </div>
                 </div>
               </div>
