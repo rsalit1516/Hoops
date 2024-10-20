@@ -47,7 +47,7 @@ export class AdminSeasonListComponent implements OnInit {
     this.store.dispatch(new adminActions.LoadSeasons());
     this.store.select(fromAdmin.getSeasons).subscribe(seasons => {
       this.seasons = seasons;
-      console.log(seasons);
+      // console.log(seasons);
       this.dataSource.data = seasons;
     });
   }
@@ -58,7 +58,6 @@ export class AdminSeasonListComponent implements OnInit {
     this.displayColumns.push('toDate');
   }
   edit(row: Season) {
-    console.log(row);
     this.store.dispatch(new adminActions.SetSelectedSeason(row));
     this.router.navigate(['./admin/seasons/edit']);
 
