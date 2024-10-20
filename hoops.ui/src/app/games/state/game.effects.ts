@@ -78,7 +78,7 @@ export class GameEffects {
 
     mergeMap((action) =>
       this.gameService.getSeasonPlayoffGames().pipe(
-          tap(data => console.log('All playoff games: ' +this.playoffGameUrl + ' '+ JSON.stringify(data))),
+          // tap(data => console.log('All playoff games: ' +this.playoffGameUrl + ' '+ JSON.stringify(data))),
           shareReplay(1),
           map((games) => new gameActions.LoadPlayoffGamesSuccess(games)),
           tap(games => console.log(games)),
@@ -94,7 +94,7 @@ export class GameEffects {
     mergeMap((action) =>
       this.seasonService.currentSeason$.pipe(
         map((season) => new gameActions.LoadCurrentSeasonSuccess(season)),
-        tap((data) => console.log(data)),
+        // tap((data) => console.log(data)),
         catchError((err) => of(new gameActions.LoadCurrentSeasonFail(err)))
       )
     )
