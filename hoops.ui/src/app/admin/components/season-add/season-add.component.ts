@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { ReactiveFormsModule, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -13,6 +13,7 @@ import { Store } from '@ngrx/store';
 
 import * as fromAdmin from '../../state';
 import { Season } from '@app/domain/season';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-season-add',
@@ -83,9 +84,10 @@ export class SeasonAddComponent implements OnInit{
     });
   }
 
-  save() {
+  save () {
     console.log(this.form.value);
     // convert to Season
+    // this.seasonService.season = signal(new Season());
     let _season = new Season();
     _season.description = this.form.value.name;
     _season.seasonId = this.form.value.seasonId;
@@ -99,9 +101,14 @@ export class SeasonAddComponent implements OnInit{
     _season.gameSchedules = this.form.value.gameSchedules;
     _season.currentSeason = this.form.value.currentSeason;
     _season.onlineRegistration = this.form.value.onlineRegistration;
+    this.seasonService.season = signal(_season);
 
-    this.seasonService.postSeason(_season);
-   }
+    if (_season.seasonId !== undefined) {
+      this.seasonService.postSeason(_season);
+    } else {
+      this.seasonService.patchSeason(_season);
+    }
+  }
   cancel() { }
   new() {}
 }

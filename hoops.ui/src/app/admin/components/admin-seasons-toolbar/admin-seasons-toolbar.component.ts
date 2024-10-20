@@ -5,7 +5,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
+
+import * as fromAdmin from '../../state';
 
 @Component({
   selector: 'app-admin-seasons-toolbar',
@@ -33,12 +35,16 @@ export class AdminSeasonsToolbarComponent implements OnInit {
   constructor(
     private router: Router,
     // private store: Store<fromContent.State>,
-    private fb: UntypedFormBuilder
+    private fb: UntypedFormBuilder,
+    private store: Store<fromAdmin.State>
   ) {}
 
   ngOnInit(): void {
     // throw new Error('Method not implemented.');
   }
 
-  addContent() {}
+  addContent () {
+    this.store.dispatch(new adminActions.SetSelectedSeason(row));
+    this.router.navigate(['./admin/seasons/edit']);
+  }
 }
