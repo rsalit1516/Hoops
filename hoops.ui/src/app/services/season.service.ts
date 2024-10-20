@@ -56,6 +56,14 @@ export class SeasonService {
     );
   }
 
+  postSeason(season: Season) : void {
+    this.http.post<Season>(this.dataService.getCurrentSeasonUrl, season)
+      .pipe(
+      map(season => season as Season),
+      tap(data => console.log('All: ' + JSON.stringify(data))),
+      catchError(this.dataService.handleError('getCurrentSeason', null))
+    )
+  }
 
   postSeason(season: Season) : void {
     this.http.post<Season>(this.dataService.getCurrentSeasonUrl, season)
