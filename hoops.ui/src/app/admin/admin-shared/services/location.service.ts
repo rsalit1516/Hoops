@@ -13,10 +13,9 @@ export class LocationService {
   constructor(private _http: HttpClient, public dataService: DataService) {}
 
   get() {
-    console.log('Get Locations from ' + this.dataService.getLocationUrl);
     return this._http.get<Location[]>(this.dataService.getLocationUrl).pipe(
       tap((locations) => {
-        console.log('All: ' + JSON.stringify(locations))
+        // console.log('All: ' + JSON.stringify(locations))
         this.locations.set(locations);
       }),
 

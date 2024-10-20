@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ReactiveFormsModule, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -12,6 +12,7 @@ import { SeasonService } from '@app/services/season.service';
 import { Store } from '@ngrx/store';
 
 import * as fromAdmin from '../../state';
+import { Season } from '@app/domain/season';
 
 @Component({
   selector: 'app-season-add',
@@ -36,7 +37,7 @@ import * as fromAdmin from '../../state';
     './season-add.component.scss'
   ]
 })
-export class SeasonAddComponent {
+export class SeasonAddComponent implements OnInit{
   title = 'Season';
   seasonService  = inject(SeasonService);
   form: any;
@@ -48,32 +49,59 @@ export class SeasonAddComponent {
     this.form = this.fb.group({
       name: ['', Validators.required], //this.division.divisionDescription,
       seasonId: [''], //this.division.seasonId,
-      divisionId: [ '' ], //this.division.seasonId,
       startDate: [ '' ],
       endDate: [ '' ],
       playerFee: [ '' ],
       sponsorFee: [ '' ],
       sponsorDiscount: [ '' ],
-      onlineStart: [ '' ],
-      onlineEnd: [ '' ],
+      signUpStartDate: [ '' ],
+      signUpEndDate: [ '' ],
       gameSchedules: [ '' ],
       currentSeason: [ '' ],
-      onLineRegistration: [ '' ],
+      onlineRegistration: [ '' ],
     });
   }
-  ngOnit(): void {
-    //get selected season
-
-      this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
-  console.log(season);
-        if (season.seasonId !== undefined) {
-          this.form.name.setValue(season.description);
-        }
-      });
-
+  ngOnInit(): void {
+    this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
+      console.log(season);
+      if (season.seasonId !== undefined) {
+        this.form.patchValue({
+          name: season.description,
+          seasonId: season.seasonId,
+          startDate: season.fromDate,
+          endDate: season.toDate,
+          playerFee: season.participationFee,
+          sponsorFee: season.sponsorFee,
+          sponsorDiscount: season.sponsorDiscount,
+          signUpStartDate: season.onlineStarts,
+          signUpEndDate: season.onlineStops,
+          gameSchedules: season.gameSchedules,
+          currentSeason: season.currentSeason,
+          onlineRegistration: season.onlineRegistration
+        });
+      };
+    });
   }
 
-  save() { }
+  save() {
+    console.log(this.form.value);
+    // convert to Season
+    let _season = new Season();
+    _season.description = this.form.value.name;
+    _season.seasonId = this.form.value.seasonId;
+    _season.fromDate = this.form.value.startDate;
+    _season.toDate = this.form.value.endDate;
+    _season.participationFee = this.form.value.playerFee;
+    _season.sponsorFee = this.form.value.sponsorFee;
+    _season.sponsorDiscount = this.form.value.sponsorDiscount;
+    _season.onlineStarts = this.form.value.signUpStartDate;
+    _season.onlineStops = this.form.value.signUpEndDate;
+    _season.gameSchedules = this.form.value.gameSchedules;
+    _season.currentSeason = this.form.value.currentSeason;
+    _season.onlineRegistration = this.form.value.onlineRegistration;
+
+    this.seasonService.postSeason(_season);
+   }
   cancel() { }
   new() {}
 }
