@@ -41,6 +41,7 @@ export class SeasonService {
   setSelectedSeason(season: Observable<Season>) {
     this.selectedSeason$ = season;
   }
+  
   getSeasons(): Observable<Season[]> {
     return this.http.get<Season[]>(this._seasonsUrl).pipe(
       map(response => this.seasons = response as Season[]),
@@ -54,6 +55,7 @@ export class SeasonService {
       map((season: Season[]) => season.find(p => p.seasonId === id) as Season)
     );
   }
+
 
   postSeason(season: Season) : void {
     this.http.post<Season>(this.dataService.getCurrentSeasonUrl, season)
