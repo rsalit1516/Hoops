@@ -8,6 +8,9 @@ import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 
 import * as fromAdmin from '../../state';
+import * as adminActions from '../../state/admin.actions';
+import { Season } from '@app/domain/season';
+
 
 @Component({
   selector: 'app-admin-seasons-toolbar',
@@ -44,7 +47,7 @@ export class AdminSeasonsToolbarComponent implements OnInit {
   }
 
   addContent () {
-    this.store.dispatch(new adminActions.SetSelectedSeason(row));
+    this.store.dispatch(new adminActions.SetSelectedSeason(new Season()));
     this.router.navigate(['./admin/seasons/edit']);
   }
 }
