@@ -47,6 +47,9 @@ export class AdminSeasonsToolbarComponent implements OnInit {
   }
 
   addContent () {
+    const season = new Season();
+    console.log(season);
+    // season.
     this.store.dispatch(new adminActions.SetSelectedSeason(new Season()));
     this.router.navigate(['./admin/seasons/edit']);
   }
