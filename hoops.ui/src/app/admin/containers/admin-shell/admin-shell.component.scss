@@ -1,7 +1,7 @@
-@import '../../../../Content/variables';
+@use  '../../../../Content/variables' as v;
 
 body {
-  background-color: $black;
+  background-color: v.$black;
 
 }
 
@@ -11,10 +11,10 @@ body {
   padding-right: 10px;
   margin-right: 4px;
   margin-left: 4px;
-  background-color: $black;
-  color: $table-body-color;
-  // border-right: $brand-color solid 1px; ;
-  font-size: 1.2rem;
+  background-color: v.$black;
+  color: v.$table-body-color;
+  // border-right: v.$brand-color solid 1px; ;
+  font-weight: 400;
 }
 
 .admin-events {
@@ -24,29 +24,12 @@ body {
   border: 1px solid #555;
 }
 
-.mat-list-item-content {
-  font-size: 1.4em;
-}
-
-a.mat-list-item {
-  color: $font-color-text;
-  font-size: 1.1em;
-}
-
-.mat-list-text {
-  color: $font-color-text;
-  font-size: 1.2em;
-}
-
 .container {
   margin-left: 0px;
   padding-left: 0px;
   width: 100%;
 }
 
-.mat-divider {
-  background-color: $color;
-}
 
 .row {
   margin-top: 20px;
@@ -56,18 +39,15 @@ a.mat-list-item {
   margin-bottom: 12px
 }
 
-.active {
-  border-bottom: $brand-color;
-  transform: scale(1.1);
-  transition: border-bottom 0.3s ease color 0.3s ease, transform 0.3s ease;
-}
 .mat-drawer-content {
   overflow: hidden;
 }
 .mat-mdc-icon-button:disabled {
-  color: $color;
+  color: v.$color;
 }
 
 .mat-mdc-icon-button:disabled {
-  color: darken($color , 20%);
+  color: darken(v.$color , 20%);
 }
+
+

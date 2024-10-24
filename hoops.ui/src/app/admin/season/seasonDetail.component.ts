@@ -13,11 +13,11 @@ import { NgClass } from '@angular/common';
 })
 
 export class SeasonDetailComponent implements OnInit {
-    @Input() season: Season;
-    seasonForm: UntypedFormGroup;
+    @Input() season: Season | undefined;
+    seasonForm!: UntypedFormGroup;
 
     constructor(private fb: UntypedFormBuilder) { }
-    
+
     ngOnInit(): void {
         this.seasonForm = this.fb.group({
             // id: this.season.id,
@@ -29,6 +29,6 @@ export class SeasonDetailComponent implements OnInit {
     }
 
     save() {
-        
+
     }
 }
