@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-admin-shell-sidebar',
@@ -16,9 +16,9 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
     RouterLinkActive,
     MatDividerModule,
     NgIf,
-],
+  ],
   templateUrl: './admin-shell-sidebar.component.html',
-  styleUrls: [ './admin-shell-sidebar.component.scss',
+  styleUrls: ['./admin-shell-sidebar.component.scss',
     './../../containers/admin-shell/admin-shell.component.scss'],
 })
 export class AdminShellSidebarComponent {
@@ -29,4 +29,48 @@ export class AdminShellSidebarComponent {
   showUsers = false;
   shouldRun = true;
 
+  SeasonSetupSection = 'Season Setup';
+  seasonSetupItems = [
+    { name: 'Seasons', route: '/admin/seasons', isSelected: false },
+    { name: 'Divisions', route: '/admin/division', isSelected: false },
+    { name: 'Teams', route: '/admin/teams', isSelected: false },
+    { name: 'Games', route: '/admin/games', isSelected: false },
+    { name: 'Colors', route: '/admin/colors', isSelected: false },
+  ];
+  CommunicationSection = 'Communcation';
+  communicationItems = [
+    { name: 'Web Content', route: '/admin/content', isSelected: false },
+  ];
+
+  constructor (private router: Router,) { }
+
+  selectedItem: nav| undefined;
+
+  selectItem (item: nav) {
+    this.selectedItem = item;
+
+  }  isSelected (item: nav): boolean {
+    console.log(item);
+    return item.isSelected;
+  }
+
+  navigate (item: nav) {
+    this.seasonSetupItems.forEach(i => {
+      if (i.name === item.name) {
+        i.isSelected = true;
+      } else {
+        i.isSelected = false;
+      }
+    });
+
+    console.log(this.seasonSetupItems);
+    this.router.navigate([item.route]);
+  }
+
+}
+
+class nav {
+  name!: string;
+  route!: string;
+  isSelected!: boolean;
 }
