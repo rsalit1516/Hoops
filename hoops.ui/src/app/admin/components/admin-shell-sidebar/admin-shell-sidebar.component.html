@@ -8,7 +8,7 @@
         ></span>
       </a>
       <!-- <mat-divider></mat-divider> -->
-      <a
+      <!-- <a
         mat-list-item
         *ngIf="showDirectors"
         routerLink="/admin/director"
@@ -28,21 +28,21 @@
         routerLink="/admin/people"
         routerLinkActive="active"
         >People</a
-      >
-      <a
+      > -->
+      <!-- <a
         mat-list-item
         *ngIf="showColors"
         routerLink="/admin/colors"
         routerLinkActive="active"
         >Uniform Colors</a
-      >
-      <a
+      > -->
+      <!-- <a
         mat-list-item
         *ngIf="showUsers"
         routerLink="/admin/users"
         routerLinkActive="active"
         >Users</a
-      >
+      > -->
       <mat-divider
         *ngIf="
           showDirectors ||
@@ -51,25 +51,6 @@
           showColors ||
           showUsers
         "></mat-divider>
-            <!-- <a
-        mat-list-item
-        routerLink="/admin/seasons"
-        routerLinkActive="active"
-        >Seasons</a
-      >
-      <a mat-list-item routerLink="/admin/division" routerLinkActive="active"
-        >Divisions</a
-      >
-      <a mat-list-item routerLink="/admin/games" routerLinkActive="active"
-        >Games</a
-      >
-      <a mat-list-item routerLink="/season-setup" routerLinkActive="active"
-        >Teams</a
-      > -->
-      <!--<a mat-list-item routerLink="/admin/teams" routerLinkActive="active">Teams</a>
-    <a mat-list-item routerLink="/admin/games" routerLinkActive="active">Games</a> -->
-      <!-- <mat-divider></mat-divider>
-      <a mat-list-item routerLink="/admin/content">Notices</a> -->
       <!-- <a mat-list-item routerLink="./director" routerLinkActive="active">Directors</a> -->
       <h3 mat-subheader>{{SeasonSetupSection}}</h3>
       <mat-list-item
@@ -79,7 +60,6 @@
       >
         {{ item.name }}
       </mat-list-item>
-    <!-- <mat-divider></mat-divider> -->
      <h3 mat-subheader>{{CommunicationSection}}</h3>
       <mat-list-item
         *ngFor="let item of communicationItems"
@@ -89,7 +69,16 @@
         {{ item.name }}
       </mat-list-item>
 
+      <div *ngIf="showPeopleSection">
+      <h3 mat-subheader>{{PeopleSection}}</h3>
+      <mat-list-item
+        *ngFor="let item of peopleItems"
+        (click)="navigate(item)"
+        [ngClass]="{ 'selected-list-item': isSelected(item) }"
+      >
+        {{ item.name }}
+      </mat-list-item>
+    </div>
     </mat-nav-list>
-    <!-- <p><button mat-button (click)="sidenav.toggle()">sidenav.toggle()</button></p>  -->
   </mat-sidenav-content>
 </mat-sidenav-container>
