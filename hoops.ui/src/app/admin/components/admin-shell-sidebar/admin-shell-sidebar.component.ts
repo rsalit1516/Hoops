@@ -35,11 +35,20 @@ export class AdminShellSidebarComponent {
     { name: 'Divisions', route: '/admin/division', isSelected: false },
     { name: 'Teams', route: '/admin/teams', isSelected: false },
     { name: 'Games', route: '/admin/games', isSelected: false },
-    { name: 'Colors', route: '/admin/colors', isSelected: false },
   ];
   CommunicationSection = 'Communcation';
   communicationItems = [
     { name: 'Web Content', route: '/admin/content', isSelected: false },
+  ];
+  showPeopleSection = false;
+  PeopleSection = 'People';
+  peopleItems = [
+    { name: 'Directors', route: '/admin/director', isSelected: false },
+    { name: 'Households', route: '/admin/households', isSelected: false },
+    { name: 'People', route: '/admin/people', isSelected: false },
+    { name: 'Users', route: '/admin/users', isSelected: false },
+    { name: 'Uniform Colors', route: '/admin/colors', isSelected: false },
+
   ];
 
   constructor (private router: Router,) { }
