@@ -11,6 +11,7 @@ export class Season  {
     public onlineStops?: Date;
     public currentSeason!: boolean;
     public currentSchedule!: boolean;
+    public currentSignUps!: boolean;
     public gameSchedules!: boolean;
     public onlineRegistration!: boolean;
     constructor() {}

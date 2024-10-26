@@ -59,6 +59,8 @@ export class SeasonAddComponent implements OnInit{
       signUpEndDate: [ '' ],
       gameSchedules: [ '' ],
       currentSeason: [ '' ],
+      currentSchedule: [ '' ],
+      currentSignUps: [ '' ],
       onlineRegistration: [ '' ],
     });
   }
@@ -78,6 +80,8 @@ export class SeasonAddComponent implements OnInit{
           signUpEndDate: season.onlineStops,
           gameSchedules: season.gameSchedules,
           currentSeason: season.currentSeason,
+          currentSchedule: season.currentSchedule,
+          currentSignUps: season.currentSignUps,
           onlineRegistration: season.onlineRegistration
         });
       };

@@ -38,7 +38,7 @@ export class AdminShellSidebarComponent {
   ];
   CommunicationSection = 'Communcation';
   communicationItems = [
-    { name: 'Web Content', route: '/admin/content', isSelected: false },
+    { name: 'Notices', route: '/admin/content', isSelected: false },
   ];
   showPeopleSection = false;
   PeopleSection = 'People';
