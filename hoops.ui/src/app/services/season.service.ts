@@ -26,7 +26,7 @@ export class SeasonService {
   currentSeason$ =
   this.http.get<Season>(this.dataService.getCurrentSeasonUrl).pipe(
     map(season => season as Season),
-    // tap(data => console.log('All: ' + JSON.stringify(data))),
+    tap(data => console.log('All: ' + JSON.stringify(data))),
     catchError(this.dataService.handleError('getCurrentSeason', null))
   );
 
@@ -38,10 +38,6 @@ export class SeasonService {
     //   this.selectedSeason = s);
   }
 
-  setSelectedSeason(season: Observable<Season>) {
-    this.selectedSeason$ = season;
-  }
-  
   getSeasons(): Observable<Season[]> {
     return this.http.get<Season[]>(this._seasonsUrl).pipe(
       map(response => this.seasons = response as Season[]),
@@ -57,33 +53,22 @@ export class SeasonService {
   }
 
 
-  postSeason(season: Season) : void {
-    this.http.post<Season>(this.dataService.getCurrentSeasonUrl, season)
+  postSeason(season: Season): Observable<Season | null> {
+    return this.http.post<Season>(this.dataService.getCurrentSeasonUrl, season)
       .pipe(
       map(season => season as Season),
-      tap(data => console.log('All: ' + JSON.stringify(data))),
+      tap(data => console.log('All post: ' + JSON.stringify(data))),
       catchError(this.dataService.handleError('getCurrentSeason', null))
     )
   }
 
-  patchSeason (season: Season): void {
-    this.http.patch<Season>(this.dataService.getCurrentSeasonUrl, season)
+  putSeason (season: Season): any {
+    return this.http.put<Season>(this.dataService.getCurrentSeasonUrl, season)
       .pipe(
         map(season => season as Season),
-        tap(data => console.log('All: ' + JSON.stringify(data))),
+        tap(data => console.log('All put: ' + JSON.stringify(data))),
         catchError(this.dataService.handleError('getCurrentSeason', null))
       )
   }
 
-  // getCurrent(): Observable<Season> {
-  //   return this.http.get<Season>(this._seasonUrl).pipe(
-  //      map(response => {
-  //        this.selectedSeason = response as Season;
-  //        console.log(response);
-  //       }),
-  //     tap(data => (this.selectedSeason = data)),
-  //     tap(data => console.log('All: ' + JSON.stringify(data))),
-  //     catchError(this.dataService.handleError('getCurrentSeason', null))
-  //   );
-  // }
 }

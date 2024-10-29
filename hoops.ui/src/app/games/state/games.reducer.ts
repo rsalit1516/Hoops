@@ -38,7 +38,7 @@ const cd = 0,
       description: 'Summer Season',
       currentSeason: true,
       currentSchedule: true,
-currentSignUps: true,
+      currentSignUps: true,
       gameSchedules: true,
       onlineRegistration: false,
     },
@@ -66,11 +66,11 @@ export function reducer(state = initialState, action: GameActions): GameState {
         ...state,
         currentSeason: action.payload,
       };
-      case GameActionTypes.LoadCurrentSeasonSuccess:
-        return {
-          ...state,
-          currentSeason: action.payload,
-        };
+    case GameActionTypes.LoadCurrentSeasonSuccess:
+      return {
+        ...state,
+        currentSeason: action.payload,
+      };
 
     case GameActionTypes.SetCurrentDivision:
       return {

@@ -13,7 +13,7 @@ import { Store } from '@ngrx/store';
 
 import * as fromAdmin from '../../state';
 import { Season } from '@app/domain/season';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-season-add',
@@ -45,7 +45,7 @@ export class SeasonAddComponent implements OnInit{
   startDatePicker!: MatDatepickerPanel<MatDatepickerControl<any>, any, any>;
   store = inject(Store<fromAdmin.State>);
 
-  constructor (private fb: UntypedFormBuilder) {
+  constructor (private fb: UntypedFormBuilder, private router: Router) {
 
     this.form = this.fb.group({
       name: ['', Validators.required], //this.division.divisionDescription,
@@ -88,6 +88,14 @@ export class SeasonAddComponent implements OnInit{
     });
   }
 
+  onSubmit() {
+    if (this.form.valid) {
+      console.log('Form Submitted!', this.form.value);
+      this.save();
+    } else {
+      console.log('Form is invalid');
+    }
+  }
   save () {
     console.log(this.form.value);
     // convert to Season
@@ -107,12 +115,14 @@ export class SeasonAddComponent implements OnInit{
     _season.onlineRegistration = this.form.value.onlineRegistration;
     this.seasonService.season = signal(_season);
 
-    if (_season.seasonId !== undefined) {
+    if (_season.seasonId === 0) {
       this.seasonService.postSeason(_season);
     } else {
-      this.seasonService.patchSeason(_season);
+      this.seasonService.putSeason(_season);
     }
   }
-  cancel() { }
-  new() {}
+  cancel() {
+    this.router.navigate(['/admin/seasons']);
+  }
+
 }
