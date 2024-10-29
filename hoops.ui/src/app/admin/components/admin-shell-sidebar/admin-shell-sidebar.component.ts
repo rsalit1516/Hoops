@@ -59,7 +59,6 @@ export class AdminShellSidebarComponent {
     this.selectedItem = item;
 
   }  isSelected (item: nav): boolean {
-    console.log(item);
     return item.isSelected;
   }
 
@@ -72,7 +71,6 @@ export class AdminShellSidebarComponent {
       }
     });
 
-    console.log(this.seasonSetupItems);
     this.router.navigate([item.route]);
   }
 

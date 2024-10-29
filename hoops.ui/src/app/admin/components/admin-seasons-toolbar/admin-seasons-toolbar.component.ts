@@ -46,11 +46,11 @@ export class AdminSeasonsToolbarComponent implements OnInit {
     // throw new Error('Method not implemented.');
   }
 
-  addContent () {
+  addSeason () {
     const season = new Season();
-    console.log(season);
-    // season.
-    this.store.dispatch(new adminActions.SetSelectedSeason(new Season()));
+    season.seasonId = 0;
+console.log(season);
+    this.store.dispatch(new adminActions.SetSelectedSeason(season));
     this.router.navigate(['./admin/seasons/edit']);
   }
 }

@@ -62,10 +62,10 @@ export class AdminShellComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(new contentActions.LoadAdminContent());
     this.store.dispatch(new adminActions.LoadSeasons());
-    this.store.select(fromAdmin.getSeasons).subscribe((seasons) => {
-      console.log('triggering seasons')
-      this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
-        if (season.seasonId === undefined) {
+    // this.store.select(fromAdmin.getSeasons).subscribe((seasons) => {
+    //   console.log('triggering seasons')
+    //   this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
+    //     if (season.seasonId === undefined) {
           // for (let i = 0; i < seasons.length; i++) {
           //   if (seasons[i].currentSeason === true) {
           //     this.store.dispatch(
@@ -74,12 +74,12 @@ export class AdminShellComponent implements OnInit {
           //     break;
           //   }
           // }
-        }
-      });
-    });
+     //   }
+     //  });
+    // });
     this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
-      if (season.seasonId !== undefined) {
-         console.log(season);
+      console.log(season);
+      if (season.seasonId !== 0) {
         this.store.dispatch(new adminActions.LoadDivisions());
         this.store.dispatch(new adminActions.LoadSeasonTeams());
         this.store.dispatch(new adminActions.LoadGames());

@@ -2,14 +2,13 @@
   <mat-card-header>
     <mat-card-title>Season Detail</mat-card-title>
   </mat-card-header>
-  <mat-card-content>
-    <form
-      class="form-horizontal"
-      novalidate
-      (ngSubmit)="save()"
-      [formGroup]="form"
-      [formGroup]="form"
-    >
+  <form
+    class="form-horizontal"
+    novalidate
+    (ngSubmit)="onSubmit()"
+    [formGroup]="form"
+  >
+    <mat-card-content>
       <fieldset>
         <div class="row">
           <div class="col-10">
@@ -53,10 +52,10 @@
                     formControlName="endDate"
                   />
                   <mat-datepicker-toggle
-                  matSuffix
-                  [for]="endDatePicker"
-                ></mat-datepicker-toggle>
-                <mat-datepicker #endDatePicker></mat-datepicker>
+                    matSuffix
+                    [for]="endDatePicker"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #endDatePicker></mat-datepicker>
                 </mat-form-field>
               </div>
               <div class="col-4">
@@ -71,7 +70,6 @@
                     value="playerFee"
                   />
                 </mat-form-field>
-
               </div>
               <div class="col-4">
                 <mat-form-field>
@@ -107,10 +105,10 @@
                     formControlName="signUpStartDate"
                   />
                   <mat-datepicker-toggle
-                  matSuffix
-                  [for]="onlineStartPicker"
-                ></mat-datepicker-toggle>
-                <mat-datepicker #onlineStartPicker></mat-datepicker>
+                    matSuffix
+                    [for]="onlineStartPicker"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #onlineStartPicker></mat-datepicker>
                 </mat-form-field>
               </div>
               <div class="col-5">
@@ -122,33 +120,46 @@
                     formControlName="signUpEndDate"
                   />
                   <mat-datepicker-toggle
-                  matSuffix
-                  [for]="onlineStopPicker"
-                ></mat-datepicker-toggle>
-                <mat-datepicker #onlineStopPicker></mat-datepicker>
+                    matSuffix
+                    [for]="onlineStopPicker"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #onlineStopPicker></mat-datepicker>
                 </mat-form-field>
-
               </div>
-                <div class="col-6">
-                  <div class="col-11">
-                    <p><mat-checkbox formControlName="currentSignUps">Current Sign Ups</mat-checkbox></p>
-                    <p><mat-checkbox formControlName="currentSeason">Current Season</mat-checkbox></p>
-                    <p><mat-checkbox formControlName="currentSchedule">Current Schedule</mat-checkbox></p>
-                  </div>
+              <div class="col-6">
+                <div class="col-11">
+                  <p>
+                    <mat-checkbox formControlName="currentSignUps"
+                      >Current Sign Ups</mat-checkbox
+                    >
+                  </p>
+                  <p>
+                    <mat-checkbox formControlName="currentSeason"
+                      >Current Season</mat-checkbox
+                    >
+                  </p>
+                  <p>
+                    <mat-checkbox formControlName="currentSchedule"
+                      >Current Schedule</mat-checkbox
+                    >
+                  </p>
                 </div>
               </div>
             </div>
           </div>
+        </div>
       </fieldset>
-    </form>
-  </mat-card-content>
-  <mat-card-actions>
-    <button mat-raised-button type="submit" color="primary" (click)="new()">
-      New Season
-    </button>
-    <button mat-raised-button type="submit" color="primary">Save</button>
-    <button mat-raised-button type="button" color="primary"
-    (click)="cancel()">Cancel
-  </button>
-  </mat-card-actions>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button type="submit" color="primary">Save</button>
+      <button
+        mat-raised-button
+        type="button"
+        color="primary"
+        (click)="cancel()"
+      >
+        Cancel
+      </button>
+    </mat-card-actions>
+  </form>
 </mat-card>
