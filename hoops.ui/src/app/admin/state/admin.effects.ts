@@ -130,6 +130,7 @@ export class AdminEffects {
       mergeMap(action =>
         this.seasonService.currentSeason$.pipe(
           map(season => new adminActions.SetSelectedSeason(season as Season)),
+          tap(data => console.log('Current season: ' + JSON.stringify(data))),
           catchError(err => of(new adminActions.LoadDivisionsFail(err)))
         )
       )

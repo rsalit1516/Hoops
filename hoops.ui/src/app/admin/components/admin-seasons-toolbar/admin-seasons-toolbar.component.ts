@@ -11,7 +11,6 @@ import * as fromAdmin from '../../state';
 import * as adminActions from '../../state/admin.actions';
 import { Season } from '@app/domain/season';
 
-
 @Component({
   selector: 'app-admin-seasons-toolbar',
   standalone: true,
@@ -26,13 +25,14 @@ import { Season } from '@app/domain/season';
   styleUrls: [
     './../../../shared/scss/forms.scss',
     './../../admin.component.scss',
-    './admin-seasons-toolbar.component.scss']
+    './admin-seasons-toolbar.component.scss',
+  ],
 })
 export class AdminSeasonsToolbarComponent implements OnInit {
-    checked = true;
-        filterForm = this.fb.group({
-      activeContent: true
-    });
+  checked = true;
+  filterForm = this.fb.group({
+    activeContent: true,
+  });
   title = 'Seasons List';
 
   constructor(
@@ -46,10 +46,10 @@ export class AdminSeasonsToolbarComponent implements OnInit {
     // throw new Error('Method not implemented.');
   }
 
-  addSeason () {
+  addSeason() {
     const season = new Season();
     season.seasonId = 0;
-console.log(season);
+    console.log(season);
     this.store.dispatch(new adminActions.SetSelectedSeason(season));
     this.router.navigate(['./admin/seasons/edit']);
   }

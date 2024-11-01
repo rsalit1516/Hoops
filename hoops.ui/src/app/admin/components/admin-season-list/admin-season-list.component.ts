@@ -58,6 +58,7 @@ export class AdminSeasonListComponent implements OnInit {
     this.displayColumns.push('toDate');
   }
   edit(row: Season) {
+    console.log(row)
     this.store.dispatch(new adminActions.SetSelectedSeason(row));
     this.router.navigate(['./admin/seasons/edit']);
 
