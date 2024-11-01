@@ -84,29 +84,30 @@ export class AdminShellComponent implements OnInit {
         this.store.dispatch(new adminActions.LoadSeasonTeams());
         this.store.dispatch(new adminActions.LoadGames());
         // this.store.dispatch(new adminActions.LoadPlayoffGames());
+        this.store.select(fromAdmin.getSeasonDivisions).subscribe((divisions) => {
+          this.store.dispatch(new adminActions.SetSelectedDivision(divisions[0]));
+        });
+
+        this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
+          if (division !== undefined) {
+            this.store.dispatch(new adminActions.LoadDivisionTeams());
+          }
+        });
       }
     });
 
-    this.store.select(fromAdmin.getSeasonDivisions).subscribe((divisions) => {
-      this.store.dispatch(new adminActions.SetSelectedDivision(divisions[0]));
-    });
 
-    this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
-      if (division !== undefined) {
-        this.store.dispatch(new adminActions.LoadDivisionTeams());
-      }
-    });
 
-    this.store.select(fromAdmin.getSeasonDivisions).subscribe((divisions) => {
-      this.store.dispatch(new adminActions.SetSelectedDivision(divisions[0]));
-    });
-    this.store.select(fromAdmin.getSeasonTeams).subscribe((teams) => {
-      this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
-        if (division !== undefined) {
-          this.store.dispatch(new adminActions.LoadDivisionTeams());
-        }
-      });
-    });
+    // this.store.select(fromAdmin.getSeasonDivisions).subscribe((divisions) => {
+    //   this.store.dispatch(new adminActions.SetSelectedDivision(divisions[0]));
+    // });
+    // this.store.select(fromAdmin.getSeasonTeams).subscribe((teams) => {
+    //   this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
+    //     if (division !== undefined) {
+    //       this.store.dispatch(new adminActions.LoadDivisionTeams());
+    //     }
+    //   });
+    // });
 
     this.colorService
       .getColors()
