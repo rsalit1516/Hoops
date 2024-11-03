@@ -174,13 +174,15 @@ export class ContentService {
       }),
     };
     console.log(content);
-    return this.http
-      .post<WebContent>(
-        this.data.postContentUrl,
-        content,
-        this.data.httpOptions
-      )
-      .pipe(catchError(this.data.handleError('addContent', content)));
+    return this.data.post(content, this.data.postContentUrl);
+    // );
+    // .http
+    //   .post<WebContent>(
+    //     this.data.postContentUrl,
+    //     content,
+    //     this.data.httpOptions
+    //   )
+    //   .pipe(catchError(this.data.handleError('addContent', content)));
   }
 
   private updateContent(content: Content, options: HttpParams) {

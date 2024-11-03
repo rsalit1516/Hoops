@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Division } from '@app/domain/division';
 import { map, tap, catchError } from 'rxjs/operators';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Constants } from '@app/shared/constants';
 
@@ -29,6 +29,7 @@ export class DataService {
   putContentUrl = this.baseUrl + '/api/WebContent/';
   getCurrentSponsors = this.baseUrl + '/api/Sponsor/GetSeasonSponsors/';
   getLocations = this.baseUrl + '/api/Locations/';
+  seasonUrl = this.baseUrl + '/api/Season/';
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -42,6 +43,21 @@ export class DataService {
     // this.webUrl = 'https://apicsbc.azurewebsites.net';
     this.dotNetCoreUrl = environment.apiUrl;
     this.getActiveWebContentUrl = this.dotNetCoreUrl + '/api/webcontent/getActiveWebContent';
+  }
+
+
+  post<T>(data: T, url: string): Observable<T> {
+    // content.webContentId = this.standardNotice;
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+    };
+    console.log(data);
+    return this._http
+      .post<T>(url, data, httpOptions
+      )
+      .pipe(catchError(this.handleError('Error', data)));
   }
 
   /**

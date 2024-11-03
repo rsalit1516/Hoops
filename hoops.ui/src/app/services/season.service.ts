@@ -9,8 +9,8 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class SeasonService {
-  private _seasonUrl = this.dataService.webUrl + '/api/season/getCurrentSeason';
-  private _seasonsUrl = this.dataService.webUrl + '/api/season/GetAll';
+  private _seasonUrl = this.dataService.seasonUrl + 'getCurrentSeason';
+  private _seasonsUrl = this.dataService.seasonUrl + 'GetAll';
   public currentSeason!: Observable<Season>;
   // private selectedSeason = new Subject<Season>();
   selectedSeason?: Season | null;
@@ -24,7 +24,7 @@ export class SeasonService {
   );
 
   currentSeason$ =
-  this.http.get<Season>(this.dataService.getCurrentSeasonUrl).pipe(
+  this.http.get<Season>(this.dataService.seasonUrl).pipe(
     map(season => season as Season),
     tap(data => console.log('All: ' + JSON.stringify(data))),
     catchError(this.dataService.handleError('getCurrentSeason', null))
@@ -54,16 +54,21 @@ export class SeasonService {
 
 
   postSeason(season: Season): Observable<Season | null> {
-    return this.http.post<Season>(this.dataService.getCurrentSeasonUrl, season)
-      .pipe(
-      map(season => season as Season),
-      tap(data => console.log('All post: ' + JSON.stringify(data))),
-      catchError(this.dataService.handleError('getCurrentSeason', null))
-    )
+    console.log('posting season');
+    return this.dataService.post<Season>(season, this.dataService.seasonUrl);
+
+    // return this.http.post<Season>(this.dataService.seasonUrl,
+    //   season,
+    //   this.dataService.httpOptions);
+      // // .pipe(
+      // // map(season => season as Season),
+      // // tap(data => console.log('All post: ' + JSON.stringify(data))),
+      // // catchError(this.dataService.handleError('getCurrentSeason', null))
+    // )
   }
 
   putSeason (season: Season): any {
-    return this.http.put<Season>(this.dataService.getCurrentSeasonUrl, season)
+    return this.http.put<Season>(this.dataService.seasonUrl, season)
       .pipe(
         map(season => season as Season),
         tap(data => console.log('All put: ' + JSON.stringify(data))),
