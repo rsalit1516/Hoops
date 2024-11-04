@@ -166,8 +166,7 @@ export class ContentService {
     }
   }
 
-  private createContent(content: Content, options: HttpParams) {
-    // content.webContentId = this.standardNotice;
+  private createContent(content: Content, options: HttpParams): Observable<Content> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -175,14 +174,6 @@ export class ContentService {
     };
     console.log(content);
     return this.data.post(content, this.data.postContentUrl);
-    // );
-    // .http
-    //   .post<WebContent>(
-    //     this.data.postContentUrl,
-    //     content,
-    //     this.data.httpOptions
-    //   )
-    //   .pipe(catchError(this.data.handleError('addContent', content)));
   }
 
   private updateContent(content: Content, options: HttpParams) {
