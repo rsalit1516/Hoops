@@ -98,7 +98,7 @@ export class ContentEditComponent implements OnInit {
       nonNullable: true,
     }),
 
-    subTitle: new FormControl('', [Validators.maxLength(50)]),
+    subTitle: new FormControl('', [ Validators.maxLength(50) ]),
     body: new FormControl<string | null>(''),
     location: new FormControl<string | null>(''),
     dateAndTime: new FormControl<string | null>(''),
@@ -119,7 +119,7 @@ export class ContentEditComponent implements OnInit {
     private router: Router,
     private store: Store<fromContent.State>,
     private contentService: ContentService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.pageTitle = 'Edit Web Content Messages';
@@ -179,7 +179,7 @@ export class ContentEditComponent implements OnInit {
     console.log(this.contentForm.value);
     if (this.contentForm.dirty) {
       this.contentService.saveContent(this.contentForm.value);
-      this.router.navigate(['/admin/content']);
+      this.router.navigate([ '/admin/content' ]);
     }
   }
   getWebContentType(id: number): WebContentType {
@@ -219,4 +219,14 @@ export class ContentEditComponent implements OnInit {
   protected onInput(event: Event) {
     this.value.set((event.target as HTMLInputElement).value);
   }
+  deleteContent(): void {
+    if (this.contentForm.get('webContentId')!.value !== 0) {
+      if (confirm(`Really delete the content: ${this.content.title}?`)) {
+        this.contentService.deleteContent(
+          this.contentForm.get('webContentId')!.value!
+        );
+        // this.onSaveComplete();
+      }
+    }
   }
+}
