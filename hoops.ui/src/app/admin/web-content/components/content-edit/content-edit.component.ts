@@ -36,6 +36,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '@app/admin/shared/confirm-dialog/confirm-dialog.component';
+import { Constants } from '@app/shared/constants';
 
 @Component({
   selector: 'csbc-content-edit',
@@ -65,7 +66,7 @@ import { ConfirmDialogComponent } from '@app/admin/shared/confirm-dialog/confirm
 })
 export class ContentEditComponent implements OnInit {
   @ViewChildren(FormControlName, { read: ElementRef })
-  contentService = inject(ContentService);
+
   store = inject(Store<fromContent.State>);
 
   // @Input()
@@ -120,20 +121,22 @@ export class ContentEditComponent implements OnInit {
   });
   floatLabelType: FloatLabelType = 'auto';
   protected readonly value = signal('');
-  constructor (
+
+  constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
+    private contentService: ContentService,
     public dialog: MatDialog
-  ) { }
+  ) {}
 
-  ngOnInit (): void {
+  ngOnInit(): void {
     this.pageTitle = 'Edit Web Content Messages';
     this.hideId = true;
     this.getContent();
   }
 
-  update (): void {
+  update(): void {
     this.contentForm.patchValue({
       title: this.selectedContent.title,
       subTitle: this.selectedContent.subTitle,
@@ -144,7 +147,7 @@ export class ContentEditComponent implements OnInit {
       // webContentTypeControl: this.content.webContentType,
     });
   }
-  getContent (): void {
+  getContent(): void {
     this.store
       .pipe(select(fromContent.getSelectedContent))
       .subscribe((content) => {
@@ -154,7 +157,7 @@ export class ContentEditComponent implements OnInit {
         }
       });
   }
-  onContentRetrieved (content: Content): void {
+  onContentRetrieved(content: Content): void {
     console.log(content);
     if (this.contentForm) {
       this.contentForm.reset();
@@ -163,7 +166,7 @@ export class ContentEditComponent implements OnInit {
     if (content.webContentId === 0) {
       this.pageTitle = 'Add Notice';
     } else {
-      this.pageTitle = `Edit Notice: ${ content.title }`;
+      this.pageTitle = `Edit Notice: ${content.title}`;
     }
 
     // // Update the data on the form
@@ -181,14 +184,31 @@ export class ContentEditComponent implements OnInit {
     this.selected = content.webContentType;
     console.log(this.selected);
   }
-  saveContent () {
+  saveContent() {
     console.log(this.contentForm.value);
     if (this.contentForm.dirty) {
-      this.contentService.saveContent(this.contentForm.value);
+      let content = new Content();
+      const form = this.contentForm.value;
+      // content.webContentType = this.getWebContentType(
+      //   contentForm.webContentType.Web
+      // );
+      content.webContentTypeId = form.webContentTypeControl!;
+      content.webContentId = form.webContentId === null ? 0 : form.webContentId;
+      // console.log(content);
+      content.title = form.title!;
+      content.subTitle = form.subTitle!;
+      content.body = form.body!;
+      content.dateAndTime = form.dateAndTime!;
+      content.location = form.location!;
+      content.expirationDate = form.expirationDate!;
+      content.contentSequence = form.contentSequence!;
+      content.companyId = Constants.COMPANYID;
+      content.webContentTypeId = form.webContentTypeControl!;
+      this.contentService.saveContent(content);
       this.router.navigate(['/admin/content']);
     }
   }
-  getWebContentType (id: number): WebContentType {
+  getWebContentType(id: number): WebContentType {
     let webContentType = new WebContentType();
     console.log(id);
     switch (id) {
@@ -219,25 +239,26 @@ export class ContentEditComponent implements OnInit {
     // this.contentForm.controls[ controlName ].hasError(errorName);
   };
 
-  getFloatLabelValue (): FloatLabelType {
+  getFloatLabelValue(): FloatLabelType {
     return this.floatLabelType;
   }
-  protected onInput (event: Event) {
+  protected onInput(event: Event) {
     this.value.set((event.target as HTMLInputElement).value);
   }
-  deleteRecord (): void {
+  deleteRecord(): void {
     console.log(this.contentForm.get('webContentId')!.value);
     if (this.contentForm.get('webContentId')!.value !== 0) {
-       this.contentService.deleteContent(
-          this.contentForm.get('webContentId')!.value!
-        );
-        // this.onSaveComplete();
-      }
+      this.contentService.deleteContent(
+        this.contentForm.get('webContentId')!.value!
+      );
+      // this.onSaveComplete();
+    }
   }
-  openDialog (): void {
+  openDialog(): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent);
 
     dialogRef.afterClosed().subscribe((result) => {
+      console.log(result);
       if (result) {
         this.deleteRecord();
       }
