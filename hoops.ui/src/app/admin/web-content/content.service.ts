@@ -68,6 +68,7 @@ export class ContentService {
     let filteredContent: WebContent[] = [];
 
     this.store.select(fromContent.getContentList).subscribe((contents) => {
+      console.log(contents);
       if (contents !== undefined) {
         const today = moment();
         // console.log(today);
@@ -116,40 +117,29 @@ export class ContentService {
 
   deleteContent(webContentId: number | null) {
     console.log('Deleting content');
-    //   let headers = new Headers({ 'Content-Type': 'application/json' });
-    //   // To Do: add this back
-    //   let options = { params: new HttpParams() };
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    // To Do: add this back
+    let options = { params: new HttpParams() };
 
-    //   const url = `${this.baseUrl}/${webContentId}`;
-    //   return this.http
-    //     .delete(url, options)
-    //     .pipe(
-    //       tap(data => console.log('deleteContent: ' + JSON.stringify(data))),
-    //       catchError(this.data.handleError('deleteContent', []))
-    //     );
+    const url = `${this.data.getContentUrl}/${webContentId}`;
+    return this.data.delete(url);
   }
 
-  saveContent(contentForm: any) {
-    console.log(contentForm);
+  saveContent(data: Content) {
+    console.log(data);
     let content = new Content();
-    // content.webContentType = this.getWebContentType(
-    //   contentForm.webContentType.Web
-    // );
-    content.webContentTypeId = contentForm.webContentTypeControl;
-    content.webContentId =
-      contentForm.webContentId === null ? 0 : contentForm.webContentId;
-    // console.log(content);
-    content.title = contentForm.title;
-    content.subTitle = contentForm.subTitle;
-    content.body = contentForm.body;
-    content.dateAndTime = contentForm.dateAndTime;
-    content.location = contentForm.location;
-    content.expirationDate = contentForm.expirationDate;
-    content.contentSequence = contentForm.contentSequence;
+    content.webContentTypeId = data.webContentTypeId;
+    content.webContentId = data.webContentId === null ? 0 : data.webContentId;
+    content.title = data.title;
+    content.subTitle = data.subTitle;
+    content.body = data.body;
+    content.dateAndTime = data.dateAndTime;
+    content.location = data.location;
+    content.expirationDate = data.expirationDate;
+    content.contentSequence = data.contentSequence;
     content.companyId = Constants.COMPANYID;
-    content.webContentTypeId = contentForm.webContentTypeControl;
 
-    if (contentForm.webContentId === undefined) {
+    if (data.webContentId === undefined) {
       return this.createContent(content).subscribe((x) => {
         // console.log(x)
         this.store.dispatch(new contentActions.LoadAdminContent());

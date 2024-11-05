@@ -69,6 +69,16 @@ export class DataService {
         catchError(this.handleError('updateContent', data))
       );
   }
+
+  delete(url: string) {
+    console.log(url);
+      return this._http
+        .delete(url, this.httpOptions)
+        .pipe(
+          tap(data => console.log('deleteContent: ' + JSON.stringify(data))),
+          catchError(this.handleError('deleteContent', []))
+      );
+    }
   /**
    * Handle Http operation that failed.
    * Let the app continue.
