@@ -6,6 +6,7 @@ import {
   Inject,
   signal,
   ChangeDetectionStrategy,
+  inject,
 } from '@angular/core';
 import {
   Validators,
@@ -33,6 +34,8 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatOptionModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '@app/admin/shared/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'csbc-content-edit',
@@ -49,16 +52,21 @@ import { MatSelectModule } from '@angular/material/select';
     MatOptionModule,
     MatButtonModule,
     MatSelectModule,
+    ConfirmDialogComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './content-edit.component.html',
-  styleUrls: [ './content-edit.component.scss',
+  styleUrls: [
+    './content-edit.component.scss',
     '../../../admin.component.scss',
     '../../../../shared/scss/forms.scss',
-    '../../../../shared/scss/cards.scss' ],
+    '../../../../shared/scss/cards.scss',
+  ],
 })
 export class ContentEditComponent implements OnInit {
   @ViewChildren(FormControlName, { read: ElementRef })
+  contentService = inject(ContentService);
+  store = inject(Store<fromContent.State>);
 
   // @Input()
   content!: Content;
@@ -98,7 +106,7 @@ export class ContentEditComponent implements OnInit {
       nonNullable: true,
     }),
 
-    subTitle: new FormControl('', [ Validators.maxLength(50) ]),
+    subTitle: new FormControl('', [Validators.maxLength(50)]),
     body: new FormControl<string | null>(''),
     location: new FormControl<string | null>(''),
     dateAndTime: new FormControl<string | null>(''),
@@ -112,14 +120,12 @@ export class ContentEditComponent implements OnInit {
   });
   floatLabelType: FloatLabelType = 'auto';
   protected readonly value = signal('');
-
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private store: Store<fromContent.State>,
-    private contentService: ContentService
-  ) { }
+    public dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.pageTitle = 'Edit Web Content Messages';
@@ -179,7 +185,7 @@ export class ContentEditComponent implements OnInit {
     console.log(this.contentForm.value);
     if (this.contentForm.dirty) {
       this.contentService.saveContent(this.contentForm.value);
-      this.router.navigate([ '/admin/content' ]);
+      this.router.navigate(['/admin/content']);
     }
   }
   getWebContentType(id: number): WebContentType {
@@ -219,7 +225,8 @@ export class ContentEditComponent implements OnInit {
   protected onInput(event: Event) {
     this.value.set((event.target as HTMLInputElement).value);
   }
-  deleteContent(): void {
+  deleteRecord(): void {
+    console.log(this.contentForm.get('webContentId')!.value);
     if (this.contentForm.get('webContentId')!.value !== 0) {
       if (confirm(`Really delete the content: ${this.content.title}?`)) {
         this.contentService.deleteContent(
@@ -228,5 +235,14 @@ export class ContentEditComponent implements OnInit {
         // this.onSaveComplete();
       }
     }
+  }
+  openDialog(): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.deleteRecord();
+      }
+    });
   }
 }
