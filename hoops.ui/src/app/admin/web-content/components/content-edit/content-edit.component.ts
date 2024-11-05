@@ -120,20 +120,20 @@ export class ContentEditComponent implements OnInit {
   });
   floatLabelType: FloatLabelType = 'auto';
   protected readonly value = signal('');
-  constructor(
+  constructor (
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     public dialog: MatDialog
-  ) {}
+  ) { }
 
-  ngOnInit(): void {
+  ngOnInit (): void {
     this.pageTitle = 'Edit Web Content Messages';
     this.hideId = true;
     this.getContent();
   }
 
-  update(): void {
+  update (): void {
     this.contentForm.patchValue({
       title: this.selectedContent.title,
       subTitle: this.selectedContent.subTitle,
@@ -144,7 +144,7 @@ export class ContentEditComponent implements OnInit {
       // webContentTypeControl: this.content.webContentType,
     });
   }
-  getContent(): void {
+  getContent (): void {
     this.store
       .pipe(select(fromContent.getSelectedContent))
       .subscribe((content) => {
@@ -154,7 +154,7 @@ export class ContentEditComponent implements OnInit {
         }
       });
   }
-  onContentRetrieved(content: Content): void {
+  onContentRetrieved (content: Content): void {
     console.log(content);
     if (this.contentForm) {
       this.contentForm.reset();
@@ -163,7 +163,7 @@ export class ContentEditComponent implements OnInit {
     if (content.webContentId === 0) {
       this.pageTitle = 'Add Notice';
     } else {
-      this.pageTitle = `Edit Notice: ${content.title}`;
+      this.pageTitle = `Edit Notice: ${ content.title }`;
     }
 
     // // Update the data on the form
@@ -181,14 +181,14 @@ export class ContentEditComponent implements OnInit {
     this.selected = content.webContentType;
     console.log(this.selected);
   }
-  saveContent() {
+  saveContent () {
     console.log(this.contentForm.value);
     if (this.contentForm.dirty) {
       this.contentService.saveContent(this.contentForm.value);
       this.router.navigate(['/admin/content']);
     }
   }
-  getWebContentType(id: number): WebContentType {
+  getWebContentType (id: number): WebContentType {
     let webContentType = new WebContentType();
     console.log(id);
     switch (id) {
@@ -219,24 +219,22 @@ export class ContentEditComponent implements OnInit {
     // this.contentForm.controls[ controlName ].hasError(errorName);
   };
 
-  getFloatLabelValue(): FloatLabelType {
+  getFloatLabelValue (): FloatLabelType {
     return this.floatLabelType;
   }
-  protected onInput(event: Event) {
+  protected onInput (event: Event) {
     this.value.set((event.target as HTMLInputElement).value);
   }
-  deleteRecord(): void {
+  deleteRecord (): void {
     console.log(this.contentForm.get('webContentId')!.value);
     if (this.contentForm.get('webContentId')!.value !== 0) {
-      if (confirm(`Really delete the content: ${this.content.title}?`)) {
-        this.contentService.deleteContent(
+       this.contentService.deleteContent(
           this.contentForm.get('webContentId')!.value!
         );
         // this.onSaveComplete();
       }
-    }
   }
-  openDialog(): void {
+  openDialog (): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent);
 
     dialogRef.afterClosed().subscribe((result) => {

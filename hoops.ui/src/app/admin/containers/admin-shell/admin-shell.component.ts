@@ -65,7 +65,7 @@ export class AdminShellComponent implements OnInit {
     this.store.select(fromAdmin.getSeasons).subscribe((seasons) => {
        console.log('triggering seasons')
        this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
-         console.log(season);
+         // console.log(season);
          if (season.seasonId === undefined) {
           for (let i = 0; i < seasons.length; i++) {
             if (seasons[i].currentSeason === true) {
@@ -79,7 +79,7 @@ export class AdminShellComponent implements OnInit {
        });
     });
     this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
-      console.log(season);
+      // console.log(season);
       if (season.seasonId !== undefined) {
         if (season.seasonId !== 0) {
           this.store.dispatch(new adminActions.LoadDivisions());
