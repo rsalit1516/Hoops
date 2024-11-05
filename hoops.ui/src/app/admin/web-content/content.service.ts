@@ -114,19 +114,20 @@ export class ContentService {
     );
   }
 
-  // deleteContent(webContentId: number): Observable<Response> {
-  //   let headers = new Headers({ 'Content-Type': 'application/json' });
-  //   // To Do: add this back
-  //   let options = { params: new HttpParams() };
+  deleteContent(webContentId: number | null) {
+    console.log('Deleting content');
+    //   let headers = new Headers({ 'Content-Type': 'application/json' });
+    //   // To Do: add this back
+    //   let options = { params: new HttpParams() };
 
-  //   const url = `${this.baseUrl}/${webContentId}`;
-  //   return this.http
-  //     .delete(url, options)
-  //     .pipe(
-  //       tap(data => console.log('deleteContent: ' + JSON.stringify(data))),
-  //       catchError(this.data.handleError('deleteContent', []))
-  //     );
-  // }
+    //   const url = `${this.baseUrl}/${webContentId}`;
+    //   return this.http
+    //     .delete(url, options)
+    //     .pipe(
+    //       tap(data => console.log('deleteContent: ' + JSON.stringify(data))),
+    //       catchError(this.data.handleError('deleteContent', []))
+    //     );
+  }
 
   saveContent(contentForm: any) {
     console.log(contentForm);
@@ -137,7 +138,7 @@ export class ContentService {
     content.webContentTypeId = contentForm.webContentTypeControl;
     content.webContentId =
       contentForm.webContentId === null ? 0 : contentForm.webContentId;
-    console.log(content);
+    // console.log(content);
     content.title = contentForm.title;
     content.subTitle = contentForm.subTitle;
     content.body = contentForm.body;
@@ -147,47 +148,40 @@ export class ContentService {
     content.contentSequence = contentForm.contentSequence;
     content.companyId = Constants.COMPANYID;
     content.webContentTypeId = contentForm.webContentTypeControl;
-    console.log(content);
-    let headers = new Headers({ 'Content-Type': 'application/json' });
-    let options = { headers: new HttpParams() };
 
     if (contentForm.webContentId === undefined) {
-      return this.createContent(content, options.headers).subscribe(x => {
-        console.log(x)
+      return this.createContent(content).subscribe((x) => {
+        // console.log(x)
         this.store.dispatch(new contentActions.LoadAdminContent());
       });
     } else {
-      return this.updateContent(content, options.headers).subscribe((x) => {
+      return this.updateContent(content).subscribe((x) => {
         console.log(x);
         this.store.dispatch(new contentActions.LoadAdminContent());
-      }
-
-      );
+      });
     }
   }
 
-  private createContent(content: Content, options: HttpParams): Observable<Content> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
-    };
+  private createContent(content: Content): Observable<void | Content> {
+    // const httpOptions = {
+    //   headers: new HttpHeaders({
+    //     'Content-Type': 'application/json',
+    //   }),
+    // };
     console.log(content);
-    return this.data.post(content, this.data.postContentUrl);
+    return this.data.post(content, this.data.postContentUrl).pipe(
+      // tap((data) => console.log('createContent: ' + JSON.stringify(data))),
+      map((data) => this.store.dispatch(new contentActions.LoadAdminContent())),
+      catchError(this.data.handleError('createContent', content))
+    );
   }
 
-  private updateContent(content: Content, options: HttpParams) {
-    // const url = `${this.baseUrl}/${content.webContentId}`;
+  private updateContent(content: Content) {
     console.log(this.data.putContentUrl);
     console.log(content);
     let url = this.data.putContentUrl + content.webContentId;
     console.log(url);
-    return this.http
-      .put<WebContent>(url,  content, this.data.httpOptions)
-      .pipe(
-        tap((data) => console.log('updateContent: ' + JSON.stringify(data))),
-        catchError(this.data.handleError('updateContent', content))
-      );
+    return this.data.put<Content>(content, url);
   }
 
   private extractData(response: Response) {

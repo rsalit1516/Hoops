@@ -41,6 +41,7 @@ export class ContentListComponent implements OnInit {
     this.pageTitle = 'Web Site Messages';
 
     this.store.select(fromContent.getfilteredList).subscribe(data => {
+      console.log(data);
       this.dataSource = new MatTableDataSource(data);
     });
   }

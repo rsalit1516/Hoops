@@ -30,6 +30,7 @@ export class DataService {
   getCurrentSponsors = this.baseUrl + '/api/Sponsor/GetSeasonSponsors/';
   getLocations = this.baseUrl + '/api/Locations/';
   seasonUrl = this.baseUrl + '/api/Season/';
+  currentSeasonUrl = this.baseUrl + '/api/Season/GetCurrentSeason';
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -46,20 +47,28 @@ export class DataService {
   }
 
 
+
+
   post<T>(data: T, url: string): Observable<T> {
-    // content.webContentId = this.standardNotice;
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
-    };
+
     console.log(data);
     return this._http
-      .post<T>(url, data, httpOptions
+      .post<T>(url, data, this.httpOptions
       )
       .pipe(catchError(this.handleError('Error', data)));
   }
-
+  put<T>(data: T, url: string): Observable<T> {
+    console.log(url);
+    console.log(data);
+    // let url = this.data.putContentUrl + content.webContentId;
+    console.log(url);
+    return this._http
+      .put<T>(url,  data, this.httpOptions)
+      .pipe(
+        tap((data) => console.log('updateContent: ' + JSON.stringify(data))),
+        catchError(this.handleError('updateContent', data))
+      );
+  }
   /**
    * Handle Http operation that failed.
    * Let the app continue.

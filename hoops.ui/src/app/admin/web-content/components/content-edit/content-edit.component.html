@@ -148,12 +148,22 @@
           >
             Save
           </button>
+          <button
+          type="button"
+          mat-raised-button
+          type="delete"
+          color="primary"
+          (click)="deleteContent()"
+        >
+          Delete
+        </button>
           <!-- <button type="button" mat-raised-button>Save and New</button> -->
           <button
             type="button"
             mat-raised-button
             [routerLink]="['/admin/content']"
-          >
+            color="primary"
+            >
             Cancel
           </button>
         </div>
