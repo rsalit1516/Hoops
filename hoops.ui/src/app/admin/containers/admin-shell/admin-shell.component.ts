@@ -62,37 +62,40 @@ export class AdminShellComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(new contentActions.LoadAdminContent());
     this.store.dispatch(new adminActions.LoadSeasons());
-    // this.store.select(fromAdmin.getSeasons).subscribe((seasons) => {
-    //   console.log('triggering seasons')
-    //   this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
-    //     if (season.seasonId === undefined) {
-          // for (let i = 0; i < seasons.length; i++) {
-          //   if (seasons[i].currentSeason === true) {
-          //     this.store.dispatch(
-          //       new adminActions.SetSelectedSeason(seasons[i])
-          //     );
-          //     break;
-          //   }
-          // }
-     //   }
-     //  });
-    // });
+    this.store.select(fromAdmin.getSeasons).subscribe((seasons) => {
+       console.log('triggering seasons')
+       this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
+         console.log(season);
+         if (season.seasonId === undefined) {
+          for (let i = 0; i < seasons.length; i++) {
+            if (seasons[i].currentSeason === true) {
+              this.store.dispatch(
+                new adminActions.SetSelectedSeason(seasons[i])
+              );
+              break;
+            }
+          }
+        }
+       });
+    });
     this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
       console.log(season);
-      if (season.seasonId !== 0) {
-        this.store.dispatch(new adminActions.LoadDivisions());
-        this.store.dispatch(new adminActions.LoadSeasonTeams());
-        this.store.dispatch(new adminActions.LoadGames());
-        // this.store.dispatch(new adminActions.LoadPlayoffGames());
-        this.store.select(fromAdmin.getSeasonDivisions).subscribe((divisions) => {
-          this.store.dispatch(new adminActions.SetSelectedDivision(divisions[0]));
-        });
+      if (season.seasonId !== undefined) {
+        if (season.seasonId !== 0) {
+          this.store.dispatch(new adminActions.LoadDivisions());
+          this.store.dispatch(new adminActions.LoadSeasonTeams());
+          this.store.dispatch(new adminActions.LoadGames());
+          // this.store.dispatch(new adminActions.LoadPlayoffGames());
+          this.store.select(fromAdmin.getSeasonDivisions).subscribe((divisions) => {
+            this.store.dispatch(new adminActions.SetSelectedDivision(divisions[ 0 ]));
+          });
 
-        this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
-          if (division !== undefined) {
-            this.store.dispatch(new adminActions.LoadDivisionTeams());
-          }
-        });
+          this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
+            if (division !== undefined) {
+              this.store.dispatch(new adminActions.LoadDivisionTeams());
+            }
+          });
+        }
       }
     });
 

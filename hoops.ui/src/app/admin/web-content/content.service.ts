@@ -74,14 +74,14 @@ export class ContentService {
         for (let i = 0; i < contents.length; i++) {
           const expirationDate = moment(contents[i].expirationDate);
           if (expirationDate >= today) {
-            console.log(contents[i]);
+            // console.log(contents[i]);
             filteredContent.push(contents[i]);
           }
         }
       }
     });
     this.contentsS.set(filteredContent);
-    console.log(this.contentsS);
+    // console.log(this.contentsS);
 
     return of(filteredContent);
   }
