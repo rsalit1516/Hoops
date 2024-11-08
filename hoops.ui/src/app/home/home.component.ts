@@ -49,8 +49,10 @@ export class HomeComponent implements OnInit {
   meetingNotices$: Observable<WebContent[]> | undefined;
 
   showSidebar = false;
+  showSponsors = false;
   imageClass = 'col-sm-8 offset-sm-2 col-12';
   meetingNoticeClass = 'col-sm-0 col-xs-0';
+
 
   constructor(
     private _contentService: ContentService,
@@ -103,6 +105,9 @@ export class HomeComponent implements OnInit {
           }
         });
       }
+    });
+    this.store.select(fromHome.getSponsors).subscribe((sponsors) => {
+      this.showSponsors = sponsors.length > 0;
     });
   }
 
