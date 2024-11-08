@@ -9,7 +9,9 @@
     </div>
   </div>
   <div class="row">
-      <csbc-home-center class="col-sm-6 offset-sm-3 col-12 tag"></csbc-home-center>
+    <csbc-home-center
+      class="col-sm-6 offset-sm-3 col-12 tag"
+    ></csbc-home-center>
   </div>
   <div class="row">
     <div [ngClass]="meetingNoticeClass" [hidden]="!showSidebar">
@@ -18,16 +20,18 @@
     <!-- <div class="row"> -->
     <div [ngClass]="imageClass">
       <div class="row align-items-center">
-          <csbc-announcements class="announcements" Í></csbc-announcements>
+        <csbc-announcements class="announcements" Í></csbc-announcements>
       </div>
     </div>
   </div>
   <div class="row">
-      <div class="col-sm-6 offset-sm-3 col-12">
-        <div class="manny">Manny Rosa - forever in our hearts at CSBC </div>
-      </div>
+    <div class="col-sm-6 offset-sm-3 col-12">
+      <div class="manny">Manny Rosa - forever in our hearts at CSBC</div>
+    </div>
   </div>
+  @if (showSponsors) {
   <div class="sponsor">
     <app-sponsor-list></app-sponsor-list>
   </div>
+  }
 </div>
