@@ -20,7 +20,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     standalone: true,
     imports: [
         FormsModule,
-        ReactiveFormsModule,
+        // ReactiveFormsModule,
         MatFormFieldModule,
         MatSelectModule,
         MatOptionModule,
@@ -34,37 +34,43 @@ export class SeasonSelectComponent implements OnInit {
   seasonComponent: UntypedFormControl | null | undefined;
   seasons: Season[] | undefined;
   selectedSeason: Season | undefined;
-  selectedSeason$: Observable<Season> | undefined;
+  // selectedSeason$: Observable<Season> | undefined;
   defaultSeason: Season | undefined;
-  selectForm!: UntypedFormGroup;
+  // selectForm!: UntypedFormGroup;
+  selectedValue: number | undefined;
 
   constructor(
     private store: Store<fromAdmin.State>,
-    private fb: UntypedFormBuilder,
+    // private fb: UntypedFormBuilder,
     private seasonService: SeasonService
   ) {
-    this.selectForm = this.fb.group({
-      seasonControl: new UntypedFormControl(''),
-    });
+    // this.selectForm = this.fb.group({
+    //   seasonControl: new UntypedFormControl(''),
+    // });
     this.seasons$ = this.store.select(fromAdmin.getSeasons);
   }
 
   ngOnInit() {
-    this.seasonComponent = this.selectForm.get('seasonControl') as UntypedFormControl;
-    this.seasonComponent?.valueChanges.subscribe((value) => {
-      console.log(value);
-      let selectedSeason = new Season();
-      if (value !== 0) {
-        selectedSeason = this.seasonService.getSeason(value);
-      }
-      console.log(selectedSeason);
-      this.store.dispatch(new adminActions.SetSelectedSeason(selectedSeason));
-    });
+//     this.seasonComponent = this.selectForm.get('seasonControl') as UntypedFormControl;
+    // this.seasonComponent?.valueChanges.subscribe((value) => {
+    //   console.log(value);
+    //   let selectedSeason = new Season();
+    //   if (value !== 0) {
+    //     selectedSeason = this.seasonService.getSeason(value);
+    //   }
+    //   console.log(selectedSeason);
+    //   this.store.dispatch(new adminActions.SetSelectedSeason(selectedSeason));
+    // });
     this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
+      console.log(season);
       if (season.seasonId !== undefined && season !== this.selectedSeason) {
-        this.selectedSeason = season;
-        this.seasonComponent?.setValue(season.seasonId);
+        // this.selectedSeason = season;
+        // this.seasonComponent?.setValue(season.seasonId);
+        this.selectedValue = season.seasonId;
       }
     });
+  }
+  changeSeason(season: Season) {
+    this.store.dispatch(new adminActions.SetSelectedSeason(season));
   }
 }
