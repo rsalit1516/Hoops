@@ -1,8 +1,5 @@
-using Microsoft.Extensions.Logging;
 using Hoops.Core;
 using Hoops.Infrastructure.Repository;
-using Xunit;
-using Microsoft.EntityFrameworkCore;
 
 
 namespace hoops_test
