@@ -1,13 +1,13 @@
-<form [formGroup]="selectForm">
+<!-- <form [formGroup]="selectForm"> -->
   <h4>Season</h4>
-  <mat-form-field>
+  <!-- <mat-form-field> -->
     <!-- <mat-label>Season</mat-label> -->
-    <mat-select formControlName="seasonControl" class="form-control" >
+    <mat-select class="form-control" >
       @for( season of seasons$ | async; track season) {
       <mat-option [value]="season.seasonId">
         {{ season.description }}
       </mat-option>
       }
     </mat-select>
-  </mat-form-field>
-</form>
+  <!-- </mat-form-field>
+</form> -->

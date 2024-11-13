@@ -75,20 +75,22 @@ export class ContentService {
         for (let i = 0; i < contents.length; i++) {
           const expirationDate = moment(contents[i].expirationDate);
           if (expirationDate >= today) {
-            // console.log(contents[i]);
-            filteredContent.push(contents[i]);
+            console.log(contents[i]);
+            filteredContent.push(contents[ i ]);
+            console.log(filteredContent);
           }
         }
       }
     });
     this.contentsS.set(filteredContent);
-    // console.log(this.contentsS);
-
+    console.log(this.contentsS);
+    console.log(filteredContent);
     return of(filteredContent);
   }
 
   getAllContents(): Observable<WebContent[]> {
     let filteredContent: WebContent[] = [];
+    console.log(filteredContent);
     this.store.select(fromContent.getContentList).subscribe((contents) => {
       if (contents !== undefined) {
         for (let i = 0; i < contents.length; i++) {
@@ -96,6 +98,7 @@ export class ContentService {
         }
       }
     });
+    console.log(filteredContent);
     return of(filteredContent);
   }
 

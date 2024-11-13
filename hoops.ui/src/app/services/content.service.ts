@@ -1,9 +1,5 @@
 import { Injectable } from '@angular/core';
-import { map, tap } from 'rxjs/operators';
-import { catchError } from 'rxjs/operators';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-
-import { Content } from '../domain/content';
+import { HttpClient } from '@angular/common/http';
 import { DataService } from './data.service';
 import { WebContent } from '../domain/webContent';
 import { Observable } from 'rxjs';
