@@ -71,13 +71,14 @@ export class SeasonService {
     // )
   }
 
-  putSeason (season: Season): any {
-    return this.http.put<Season>(this.dataService.seasonUrl, season)
-      .pipe(
-        map(season => season as Season),
-        tap(data => console.log('All put: ' + JSON.stringify(data))),
-        catchError(this.dataService.handleError('getCurrentSeason', null))
-      )
+  putSeason(season: Season): any {
+    return this.dataService.put<Season>(season, this.dataService.seasonUrl);
+    // return this.http.put<Season>(this.dataService.seasonUrl, season)
+    //   .pipe(
+    //     map(season => season as Season),
+    //     tap(data => console.log('All put: ' + JSON.stringify(data))),
+    //     catchError(this.dataService.handleError('getCurrentSeason', null))
+    //   )
   }
 
 }
