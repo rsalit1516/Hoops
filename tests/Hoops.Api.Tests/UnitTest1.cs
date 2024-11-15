@@ -1,4 +1,4 @@
-namespace Hoops1.Test;
+namespace Hoops.Api.Tests;
 
 public class UnitTest1
 {
