@@ -1,4 +1,4 @@
-namespace Hoops.Core.Tests;
+namespace Hoops.Infrastructure.Tests;
 
 public class UnitTest1
 {
