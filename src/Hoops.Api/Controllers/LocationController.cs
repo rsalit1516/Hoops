@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Hoops.Core;
 using Hoops.Core.Models;
-using Hoops.Infrastructure.Interface;
+using Hoops.Core.Interface;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Hoops.Core.Models;
 
-namespace Hoops.Infrastructure.Interface
+namespace Hoops.Core.Interface
 {
     public interface ITeamRepository : IRepository<Team>
     {

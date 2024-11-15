@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Hoops.Core.Models;
 using Microsoft.Extensions.Logging;
-using Hoops.Infrastructure.Interface;
+using Hoops.Core.Interface;
 using System.Linq;
 
 namespace Hoops.Controllers

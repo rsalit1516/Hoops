@@ -2,7 +2,7 @@
 using System.Linq;
 using Hoops.Core.Models;
 using Csbc.Infrastructure;
-using Hoops.Infrastructure.Interface;
+using Hoops.Core.Interface;
 using Hoops.Core;
 
 namespace Hoops.Infrastructure.Repository

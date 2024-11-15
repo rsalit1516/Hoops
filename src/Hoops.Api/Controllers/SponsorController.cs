@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Hoops.Infrastructure.Interface;
+using Hoops.Core.Interface;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hoops.Api.Controllers

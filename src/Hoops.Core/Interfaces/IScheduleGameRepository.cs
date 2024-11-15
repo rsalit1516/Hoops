@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Hoops.Core.ViewModels;
 using Hoops.Core.Models;
 
-namespace Hoops.Infrastructure.Interface
+namespace Hoops.Core.Interface
 {
     public interface IScheduleGameRepository : IRepository<ScheduleGame>
     {

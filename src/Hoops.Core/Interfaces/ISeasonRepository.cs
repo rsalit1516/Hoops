@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Hoops.Infrastructure.Interface
+namespace Hoops.Core.Interface
 {
     public interface ISeasonRepository : IRepository<Season>
     {

@@ -2,7 +2,7 @@
 using Hoops.Core.Models;
 using System.Data;
 
-namespace Hoops.Infrastructure.Interface
+namespace Hoops.Core.Interface
 {
     public interface ICoachRepository : IRepository<Coach>
     {

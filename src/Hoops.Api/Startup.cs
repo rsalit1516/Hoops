@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Hoops.Infrastructure.Interface;
+using Hoops.Core.Interface;
 using Hoops.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;

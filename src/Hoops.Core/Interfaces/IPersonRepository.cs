@@ -3,7 +3,7 @@ using System.Linq;
 using Hoops.Core.Models;
 using Hoops.Core.Enum;
 
-namespace Hoops.Infrastructure.Interface
+namespace Hoops.Core.Interface
 {
     public interface IPersonRepository : IRepository<Person>
     {

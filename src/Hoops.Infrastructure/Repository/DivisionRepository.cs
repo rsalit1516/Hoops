@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Data;
-using Hoops.Infrastructure.Interface;
+using Hoops.Core.Interface;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using Hoops.Core.Models;

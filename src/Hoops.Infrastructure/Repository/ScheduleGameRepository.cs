@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Hoops.Infrastructure.Interface;
+using Hoops.Core.Interface;
 using System.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;

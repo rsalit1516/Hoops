@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Data;
-using Hoops.Infrastructure.Interface;
+using Hoops.Core.Interface;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.SqlClient;
 using Csbc.Infrastructure;
