@@ -3,21 +3,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30128.74
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hoops.Core", "Hoops.Core\Hoops.Core.csproj", "{61E5DAB1-8317-4669-B15A-D1BA990A5BC4}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hoops.Data", "Hoops.Data\Hoops.Data.csproj", "{9E80087F-BAB4-4D33-9EE6-1D95300C1BAC}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "hoops.api", "Hoops.Api\hoops.api.csproj", "{7605B864-DBDE-46C1-BA27-02A83D7DE376}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{9F319ADD-BDD1-45E0-9FD8-3DA5B5943C2D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hoops.Tests", "Hoops.Tests\Hoops.Tests.csproj", "{5AA7BE60-953E-44DB-A58F-9327FD975E36}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{AE904B2A-2AC8-4DB3-A5AF-6D41A2E54261}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hoops.Core", "src\Hoops.Core\Hoops.Core.csproj", "{61E5DAB1-8317-4669-B15A-D1BA990A5BC4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hoops.Data", "src\Hoops.Data\Hoops.Data.csproj", "{9E80087F-BAB4-4D33-9EE6-1D95300C1BAC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "hoops.api", "src\Hoops.Api\hoops.api.csproj", "{7605B864-DBDE-46C1-BA27-02A83D7DE376}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hoops.Infrastructure", "src\Hoops.Infrastructure\Hoops.Infrastructure.csproj", "{10060F55-B948-4843-824D-58E2D3DA0ABF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hoops.Core.Tests", "tests\Hoops.Core.Tests\Hoops.Core.Tests.csproj", "{D3462862-4B1F-4CC5-B440-46C875808734}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hoops.Api.Tests", "tests\Hoops.Api.Tests\Hoops.Api.Tests.csproj", "{8AD5E9CD-E5D8-48C3-9184-330210F01A50}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hoops.Infrastructure.Tests", "tests\Hoops.Infrastructure.Tests\Hoops.Infrastructure.Tests.csproj", "{EFAE2523-34EB-4BDE-9E62-5537C87587CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hoops.Application", "src\Hoops.Application\Hoops.Application.csproj", "{51CC476C-357B-40D5-8DCB-2870A5A06B25}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -101,6 +105,42 @@ Global
 		{8AD5E9CD-E5D8-48C3-9184-330210F01A50}.Release|x64.Build.0 = Release|Any CPU
 		{8AD5E9CD-E5D8-48C3-9184-330210F01A50}.Release|x86.ActiveCfg = Release|Any CPU
 		{8AD5E9CD-E5D8-48C3-9184-330210F01A50}.Release|x86.Build.0 = Release|Any CPU
+		{10060F55-B948-4843-824D-58E2D3DA0ABF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10060F55-B948-4843-824D-58E2D3DA0ABF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10060F55-B948-4843-824D-58E2D3DA0ABF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{10060F55-B948-4843-824D-58E2D3DA0ABF}.Debug|x64.Build.0 = Debug|Any CPU
+		{10060F55-B948-4843-824D-58E2D3DA0ABF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{10060F55-B948-4843-824D-58E2D3DA0ABF}.Debug|x86.Build.0 = Debug|Any CPU
+		{10060F55-B948-4843-824D-58E2D3DA0ABF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10060F55-B948-4843-824D-58E2D3DA0ABF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10060F55-B948-4843-824D-58E2D3DA0ABF}.Release|x64.ActiveCfg = Release|Any CPU
+		{10060F55-B948-4843-824D-58E2D3DA0ABF}.Release|x64.Build.0 = Release|Any CPU
+		{10060F55-B948-4843-824D-58E2D3DA0ABF}.Release|x86.ActiveCfg = Release|Any CPU
+		{10060F55-B948-4843-824D-58E2D3DA0ABF}.Release|x86.Build.0 = Release|Any CPU
+		{EFAE2523-34EB-4BDE-9E62-5537C87587CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFAE2523-34EB-4BDE-9E62-5537C87587CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFAE2523-34EB-4BDE-9E62-5537C87587CC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EFAE2523-34EB-4BDE-9E62-5537C87587CC}.Debug|x64.Build.0 = Debug|Any CPU
+		{EFAE2523-34EB-4BDE-9E62-5537C87587CC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EFAE2523-34EB-4BDE-9E62-5537C87587CC}.Debug|x86.Build.0 = Debug|Any CPU
+		{EFAE2523-34EB-4BDE-9E62-5537C87587CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFAE2523-34EB-4BDE-9E62-5537C87587CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFAE2523-34EB-4BDE-9E62-5537C87587CC}.Release|x64.ActiveCfg = Release|Any CPU
+		{EFAE2523-34EB-4BDE-9E62-5537C87587CC}.Release|x64.Build.0 = Release|Any CPU
+		{EFAE2523-34EB-4BDE-9E62-5537C87587CC}.Release|x86.ActiveCfg = Release|Any CPU
+		{EFAE2523-34EB-4BDE-9E62-5537C87587CC}.Release|x86.Build.0 = Release|Any CPU
+		{51CC476C-357B-40D5-8DCB-2870A5A06B25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51CC476C-357B-40D5-8DCB-2870A5A06B25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51CC476C-357B-40D5-8DCB-2870A5A06B25}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{51CC476C-357B-40D5-8DCB-2870A5A06B25}.Debug|x64.Build.0 = Debug|Any CPU
+		{51CC476C-357B-40D5-8DCB-2870A5A06B25}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{51CC476C-357B-40D5-8DCB-2870A5A06B25}.Debug|x86.Build.0 = Debug|Any CPU
+		{51CC476C-357B-40D5-8DCB-2870A5A06B25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51CC476C-357B-40D5-8DCB-2870A5A06B25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51CC476C-357B-40D5-8DCB-2870A5A06B25}.Release|x64.ActiveCfg = Release|Any CPU
+		{51CC476C-357B-40D5-8DCB-2870A5A06B25}.Release|x64.Build.0 = Release|Any CPU
+		{51CC476C-357B-40D5-8DCB-2870A5A06B25}.Release|x86.ActiveCfg = Release|Any CPU
+		{51CC476C-357B-40D5-8DCB-2870A5A06B25}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -111,5 +151,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{D3462862-4B1F-4CC5-B440-46C875808734} = {9F319ADD-BDD1-45E0-9FD8-3DA5B5943C2D}
 		{8AD5E9CD-E5D8-48C3-9184-330210F01A50} = {9F319ADD-BDD1-45E0-9FD8-3DA5B5943C2D}
+		{10060F55-B948-4843-824D-58E2D3DA0ABF} = {AE904B2A-2AC8-4DB3-A5AF-6D41A2E54261}
+		{EFAE2523-34EB-4BDE-9E62-5537C87587CC} = {9F319ADD-BDD1-45E0-9FD8-3DA5B5943C2D}
+		{51CC476C-357B-40D5-8DCB-2870A5A06B25} = {AE904B2A-2AC8-4DB3-A5AF-6D41A2E54261}
 	EndGlobalSection
 EndGlobal
