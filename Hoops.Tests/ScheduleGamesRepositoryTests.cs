@@ -1,14 +1,18 @@
 using Hoops.Core;
 using Hoops.Infrastructure.Repository;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Xunit;
+using System.Threading.Tasks;
 
 
-namespace hoops_test
+namespace Hoops.Test
 {
     public class ScheduleGamesRepositoryTests
     {
         private readonly hoopsContext _context;
         public ScheduleGameRepository repo;
-        private readonly ILogger<ScheduleGameRepository> _logger;
+        private ILogger<ScheduleGameRepository> _logger;
 
         // public ScheduleGamesRepositoryTests(ILogger<ScheduleGameRepository> logger)
         // {
@@ -31,7 +35,7 @@ namespace hoops_test
         /// Test method for the ScheduleGamesRepository.
         /// </summary>
         [Fact]
-        public async void ScheduleGamesRepositoryTest1()
+        public async Task ScheduleGamesRepositoryTest1()
         {
             // var repo = new ScheduleGameRepository(new hoopsContext());
             var actual = await repo.GetSeasonGamesAsync(2203);

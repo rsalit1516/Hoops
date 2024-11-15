@@ -7,7 +7,7 @@ using Hoops.Core.Models;
 using Hoops.Core;
 using Microsoft.EntityFrameworkCore;
 
-namespace csbc_server_test
+namespace Hoops.Test
 {
     public class WebContentsTest
     {
@@ -45,7 +45,7 @@ namespace csbc_server_test
         }
 
         [Fact]
-        public async void AddAllAsyncWebContentTypeTest()
+        public async Task AddAllAsyncWebContentTypeTest()
         {
             var seasonInfo = await repoType.GetByDescriptionAsync("Season Info");
             var meeting = await repoType.GetByDescriptionAsync("Meeting");

@@ -26,7 +26,7 @@ namespace Hoops.Test
         }
 
         [Fact]
-        public async void GetByWebContentTypeDescription()
+        public async Task GetByWebContentTypeDescription()
         {
 
             var inserted = await repo.InsertAsync(new WebContentType { WebContentTypeDescription = "Test" });
@@ -39,7 +39,7 @@ namespace Hoops.Test
 
 
         [Fact]
-        public async void AddAsyncWebContentTypeTest1()
+        public async Task AddAsyncWebContentTypeTest1()
         {
             // await DeleteAllAsync(repo);
             var found = await repo.GetAllAsync();
@@ -56,7 +56,7 @@ namespace Hoops.Test
 
         }
         [Fact]
-        public async void AddAllAsyncWebContentTypeTest1()
+        public async Task AddAllAsyncWebContentTypeTest1()
         {
                 // var repo = new WebContentTypeRepository(_context);
                 await DeleteAllAsync(repo);
