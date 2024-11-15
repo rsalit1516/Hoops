@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hoops.Core", "src\Hoops.Cor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hoops.Data", "src\Hoops.Data\Hoops.Data.csproj", "{9E80087F-BAB4-4D33-9EE6-1D95300C1BAC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "hoops.api", "src\Hoops.Api\hoops.api.csproj", "{7605B864-DBDE-46C1-BA27-02A83D7DE376}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hoops.Api", "src\Hoops.Api\Hoops.Api.csproj", "{7605B864-DBDE-46C1-BA27-02A83D7DE376}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hoops.Infrastructure", "src\Hoops.Infrastructure\Hoops.Infrastructure.csproj", "{10060F55-B948-4843-824D-58E2D3DA0ABF}"
 EndProject
