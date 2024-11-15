@@ -7,7 +7,7 @@ using Hoops.Core.Models;
 using Hoops.Core;
 using Microsoft.EntityFrameworkCore;
 
-namespace Hoops.Test
+namespace Hoops.Core.Tests
 {
     public class WebContentsTest
     {
