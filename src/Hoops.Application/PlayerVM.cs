@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Hoops.Core;
-using System.Data;
+﻿using System.Data;
 using Hoops.Core.ViewModels;
 using Hoops.Infrastructure.Repository;
+using Hoops.Infrastructure.Data;
 using Hoops.Core.Models;
 
-namespace Hoops.Core.ViewModels
+namespace Hoop.Application.DTOs
 {
 
     /// <summary>

@@ -1,13 +1,9 @@
-using System;
-using Xunit;
-using System.Linq;
-using System.Threading.Tasks;
 using Hoops.Infrastructure.Repository;
+using Hoops.Infrastructure.Data;
 using Hoops.Core.Models;
-using Hoops.Core;
 using Microsoft.EntityFrameworkCore;
 
-namespace Hoops.Core.Tests
+namespace Hoops.Infrastructure.Tests
 {
     public class WebContentsTest
     {
