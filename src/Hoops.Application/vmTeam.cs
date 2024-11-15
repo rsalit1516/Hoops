@@ -2,9 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Hoops.Infrastructure.Repository;
+using Hoops.Infrastructure.Data;
 using Hoops.Core.Models;
 
-namespace Hoops.Core.ViewModel
+namespace Hoops.Application.DTOs
 {
     public class vmTeam
     {

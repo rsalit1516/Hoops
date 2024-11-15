@@ -9,19 +9,24 @@ using System.Linq.Expressions;
 using System.Security.Cryptography;
 // using System.Security.Cryptography;
 using System.Threading.Tasks;
-using Hoops.Core;
+using Hoops.Infrastructure.Data;
 // using Microsoft.EntityFrameworkCore;
 
 namespace Hoops.Infrastructure.Repository
 {
     public class UserRepository : EFRepository<User>, IUserRepository
     {
+        private readonly hoopsContext context;
+
+        public UserRepository(hoopsContext context) : base(context)
+        {
+            this.context = context;
+        }
+    {
 
         // private readonly hoopsContext context;
         // protected DbSet<User> DbSet;
         private string sSQL;
-
-        public UserRepository(hoopsContext context) : base(context) {}
 
         #region IRepository<T> Members
         public override User Insert(User entity)

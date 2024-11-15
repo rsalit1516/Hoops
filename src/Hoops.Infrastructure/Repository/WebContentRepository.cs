@@ -5,8 +5,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Hoops.Core.Models;
 using Hoops.Core.ViewModels;
-using Hoops.Core;
-using Hoops.Infrastructure.Interface;
+using Hoops.Core.Interface;
+using Hoops.Infrastructure.Data;
 
 namespace Hoops.Infrastructure.Repository
 {

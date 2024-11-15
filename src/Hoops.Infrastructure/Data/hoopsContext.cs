@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Hoops.Core.Models;
 
-namespace Hoops.Core;
+namespace Hoops.Infrastructure.Data;
 
 public partial class hoopsContext : DbContext
 {
