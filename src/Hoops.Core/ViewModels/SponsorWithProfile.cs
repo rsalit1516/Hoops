@@ -1,4 +1,4 @@
-namespace Hoops.Infrastructure.Repository
+namespace Hoops.Core.ViewModels
 {
 public class SponsorWithProfile 
 {

@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Hoops.Infrastructure.Interface;
+using Hoops.Core.Interface;
 using Hoops.Core;
 using Hoops.Core.Models;
 using Hoops.Core.ViewModel;

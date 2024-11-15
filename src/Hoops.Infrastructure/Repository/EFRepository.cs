@@ -1,9 +1,9 @@
 using System.Linq;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using Hoops.Infrastructure.Interface;
+using Hoops.Core.Interface;
 using System.Threading.Tasks;
-using Hoops.Core;
+using Hoops.Infrastructure.Data;
 
 namespace Hoops.Infrastructure.Repository
 {

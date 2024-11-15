@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Hoops.Infrastructure.Interface;
+using Hoops.Core.Interface;
 using Hoops.Core.Models;
 using System;
 

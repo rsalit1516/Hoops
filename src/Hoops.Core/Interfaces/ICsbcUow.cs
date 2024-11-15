@@ -1,4 +1,4 @@
-﻿namespace Hoops.Infrastructure.Interface
+﻿namespace Hoops.Core.Interface
 {
     public interface ICsbcUow
     {

@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using System.Linq;
 using System.Data;
-using Hoops.Infrastructure.Interface;
+using Hoops.Core.Interface;
 using System.Collections.Generic;
 using Hoops.Core.Models;
 using Hoops.Core;

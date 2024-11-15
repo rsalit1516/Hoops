@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hoops.Infrastructure.Interface
+namespace Hoops.Core.Interface
 {
     interface IContactContext
     {

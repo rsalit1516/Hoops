@@ -5,11 +5,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Csbc.Infrastructure;
-using Hoops.Infrastructure.Interface;
+using Hoops.Core.Interface;
 using Hoops.Infrastructure.Repository;
 using Csbc.Infrastructure.Interface;
 using Hoops.Core.Models;
-using Hoops.Core;
+using Hoops.Infrastructure.Data;
 
 namespace Csbc.Infrastructure.Repository
 {

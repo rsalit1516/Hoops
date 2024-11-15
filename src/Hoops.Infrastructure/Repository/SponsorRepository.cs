@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Data;
-using Hoops.Infrastructure.Interface;
+using Hoops.Core.Interface;
 using Hoops.Core.Models;
 using Hoops.Core;
 using Microsoft.EntityFrameworkCore;

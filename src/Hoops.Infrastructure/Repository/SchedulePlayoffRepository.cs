@@ -5,7 +5,7 @@ using System.Linq;
 using Hoops.Core;
 using Hoops.Core.Models;
 using Hoops.Core.ViewModels;
-using Hoops.Infrastructure.Interface;
+using Hoops.Core.Interface;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.Logging;
 

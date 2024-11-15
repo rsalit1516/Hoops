@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Csbc.Infrastructure;
-using Hoops.Infrastructure.Interface;
+using Hoops.Core.Interface;
 using System;
 using System.Linq;
 using System.Data;

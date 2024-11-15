@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Linq;
-using Hoops.Infrastructure.Interface;
+using Hoops.Core.Interface;
 using Csbc.Infrastructure;
 using Hoops.Core.Models;
 using Hoops.Core;

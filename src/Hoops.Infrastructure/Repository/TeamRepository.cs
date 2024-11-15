@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using System.Data;
-using Hoops.Infrastructure.Interface;
+using Hoops.Core.Interface;
 //using CSBC.Components;
 using Hoops.Core.Models;
 using System.Collections.Generic;

@@ -1,5 +1,5 @@
 ﻿using Hoops.Core;
-using Hoops.Infrastructure.Interface;
+using Hoops.Core.Interface;
 using System;
 
 namespace CSBC.Core.Data

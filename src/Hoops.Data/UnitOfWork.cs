@@ -1,5 +1,5 @@
 ﻿using Hoops.Core.Models;
-using Hoops.Infrastructure.Interface;
+using Hoops.Core.Interface;
 using Hoops.Infrastructure.Repository;
 
 namespace Hoops.Core.Infrastructure

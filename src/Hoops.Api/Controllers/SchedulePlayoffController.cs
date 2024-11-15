@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 using Hoops.Core;
 using Hoops.Core.Models;
-using Hoops.Infrastructure.Interface;
+using Hoops.Core.Interface;
 using NLog.Web.LayoutRenderers;
 
 namespace Hoops.Controllers

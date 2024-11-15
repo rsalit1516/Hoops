@@ -1,6 +1,6 @@
 ﻿using Hoops.Core.Models;
 
-namespace Hoops.Infrastructure.Interface
+namespace Hoops.Core.Interface
 {
     public interface IScheduleLocationRepository : IRepository<ScheduleLocation>
     {
