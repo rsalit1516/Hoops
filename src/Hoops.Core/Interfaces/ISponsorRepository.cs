@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Hoops.Core.Models;
-using Hoops.Infrastructure.Repository;
 
-namespace Hoops.Infrastructure.Interface
+namespace Hoops.Core.Interface
 {
     public interface ISponsorRepository : IRepository<Sponsor>
     {

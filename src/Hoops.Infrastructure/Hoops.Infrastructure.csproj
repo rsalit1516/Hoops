@@ -4,6 +4,10 @@
     <ProjectReference Include="..\Hoops.Core\Hoops.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data/" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
