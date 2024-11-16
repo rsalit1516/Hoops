@@ -8,22 +8,22 @@ namespace Hoops.Core.Models
     {
         [Key]
         public int DivisionId { get; set; }
-        public Nullable<int> CompanyId { get; set; }
-        public Nullable<int> SeasonId { get; set; }
+        public int? CompanyId { get; set; }
+        public int? SeasonId { get; set; }
         public string DivisionDescription { get; set; }
-        public Nullable<int> DirectorId { get; set; }
-        public Nullable<int> CoDirectorId { get; set; }
+        public int? DirectorId { get; set; }
+        public int? CoDirectorId { get; set; }
         public string Gender { get; set; }
-        public Nullable<System.DateTime> MinDate { get; set; }
-        public Nullable<System.DateTime> MaxDate { get; set; }
+        public DateTime? MinDate { get; set; }
+        public DateTime? MaxDate { get; set; }
         public string Gender2 { get; set; }
-        public Nullable<System.DateTime> MinDate2 { get; set; }
-        public Nullable<System.DateTime> MaxDate2 { get; set; }
+        public DateTime? MinDate2 { get; set; }
+        public DateTime? MaxDate2 { get; set; }
         public string DraftVenue { get; set; }
-        public Nullable<System.DateTime> DraftDate { get; set; }
+        public DateTime? DraftDate { get; set; }
         public string DraftTime { get; set; }
         public bool Stats { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
         public string CreatedUser { get; set; }
 
         // [ForeignKey("DirectorID")]

@@ -9,6 +9,6 @@ namespace Hoops.Core.Models
         public int TeamNumber { get; set; }
         public int ScheduleNumber { get; set; }
         public int ScheduleTeamNumber { get; set; }
-        public Nullable<int> HomeLocation { get; set; }
+        public int? HomeLocation { get; set; }
     }
 }

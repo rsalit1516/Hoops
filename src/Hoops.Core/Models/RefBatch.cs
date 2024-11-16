@@ -9,9 +9,9 @@ namespace Hoops.Core.Models
     {
         [Key]
         public int RefBatchID { get; set; }
-        public Nullable<int> CompanyID { get; set; }
+        public int? CompanyID { get; set; }
         public int SeasonID { get; set; }
         public string CreatedUser { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
     }
 }

@@ -12,15 +12,15 @@ namespace Hoops.Core.Models
         [Column("ID")]
         public int DirectorId { get; set; }
         [Column("CompanyID")]
-        public Nullable<int> CompanyId { get; set; }
+        public int? CompanyId { get; set; }
         [Column("PeopleID")]
         public int PersonId { get; set; }
-        public Nullable<int> Seq { get; set; }
+        public int? Seq { get; set; }
         public string Title { get; set; }
         public byte[] Photo { get; set; }
         public string PhonePref { get; set; }
-        public Nullable<int> EmailPref { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public int? EmailPref { get; set; }
+        public DateTime? CreatedDate { get; set; }
         public string CreatedUser { get; set; }
 
         // [ForeignKey("PeopleID")]

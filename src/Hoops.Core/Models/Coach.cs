@@ -11,16 +11,16 @@ namespace Hoops.Core.Models
         [Column("CoachID")]
         public int CoachId { get; set; }
         [Column("CompanyID")]
-        public Nullable<int> CompanyId { get; set; }
+        public int? CompanyId { get; set; }
         [Column("SeasonID")]
-        public Nullable<int> SeasonId { get; set; }
+        public int? SeasonId { get; set; }
         [Column("PeopleID")]
         public int PersonId { get; set; }
         [Column("PlayerID")]
-        public Nullable<int> PlayerId { get; set; }
+        public int? PlayerId { get; set; }
         public string ShirtSize { get; set; }
         public string CoachPhone { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
         public string CreatedUser { get; set; }
 
         [ForeignKey("PeopleID")]

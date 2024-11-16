@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Hoops.Core\Hoops.Core.csproj" />
+    <ProjectReference Include="..\Hoops.Infrastructure\Hoops.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

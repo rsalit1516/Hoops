@@ -5,35 +5,13 @@ using System.Data;
 using Hoops.Core.Models;
 using static Hoops.Core.Enum.GroupTypes;
 using Hoops.Infrastructure.Data;
+using Hoops.Core.ViewModels;
 
 namespace Hoops.Core.ViewModels
 {
-    public class GameSchedulesViewModel
+    public class GameSchedulesVmService
     {
-        public int DivisionId { get; set; }
-        public Nullable<int> CompanyId { get; set; }
-        public Nullable<int> SeasonId { get; set; }
-        public string DivisionDescription { get; set; }
-        public DateTime GameDate { get; set; }
-        public String GameTimeString { get; set; }
-        public DateTime GameTime { get; set; }
-        public string LocationName { get; set; }
-        public int GameNumber { get; set; }
-        public int? VisitingTeamNumber { get; set; }
-        public int? HomeTeamNumber { get; set; }
-        public int VisitingTeamSeasonNumber { get; set; }
-        public int HomeTeamSeasonNumber { get; set; }
-        public string VisitingTeamName { get; set; }
-        public string HomeTeamName { get; set; }
-        public int ScheduleNumber { get; set; }
-        public int HomeTeamScore { get; set; }
-        public int VisitingTeamScore { get; set; }
-        public string GameDescription { get; set; }
-        public int VisitingTeamId { get; set; }
-        public int HomeTeamId { get; set; }
-        public GameTypes GameType {get; set;}
-
-        public List<GameSchedulesViewModel> GetGames(int seasonId)
+        public List<vmGameSchedule> GetGames(int seasonId)
         {
             using (var db = new hoopsContext())
             {
@@ -44,11 +22,11 @@ namespace Hoops.Core.ViewModels
                               where g.SeasonId == seasonId
                               where g.DivisionId == d.DivisionId
                               where g.LocationNumber == l.LocationNumber
-                              select new GameSchedulesViewModel
+                              select new vmGameSchedule
                               {
                                   SeasonId = seasonId,
                                   DivisionDescription = d.DivisionDescription,
-                                  DivisionId = (int)g.DivisionId,
+                                  DivisionId = g.DivisionId ?? 0,
                                   GameDate = g.GameDate,
                                   GameTimeString = g.GameTime,
                                   LocationName = l.LocationName,
@@ -56,8 +34,8 @@ namespace Hoops.Core.ViewModels
                                   VisitingTeamNumber = g.VisitingTeamNumber,
                                   HomeTeamNumber = g.HomeTeamNumber,
                                   ScheduleNumber = g.ScheduleNumber,
-                                  HomeTeamScore = g.HomeTeamScore == -1 ? 0 : (int)g.HomeTeamScore,
-                                  VisitingTeamScore = g.VisitingTeamScore == -1 ? 0 : (int)g.VisitingTeamScore
+                                  HomeTeamScore = g.HomeTeamScore ?? 0,
+                                  VisitingTeamScore = g.VisitingTeamScore == null || g.VisitingTeamScore == -1 ? 0 : (int)g.VisitingTeamScore
                               });
 
                 //List<TeamViewModel> teams;
@@ -197,12 +175,17 @@ namespace Hoops.Core.ViewModels
 
         private static ScheduleDivTeam  GetTeam(List<ScheduleDivTeam> schedDiv, int gameNo, int teamNo, int? seasonId )
         {
-            return schedDiv.FirstOrDefault(s => s.ScheduleNumber == gameNo &&
+            var team = schedDiv.FirstOrDefault(s => s.ScheduleNumber == gameNo &&
                 s.TeamNumber == teamNo &&
                 s.SeasonId == seasonId );
+            if (team == null)
+            {
+                throw new InvalidOperationException("Team not found.");
+            }
+            return team;
         }
 
-        private List<GameSchedulesViewModel> GetPlayoffGames(int divisionId)
+        private List<vmGameSchedule> GetPlayoffGames(int divisionId)
         {
             using (var db = new hoopsContext())
             {
@@ -226,11 +209,11 @@ namespace Hoops.Core.ViewModels
                                  g.VisitingTeam,
                                  g.Descr
                              });
-                var schedGames = new List<GameSchedulesViewModel>();
+                var schedGames = new List<vmGameSchedule>();
                 DateTime time;
                 foreach (var g in games)
                 {
-                    var game = new GameSchedulesViewModel();
+                    var game = new vmGameSchedule();
 
                     game.ScheduleNumber = g.ScheduleNumber;
                     //game.DivisionId = g.DivisionId;
@@ -251,7 +234,7 @@ namespace Hoops.Core.ViewModels
                 if (divisionId != 0)
                 {
                     schedGames = schedGames
-                    .OrderBy(g => g.GameDate).ThenBy(g => g.GameTime).ThenBy(g => g.DivisionId).ToList<GameSchedulesViewModel>();
+                    .OrderBy(g => g.GameDate).ThenBy(g => g.GameTime).ThenBy(g => g.DivisionId).ToList<vmGameSchedule>();
                 }
                 return schedGames;
             }

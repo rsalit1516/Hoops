@@ -19,12 +19,12 @@ namespace Hoops.Core.ViewModels
 
         }
         public int TeamId { get; set; }
-        public Nullable<int> CompanyId { get; set; }
+        public int? CompanyId { get; set; }
         public int SeasonId { get; set; }
         public int DivisionId { get; set; }
-        public Nullable<int> CoachId { get; set; }
-        public Nullable<int> AssCoachId { get; set; }
-        public Nullable<int> SponsorId { get; set; }
+        public int? CoachId { get; set; }
+        public int? AssCoachId { get; set; }
+        public int? SponsorId { get; set; }
         [MaxLength(50)]
         public string TeamName { get; set; }
         [MaxLength(50)]

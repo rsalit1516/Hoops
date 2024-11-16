@@ -10,16 +10,16 @@ namespace Hoops.Core.Models
         public string CompanyName { get; set; }
         public string EmailSender { get; set; }
         public string ImageName { get; set; }
-        public Nullable<int> SeasonID { get; set; }
-        public Nullable<int> SignUpSeasonID { get; set; }
+        public int? SeasonID { get; set; }
+        public int? SignUpSeasonID { get; set; }
         public string Sea_Desc { get; set; }
-        public Nullable<int> HouseID { get; set; }
+        public int? HouseID { get; set; }
         public int UserID { get; set; }
-        public Nullable<int> UserType { get; set; }
+        public int? UserType { get; set; }
         public string UserName { get; set; }
         public string PWord { get; set; }
         public string Password { get; set; }
-        public Nullable<System.DateTime> SignedDate { get; set; }
-        public Nullable<System.DateTime> SignedDateEnd { get; set; }
+        public DateTime? SignedDate { get; set; }
+        public DateTime? SignedDateEnd { get; set; }
     }
 }

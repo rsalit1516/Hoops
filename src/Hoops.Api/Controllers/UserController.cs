@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Hoops.Infrastructure.Data;
+using Hoops.Infrastructure.Repository;
 using Hoops.Core.Models;
 using Hoops.Core.ViewModels;
 using Hoops.Core;

@@ -5,7 +5,7 @@ namespace Hoops.Core.Models
 {
     public partial class TeamH
     {
-        public Nullable<int> TeamNumber { get; set; }
+        public int? TeamNumber { get; set; }
         public string TeamName { get; set; }
         public string ContactFirstName { get; set; }
         public string ContactLastName { get; set; }

@@ -11,17 +11,17 @@ namespace Hoops.Core.Models
         [Column("PaymentID")]
         public int PaymentId { get; set; }
         [Column("CompanyID")]
-        public Nullable<int> CompanyId { get; set; }
+        public int? CompanyId { get; set; }
         [Column("SponsorProfileID")]
         public int SponsorProfileId { get; set; }
         public decimal Amount { get; set; }
         public string PaymentType { get; set; }
-        public Nullable<System.DateTime> TransactionDate { get; set; }
+        public DateTime? TransactionDate { get; set; }
         public string TransactionNumber { get; set; }
         public string Memo { get; set; }
         [Column("ShoppingCartID")]
         public string ShoppingCartId { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
         public string CreatedUser { get; set; }
 
         [ForeignKey("SponsorProfileID")]

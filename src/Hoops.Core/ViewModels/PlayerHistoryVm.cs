@@ -9,23 +9,23 @@ namespace Hoops.Core.ViewModels
         public int PlayerId { get; set; }
         [Key]
         public int SeasonId { get; set; }
-        public Nullable<int> DivisionId { get; set; }
+        public int? DivisionId { get; set; }
         public int TeamId { get; set; }
         public string Team { get; set; }
         public int PeopleI { get; set; }
         public string DraftId { get; set; }
         public string DraftNotes { get; set; }
-        public Nullable<int> Rating { get; set; }
+        public int? Rating { get; set; }
         public string Coach { get; set; }
         public int CoachID { get; set; }
-        public Nullable<System.DateTime> PaidDate { get; set; }
-        public Nullable<decimal> PaidAmount { get; set; }
-        public Nullable<decimal> BalanceOwed { get; set; }
+        public DateTime? PaidDate { get; set; }
+        public decimal? PaidAmount { get; set; }
+        public decimal? BalanceOwed { get; set; }
         public string PayType { get; set; }
         public string NoteDesc { get; set; }
         public string CheckMemo { get; set; }
         public bool PlaysDown { get; set; }
-        public Nullable<bool> PlaysUp { get; set; }
+        public bool? PlaysUp { get; set; }
         public string Season { get; set; }
 
         //public PlayerHistory()

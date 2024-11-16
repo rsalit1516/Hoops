@@ -12,10 +12,10 @@ namespace Hoops.Core.Models
         [Column("ID")]
         public int ColorId { get; set; }
         [Column("CompanyID")]
-        public Nullable<int> CompanyId { get; set; }
+        public int? CompanyId { get; set; }
         public string ColorName { get; set; }
-        public Nullable<bool> Discontinued { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public bool? Discontinued { get; set; }
+        public DateTime? CreatedDate { get; set; }
         public string CreatedUser { get; set; }
     }
 }

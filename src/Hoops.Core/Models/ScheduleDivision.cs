@@ -10,13 +10,13 @@ namespace Hoops.Core.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ScheduleNumber { get; set; }
-        public Nullable<int> LeagueNumber { get; set; }
+        public int? LeagueNumber { get; set; }
         public string ScheduleName { get; set; }
-        public Nullable<short> Computed { get; set; }
-        public Nullable<System.DateTime> ComputedEndDate { get; set; }
-        public Nullable<short> HomeFields { get; set; }
-        public Nullable<System.DateTime> ParameterStartDate { get; set; }
-        public Nullable<int> LenghtOfGames { get; set; }
+        public short? Computed { get; set; }
+        public DateTime? ComputedEndDate { get; set; }
+        public short? HomeFields { get; set; }
+        public DateTime? ParameterStartDate { get; set; }
+        public int? LenghtOfGames { get; set; }
         public string ContactFirstName { get; set; }
         public string ContactLastName { get; set; }
         public string WorkPhone { get; set; }

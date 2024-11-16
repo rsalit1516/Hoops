@@ -6,11 +6,12 @@ using Hoops.Core;
 using Hoops.Core.Models;
 using Hoops.Core.ViewModels;
 using Hoops.Infrastructure.Repository;
+using Hoops.Infrastructure.Data;
 using Microsoft.IdentityModel.Protocols;
 using System.Configuration;
 using Microsoft.EntityFrameworkCore;
 
-namespace Hoops.Core.Data
+namespace Hoops.Data
 {
 
     public class HoopsInitializer

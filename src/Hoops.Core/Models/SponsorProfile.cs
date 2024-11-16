@@ -14,7 +14,7 @@ namespace Hoops.Core.Models
         [Column("CompanyID")]
         public int CompanyId { get; set; }
         [Column("HouseID")]
-        public Nullable<int> HouseId { get; set; }
+        public int? HouseId { get; set; }
         public string ContactName { get; set; }
         public string SpoName { get; set; }
         [Column("EMAIL")]
@@ -27,7 +27,7 @@ namespace Hoops.Core.Models
         public string Zip { get; set; }
         public string Phone { get; set; }
         public string TypeOfBuss { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
         public string CreatedUser { get; set; }
         public bool? ShowAd { get; set; }
         public DateTime? AdExpiration { get; set; }

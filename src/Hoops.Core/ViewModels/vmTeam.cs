@@ -1,3 +1,7 @@
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Hoops.Core.ViewModels;
 
 public class vmTeam
@@ -7,9 +11,9 @@ public class vmTeam
     // public Nullable<int> CompanyID { get; set; }
     public int SeasonID { get; set; }
     public int DivisionId { get; set; }
-    public Nullable<int> CoachID { get; set; }
-    public Nullable<int> AssCoachID { get; set; }
-    public Nullable<int> SponsorID { get; set; }
+    public int? CoachID { get; set; }
+    public int? AssCoachID { get; set; }
+    public int? SponsorID { get; set; }
     [MaxLength(50)]
     public string? TeamName { get; set; }
     [MaxLength(50)]
