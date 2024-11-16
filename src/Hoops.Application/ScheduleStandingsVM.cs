@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Hoops.Core;
 using Hoops.Core.Models;
+using Hoops.Infrastructure.Data;
 using Hoops.Infrastructure.Repository;
 
 namespace Hoops.Core.ViewModels
@@ -10,10 +11,10 @@ namespace Hoops.Core.ViewModels
     public class ScheduleStandingsVM
     {
         public int TeamNo { get; set; }
-        public string TeamName { get; set; }
-        public string ScheduleName { get; set; }
-        public string DivNo { get; set; }
-        public string Team { get; set; }
+        public string? TeamName { get; set; }
+        public string? ScheduleName { get; set; }
+        public string? DivNo { get; set; }
+        public string? Team { get; set; }
         public int Won { get; set; }
         public int Lost { get; set; }
         public decimal Pct { get; set; }

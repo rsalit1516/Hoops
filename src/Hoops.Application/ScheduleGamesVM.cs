@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Data;
-using Hoops.Infrastructure.Repository;
 using Hoops.Core.Models;
 using static Hoops.Core.Enum.GroupTypes;
+using Hoops.Infrastructure.Data;
 
 namespace Hoops.Core.ViewModels
 {

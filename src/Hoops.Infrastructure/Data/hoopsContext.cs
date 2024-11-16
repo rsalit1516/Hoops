@@ -6,13 +6,10 @@ namespace Hoops.Infrastructure.Data;
 
 public partial class hoopsContext : DbContext
 {
-    public hoopsContext()
-    { }
+    public hoopsContext() { }
 
     public hoopsContext(DbContextOptions<hoopsContext> options)
-        : base(options)
-    {
-    }
+        : base(options) {}
 
 
     public virtual DbSet<Coach> Coaches { get; set; }
