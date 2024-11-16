@@ -1,28 +1,22 @@
 ﻿using Hoops.Core.Models;
-using Csbc.Infrastructure;
-using Hoops.Core.Interface;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Data;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Security.Cryptography;
-// using System.Security.Cryptography;
-using System.Threading.Tasks;
 using Hoops.Infrastructure.Data;
-// using Microsoft.EntityFrameworkCore;
+using Hoops.Core.Interface;
 
 namespace Hoops.Infrastructure.Repository
 {
     public class UserRepository : EFRepository<User>, IUserRepository
     {
-        private readonly hoopsContext context;
+        private new readonly hoopsContext context;
 
         public UserRepository(hoopsContext context) : base(context)
         {
             this.context = context;
+            sSQL = string.Empty;
         }
-    {
+    
 
         // private readonly hoopsContext context;
         // protected DbSet<User> DbSet;
@@ -35,7 +29,7 @@ namespace Hoops.Infrastructure.Repository
             entity.UserId = context.Users.Any() ? context.Users.Max(t => t.UserId) + 1 : 1;
             var newUser = context.Users.Add(entity);
             var no = context.SaveChanges();
-            return context.Users.FirstOrDefault(user => user.UserName == entity.UserName);
+            return context.Users.FirstOrDefault(user => user.UserName == entity.UserName)!;
 
         }
         public override User Update(User entity)
@@ -43,7 +37,7 @@ namespace Hoops.Infrastructure.Repository
             var user = GetById(entity.UserId);
             user = entity;
             context.SaveChanges();
-            return user;
+            return user!;
         }
         public override void Delete(User entity)
         {
@@ -81,7 +75,7 @@ namespace Hoops.Infrastructure.Repository
             try
             {
                 var user = context.Users.FirstOrDefault(u => u.UserName.ToLower() == sUserName.ToLower());
-                return user;
+                return user!;
             }
             catch (Exception ex)
             {
@@ -90,7 +84,7 @@ namespace Hoops.Infrastructure.Repository
 
         }
 
-        public Task<User> GetUserAsync(string sUserName, string sPwd)
+        public Task<User?> GetUserAsync(string sUserName, string sPwd)
         {
             var db = new hoopsContext();
            
@@ -98,7 +92,7 @@ namespace Hoops.Infrastructure.Repository
             {
                 //var repo = new UserRepository(DB);
                 var user = db.Users.FirstOrDefaultAsync(u => u.Name.ToLower() == sUserName.ToLower());
-                return user;
+                return user ?? Task.FromException<User?>(new Exception("User not found"));
             }
             catch (Exception ex)
             {
@@ -146,7 +140,7 @@ namespace Hoops.Infrastructure.Repository
         public DataTable GetSeason(Int32 CompanyID)
         {
             var DB = new hoopsContext();
-            DataTable dtResults = default(DataTable);
+            DataTable? dtResults = default(DataTable);
             
             try
             {
@@ -155,7 +149,7 @@ namespace Hoops.Infrastructure.Repository
                 //TODO:: Company
                 sSQL = "SELECT SeasonID, Sea_Desc, FromDate FROM Seasons WHERE Seasons.CurrentSeason=1";
                 // dtResults = DB.ExecuteGetSQL(sSQL);
-                return dtResults;
+                return dtResults ?? new DataTable();
             }
             catch (Exception ex)
             {
@@ -171,7 +165,7 @@ namespace Hoops.Infrastructure.Repository
             {
                 var repo = new UserRepository(db);
                 var user = repo.GetUser(userName, password);
-                return user;
+                return user!;
                 // sSQL = "SELECT SeasonID, Sea_Desc, FromDate FROM vw_CheckLogin WHERE Seasons.CurrentSeason=1";
                 //sSQL += " AND CompanyID = " + sGlobal.Quo(CompanyID.ToString());
                 //dtResults = db.ExecuteGetSQL(sSQL);
@@ -183,7 +177,7 @@ namespace Hoops.Infrastructure.Repository
 
         }
 
-        public Task<User> GetLoginInfoAsync(string userName, string password)
+        public Task<User?> GetLoginInfoAsync(string userName, string password)
         {
             var db = new hoopsContext();
            
@@ -191,7 +185,7 @@ namespace Hoops.Infrastructure.Repository
             {
                 var repo = new UserRepository(db);
                 var user = repo.GetUserAsync(userName, password);
-                return user;
+                return user!;
                 // sSQL = "SELECT SeasonID, Sea_Desc, FromDate FROM vw_CheckLogin WHERE Seasons.CurrentSeason=1";
                 //sSQL += " AND CompanyID = " + sGlobal.Quo(CompanyID.ToString());
                 //dtResults = db.ExecuteGetSQL(sSQL);
@@ -225,11 +219,11 @@ namespace Hoops.Infrastructure.Repository
         */
         private string HashPassword(string password)
         {
-            string hashedPassword = null;
+            string? hashedPassword = null;
             // dynamic hashProvider = new SHA256Managed();
             try
             {
-                byte[] passwordBytes = null;
+                byte[]? passwordBytes = null;
                 //Dim hashBytes() As Byte
                 passwordBytes = System.Text.Encoding.Unicode.GetBytes(password);
                 //hashProvider = New SHA256Managed
@@ -252,8 +246,8 @@ namespace Hoops.Infrastructure.Repository
         public string GetAccess(Int32 iUserID, string sScreen, Int32 iCompanyID, Int32 iSeasonID = 0)
         {
             var DB = new hoopsContext();
-            DataTable dtResults = default(DataTable);
-            var accessType = String.Empty;
+            DataTable? dtResults = default(DataTable);
+            var accessType = "NoAccess";
             try
             {
                 sSQL = "EXEC GetAccess";
@@ -267,7 +261,14 @@ namespace Hoops.Infrastructure.Repository
                 sSQL += ", @Screen = " + Quo(sScreen);
                 sSQL += ", @SeasonID = " + iSeasonID;
                 // dtResults = DB.ExecuteGetSQL(sSQL);
-                accessType = dtResults.Rows[0]["accesstype"].ToString();
+                if (dtResults != null && dtResults.Rows.Count > 0)
+                {
+                    accessType = dtResults.Rows[0]["accesstype"].ToString();
+                }
+                else
+                {
+                    throw new Exception("No access type found.");
+                }
             }
             catch (Exception ex)
             {
@@ -279,13 +280,13 @@ namespace Hoops.Infrastructure.Repository
                 dtResults = null;
                 
             }
-            return accessType;
+            return accessType!;
         }
 
         public void GetEmail(int CompanyID, string sUserName)
         {
             var DB = new hoopsContext();
-            DataTable dtResults = default(DataTable);
+            DataTable? dtResults = default;
             try
             {
                 sSQL = "exec CheckEmail @UName=" + Quotes(sUserName);
@@ -293,7 +294,7 @@ namespace Hoops.Infrastructure.Repository
                 //TODO:: Company
                 sSQL = "exec CheckEmail @UName=" + Quotes(sUserName);
                 // dtResults = DB.ExecuteGetSQL(sSQL);
-                if (dtResults.Rows.Count > 0)
+                if (dtResults != null && dtResults.Rows.Count > 0)
                 {
                     var user = new User
                     {
@@ -365,7 +366,7 @@ namespace Hoops.Infrastructure.Repository
         public User GetUserByHouseId(int houseId)
         {
             var user = context.Users.FirstOrDefault(u => u.HouseId == houseId);
-            return user;
+            return user!;
         }
 
         User IRepository<User>.Insert(User entity)
