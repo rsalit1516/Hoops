@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Hoops.Infrastructure.Repository;
 using Hoops.Infrastructure.Data;
@@ -18,21 +16,21 @@ namespace Hoops.Application.DTOs
         public Nullable<int> AssCoachID { get; set; }
         public Nullable<int> SponsorID { get; set; }
         [MaxLength(50)]
-        public string TeamName { get; set; }
+        public string? TeamName { get; set; }
         [MaxLength(50)]
-        public string TeamColor { get; set; }
+        public string? TeamColor { get; set; }
         public int TeamColorID { get; set; }
-        public string TeamNumber { get; set; }
+        public string? TeamNumber { get; set; }
         public int TeamNo { get; set; } //kludge for team number being a string in the DB!!
 
         public static vmTeam ConvertRecordForTeamNumber(Team team)
         {
-            var colorRepo = new ColorRepository(new hoopsContext());
+            var colorRepo = new ColorRepository(new Hoops.Infrastructure.Data.hoopsContext());
             var newTeam = new vmTeam
             {
                 TeamID = team.TeamId,
                 // CompanyID = team.CompanyId,
-                SeasonID = (int)team.SeasonId,
+                SeasonID = team.SeasonId ?? 0,
                 DivisionId = (int)team.DivisionId,
                 CoachID = team.CoachId,
                 TeamName = team.TeamName,
