@@ -1,13 +1,7 @@
-﻿using System.Linq;
-using System.Data;
+﻿using System.Data;
 using Hoops.Core.Interface;
-//using CSBC.Components;
+using Hoops.Infrastructure.Data;
 using Hoops.Core.Models;
-using System.Collections.Generic;
-using Hoops.Core;
-using Hoops.Core.ViewModel;
-using System;
-using Microsoft.Extensions.Logging;
 
 namespace Hoops.Infrastructure.Repository
 {

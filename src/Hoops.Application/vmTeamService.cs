@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using Hoops.Infrastructure.Repository;
 using Hoops.Infrastructure.Data;
 using Hoops.Core.Models;
+using Hoops.Core.ViewModels;
 
 namespace Hoops.Application.DTOs
 {

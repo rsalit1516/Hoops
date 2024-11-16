@@ -3,9 +3,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Hoops.Infrastructure.Repository;
+using Hoops.Infrastructure.Data;
 using Hoops.Core.Models;
-using Hoops.Core.ViewModel;
+using Hoops.Core.ViewModels;
 using Hoops.Core;
 
 namespace csbc_server.Controllers

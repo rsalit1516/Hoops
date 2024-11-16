@@ -3,27 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using Hoops.Core;
 using Hoops.Core.Models;
+using Hoops.Core.ViewModels;
 using Hoops.Infrastructure.Data;
 using Hoops.Infrastructure.Repository;
 
-namespace Hoops.Core.ViewModels
-{
-    public class ScheduleStandingsVM
+namespace Hoops.Application;
+    public class ScheduleStandingsVMService
     {
-        public int TeamNo { get; set; }
-        public string? TeamName { get; set; }
-        public string? ScheduleName { get; set; }
-        public string? DivNo { get; set; }
-        public string? Team { get; set; }
-        public int Won { get; set; }
-        public int Lost { get; set; }
-        public decimal Pct { get; set; }
-        public int Tiebreaker { get; set; }
-        public int Streak { get; set; }
-        public int PF { get; set; }
-        public int PA { get; set; }
-        public decimal GB { get; set; }
-
+       
 
         public List<ScheduleStandingsVM> CalculateStandings(List<ScheduleGame> games,
         List<Color> colors,
@@ -189,4 +176,3 @@ namespace Hoops.Core.ViewModels
             return teams;
         }
     }
-}
