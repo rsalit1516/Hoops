@@ -12,11 +12,11 @@ namespace Hoops.Core.Models
         [Column("SponsorID")]
         public int SponsorId { get; set; }
         [Column("CompanyID")]
-        public Nullable<int> CompanyId { get; set; }
+        public int? CompanyId { get; set; }
         [Column("SeasonID")]
-        public Nullable<int> SeasonId { get; set; }
+        public int? SeasonId { get; set; }
         [Column("HouseID")]
-        public Nullable<int> HouseId { get; set; }
+        public int? HouseId { get; set; }
         //public string ContactNameDELETE { get; set; }
         //public string SpoNameDELETE { get; set; }
         public string ShirtName { get; set; }
@@ -28,7 +28,7 @@ namespace Hoops.Core.Models
         //public string ZipDELETE { get; set; }
         //public string PhoneDELETE { get; set; }
         public string ShirtSize { get; set; }
-        public Nullable<decimal> SpoAmount { get; set; }
+        public decimal? SpoAmount { get; set; }
         //public string TypeOfBussDELETE { get; set; }
         public string Color1 { get; set; }
         [Column("Color1AD")]
@@ -37,14 +37,14 @@ namespace Hoops.Core.Models
         [Column("Color2AD")]
         public int Color2Id { get; set; }
         [Column("ShoppingCartID")]
-        public Nullable<int> ShoppingCartId { get; set; }
-        public Nullable<bool> MailCheck { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public int? ShoppingCartId { get; set; }
+        public bool? MailCheck { get; set; }
+        public DateTime? CreatedDate { get; set; }
         public string CreatedUser { get; set; }
         [Column("SponsorProfileID")]
         public int SponsorProfileId { get; set; }
         [Column("FeeID")]
-        public Nullable<decimal> FeeId { get; set; }
+        public decimal? FeeId { get; set; }
         public DateTime? AdExpiration { get; set; }
 
         // [ForeignKey("SponsorProfileID")]

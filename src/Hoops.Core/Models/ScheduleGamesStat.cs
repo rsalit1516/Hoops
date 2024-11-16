@@ -11,7 +11,7 @@ namespace Hoops.Core.Models
         public int GameNumber { get; set; }
         public int SeasonID { get; set; }
         public int PeopleID { get; set; }
-        public Nullable<int> Points { get; set; }
+        public int? Points { get; set; }
         public bool DNP { get; set; }
     }
 }

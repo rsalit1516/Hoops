@@ -16,6 +16,6 @@ namespace Hoops.Core.Interface
         // new int Update(ScheduleGame scheduleGame);
         new ScheduleGame Insert(ScheduleGame scheduleGame);
         IEnumerable<ScheduleStandingsVM> GetStandings(int divisionId);
-        List<GameSchedulesViewModel> GetGames( int seasonId);
+        List<vmGameSchedule> GetGames( int seasonId);
     }
 }

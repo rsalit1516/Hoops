@@ -11,11 +11,11 @@ namespace Hoops.Core.Models
         [Column("PlayerID")]
         public int PlayerId { get; set; }
         [Column("CompanyID")]
-        public Nullable<int> CompanyId { get; set; }
+        public int? CompanyId { get; set; }
         [Column("SeasonID")]
-        public Nullable<int> SeasonId { get; set; }
+        public int? SeasonId { get; set; }
         [Column("DivisionID")]
-        public Nullable<int> DivisionId { get; set; }
+        public int? DivisionId { get; set; }
         [Column("TeamID")]
         public int? TeamId { get; set; }
         [Column("PeopleID")]
@@ -23,8 +23,8 @@ namespace Hoops.Core.Models
         [Column("DraftID")]
         public string DraftId { get; set; }
         public string DraftNotes { get; set; }
-        public Nullable<int> Rating { get; set; }
-        public Nullable<int> Coach { get; set; }
+        public int? Rating { get; set; }
+        public int? Coach { get; set; }
         [Column("CoachID")]
         public int? CoachId { get; set; }
         public int? Sponsor { get; set; }
@@ -37,19 +37,19 @@ namespace Hoops.Core.Models
         public bool? Rollover { get; set; }
         public bool? OutOfTown { get; set; }
         [Column("RefundBatchID")]
-        public Nullable<int> RefundBatchId { get; set; }
-        public Nullable<System.DateTime> PaidDate { get; set; }
-        public Nullable<decimal> PaidAmount { get; set; }
-        public Nullable<decimal> BalanceOwed { get; set; }
+        public int? RefundBatchId { get; set; }
+        public DateTime? PaidDate { get; set; }
+        public decimal? PaidAmount { get; set; }
+        public decimal? BalanceOwed { get; set; }
         public string PayType { get; set; }
         public string NoteDesc { get; set; }
         public string CheckMemo { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
         public string CreatedUser { get; set; }
         public bool? PlaysDown { get; set; }
         public bool? PlaysUp { get; set; }
         [Column("ShoppingCartID")]
-        public Nullable<int> ShoppingCartId { get; set; }
+        public int? ShoppingCartId { get; set; }
 
         [ForeignKey("PeopleID")]
         public virtual Person Person { get; set; }

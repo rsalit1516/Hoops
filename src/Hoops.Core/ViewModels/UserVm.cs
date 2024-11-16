@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Hoops.Core.Models;
 
-namespace Hoops.Core.ViewModel
+namespace Hoops.Core.ViewModels
 {
     public class UserVm
     {

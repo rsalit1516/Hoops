@@ -7,7 +7,7 @@ namespace Hoops.Core.Models
     {
         public int CompanyID { get; set; }
         public int SponsorProfileID { get; set; }
-        public Nullable<int> HouseID { get; set; }
+        public int? HouseID { get; set; }
         public string spoName { get; set; }
         public string Address { get; set; }
         public string ContactName { get; set; }
@@ -17,8 +17,8 @@ namespace Hoops.Core.Models
         public string Phone { get; set; }
         public string Email { get; set; }
         public string URL { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
         public string CreatedUser { get; set; }
-        public Nullable<decimal> Balance { get; set; }
+        public decimal? Balance { get; set; }
     }
 }

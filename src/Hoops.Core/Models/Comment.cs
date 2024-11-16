@@ -8,12 +8,12 @@ namespace Hoops.Core.Models
     {
         [Key]
         public int CommentID { get; set; }
-        public Nullable<int> CompanyID { get; set; }
+        public int? CompanyID { get; set; }
         public string CommentType { get; set; }
-        public Nullable<int> LinkID { get; set; }
-        public Nullable<int> UserID { get; set; }
+        public int? LinkID { get; set; }
+        public int? UserID { get; set; }
         public string Comment1 { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
         public string CreatedUSer { get; set; }
     }
 }

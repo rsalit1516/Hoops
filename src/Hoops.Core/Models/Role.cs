@@ -16,7 +16,7 @@ namespace Hoops.Core.Models
         public int UserId { get; set; }
         public string ScreenName { get; set; }
         public string AccessType { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
         public string CreatedUser { get; set; }
 
         //public virtual User User { get; set; }

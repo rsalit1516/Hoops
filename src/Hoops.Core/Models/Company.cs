@@ -16,7 +16,7 @@ namespace Hoops.Core.Models
         public int TimeZone { get; set; }
         public string ImageName { get; set; }
         public string EmailSender { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
         public string CreatedUser { get; set; }
     }
 }

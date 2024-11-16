@@ -13,7 +13,7 @@ namespace Hoops.Core.Models
         [Column("HouseID")]
         public int HouseId { get; set; }
         [Column("CompanyID")]
-        public Nullable<int> CompanyId { get; set; }
+        public int? CompanyId { get; set; }
         public string Name { get; set; }
         public string Phone { get; set; }
         public string Address1 { get; set; }
@@ -22,13 +22,13 @@ namespace Hoops.Core.Models
         public string State { get; set; }
         public string Zip { get; set; }
         public string Email { get; set; }
-        public Nullable<bool> EmailList { get; set; }
+        public bool? EmailList { get; set; }
         public string SportsCard { get; set; }
-        public Nullable<int> Guardian { get; set; }
-        public Nullable<bool> FeeWaived { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public int? Guardian { get; set; }
+        public bool? FeeWaived { get; set; }
+        public DateTime? CreatedDate { get; set; }
         public string CreatedUser { get; set; }
         [Column("TEMID")]
-        public Nullable<int> TeamId { get; set; }
+        public int? TeamId { get; set; }
     }
 }

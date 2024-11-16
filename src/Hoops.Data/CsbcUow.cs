@@ -1,8 +1,10 @@
 ﻿using Hoops.Core;
 using Hoops.Core.Interface;
 using System;
+using Hoops.Infrastructure.Data;
+using Hoops.Data; // Add this line to include the correct namespace for hoopsContext
 
-namespace CSBC.Core.Data
+namespace Hoops.Data
 {
     /// <summary>
     /// The Code Camper "Unit of Work"

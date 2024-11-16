@@ -11,6 +11,6 @@ namespace Hoops.Core.Models
         public string Email { get; set; }
         public byte[] Photo { get; set; }
         public int CompanyID { get; set; }
-        public Nullable<int> Seq { get; set; }
+        public int? Seq { get; set; }
     }
 }
