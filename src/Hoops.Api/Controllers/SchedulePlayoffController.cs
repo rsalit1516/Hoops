@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Hoops.Core.Models;
 using Hoops.Core.Interface;
+using Hoops.Infrastructure.Data;
 
 namespace Hoops.Controllers
 {
