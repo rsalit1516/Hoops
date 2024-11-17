@@ -1,6 +1,5 @@
 using Hoops.Core.Models;
 using Hoops.Core.Interface;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 

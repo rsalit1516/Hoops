@@ -7,7 +7,6 @@ using Hoops.Infrastructure.Data;
 using Hoops.Infrastructure.Repository;
 using Hoops.Core.Models;
 using Hoops.Core.ViewModels;
-using Hoops.Core;
 
 namespace csbc_server.Controllers
 {

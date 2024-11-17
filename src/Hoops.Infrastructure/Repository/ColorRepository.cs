@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Hoops.Core.Models;
-using Csbc.Infrastructure;
+﻿using Hoops.Core.Models;
 using Hoops.Core.Interface;
 using Hoops.Infrastructure.Data;
 

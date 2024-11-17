@@ -5,8 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-
-using Hoops.Core;
+using Hoops.Infrastructure.Data;
 using Hoops.Core.Models;
 using Hoops.Core.Interface;
 

@@ -1,6 +1,8 @@
 ﻿using System.Data;
 using Hoops.Core.Interface;
 using Hoops.Core.Models;
+using Hoops.Core.ViewModels;
+
 using Microsoft.EntityFrameworkCore;
 using Hoops.Infrastructure.Data;
 

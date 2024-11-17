@@ -1,6 +1,7 @@
 ﻿using Hoops.Core.Models;
 using Hoops.Core.Interface;
 using Hoops.Infrastructure.Repository;
+using Hoops.Infrastructure.Data;
 
 namespace Hoops.Core.Infrastructure
 {

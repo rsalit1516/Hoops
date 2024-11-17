@@ -1,13 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-
-using Hoops.Core;
 using Hoops.Core.Models;
-using Hoops.Core.ViewModels;
 using Hoops.Core.Interface;
 
 namespace Hoops.Controllers

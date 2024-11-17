@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Hoops.Core.Models;
 
 namespace Hoops.Infrastructure.Data;

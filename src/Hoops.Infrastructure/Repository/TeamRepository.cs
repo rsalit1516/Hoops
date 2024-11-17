@@ -30,7 +30,7 @@ namespace Hoops.Infrastructure.Repository
         public IQueryable<Team> GetTeams(int divisionId)
         {
             var teams = context.Set<Team>().Where(s => s.DivisionId == divisionId);
-            return teams;
+            return teams!;
         }
         public int GetNumberofDivisionTeams(int divisionId)
         {
@@ -97,7 +97,14 @@ namespace Hoops.Infrastructure.Repository
                 // logger.LogInformation(team.TeamColorId.ToString());
                 // logger.LogInformation(team.TeamNumber);
                 var color = colors.FirstOrDefault(c => c.ColorId == team.TeamColorId);
-                team.TeamName = color.ColorName.ToUpper() + " (" + team.TeamNumber.ToString() + ")";
+                if (color != null)
+                {
+                    team.TeamName = color.ColorName.ToUpper() + " (" + team.TeamNumber.ToString() + ")";
+                    if (color != null)
+                    {
+                        team.TeamColor = color.ColorName;
+                    }
+                }
                 team.TeamColor = color.ColorName;
             }
             else

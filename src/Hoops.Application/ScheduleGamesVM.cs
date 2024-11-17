@@ -47,7 +47,7 @@ namespace Hoops.Core.ViewModels
         }
 
 
-        // public List<GameSchedulesViewModel> GetGames(int seasonId, int divisionId)
+        // public List<vmGameSchedule> GetGames(int seasonId, int divisionId)
         // {
         //     using (var db = new hoopsContext())
         //     {
@@ -58,7 +58,7 @@ namespace Hoops.Core.ViewModels
         //                       where g.DivisionId == divisionId
         //                       where g.LocationNumber == l.LocationNumber
         //                       where d.DivisionId == g.DivisionId
-        //                       select new GameSchedulesViewModel
+        //                       select new vmGameSchedule
         //                       {
         //                           DivisionDescription = d.DivisionDescription,
         //                           DivisionId = d.DivisionId,
@@ -81,7 +81,7 @@ namespace Hoops.Core.ViewModels
         //         return games;
         //     }
         // }
-        // public List<GameSchedulesViewModel> GetGames(int seasonId, int divisionId, int teamId)
+        // public List<vmGameSchedule> GetGames(int seasonId, int divisionId, int teamId)
         // {
         //     using (var db = new hoopsContext())
         //     {
@@ -104,7 +104,7 @@ namespace Hoops.Core.ViewModels
         //                           where (g.VisitingTeamNumber == teamNumber || g.HomeTeamNumber == teamNumber)
         //                           where g.ScheduleNumber == scheduleNumber
         //                           where g.LocationNumber == l.LocationNumber
-        //                           select new GameSchedulesViewModel
+        //                           select new vmGameSchedule
         //                           {
         //                               DivisionId = t.DivisionId,
         //                               SeasonId = g.SeasonId,
@@ -119,7 +119,7 @@ namespace Hoops.Core.ViewModels
         //                               VisitingTeamScore = (int)g.VisitingTeamScore
         //                           });
         //             //List<TeamViewModel> teams;
-        //             //var count = result.Count<GameSchedulesViewModel>();
+        //             //var count = result.Count<vmGameSchedule>();
         //             var games = GetTeamNamesFromScheduledGames(db, result);
         //             var playoffGames = GetPlayoffGames(divisionId);
         //             games.AddRange(playoffGames);
@@ -127,18 +127,18 @@ namespace Hoops.Core.ViewModels
         //         }
         //         else
         //         {
-        //             return new List<GameSchedulesViewModel>();
+        //             return new List<vmGameSchedule>();
         //         }
         //     }
         // }
-        // private static List<GameSchedulesViewModel> GetTeamNamesFromScheduledGames(hoopsContext db, IQueryable<GameSchedulesViewModel> result)
+        // private static List<vmGameSchedule> GetTeamNamesFromScheduledGames(hoopsContext db, IQueryable<vmGameSchedule> result)
         // {
-        //     List<GameSchedulesViewModel> games = new List<GameSchedulesViewModel>();
+        //     List<vmGameSchedule> games = new List<vmGameSchedule>();
         //     var seasonId = result.First().SeasonId;
-        //     //var teams = TeamViewModel.GetDivisionTeams(result.FirstOrDefault<GameSchedulesViewModel>().DivisionId);
+        //     //var teams = TeamViewModel.GetDivisionTeams(result.FirstOrDefault<vmGameSchedule>().DivisionId);
         //     var teams = TeamViewModel.GetSeasonTeams((int)seasonId);
         //     var schedDiv = db.Set<ScheduleDivTeam>().Where(s => s.SeasonId == seasonId).ToList();
-        //     foreach (GameSchedulesViewModel game in result)
+        //     foreach (vmGameSchedule game in result)
         //     {
         //         //first get real game time
         //         DateTime time;

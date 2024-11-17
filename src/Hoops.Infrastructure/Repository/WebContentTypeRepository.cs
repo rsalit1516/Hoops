@@ -1,11 +1,7 @@
 ﻿using Hoops.Core.Models;
-using Csbc.Infrastructure;
 using Hoops.Core.Interface;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Hoops.Core;
+using Hoops.Infrastructure.Data;
 // using System.Data.Entity;
 
 namespace Hoops.Infrastructure.Repository
