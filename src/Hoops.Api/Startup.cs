@@ -11,6 +11,7 @@ using Hoops.Core.Interface;
 using Hoops.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Hoops.Infrastructure.Data;
 
 namespace Hoops.Api
 {
