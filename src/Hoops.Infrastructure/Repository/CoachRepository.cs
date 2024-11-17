@@ -1,12 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Data;
+﻿using System.Data;
 using Hoops.Core.Interface;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Data.SqlClient;
-using Csbc.Infrastructure;
 using Hoops.Core.Models;
-using Hoops.Core;
+using Hoops.Infrastructure.Data;
+
 
 namespace Hoops.Infrastructure.Repository
 {
