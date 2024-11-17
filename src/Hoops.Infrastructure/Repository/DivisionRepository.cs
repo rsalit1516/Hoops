@@ -7,7 +7,7 @@ using Hoops.Core.Interface;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using Hoops.Core.Models;
-using Hoops.Core;
+using Hoops.Infrastructure.Data;
 
 namespace Hoops.Infrastructure.Repository
 {

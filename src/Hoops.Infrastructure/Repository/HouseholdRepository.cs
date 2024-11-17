@@ -1,17 +1,14 @@
 using Microsoft.EntityFrameworkCore;
-using Csbc.Infrastructure;
+using Hoops.Infrastructure.Data;
 using Hoops.Core.Interface;
-using System;
-using System.Linq;
 using System.Data;
 using System.Linq.Expressions;
 using Hoops.Core.Models;
-using Hoops.Core;
 
 namespace Hoops.Infrastructure.Repository
 {
 
-public class HouseholdRepository : EFRepository<Household>, IHouseholdRepository
+    public class HouseholdRepository : EFRepository<Household>, IHouseholdRepository
 	{
         public HouseholdRepository(hoopsContext context) : base(context){}
 

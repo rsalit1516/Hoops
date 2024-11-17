@@ -2,14 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Hoops.Core;
 using Hoops.Core.Models;
 using Hoops.Core.ViewModels;
 using Hoops.Infrastructure.Repository;
 using Hoops.Infrastructure.Data;
-using Microsoft.IdentityModel.Protocols;
-using System.Configuration;
-using Microsoft.EntityFrameworkCore;
 
 namespace Hoops.Data
 {
@@ -51,7 +47,7 @@ namespace Hoops.Data
         {
             get
             {
-                var rep = new SeasonRepository(new Hoops.Core.hoopsContext());
+                var rep = new SeasonRepository(new hoopsContext());
                 return rep.GetCurrentSeason(CompanyId).Result;
             }
         }
