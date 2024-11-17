@@ -217,7 +217,7 @@ namespace Hoops.Core.ViewModels
 
                     game.ScheduleNumber = g.ScheduleNumber;
                     //game.DivisionId = g.DivisionId;
-                    game.GameDate = (DateTime)g.GameDate;
+                    game.GameDate = g.GameDate ?? DateTime.MinValue;
                     if (DateTime.TryParse(g.GameTime, out time))
                         game.GameTime = time;
                     //game.D = g.Div_Desc;
