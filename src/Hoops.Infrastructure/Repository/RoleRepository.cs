@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Linq;
-using System.Data;
+﻿using System.Data;
 using Hoops.Core.Interface;
-using Hoops.Core.Models;
-using Hoops.Core;
+using Hoops.Core.Models;    
+using Hoops.Infrastructure.Data;
 
 namespace Hoops.Infrastructure.Repository
 {

@@ -1,8 +1,4 @@
-using System;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Hoops.Core.Models;
 using Hoops.Core.ViewModels;
 using Hoops.Core.Interface;

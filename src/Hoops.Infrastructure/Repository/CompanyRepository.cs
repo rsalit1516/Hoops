@@ -1,20 +1,23 @@
-﻿using System;
-using System.Linq.Expressions;
-using System.Linq;
+﻿using System.Linq.Expressions;
 using Hoops.Core.Interface;
-using Csbc.Infrastructure;
+using Hoops.Infrastructure.Data;
 using Hoops.Core.Models;
-using Hoops.Core;
 
 namespace Hoops.Infrastructure.Repository
 {
     public class CompanyRepository : EFRepository<Company>, ICompanyRepository
     {
-        public CompanyRepository(hoopsContext context) : base(context) { }
+        public CompanyRepository(hoopsContext context) : base(context)
+        {
+            if (context is null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+        }
 
         #region IRepository<T> Members
 
-    
+
         public override void Delete(Company entity)
         {
             DbSet.Remove(entity);

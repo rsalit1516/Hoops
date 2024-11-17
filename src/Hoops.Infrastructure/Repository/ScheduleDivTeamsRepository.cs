@@ -1,8 +1,6 @@
 ﻿using Hoops.Core.Models;
-using Csbc.Infrastructure;
 using Hoops.Core.Interface;
-using System.Linq;
-using Hoops.Core;
+using Hoops.Infrastructure.Data;
 
 namespace Hoops.Infrastructure.Repository
 {

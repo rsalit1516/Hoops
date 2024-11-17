@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 using System.Data;
 using Hoops.Core.Interface;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 using Hoops.Core.Models;
 using Hoops.Infrastructure.Data;
 

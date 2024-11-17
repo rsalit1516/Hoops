@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using Hoops.Core;
+﻿using System.Globalization;
 using Hoops.Core.Models;
 using Hoops.Core.ViewModels;
 using Hoops.Core.Interface;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.Extensions.Logging;
+using Hoops.Infrastructure.Data;
 
 namespace Hoops.Infrastructure.Repository
 {

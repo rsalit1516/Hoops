@@ -1,11 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Hoops.Core;
-using Hoops.Core.Models;
 using Hoops.Core.Interface;
-
+using Hoops.Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 

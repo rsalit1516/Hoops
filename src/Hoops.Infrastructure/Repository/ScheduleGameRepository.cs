@@ -1,13 +1,9 @@
-﻿using System;
-using System.Linq;
-using Hoops.Core.Interface;
+﻿using Hoops.Core.Interface;
 using System.Data;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 using Hoops.Core.ViewModels;
 using Hoops.Core.Models;
-using Microsoft.Extensions.Logging;
+using Hoops.Infrastructure.Data;
 using static Hoops.Core.Enum.GroupTypes;
 
 namespace Hoops.Infrastructure.Repository
@@ -15,7 +11,7 @@ namespace Hoops.Infrastructure.Repository
     public class ScheduleGameRepository : EFRepository<ScheduleGame>, IScheduleGameRepository
     {
         private readonly ILogger<ScheduleGameRepository> _logger;
-        public ScheduleGameRepository(Hoops.Core.hoopsContext context, ILogger<ScheduleGameRepository> logger) : base(context)
+        public ScheduleGameRepository(hoopsContext context, ILogger<ScheduleGameRepository> logger) : base(context)
         {
             _logger = logger;
         }
@@ -368,7 +364,7 @@ namespace Hoops.Infrastructure.Repository
             return teams.ToList();
         }
 
-        public List<GameSchedulesViewModel> GetGames(int seasonId)
+        public List<vmGameSchedule> GetGames(int seasonId)
         {
             var startTime = DateTime.Now;
             // _logger.LogInformation("ScheduledGames: GetGames - start basic query" + startTime);
@@ -381,7 +377,7 @@ namespace Hoops.Infrastructure.Repository
                          where g.SeasonId == seasonId
                          where g.DivisionId == d.DivisionId
                          where g.LocationNumber == l.LocationNumber
-                         select new GameSchedulesViewModel
+                         select new vmGameSchedule
                          {
                              SeasonId = seasonId,
                              DivisionDescription = d.DivisionDescription,
@@ -410,10 +406,10 @@ namespace Hoops.Infrastructure.Repository
             // _logger.LogInformation("Retrieved " + games.Count.ToString() + " total season games");
             return games;
         }
-        private List<GameSchedulesViewModel> GetTeamNamesFromScheduledGames(IQueryable<GameSchedulesViewModel> result)
+        private List<vmGameSchedule> GetTeamNamesFromScheduledGames(IQueryable<vmGameSchedule> result)
         {
             var db = context;
-            List<GameSchedulesViewModel> games = new List<GameSchedulesViewModel>();
+            List<vmGameSchedule> games = new List<vmGameSchedule>();
             _logger.LogInformation("Retrieved " + result.Count().ToString() + " season games");
             var seasonId = result.First().SeasonId;
             _logger.LogInformation("SeasonID=" + seasonId.ToString());
@@ -423,7 +419,7 @@ namespace Hoops.Infrastructure.Repository
 
             // var repoColor = new ColorRepository(context);
             // var colors = repoColor.GetAll(1);
-            foreach (GameSchedulesViewModel game in result)
+            foreach (vmGameSchedule game in result)
             {
                 //first get real game time
                 DateTime time;
@@ -467,7 +463,7 @@ namespace Hoops.Infrastructure.Repository
                 s.SeasonId == seasonId);
         }
 
-        private List<GameSchedulesViewModel> GetPlayoffGames(int divisionId)
+        private List<vmGameSchedule> GetPlayoffGames(int divisionId)
         {
             using (var db = context)
             {
@@ -491,11 +487,11 @@ namespace Hoops.Infrastructure.Repository
                                  g.VisitingTeam,
                                  g.Descr
                              });
-                var schedGames = new List<GameSchedulesViewModel>();
+                var schedGames = new List<vmGameSchedule>();
                 DateTime time;
                 foreach (var g in games)
                 {
-                    var game = new GameSchedulesViewModel();
+                    var game = new vmGameSchedule();
 
                     game.ScheduleNumber = g.ScheduleNumber;
                     //game.DivisionId = g.DivisionId;
@@ -516,12 +512,12 @@ namespace Hoops.Infrastructure.Repository
                 if (divisionId != 0)
                 {
                     schedGames = schedGames
-                    .OrderBy(g => g.GameDate).ThenBy(g => g.GameTime).ThenBy(g => g.DivisionId).ToList<GameSchedulesViewModel>();
+                    .OrderBy(g => g.GameDate).ThenBy(g => g.GameTime).ThenBy(g => g.DivisionId).ToList<vmGameSchedule>();
                 }
                 return schedGames;
             }
         }
-        public List<GameSchedulesViewModel> GetSeasonPlayoffGames(int seasonId)
+        public List<vmGameSchedule> GetSeasonPlayoffGames(int seasonId)
         {
             using var db = context;
             var games = from g in db.SchedulePlayoffs
@@ -544,7 +540,7 @@ namespace Hoops.Infrastructure.Repository
                              g.VisitingTeam,
                              g.Descr
                          };
-            var schedGames = new List<GameSchedulesViewModel>();
+            var schedGames = new List<vmGameSchedule>();
             DateTime time;
             _logger.LogInformation("Retrieved " + games.Count().ToString() + " playoff games");
             _logger.LogInformation("Playoffs " + games.ToList().ToString());
@@ -555,7 +551,7 @@ namespace Hoops.Infrastructure.Repository
                 if (DateTime.TryParse(g.GameTime, out time))
                     gameTime = time;
 
-                var game = new GameSchedulesViewModel
+                var game = new vmGameSchedule
                 {
                     ScheduleNumber = g.ScheduleNumber,
                     DivisionId = g.DivisionId,
@@ -573,7 +569,7 @@ namespace Hoops.Infrastructure.Repository
                 schedGames.Add(game);
             }
 
-            return schedGames.OrderBy(g => g.GameDate).ThenBy(g => g.GameTime).ThenBy(g => g.DivisionId).ToList<GameSchedulesViewModel>();
+            return schedGames.OrderBy(g => g.GameDate).ThenBy(g => g.GameTime).ThenBy(g => g.DivisionId).ToList<vmGameSchedule>();
         }
         private static DateTime CombineDateAndTime(DateTime date, DateTime time)
         {
