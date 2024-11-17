@@ -3,8 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Hoops.Core.Models;
-using Hoops.Core;
 using Microsoft.EntityFrameworkCore;
+using Hoops.Infrastructure.Data;
 
 namespace Hoops.Controllers
 {
