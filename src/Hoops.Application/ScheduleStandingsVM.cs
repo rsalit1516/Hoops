@@ -74,8 +74,8 @@ namespace Hoops.Application;
                         {
                             if (team.TeamNumber == record.HomeTeamNumber.ToString())
                             {
-                                seasonRecord.PA += (int)record.VisitingTeamScore;
-                                seasonRecord.PF += (int)record.HomeTeamScore;
+                                seasonRecord.PA += record.VisitingTeamScore.HasValue ? (int)record.VisitingTeamScore.Value : 0;
+                                seasonRecord.PF += record.HomeTeamScore ?? 0;
 
                                 if (record.HomeTeamScore > record.VisitingTeamScore)
                                     seasonRecord.Won++;

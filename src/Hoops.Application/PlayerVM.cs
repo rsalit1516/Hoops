@@ -16,7 +16,7 @@ namespace Hoop.Application.DTOs
 
         public PlayerViewModel()
         {
-            
+            hoopsContext = new hoopsContext();
         }
 
         public PlayerViewModel(hoopsContext db)
