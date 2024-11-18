@@ -36,7 +36,7 @@ export class AdminShellSidebarComponent {
     { name: 'Teams', route: '/admin/teams', isSelected: false },
     { name: 'Games', route: '/admin/games', isSelected: false },
   ];
-  CommunicationSection = 'Communcation';
+  CommunicationSection = 'Communication';
   communicationItems = [
     { name: 'Notices', route: '/admin/content', isSelected: false },
   ];
