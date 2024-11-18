@@ -40,8 +40,12 @@ namespace Hoops.Application;
             foreach (var team in teams)
             {
                 var t = divTeams.FirstOrDefault(t => t.TeamNumber.ToString() == team.TeamNumber);
-                var teamRecord = GetTeamRecord(team, t, games);
-                teamRecords.Add(teamRecord);
+                if (t != null)
+                {
+                    var teamRecord = GetTeamRecord(team, t, games);
+                    teamRecords.Add(teamRecord);
+                }
+                // teamRecords.Add(teamRecord);
             }
             return teamRecords;
         }
@@ -86,8 +90,8 @@ namespace Hoops.Application;
                             {
                                 if (team.TeamNumber == record.VisitingTeamNumber.ToString())
                                 {
-                                    seasonRecord.PF += (int)record.VisitingTeamScore;
-                                    seasonRecord.PA += (int)record.HomeTeamScore;
+                                    seasonRecord.PF += record.VisitingTeamScore ?? 0;
+                                    seasonRecord.PA += record.HomeTeamScore ?? 0;
                                     if (record.VisitingTeamScore > record.HomeTeamScore)
                                         seasonRecord.Won++;
                                     else
@@ -121,7 +125,7 @@ namespace Hoops.Application;
                     .FirstOrDefault(t => t.ScheduleNumber == divisionNo
                     && t.ScheduleTeamNumber == teamNo
                     && t.SeasonId == seasonId);
-                return schedTeam.TeamNumber;
+                return schedTeam?.TeamNumber ?? 0;
             }
         }
 
@@ -139,14 +143,16 @@ namespace Hoops.Application;
                 {
                     if (team == null)
                     {
-                        if (team.TeamColorId != 0)
+                        if (team != null && team.TeamColorId != 0)
                         {
                             var color = colors.FirstOrDefault(c => c.ColorId == team.TeamColorId);
                             team.TeamName = color == null ? "(" + team.TeamNumber + ")" : color.ColorName + "(" + team.TeamNumber + ")";
                         }
                         else
                         {
-                            team.TeamName = "(" + team.TeamNumber + ")";
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+                            team.TeamName = "(" + (team.TeamNumber != null ? team.TeamNumber : "Unknown") + ")";
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
                         }
                     }
                     else
