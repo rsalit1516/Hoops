@@ -23,7 +23,7 @@ namespace Hoops.Api.Controllers.Tests
         }
 
         [Fact]
-        public async Task DeleteWebContent_ReturnsNotFound_WhenWebContentDoesNotExist()
+        public void DeleteWebContent_ReturnsNotFound_WhenWebContentDoesNotExist()
         {
             // Arrange
             int webContentId = 1;
@@ -37,7 +37,7 @@ namespace Hoops.Api.Controllers.Tests
         }
 
         [Fact]
-        public async Task DeleteWebContent_ReturnsOk_WhenWebContentExists()
+        public void DeleteWebContent_ReturnsOk_WhenWebContentExists()
         {
             // Arrange
             int webContentId = 1;

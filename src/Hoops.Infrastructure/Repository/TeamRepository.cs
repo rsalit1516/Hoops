@@ -7,7 +7,7 @@ namespace Hoops.Infrastructure.Repository
 {
     public class TeamRepository : EFRepository<Team>, ITeamRepository
     {
-        private readonly ILogger<TeamRepository> logger;
+        private readonly ILogger<TeamRepository>? logger;
 
         public TeamRepository(hoopsContext context, ILogger<TeamRepository> _logger) : base(context)
         {
