@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import * as fromGames from '../../state';
@@ -9,7 +9,7 @@ import { DailyPlayoffScheduleComponent } from '../daily-playoff-schedule/daily-p
     selector: 'schedule-playoffs',
     template: `
     <section class="container">
-      <div *ngFor="let data of playoffGames">
+      <div *ngFor="let data of playoffGames()">
         <csbc-daily-playoff-schedule [playoffGames]="data">
         </csbc-daily-playoff-schedule>
       </div>
@@ -20,7 +20,7 @@ import { DailyPlayoffScheduleComponent } from '../daily-playoff-schedule/daily-p
     providers: [Store]
 })
 export class SchedulePlayoffsComponent {
-  @Input() playoffGames!: Array<PlayoffGame[]>;
+  readonly playoffGames = input.required<Array<PlayoffGame[]>>();
   public games: PlayoffGame[] | undefined;
 
 

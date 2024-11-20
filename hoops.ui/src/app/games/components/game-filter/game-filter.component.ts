@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
+import { Component, OnInit, input, output } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import * as fromGames from '../../state';
@@ -30,12 +30,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     ]
 })
 export class GameFilterComponent implements OnInit {
-  @Input( { required: true } )divisions!: Division[];
+  readonly divisions = input.required<Division[]>();
   currentDivision!: Division;
-  @Input() teams!: Team[] | null;
+  readonly teams = input.required<Team[] | null>();
   currentTeam!: Team;
   showAllTeams!: boolean;
-  @Output() selectedTeam = new EventEmitter<Team>();
+  readonly selectedTeam = output<Team>();
   criteriaForm!: any;
   divisions$ = this.divisionService.divisions$.pipe(
     catchError((err) => {
@@ -72,7 +72,7 @@ export class GameFilterComponent implements OnInit {
   createForm() {
     this.criteriaForm = this.fb.group({
       divisions: new FormControl(this.currentDivision),
-      teams: this.teams,
+      teams: this.teams(),
       allTeams: true,
       gameView: 'list',
     });

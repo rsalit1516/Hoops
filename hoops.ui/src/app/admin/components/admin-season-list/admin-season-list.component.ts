@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, input } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
 import * as fromAdmin from '../../state';
@@ -24,7 +24,7 @@ import { Router } from '@angular/router';
 })
 export class AdminSeasonListComponent implements OnInit {
   private _seasons: Season[] | undefined;
-  @Input() info: string | undefined;
+  readonly info = input<string>();
   get seasons() {
     return this._seasons;
   }

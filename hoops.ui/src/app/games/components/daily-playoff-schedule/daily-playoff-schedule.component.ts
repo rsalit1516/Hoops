@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PlayoffGame } from '@app/domain/playoffGame';
 import { MatTableModule } from '@angular/material/table';
@@ -15,7 +15,7 @@ import { MatTableModule } from '@angular/material/table';
     ]
 })
 export class DailyPlayoffScheduleComponent {
-  @Input() playoffGames!: PlayoffGame[];
+  readonly playoffGames = input.required<PlayoffGame[]>();
   gameDate!: Date;
   displayedColumns = [
     'gameTime',
@@ -29,7 +29,7 @@ export class DailyPlayoffScheduleComponent {
   constructor() { }
 
   ngOnInit() {
-    this.data = this.playoffGames;
+    this.data = this.playoffGames();
     this.gameDate! = this.data[0].gameDate as Date;
 
   }

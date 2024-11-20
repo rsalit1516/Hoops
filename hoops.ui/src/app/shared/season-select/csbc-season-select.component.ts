@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, input, output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 import { SeasonService } from '../../services/season.service';
@@ -16,16 +16,16 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     imports: [MatFormFieldModule, MatSelectModule, NgFor, MatOptionModule, AsyncPipe]
 })
 export class CsbcSeasonSelectComponent implements OnInit {
-  @Input() seasons$: Observable<Season[]> | undefined;
-  @Input() selectedSeason: Season = new Season();
-  @Output() setSeason = new EventEmitter<Season>(); // : Season;
+  readonly seasons$ = input<Observable<Season[]>>();
+  readonly selectedSeason = input<Season>(new Season());
+  readonly setSeason = output<Season>(); // : Season;
 
   season: Season = new Season();
   constructor(private _seasonService: SeasonService) {}
 
   ngOnInit() {
     // this.seasons = this._seasonService.getSeasons();
-    console.log(this.seasons$);
+    console.log(this.seasons$());
     // this.selectedSeason = this.seasons[0];
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, input } from '@angular/core';
 import { UntypedFormGroup, UntypedFormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { Season } from '../../domain/season';
@@ -12,7 +12,7 @@ import { NgClass } from '@angular/common';
 })
 
 export class SeasonDetailComponent implements OnInit {
-    @Input() season: Season | undefined;
+    readonly season = input<Season>();
     seasonForm!: UntypedFormGroup;
 
     constructor(private fb: UntypedFormBuilder) { }
@@ -20,9 +20,9 @@ export class SeasonDetailComponent implements OnInit {
     ngOnInit(): void {
         this.seasonForm = this.fb.group({
             // id: this.season.id,
-            name: this.season.description,
-            startDate: this.season.fromDate,
-            endDate: this.season.toDate,
+            name: this.season().description,
+            startDate: this.season().fromDate,
+            endDate: this.season().toDate,
             currentSeason: false
         });
     }

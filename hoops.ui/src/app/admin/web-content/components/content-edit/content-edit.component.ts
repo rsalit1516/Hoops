@@ -1,12 +1,12 @@
 import {
   Component,
   OnInit,
-  ViewChildren,
   ElementRef,
   Inject,
   signal,
   ChangeDetectionStrategy,
   inject,
+  viewChildren
 } from '@angular/core';
 import {
   Validators,
@@ -64,9 +64,7 @@ import { Constants } from '@app/shared/constants';
     ]
 })
 export class ContentEditComponent implements OnInit {
-  @ViewChildren(FormControlName, { read: ElementRef })
-
-  store = inject(Store<fromContent.State>);
+  readonly store = viewChildren(FormControlName, { read: ElementRef });
 
   // @Input()
   content!: Content;
@@ -147,7 +145,7 @@ export class ContentEditComponent implements OnInit {
     });
   }
   getContent(): void {
-    this.store
+    this.store()
       .pipe(select(fromContent.getSelectedContent))
       .subscribe((content) => {
         if (content !== null) {

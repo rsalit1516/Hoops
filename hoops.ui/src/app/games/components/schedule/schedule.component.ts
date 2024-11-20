@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
+import { Component, OnInit, Input, Output, input } from '@angular/core';
 import { Game } from '../../../domain/game';
 import { Store } from '@ngrx/store';
 import * as fromGames from '../../state';
@@ -19,7 +19,7 @@ import { NgFor } from '@angular/common';
     imports: [NgFor, DailyScheduleComponent]
 })
 export class ScheduleComponent implements OnInit {
-  @Input() dailySchedule!: Array<Game[]>;
+  readonly dailySchedule = input.required<Array<Game[]>>();
   groupedGames: Game[] | undefined;
   _gamesByDate: [Date, Game[]] | undefined;
   divisionId: number | undefined;

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, input, output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as fromGames from '../../state';
 import { Subject, Observable } from 'rxjs';
@@ -23,10 +23,10 @@ import { CommonModule } from '@angular/common';
         MatToolbarModule, MatTabsModule, GameFilterComponent]
 })
 export class GamesTopMenuComponent implements OnInit {
-  @Input() divisions!: Division[];
-  @Input() teams!: Team[];
+  readonly divisions = input.required<Division[]>();
+  readonly teams = input.required<Team[]>();
   @Output() currentDivision: Division | undefined;
-  @Output() selectedDivision = new EventEmitter<Division>();
+  readonly selectedDivision = output<Division>();
   private errorMessageSubject = new Subject<string>();
   filteredTeams!: Team[];
   seasonDescription: string | undefined;

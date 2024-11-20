@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, input } from '@angular/core';
 import { Standing } from '@domain/standing';
 import { GameService } from './../../game.service';
 import { CommonModule } from '@angular/common';
@@ -17,7 +17,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 })
 export class StandingsComponent implements OnInit {
   public title: string;
-  @Input() teams!: any[];
+  readonly teams = input.required<any[]>();
 
   private _standings: Standing[] | undefined | null;
   get standings() {
@@ -41,7 +41,7 @@ export class StandingsComponent implements OnInit {
 
   ngOnInit() {
     this.dataSource = new MatTableDataSource(this.standings);
-    console.log(this.teams);
+    console.log(this.teams());
     console.log(this.standings);
   }
 }

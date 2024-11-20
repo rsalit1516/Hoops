@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, output } from '@angular/core';
 import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
 import * as fromUser from '../../user/state';
 import { Store, select } from '@ngrx/store';
@@ -21,7 +21,7 @@ import { FlexModule } from '@angular/flex-layout';
         MatButtonModule, MatIconModule, RouterModule, FlexModule, RouterLinkActive]
 })
 export class TopNavComponent implements OnInit {
-  @Output() public sidenavToggle = new EventEmitter();
+  public readonly sidenavToggle = output();
   currentUser$: Observable<User> | undefined;
   userName: string | undefined;
   showAdminMenu: boolean | undefined;

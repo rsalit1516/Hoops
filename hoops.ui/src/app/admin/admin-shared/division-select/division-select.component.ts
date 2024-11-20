@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, output } from '@angular/core';
 import { Division } from '@app/domain/division';
 import { Observable } from 'rxjs';
 import * as fromAdmin from '../../state';
@@ -25,7 +25,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     ]
 })
 export class DivisionSelectComponent implements OnInit {
-  @Output() selectedDivision = new EventEmitter<Division>();
+  readonly selectedDivision = output<Division>();
   selectForm!: UntypedFormGroup;
   divisions$: Observable<Division[]>;
   divisionComponent: UntypedFormControl | null | undefined;

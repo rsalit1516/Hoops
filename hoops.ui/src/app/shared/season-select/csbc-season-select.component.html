@@ -2,7 +2,7 @@
   <mat-label>Season</mat-label>
   <mat-select>
     <mat-option
-      *ngFor="let season of seasons$ | async"
+      *ngFor="let season of seasons$() | async"
       [value]="season.seasonId"
     >
       {{ season.description }}

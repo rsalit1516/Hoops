@@ -16,7 +16,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 @Component({
     selector: 'season-select',
     templateUrl: './season-select.component.html',
-    styleUrls: ['./../../../shared/scss/select.scss'],
+  styleUrls: ['./../../../shared/scss/select.scss'],
+    standalone: true,
     imports: [
         FormsModule,
         // ReactiveFormsModule,

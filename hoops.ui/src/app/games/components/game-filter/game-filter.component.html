@@ -4,7 +4,7 @@
       <mat-label>Divisions</mat-label>
       <mat-select formControlName="divisions">
         <mat-option
-          *ngFor="let division of divisions"
+          *ngFor="let division of divisions()"
           [value]="division"
         >
           {{ division.divisionDescription }}
@@ -15,7 +15,7 @@
     <mat-form-field>
       <mat-label>Teams</mat-label>
       <mat-select formControlName="teams">
-        <mat-option *ngFor="let team of teams" [value]="team">
+        <mat-option *ngFor="let team of teams()" [value]="team">
           {{ team.teamName }}
         </mat-option>
       </mat-select>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, input } from '@angular/core';
 import { FormBuilder, FormsModule } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
 
@@ -45,8 +45,7 @@ export class ScoresComponent implements OnInit {
     //});
   }
   private _games!: Game[];
-  @Input()
-  canEdit!: boolean;
+  readonly canEdit = input.required<boolean>();
 
   errorMessage!: string;
   public title: string;
@@ -69,7 +68,7 @@ export class ScoresComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.canEdit === true) {
+    if (this.canEdit() === true) {
       this.displayedColumns.push('actions');
     }
     this.userStore.pipe(select(fromUser.getCurrentUser)).subscribe(user => {

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, input } from '@angular/core';
 
 import { Content } from '../../../domain/content';
 import { ContentService } from '../../../admin/web-content/content.service';
@@ -20,7 +20,7 @@ import { AnnouncementComponent } from '../announcement/announcement.component';
     providers: [ContentService]
 })
 export class CsbcAnnouncementsComponent implements OnInit {
-@Input() info!: string;
+readonly info = input.required<string>();
   seasonInfoCount = 0 as number;
   latestNewsCount!: number;
   meetingNoticeCount!: number;

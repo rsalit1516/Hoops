@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -22,7 +22,7 @@ import { ContentListToolbarComponent } from '../content-list-toolbar/content-lis
         ContentListToolbarComponent]
 })
 export class ContentListComponent implements OnInit {
-  @Output() selectedContent = new EventEmitter<Content>();
+  readonly selectedContent = output<Content>();
   contents$!: Observable<WebContent[]>;
   errorMessage: string|undefined;
   pageTitle: string|undefined;

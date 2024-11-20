@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone, ViewChild } from '@angular/core';
+import { Component, OnInit, NgZone, viewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
@@ -26,7 +26,7 @@ const SMALL_WIDTH_BREAKPOINT = 720;
 
 
 export class AdminComponent  implements OnInit {
-  @ViewChild(MatSidenav, {static: false}) sidenav: MatSidenav | undefined;
+  readonly sidenav = viewChild(MatSidenav);
 
   opened = true;
   mode = 'side';

@@ -32,13 +32,13 @@
               {{ game.visitingTeamName }}
             </td>
           </ng-container>
-          <ng-container matColumnDef="homeTeamScore" *ngIf="showScores">
+          <ng-container matColumnDef="homeTeamScore" *ngIf="showScores()">
             <th mat-header-cell *matHeaderCellDef>Home Score</th>
             <td mat-cell *matCellDef="let game" class="teamName">
               {{ game.homeTeamScore }}
             </td>
           </ng-container>
-          <ng-container matColumnDef="visitingTeamScore" *ngIf="showScores">
+          <ng-container matColumnDef="visitingTeamScore" *ngIf="showScores()">
             <th mat-header-cell *matHeaderCellDef>Visitor Score</th>
             <td mat-cell *matCellDef="let game" class="teamName">
               {{ game.visitingTeamScore }}

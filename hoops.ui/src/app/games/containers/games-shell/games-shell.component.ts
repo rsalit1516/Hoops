@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, input } from '@angular/core';
 import { SeasonService } from '@app/services/season.service';
 import { DivisionService } from '@app/services/division.service';
 import { TeamService } from '@app/services/team.service';
@@ -26,8 +26,8 @@ import { GamesTopMenuComponent } from '../../components/games-top-menu/games-top
     imports: [GamesTopMenuComponent, RouterOutlet]
 })
 export class GamesShellComponent implements OnInit {
-  @Input() showAllTeams: boolean | undefined;
-  @Input() currentTeam: string | undefined;
+  readonly showAllTeams = input<boolean>();
+  readonly currentTeam = input<string>();
   teamList: any[] | undefined;
   filteredGames$: Observable<Game[]> | undefined;
   standings$: Observable<Standing[]> | undefined;

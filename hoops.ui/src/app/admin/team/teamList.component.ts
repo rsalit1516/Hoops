@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, inject } from '@angular/core';
+import { Component, OnInit, inject, input } from '@angular/core';
 import { TeamService } from '../../services/team.service';
 import { Team } from '../../domain/team';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -15,7 +15,7 @@ import { CommonModule } from '@angular/common';
         '../admin.component.scss']
 })
 export class TeamListComponent implements OnInit {
-    @Input() teams: Team[] | undefined;
+    readonly teams = input<Team[]>();
     errorMessage: string | undefined;
   selectedTeam: Team | undefined;
   private _teamService = inject(TeamService);
