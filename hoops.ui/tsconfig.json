@@ -34,7 +34,13 @@
     "strictInputAccessModifiers": true,
     "strictTemplates": true,
     "strictNullChecks": false,
-    "fullTepmplateTytpeCheck": false
+    "fullTepmplateTytpeCheck": false,
+    "extendedDiagnostics": {
+      "checks": {
+        "unusedStandaloneImports": "suppress"
+      }
+    },
+
   },
   "exclude": [
     "./node_modules",

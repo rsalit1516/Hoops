@@ -45,7 +45,7 @@ export class ScoresComponent implements OnInit {
     //});
   }
   private _games!: Game[];
-  readonly canEdit = input.required<boolean>();
+  canEdit = input.required<boolean>();
 
   errorMessage!: string;
   public title: string;

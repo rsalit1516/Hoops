@@ -17,7 +17,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 })
 export class CsbcSeasonSelectComponent implements OnInit {
   readonly seasons$ = input<Observable<Season[]>>();
-  readonly selectedSeason = input<Season>(new Season());
+  @Input() selectedSeason: Season = new Season();
   readonly setSeason = output<Season>(); // : Season;
 
   season: Season = new Season();
