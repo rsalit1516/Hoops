@@ -187,6 +187,10 @@ input::placeholder {
    opacity: 1 !important;
    color: #FFF !important;
 }
+::ng-deep .mat-form-field-placeholder {
+  color: #757575; /* Adjust color as needed */
+  font-size: .8em !important;
+}
 
 mat-form-field input::placeholder {
    opacity: 1 !important;
