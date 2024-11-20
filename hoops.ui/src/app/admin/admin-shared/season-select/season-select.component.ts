@@ -8,7 +8,7 @@ import * as adminActions from '../../state/admin.actions';
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { subscribeOn } from 'rxjs-compat/operator/subscribeOn';
 import { SeasonService } from '../services/season.service';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -17,8 +17,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     selector: 'season-select',
     templateUrl: './season-select.component.html',
   styleUrls: ['./../../../shared/scss/select.scss'],
-    standalone: true,
-    imports: [
+  imports: [
+      CommonModule,
         FormsModule,
         // ReactiveFormsModule,
         MatFormFieldModule,

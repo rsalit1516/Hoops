@@ -147,7 +147,7 @@ export class DivisionService {
       if (this.season !== undefined && this.season.seasonId == undefined) {
         this.seasonId = 2193;
       } else {
-        season.subscribe((s) => (this.seasonId = s.seasonId));
+        season.subscribe((s) => (this.seasonId = s.seasonId ?? 0));
       }
     }
     if (this.seasonId === undefined) {
