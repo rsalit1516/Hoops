@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { concatLatestFrom } from '@ngrx/operators';
+// import { concatLatestFrom } from '@ngrx/operators';
 
 import * as homeActions from './home.actions';
 import * as fromHome from './';
@@ -60,3 +60,7 @@ export class HomeEffects {
   ));
 
 }
+function concatLatestFrom (arg0: () => Observable<import("../../domain/season").Season | null>): import("rxjs").OperatorFunction<never, [any, any]> {
+  throw new Error('Function not implemented.');
+}
+

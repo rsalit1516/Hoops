@@ -8,12 +8,13 @@ import { Division } from '@app/domain/division';
 import { DivisionService } from '@app/services/division.service';
 
 @Component({
-    selector: 'csbc-new-division-selector',
-    imports: [MatFormField,
-        MatSelect,
-        MatInputModule,
-        MatOptionModule,
-        MatButtonModule],
+  selector: 'csbc-new-division-selector',
+  imports: [CommonModule,
+      MatFormField,
+      MatSelect,
+      MatInputModule,
+      MatOptionModule,
+      MatButtonModule],
     templateUrl: './new-division-selector.component.html',
     styleUrls: ['../../admin.component.scss',
         '../../../shared/scss/forms.scss',

@@ -1,5 +1,5 @@
-@import '../../../Content/variables';
+@use '../../../Content/variables' as v;
 
 .mat-select {
-  background-color: $card-background-color;
+  background-color: v.$card-background-color;
 }

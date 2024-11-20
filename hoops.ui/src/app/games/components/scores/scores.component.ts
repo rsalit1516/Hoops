@@ -45,7 +45,7 @@ export class ScoresComponent implements OnInit {
     //});
   }
   private _games!: Game[];
-  canEdit = input.required<boolean>();
+  canEdit!: boolean;
 
   errorMessage!: string;
   public title: string;
@@ -68,7 +68,7 @@ export class ScoresComponent implements OnInit {
     }
 
   ngOnInit() {
-    if (this.canEdit() === true) {
+    if (this.canEdit === true) {
       this.displayedColumns.push('actions');
     }
     this.userStore.pipe(select(fromUser.getCurrentUser)).subscribe(user => {
