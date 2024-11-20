@@ -24,28 +24,27 @@ import { Season } from '@app/domain/season';
 import { Router, RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-season-add',
-  standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    RouterModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatDatepickerModule,
-    MatButtonModule,
-    MatSelectModule,
-    MatCheckboxModule,
-  ],
-  providers: [SeasonService],
-  templateUrl: './season-add.component.html',
-  styleUrls: [
-    '../../../shared/scss/forms.scss',
-    '../../../shared/scss/cards.scss',
-    './season-add.component.scss',
-  ],
+    selector: 'app-season-add',
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        RouterModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatCardModule,
+        MatFormFieldModule,
+        MatDatepickerModule,
+        MatButtonModule,
+        MatSelectModule,
+        MatCheckboxModule,
+    ],
+    providers: [SeasonService],
+    templateUrl: './season-add.component.html',
+    styleUrls: [
+        '../../../shared/scss/forms.scss',
+        '../../../shared/scss/cards.scss',
+        './season-add.component.scss',
+    ]
 })
 export class SeasonAddComponent implements OnInit {
   title = 'Season';

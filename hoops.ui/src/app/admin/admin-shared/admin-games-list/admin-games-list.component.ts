@@ -13,16 +13,15 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 @Component({
-  selector: 'admin-games-list',
-  standalone: true,
-  imports: [ CommonModule, MatIconModule, MatTableModule, MatPaginatorModule,
-  MatIconModule],
-  templateUrl: './admin-games-list.component.html',
-  styleUrls: [
-    '../../../shared/scss/tables.scss',
-    './admin-games-list.component.scss',
-    '../../admin.component.scss',
-  ],
+    selector: 'admin-games-list',
+    imports: [CommonModule, MatIconModule, MatTableModule, MatPaginatorModule,
+        MatIconModule],
+    templateUrl: './admin-games-list.component.html',
+    styleUrls: [
+        '../../../shared/scss/tables.scss',
+        './admin-games-list.component.scss',
+        '../../admin.component.scss',
+    ]
 })
 export class AdminGamesListComponent implements OnInit {
   @Input() showScores: boolean = false;

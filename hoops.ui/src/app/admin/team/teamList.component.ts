@@ -5,16 +5,14 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'csbc-team-list',
-  standalone: true,
-  templateUrl: './teamList.component.html',
-  imports: [CommonModule,
-    MatTableModule,
-],
-  styleUrls: ['../../shared/scss/tables.scss',
-    './team.component.scss',
-    '../admin.component.scss']
-
+    selector: 'csbc-team-list',
+    templateUrl: './teamList.component.html',
+    imports: [CommonModule,
+        MatTableModule,
+    ],
+    styleUrls: ['../../shared/scss/tables.scss',
+        './team.component.scss',
+        '../admin.component.scss']
 })
 export class TeamListComponent implements OnInit {
     @Input() teams: Team[] | undefined;

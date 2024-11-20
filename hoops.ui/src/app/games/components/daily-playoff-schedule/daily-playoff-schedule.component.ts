@@ -5,15 +5,14 @@ import { MatTableModule } from '@angular/material/table';
 
 
 @Component({
-  selector: 'csbc-daily-playoff-schedule',
-  standalone: true,
-  imports: [CommonModule, MatTableModule],
-  templateUrl: './daily-playoff-schedule.component.html',
-  styleUrls: [
-    // '../../../shared/scss/tables.scss',
-    './daily-playoff-schedule.component.scss',
-    '../../../../Content/styles.scss'
-]
+    selector: 'csbc-daily-playoff-schedule',
+    imports: [CommonModule, MatTableModule],
+    templateUrl: './daily-playoff-schedule.component.html',
+    styleUrls: [
+        // '../../../shared/scss/tables.scss',
+        './daily-playoff-schedule.component.scss',
+        '../../../../Content/styles.scss'
+    ]
 })
 export class DailyPlayoffScheduleComponent {
   @Input() playoffGames!: PlayoffGame[];

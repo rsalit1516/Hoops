@@ -14,7 +14,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     selector: 'game-score-dialog',
     templateUrl: './game-score-dialog.component.html',
     styleUrls: ['./game-score-dialog.component.scss'],
-    standalone: true,
     imports: [MatDialogTitle, MatDialogContent, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatDialogActions, MatButtonModule, MatDialogClose]
 })
 export class GameScoreDialogComponent implements OnInit {

@@ -6,20 +6,19 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
-  selector: 'app-admin-shell-sidebar',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatSidenavModule,
-    MatListModule,
-    RouterLink,
-    RouterLinkActive,
-    MatDividerModule,
-    NgIf,
-  ],
-  templateUrl: './admin-shell-sidebar.component.html',
-  styleUrls: ['./admin-shell-sidebar.component.scss',
-    './../../containers/admin-shell/admin-shell.component.scss'],
+    selector: 'app-admin-shell-sidebar',
+    imports: [
+        CommonModule,
+        MatSidenavModule,
+        MatListModule,
+        RouterLink,
+        RouterLinkActive,
+        MatDividerModule,
+        NgIf,
+    ],
+    templateUrl: './admin-shell-sidebar.component.html',
+    styleUrls: ['./admin-shell-sidebar.component.scss',
+        './../../containers/admin-shell/admin-shell.component.scss']
 })
 export class AdminShellSidebarComponent {
   showDirectors = false;

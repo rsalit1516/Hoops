@@ -15,12 +15,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { ContentListToolbarComponent } from '../content-list-toolbar/content-list-toolbar.component';
 
 @Component({
-  selector: 'csbc-content-list',
-  standalone: true,
-  templateUrl: './contentList.component.html',
-  styleUrls: [ './contentList.component.scss', '../../../admin.component.scss', '../../../../shared/scss/tables.scss' ],
-  imports: [ CommonModule, MatDialogModule, MatTableModule, MatIconModule,
-    ContentListToolbarComponent ]
+    selector: 'csbc-content-list',
+    templateUrl: './contentList.component.html',
+    styleUrls: ['./contentList.component.scss', '../../../admin.component.scss', '../../../../shared/scss/tables.scss'],
+    imports: [CommonModule, MatDialogModule, MatTableModule, MatIconModule,
+        ContentListToolbarComponent]
 })
 export class ContentListComponent implements OnInit {
   @Output() selectedContent = new EventEmitter<Content>();

@@ -6,9 +6,8 @@ import { PlayoffGame } from '@domain/playoffGame';
 import { DailyPlayoffScheduleComponent } from '../daily-playoff-schedule/daily-playoff-schedule.component';
 
 @Component({
-  selector: 'schedule-playoffs',
-  standalone: true,
-  template: `
+    selector: 'schedule-playoffs',
+    template: `
     <section class="container">
       <div *ngFor="let data of playoffGames">
         <csbc-daily-playoff-schedule [playoffGames]="data">
@@ -16,9 +15,9 @@ import { DailyPlayoffScheduleComponent } from '../daily-playoff-schedule/daily-p
       </div>
     </section>
   `,
-  styleUrls: ['./schedule-playoffs.component.scss'],
-  imports: [ CommonModule, DailyPlayoffScheduleComponent ],
-  providers: [ Store ]
+    styleUrls: ['./schedule-playoffs.component.scss'],
+    imports: [CommonModule, DailyPlayoffScheduleComponent],
+    providers: [Store]
 })
 export class SchedulePlayoffsComponent {
   @Input() playoffGames!: Array<PlayoffGame[]>;

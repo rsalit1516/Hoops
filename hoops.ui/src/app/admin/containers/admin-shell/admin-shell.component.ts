@@ -18,8 +18,8 @@ import { LocationService } from '@app/admin/admin-shared/services/location.servi
 import { AdminShellSidebarComponent } from '@app/admin/components/admin-shell-sidebar/admin-shell-sidebar.component';
 
 @Component({
-  selector: 'csbc-admin-shell',
-  template: `
+    selector: 'csbc-admin-shell',
+    template: `
   <div class="container-fluid">
   <div class="row">
     <div class="col-2 nav-wrapper">
@@ -31,18 +31,17 @@ import { AdminShellSidebarComponent } from '@app/admin/components/admin-shell-si
     </div>
   </div>
 </div>`,
-  styleUrls: ['./admin-shell.component.scss'],
-  standalone: true,
-  imports: [
-    CommonModule,
-    AdminShellSidebarComponent,
-    MatListModule,
-    RouterLink,
-    RouterLinkActive,
-    MatDividerModule,
-    NgIf,
-    RouterOutlet,
-  ],
+    styleUrls: ['./admin-shell.component.scss'],
+    imports: [
+        CommonModule,
+        AdminShellSidebarComponent,
+        MatListModule,
+        RouterLink,
+        RouterLinkActive,
+        MatDividerModule,
+        NgIf,
+        RouterOutlet,
+    ]
 })
 export class AdminShellComponent implements OnInit {
   events: string[] = [];

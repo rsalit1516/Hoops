@@ -28,28 +28,27 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 
 @Component({
-  selector: 'csbc-division-detail',
-  templateUrl: './divisionDetail.component.html',
-  styleUrls: [
-    '../../admin.component.scss',
-    '../../../shared/scss/forms.scss',
-    '../../../shared/scss/cards.scss',
-  ],
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatCardModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatRadioModule,
-    MatSelectModule,
-    MatOptionModule,
-    NewDivisionSelectorComponent
-  ],
-  // changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [DivisionService],
+    selector: 'csbc-division-detail',
+    templateUrl: './divisionDetail.component.html',
+    styleUrls: [
+        '../../admin.component.scss',
+        '../../../shared/scss/forms.scss',
+        '../../../shared/scss/cards.scss',
+    ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatCardModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatRadioModule,
+        MatSelectModule,
+        MatOptionModule,
+        NewDivisionSelectorComponent
+    ],
+    // changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [DivisionService]
 })
 export class DivisionDetailComponent implements OnInit {
   selectedDivision = signal<Division>(new Division());

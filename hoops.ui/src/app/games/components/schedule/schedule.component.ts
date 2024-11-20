@@ -16,8 +16,7 @@ import { NgFor } from '@angular/common';
     selector: 'csbc-schedule',
     templateUrl: './schedule.component.html',
     styleUrls: ['./schedule.component.scss'],
-    standalone: true,
-    imports: [NgFor, DailyScheduleComponent],
+    imports: [NgFor, DailyScheduleComponent]
 })
 export class ScheduleComponent implements OnInit {
   @Input() dailySchedule!: Array<Game[]>;

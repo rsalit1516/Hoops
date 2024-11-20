@@ -23,8 +23,7 @@ import { GamesTopMenuComponent } from '../../components/games-top-menu/games-top
     selector: 'csbc-games-shell',
     templateUrl: './games-shell.component.html',
     styleUrls: ['./games-shell.component.scss'],
-    standalone: true,
-    imports: [GamesTopMenuComponent, RouterOutlet],
+    imports: [GamesTopMenuComponent, RouterOutlet]
 })
 export class GamesShellComponent implements OnInit {
   @Input() showAllTeams: boolean | undefined;

@@ -30,22 +30,21 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
-  selector: 'csbc-division-list',
-  templateUrl: './divisionList.component.html',
-  styleUrls: ['../../admin.component.scss'],
-  providers: [SeasonService, DivisionService],
-  standalone: true,
-  imports: [
-    MatToolbarModule,
-    FlexModule,
-    MatButtonModule,
-    MatTableModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatRadioModule,
-    DatePipe,
-  ],
+    selector: 'csbc-division-list',
+    templateUrl: './divisionList.component.html',
+    styleUrls: ['../../admin.component.scss'],
+    providers: [SeasonService, DivisionService],
+    imports: [
+        MatToolbarModule,
+        FlexModule,
+        MatButtonModule,
+        MatTableModule,
+        MatIconModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatRadioModule,
+        DatePipe,
+    ]
 })
 
 export class DivisionListComponent implements OnInit, OnChanges {

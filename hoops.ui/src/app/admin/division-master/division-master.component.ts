@@ -10,7 +10,6 @@ import { CsbcSeasonSelectComponent } from '../../shared/season-select/csbc-seaso
     selector: 'csbc-division-master',
     templateUrl: './division-master.component.html',
     styleUrls: ['./division-master.component.css'],
-    standalone: true,
     imports: [CsbcSeasonSelectComponent, DivisionListComponent]
 })
 export class DivisionMasterComponent implements OnInit {

@@ -11,10 +11,9 @@ import { MatNativeDateModule } from '@angular/material/core';
     styleUrls: [
         './app.component.scss'
     ],
-    standalone: true,
-  imports: [ SidenavListComponent,
-    TopNavComponent, RouterOutlet,
-    MatSidenavModule, MatNativeDateModule ]
+    imports: [SidenavListComponent,
+        TopNavComponent, RouterOutlet,
+        MatSidenavModule, MatNativeDateModule]
 })
 export class AppComponent implements OnInit {
   @Output() public sidenavToggle = new EventEmitter();

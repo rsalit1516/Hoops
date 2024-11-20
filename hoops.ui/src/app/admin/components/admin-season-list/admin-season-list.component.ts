@@ -13,14 +13,13 @@ import { Router } from '@angular/router';
 @Component({
     selector: 'csbc-admin-season-list',
     templateUrl: './admin-season-list.component.html',
-  styleUrls: [
-      './../../../shared/scss/tables.scss',
+    styleUrls: [
+        './../../../shared/scss/tables.scss',
         './admin-season-list.component.scss',
         '../../admin.component.scss'
     ],
-    standalone: true,
-  imports: [ FlexModule, MatTableModule, DatePipe,
-    AdminSeasonsToolbarComponent,
+    imports: [FlexModule, MatTableModule, DatePipe,
+        AdminSeasonsToolbarComponent,
     ]
 })
 export class AdminSeasonListComponent implements OnInit {

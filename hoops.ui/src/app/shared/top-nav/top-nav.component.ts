@@ -14,12 +14,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { FlexModule } from '@angular/flex-layout';
 @Component({
-  selector: 'csbc-top-nav',
-  standalone: true,
-  templateUrl: './top-nav.component.html',
-  styleUrls: [ './top-nav.component.scss', './../../shared/scss/menu.scss' ],
-  imports: [ CommonModule, MatDialogModule, MatToolbarModule,
-    MatButtonModule, MatIconModule, RouterModule, FlexModule, RouterLinkActive ],
+    selector: 'csbc-top-nav',
+    templateUrl: './top-nav.component.html',
+    styleUrls: ['./top-nav.component.scss', './../../shared/scss/menu.scss'],
+    imports: [CommonModule, MatDialogModule, MatToolbarModule,
+        MatButtonModule, MatIconModule, RouterModule, FlexModule, RouterLinkActive]
 })
 export class TopNavComponent implements OnInit {
   @Output() public sidenavToggle = new EventEmitter();

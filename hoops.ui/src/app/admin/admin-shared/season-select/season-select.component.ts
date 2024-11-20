@@ -17,7 +17,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     selector: 'season-select',
     templateUrl: './season-select.component.html',
     styleUrls: ['./../../../shared/scss/select.scss'],
-    standalone: true,
     imports: [
         FormsModule,
         // ReactiveFormsModule,
@@ -25,7 +24,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
         MatSelectModule,
         MatOptionModule,
         AsyncPipe,
-    ],
+    ]
 })
 export class SeasonSelectComponent implements OnInit {
   seasons$!: Observable<Season[]>;

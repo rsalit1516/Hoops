@@ -19,18 +19,18 @@ import { SeasonSelectComponent } from '../admin-shared/season-select/season-sele
 @Component({
     selector: 'csbc-admin-dashboard',
     templateUrl: './admin-dashboard.component.html',
-  styleUrls: [
-    '../../shared/scss/cards.scss',
-    './admin-dashboard.component.scss',
-    '../admin.component.scss'],
-    standalone: true,
+    styleUrls: [
+        '../../shared/scss/cards.scss',
+        './admin-dashboard.component.scss',
+        '../admin.component.scss'
+    ],
     imports: [
         SeasonSelectComponent,
         MatCardModule,
         MatListModule,
         NgFor,
         AdminGamesListComponent,
-    ],
+    ]
 })
 export class AdminDashboardComponent implements OnInit {
   currentSeason!: Season;

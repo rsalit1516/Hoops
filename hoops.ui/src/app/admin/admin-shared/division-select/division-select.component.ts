@@ -14,7 +14,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     selector: 'division-select',
     templateUrl: './division-select.component.html',
     styleUrls: ['./../../../shared/scss/select.scss'],
-    standalone: true,
     imports: [
         FormsModule,
         ReactiveFormsModule,
@@ -23,7 +22,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
         NgFor,
         MatOptionModule,
         AsyncPipe,
-    ],
+    ]
 })
 export class DivisionSelectComponent implements OnInit {
   @Output() selectedDivision = new EventEmitter<Division>();

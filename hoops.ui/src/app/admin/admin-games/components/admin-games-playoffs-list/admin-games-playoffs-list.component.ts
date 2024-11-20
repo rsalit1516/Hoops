@@ -15,7 +15,6 @@ import { FormsModule } from '@angular/forms';
     selector: 'app-admin-games-playoffs-list',
     templateUrl: './admin-games-playoffs-list.component.html',
     styleUrls: ['./admin-games-playoffs-list.component.scss',],
-    standalone: true,
     imports: [FormsModule, NgIf, MatTableModule, MatButtonModule, MatIconModule, DatePipe]
 })
 export class AdminGamesPlayoffsListComponent implements OnInit {

@@ -26,26 +26,25 @@ import { Division } from '@app/domain/division';
 import { Location } from '@app/domain/location';
 
 @Component({
-  selector: 'admin-game-detail',
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatCardModule,
-    MatSelectModule,
-    MatOptionModule,
-    MatDatepickerModule,
-    MatInputModule,
-    NgxMatTimepickerModule,
-  ],
-  templateUrl: './admin-game-detail.component.html',
-  styleUrls: [
-    '../../../shared/scss/cards.scss',
-    '../../../shared/scss/forms.scss',
-    '../../admin.component.scss',
-  ],
+    selector: 'admin-game-detail',
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatCardModule,
+        MatSelectModule,
+        MatOptionModule,
+        MatDatepickerModule,
+        MatInputModule,
+        NgxMatTimepickerModule,
+    ],
+    templateUrl: './admin-game-detail.component.html',
+    styleUrls: [
+        '../../../shared/scss/cards.scss',
+        '../../../shared/scss/forms.scss',
+        '../../admin.component.scss',
+    ]
 })
 export class AdminGameDetailComponent implements OnInit {
   gameEditForm = this.fb.group({

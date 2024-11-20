@@ -14,7 +14,6 @@ import { NgFor, NgIf, DatePipe } from '@angular/common';
     styleUrls: [
         '../admin.component.scss'
     ],
-    standalone: true,
     imports: [NgFor, NgIf, SeasonDetailComponent, FormsModule, MatTableModule, MatButtonModule, MatIconModule, DatePipe]
 })
 export class SeasonListComponent implements OnInit {

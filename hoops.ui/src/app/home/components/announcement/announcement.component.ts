@@ -4,12 +4,11 @@ import { MatCardModule } from '@angular/material/card';
 import { WebContent } from '@app/domain/webContent';
 
 @Component({
-  selector: 'csbc-announcement',
-  standalone: true,
-  templateUrl: './announcement.component.html',
-  styleUrls: [ './../../../../Content/styles.scss',
-    '../../home.component.scss'],
-  imports: [CommonModule, MatCardModule]
+    selector: 'csbc-announcement',
+    templateUrl: './announcement.component.html',
+    styleUrls: ['./../../../../Content/styles.scss',
+        '../../home.component.scss'],
+    imports: [CommonModule, MatCardModule]
 })
 export class AnnouncementComponent implements OnInit {
   @Input() info!: WebContent;

@@ -13,12 +13,11 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
-  selector: 'content-list-toolbar',
-  standalone: true,
-  templateUrl: './content-list-toolbar.component.html',
-  styleUrls: [ './content-list-toolbar.component.scss',
-    '../../../admin.component.scss' ],
-  imports: [ MatFormFieldModule, ReactiveFormsModule, MatButtonModule, MatToolbarModule, MatCheckboxModule ]
+    selector: 'content-list-toolbar',
+    templateUrl: './content-list-toolbar.component.html',
+    styleUrls: ['./content-list-toolbar.component.scss',
+        '../../../admin.component.scss'],
+    imports: [MatFormFieldModule, ReactiveFormsModule, MatButtonModule, MatToolbarModule, MatCheckboxModule]
 })
 export class ContentListToolbarComponent implements OnInit {
   checked = true;

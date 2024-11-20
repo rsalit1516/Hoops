@@ -20,9 +20,8 @@ import { ContentListComponent } from '@app/admin/web-content/components/content-
     <router-outlet></router-outlet>
   </section>`,
     styleUrls: ['./admin-season-shell.component.scss'],
-    standalone: true,
     imports: [CommonModule, AdminGamesRoutingModule,
-      RouterOutlet, AdminSeasonListComponent]
+        RouterOutlet, AdminSeasonListComponent]
 })
 export class AdminSeasonShellComponent implements OnInit {
   currentSeason$!: Observable<Season>;

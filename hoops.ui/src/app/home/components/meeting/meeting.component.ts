@@ -6,7 +6,6 @@ import { MatCardModule } from '@angular/material/card';
     selector: 'csbc-meeting',
     templateUrl: './meeting.component.html',
     styleUrls: ['./meeting.component.scss'],
-    standalone: true,
     imports: [MatCardModule]
 })
 export class MeetingComponent implements OnInit {

@@ -5,17 +5,15 @@ import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 
 @Component({
-  selector: 'csbc-standings',
-  standalone: true,
-  imports: [CommonModule, MatTableModule],
-  templateUrl: './standings.component.html',
-  styleUrls: [
-    '../../../shared/scss/tables.scss',
-    './standings.component.scss',
-    '../../containers/games-shell/games-shell.component.scss',
-    '../../../../Content/styles.scss'
-
-  ]
+    selector: 'csbc-standings',
+    imports: [CommonModule, MatTableModule],
+    templateUrl: './standings.component.html',
+    styleUrls: [
+        '../../../shared/scss/tables.scss',
+        './standings.component.scss',
+        '../../containers/games-shell/games-shell.component.scss',
+        '../../../../Content/styles.scss'
+    ]
 })
 export class StandingsComponent implements OnInit {
   public title: string;

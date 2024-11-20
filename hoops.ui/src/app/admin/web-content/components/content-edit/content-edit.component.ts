@@ -39,30 +39,29 @@ import { ConfirmDialogComponent } from '@app/admin/shared/confirm-dialog/confirm
 import { Constants } from '@app/shared/constants';
 
 @Component({
-  selector: 'csbc-content-edit',
-  standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    RouterModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatCardModule,
-    MatDatepickerModule,
-    MatDividerModule,
-    MatOptionModule,
-    MatButtonModule,
-    MatSelectModule,
-    ConfirmDialogComponent,
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './content-edit.component.html',
-  styleUrls: [
-    './content-edit.component.scss',
-    '../../../admin.component.scss',
-    '../../../../shared/scss/forms.scss',
-    '../../../../shared/scss/cards.scss',
-  ],
+    selector: 'csbc-content-edit',
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        RouterModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatCardModule,
+        MatDatepickerModule,
+        MatDividerModule,
+        MatOptionModule,
+        MatButtonModule,
+        MatSelectModule,
+        ConfirmDialogComponent,
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    templateUrl: './content-edit.component.html',
+    styleUrls: [
+        './content-edit.component.scss',
+        '../../../admin.component.scss',
+        '../../../../shared/scss/forms.scss',
+        '../../../../shared/scss/cards.scss',
+    ]
 })
 export class ContentEditComponent implements OnInit {
   @ViewChildren(FormControlName, { read: ElementRef })

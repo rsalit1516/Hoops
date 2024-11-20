@@ -14,16 +14,14 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-  selector: 'csbc-login-dialog',
-  standalone: true,
-  templateUrl: './login-dialog.component.html',
-  styleUrls: [ './login-dialog.component.scss' ],
-  imports: [ CommonModule, MatDialogModule, MatFormFieldModule,
-    MatInputModule, MatButtonModule ],
+    selector: 'csbc-login-dialog',
+    templateUrl: './login-dialog.component.html',
+    styleUrls: ['./login-dialog.component.scss'],
+    imports: [CommonModule, MatDialogModule, MatFormFieldModule,
+        MatInputModule, MatButtonModule],
     providers: [
-      { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } }
-  ]
-
+        { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } }
+    ]
 })
 export class LoginDialogComponent implements OnInit {
   loginForm = this.fb.group({

@@ -13,7 +13,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     selector: 'csbc-season-select',
     templateUrl: './csbc-season-select.component.html',
     styleUrls: ['./csbc-season-select.component.scss'],
-    standalone: true,
     imports: [MatFormFieldModule, MatSelectModule, NgFor, MatOptionModule, AsyncPipe]
 })
 export class CsbcSeasonSelectComponent implements OnInit {

@@ -22,7 +22,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
         './admin-games-shell.component.scss',
         '../../../admin.component.scss',
     ],
-    standalone: true,
     imports: [
         MatToolbarModule,
         SeasonSelectComponent,
@@ -32,7 +31,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
         AdminGamesListComponent,
         AdminGamesPlayoffsListComponent,
         AdminGameDetailComponent,
-    ],
+    ]
 })
 export class AdminGamesShellComponent implements OnInit {
   seasons$ = this.store.select(fromAdmin.getSeasons);

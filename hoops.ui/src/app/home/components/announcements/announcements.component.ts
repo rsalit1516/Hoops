@@ -13,12 +13,11 @@ import { CommonModule } from '@angular/common';
 import { AnnouncementComponent } from '../announcement/announcement.component';
 
 @Component({
-  selector: 'csbc-announcements',
-  standalone: true,
-  templateUrl: './announcements.component.html',
-  styleUrls: [ './announcements.component.scss' ],
-  imports: [ CommonModule, AnnouncementComponent ],
-  providers: [ ContentService ]
+    selector: 'csbc-announcements',
+    templateUrl: './announcements.component.html',
+    styleUrls: ['./announcements.component.scss'],
+    imports: [CommonModule, AnnouncementComponent],
+    providers: [ContentService]
 })
 export class CsbcAnnouncementsComponent implements OnInit {
 @Input() info!: string;

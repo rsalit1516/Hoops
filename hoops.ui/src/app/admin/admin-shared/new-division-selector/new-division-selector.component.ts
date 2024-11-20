@@ -8,20 +8,18 @@ import { Division } from '@app/domain/division';
 import { DivisionService } from '@app/services/division.service';
 
 @Component({
-  selector: 'csbc-new-division-selector',
-  standalone: true,
-  imports: [ MatFormField,
-    MatSelect,
-    MatInputModule,
-    MatOptionModule,
-  MatButtonModule],
-  templateUrl: './new-division-selector.component.html',
-  styleUrls: [ '../../admin.component.scss',
-    '../../../shared/scss/forms.scss',
-    '../../../shared/scss/cards.scss',
-    './new-division-selector.component.scss'],
-  providers: [DivisionService],
-  //changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'csbc-new-division-selector',
+    imports: [MatFormField,
+        MatSelect,
+        MatInputModule,
+        MatOptionModule,
+        MatButtonModule],
+    templateUrl: './new-division-selector.component.html',
+    styleUrls: ['../../admin.component.scss',
+        '../../../shared/scss/forms.scss',
+        '../../../shared/scss/cards.scss',
+        './new-division-selector.component.scss'],
+    providers: [DivisionService]
 })
 export class NewDivisionSelectorComponent {
   divisionService = inject(DivisionService);

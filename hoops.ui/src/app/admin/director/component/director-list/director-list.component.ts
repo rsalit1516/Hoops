@@ -5,7 +5,6 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
     selector: 'csbc-director-list',
     templateUrl: './director-list.component.html',
     styleUrls: ['./director-list.component.scss'],
-    standalone: true,
     imports: [MatTableModule]
 })
 export class DirectorListComponent implements OnInit {

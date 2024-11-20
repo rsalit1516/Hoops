@@ -20,7 +20,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     selector: 'csbc-game-filter',
     templateUrl: './game-filter.component.html',
     styleUrls: ['./game-filter.component.scss'],
-    standalone: true,
     imports: [
         FormsModule,
         ReactiveFormsModule,
@@ -28,7 +27,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
         MatSelectModule,
         NgFor,
         MatOptionModule,
-    ],
+    ]
 })
 export class GameFilterComponent implements OnInit {
   @Input( { required: true } )divisions!: Division[];

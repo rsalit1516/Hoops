@@ -6,12 +6,11 @@ import { NgFor, AsyncPipe, TitleCasePipe } from '@angular/common';
     selector: 'csbc-contacts',
     templateUrl: './contacts.component.html',
     styleUrls: ['./contacts.component.scss', '../home/home.component.scss'],
-    standalone: true,
     imports: [
         NgFor,
         AsyncPipe,
         TitleCasePipe,
-    ],
+    ]
 })
 export class ContactsComponent implements OnInit {
   title: string;

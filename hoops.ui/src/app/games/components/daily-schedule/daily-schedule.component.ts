@@ -17,15 +17,14 @@ import { MatTableModule } from '@angular/material/table';
 @Component({
     selector: 'daily-schedule',
     templateUrl: './daily-schedule.component.html',
-  styleUrls: [ './daily-schedule.component.scss',
-    './../../../shared/scss/tables.scss' ],
-    standalone: true,
+    styleUrls: ['./daily-schedule.component.scss',
+        './../../../shared/scss/tables.scss'],
     imports: [
         MatTableModule,
         MatButtonModule,
         MatIconModule,
         DatePipe,
-    ],
+    ]
 })
 export class DailyScheduleComponent implements OnInit {
   @Input() games!: Game[];

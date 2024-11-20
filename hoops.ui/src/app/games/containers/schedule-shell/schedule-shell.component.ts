@@ -39,8 +39,7 @@ import { ScheduleComponent } from '../../components/schedule/schedule.component'
     </div>
   `,
     styleUrls: ['./schedule-shell.component.scss'],
-    standalone: true,
-    imports: [ScheduleComponent],
+    imports: [ScheduleComponent]
 })
 export class ScheduleShellComponent implements OnInit {
   games: Game[] | undefined | null;

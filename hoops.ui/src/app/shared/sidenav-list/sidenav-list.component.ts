@@ -12,7 +12,6 @@ import { MatListModule } from '@angular/material/list';
     selector: 'csbc-sidenav-list',
     templateUrl: './sidenav-list.component.html',
     styleUrls: ['./sidenav-list.component.css'],
-    standalone: true,
     imports: [MatListModule, MatIconModule, RouterLink, NgIf]
 })
 export class SidenavListComponent implements OnInit {

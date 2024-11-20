@@ -11,7 +11,6 @@ import { NgIf } from '@angular/common';
       <button (click)="login()"  *ngIf="!authService.isLoggedIn">Login</button>
       <button (click)="logout()" *ngIf="authService.isLoggedIn">Logout</button>
     </p>`,
-    standalone: true,
     imports: [NgIf]
 })
 export class LoginComponent {

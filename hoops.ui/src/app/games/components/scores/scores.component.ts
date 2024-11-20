@@ -22,7 +22,6 @@ import { NgIf, DatePipe } from '@angular/common';
         './scores.component.scss',
         '../../containers/games-shell/games-shell.component.scss'
     ],
-    standalone: true,
     imports: [FormsModule, MatTableModule, NgIf, MatButtonModule, MatIconModule, DatePipe]
 })
 export class ScoresComponent implements OnInit {

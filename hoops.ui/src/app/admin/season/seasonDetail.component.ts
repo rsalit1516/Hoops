@@ -8,7 +8,6 @@ import { NgClass } from '@angular/common';
 @Component({
     selector: 'csbc-season-detail',
     templateUrl: './seasonDetail.component.html',
-    standalone: true,
     imports: [FormsModule, ReactiveFormsModule, NgClass, ExtendedModule]
 })
 

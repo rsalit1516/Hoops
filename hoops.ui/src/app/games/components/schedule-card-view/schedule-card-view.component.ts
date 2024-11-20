@@ -10,7 +10,6 @@ import { NgFor } from '@angular/common';
     selector: 'csbc-schedule-card-view',
     templateUrl: './schedule-card-view.component.html',
     styleUrls: ['./schedule-card-view.component.scss'],
-    standalone: true,
     imports: [NgFor, GameCardComponent]
 })
 export class ScheduleCardViewComponent implements OnInit {

@@ -14,14 +14,13 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'csbc-games-top-menu',
-  templateUrl: './games-top-menu.component.html',
-  styleUrls: ['../../../shared/scss/select.scss',
-    './games-top-menu.component.scss'
-  ],
-  standalone: true,
-  imports: [CommonModule, RouterModule, RouterLinkActive,
-    MatToolbarModule, MatTabsModule, GameFilterComponent],
+    selector: 'csbc-games-top-menu',
+    templateUrl: './games-top-menu.component.html',
+    styleUrls: ['../../../shared/scss/select.scss',
+        './games-top-menu.component.scss'
+    ],
+    imports: [CommonModule, RouterModule, RouterLinkActive,
+        MatToolbarModule, MatTabsModule, GameFilterComponent]
 })
 export class GamesTopMenuComponent implements OnInit {
   @Input() divisions!: Division[];

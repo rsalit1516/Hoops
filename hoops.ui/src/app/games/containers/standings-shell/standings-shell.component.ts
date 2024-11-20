@@ -11,17 +11,16 @@ import { StandingsComponent } from '@app/games/components/standings/standings.co
 
 
 @Component({
-  selector: 'csbc-standings-shell',
-  standalone: true,
-  imports: [CommonModule, StandingsComponent],
-  template: `<div class="container">
+    selector: 'csbc-standings-shell',
+    imports: [CommonModule, StandingsComponent],
+    template: `<div class="container">
   <div>
     <h1>Standings</h1>
     <csbc-standings [standings]="(standings$ | async) ?? []"></csbc-standings>
   </div>
 </div>
 `,
-  styleUrls: ['./standings-shell.component.scss', '../../../../Content/styles.scss']
+    styleUrls: ['./standings-shell.component.scss', '../../../../Content/styles.scss']
 })
 export class StandingsShellComponent implements OnInit {
   standings$: Observable<Standing[]>;
