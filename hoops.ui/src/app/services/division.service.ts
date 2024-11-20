@@ -180,7 +180,7 @@ export class DivisionService {
   getDefaultDivision(name: string): Division {
     let division = new Division();
     division.companyId = 1;
-    division.seasonId = this.season!.seasonId;
+    division.seasonId = this.season?.seasonId ?? 0;
 
     switch (name) {
       case Constants.TR2COED: {

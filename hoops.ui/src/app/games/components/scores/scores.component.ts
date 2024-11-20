@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, input } from '@angular/core';
+import { Component, OnInit, Input, input, Inject } from '@angular/core';
 import { FormBuilder, FormsModule } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
 
@@ -59,13 +59,13 @@ export class ScoresComponent implements OnInit {
     'homeTeamScore'
   ];
   constructor(
-    private store: Store<fromGames.State>,
-    private userStore: Store<fromUser.State>,
-    public dialog: MatDialog,
-    private media: MediaObserver
-  ) {
-    this.title = 'Schedule!';
-  }
+      @Inject(Store) private store: Store<fromGames.State>,
+      private userStore: Store<fromUser.State>,
+      public dialog: MatDialog,
+      private media: MediaObserver
+    ) {
+      this.title = 'Schedule!';
+    }
 
   ngOnInit() {
     if (this.canEdit() === true) {

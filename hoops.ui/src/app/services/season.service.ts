@@ -1,4 +1,4 @@
-import { Injectable, signal, WritableSignal } from '@angular/core';
+import { Inject, Injectable, signal, WritableSignal } from '@angular/core';
 import { map, tap, shareReplay } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
 
@@ -30,7 +30,7 @@ export class SeasonService {
     catchError(this.dataService.handleError('getCurrentSeason', null))
   );
 
-  constructor(private http: HttpClient, private dataService: DataService) {
+  constructor(private http: HttpClient, @Inject(DataService) private dataService: DataService) {
 
     this.selectedSeason$ = this.currentSeason;
     // .currentSeason = this.getCurrent();
