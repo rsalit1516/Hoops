@@ -1,3 +1,4 @@
+@use 'sass:color';
 @use '../../../Content/variables.scss' as v;
 
 .mat-mdc-table, .mat-table {
@@ -28,7 +29,7 @@ thead {
 }
 
 th {
-  background-color: lighten(v.$table-header-background-color, 5%) !important;
+  background-color: color.adjust(v.$table-header-background-color, $lightness: 5%) !important;
   color: v.$table-font-color !important;
   font-weight: 300;
   font-size: v.$table-font-size;
@@ -56,7 +57,7 @@ tr:nth-child(even)
 tr:hover {
   box-shadow: 4px 4px 8px rgb(170, 169, 169);
   // transform: scale(1.02);
-  background-color: lighten(v.$admin-table-background-color, 20%) !important;
+  background-color: color.adjust(v.$admin-table-background-color, $lightness: 20%) !important;
 
 }
 

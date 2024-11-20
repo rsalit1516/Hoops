@@ -1,3 +1,4 @@
+@use 'sass:color';
 @import '../../content/_variables';
 
 
@@ -6,7 +7,7 @@
     width: 90%;
 }
 .table {
-  border-top: 1px solid lighten($app-bar-background, 10%);
+  border-top: 1px solid color.adjust($app-bar-background, $lightness: 10%);
 }
 td{
   color: $brand-color;
@@ -33,9 +34,9 @@ td{
 }
 
 .panel {
-  background-color: lighen($app-bar-background, 20%);
+  background-color: color.adjust($app-bar-background, $lightness: 20%);
   border-radius: 5px;
-  border-color: darken($app-bar-background, 5%);
+  border-color: color.adjust($app-bar-background, $lightness: -5%);
   padding-left: 12px;
   padding-right: 12px;
   padding-bottom: 8px;
