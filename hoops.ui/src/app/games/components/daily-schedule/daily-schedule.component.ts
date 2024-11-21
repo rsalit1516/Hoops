@@ -1,6 +1,5 @@
-import { Component, OnInit, ViewChild, input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, input } from '@angular/core';
 import { Game } from '@domain/game';
-// import { DataSource } from "@angular/cdk/table";
 import { Store, select } from '@ngrx/store';
 import { MediaObserver } from '@angular/flex-layout';
 import { GameScoreDialogComponent } from '../game-score-dialog/game-score-dialog.component';
@@ -28,7 +27,7 @@ import { MatTableModule } from '@angular/material/table';
 })
 export class DailyScheduleComponent implements OnInit {
   readonly games = input.required<Game[]>();
-  readonly canEdit = input.required<boolean>();
+  @Input() canEdit!: boolean;
   displayedColumns = [
     'gameTime',
     'locationName',

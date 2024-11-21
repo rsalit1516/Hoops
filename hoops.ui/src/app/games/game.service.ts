@@ -21,7 +21,6 @@ import { Store, select } from '@ngrx/store';
 import { User } from '@app/domain/user';
 import { TeamService } from '@app/services/team.service';
 import { Team } from '@app/domain/team';
-// import * as moment from 'moment';
 import { DateTime } from 'luxon';
 import { PlayoffGame } from '@app/domain/playoffGame';
 import { getCurrentSeason } from './state/index';

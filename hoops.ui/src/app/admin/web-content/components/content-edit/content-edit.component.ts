@@ -37,6 +37,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '@app/admin/shared/confirm-dialog/confirm-dialog.component';
 import { Constants } from '@app/shared/constants';
+import { State } from '../../../state/index';
 
 @Component({
     selector: 'csbc-content-edit',
@@ -64,7 +65,7 @@ import { Constants } from '@app/shared/constants';
     ]
 })
 export class ContentEditComponent implements OnInit {
-  readonly store = viewChildren(FormControlName, { read: ElementRef });
+  readonly store = inject(Store<fromContent.State>);
 
   // @Input()
   content!: Content;
@@ -145,7 +146,7 @@ export class ContentEditComponent implements OnInit {
     });
   }
   getContent(): void {
-    this.store()
+    this.store
       .pipe(select(fromContent.getSelectedContent))
       .subscribe((content) => {
         if (content !== null) {

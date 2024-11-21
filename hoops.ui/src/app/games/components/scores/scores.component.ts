@@ -1,10 +1,9 @@
 import { Component, OnInit, Input, input, Inject } from '@angular/core';
-import { FormBuilder, FormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
 
 import * as fromGames from '../../state';
 import * as fromUser from '../../../user/state';
-import * as gameActions from '../../state/games.actions';
 
 import { Game } from '@app/domain/game';
 import { User } from '@app/domain/user';

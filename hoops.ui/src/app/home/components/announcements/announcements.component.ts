@@ -1,8 +1,5 @@
 import { Component, OnInit, inject, input } from '@angular/core';
-
-import { Content } from '../../../domain/content';
 import { ContentService } from '../../../admin/web-content/content.service';
-import * as moment from 'moment';
 import { DateTime } from 'luxon';
 import { Store } from '@ngrx/store';
 

@@ -8,6 +8,7 @@
 //     dateAndTime: string;
 //     webContentTypeId: number;
 
+import { DateTime } from 'luxon';
 import { WebContentType } from './webContentType';
 
 // }
@@ -21,7 +22,7 @@ export class WebContent {
     public location: string | undefined;
     public dateAndTime: string | undefined;
     public webContentTypeDescription: string | undefined;
-    public expirationDate: Date | undefined;
+    public expirationDate: Date = DateTime.now().toJSDate();
     public webContentTypeId!: number | null;
     constructor() {
     }

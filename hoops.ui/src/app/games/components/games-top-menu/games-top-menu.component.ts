@@ -1,4 +1,4 @@
-import { Component, OnInit, input, output } from '@angular/core';
+import { Component, OnInit, Output, input, output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as fromGames from '../../state';
 import { Subject, Observable } from 'rxjs';
