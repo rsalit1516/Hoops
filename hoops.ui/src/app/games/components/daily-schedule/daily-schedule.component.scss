@@ -1,4 +1,4 @@
-@import '../../../../content/variables';
+@use '../../../../content/variables' as v;
 
 :root {
   --color-primary: blue;
@@ -7,7 +7,7 @@
 }
 
 .gamedate {
-  color: $brand-color;
+  color: v.$brand-color;
   font-weight: 600;
   font-size: 1.1rem;
   padding-left: 24px;
@@ -19,26 +19,26 @@
 .mat-table {
   background-color: red;
   background-color: var(--background-color); //$background-color;
-  color: $color;
+  color: v.$color;
   border-radius: 10px;
   width: 100%;
 }
 
 .mat-table tr {
-  color: $color;
+  color: v.$color;
 }
 
 .mat-table tr th {
-  color: $color;
+  color: v.$color;
   font-weight: 600;
-  font-size: $table-font-size;
+  font-size: v.$table-font-size;
 }
 
 .mat-table .mat-header-row {
   height: 32px;
   border-collapse: collapse;
   border-spacing: 2px;
-  background-color: $card-background-color;
+  background-color: v.$card-background-color;
   position: static;
   // line-height
 }
@@ -48,9 +48,9 @@
 }
 
 .mat-table tr td {
-  color: $color;
+  color: v.$color;
   font-weight: 400;
-  font-size: $table-font-size;
+  font-size: v.$table-font-size;
 }
 
 .mat-column-gameTime,

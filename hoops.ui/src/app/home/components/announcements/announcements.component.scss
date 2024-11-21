@@ -1,5 +1,5 @@
 @use 'sass:color';
-@import '../../../../Content/_variables';
+@use '../../../../Content/_variables' as v;
 
 .announcements {
   padding-top:2px;
@@ -14,7 +14,7 @@
   font-size: 1.2em;
   font-weight: 720;
   font-variant: small-caps;
-  color: $color;
+  color: v.$color;
   text-align: center;
   padding-left: auto;
   padding-right: auto;
@@ -30,7 +30,7 @@
 
 .mat-card-content {
   font-size: 1em;
-  color: $font-color-text;
+  color: v.$font-color-text;
   font-weight: 400;
 }
 .top-padding {

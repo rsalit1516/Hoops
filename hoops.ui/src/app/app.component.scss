@@ -1,6 +1,6 @@
 @use "./shared/scss/menu";
 
-@import "../content/variables";
+@use "../content/variables" as v;
 
 :root {
   --color-primary: blue;
@@ -55,7 +55,7 @@ a {
   text-align: left;
 }
 h2 {
-  color: $brand-color;
+  color: v.$brand-color;
 }
 h3,
 h4 {
@@ -68,7 +68,7 @@ h4 {
 
 /*-------------------       General      --------------*/
 th {
-  background-color: $card-background-color;
+  background-color: v.$card-background-color;
   text-align: center;
   color: white;
 }
@@ -119,7 +119,7 @@ th {
 }
 
 .panel-default .panel-heading fieldset {
-  background-color: $panel-default-heading-background;
+  background-color: v.$panel-default-heading-background;
 }
 
 .panel .panel-default fieldset {
@@ -467,7 +467,7 @@ th {
 }
 
 mat-side-container {
-  background-color: $background-color;
+  background-color: v.$background-color;
 }
 mat-side-container,
 mat-sidenav-content,
@@ -479,7 +479,7 @@ mat-sidenav {
   width: 250px;
 }
 .mat-drawer-container {
-  background-color: $background-color;
+  background-color: v.$background-color;
 }
 .mat-drawer-content {
   overflow: inherit;

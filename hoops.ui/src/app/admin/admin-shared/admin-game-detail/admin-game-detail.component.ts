@@ -20,7 +20,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
-import { NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
+// import { NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
 import { LocationService } from '../services/location.service';
 import { Division } from '@app/domain/division';
 import { Location } from '@app/domain/location';
@@ -37,7 +37,7 @@ import { Location } from '@app/domain/location';
         MatOptionModule,
         MatDatepickerModule,
         MatInputModule,
-        NgxMatTimepickerModule,
+        // NgxMatTimepickerModule,
     ],
     templateUrl: './admin-game-detail.component.html',
     styleUrls: [

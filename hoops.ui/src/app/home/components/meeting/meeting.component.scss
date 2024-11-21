@@ -1,5 +1,5 @@
 @use 'sass:color';
-@import '../../../../content/_variables';
+@use '../../../../content/_variables' as v;
 
 .panel-title {
     font-size: 1.2em;
@@ -9,7 +9,7 @@
 
   .mat-card {
     border-radius: 10px;
-    background-color: $card-background-color;
+    background-color: v.$card-background-color;
     margin-bottom: 10px;
     margin-left: 1.5em;
     margin-right:4px;
@@ -21,7 +21,7 @@
     font-size: 1.2em;
     font-weight: 720;
     font-variant: small-caps;
-    color: $navbar-color;
+    color: v.$navbar-color;
     text-align: center;
     padding-left: auto;
     padding-right: auto;
@@ -37,7 +37,7 @@
 
   .mat-card-content {
     font-size: .8em;
-    color: $font-color-text;
+    color: v.$font-color-text;
     font-weight: 400;
   }
   .top-padding {
@@ -47,7 +47,7 @@
   }
   .sub-title {
     text-align: center;
-    color: color.adjust($card-sub-title-color, $lightness: 10%);
+    color: color.adjust(v.$card-sub-title-color, $lightness: 10%);
     margin-left: auto;
     margin-right: auto;
     font-style: italic;

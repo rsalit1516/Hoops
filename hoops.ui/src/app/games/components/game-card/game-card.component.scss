@@ -1,5 +1,5 @@
 @use 'sass:color';
-@import "../../../../content/_variables";
+@use "../../../../content/_variables" as v;
 
 .panel-primary .panel-body {
   background-color: gray;
@@ -13,13 +13,13 @@
 }
 .data {
   font-weight: 700;
-  color: $brand-color;
+  color: v.$brand-color;
 }
 .card-body {
-  color: $brand-color;
+  color: v.$brand-color;
 }
 .card {
-  background-color: $card-background-color;
+  background-color: v.$card-background-color;
   border-radius: 5%;
-  border-color: color.adjust($card-background-color, $lightness: -10%);
+  border-color: color.adjust(v.$card-background-color, $lightness: -10%);
 }

@@ -1,4 +1,4 @@
-@import "../../../../content/_variables";
+@use "../../../../content/_variables" as v;
 
 .panel-primary .panel-body{
     background-color: gray;
@@ -13,8 +13,8 @@
 }
 
 h2 {
-  background-color: $card-background-color;
-  color: $brand-color;
-  font-size: $heading-font-size;
+  background-color: v.$card-background-color;
+  color: v.$brand-color;
+  font-size: v.$heading-font-size;
   padding-left: 8px;
 }

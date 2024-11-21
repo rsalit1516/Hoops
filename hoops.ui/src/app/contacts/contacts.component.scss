@@ -1,5 +1,5 @@
 @use 'sass:color';
-@import '../../content/_variables';
+@use '../../content/_variables' as v;
 
 
 .row {
@@ -7,36 +7,36 @@
     width: 90%;
 }
 .table {
-  border-top: 1px solid color.adjust($app-bar-background, $lightness: 10%);
+  border-top: 1px solid color.adjust(v.$app-bar-background, $lightness: 10%);
 }
 td{
-  color: $brand-color;
+  color: v.$brand-color;
   padding-top: 4px;
   padding-bottom: 4px;
   font-size: 1.1em;
 }
 
 .panel-title {
-  color: $brand-color;
+  color: v.$brand-color;
   padding-top: 12px;
   padding-bottom: 12px;
   font-size: 1.4em;
-  background-color: $app-bar-background;
+  background-color: v.$app-bar-background;
 }
 
 .panel-heading{
   margin-top: 20px;
   margin-bottom: 16px;
-  background-color: $app-bar-background;
+  background-color: v.$app-bar-background;
 }
 .panel-body {
-  background-color: $app-bar-background;
+  background-color: v.$app-bar-background;
 }
 
 .panel {
-  background-color: color.adjust($app-bar-background, $lightness: 20%);
+  background-color: color.adjust(v.$app-bar-background, $lightness: 20%);
   border-radius: 5px;
-  border-color: color.adjust($app-bar-background, $lightness: -5%);
+  border-color: color.adjust(v.$app-bar-background, $lightness: -5%);
   padding-left: 12px;
   padding-right: 12px;
   padding-bottom: 8px;
