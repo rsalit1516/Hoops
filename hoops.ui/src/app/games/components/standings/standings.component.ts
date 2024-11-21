@@ -17,7 +17,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 })
 export class StandingsComponent implements OnInit {
   public title: string;
-  readonly teams = input.required<any[]>();
+  readonly teams = input<any[]>();
 
   private _standings: Standing[] | undefined | null;
   get standings() {

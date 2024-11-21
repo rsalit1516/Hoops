@@ -9,7 +9,7 @@ export class Game {
   public gameId: number | undefined;
   public locationName!: string;
   public locationNumber!: number;
-  public gameDate: Date | undefined;
+  public gameDate!: Date;
   public gameTime: Date | undefined;
   public gameTimeString: string | undefined;
   public homeTeamName: string | undefined;

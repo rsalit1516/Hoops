@@ -3,6 +3,7 @@ import { Component, OnInit, inject, input } from '@angular/core';
 import { Content } from '../../../domain/content';
 import { ContentService } from '../../../admin/web-content/content.service';
 import * as moment from 'moment';
+import { DateTime } from 'luxon';
 import { Store } from '@ngrx/store';
 
 import * as fromHome from '../../state/';
@@ -54,7 +55,7 @@ readonly info = input.required<string>();
     this.store.select(fromHome.getContent).subscribe(
       (webContents) => {
         if (webContents !== undefined) {
-          const today = moment();
+          const today = DateTime.now();
           console.log(webContents);
           for (let i = 0; i < webContents.length; i++) {
               // console.log(webContents[i]);

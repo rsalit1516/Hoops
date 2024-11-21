@@ -52,6 +52,7 @@
     "@schematics/angular": "^15.1.2",
     "@types/babel__core": "^7.20.5",
     "@types/jasmine": "~4.3.0",
+    "@types/luxon": "^3.4.2",
     "@types/node": "^12.11.1",
     "jasmine-core": "^5.0.0",
     "karma": "~6.4.0",
