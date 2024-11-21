@@ -1,4 +1,4 @@
-@import '../../../../../content/_variables';
+@use '../../../../../content/_variables' as *;
 .activeContentCheckbox {
     border-radius: 10px;
     background-color: $card-background-color;

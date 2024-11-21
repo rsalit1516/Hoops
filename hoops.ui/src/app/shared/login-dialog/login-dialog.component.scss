@@ -1,4 +1,4 @@
-@import '../../../Content/_variables';
+@use '../../../Content/_variables' as *;
 
 .mat-dialog-container {
     background-color: $card-background-color;
