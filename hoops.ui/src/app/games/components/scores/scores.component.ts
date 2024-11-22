@@ -61,7 +61,7 @@ export class ScoresComponent implements OnInit {
       @Inject(Store) private store: Store<fromGames.State>,
       private userStore: Store<fromUser.State>,
       public dialog: MatDialog,
-      private media: MediaObserver
+      // private media: MediaObserver
     ) {
       this.title = 'Schedule!';
     }
