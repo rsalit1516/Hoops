@@ -9,19 +9,19 @@ import { Division } from '@app/domain/division';
 import { DivisionService } from '@app/services/division.service';
 
 @Component({
-  imports: [CommonModule,
-      MatFormFieldModule,
-      MatSelectModule,
-      MatInputModule,
-      MatOptionModule,
-      MatButtonModule],
-
+  selector: 'csbc-new-division-selector',
   templateUrl: './new-division-selector.component.html',
-    styleUrls: ['../../admin.component.scss',
-        '../../../shared/scss/forms.scss',
-        '../../../shared/scss/cards.scss',
-        './new-division-selector.component.scss'],
-    providers: [DivisionService]
+  imports: [CommonModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    MatOptionModule,
+    MatButtonModule],
+  styleUrls: ['../../admin.component.scss',
+    '../../../shared/scss/forms.scss',
+    '../../../shared/scss/cards.scss',
+    './new-division-selector.component.scss'],
+  providers: [DivisionService]
 })
 export class NewDivisionSelectorComponent {
   divisionService = inject(DivisionService);
@@ -29,13 +29,13 @@ export class NewDivisionSelectorComponent {
   hideNameInput = signal<boolean>(true);
   title = 'New Division';
 
-  divisionSelected($event: any) {
+  divisionSelected ($event: any) {
     this.divisionService.createTemporaryDivision($event.value);
-    this.hideNameInput.set( $event.value !== 'other');
+    this.hideNameInput.set($event.value !== 'other');
   }
 
-  addDivision() {
+  addDivision () {
   }
-  cancel() {
+  cancel () {
   }
 }

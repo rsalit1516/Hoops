@@ -18,7 +18,8 @@ import { ContentListToolbarComponent } from '../content-list-toolbar/content-lis
     selector: 'csbc-content-list',
     templateUrl: './contentList.component.html',
     styleUrls: ['./contentList.component.scss', '../../../admin.component.scss', '../../../../shared/scss/tables.scss'],
-    imports: [CommonModule, MatDialogModule, MatTableModule, MatIconModule,
+  imports: [CommonModule, MatDialogModule,
+    MatTableModule, MatIconModule,
         ContentListToolbarComponent]
 })
 export class ContentListComponent implements OnInit {

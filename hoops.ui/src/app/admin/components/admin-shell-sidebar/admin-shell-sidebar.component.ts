@@ -1,5 +1,5 @@
 import { CommonModule, NgIf } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -50,7 +50,7 @@ export class AdminShellSidebarComponent {
 
   ];
 
-  constructor (private router: Router,) { }
+  constructor (@Inject(Router) private router: Router) { }
 
   selectedItem: nav| undefined;
 

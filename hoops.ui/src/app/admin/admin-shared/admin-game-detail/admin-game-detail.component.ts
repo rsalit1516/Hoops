@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, Inject, OnInit, inject, signal } from '@angular/core';
 import {
   FormGroup,
   UntypedFormControl,
@@ -67,7 +67,7 @@ export class AdminGameDetailComponent implements OnInit {
   locationService = inject(LocationService);
 
   constructor(
-    private store: Store<fromAdmin.State>,
+    @Inject(Store) private store: Store<fromAdmin.State>,
     private fb: UntypedFormBuilder
   ) {
     this.divisionTeams$ = this.store.select(fromAdmin.getDivisionTeams);
