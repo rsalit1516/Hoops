@@ -52,10 +52,12 @@ export class DataService {
   post<T>(data: T, url: string): Observable<T> {
 
     console.log(data);
+    console.log(url);
     return this._http
-      .post<T>(url, data, this.httpOptions
-      )
-      .pipe(catchError(this.handleError('Error', data)));
+      .post<T>(url, data, this.httpOptions)
+      .pipe(
+        tap((data) => console.log('PostContent: ' + JSON.stringify(data))),
+        catchError(this.handleError('Error', data)));
   }
   put<T>(data: T, url: string): Observable<T> {
     console.log(url);
