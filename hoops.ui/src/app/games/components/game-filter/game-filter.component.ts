@@ -105,6 +105,13 @@ export class GameFilterComponent implements OnInit {
     }
   }
 
+  changeTeam(val: Team) {
+    if (val !== undefined && val !== this.currentTeam) {
+      this.currentTeam = val;
+      this.store.dispatch(new gameActions.SetCurrentTeam(val));
+      // this.store.dispatch(new gameActions.LoadTeamGames);
+    }
+  }
   divisionSelected(division: Division): void {}
 
   teamSelected(team: Team): void {

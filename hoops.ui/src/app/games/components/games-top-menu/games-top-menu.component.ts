@@ -23,8 +23,8 @@ import { CommonModule } from '@angular/common';
         MatToolbarModule, MatTabsModule, GameFilterComponent]
 })
 export class GamesTopMenuComponent implements OnInit {
-  readonly divisions = input.required<Division[]>();
-  readonly teams = input.required<Team[]>();
+  divisions = input.required<Division[]>();
+  teams = input.required<Team[]>();
   @Output() currentDivision: Division | undefined;
   readonly selectedDivision = output<Division>();
   private errorMessageSubject = new Subject<string>();
