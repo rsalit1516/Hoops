@@ -27,6 +27,7 @@ import { GameService } from '@app/games/game.service';
 import { SchedulePlayoffsComponent } from '@app/games/components/schedule-playoffs/schedule-playoffs.component';
 import { ScheduleComponent } from '../../components/schedule/schedule.component';
 import { DateTime } from 'luxon';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'csbc-schedule-shell',
@@ -39,7 +40,10 @@ import { DateTime } from 'luxon';
     </div>
   `,
     styleUrls: ['./schedule-shell.component.scss'],
-    imports: [ScheduleComponent]
+  imports: [
+    CommonModule,
+    ScheduleComponent
+  ]
 })
 export class ScheduleShellComponent implements OnInit {
   games: Game[] | undefined | null;

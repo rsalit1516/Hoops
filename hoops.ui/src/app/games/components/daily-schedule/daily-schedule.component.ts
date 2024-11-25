@@ -8,7 +8,7 @@ import * as fromGames from '../../state';
 import * as fromUser from '../../../user/state';
 import * as gameActions from '../../state/games.actions';
 import { MatDialog } from '@angular/material/dialog';
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
@@ -18,11 +18,11 @@ import { MatTableModule } from '@angular/material/table';
     templateUrl: './daily-schedule.component.html',
     styleUrls: ['./daily-schedule.component.scss',
         './../../../shared/scss/tables.scss'],
-    imports: [
+  imports: [
+      CommonModule,
         MatTableModule,
         MatButtonModule,
         MatIconModule,
-        DatePipe,
     ]
 })
 export class DailyScheduleComponent implements OnInit {
@@ -44,7 +44,7 @@ export class DailyScheduleComponent implements OnInit {
   constructor(
     private store: Store<fromGames.State>,
     public dialog: MatDialog,
-    private media: MediaObserver
+    // private media: MediaObserver
   ) {}
 
   ngOnInit() {
