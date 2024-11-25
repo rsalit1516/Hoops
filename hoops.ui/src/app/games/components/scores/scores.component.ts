@@ -12,7 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { NgIf, DatePipe } from '@angular/common';
+import { NgIf, DatePipe, CommonModule } from '@angular/common';
 
 @Component({
     selector: 'csbc-scores',
@@ -21,7 +21,14 @@ import { NgIf, DatePipe } from '@angular/common';
         './scores.component.scss',
         '../../containers/games-shell/games-shell.component.scss'
     ],
-    imports: [FormsModule, MatTableModule, NgIf, MatButtonModule, MatIconModule, DatePipe]
+  imports: [CommonModule,
+    // 
+    MatTableModule,
+    // NgIf,
+    MatButtonModule,
+    MatIconModule,
+  // DatePipe
+  ]
 })
 export class ScoresComponent implements OnInit {
   dataSource!: MatTableDataSource<Game>;
