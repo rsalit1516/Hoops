@@ -38,35 +38,58 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '@app/admin/shared/confirm-dialog/confirm-dialog.component';
 import { Constants } from '@app/shared/constants';
 import { State } from '../../../state/index';
+import { BrowserModule } from '@angular/platform-browser';
 
 @Component({
-    selector: 'csbc-content-edit',
-    imports: [
-        CommonModule,
-        ReactiveFormsModule,
-        RouterModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatCardModule,
-        MatDatepickerModule,
-        MatDividerModule,
-        MatOptionModule,
-        MatButtonModule,
-        MatSelectModule,
-        ConfirmDialogComponent,
-    ],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    templateUrl: './content-edit.component.html',
-    styleUrls: [
-        './content-edit.component.scss',
-        '../../../admin.component.scss',
-        '../../../../shared/scss/forms.scss',
-        '../../../../shared/scss/cards.scss',
-    ]
+  selector: 'csbc-content-edit',
+  imports: [
+    CommonModule,
+    // ReactiveFormsModule,
+    RouterModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatCardModule,
+    MatDatepickerModule,
+    MatDividerModule,
+    MatOptionModule,
+    MatButtonModule,
+    MatSelectModule,
+    ConfirmDialogComponent,
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: './content-edit.component.html',
+  styleUrls: [
+    './content-edit.component.scss',
+    '../../../admin.component.scss',
+    '../../../../shared/scss/forms.scss',
+    '../../../../shared/scss/cards.scss',
+  ]
 })
 export class ContentEditComponent implements OnInit {
   readonly store = inject(Store<fromContent.State>);
+  private fb = inject(FormBuilder);
+  contentForm = this.fb.group({
+    title: new FormControl('', {
+      validators: [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(50),
+      ],
+      nonNullable: true,
+    }),
 
+    subTitle: new FormControl('', [Validators.maxLength(50)]),
+    body: new FormControl<string | null>(''),
+    location: new FormControl<string | null>(''),
+    dateAndTime: new FormControl<string | null>(''),
+    webContentId: new FormControl<number>(0),
+    webContentTypeControl: new FormControl<number>(1),
+    contentSequence: new FormControl<number>(1),
+    expirationDate: new FormControl<Date | null>(
+      new Date(),
+      Validators.required
+    ),
+  });
   // @Input()
   content!: Content;
   errorMessage: string | undefined;
@@ -94,47 +117,26 @@ export class ContentEditComponent implements OnInit {
   expirationDate = 'Expiration Date';
   location = 'Location';
   contentSequence = 'Content Order';
-
-  contentForm = new FormGroup({
-    title: new FormControl('', {
-      validators: [
-        Validators.required,
-        Validators.minLength(3),
-        Validators.maxLength(50),
-      ],
-      nonNullable: true,
-    }),
-
-    subTitle: new FormControl('', [Validators.maxLength(50)]),
-    body: new FormControl<string | null>(''),
-    location: new FormControl<string | null>(''),
-    dateAndTime: new FormControl<string | null>(''),
-    webContentId: new FormControl<number>(0),
-    webContentTypeControl: new FormControl<number>(1),
-    contentSequence: new FormControl<number>(1),
-    expirationDate: new FormControl<Date | null>(
-      new Date(),
-      Validators.required
-    ),
-  });
   floatLabelType: FloatLabelType = 'auto';
   protected readonly value = signal('');
 
-  constructor(
-    private fb: FormBuilder,
+  constructor (
+    // @Inject(FormBuilder) private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private contentService: ContentService,
     public dialog: MatDialog
-  ) {}
+  ) { }
 
-  ngOnInit(): void {
+  ngOnInit (): void {
     this.pageTitle = 'Edit Web Content Messages';
     this.hideId = true;
+
+
     this.getContent();
   }
 
-  update(): void {
+  update (): void {
     this.contentForm.patchValue({
       title: this.selectedContent.title,
       subTitle: this.selectedContent.subTitle,
@@ -145,7 +147,7 @@ export class ContentEditComponent implements OnInit {
       // webContentTypeControl: this.content.webContentType,
     });
   }
-  getContent(): void {
+  getContent (): void {
     this.store
       .pipe(select(fromContent.getSelectedContent))
       .subscribe((content) => {
@@ -155,7 +157,7 @@ export class ContentEditComponent implements OnInit {
         }
       });
   }
-  onContentRetrieved(content: Content): void {
+  onContentRetrieved (content: Content): void {
     console.log(content);
     if (this.contentForm) {
       this.contentForm.reset();
@@ -164,7 +166,7 @@ export class ContentEditComponent implements OnInit {
     if (content.webContentId === 0) {
       this.pageTitle = 'Add Notice';
     } else {
-      this.pageTitle = `Edit Notice: ${content.title}`;
+      this.pageTitle = `Edit Notice: ${ content.title }`;
     }
 
     // // Update the data on the form
@@ -182,7 +184,7 @@ export class ContentEditComponent implements OnInit {
     this.selected = content.webContentType;
     console.log(this.selected);
   }
-  saveContent() {
+  saveContent () {
     console.log(this.contentForm.value);
     if (this.contentForm.dirty) {
       let content = new Content();
@@ -206,7 +208,7 @@ export class ContentEditComponent implements OnInit {
       this.router.navigate(['/admin/content']);
     }
   }
-  getWebContentType(id: number): WebContentType {
+  getWebContentType (id: number): WebContentType {
     let webContentType = new WebContentType();
     console.log(id);
     switch (id) {
@@ -237,13 +239,13 @@ export class ContentEditComponent implements OnInit {
     // this.contentForm.controls[ controlName ].hasError(errorName);
   };
 
-  getFloatLabelValue(): FloatLabelType {
+  getFloatLabelValue (): FloatLabelType {
     return this.floatLabelType;
   }
-  protected onInput(event: Event) {
+  protected onInput (event: Event) {
     this.value.set((event.target as HTMLInputElement).value);
   }
-  deleteRecord(): void {
+  deleteRecord (): void {
     console.log(this.contentForm.get('webContentId')!.value);
     if (this.contentForm.get('webContentId')!.value !== 0) {
       this.contentService.deleteContent(
@@ -252,7 +254,7 @@ export class ContentEditComponent implements OnInit {
       // this.onSaveComplete();
     }
   }
-  openDialog(): void {
+  openDialog (): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent);
 
     dialogRef.afterClosed().subscribe((result) => {
