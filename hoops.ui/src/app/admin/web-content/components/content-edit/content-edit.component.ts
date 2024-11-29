@@ -10,11 +10,9 @@ import {
 } from '@angular/core';
 import {
   Validators,
-  FormControlName,
   FormControl,
   FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
+  ReactiveFormsModule
 } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
@@ -38,13 +36,21 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '@app/admin/shared/confirm-dialog/confirm-dialog.component';
 import { Constants } from '@app/shared/constants';
 import { State } from '../../../state/index';
-import { BrowserModule } from '@angular/platform-browser';
 
 @Component({
   selector: 'csbc-content-edit',
+
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: './content-edit.component.html',
+  styleUrls: [
+    './content-edit.component.scss',
+    '../../../admin.component.scss',
+    '../../../../shared/scss/forms.scss',
+    '../../../../shared/scss/cards.scss',
+  ],
   imports: [
     CommonModule,
-    // ReactiveFormsModule,
+    ReactiveFormsModule,
     RouterModule,
     MatFormFieldModule,
     MatInputModule,
@@ -56,14 +62,7 @@ import { BrowserModule } from '@angular/platform-browser';
     MatSelectModule,
     ConfirmDialogComponent,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './content-edit.component.html',
-  styleUrls: [
-    './content-edit.component.scss',
-    '../../../admin.component.scss',
-    '../../../../shared/scss/forms.scss',
-    '../../../../shared/scss/cards.scss',
-  ]
+  providers: [ContentService],
 })
 export class ContentEditComponent implements OnInit {
   readonly store = inject(Store<fromContent.State>);

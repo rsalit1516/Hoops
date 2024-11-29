@@ -156,11 +156,7 @@ export class ContentService {
   }
 
   private createContent(content: Content): Observable<void | Content> {
-    // const httpOptions = {
-    //   headers: new HttpHeaders({
-    //     'Content-Type': 'application/json',
-    //   }),
-    // };
+ 
     console.log(content);
     return this.data.post(content, this.data.postContentUrl).pipe(
       // tap((data) => console.log('createContent: ' + JSON.stringify(data))),
