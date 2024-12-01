@@ -359,7 +359,6 @@ Hoops.Api/c:/temp/internal-nlog-AspNetCore.txt
 Hoops.Api/c:/temp/internal-nlog-AspNetCore.txt
 Hoops.Api/hoops.api.csproj
 hoops.ui/.DS_Store
-hoops.ui/angular.json
 hoops.ui/dist/**
 hoops.ui/.angular/cache/**
 .DS_Store
