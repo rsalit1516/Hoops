@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, Inject, OnInit, inject, signal } from '@angular/core';
 import {
   FormGroup,
   UntypedFormControl,
@@ -20,32 +20,31 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
-import { NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
+// import { NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
 import { LocationService } from '../services/location.service';
 import { Division } from '@app/domain/division';
 import { Location } from '@app/domain/location';
 
 @Component({
-  selector: 'admin-game-detail',
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatCardModule,
-    MatSelectModule,
-    MatOptionModule,
-    MatDatepickerModule,
-    MatInputModule,
-    NgxMatTimepickerModule,
-  ],
-  templateUrl: './admin-game-detail.component.html',
-  styleUrls: [
-    '../../../shared/scss/cards.scss',
-    '../../../shared/scss/forms.scss',
-    '../../admin.component.scss',
-  ],
+    selector: 'admin-game-detail',
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatCardModule,
+        MatSelectModule,
+        MatOptionModule,
+        MatDatepickerModule,
+        MatInputModule,
+        // NgxMatTimepickerModule,
+    ],
+    templateUrl: './admin-game-detail.component.html',
+    styleUrls: [
+        '../../../shared/scss/cards.scss',
+        '../../../shared/scss/forms.scss',
+        '../../admin.component.scss',
+    ]
 })
 export class AdminGameDetailComponent implements OnInit {
   gameEditForm = this.fb.group({
@@ -68,7 +67,7 @@ export class AdminGameDetailComponent implements OnInit {
   locationService = inject(LocationService);
 
   constructor(
-    private store: Store<fromAdmin.State>,
+    @Inject(Store) private store: Store<fromAdmin.State>,
     private fb: UntypedFormBuilder
   ) {
     this.divisionTeams$ = this.store.select(fromAdmin.getDivisionTeams);

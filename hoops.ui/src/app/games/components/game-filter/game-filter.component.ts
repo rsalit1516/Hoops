@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
+import { Component, OnInit, input, output } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import * as fromGames from '../../state';
@@ -20,7 +20,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     selector: 'csbc-game-filter',
     templateUrl: './game-filter.component.html',
     styleUrls: ['./game-filter.component.scss'],
-    standalone: true,
     imports: [
         FormsModule,
         ReactiveFormsModule,
@@ -28,15 +27,15 @@ import { MatFormFieldModule } from '@angular/material/form-field';
         MatSelectModule,
         NgFor,
         MatOptionModule,
-    ],
+    ]
 })
 export class GameFilterComponent implements OnInit {
-  @Input( { required: true } )divisions!: Division[];
+  readonly divisions = input.required<Division[]>();
   currentDivision!: Division;
-  @Input() teams!: Team[] | null;
+  readonly teams = input.required<Team[] | null>();
   currentTeam!: Team;
   showAllTeams!: boolean;
-  @Output() selectedTeam = new EventEmitter<Team>();
+  readonly selectedTeam = output<Team>();
   criteriaForm!: any;
   divisions$ = this.divisionService.divisions$.pipe(
     catchError((err) => {
@@ -73,7 +72,7 @@ export class GameFilterComponent implements OnInit {
   createForm() {
     this.criteriaForm = this.fb.group({
       divisions: new FormControl(this.currentDivision),
-      teams: this.teams,
+      teams: this.teams(),
       allTeams: true,
       gameView: 'list',
     });
@@ -106,6 +105,13 @@ export class GameFilterComponent implements OnInit {
     }
   }
 
+  changeTeam(val: Team) {
+    if (val !== undefined && val !== this.currentTeam) {
+      this.currentTeam = val;
+      this.store.dispatch(new gameActions.SetCurrentTeam(val));
+      // this.store.dispatch(new gameActions.LoadTeamGames);
+    }
+  }
   divisionSelected(division: Division): void {}
 
   teamSelected(team: Team): void {

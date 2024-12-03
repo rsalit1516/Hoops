@@ -1,4 +1,5 @@
-@import "../../content/_variables";
+@use 'sass:color';
+@use '../../content/_variables' as *;
 
 h4 {
   color: $brand-color;
@@ -41,7 +42,7 @@ em {
 }
 .manny {
   background-color: transparent;
-  color: darken(#ebf3c6, 10%);
+  color: color.adjust(#ebf3c6, $lightness: -10%);
   text-align: right;
   font-size: $card-body;
   font-weight: 400;
@@ -75,7 +76,6 @@ em {
   margin-left: 4vw;
 }
 .mat-card-header {
-  // border-bottom: 1px solid lighten($card-background-color, 20%);
   text-align: center;
   margin: auto;
 }
@@ -98,7 +98,7 @@ em {
 }
 .sub-title {
   text-align: center;
-  color: lighten($card-sub-title-color, 10%);
+  color: color.adjust($card-sub-title-color, $lightness: 10%);
   margin-left: auto;
   margin-right: auto;
   font-style: italic;
@@ -127,7 +127,7 @@ div.sponsor {
   left: 0;
   bottom:0%;
   width:100%;
-  background-color: darken($card-background-color, 10%);
+  background-color: color.adjust($card-background-color, $lightness: -10%);
   // opacity: 1;
   text-align: center;
 }

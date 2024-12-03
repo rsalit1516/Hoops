@@ -1,4 +1,5 @@
-@import '../../../../content/_variables';
+@use 'sass:color';
+@use '../../../../content/_variables' as v;
 
 .sidebar-widget form {
     margin: 0em -1em;

@@ -1,22 +1,21 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PlayoffGame } from '@app/domain/playoffGame';
 import { MatTableModule } from '@angular/material/table';
 
 
 @Component({
-  selector: 'csbc-daily-playoff-schedule',
-  standalone: true,
-  imports: [CommonModule, MatTableModule],
-  templateUrl: './daily-playoff-schedule.component.html',
-  styleUrls: [
-    // '../../../shared/scss/tables.scss',
-    './daily-playoff-schedule.component.scss',
-    '../../../../Content/styles.scss'
-]
+    selector: 'csbc-daily-playoff-schedule',
+    imports: [CommonModule, MatTableModule],
+    templateUrl: './daily-playoff-schedule.component.html',
+    styleUrls: [
+        // '../../../shared/scss/tables.scss',
+        './daily-playoff-schedule.component.scss',
+        '../../../../Content/styles.scss'
+    ]
 })
 export class DailyPlayoffScheduleComponent {
-  @Input() playoffGames!: PlayoffGame[];
+  readonly playoffGames = input.required<PlayoffGame[]>();
   gameDate!: Date;
   displayedColumns = [
     'gameTime',
@@ -30,7 +29,7 @@ export class DailyPlayoffScheduleComponent {
   constructor() { }
 
   ngOnInit() {
-    this.data = this.playoffGames;
+    this.data = this.playoffGames();
     this.gameDate! = this.data[0].gameDate as Date;
 
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
+import { Component, OnInit, Input, Output, input } from '@angular/core';
 import { Game } from '../../../domain/game';
 import { Store } from '@ngrx/store';
 import * as fromGames from '../../state';
@@ -10,17 +10,16 @@ import { MediaObserver } from '@angular/flex-layout';
 import { GameService } from '@app/games/game.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DailyScheduleComponent } from '../daily-schedule/daily-schedule.component';
-import { NgFor } from '@angular/common';
+import { CommonModule, NgFor } from '@angular/common';
 
 @Component({
     selector: 'csbc-schedule',
     templateUrl: './schedule.component.html',
     styleUrls: ['./schedule.component.scss'],
-    standalone: true,
-    imports: [NgFor, DailyScheduleComponent],
+    imports: [CommonModule, DailyScheduleComponent]
 })
 export class ScheduleComponent implements OnInit {
-  @Input() dailySchedule!: Array<Game[]>;
+  readonly dailySchedule = input.required<Array<Game[]>>();
   groupedGames: Game[] | undefined;
   _gamesByDate: [Date, Game[]] | undefined;
   divisionId: number | undefined;
@@ -45,7 +44,7 @@ export class ScheduleComponent implements OnInit {
   constructor(
     private store: Store<fromGames.State>,
     public dialog: MatDialog,
-    private media: MediaObserver,
+    // private media: MediaObserver,
   ) {
     this.title = 'Schedule!';
     // this.flexMediaWatcher = media.media$.subscribe((change) => {

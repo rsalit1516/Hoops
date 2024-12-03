@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -15,15 +15,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { ContentListToolbarComponent } from '../content-list-toolbar/content-list-toolbar.component';
 
 @Component({
-  selector: 'csbc-content-list',
-  standalone: true,
-  templateUrl: './contentList.component.html',
-  styleUrls: [ './contentList.component.scss', '../../../admin.component.scss', '../../../../shared/scss/tables.scss' ],
-  imports: [ CommonModule, MatDialogModule, MatTableModule, MatIconModule,
-    ContentListToolbarComponent ]
+    selector: 'csbc-content-list',
+    templateUrl: './contentList.component.html',
+    styleUrls: ['./contentList.component.scss', '../../../admin.component.scss', '../../../../shared/scss/tables.scss'],
+  imports: [CommonModule, MatDialogModule,
+    MatTableModule, MatIconModule,
+        ContentListToolbarComponent]
 })
 export class ContentListComponent implements OnInit {
-  @Output() selectedContent = new EventEmitter<Content>();
+  readonly selectedContent = output<Content>();
   contents$!: Observable<WebContent[]>;
   errorMessage: string|undefined;
   pageTitle: string|undefined;

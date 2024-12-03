@@ -14,12 +14,12 @@ import { FormsModule } from '@angular/forms';
 @Component({
     selector: 'app-admin-team-list',
     templateUrl: './admin-team-list.component.html',
-  styleUrls: [
-    '../../../shared/scss/cards.scss',
-    '../../../shared/scss/tables.scss',
-    './admin-team-list.component.scss',
-    '../../admin.component.scss'],
-    standalone: true,
+    styleUrls: [
+        '../../../shared/scss/cards.scss',
+        '../../../shared/scss/tables.scss',
+        './admin-team-list.component.scss',
+        '../../admin.component.scss'
+    ],
     imports: [
         FormsModule,
         MatCardModule,
@@ -27,7 +27,7 @@ import { FormsModule } from '@angular/forms';
         NgIf,
         MatButtonModule,
         MatIconModule,
-    ],
+    ]
 })
 export class AdminTeamListComponent implements OnInit {
   title = 'Team List';

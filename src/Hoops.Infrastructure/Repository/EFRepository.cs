@@ -35,11 +35,12 @@ namespace Hoops.Infrastructure.Repository
 
         public virtual T GetById(int id)
         {
-            return DbSet.Find(id);
+            return DbSet.Find(id)!;
         }
         public virtual async Task<T> FindByAsync(int id)
         {
-            return await DbSet.FindAsync(id);
+            var entity = await DbSet.FindAsync(id);
+            return entity ?? throw new InvalidOperationException("Entity not found");
         }
         public virtual T Insert(T entity)
         {
@@ -71,7 +72,13 @@ namespace Hoops.Infrastructure.Repository
             else
             {
                 DbSet.Attach(entity);
-                DbSet.Remove(entity);
+                if (entity != null)
+                {
+                    if (entity != null)
+                    {
+                        DbSet.Remove(entity);
+                    }
+                }
             }
         }
 

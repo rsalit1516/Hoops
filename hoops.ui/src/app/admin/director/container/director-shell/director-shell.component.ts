@@ -8,7 +8,6 @@ import { DirectorListComponent } from '../../component/director-list/director-li
     selector: 'csbc-director-shell',
     templateUrl: './director-shell.component.html',
     styleUrls: ['./director-shell.component.css'],
-    standalone: true,
     imports: [DirectorListComponent, DirectorEditComponent]
 })
 export class DirectorShellComponent implements OnInit {

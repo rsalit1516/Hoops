@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, output } from '@angular/core';
 import * as fromUser from '../../user/state';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -12,11 +12,10 @@ import { MatListModule } from '@angular/material/list';
     selector: 'csbc-sidenav-list',
     templateUrl: './sidenav-list.component.html',
     styleUrls: ['./sidenav-list.component.css'],
-    standalone: true,
     imports: [MatListModule, MatIconModule, RouterLink, NgIf]
 })
 export class SidenavListComponent implements OnInit {
-  @Output() sidenavClose = new EventEmitter();
+  readonly sidenavClose = output();
   showAdminMenu = false;
   currentUser: User | undefined;
   userName: string | undefined;

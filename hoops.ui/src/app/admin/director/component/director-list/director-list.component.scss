@@ -1,5 +1,5 @@
-@import '../../../../../content/_variables';
+@use  '../../../../../content/_variables' as v;
 
 p {
-    color: $brand-color
+    color: v.$brand-color
 }

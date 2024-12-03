@@ -13,12 +13,11 @@ import { NgFor, AsyncPipe } from '@angular/common';
     selector: 'csbc-home-sidebar',
     templateUrl: './home-sidebar.component.html',
     styleUrls: ['./home-sidebar.component.scss'],
-    standalone: true,
     imports: [
         NgFor,
         MeetingComponent,
         AsyncPipe,
-    ],
+    ]
 })
 export class CsbcHomeSidebarComponent implements OnInit {
   boardMeetingMessage: string;

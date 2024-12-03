@@ -15,7 +15,6 @@ import { SeasonSelectComponent } from '../../admin-shared/season-select/season-s
     selector: 'season-setup',
     templateUrl: './season-setup.component.html',
     styleUrls: ['./season-setup.component.scss', '../../admin.component.scss'],
-    standalone: true,
     imports: [SeasonSelectComponent, DivisionSelectComponent, MatToolbarModule, MatButtonModule, AdminTeamListComponent, AdminTeamDetailComponent]
 })
 export class SeasonSetupComponent implements OnInit {

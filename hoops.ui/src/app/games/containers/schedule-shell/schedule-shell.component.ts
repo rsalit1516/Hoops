@@ -21,12 +21,13 @@ import {
   catchError,
   take,
 } from 'rxjs/operators';
-import * as moment from 'moment';
 import { User } from '@app/domain/user';
 import { DivisionService } from './../../../services/division.service';
 import { GameService } from '@app/games/game.service';
 import { SchedulePlayoffsComponent } from '@app/games/components/schedule-playoffs/schedule-playoffs.component';
 import { ScheduleComponent } from '../../components/schedule/schedule.component';
+import { DateTime } from 'luxon';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'csbc-schedule-shell',
@@ -39,8 +40,10 @@ import { ScheduleComponent } from '../../components/schedule/schedule.component'
     </div>
   `,
     styleUrls: ['./schedule-shell.component.scss'],
-    standalone: true,
-    imports: [ScheduleComponent],
+  imports: [
+    CommonModule,
+    ScheduleComponent
+  ]
 })
 export class ScheduleShellComponent implements OnInit {
   games: Game[] | undefined | null;
@@ -110,7 +113,7 @@ export class ScheduleShellComponent implements OnInit {
     // console.log(games);
     games.forEach((element) => {
       element.gameTime = element.gameDate;
-      element.gameDate = moment(element.gameDate).startOf('day').toDate();
+      element.gameDate = DateTime.fromJSDate(element.gameDate).startOf('day').toJSDate();
     });
     const source = from(games);
 

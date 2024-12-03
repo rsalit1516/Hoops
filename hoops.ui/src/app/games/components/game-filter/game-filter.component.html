@@ -1,24 +1,25 @@
-<form [formGroup]="criteriaForm" class="filter-wrapper">
-  <div class="filter-divisions">
-    <mat-form-field>
-      <mat-label>Divisions</mat-label>
-      <mat-select formControlName="divisions">
-        <mat-option
-          *ngFor="let division of divisions"
-          [value]="division"
-        >
-          {{ division.divisionDescription }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+<div class="filter-divisions" class="filter-wrapper">
+  <mat-form-field>
+    <mat-label>Divisions</mat-label>
+    <mat-select formControlName="divisions">
+      <mat-option
+        *ngFor="let division of divisions()"
+        [value]="division"
+        (click)="changeDivision(division)"
+      >
+        {{ division.divisionDescription }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Teams</mat-label>
-      <mat-select formControlName="teams">
-        <mat-option *ngFor="let team of teams" [value]="team">
-          {{ team.teamName }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-</form>
+  <mat-form-field>
+    <mat-label>Teams</mat-label>
+    <mat-select formControlName="teams">
+      <mat-option *ngFor="let team of teams()"
+      [value]="team"
+      (click) = "changeTeam(team)">
+        {{ team.teamName }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>

@@ -1,3 +1,4 @@
+@use 'sass:color';
 @use '../../Content/variables' as v;
 
 :host {
@@ -46,7 +47,7 @@ input.mat-form-field-label {
 }
 .mat-input {
   color: v.$field-label  !important;
-  background-color: lighten(v.$admin-background-color, 5%);
+  background-color: color.adjust(v.$admin-background-color, $lightness: 5%);
 }
 
 .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
@@ -76,7 +77,7 @@ button {
 }
 
 nav.sidebar {
-  background-color: lighten(v.$background-color, 12%);
+  background-color: color.adjust(v.$background-color, $lightness: 12%);
   color: white;
   border: 0;
   height: 100%;
@@ -304,9 +305,6 @@ h2 {
   color: v.$admin-font-color;
   font-size: 1.1rem;
 }
-// td.mat-cell:hover {
-//   background-color: lighten(v.$admin-background-color, 30%);
-// }
 
 .mat-mdc-card-content {
   display: block;

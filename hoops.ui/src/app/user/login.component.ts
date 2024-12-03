@@ -9,7 +9,6 @@ import { NgIf } from '@angular/common';
 @Component({
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss'],
-    standalone: true,
     imports: [NgIf]
 })
 export class LoginComponent implements OnInit {

@@ -1,4 +1,4 @@
-@import '../../../../Content/variables';
+@use '../../../../Content/variables' as *;
 
 .wrapper {
   background-color: $black;

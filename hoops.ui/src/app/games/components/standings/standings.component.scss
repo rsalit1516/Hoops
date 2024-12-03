@@ -1,4 +1,4 @@
-@import '../../../../content/_variables';
+@use '../../../../content/_variables' as v;
 
 .table-striped > tbody > tr {
   background-color: gray;
@@ -8,7 +8,7 @@
   background-color: darkslategray;
 }
 .mat-table tr td {
-  color: $color;
+  color: v.$color;
   font-weight: 500;
   font-size: 1.3em;
 }
@@ -54,6 +54,6 @@ th {
 .standings-header {
   font-size:1.1em;
   font-weight:600;
-  color:$color;
+  color:v.$color;
   text-align: center;
 }

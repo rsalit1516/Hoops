@@ -18,25 +18,24 @@ import { DivisionService } from '@app/services/division.service';
 import { NewDivisionSelectorComponent } from '../../admin-shared/new-division-selector/new-division-selector.component';
 
 @Component({
-  selector: 'csbc-admin-division-shell',
-  templateUrl: './admin-division-shell.component.html',
-  styleUrls: [
-    '../../../shared/scss/forms.scss',
-    '../../admin.component.scss',
-    './admin-division-shell.component.scss',
-  ],
-  standalone: true,
-  imports: [
-    SeasonSelectComponent,
-    DivisionListComponent,
-    DivisionSelectComponent,
-    MatToolbarModule,
-    MatButtonModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatInputModule,
-    NewDivisionSelectorComponent,
-  ],
+    selector: 'csbc-admin-division-shell',
+    templateUrl: './admin-division-shell.component.html',
+    styleUrls: [
+        '../../../shared/scss/forms.scss',
+        '../../admin.component.scss',
+        './admin-division-shell.component.scss',
+    ],
+    imports: [
+        SeasonSelectComponent,
+        DivisionListComponent,
+        DivisionSelectComponent,
+        MatToolbarModule,
+        MatButtonModule,
+        MatIconModule,
+        MatFormFieldModule,
+        MatInputModule,
+        NewDivisionSelectorComponent,
+    ]
 })
 export class AdminDivisionShellComponent implements OnInit {
   season = input(new Season());

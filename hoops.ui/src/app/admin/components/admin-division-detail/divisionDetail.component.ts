@@ -28,28 +28,27 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 
 @Component({
-  selector: 'csbc-division-detail',
-  templateUrl: './divisionDetail.component.html',
-  styleUrls: [
-    '../../admin.component.scss',
-    '../../../shared/scss/forms.scss',
-    '../../../shared/scss/cards.scss',
-  ],
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatCardModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatRadioModule,
-    MatSelectModule,
-    MatOptionModule,
-    NewDivisionSelectorComponent
-  ],
-  // changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [DivisionService],
+    selector: 'csbc-division-detail',
+    templateUrl: './divisionDetail.component.html',
+    styleUrls: [
+        '../../admin.component.scss',
+        '../../../shared/scss/forms.scss',
+        '../../../shared/scss/cards.scss',
+    ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatCardModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatRadioModule,
+        MatSelectModule,
+        MatOptionModule,
+        NewDivisionSelectorComponent
+    ],
+    // changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [DivisionService]
 })
 export class DivisionDetailComponent implements OnInit {
   selectedDivision = signal<Division>(new Division());
@@ -152,7 +151,29 @@ export class DivisionDetailComponent implements OnInit {
 
   }
 
-  save() {}
+  save () {
+    let division = new Division();
+    division.divisionDescription = this.divisionForm.get('name')?.value;
+    division.maxDate = this.divisionForm.get('maxDate1')?.value;
+    division.minDate = this.divisionForm.get('minDate1')?.value;
+    division.gender = this.divisionForm.get('gender1')?.value;
+    if (division.maxDate2 !== null) {
+      division.maxDate2 = this.divisionForm.get('maxDate2')?.value;
+    }
+    // this.divisionForm.get('maxDate2')?.setValue(formatDate(division.maxDate2, this.dateFormat, this.languageFormat));
+    if (division.minDate2 !== null) {
+      division.minDate = this.divisionForm.get('minDate2')?.value;
+    }
+    if (division.maxDate2 !== null || division.minDate2 !== null) {
+      division.gender2 = this.divisionForm.get('gender2')?.value;
+    }
+    division.divisionId = this.divisionService.division().divisionId;
+    division.companyId = 1; // get from constants
+    division.seasonId = this.divisionService.division().seasonId;
+
+    console.log(division);
+    this.divisionService.save(division);
+  }
 
   updateErrorMessage() {
     // if (this.email.hasError('required')) {

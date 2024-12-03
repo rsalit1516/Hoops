@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, output } from '@angular/core';
 import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
 import * as fromUser from '../../user/state';
 import { Store, select } from '@ngrx/store';
@@ -14,15 +14,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { FlexModule } from '@angular/flex-layout';
 @Component({
-  selector: 'csbc-top-nav',
-  standalone: true,
-  templateUrl: './top-nav.component.html',
-  styleUrls: [ './top-nav.component.scss', './../../shared/scss/menu.scss' ],
-  imports: [ CommonModule, MatDialogModule, MatToolbarModule,
-    MatButtonModule, MatIconModule, RouterModule, FlexModule, RouterLinkActive ],
+    selector: 'csbc-top-nav',
+    templateUrl: './top-nav.component.html',
+    styleUrls: ['./top-nav.component.scss', './../../shared/scss/menu.scss'],
+    imports: [CommonModule, MatDialogModule, MatToolbarModule,
+        MatButtonModule, MatIconModule, RouterModule, FlexModule, RouterLinkActive]
 })
 export class TopNavComponent implements OnInit {
-  @Output() public sidenavToggle = new EventEmitter();
+  public readonly sidenavToggle = output();
   currentUser$: Observable<User> | undefined;
   userName: string | undefined;
   showAdminMenu: boolean | undefined;

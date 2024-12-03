@@ -2,9 +2,9 @@
   <div class="gamedate">{{ gameDate | date: 'EEEE, MMMM d' }}</div>
   <div id="panelGames" flexLayout="row" >
     <div class="table-wrapper">
-      <div *ngIf="playoffGames !== undefined">
-        <div *ngIf="playoffGames.length > 0">
-          <mat-table #table id="grdSchedule" [dataSource]="playoffGames">
+      <div *ngIf="playoffGames() !== undefined">
+        <div *ngIf="playoffGames().length > 0">
+          <mat-table #table id="grdSchedule" [dataSource]="playoffGames()">
             <ng-container matColumnDef="gameTime" class="gametime">
               <th mat-header-cell *matHeaderCellDef class="gametime">Time</th>
               <td mat-cell *matCellDef="let game" class="gametime">
@@ -46,7 +46,7 @@
             </tr>
           </mat-table>
         </div>
-          <div class="table-wrapper" *ngIf="playoffGames.length === 0">
+          <div class="table-wrapper" *ngIf="playoffGames().length === 0">
         <div class="no-data">No data</div>
           </div>
       </div>

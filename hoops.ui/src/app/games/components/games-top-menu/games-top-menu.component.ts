@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, input, output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as fromGames from '../../state';
 import { Subject, Observable } from 'rxjs';
@@ -14,20 +14,19 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'csbc-games-top-menu',
-  templateUrl: './games-top-menu.component.html',
-  styleUrls: ['../../../shared/scss/select.scss',
-    './games-top-menu.component.scss'
-  ],
-  standalone: true,
-  imports: [CommonModule, RouterModule, RouterLinkActive,
-    MatToolbarModule, MatTabsModule, GameFilterComponent],
+    selector: 'csbc-games-top-menu',
+    templateUrl: './games-top-menu.component.html',
+    styleUrls: ['../../../shared/scss/select.scss',
+        './games-top-menu.component.scss'
+    ],
+    imports: [CommonModule, RouterModule, RouterLinkActive,
+        MatToolbarModule, MatTabsModule, GameFilterComponent]
 })
 export class GamesTopMenuComponent implements OnInit {
-  @Input() divisions!: Division[];
-  @Input() teams!: Team[];
+  divisions = input.required<Division[]>();
+  teams = input.required<Team[]>();
   @Output() currentDivision: Division | undefined;
-  @Output() selectedDivision = new EventEmitter<Division>();
+  readonly selectedDivision = output<Division>();
   private errorMessageSubject = new Subject<string>();
   filteredTeams!: Team[];
   seasonDescription: string | undefined;

@@ -1,8 +1,6 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
-
-import { Content } from '../../../domain/content';
+import { Component, OnInit, inject, input } from '@angular/core';
 import { ContentService } from '../../../admin/web-content/content.service';
-import * as moment from 'moment';
+import { DateTime } from 'luxon';
 import { Store } from '@ngrx/store';
 
 import * as fromHome from '../../state/';
@@ -13,15 +11,14 @@ import { CommonModule } from '@angular/common';
 import { AnnouncementComponent } from '../announcement/announcement.component';
 
 @Component({
-  selector: 'csbc-announcements',
-  standalone: true,
-  templateUrl: './announcements.component.html',
-  styleUrls: [ './announcements.component.scss' ],
-  imports: [ CommonModule, AnnouncementComponent ],
-  providers: [ ContentService ]
+    selector: 'csbc-announcements',
+    templateUrl: './announcements.component.html',
+    styleUrls: ['./announcements.component.scss'],
+    imports: [CommonModule, AnnouncementComponent],
+    providers: [ContentService]
 })
 export class CsbcAnnouncementsComponent implements OnInit {
-@Input() info!: string;
+readonly info = input.required<string>();
   seasonInfoCount = 0 as number;
   latestNewsCount!: number;
   meetingNoticeCount!: number;
@@ -55,7 +52,7 @@ export class CsbcAnnouncementsComponent implements OnInit {
     this.store.select(fromHome.getContent).subscribe(
       (webContents) => {
         if (webContents !== undefined) {
-          const today = moment();
+          const today = DateTime.now();
           console.log(webContents);
           for (let i = 0; i < webContents.length; i++) {
               // console.log(webContents[i]);

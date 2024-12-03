@@ -12,7 +12,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     selector: 'game-type-select',
     templateUrl: './game-type-select.component.html',
     styleUrls: ['./../../../shared/scss/select.scss'],
-    standalone: true,
     imports: [
         MatFormFieldModule,
         MatSelectModule,
@@ -20,7 +19,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
         ReactiveFormsModule,
         NgFor,
         MatOptionModule,
-    ],
+    ]
 })
 export class GameTypeSelectComponent implements OnInit {
   selectForm!: UntypedFormGroup;

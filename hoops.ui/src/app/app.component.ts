@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, OnInit, output } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { TopNavComponent } from './shared/top-nav/top-nav.component';
 import { SidenavListComponent } from './shared/sidenav-list/sidenav-list.component';
@@ -11,13 +11,12 @@ import { MatNativeDateModule } from '@angular/material/core';
     styleUrls: [
         './app.component.scss'
     ],
-    standalone: true,
-  imports: [ SidenavListComponent,
-    TopNavComponent, RouterOutlet,
-    MatSidenavModule, MatNativeDateModule ]
+    imports: [SidenavListComponent,
+        TopNavComponent, RouterOutlet,
+        MatSidenavModule, MatNativeDateModule]
 })
 export class AppComponent implements OnInit {
-  @Output() public sidenavToggle = new EventEmitter();
+  public readonly sidenavToggle = output();
   title = 'CSBC Hoops';
 
   constructor(private router: Router) {}

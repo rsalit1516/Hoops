@@ -23,7 +23,6 @@ import { HomeCenterComponent } from './components/home-center/home-center.compon
     selector: 'csbc-home',
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.scss'],
-    standalone: true,
     imports: [
         HomeCenterComponent,
         NgClass,
@@ -31,7 +30,7 @@ import { HomeCenterComponent } from './components/home-center/home-center.compon
         CsbcHomeSidebarComponent,
         CsbcAnnouncementsComponent,
         SponsorListComponent,
-    ],
+    ]
 })
 export class HomeComponent implements OnInit {
   coverImage: string;
@@ -52,7 +51,7 @@ export class HomeComponent implements OnInit {
   showSponsors = false;
   imageClass = 'col-sm-8 offset-sm-2 col-12';
   meetingNoticeClass = 'col-sm-0 col-xs-0';
-
+  announcementInfo = '';
 
   constructor(
     private _contentService: ContentService,

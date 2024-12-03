@@ -5,7 +5,6 @@ import { MatListModule } from '@angular/material/list';
     selector: 'csbc-import-schedule',
     templateUrl: './import-schedule.component.html',
     styleUrls: ['./import-schedule.component.scss'],
-    standalone: true,
     imports: [MatListModule]
 })
 export class ImportScheduleComponent implements OnInit {

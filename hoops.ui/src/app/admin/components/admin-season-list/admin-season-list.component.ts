@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, input } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
 import * as fromAdmin from '../../state';
@@ -13,19 +13,18 @@ import { Router } from '@angular/router';
 @Component({
     selector: 'csbc-admin-season-list',
     templateUrl: './admin-season-list.component.html',
-  styleUrls: [
-      './../../../shared/scss/tables.scss',
+    styleUrls: [
+        './../../../shared/scss/tables.scss',
         './admin-season-list.component.scss',
         '../../admin.component.scss'
     ],
-    standalone: true,
-  imports: [ FlexModule, MatTableModule, DatePipe,
-    AdminSeasonsToolbarComponent,
+    imports: [FlexModule, MatTableModule, DatePipe,
+        AdminSeasonsToolbarComponent,
     ]
 })
 export class AdminSeasonListComponent implements OnInit {
   private _seasons: Season[] | undefined;
-  @Input() info: string | undefined;
+  readonly info = input<string>();
   get seasons() {
     return this._seasons;
   }

@@ -1,10 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { FormBuilder, FormsModule } from '@angular/forms';
+import { Component, OnInit, Input, input, Inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
 
 import * as fromGames from '../../state';
 import * as fromUser from '../../../user/state';
-import * as gameActions from '../../state/games.actions';
 
 import { Game } from '@app/domain/game';
 import { User } from '@app/domain/user';
@@ -13,7 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { NgIf, DatePipe } from '@angular/common';
+import { NgIf, DatePipe, CommonModule } from '@angular/common';
 
 @Component({
     selector: 'csbc-scores',
@@ -22,8 +21,14 @@ import { NgIf, DatePipe } from '@angular/common';
         './scores.component.scss',
         '../../containers/games-shell/games-shell.component.scss'
     ],
-    standalone: true,
-    imports: [FormsModule, MatTableModule, NgIf, MatButtonModule, MatIconModule, DatePipe]
+  imports: [CommonModule,
+    // 
+    MatTableModule,
+    // NgIf,
+    MatButtonModule,
+    MatIconModule,
+  // DatePipe
+  ]
 })
 export class ScoresComponent implements OnInit {
   dataSource!: MatTableDataSource<Game>;
@@ -46,7 +51,6 @@ export class ScoresComponent implements OnInit {
     //});
   }
   private _games!: Game[];
-  @Input()
   canEdit!: boolean;
 
   errorMessage!: string;
@@ -61,13 +65,13 @@ export class ScoresComponent implements OnInit {
     'homeTeamScore'
   ];
   constructor(
-    private store: Store<fromGames.State>,
-    private userStore: Store<fromUser.State>,
-    public dialog: MatDialog,
-    private media: MediaObserver
-  ) {
-    this.title = 'Schedule!';
-  }
+      @Inject(Store) private store: Store<fromGames.State>,
+      private userStore: Store<fromUser.State>,
+      public dialog: MatDialog,
+      // private media: MediaObserver
+    ) {
+      this.title = 'Schedule!';
+    }
 
   ngOnInit() {
     if (this.canEdit === true) {

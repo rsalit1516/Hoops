@@ -20,7 +20,7 @@ import { WebContentType } from '@app/domain/webContentType';
 import { WebContent } from '../../domain/webContent';
 import { Observable, of } from 'rxjs';
 import { Constants } from '@app/shared/constants';
-import * as moment from 'moment';
+import { DateTime } from 'luxon';
 
 @Injectable({
   providedIn: 'root',
@@ -70,11 +70,11 @@ export class ContentService {
     this.store.select(fromContent.getContentList).subscribe((contents) => {
       console.log(contents);
       if (contents !== undefined) {
-        const today = moment();
+        const today = DateTime.now().toJSDate();
         // console.log(today);
         for (let i = 0; i < contents.length; i++) {
-          const expirationDate = moment(contents[i].expirationDate);
-          if (expirationDate >= today) {
+          const expirationDate = DateTime.fromJSDate(contents[i].expirationDate).toJSDate();
+          if (expirationDate >= DateTime.fromJSDate(today).toJSDate()) {
             console.log(contents[i]);
             filteredContent.push(contents[ i ]);
             console.log(filteredContent);
@@ -156,11 +156,7 @@ export class ContentService {
   }
 
   private createContent(content: Content): Observable<void | Content> {
-    // const httpOptions = {
-    //   headers: new HttpHeaders({
-    //     'Content-Type': 'application/json',
-    //   }),
-    // };
+ 
     console.log(content);
     return this.data.post(content, this.data.postContentUrl).pipe(
       // tap((data) => console.log('createContent: ' + JSON.stringify(data))),
@@ -225,4 +221,5 @@ export class ContentService {
     }
     return webContentType;
   }
+
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, input } from '@angular/core';
 import { WebContent } from '../../../domain/webContent';
 import { MatCardModule } from '@angular/material/card';
 
@@ -6,11 +6,10 @@ import { MatCardModule } from '@angular/material/card';
     selector: 'csbc-meeting',
     templateUrl: './meeting.component.html',
     styleUrls: ['./meeting.component.scss'],
-    standalone: true,
     imports: [MatCardModule]
 })
 export class MeetingComponent implements OnInit {
-@Input() info: WebContent | undefined;
+readonly info = input<WebContent>();
   constructor() { }
 
   ngOnInit(): void {

@@ -5,7 +5,6 @@ import { MatCardModule } from '@angular/material/card';
     selector: 'app-csbc-club-docs',
     templateUrl: './csbc-club-docs.component.html',
     styleUrls: ['./club-docs.component.scss'],
-    standalone: true,
     imports: [MatCardModule]
 })
 export class CsbcClubDocsComponent implements OnInit {

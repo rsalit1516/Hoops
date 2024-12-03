@@ -1,6 +1,5 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, input } from '@angular/core';
 import { Game } from '@domain/game';
-// import { DataSource } from "@angular/cdk/table";
 import { Store, select } from '@ngrx/store';
 import { MediaObserver } from '@angular/flex-layout';
 import { GameScoreDialogComponent } from '../game-score-dialog/game-score-dialog.component';
@@ -9,7 +8,7 @@ import * as fromGames from '../../state';
 import * as fromUser from '../../../user/state';
 import * as gameActions from '../../state/games.actions';
 import { MatDialog } from '@angular/material/dialog';
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
@@ -17,18 +16,17 @@ import { MatTableModule } from '@angular/material/table';
 @Component({
     selector: 'daily-schedule',
     templateUrl: './daily-schedule.component.html',
-  styleUrls: [ './daily-schedule.component.scss',
-    './../../../shared/scss/tables.scss' ],
-    standalone: true,
-    imports: [
+    styleUrls: ['./daily-schedule.component.scss',
+        './../../../shared/scss/tables.scss'],
+  imports: [
+      CommonModule,
         MatTableModule,
         MatButtonModule,
         MatIconModule,
-        DatePipe,
-    ],
+    ]
 })
 export class DailyScheduleComponent implements OnInit {
-  @Input() games!: Game[];
+  readonly games = input.required<Game[]>();
   @Input() canEdit!: boolean;
   displayedColumns = [
     'gameTime',
@@ -46,11 +44,11 @@ export class DailyScheduleComponent implements OnInit {
   constructor(
     private store: Store<fromGames.State>,
     public dialog: MatDialog,
-    private media: MediaObserver
+    // private media: MediaObserver
   ) {}
 
   ngOnInit() {
-    this.data = this.games;
+    this.data = this.games();
     // this.flexMediaWatcher = this.media.media$.subscribe((change) => {
       // if (change.mqAlias !== this.currentScreenWidth) {
       //   this.currentScreenWidth = change.mqAlias;

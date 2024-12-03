@@ -12,21 +12,20 @@ import * as adminActions from '../../state/admin.actions';
 import { Season } from '@app/domain/season';
 
 @Component({
-  selector: 'app-admin-seasons-toolbar',
-  standalone: true,
-  imports: [
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    MatButtonModule,
-    MatToolbarModule,
-    MatCheckboxModule,
-  ],
-  templateUrl: './admin-seasons-toolbar.component.html',
-  styleUrls: [
-    './../../../shared/scss/forms.scss',
-    './../../admin.component.scss',
-    './admin-seasons-toolbar.component.scss',
-  ],
+    selector: 'app-admin-seasons-toolbar',
+    imports: [
+        MatFormFieldModule,
+        ReactiveFormsModule,
+        MatButtonModule,
+        MatToolbarModule,
+        MatCheckboxModule,
+    ],
+    templateUrl: './admin-seasons-toolbar.component.html',
+    styleUrls: [
+        './../../../shared/scss/forms.scss',
+        './../../admin.component.scss',
+        './admin-seasons-toolbar.component.scss',
+    ]
 })
 export class AdminSeasonsToolbarComponent implements OnInit {
   checked = true;

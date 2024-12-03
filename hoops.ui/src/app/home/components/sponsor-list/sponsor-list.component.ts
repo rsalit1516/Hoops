@@ -10,7 +10,6 @@ import { NgbCarousel, NgbSlide } from '@ng-bootstrap/ng-bootstrap';
     selector: 'app-sponsor-list',
     templateUrl: './sponsor-list.component.html',
     styleUrls: ['./sponsor-list.component.scss', '../../home.component.scss'],
-    standalone: true,
     imports: [NgbCarousel, NgFor, NgbSlide]
 })
 export class SponsorListComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, inject, input, viewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { MediaObserver } from '@angular/flex-layout';
 import { Game } from '@app/domain/game';
@@ -13,20 +13,19 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 @Component({
-  selector: 'admin-games-list',
-  standalone: true,
-  imports: [ CommonModule, MatIconModule, MatTableModule, MatPaginatorModule,
-  MatIconModule],
-  templateUrl: './admin-games-list.component.html',
-  styleUrls: [
-    '../../../shared/scss/tables.scss',
-    './admin-games-list.component.scss',
-    '../../admin.component.scss',
-  ],
+    selector: 'admin-games-list',
+    imports: [CommonModule, MatIconModule, MatTableModule, MatPaginatorModule,
+        MatIconModule],
+    templateUrl: './admin-games-list.component.html',
+    styleUrls: [
+        '../../../shared/scss/tables.scss',
+        './admin-games-list.component.scss',
+        '../../admin.component.scss',
+    ]
 })
 export class AdminGamesListComponent implements OnInit {
-  @Input() showScores: boolean = false;
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  readonly showScores = input<boolean>(false);
+  readonly paginator = viewChild.required(MatPaginator);
 
   dialog = inject(MatDialog);
   dataSource!: MatTableDataSource<Game>;
@@ -81,11 +80,11 @@ export class AdminGamesListComponent implements OnInit {
     });
   }
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
+    this.dataSource.paginator = this.paginator();
     // this.dataSource.sort = this.sort;
   }
   setupTable() {
-    if (this.showScores) {
+    if (this.showScores()) {
       this.displayedColumns = [
         'gameDate',
         'gameTime',

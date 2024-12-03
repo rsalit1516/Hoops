@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, input } from '@angular/core';
 import { Game } from '../../../domain/game';
 import { NgIf, DatePipe } from '@angular/common';
 
@@ -6,11 +6,10 @@ import { NgIf, DatePipe } from '@angular/common';
     selector: 'csbc-game-card',
     templateUrl: './game-card.component.html',
     styleUrls: ['./game-card.component.scss'],
-    standalone: true,
     imports: [NgIf, DatePipe]
 })
 export class GameCardComponent implements OnInit {
-  @Input() game!: Game;
+  readonly game = input.required<Game>();
   constructor() { }
 
   ngOnInit() {

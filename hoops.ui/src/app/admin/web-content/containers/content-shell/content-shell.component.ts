@@ -13,19 +13,19 @@ import { AdminGamesRoutingModule } from '@app/admin/admin-games/admin-games-rout
 import { CONTENT_ROUTES } from '../../content-routing';
 
 @Component({
-  selector: 'csbc-content-shell',
-  standalone: true,
-  template: `<section class="container-fluid">
+    selector: 'csbc-content-shell',
+    template: `<section class="container-fluid">
     <h2>{{title}}</h2>
     <router-outlet></router-outlet>
   </section>`,
-  styleUrls: [ './content-shell.component.scss' ],
-  imports: [
-    CommonModule,
-    ContentListComponent,
-    ContentEditComponent,
-    RouterOutlet,
-    RouterLinkWithHref ],
+    styleUrls: ['./content-shell.component.scss'],
+    imports: [
+        CommonModule,
+        ContentListComponent,
+        ContentEditComponent,
+        RouterOutlet,
+        RouterLinkWithHref
+    ]
 })
 
 export class ContentShellComponent implements OnInit {

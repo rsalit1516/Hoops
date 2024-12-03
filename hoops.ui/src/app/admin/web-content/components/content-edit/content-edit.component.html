@@ -74,13 +74,13 @@
         >
           <mat-label>Date and Time</mat-label>
           <input
-            matInput>
+            matInput
             formControlName="dateAndTime"
           />
           <mat-hint>Enter the date and time for the event</mat-hint>
           <!-- <mat-hint>Enter the date and time for the event, if applicable</mat-hint> -->
         </mat-form-field>
-        <mat-divider></mat-divider>
+        <!-- <mat-divider></mat-divider> -->
 
         <!-- web content -->
         <mat-form-field>
@@ -133,6 +133,7 @@
           formControlName="webContentId"
         />
       </mat-card-content>
+      <div>{{contentForm.valid}}</div>
       <mat-card-actions>
         <div class="button-row">
           <button

@@ -22,13 +22,12 @@ import { MatCardModule } from '@angular/material/card';
 @Component({
     selector: 'app-admin-team-detail',
     templateUrl: './admin-team-detail.component.html',
-  styleUrls: [
-      './../../../shared/scss/forms.scss',
-    './../../../shared/scss/cards.scss',
-    './admin-team-detail.component.scss',
+    styleUrls: [
+        './../../../shared/scss/forms.scss',
+        './../../../shared/scss/cards.scss',
+        './admin-team-detail.component.scss',
         '../../admin.component.scss',
     ],
-    standalone: true,
     imports: [
         MatCardModule,
         FormsModule,
@@ -40,7 +39,7 @@ import { MatCardModule } from '@angular/material/card';
         MatOptionModule,
         MatButtonModule,
         AsyncPipe,
-    ],
+    ]
 })
 export class AdminTeamDetailComponent implements OnInit {
   editTeamForm = this.fb.group({

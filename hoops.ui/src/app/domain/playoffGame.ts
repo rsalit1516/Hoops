@@ -7,7 +7,7 @@ export class PlayoffGame {
   public divisionId: number | undefined;
   public gameId: number | undefined;
   public locationNumber: number | undefined;
-  public gameDate: Date | undefined;
+  public gameDate!: Date;
   public gameTime: Date | undefined;
   public homeTeam: string | undefined;
   public visitingTeam: string | undefined;
