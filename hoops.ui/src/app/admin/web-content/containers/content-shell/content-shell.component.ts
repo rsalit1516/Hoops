@@ -60,15 +60,18 @@ export class ContentShellComponent implements OnInit {
     ]);
     console.log(this.route.snapshot.data.form);
     console.log('called content shell' + this.content1());
-    this.store.dispatch(new contentActions.LoadAdminContent());
-    this.store
-      .select(fromContent.getIsActiveOnly)
-      .subscribe((isActiveContent) => {
-        console.log(isActiveContent);
-        isActiveContent
-          ? this.store.dispatch(new contentActions.SetActiveContent())
-          : this.store.dispatch(new contentActions.SetAllContent());
-      });
+    // this.store.dispatch(new contentActions.LoadAdminContent());
+    this.store.select(fromContent.getContentList).subscribe((content) => {
+      console.log(content);
+      this.store
+        .select(fromContent.getIsActiveOnly)
+        .subscribe((isActiveContent) => {
+          console.log(isActiveContent);
+          isActiveContent
+            ? this.store.dispatch(new contentActions.SetActiveContent())
+            : this.store.dispatch(new contentActions.SetAllContent());
+        })
+    });
     // this.contentService.saveContent(this.contentForm.value);
   }
 

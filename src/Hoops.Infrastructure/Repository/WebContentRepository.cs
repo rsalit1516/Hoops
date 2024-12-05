@@ -1,60 +1,70 @@
-using Microsoft.EntityFrameworkCore;
+using Hoops.Core.Interface;
 using Hoops.Core.Models;
 using Hoops.Core.ViewModels;
-using Hoops.Core.Interface;
 using Hoops.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hoops.Infrastructure.Repository
 {
     public class WebContentRepository : EFRepository<WebContent>, IWebContentRepository
     {
-        public WebContentRepository(hoopsContext context) : base(context) { }
+        public WebContentRepository(hoopsContext context)
+            : base(context) { }
 
         public async Task<IEnumerable<WebContentVm>> GetAllAsync(int companyId)
         {
             return await context
-                .WebContents
-.Join(context.WebContentTypes,
-          content => content.WebContentTypeId,
-          contentType => contentType.WebContentTypeId,
-          (content, contentType) => new { content, contentType })
-    .Where(result => result.content.CompanyId == companyId)
-    .Select(z => new WebContentVm
-    {
-        WebContentId = z.content.WebContentId,
-        ContentSequence = z.content.ContentSequence,
-        Title = z.content.Title,
-        SubTitle = z.content.SubTitle,
-        Body = z.content.Body,
-        DateAndTime = z.content.DateAndTime,
-        Location = z.content.Location,
-        WebContentTypeDescription = z.contentType.WebContentTypeDescription
-    })
-      .ToListAsync();
+                .WebContents.Join(
+                    context.WebContentTypes,
+                    content => content.WebContentTypeId,
+                    contentType => contentType.WebContentTypeId,
+                    (content, contentType) => new { content, contentType }
+                )
+                .Where(result => result.content.CompanyId == companyId)
+                .Select(z => new WebContentVm
+                {
+                    WebContentId = z.content.WebContentId,
+                    ContentSequence = z.content.ContentSequence,
+                    Title = z.content.Title,
+                    SubTitle = z.content.SubTitle,
+                    Body = z.content.Body,
+                    DateAndTime = z.content.DateAndTime,
+                    Location = z.content.Location,
+                    WebContentTypeDescription = z.contentType.WebContentTypeDescription,
+                    ExpirationDate = z.content.ExpirationDate.HasValue
+                        ? z.content.ExpirationDate.Value.Date
+                        : DateTime.Now,
+                })
+                .OrderByDescending(e => e.ExpirationDate)
+                .OrderBy(s => s.ContentSequence)
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<WebContentVm>> GetActiveWebContentAsync(int companyId)
         {
             return await context
-                .WebContents
-.Join(context.WebContentTypes,
-          content => content.WebContentTypeId,
-          contentType => contentType.WebContentTypeId,
-          (content, contentType) => new { content, contentType })
-    .Where(result => result.content.CompanyId == companyId)
-    .Where(result => result.content.ExpirationDate >= DateTime.Now)
-    .Select(z => new WebContentVm
-    {
-        WebContentId = z.content.WebContentId,
-        ContentSequence = z.content.ContentSequence,
-        Title = z.content.Title,
-        SubTitle = z.content.SubTitle,
-        Body = z.content.Body,
-        DateAndTime = z.content.DateAndTime,
-        Location = z.content.Location,
-        WebContentTypeDescription = z.contentType.WebContentTypeDescription,
-        ExpirationDate = z.content.ExpirationDate
-    })
+                .WebContents.Join(
+                    context.WebContentTypes,
+                    content => content.WebContentTypeId,
+                    contentType => contentType.WebContentTypeId,
+                    (content, contentType) => new { content, contentType }
+                )
+                .Where(result => result.content.CompanyId == companyId)
+                .Where(result => result.content.ExpirationDate >= DateTime.Now)
+                .Select(z => new WebContentVm
+                {
+                    WebContentId = z.content.WebContentId,
+                    ContentSequence = z.content.ContentSequence,
+                    Title = z.content.Title,
+                    SubTitle = z.content.SubTitle,
+                    Body = z.content.Body,
+                    DateAndTime = z.content.DateAndTime,
+                    Location = z.content.Location,
+                    WebContentTypeDescription = z.contentType.WebContentTypeDescription,
+                    ExpirationDate = z.content.ExpirationDate.HasValue
+                        ? z.content.ExpirationDate.Value.Date
+                        : DateTime.Now,
+                })
                 .OrderByDescending(e => e.ExpirationDate)
                 .OrderBy(s => s.ContentSequence)
                 .ToListAsync();
@@ -94,8 +104,7 @@ namespace Hoops.Infrastructure.Repository
 
             // var maxId = context.WebContent.Max(x => x.WebContentId);
             // entity.WebContentId = null;
-            newEntity.CompanyId =
-                entity.CompanyId == null ? 1 : entity.CompanyId;
+            newEntity.CompanyId = entity.CompanyId == null ? 1 : entity.CompanyId;
             if (dbEntityEntry.State != EntityState.Detached)
             {
                 dbEntityEntry.State = EntityState.Added;

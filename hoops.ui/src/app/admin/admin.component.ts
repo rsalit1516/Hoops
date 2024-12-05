@@ -45,8 +45,8 @@ export class AdminComponent  implements OnInit {
     });
   }
   ngOnInit() {
-    this.store.dispatch(new contentActions.LoadAdminContent());
-
+    // this.store.dispatch(new contentActions.LoadAdminContent());
+   //  console.log('Called content');
     // this.userService.isLoggedIn.subscribe(f => {
     //   console.log(f);
     //   this.isLoggedin = f;

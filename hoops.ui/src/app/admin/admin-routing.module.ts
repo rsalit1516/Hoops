@@ -14,6 +14,7 @@ import { AuthGuard } from '../auth/auth.guard';
 import { SeasonSetupComponent } from './containers/season-setup/season-setup.component';
 import { ContentShellComponent } from './web-content/containers/content-shell/content-shell.component';
 import { DivisionDetailComponent } from './components/admin-division-detail/divisionDetail.component';
+import { getWebContentDataResolver } from './get-web-content-data.resolver';
 
 
 export const ADMINROUTES: Routes = [
@@ -21,10 +22,10 @@ export const ADMINROUTES: Routes = [
     path: '',
     title: 'Admin Module',
     component: AdminShellComponent,
-    canActivate: [ AuthGuard ],
+    canActivate: [AuthGuard],
 
     children: [
-      { path: 'dashboard',  title: 'Admin Dashboard', component: AdminDashboardComponent },
+      { path: 'dashboard', title: 'Admin Dashboard', component: AdminDashboardComponent },
       {
         path: 'seasons', component: AdminSeasonShellComponent,
         title: 'Seasons Module',
@@ -34,7 +35,7 @@ export const ADMINROUTES: Routes = [
             loadComponent: () =>
               import('./components/season-add/season-add.component')
                 .then(
-                (mod) => mod.SeasonAddComponent),
+                  (mod) => mod.SeasonAddComponent),
           },
           {
             path: 'list',
@@ -42,21 +43,21 @@ export const ADMINROUTES: Routes = [
               import('./components/admin-season-list/admin-season-list.component').then(
                 (mod) => mod.AdminSeasonListComponent
               ),
-         },
-        {
-          path: '',
-          loadComponent: () =>
-            import('./components/admin-season-list/admin-season-list.component').then(
-              (mod) => mod.AdminSeasonListComponent
-            ),
-          pathMatch: 'full',
-        },
+          },
+          {
+            path: '',
+            loadComponent: () =>
+              import('./components/admin-season-list/admin-season-list.component').then(
+                (mod) => mod.AdminSeasonListComponent
+              ),
+            pathMatch: 'full',
+          },
 
           { path: '**', component: PageNotFoundComponent },
         ],
-       },
+      },
       { path: 'division', component: AdminDivisionShellComponent },
-      { path: 'division-detail', component: DivisionDetailComponent},
+      { path: 'division-detail', component: DivisionDetailComponent },
       { path: 'season-setup', component: SeasonSetupComponent },
       { path: 'teams', component: TeamListComponent },
       {
@@ -81,31 +82,32 @@ export const ADMINROUTES: Routes = [
       {
         path: 'content',
         component: ContentShellComponent,
-      children: [
-        {
-          path: 'edit',
-          // component: ContentEditComponent,
-          loadComponent: () =>
-            import('./web-content/components/content-edit/content-edit.component').then(
-              (mod) => mod.ContentEditComponent
-            ),
-        },
-        {
-          path: 'list',
-          // component: ContentListComponent,
-          loadComponent: () =>
-            import('./web-content/components/content-list/contentList.component').then(
-              (mod) => mod.ContentListComponent
-            ),
-       },
-      {
-        path: '',
-        redirectTo: '/admin/content/list',
-        pathMatch: 'full',
-      },
+        resolve: { data: getWebContentDataResolver },
+        children: [
+          {
+            path: 'edit',
+            // component: ContentEditComponent,
+            loadComponent: () =>
+              import('./web-content/components/content-edit/content-edit.component').then(
+                (mod) => mod.ContentEditComponent
+              ),
+          },
+          {
+            path: 'list',
+            // component: ContentListComponent,
+            loadComponent: () =>
+              import('./web-content/components/content-list/contentList.component').then(
+                (mod) => mod.ContentListComponent
+              ),
+          },
+          {
+            path: '',
+            redirectTo: '/admin/content/list',
+            pathMatch: 'full',
+          },
 
-        { path: '**', component: PageNotFoundComponent },
-      ],
+          { path: '**', component: PageNotFoundComponent },
+        ],
       },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: '**', component: PageNotFoundComponent },
@@ -117,4 +119,4 @@ export const ADMINROUTES: Routes = [
   imports: [RouterModule.forChild(ADMINROUTES)],
   exports: [RouterModule],
 })
-export class AdminRoutingModule {}
+export class AdminRoutingModule { }

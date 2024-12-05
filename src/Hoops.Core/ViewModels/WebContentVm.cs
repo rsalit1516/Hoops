@@ -15,7 +15,7 @@ namespace Hoops.Core.ViewModels
         public string Location { get; set; }
         public string DateAndTime { get; set; }
         public string WebContentTypeDescription { get; set; }
-        public DateTime? ExpirationDate { get; set; }
+        public DateTime ExpirationDate { get; set; } = DateTime.Now;
 
     }
 }

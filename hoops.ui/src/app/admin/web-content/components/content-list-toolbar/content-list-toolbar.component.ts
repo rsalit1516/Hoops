@@ -46,6 +46,7 @@ export class ContentListToolbarComponent implements OnInit {
   ngOnInit() {
     this.isActiveContent$.subscribe(isActiveContent => {
       console.log(isActiveContent);
+      this.store.dispatch(new contentActions.SetActiveContent());
     });
   }
 
@@ -58,6 +59,6 @@ export class ContentListToolbarComponent implements OnInit {
     // const isActive = this.filterForm.value.activeContent === true;
     this.isActive.set(checked);
     console.log(checked);
-    this.store.dispatch(new contentActions.SetIsActiveOnly(checked));
+    this.store.dispatch(new contentActions.SetActiveContent());
   }
 }

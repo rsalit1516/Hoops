@@ -98,7 +98,11 @@ export class AdminShellComponent implements OnInit {
       }
     });
 
-
+    this.store.select(fromAdmin.getContentList).subscribe((content) => {
+      console.log(content);
+      console.log('Setting active content');
+      this.store.dispatch(new contentActions.SetActiveContent());
+    });
 
     // this.store.select(fromAdmin.getSeasonDivisions).subscribe((divisions) => {
     //   this.store.dispatch(new adminActions.SetSelectedDivision(divisions[0]));

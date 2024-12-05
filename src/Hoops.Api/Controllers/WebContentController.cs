@@ -35,7 +35,7 @@ namespace Hoops.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<WebContent>> GetWebContent()
         {
-            return Ok(repository.GetAll().OrderByDescending(x => x.ExpirationDate));
+            return Ok(repository.GetAllAsync(1));
         }
 
         // GET: api/WebContent/5

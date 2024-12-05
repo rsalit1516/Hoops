@@ -13,6 +13,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { ContentListToolbarComponent } from '../content-list-toolbar/content-list-toolbar.component';
+import { getContent } from '../../../../home/state/index';
 
 @Component({
     selector: 'csbc-content-list',
@@ -30,7 +31,7 @@ export class ContentListComponent implements OnInit {
   public dialog!: MatDialog;
   displayedColumns = ['title', 'expirationDate', 'dateAndTime', 'location', 'actions'];
   dataSource!: MatTableDataSource<WebContent>;
-
+  data: WebContent[] = [];
   constructor(
     // private _contentService: ContentService,
     private router: Router,
@@ -40,10 +41,25 @@ export class ContentListComponent implements OnInit {
   ngOnInit() {
     this.pageTitle = 'Web Site Messages';
 
-    this.store.select(fromContent.getfilteredList).subscribe(data => {
-      console.log(data);
-      this.dataSource = new MatTableDataSource(data);
+    this.store.select(fromContent.getIsActiveOnly).subscribe(isActive => {
+      console.log(isActive);
+      if (isActive) {
+
+        this.store.select(fromContent.getfilteredList).subscribe(data => {
+          this.data = data;
+        });
+      }
+      else {
+        this.store.select(fromContent.getContentList).subscribe(data => {
+          this.data = data;
+        });
+      }
+
     });
+    // this.store.select(fromContent.getfilteredList).subscribe(data => {
+    //   console.log(data);
+    //   this.dataSource = new MatTableDataSource(data);
+    // });
   }
 
   onSelect(content: Content): void {

@@ -53,7 +53,10 @@ export class ContentService {
 
   getContents(): Observable<WebContent[]> {
     return this.http.get<WebContent[]>(this.data.getContentUrl).pipe(
-      // tap((data) => console.log('All: ' + JSON.stringify(data))),
+      tap((data) => {
+        // this.store.dispatch(new contentActions.SetAllContent());
+        // console.log('getContent: ' + JSON.stringify(data))
+      }),
       catchError(this.data.handleError('getContents', []))
     );
   }
@@ -68,14 +71,16 @@ export class ContentService {
     let filteredContent: WebContent[] = [];
 
     this.store.select(fromContent.getContentList).subscribe((contents) => {
-      console.log(contents);
       if (contents !== undefined) {
         const today = DateTime.now().toJSDate();
-        // console.log(today);
         for (let i = 0; i < contents.length; i++) {
-          const expirationDate = DateTime.fromJSDate(contents[i].expirationDate).toJSDate();
-          if (expirationDate >= DateTime.fromJSDate(today).toJSDate()) {
-            console.log(contents[i]);
+          //console.log(contents[i].expirationDate);
+          const exp = DateTime.fromISO(contents[i].expirationDate.toString());
+          //console.log(exp);
+          const ldateTime = DateTime.fromISO(contents[i].expirationDate.toString()).toJSDate();
+          //console.log(ldateTime);
+          if (ldateTime >= today) {
+            //console.log(contents[i]);
             filteredContent.push(contents[ i ]);
             console.log(filteredContent);
           }
@@ -83,7 +88,7 @@ export class ContentService {
       }
     });
     this.contentsS.set(filteredContent);
-    console.log(this.contentsS);
+    //console.log(this.contentsS);
     console.log(filteredContent);
     return of(filteredContent);
   }
@@ -102,18 +107,17 @@ export class ContentService {
     return of(filteredContent);
   }
 
-  getContent(webContentId: number) {
+  getContent (webContentId: number) {
     console.log(webContentId);
     if (webContentId === 0) {
       return of(this.initializeContent());
-      // return Observable.create((observer: any) => {
-      //     observer.next(this.initializeProduct());
-      //     observer.complete();
-      // });
     }
     return this.http.get(this.data.getContentUrl).pipe(
-      // map(this.extractData),
-      tap((data) => console.log('getContent: ' + JSON.stringify(data))),
+      tap((data) => {
+        this.store.dispatch(new contentActions.SetAllContent());
+        // this.store.dispatch(new contentActions.SetActiveContent());
+        console.log('getContent: ' + JSON.stringify(data))
+  }),
       catchError(this.data.handleError('getContent', []))
     );
   }
@@ -156,7 +160,7 @@ export class ContentService {
   }
 
   private createContent(content: Content): Observable<void | Content> {
- 
+
     console.log(content);
     return this.data.post(content, this.data.postContentUrl).pipe(
       // tap((data) => console.log('createContent: ' + JSON.stringify(data))),
