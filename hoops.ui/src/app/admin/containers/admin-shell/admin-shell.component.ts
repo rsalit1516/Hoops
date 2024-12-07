@@ -78,7 +78,7 @@ export class AdminShellComponent implements OnInit {
        });
     });
     this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
-      // console.log(season);
+      console.log(season);
       if (season.seasonId !== undefined) {
         if (season.seasonId !== 0) {
           this.store.dispatch(new adminActions.LoadDivisions());

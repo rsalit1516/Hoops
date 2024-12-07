@@ -82,7 +82,7 @@ export class ContentService {
           if (ldateTime >= today) {
             //console.log(contents[i]);
             filteredContent.push(contents[ i ]);
-            console.log(filteredContent);
+            // console.log(filteredContent);
           }
         }
       }

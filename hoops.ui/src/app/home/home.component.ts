@@ -77,7 +77,7 @@ export class HomeComponent implements OnInit {
     this.setImageClass();
     this.gameStore.dispatch(new gameActions.LoadCurrentSeason());
     this.gameStore.select(fromGames.getCurrentSeason).subscribe((season) => {
-      if (season?.seasonId !== 0) {
+      if ((season?.seasonId !== 0) && (season?.seasonId !== undefined)) {
         this.store.dispatch(new homeActions.LoadSponsors());
         this.gameStore.dispatch(new gameActions.LoadDivisions());
         this.store.dispatch(new gameActions.LoadTeams());
