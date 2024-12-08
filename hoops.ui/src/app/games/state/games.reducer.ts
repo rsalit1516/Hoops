@@ -118,7 +118,7 @@ export function reducer(state = initialState, action: GameActions): GameState {
         ...state,
         teams: action.payload,
       };
-    case GameActionTypes.LoadSuccess:
+    case GameActionTypes.LoadGamesSuccess:
       return {
         ...state,
         games: action.payload,

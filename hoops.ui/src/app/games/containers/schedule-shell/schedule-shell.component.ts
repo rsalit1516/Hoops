@@ -83,11 +83,12 @@ export class ScheduleShellComponent implements OnInit {
 
   ngOnInit() {
     // this.divisionId = 4183;
+    console.log('schedule shell');
     this.store.select(fromGames.getCurrentDivision).subscribe((division) => {
       this.store.select(fromGames.getFilteredGames).subscribe((games) => {
         this.games = games;
         this.dailySchedule = [];
-
+        console.log('schedule shell - in filtered games');
         this.gameService.groupByDate(games).subscribe((dailyGames) => {
           this.dailySchedule.push(dailyGames);
         });

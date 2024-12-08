@@ -45,28 +45,17 @@ export class GameEffects {
   // tslint:disable-next-line:member-ordering
 
   loadGames$: Observable<Action> = createEffect(() => this.actions$.pipe(
-    ofType(gameActions.GameActionTypes.Load),
-    concatMap((action) =>
-      of(action).pipe(
-        withLatestFrom(this.store.pipe(select(fromGames.getCurrentSeason))),
-        // tap((divisions) => console.log(divisions))
-      )
-    ),
-    tap(([action, t]) => {
-      if (t) {
-        this.seasonId = t.seasonId!;
-      } else {
-        this.seasonId = 0;
-      }
-    }),
-
+    ofType(gameActions.GameActionTypes.LoadGames),
     mergeMap((action) =>
-      this.http.get<Game[]>(this.gameUrl + '?seasonId=' + this.seasonId).pipe(
-        // tap(data => console.log('All games: ' + JSON.stringify(data))),
-        shareReplay(1),
-        map((games) => new gameActions.LoadSuccess(games)),
-        // tap(games => console.log(games)),
-        catchError((err) => of(new gameActions.LoadFail(err)))
+      this.gameService.getGames().pipe(
+        map(games => games.map(game => ({
+          ...game,
+          GameDateOnly: this.gameService.extractDate(game.gameDate.toDateString())
+
+        }))),
+        map((games) => new gameActions.LoadGamesSuccess(games)),    
+        tap(games => console.log(games)),
+        catchError((err) => of(new gameActions.LoadGamesFail(err)))
       )
     )
   ));

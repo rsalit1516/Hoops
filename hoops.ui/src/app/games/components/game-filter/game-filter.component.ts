@@ -58,44 +58,44 @@ export class GameFilterComponent implements OnInit {
 
   ngOnInit() {
     this.showAllTeams = true;
-    this.divisionComponent = this.criteriaForm.get('divisions') as FormControl;
-    this.teamComponent = this.criteriaForm.get('teams') as FormControl;
+    // this.divisionComponent = this.criteriaForm.get('divisions') as FormControl;
+    // this.teamComponent = this.criteriaForm.get('teams') as FormControl;
     this.setStateSubscriptions();
     this.setControlSubscriptions();
     this.store.select(fromGames.getCurrentDivision).subscribe((division) => {
       this.currentDivision = division as Division;
-      this.divisionComponent?.setValue(this.currentDivision);
-      this.changeDivision(division as Division);
+      // this.divisionComponent?.setValue(this.currentDivision);
+      this.onDivisionChange(division as Division);
     });
   }
 
   createForm() {
-    this.criteriaForm = this.fb.group({
-      divisions: new FormControl(this.currentDivision),
-      teams: this.teams(),
-      allTeams: true,
-      gameView: 'list',
-    });
+    // this.criteriaForm = this.fb.group({
+    //   divisions: new FormControl(this.currentDivision),
+    //   teams: this.teams(),
+    //   allTeams: true,
+    //   gameView: 'list',
+    // });
   }
   setControlSubscriptions() {
-    this.divisionComponent?.valueChanges.subscribe((division) => {
-      this.changeDivision(division);
-    });
-    this.teamComponent?.valueChanges.subscribe((val) => {
-      console.log(val);
-      if (val.teamName === Constants.ALLTEAMS) {
-        this.changeDivision(this.currentDivision);
-      } else {
-      this.store.dispatch(new gameActions.SetCurrentTeam(val));
-      }
-      // let check = this.criteriaForm.get('allTeamCheckbox') as FormControl;
-      // check.setValue(false);
-    });
+    // this.divisionComponent?.valueChanges.subscribe((division) => {
+    //   this.onDivisionChange(division);
+    // });
+    // this.teamComponent?.valueChanges.subscribe((val) => {
+    //   console.log(val);
+    //   if (val.teamName === Constants.ALLTEAMS) {
+    //     this.onDivisionChange(this.currentDivision);
+    //   } else {
+    //   this.store.dispatch(new gameActions.SetCurrentTeam(val));
+    //   }
+    //   // let check = this.criteriaForm.get('allTeamCheckbox') as FormControl;
+    //   // check.setValue(false);
+    // });
   }
 
   setStateSubscriptions() {}
 
-  changeDivision(val: Division) {
+  onDivisionChange(val: Division) {
     if (val !== undefined && val !== this.currentDivision) {
       this.currentDivision = val;
       this.store.dispatch(new gameActions.SetCurrentDivision(val));
@@ -105,7 +105,7 @@ export class GameFilterComponent implements OnInit {
     }
   }
 
-  changeTeam(val: Team) {
+  onTeamChange(val: Team) {
     if (val !== undefined && val !== this.currentTeam) {
       this.currentTeam = val;
       this.store.dispatch(new gameActions.SetCurrentTeam(val));

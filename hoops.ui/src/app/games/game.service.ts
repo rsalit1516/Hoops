@@ -10,6 +10,7 @@ import {
   toArray,
   mergeMap,
   groupBy,
+  switchMap,
 } from 'rxjs/operators';
 import { DataService } from '@app/services/data.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -131,15 +132,22 @@ export class GameService {
     return g;
   }
   getGames (): Observable<Game[]> {
-    const divId = fromGames.getCurrentDivisionId;
-    return this.http
-      .get<Game[]>(this.dataService.seasonGamesUrl + this.currentSeason$)
+    return this.store.select(fromGames.getCurrentSeason)
       .pipe(
-        map((response) => (this.games = response))
-        // tap(data => console.log('All: ' + JSON.stringify(data))),
-        // catchError(this.handleError)
+        switchMap((season) =>
+          this.http.get<Game[]>(this.gameUrl + '?seasonId=' + season!.seasonId)
+        )
       );
   }
+  //   const divId = fromGames.getCurrentDivisionId;
+  //   return this.http
+  //     .get<Game[]>(this.dataService.seasonGamesUrl + this.currentSeason$)
+  //     .pipe(
+  //       map((response) => (this.games = response))
+  //       // tap(data => console.log('All: ' + JSON.stringify(data))),
+  //       // catchError(this.handleError)
+  //     );
+  // }
   getSeasonPlayoffGames (): Observable<PlayoffGame[]> {
     const url = this.dataService.playoffGameUrl + '?seasonId=' + this.seasonId;
     // console.log(url);
@@ -232,9 +240,12 @@ export class GameService {
     const source = from(games);
     const gDate = source.pipe(
       map((s) => {
-        if (typeof s.gameDate === 'string') {
-          s.gameDate = DateTime.fromISO(s.gameDate).toJSDate();
-        }
+        const gameDate = DateTime.fromISO(s.gameDate.toISOString()).toJSDate();// if (typeof s.gameDate === 'string') {
+          // if (typeof s.gameDate === 'string') {
+            s.gameDate = gameDate;
+          // }
+        // }
+        console.log(s.gameDate);
         return s;
       })
     );
@@ -243,7 +254,6 @@ export class GameService {
       groupBy((game) => DateTime.fromJSDate(game.gameDate).toFormat('yyyy-MM-dd')),
       mergeMap((group) => group.pipe(toArray()))
     );
-
 
     return gamesByDate;
   }
@@ -366,5 +376,9 @@ export class GameService {
     //   tap(data => console.log(data)),
     //   catchError(this.dataService.handleError)
     // );
+  }
+
+  extractDate(date: string): string {
+    return DateTime.fromISO(date).toFormat('yyyy-MM-dd');
   }
 }
