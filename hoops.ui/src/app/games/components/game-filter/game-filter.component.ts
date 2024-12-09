@@ -5,8 +5,6 @@ import * as fromGames from '../../state';
 import * as gameActions from '../../state/games.actions';
 import { Division } from '@app/domain/division';
 import { Team } from '@app/domain/team';
-import { catchError } from 'rxjs/operators';
-import { EMPTY } from 'rxjs';
 import { GameService } from '@app/games/game.service';
 import { FormsModule } from '@angular/forms';
 import { MatOptionModule } from '@angular/material/core';
@@ -36,17 +34,6 @@ export class GameFilterComponent implements OnInit {
   currentTeam!: Team;
   showAllTeams!: boolean;
   readonly selectedTeam = output<Team>();
-  criteriaForm!: any;
-  divisions$ = this.divisionService.divisions$.pipe(
-    catchError((err) => {
-      return EMPTY;
-    })
-  );
-  // selected!: Division;
-  filteredTeams: Team[] | undefined;
-  // season: Season | undefined;
-  //  teamComponent: FormControl | null | undefined;
-  //  divisionComponent: FormControl | null | undefined;
 
   constructor () {}
 
