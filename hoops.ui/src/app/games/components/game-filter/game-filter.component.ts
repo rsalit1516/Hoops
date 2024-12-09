@@ -32,6 +32,7 @@ export class GameFilterComponent implements OnInit {
   currentDivision!: Division;
   readonly teams = input.required<Team[] | null>();
   divisionService = inject(GameService);
+  gameStore = inject(Store<fromGames.State>);
   currentTeam!: Team;
   showAllTeams!: boolean;
   readonly selectedTeam = output<Team>();
@@ -47,46 +48,32 @@ export class GameFilterComponent implements OnInit {
   //  teamComponent: FormControl | null | undefined;
   //  divisionComponent: FormControl | null | undefined;
 
-  constructor (
-    // private fb: FormBuilder,
-    // private divisionService: GameService,
-    private store: Store<fromGames.State>
-  ) {
-    // this.createForm();
-  }
+  constructor () {}
 
   ngOnInit () {
     this.showAllTeams = true;
-    // this.setStateSubscriptions();
-    // this.setControlSubscriptions();
-    this.store.select(fromGames.getCurrentDivision).subscribe((division) => {
-      this.currentDivision = division as Division;
+    this.gameStore.select(fromGames.getCurrentDivision).subscribe((division) => {
+      this.currentDivision = division!;
       console.log(division);
-      this.store.dispatch(new gameActions.LoadFilteredGames);
-      this.store.dispatch(new gameActions.LoadDivisionPlayoffGames);
-      this.store.dispatch(new gameActions.LoadStandings);
+      this.gameStore.dispatch(new gameActions.LoadFilteredGames);
+      this.gameStore.dispatch(new gameActions.LoadDivisionPlayoffGames);
+      this.gameStore.dispatch(new gameActions.LoadStandings);
     });
   }
 
   onDivisionChange (val: Division) {
     console.log(val);
-    if (val !== undefined && val !== this.currentDivision) {
+    if (val !== undefined) {
       this.currentDivision = val;
-      this.store.dispatch(new gameActions.SetCurrentDivision(val));
-
+      this.gameStore.dispatch(new gameActions.SetCurrentDivision(val));
     }
   }
 
   onTeamChange (val: Team) {
     if (val !== undefined && val !== this.currentTeam) {
       this.currentTeam = val;
-      this.store.dispatch(new gameActions.SetCurrentTeam(val));
+      this.gameStore.dispatch(new gameActions.SetCurrentTeam(val));
       // this.store.dispatch(new gameActions.LoadTeamGames);
     }
-  }
-  divisionSelected (division: Division): void { }
-
-  teamSelected (team: Team): void {
-    this.selectedTeam.emit(team);
   }
 }

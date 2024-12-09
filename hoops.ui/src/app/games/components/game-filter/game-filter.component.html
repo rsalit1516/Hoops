@@ -1,7 +1,7 @@
 <div class="filter-divisions" class="filter-wrapper">
   <mat-form-field>
     <mat-label>Divisions</mat-label>
-    <mat-select #divisionSelect (selectionChange)="onDivisionChange(divisionSelect.value)">
+    <mat-select [(value)]="currentDivision" #divisionSelect (selectionChange)="onDivisionChange(divisionSelect.value)">
       <mat-option
         *ngFor="let division of divisions()"
         [value]="division"

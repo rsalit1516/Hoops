@@ -66,24 +66,12 @@ export class GameService {
   //   map(([games, divisions]) => ({ games, divisions }))
   // );
   currentDivision$ = this.gameStore
-    .pipe(select(fromGames.getCurrentDivision))
-    .subscribe((division): number | undefined => {
-      return division !== undefined
-        ? // console.log(division);
-        (this.divisionId = division.divisionId)
-        : undefined;
-    });
-  selectedDivision$ = this.gameStore.pipe(
-    select(fromGames.getCurrentDivision),
-    map((division) => {
-      this.divisionId = division?.divisionId;
-      // this.getStandingsByDivision(divisionId);
-    })
-    // tap((data) => console.log("Division", JSON.stringify(data)))
-  );
-  // divisionGames$ = this.games$.pipe(
-  //   map((games) => games.filter((game) => game.divisionId === this.divisionId))
-  // );
+    .pipe(select(fromGames.getCurrentDivision));
+    // .subscribe((division): number | undefined => {
+    //   return division !== undefined
+    //     ? (this.divisionId = division.divisionId)
+    //     : undefined;
+    // });
 
   divisions: Division[] | undefined;
   user: User | undefined;
@@ -101,6 +89,7 @@ export class GameService {
         }
       },
     });
+    // this.currentDivision$ = this.gameStore.select(fromGames.getCurrentDivision)
 
     // this.getCurrentSeason();
     this.seasonGames$ = this.gameStore.pipe(select(fromGames.getGames));
@@ -153,11 +142,11 @@ export class GameService {
     let games: Game[] = [];
     let sortedDate: Game[] = [];
     let div = 0;
-    this.gameStore.select(fromGames.getCurrentDivision).subscribe((division) => {
-      console.log(division);
+    this.currentDivision$.subscribe((division) => {
+      // console.log(division);
       div = division?.divisionId ?? 0;
       this.seasonGames$.subscribe((seasonGames) => {
-        console.log(seasonGames);
+        // console.log(seasonGames);
         this.allGames = seasonGames;
         this.setCanEdit(div);
         if (seasonGames) {
@@ -166,7 +155,6 @@ export class GameService {
               let game = seasonGames[i];
               game.gameDateOnly = this.extractDate(game.gameDate.toString());
               games.push(game);
-              console.log(game);
             }
           }
           games.sort();
