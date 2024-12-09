@@ -32,6 +32,8 @@ export class DataService {
   seasonUrl = this.baseUrl + '/api/Season/';
   currentSeasonUrl = this.baseUrl + '/api/Season/GetCurrentSeason';
 
+  standingsUrl =
+    this.baseUrl + '/api/ScheduleGame/getStandings';
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',

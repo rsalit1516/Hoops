@@ -1,4 +1,4 @@
-import { Component, OnInit, input, output } from '@angular/core';
+import { Component, OnInit, inject, input, output } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import * as fromGames from '../../state';
@@ -8,31 +8,30 @@ import { Team } from '@app/domain/team';
 import { catchError } from 'rxjs/operators';
 import { EMPTY } from 'rxjs';
 import { GameService } from '@app/games/game.service';
-import { Season } from '@app/domain/season';
-import { Constants } from '@app/shared/constants';
-import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { MatOptionModule } from '@angular/material/core';
-import { NgFor } from '@angular/common';
+import { NgFor, CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
-    selector: 'csbc-game-filter',
-    templateUrl: './game-filter.component.html',
-    styleUrls: ['./game-filter.component.scss'],
-    imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        NgFor,
-        MatOptionModule,
-    ]
+  selector: 'csbc-game-filter',
+  templateUrl: './game-filter.component.html',
+  styleUrls: ['./game-filter.component.scss'],
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    NgFor,
+    MatOptionModule,
+  ]
 })
 export class GameFilterComponent implements OnInit {
   readonly divisions = input.required<Division[]>();
   currentDivision!: Division;
   readonly teams = input.required<Team[] | null>();
+  divisionService = inject(GameService);
   currentTeam!: Team;
   showAllTeams!: boolean;
   readonly selectedTeam = output<Team>();
@@ -42,79 +41,52 @@ export class GameFilterComponent implements OnInit {
       return EMPTY;
     })
   );
-  selected!: Division;
+  // selected!: Division;
   filteredTeams: Team[] | undefined;
-  season: Season | undefined;
-  teamComponent: FormControl | null | undefined;
-  divisionComponent: FormControl | null | undefined;
+  // season: Season | undefined;
+  //  teamComponent: FormControl | null | undefined;
+  //  divisionComponent: FormControl | null | undefined;
 
-  constructor(
-    private fb: FormBuilder,
-    private divisionService: GameService,
+  constructor (
+    // private fb: FormBuilder,
+    // private divisionService: GameService,
     private store: Store<fromGames.State>
   ) {
-    this.createForm();
+    // this.createForm();
   }
 
-  ngOnInit() {
+  ngOnInit () {
     this.showAllTeams = true;
-    // this.divisionComponent = this.criteriaForm.get('divisions') as FormControl;
-    // this.teamComponent = this.criteriaForm.get('teams') as FormControl;
-    this.setStateSubscriptions();
-    this.setControlSubscriptions();
+    // this.setStateSubscriptions();
+    // this.setControlSubscriptions();
     this.store.select(fromGames.getCurrentDivision).subscribe((division) => {
       this.currentDivision = division as Division;
-      // this.divisionComponent?.setValue(this.currentDivision);
-      this.onDivisionChange(division as Division);
+      console.log(division);
+      this.store.dispatch(new gameActions.LoadFilteredGames);
+      this.store.dispatch(new gameActions.LoadDivisionPlayoffGames);
+      this.store.dispatch(new gameActions.LoadStandings);
     });
   }
 
-  createForm() {
-    // this.criteriaForm = this.fb.group({
-    //   divisions: new FormControl(this.currentDivision),
-    //   teams: this.teams(),
-    //   allTeams: true,
-    //   gameView: 'list',
-    // });
-  }
-  setControlSubscriptions() {
-    // this.divisionComponent?.valueChanges.subscribe((division) => {
-    //   this.onDivisionChange(division);
-    // });
-    // this.teamComponent?.valueChanges.subscribe((val) => {
-    //   console.log(val);
-    //   if (val.teamName === Constants.ALLTEAMS) {
-    //     this.onDivisionChange(this.currentDivision);
-    //   } else {
-    //   this.store.dispatch(new gameActions.SetCurrentTeam(val));
-    //   }
-    //   // let check = this.criteriaForm.get('allTeamCheckbox') as FormControl;
-    //   // check.setValue(false);
-    // });
-  }
-
-  setStateSubscriptions() {}
-
-  onDivisionChange(val: Division) {
+  onDivisionChange (val: Division) {
+    console.log(val);
     if (val !== undefined && val !== this.currentDivision) {
       this.currentDivision = val;
       this.store.dispatch(new gameActions.SetCurrentDivision(val));
-      this.store.dispatch(new gameActions.LoadDivisionGames);
-      this.store.dispatch(new gameActions.LoadDivisionPlayoffGames);
-      this.store.dispatch(new gameActions.LoadStandings);
+
     }
   }
 
-  onTeamChange(val: Team) {
+  onTeamChange (val: Team) {
     if (val !== undefined && val !== this.currentTeam) {
       this.currentTeam = val;
       this.store.dispatch(new gameActions.SetCurrentTeam(val));
       // this.store.dispatch(new gameActions.LoadTeamGames);
     }
   }
-  divisionSelected(division: Division): void {}
+  divisionSelected (division: Division): void { }
 
-  teamSelected(team: Team): void {
+  teamSelected (team: Team): void {
     this.selectedTeam.emit(team);
   }
 }

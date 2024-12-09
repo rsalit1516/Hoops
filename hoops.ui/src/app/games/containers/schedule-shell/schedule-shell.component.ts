@@ -63,7 +63,7 @@ export class ScheduleShellComponent implements OnInit {
   division$: Observable<Division> | undefined;
   division: Division | undefined;
   user: User | undefined;
-  games$ = this.gameService.games$.pipe(
+  games$ = this.gameService.seasonGames$.pipe(
     catchError((err) => {
       this.errorMessage$ = err;
       return EMPTY;
@@ -89,9 +89,10 @@ export class ScheduleShellComponent implements OnInit {
         this.games = games;
         this.dailySchedule = [];
         console.log('schedule shell - in filtered games');
-        this.gameService.groupByDate(games).subscribe((dailyGames) => {
-          this.dailySchedule.push(dailyGames);
-        });
+        // this.gameService.groupByDate(games).subscribe((dailyGames) => {
+        //   this.dailySchedule.push(dailyGames);
+        // });
+        this.dailySchedule = this.gameService.groupByDate(games);
       });
       this.store.dispatch(new gameActions.LoadDivisionPlayoffGames());
       this.store

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable, of, combineLatest, from } from 'rxjs';
 import { Division } from '@app/domain/division';
 import {
@@ -30,8 +30,13 @@ import { getCurrentSeason } from './state/index';
   providedIn: 'root',
 })
 export class GameService {
+  dataService = inject(DataService);
+  gameStore = inject(Store<fromGames.State>);
+  http = inject(HttpClient);
+  userStore = inject(Store<fromUser.State>);
+
   seasonId: number | undefined; // = 2192; // TO DO make this is passed in!
-  currentSeason$ = this.store.select(fromGames.getCurrentSeason).subscribe({
+  currentSeason$ = this.gameStore.select(fromGames.getCurrentSeason).subscribe({
     next: (season) => {
       // console.log(season);
       if (season !== undefined && season !== null) {
@@ -41,17 +46,11 @@ export class GameService {
   });
   handleError: ((err: any, caught: Observable<any[]>) => never) | undefined;
 
-  private gameUrl =
-    this.dataService.webUrl + '/api/Schedulegame/getSeasonGames';
-  //    this.seasonId;
-  private standingsUrl =
-    this.dataService.webUrl + '/api/ScheduleGame/getStandings';
+//  //    this.seasonId;
+//   private standingsUrl =
+//     this.dataService.webUrl + '/api/ScheduleGame/getStandings';
   // private divisionUrl = this.dataService.webUrl + '/api/divisions';
-  private divisionUrl =
-    this.dataService.webUrl + '/api/division/GetSeasonDivisions/' + '4111';
-  // this.seasonId;
-  private divisionStartUrl =
-    this.dataService.webUrl + '/api/division/GetSeasonDivisions';
+
   games: Game[] | undefined;
   divisionId: number | undefined;
   teamId: number | undefined;
@@ -59,20 +58,14 @@ export class GameService {
   allPlayoffGames: PlayoffGame[] | undefined;
   standing: any[] | undefined;
   // divisions$: Observable<Division>;
-  games$ = this.http
-    .get<Game[]>(this.dataService.seasonGamesUrl + '?seasonId=' + '2203')
-    .pipe(
-      // tap((data) => console.log("All games: " + JSON.stringify(data))),
-      shareReplay(1)
-      // catchError()
-    );
+  seasonGames$: Observable<Game[]>;
 
-  divisions$ = this.store.select(fromGames.getDivisions);
+  divisions$ = this.gameStore.select(fromGames.getDivisions);
 
-  vm$ = combineLatest([this.games$, this.divisions$]).pipe(
-    map(([games, divisions]) => ({ games, divisions }))
-  );
-  currentDivision$ = this.store
+  // vm$ = combineLatest([this.games$, this.divisions$]).pipe(
+  //   map(([games, divisions]) => ({ games, divisions }))
+  // );
+  currentDivision$ = this.gameStore
     .pipe(select(fromGames.getCurrentDivision))
     .subscribe((division): number | undefined => {
       return division !== undefined
@@ -80,11 +73,7 @@ export class GameService {
         (this.divisionId = division.divisionId)
         : undefined;
     });
-  allGames$ = this.store.pipe(
-    select(fromGames.getGames)
-    // tap((data) => console.log(data))
-  );
-  selectedDivision$ = this.store.pipe(
+  selectedDivision$ = this.gameStore.pipe(
     select(fromGames.getCurrentDivision),
     map((division) => {
       this.divisionId = division?.divisionId;
@@ -92,14 +81,10 @@ export class GameService {
     })
     // tap((data) => console.log("Division", JSON.stringify(data)))
   );
-  divisionGames$ = this.games$.pipe(
-    map((games) => games.filter((game) => game.divisionId === this.divisionId))
-  );
-  gameDivisions$ = this.http.get<Division[]>(this.divisionUrl).pipe(
-    // tap((data) => console.log("Divisions", JSON.stringify(data))),
-    shareReplay(1)
-    // catchError(this.handleError)
-  );
+  // divisionGames$ = this.games$.pipe(
+  //   map((games) => games.filter((game) => game.divisionId === this.divisionId))
+  // );
+
   divisions: Division[] | undefined;
   user: User | undefined;
   seasonPlayoffGames: PlayoffGame[] | null | undefined;
@@ -107,13 +92,18 @@ export class GameService {
   //   map(games => this.getDivisionGames(games, this.divisionId))
   // );
 
-  constructor (
-    private dataService: DataService,
-    private http: HttpClient,
-    private store: Store<fromGames.State>,
-    private userStore: Store<fromUser.State>
-  ) {
-    this.getCurrentSeason();
+  constructor () {
+    this.gameStore.select(fromGames.getCurrentSeason).subscribe({
+      next: (season) => {
+        // console.log(season);
+        if (season !== undefined && season !== null) {
+          this.seasonId = season.seasonId;
+        }
+      },
+    });
+
+    // this.getCurrentSeason();
+    this.seasonGames$ = this.gameStore.pipe(select(fromGames.getGames));
   }
 
   private getDivisionGames (games: Game[], divisionId: number) {
@@ -132,12 +122,7 @@ export class GameService {
     return g;
   }
   getGames (): Observable<Game[]> {
-    return this.store.select(fromGames.getCurrentSeason)
-      .pipe(
-        switchMap((season) =>
-          this.http.get<Game[]>(this.gameUrl + '?seasonId=' + season!.seasonId)
-        )
-      );
+    return this.http.get<Game[]>(this.dataService.seasonGamesUrl + '?seasonId=' + this.seasonId);
   }
   //   const divId = fromGames.getCurrentDivisionId;
   //   return this.http
@@ -164,27 +149,35 @@ export class GameService {
   //   );
   // }
 
-  filterGamesByDivision (div: number): Observable<Game[]> {
+  filterGamesByDivision (): Observable<Game[]> {
     let games: Game[] = [];
     let sortedDate: Game[] = [];
-    // console.log(div);
-    this.store.pipe(select(fromGames.getGames)).subscribe((allGames) => {
-      this.allGames = allGames;
-      this.setCanEdit(div);
-      if (allGames) {
-        for (let i = 0; i < this.allGames.length; i++) {
-          if (this.allGames[i].divisionId === div) {
-            let game = allGames[i];
-            games.push(game);
+    let div = 0;
+    this.gameStore.select(fromGames.getCurrentDivision).subscribe((division) => {
+      console.log(division);
+      div = division?.divisionId ?? 0;
+      this.seasonGames$.subscribe((seasonGames) => {
+        console.log(seasonGames);
+        this.allGames = seasonGames;
+        this.setCanEdit(div);
+        if (seasonGames) {
+          for (let i = 0; i < this.allGames.length; i++) {
+            if (this.allGames[i].divisionId === div) {
+              let game = seasonGames[i];
+              game.gameDateOnly = this.extractDate(game.gameDate.toString());
+              games.push(game);
+              console.log(game);
+            }
           }
+          games.sort();
+          sortedDate = games.sort((a, b) => {
+            return this.compare(a.gameDate!, b.gameDate!, true);
+          });
+          console.log(sortedDate);
+          return of(sortedDate);
         }
-        games.sort();
-        sortedDate = games.sort((a, b) => {
-          return this.compare(a.gameDate!, b.gameDate!, true);
-        });
         return of(sortedDate);
-      }
-      return of(sortedDate);
+      });
     });
     return of(sortedDate);
   }
@@ -192,7 +185,7 @@ export class GameService {
   divisionPlayoffGames (div: number): Observable<PlayoffGame[]> {
     let games: PlayoffGame[] = [];
     let sortedDate: PlayoffGame[] = [];
-    this.store
+    this.gameStore
       .pipe(select(fromGames.getPlayoffGames))
       .subscribe((allPlayoffGames) => {
         this.allPlayoffGames = allPlayoffGames;
@@ -215,7 +208,7 @@ export class GameService {
 
   public filterGamesByTeam (currentTeam: Team | undefined): Observable<Game[]> {
     let teamId = currentTeam?.teamId;
-    this.store.pipe(select(fromGames.getGames)).subscribe((g) => {
+    this.gameStore.pipe(select(fromGames.getGames)).subscribe((g) => {
       this.allGames = g;
     });
     let games: Game[] = [];
@@ -236,26 +229,34 @@ export class GameService {
     return of(games);
   }
 
-  groupByDate (games: Game[]) {
-    const source = from(games);
-    const gDate = source.pipe(
-      map((s) => {
-        const gameDate = DateTime.fromISO(s.gameDate.toISOString()).toJSDate();// if (typeof s.gameDate === 'string') {
-          // if (typeof s.gameDate === 'string') {
-            s.gameDate = gameDate;
-          // }
-        // }
-        console.log(s.gameDate);
-        return s;
-      })
-    );
+  groupByDate (games: Game[]): Game[][] {
+    // const source = from(games);
+    // const gDate = source.pipe(
+    //   map((s) => {
+    //     const gameDate = DateTime.fromISO(s.gameDate.toISOString()).toJSDate();// if (typeof s.gameDate === 'string') {
+    //     // if (typeof s.gameDate === 'string') {
+    //     s.gameDate = gameDateOnly;
+    //     // }
+    //     // }
+    //     console.log(s.gameDate);
+    //     return s;
+    //   })
+    // );
 
-    const gamesByDate = source.pipe(
-      groupBy((game) => DateTime.fromJSDate(game.gameDate).toFormat('yyyy-MM-dd')),
-      mergeMap((group) => group.pipe(toArray()))
-    );
+    // const gamesByDate = source.pipe(
+    //   groupBy((game) => DateTime.fromJSDate(game.gameDate).toFormat('yyyy-MM-dd')),
+    //   mergeMap((group) => group.pipe(toArray()))
+    // );
 
-    return gamesByDate;
+    // return gamesByDate;
+    const groupedGames: { [key: string]: Game[] } = {};
+    games.forEach(game => {
+      const dateKey = game.gameDateOnly!.toISOString().split('T')[0]; // Use the date part as the key
+      if (!groupedGames[dateKey]) {
+        groupedGames[dateKey] = [];
+      } groupedGames[dateKey].push(game);
+    });
+      return Object.values(groupedGames); // Convert the object to an array of arrays
   }
   groupPlayoffsByDate (games: PlayoffGame[]) {
     const source = from(games);
@@ -283,7 +284,7 @@ export class GameService {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
   getCurrentSeason () {
-    return this.store.select(fromGames.getCurrentSeason).subscribe((season) => {
+    return this.gameStore.select(fromGames.getCurrentSeason).subscribe((season) => {
       if (season !== null) {
         this.seasonId = season.seasonId;
       }
@@ -292,7 +293,7 @@ export class GameService {
   getDivisions (seasonId: number) {
     //this.seasonId = season.seasonID;
     return this.http
-      .get<Division[]>(this.divisionStartUrl + '/' + seasonId)
+      .get<Division[]>(this.dataService.seasonDivisionsUrl + '/' + seasonId)
       .pipe(
         map((response) => (this.divisions = response)),
         shareReplay(1)
@@ -313,7 +314,7 @@ export class GameService {
   standingsByDivision$ = combineLatest([this.currentDivision$]).pipe();
   getStandingsByDivision (divisionId: number) {
     return this.http
-      .get<any[]>(this.standingsUrl + '?divisionId=' + divisionId)
+      .get<any[]>(this.dataService.standingsUrl + '?divisionId=' + divisionId)
       .pipe(
         map((response) => (this.standing = response))
         // tap(data => console.log('All: ' + JSON.stringify(data))),
@@ -340,9 +341,9 @@ export class GameService {
   }
 
   setCanEdit (division: number) {
-    this.store.pipe(select(fromUser.getCurrentUser)).subscribe((user) => {
+    this.gameStore.pipe(select(fromUser.getCurrentUser)).subscribe((user) => {
       let canEdit = this.getCanEdit(user, division);
-      this.store.dispatch(new gameActions.SetCanEdit(canEdit));
+      this.gameStore.dispatch(new gameActions.SetCanEdit(canEdit));
     });
   }
 
@@ -378,7 +379,7 @@ export class GameService {
     // );
   }
 
-  extractDate(date: string): string {
-    return DateTime.fromISO(date).toFormat('yyyy-MM-dd');
+  extractDate (date: string): Date {
+    return DateTime.fromISO(date).toJSDate();
   }
 }
