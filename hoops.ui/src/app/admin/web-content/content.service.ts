@@ -52,13 +52,7 @@ export class ContentService {
   ) {}
 
   getContents(): Observable<WebContent[]> {
-    return this.http.get<WebContent[]>(this.data.getContentUrl).pipe(
-      tap((data) => {
-        // this.store.dispatch(new contentActions.SetAllContent());
-        // console.log('getContent: ' + JSON.stringify(data))
-      }),
-      catchError(this.data.handleError('getContents', []))
-    );
+    return this.http.get<WebContent[]>(this.data.getContentUrl);
   }
 
   contentsS: WritableSignal<WebContent[]> = signal([]);
@@ -114,7 +108,7 @@ export class ContentService {
     }
     return this.http.get(this.data.getContentUrl).pipe(
       tap((data) => {
-        this.store.dispatch(new contentActions.SetAllContent());
+       // this.store.dispatch(new contentActions.SetAllContent());
         // this.store.dispatch(new contentActions.SetActiveContent());
         console.log('getContent: ' + JSON.stringify(data))
   }),

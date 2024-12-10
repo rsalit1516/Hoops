@@ -48,11 +48,6 @@ export class GameEffects {
     ofType(gameActions.GameActionTypes.LoadGames),
     mergeMap((action) =>
       this.gameService.getGames().pipe(
-        // map(games => games.map(game => ({
-        //   ...game,
-        //   // GameDateOnly: this.gameService.extractDate(game.gameDate.toDateString())
-
-        // }))),
         map((games) => new gameActions.LoadGamesSuccess(games)),
         tap(games => console.log(games)),
         catchError((err) => of(new gameActions.LoadGamesFail(err)))
