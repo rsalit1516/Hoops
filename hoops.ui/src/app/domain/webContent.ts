@@ -24,6 +24,7 @@ export class WebContent {
     public webContentTypeDescription: string | undefined;
     public expirationDate: Date = DateTime.now().toJSDate();
     public webContentTypeId!: number | null;
+
     constructor() {
     }
 }

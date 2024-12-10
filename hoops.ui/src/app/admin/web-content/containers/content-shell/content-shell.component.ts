@@ -35,32 +35,15 @@ export class ContentShellComponent implements OnInit {
   title = 'Web Site Notifications';
   content1 = signal(10);
   constructor(
-    // private fb: UntypedFormBuilder,
-    // private _contentService: ContentService,
     private router: Router,
     private store: Store<fromContent.State>,
     private route: ActivatedRoute) {
-    // this.contentForm = this.fb.group({
-    //   title: [
-    //     'Test',
-    //     [Validators.required, Validators.minLength(3), Validators.maxLength(50)]
-    //   ],
-    //   subTitle: '',
-    //   body: '',
-    //   location: '',
-    //   dateAndTime: '',
-    //   webContentTypeId: ''
-    // });
-    // router.navigate(['/list']);
   }
 
   ngOnInit(): void {
     const environmentProviders = makeEnvironmentProviders([
       { provide: CONTENT_ROUTES, useValue: CONTENT_ROUTES  },
     ]);
-    console.log(this.route.snapshot.data.form);
-    console.log('called content shell' + this.content1());
-    // this.store.dispatch(new contentActions.LoadAdminContent());
     this.store.select(fromContent.getContentList).subscribe((content) => {
       console.log(content);
       this.store

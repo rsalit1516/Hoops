@@ -6,7 +6,6 @@ import { Content } from '../../../../domain/content';
 
 import * as fromContent from '../../../state';
 import * as contentActions from '../../../state/admin.actions';
-import { UntypedFormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -59,6 +58,6 @@ export class ContentListToolbarComponent implements OnInit {
     // const isActive = this.filterForm.value.activeContent === true;
     this.isActive.set(checked);
     console.log(checked);
-    this.store.dispatch(new contentActions.SetActiveContent());
+    this.store.dispatch(new contentActions.SetIsActiveOnly(checked));
   }
 }
