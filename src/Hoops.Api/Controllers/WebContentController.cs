@@ -5,6 +5,7 @@ using Hoops.Core.Models;
 using Microsoft.Extensions.Logging;
 using Hoops.Core.Interface;
 using System.Linq;
+using Hoops.Core.ViewModels;
 
 namespace Hoops.Controllers
 {
@@ -33,9 +34,9 @@ namespace Hoops.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult<IEnumerable<WebContent>> GetWebContent()
+        public async Task<IActionResult> GetWebContent()
         {
-            return Ok(repository.GetAllAsync(1));
+            return Ok(await repository.GetAllAsync(1));
         }
 
         // GET: api/WebContent/5
