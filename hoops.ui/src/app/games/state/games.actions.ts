@@ -24,9 +24,9 @@ export enum GameActionTypes {
   SetTeams = '[Games] Set Teams',
   SetAllTeams = '[Games] Set AllTeams',
   InitializeCurrentGame = '[Game] Initialize Current Game',
-  Load = '[Game] All Games Load',
-  LoadSuccess = '[Game] Load All Games Success',
-  LoadFail = '[Game] Load All Games Fail',
+  LoadGames = '[Game] All Games Load',
+  LoadGamesSuccess = '[Game] Load All Games Success',
+  LoadGamesFail = '[Game] Load All Games Fail',
   LoadFilteredGames = '[Game] Load Filtered Games',
   LoadFilteredGamesSuccess = '[Game] Load Filtered Game Success',
   LoadFilteredGamesFail = '[Game] Load Filtered Games Fail',
@@ -124,17 +124,17 @@ export class SetAllTeams implements Action {
   constructor(public payload: boolean) {}
 }
 
-export class Load implements Action {
-  readonly type = GameActionTypes.Load;
+export class LoadGames implements Action {
+  readonly type = GameActionTypes.LoadGames;
 }
 
-export class LoadSuccess implements Action {
-  readonly type = GameActionTypes.LoadSuccess;
+export class LoadGamesSuccess implements Action {
+  readonly type = GameActionTypes.LoadGamesSuccess;
   constructor(public payload: Game[]) {}
 }
 
-export class LoadFail implements Action {
-  readonly type = GameActionTypes.LoadFail;
+export class LoadGamesFail implements Action {
+  readonly type = GameActionTypes.LoadGamesFail;
 
   constructor(public payload: string) {}
 }
@@ -275,9 +275,9 @@ export type GameActions =
   | SetDivisions
   | SetTeams
   | SetAllTeams
-  | Load
-  | LoadSuccess
-  | LoadFail
+  | LoadGames
+  | LoadGamesSuccess
+  | LoadGamesFail
   | LoadFilteredGames
   | LoadFilteredGamesSuccess
   | LoadFilteredGamesFail

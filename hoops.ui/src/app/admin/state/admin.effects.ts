@@ -265,7 +265,7 @@ export class AdminEffects {
       mergeMap(action =>
         this.contentService.getContents().pipe(
           map(content => new adminActions.LoadAdminContentSuccess(content)),
-          // tap(content => console.log(content)),
+          tap(content => console.log(content)),
           catchError(err => of(new adminActions.LoadAdminContentFail(err)))
         )
       )
@@ -288,7 +288,7 @@ export class AdminEffects {
     return createEffect(() => this.actions$.pipe(
       ofType(adminActions.AdminActionTypes.SetAllContent),
       switchMap(action =>
-        this.contentService.getAllContents().pipe(
+        this.contentService.getContents().pipe(
           map(content => new adminActions.SetAllContentSuccess(content)),
           tap(response => console.log(response)),
           catchError(err => of(new adminActions.SetAllContentFail(err)))

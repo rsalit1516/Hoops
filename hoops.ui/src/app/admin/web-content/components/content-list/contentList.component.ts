@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, output } from '@angular/core';
+import { Component, OnInit, output, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -13,43 +13,69 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { ContentListToolbarComponent } from '../content-list-toolbar/content-list-toolbar.component';
+import { DateTime } from 'luxon';
 
 @Component({
-    selector: 'csbc-content-list',
-    templateUrl: './contentList.component.html',
-    styleUrls: ['./contentList.component.scss', '../../../admin.component.scss', '../../../../shared/scss/tables.scss'],
-  imports: [CommonModule, MatDialogModule,
-    MatTableModule, MatIconModule,
-        ContentListToolbarComponent]
+  selector: 'csbc-content-list',
+  templateUrl: './contentList.component.html',
+  styleUrls: [
+    './contentList.component.scss',
+    '../../../admin.component.scss',
+    '../../../../shared/scss/tables.scss',
+  ],
+  imports: [
+    CommonModule,
+    MatDialogModule,
+    MatTableModule,
+    MatIconModule,
+    ContentListToolbarComponent,
+  ],
 })
 export class ContentListComponent implements OnInit {
+  router = inject(Router);
+  store = inject(Store<fromContent.State>);
   readonly selectedContent = output<Content>();
   contents$!: Observable<WebContent[]>;
-  errorMessage: string|undefined;
-  pageTitle: string|undefined;
+  errorMessage: string | undefined;
+  pageTitle: string | undefined;
   public dialog!: MatDialog;
-  displayedColumns = ['title', 'expirationDate', 'dateAndTime', 'location', 'actions'];
-  dataSource!: MatTableDataSource<WebContent>;
+  displayedColumns = [
+    'title',
+    'expirationDate',
+    'dateAndTime',
+    'location',
+    'actions',
+  ];
+  dataSource = new MatTableDataSource<WebContent>([]);
+  data: WebContent[] = [];
+  filterValue = '';
 
-  constructor(
-    // private _contentService: ContentService,
-    private router: Router,
-    private store: Store<fromContent.State>
-  ) {}
+  constructor() {}
 
   ngOnInit() {
     this.pageTitle = 'Web Site Messages';
-
-    this.store.select(fromContent.getfilteredList).subscribe(data => {
-      console.log(data);
-      this.dataSource = new MatTableDataSource(data);
+    this.refreshData();
+    this.dataSource = new MatTableDataSource<WebContent>(this.data);
+    this.dataSource.filterPredicate = (data: WebContent, filter: string) => {
+      const today = DateTime.now().startOf('day').toJSDate();
+      const expirationDateString = data.expirationDate.toString();
+      const expirationDate = DateTime.fromISO(expirationDateString).toJSDate();
+      const result = expirationDate >= today;
+      // console.log(`Filtering ${data.expirationDate}: ${result}`);
+      return result;
+    };
+    this.store.select(fromContent.getIsActiveOnly).subscribe((isActive) => {
+      isActive ? this.applyFilter() : this.clearFilter();
     });
   }
-
-  onSelect(content: Content): void {
-    console.log(content);
+  refreshData() {
+    this.store.select(fromContent.getContentList).subscribe((data) => {
+      this.data = data;
+      this.dataSource._updateChangeSubscription();
+      this.dataSource.disconnect()
+      this.dataSource.connect();
+    });
   }
-
   editContent(content: Content) {
     this.store.dispatch(new contentActions.SetSelectedContent(content));
     this.router.navigate(['./admin/content/edit']);
@@ -59,10 +85,17 @@ export class ContentListComponent implements OnInit {
     content.webContentId = undefined;
     this.store.dispatch(new contentActions.SetSelectedContent(content));
 
-    this.router.navigate([ './admin/content/edit' ]);
+    this.router.navigate(['./admin/content/edit']);
   }
 
   addContent(): void {
     this.router.navigate(['./admin/content/edit']);
+  }
+  applyFilter(): void {
+    this.dataSource.filter = 'apply';
+  }
+
+  clearFilter(): void {
+    this.dataSource.filter = '';
   }
 }

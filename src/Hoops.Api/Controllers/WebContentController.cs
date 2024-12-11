@@ -5,6 +5,7 @@ using Hoops.Core.Models;
 using Microsoft.Extensions.Logging;
 using Hoops.Core.Interface;
 using System.Linq;
+using Hoops.Core.ViewModels;
 
 namespace Hoops.Controllers
 {
@@ -33,9 +34,9 @@ namespace Hoops.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult<IEnumerable<WebContent>> GetWebContent()
+        public async Task<IActionResult> GetWebContent()
         {
-            return Ok(repository.GetAll().OrderByDescending(x => x.ExpirationDate));
+            return Ok(await repository.GetAllAsync(1));
         }
 
         // GET: api/WebContent/5
@@ -135,14 +136,14 @@ namespace Hoops.Controllers
 
         // DELETE: api/WebContent/5
         [HttpDelete("{id}")]
-        public ActionResult<WebContent> DeleteWebContent(int id)
+        public async Task<ActionResult<WebContent>> DeleteWebContent(int id)
         {
             var webContent = repository.GetById(id);
             if (webContent == null)
             {
                 return NotFound();
             }
-            repository.Delete(webContent);
+            await repository.DeleteAsync(webContent.WebContentId);
             return Ok(webContent);
             // await _context.SaveChangesAsync();
         }

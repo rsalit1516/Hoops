@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, makeEnvironmentProviders, signal } from '@angular/core';
+import { Component, OnInit, Input, makeEnvironmentProviders, signal, inject } from '@angular/core';
 import { Content } from '@app/domain/content';
 import { ContentService } from '../../content.service';
 import { ActivatedRoute, Router, RouterLinkWithHref, RouterOutlet, provideRouter } from '@angular/router';
@@ -29,58 +29,17 @@ import { CONTENT_ROUTES } from '../../content-routing';
 })
 
 export class ContentShellComponent implements OnInit {
+  router = inject(Router);
   content!: Content;
 
-  // contentForm: UntypedFormGroup;
   title = 'Web Site Notifications';
-  content1 = signal(10);
-  constructor(
-    // private fb: UntypedFormBuilder,
-    // private _contentService: ContentService,
-    private router: Router,
-    private store: Store<fromContent.State>,
-    private route: ActivatedRoute) {
-    // this.contentForm = this.fb.group({
-    //   title: [
-    //     'Test',
-    //     [Validators.required, Validators.minLength(3), Validators.maxLength(50)]
-    //   ],
-    //   subTitle: '',
-    //   body: '',
-    //   location: '',
-    //   dateAndTime: '',
-    //   webContentTypeId: ''
-    // });
-    // router.navigate(['/list']);
-  }
 
   ngOnInit(): void {
     const environmentProviders = makeEnvironmentProviders([
       { provide: CONTENT_ROUTES, useValue: CONTENT_ROUTES  },
     ]);
-    console.log(this.route.snapshot.data.form);
-    console.log('called content shell' + this.content1());
-    this.store.dispatch(new contentActions.LoadAdminContent());
-    this.store
-      .select(fromContent.getIsActiveOnly)
-      .subscribe((isActiveContent) => {
-        console.log(isActiveContent);
-        isActiveContent
-          ? this.store.dispatch(new contentActions.SetActiveContent())
-          : this.store.dispatch(new contentActions.SetAllContent());
-      });
-    // this.contentService.saveContent(this.contentForm.value);
   }
 
-  update(): void {
-    // this.contentForm.patchValue({
-    //   title: this.content.title,
-    //   subTitle: this.content.subTitle,
-    //   body: this.content.body
-    // });
-  }
-
-  save() {}
   selectedContent() {
     console.log('call back to shell');
     this.router.navigate(['edit']);

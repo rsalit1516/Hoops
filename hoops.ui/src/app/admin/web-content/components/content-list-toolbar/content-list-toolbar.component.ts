@@ -6,7 +6,6 @@ import { Content } from '../../../../domain/content';
 
 import * as fromContent from '../../../state';
 import * as contentActions from '../../../state/admin.actions';
-import { UntypedFormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -46,6 +45,7 @@ export class ContentListToolbarComponent implements OnInit {
   ngOnInit() {
     this.isActiveContent$.subscribe(isActiveContent => {
       console.log(isActiveContent);
+      this.store.dispatch(new contentActions.SetActiveContent());
     });
   }
 

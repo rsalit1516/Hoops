@@ -27,6 +27,8 @@ export class Game {
   // public companyId: number | null = 1;
   public gameNumber: number | undefined;
   public gameType: number | null = 0;
+  public gameDateOnly: Date | undefined;
+
   constructor(
     gameScheduleId: number,
     seasonId: number,

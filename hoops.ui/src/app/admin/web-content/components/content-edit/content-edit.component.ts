@@ -36,6 +36,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '@app/admin/shared/confirm-dialog/confirm-dialog.component';
 import { Constants } from '@app/shared/constants';
 import { State } from '../../../state/index';
+import { WebContent } from '@app/domain/webContent';
 
 @Component({
   selector: 'csbc-content-edit',
@@ -67,6 +68,8 @@ import { State } from '../../../state/index';
 export class ContentEditComponent implements OnInit {
   readonly store = inject(Store<fromContent.State>);
   private fb = inject(FormBuilder);
+  contentService = inject(ContentService);
+
   contentForm = this.fb.group({
     title: new FormControl('', {
       validators: [
@@ -76,7 +79,6 @@ export class ContentEditComponent implements OnInit {
       ],
       nonNullable: true,
     }),
-
     subTitle: new FormControl('', [Validators.maxLength(50)]),
     body: new FormControl<string | null>(''),
     location: new FormControl<string | null>(''),
@@ -123,7 +125,7 @@ export class ContentEditComponent implements OnInit {
     // @Inject(FormBuilder) private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private contentService: ContentService,
+
     public dialog: MatDialog
   ) { }
 
@@ -157,7 +159,6 @@ export class ContentEditComponent implements OnInit {
       });
   }
   onContentRetrieved (content: Content): void {
-    console.log(content);
     if (this.contentForm) {
       this.contentForm.reset();
     }
@@ -186,7 +187,7 @@ export class ContentEditComponent implements OnInit {
   saveContent () {
     console.log(this.contentForm.value);
     if (this.contentForm.dirty) {
-      let content = new Content();
+      let content = new WebContent();
       const form = this.contentForm.value;
       // content.webContentType = this.getWebContentType(
       //   contentForm.webContentType.Web
@@ -204,7 +205,7 @@ export class ContentEditComponent implements OnInit {
       content.companyId = Constants.COMPANYID;
       content.webContentTypeId = form.webContentTypeControl!;
       this.contentService.saveContent(content);
-      this.router.navigate(['/admin/content']);
+      this.router.navigate([ '/admin/content' ]);
     }
   }
   getWebContentType (id: number): WebContentType {
