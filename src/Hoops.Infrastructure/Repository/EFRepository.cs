@@ -85,7 +85,10 @@ namespace Hoops.Infrastructure.Repository
         public virtual async Task DeleteAsync(int id)
         {
             var entity = await DbSet.FindAsync(id);
-            DbSet.Remove(entity);
+            if (entity != null)
+            {
+                _ = DbSet.Remove(entity);
+            }
             await SaveChangesAsync();
         }
 

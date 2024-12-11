@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, makeEnvironmentProviders, signal } from '@angular/core';
+import { Component, OnInit, Input, makeEnvironmentProviders, signal, inject } from '@angular/core';
 import { Content } from '@app/domain/content';
 import { ContentService } from '../../content.service';
 import { ActivatedRoute, Router, RouterLinkWithHref, RouterOutlet, provideRouter } from '@angular/router';
@@ -29,44 +29,17 @@ import { CONTENT_ROUTES } from '../../content-routing';
 })
 
 export class ContentShellComponent implements OnInit {
+  router = inject(Router);
   content!: Content;
 
-  // contentForm: UntypedFormGroup;
   title = 'Web Site Notifications';
-  content1 = signal(10);
-  constructor(
-    private router: Router,
-    private store: Store<fromContent.State>,
-    private route: ActivatedRoute) {
-  }
 
   ngOnInit(): void {
     const environmentProviders = makeEnvironmentProviders([
       { provide: CONTENT_ROUTES, useValue: CONTENT_ROUTES  },
     ]);
-    this.store.select(fromContent.getContentList).subscribe((content) => {
-      console.log(content);
-      this.store
-        .select(fromContent.getIsActiveOnly)
-        .subscribe((isActiveContent) => {
-          // console.log(isActiveContent);
-          // isActiveContent
-          //   ? this.store.dispatch(new contentActions.SetActiveContent())
-          //   : this.store.dispatch(new contentActions.SetAllContent());
-        })
-    });
-    // this.contentService.saveContent(this.contentForm.value);
   }
 
-  update(): void {
-    // this.contentForm.patchValue({
-    //   title: this.content.title,
-    //   subTitle: this.content.subTitle,
-    //   body: this.content.body
-    // });
-  }
-
-  save() {}
   selectedContent() {
     console.log('call back to shell');
     this.router.navigate(['edit']);

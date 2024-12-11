@@ -56,7 +56,6 @@ export class SeasonService {
     );
   }
 
-
   postSeason(season: Season): Observable<Season | null> {
     console.log('posting season');
     return this.dataService.post<Season>(season, this.dataService.seasonUrl);

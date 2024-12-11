@@ -136,14 +136,14 @@ namespace Hoops.Controllers
 
         // DELETE: api/WebContent/5
         [HttpDelete("{id}")]
-        public ActionResult<WebContent> DeleteWebContent(int id)
+        public async Task<ActionResult<WebContent>> DeleteWebContent(int id)
         {
             var webContent = repository.GetById(id);
             if (webContent == null)
             {
                 return NotFound();
             }
-            repository.Delete(webContent);
+            await repository.DeleteAsync(webContent.WebContentId);
             return Ok(webContent);
             // await _context.SaveChangesAsync();
         }

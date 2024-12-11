@@ -127,7 +127,6 @@ export class ContentService {
   }
 
   saveContent(data: WebContent) {
-    console.log(data);
     let content = new WebContent();
     content.webContentId = data.webContentId === null ? 0 : data.webContentId;
     content.companyId = Constants.COMPANYID;
@@ -144,15 +143,15 @@ export class ContentService {
     content.modifiedUser = 121; // To Do: get this from the user
     content.webContentTypeId = data.webContentTypeId === undefined ? 1 : data.webContentTypeId;
 
-    console.log(content);
+    // console.log(content);
     if (data.webContentId === undefined) {
       return this.createContent(content).subscribe((x) => {
-        console.log(x)
+        // console.log(x)
         this.store.dispatch(new contentActions.SetAllContent());
       });
     } else {
       return this.updateContent(content).subscribe((x) => {
-        console.log(x);
+        // console.log(x);
         this.store.dispatch(new contentActions.SetAllContent());
       });
     }

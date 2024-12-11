@@ -56,7 +56,6 @@ export class ContentListComponent implements OnInit {
     this.pageTitle = 'Web Site Messages';
     this.refreshData();
     this.dataSource = new MatTableDataSource<WebContent>(this.data);
-
     this.dataSource.filterPredicate = (data: WebContent, filter: string) => {
       const today = DateTime.now().startOf('day').toJSDate();
       const expirationDateString = data.expirationDate.toString();
@@ -72,6 +71,9 @@ export class ContentListComponent implements OnInit {
   refreshData() {
     this.store.select(fromContent.getContentList).subscribe((data) => {
       this.data = data;
+      this.dataSource._updateChangeSubscription();
+      this.dataSource.disconnect()
+      this.dataSource.connect();
     });
   }
   editContent(content: Content) {

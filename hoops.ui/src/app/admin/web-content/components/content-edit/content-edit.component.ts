@@ -68,6 +68,8 @@ import { WebContent } from '@app/domain/webContent';
 export class ContentEditComponent implements OnInit {
   readonly store = inject(Store<fromContent.State>);
   private fb = inject(FormBuilder);
+  contentService = inject(ContentService);
+
   contentForm = this.fb.group({
     title: new FormControl('', {
       validators: [
@@ -77,7 +79,6 @@ export class ContentEditComponent implements OnInit {
       ],
       nonNullable: true,
     }),
-
     subTitle: new FormControl('', [Validators.maxLength(50)]),
     body: new FormControl<string | null>(''),
     location: new FormControl<string | null>(''),
@@ -124,7 +125,7 @@ export class ContentEditComponent implements OnInit {
     // @Inject(FormBuilder) private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private contentService: ContentService,
+
     public dialog: MatDialog
   ) { }
 
