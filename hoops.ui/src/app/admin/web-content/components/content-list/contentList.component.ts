@@ -16,35 +16,45 @@ import { ContentListToolbarComponent } from '../content-list-toolbar/content-lis
 import { DateTime } from 'luxon';
 
 @Component({
-    selector: 'csbc-content-list',
-    templateUrl: './contentList.component.html',
-    styleUrls: ['./contentList.component.scss', '../../../admin.component.scss', '../../../../shared/scss/tables.scss'],
-  imports: [CommonModule, MatDialogModule,
-    MatTableModule, MatIconModule,
-        ContentListToolbarComponent]
+  selector: 'csbc-content-list',
+  templateUrl: './contentList.component.html',
+  styleUrls: [
+    './contentList.component.scss',
+    '../../../admin.component.scss',
+    '../../../../shared/scss/tables.scss',
+  ],
+  imports: [
+    CommonModule,
+    MatDialogModule,
+    MatTableModule,
+    MatIconModule,
+    ContentListToolbarComponent,
+  ],
 })
 export class ContentListComponent implements OnInit {
   router = inject(Router);
-  store = inject(Store<fromContent.State>)
+  store = inject(Store<fromContent.State>);
   readonly selectedContent = output<Content>();
   contents$!: Observable<WebContent[]>;
-  errorMessage: string|undefined;
-  pageTitle: string|undefined;
+  errorMessage: string | undefined;
+  pageTitle: string | undefined;
   public dialog!: MatDialog;
-  displayedColumns = ['title', 'expirationDate', 'dateAndTime', 'location', 'actions'];
+  displayedColumns = [
+    'title',
+    'expirationDate',
+    'dateAndTime',
+    'location',
+    'actions',
+  ];
   dataSource = new MatTableDataSource<WebContent>([]);
   data: WebContent[] = [];
   filterValue = '';
 
-  constructor() {
-    this.store.select(fromContent.getContentList).subscribe(data => {
-      this.data = data;
-    });
-  }
+  constructor() {}
 
   ngOnInit() {
     this.pageTitle = 'Web Site Messages';
-
+    this.refreshData();
     this.dataSource = new MatTableDataSource<WebContent>(this.data);
 
     this.dataSource.filterPredicate = (data: WebContent, filter: string) => {
@@ -55,11 +65,15 @@ export class ContentListComponent implements OnInit {
       // console.log(`Filtering ${data.expirationDate}: ${result}`);
       return result;
     };
-    this.store.select(fromContent.getIsActiveOnly).subscribe(isActive => {
+    this.store.select(fromContent.getIsActiveOnly).subscribe((isActive) => {
       isActive ? this.applyFilter() : this.clearFilter();
     });
   }
-
+  refreshData() {
+    this.store.select(fromContent.getContentList).subscribe((data) => {
+      this.data = data;
+    });
+  }
   editContent(content: Content) {
     this.store.dispatch(new contentActions.SetSelectedContent(content));
     this.router.navigate(['./admin/content/edit']);
@@ -69,7 +83,7 @@ export class ContentListComponent implements OnInit {
     content.webContentId = undefined;
     this.store.dispatch(new contentActions.SetSelectedContent(content));
 
-    this.router.navigate([ './admin/content/edit' ]);
+    this.router.navigate(['./admin/content/edit']);
   }
 
   addContent(): void {

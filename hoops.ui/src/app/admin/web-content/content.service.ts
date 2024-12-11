@@ -143,12 +143,11 @@ export class ContentService {
     if (data.webContentId === undefined) {
       return this.createContent(content).subscribe((x) => {
         // console.log(x)
-        this.store.dispatch(new contentActions.LoadAdminContent());
+        this.store.dispatch(new contentActions.SetAllContent());
       });
     } else {
       return this.updateContent(content).subscribe((x) => {
-        console.log(x);
-        this.store.dispatch(new contentActions.LoadAdminContent());
+        this.store.dispatch(new contentActions.SetAllContent());
       });
     }
   }

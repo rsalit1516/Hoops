@@ -157,7 +157,6 @@ export class ContentEditComponent implements OnInit {
       });
   }
   onContentRetrieved (content: Content): void {
-    console.log(content);
     if (this.contentForm) {
       this.contentForm.reset();
     }
@@ -204,7 +203,7 @@ export class ContentEditComponent implements OnInit {
       content.companyId = Constants.COMPANYID;
       content.webContentTypeId = form.webContentTypeControl!;
       this.contentService.saveContent(content);
-      this.router.navigate(['/admin/content']);
+      this.router.navigate([ '/admin/content' ]);
     }
   }
   getWebContentType (id: number): WebContentType {
