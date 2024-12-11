@@ -126,33 +126,39 @@ export class ContentService {
     return this.data.delete(url);
   }
 
-  saveContent(data: Content) {
+  saveContent(data: WebContent) {
     console.log(data);
-    let content = new Content();
-    content.webContentTypeId = data.webContentTypeId;
+    let content = new WebContent();
     content.webContentId = data.webContentId === null ? 0 : data.webContentId;
-    content.title = data.title;
-    content.subTitle = data.subTitle;
-    content.body = data.body;
-    content.dateAndTime = data.dateAndTime;
-    content.location = data.location;
-    content.expirationDate = data.expirationDate;
-    content.contentSequence = data.contentSequence;
     content.companyId = Constants.COMPANYID;
+    content.page = '';
+    content.type = '';
+    content.title = data.title;
+    content.contentSequence = data.contentSequence;
+    content.subTitle = data.subTitle;
+    content.location = data.location;
+    content.dateAndTime = data.dateAndTime;
+    content.body = data.body;
+    content.expirationDate = data.expirationDate;
+    content.modifiedDate = DateTime.now().toJSDate();
+    content.modifiedUser = 121; // To Do: get this from the user
+    content.webContentTypeId = data.webContentTypeId === undefined ? 1 : data.webContentTypeId;
 
+    console.log(content);
     if (data.webContentId === undefined) {
       return this.createContent(content).subscribe((x) => {
-        // console.log(x)
+        console.log(x)
         this.store.dispatch(new contentActions.SetAllContent());
       });
     } else {
       return this.updateContent(content).subscribe((x) => {
+        console.log(x);
         this.store.dispatch(new contentActions.SetAllContent());
       });
     }
   }
 
-  private createContent(content: Content): Observable<void | Content> {
+  private createContent(content: WebContent): Observable<void | WebContent> {
 
     console.log(content);
     return this.data.post(content, this.data.postContentUrl).pipe(
@@ -162,12 +168,14 @@ export class ContentService {
     );
   }
 
-  private updateContent(content: Content) {
+  private updateContent(content: WebContent): Observable<WebContent> {
     console.log(this.data.putContentUrl);
     console.log(content);
     let url = this.data.putContentUrl + content.webContentId;
     console.log(url);
-    return this.data.put<Content>(content, url);
+    // const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.put<WebContent>(url, content);
+
   }
 
   private extractData(response: Response) {

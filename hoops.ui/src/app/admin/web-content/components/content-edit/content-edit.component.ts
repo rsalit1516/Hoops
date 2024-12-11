@@ -36,6 +36,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '@app/admin/shared/confirm-dialog/confirm-dialog.component';
 import { Constants } from '@app/shared/constants';
 import { State } from '../../../state/index';
+import { WebContent } from '@app/domain/webContent';
 
 @Component({
   selector: 'csbc-content-edit',
@@ -185,7 +186,7 @@ export class ContentEditComponent implements OnInit {
   saveContent () {
     console.log(this.contentForm.value);
     if (this.contentForm.dirty) {
-      let content = new Content();
+      let content = new WebContent();
       const form = this.contentForm.value;
       // content.webContentType = this.getWebContentType(
       //   contentForm.webContentType.Web

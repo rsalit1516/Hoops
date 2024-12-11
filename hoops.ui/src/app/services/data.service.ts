@@ -61,11 +61,10 @@ export class DataService {
         tap((data) => console.log('PostContent: ' + JSON.stringify(data))),
         catchError(this.handleError('Error', data)));
   }
-  put<T>(data: T, url: string): Observable<T> {
+  put<T>(url: string, data: T ): Observable<T> {
     console.log(url);
     console.log(data);
     // let url = this.data.putContentUrl + content.webContentId;
-    console.log(url);
     return this._http
       .put<T>(url,  data, this.httpOptions)
       .pipe(

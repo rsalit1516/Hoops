@@ -60,25 +60,10 @@ export class SeasonService {
   postSeason(season: Season): Observable<Season | null> {
     console.log('posting season');
     return this.dataService.post<Season>(season, this.dataService.seasonUrl);
-
-    // return this.http.post<Season>(this.dataService.seasonUrl,
-    //   season,
-    //   this.dataService.httpOptions);
-      // // .pipe(
-      // // map(season => season as Season),
-      // // tap(data => console.log('All post: ' + JSON.stringify(data))),
-      // // catchError(this.dataService.handleError('getCurrentSeason', null))
-    // )
   }
 
   putSeason(season: Season): any {
-    return this.dataService.put<Season>(season, this.dataService.seasonUrl);
-    // return this.http.put<Season>(this.dataService.seasonUrl, season)
-    //   .pipe(
-    //     map(season => season as Season),
-    //     tap(data => console.log('All put: ' + JSON.stringify(data))),
-    //     catchError(this.dataService.handleError('getCurrentSeason', null))
-    //   )
+    return this.dataService.put<Season>(this.dataService.seasonUrl, season );
   }
 
 }
