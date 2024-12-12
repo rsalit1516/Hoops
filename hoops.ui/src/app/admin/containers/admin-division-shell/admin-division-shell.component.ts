@@ -12,40 +12,48 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { Router } from '@angular/router';
+import { Router, RouterOutlet, RouterLinkWithHref } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { Division } from '@app/domain/division';
 import { DivisionService } from '@app/services/division.service';
 import { NewDivisionSelectorComponent } from '../../admin-shared/new-division-selector/new-division-selector.component';
 
 @Component({
-    selector: 'csbc-admin-division-shell',
-    templateUrl: './admin-division-shell.component.html',
-    styleUrls: [
-        '../../../shared/scss/forms.scss',
-        '../../admin.component.scss',
-        './admin-division-shell.component.scss',
-    ],
-    imports: [
-        SeasonSelectComponent,
-        DivisionListComponent,
-        DivisionSelectComponent,
-        MatToolbarModule,
-        MatButtonModule,
-        MatIconModule,
-        MatFormFieldModule,
-        MatInputModule,
-        NewDivisionSelectorComponent,
-    ]
+  selector: 'csbc-admin-division-shell',
+  template: `<section class="container-fluid">
+    <h2>{{ title }}</h2>
+    <router-outlet></router-outlet>
+  </section>`,
+  styleUrls: [
+    '../../../shared/scss/forms.scss',
+    '../../admin.component.scss',
+    './admin-division-shell.component.scss',
+  ],
+  imports: [
+    CommonModule,
+    SeasonSelectComponent,
+    DivisionListComponent,
+    DivisionSelectComponent,
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    NewDivisionSelectorComponent,
+    RouterOutlet,
+    RouterLinkWithHref,
+  ],
+  providers: [DivisionService],
 })
 export class AdminDivisionShellComponent implements OnInit {
   season = input(new Season());
-  private router = inject(Router);
-  private _divisionService = inject(DivisionService);
-
+  router = inject(Router);
+  _divisionService = inject(DivisionService);
+  title = 'Divisions';
   constructor(private store: Store<fromAdmin.State>) {}
 
   ngOnInit() {
-    this.store.dispatch(new adminActions.LoadSeasons());
+    // this.store.dispatch(new adminActions.LoadSeasons());
     //this.store.dispatch(new adminActions.LoadLocations());
   }
   addDivision() {

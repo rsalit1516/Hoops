@@ -16,7 +16,6 @@ import { ContentShellComponent } from './web-content/containers/content-shell/co
 import { DivisionDetailComponent } from './components/admin-division-detail/divisionDetail.component';
 import { getWebContentDataResolver } from './get-web-content-data.resolver';
 
-
 export const ADMINROUTES: Routes = [
   {
     path: '',
@@ -56,8 +55,36 @@ export const ADMINROUTES: Routes = [
           { path: '**', component: PageNotFoundComponent },
         ],
       },
-      { path: 'division', component: AdminDivisionShellComponent },
-      { path: 'division-detail', component: DivisionDetailComponent },
+      {
+        path: 'division',
+        component: AdminDivisionShellComponent,
+        title: 'Division Module',
+        children: [
+          {
+              path: 'edit',
+              loadComponent: () =>
+                import('./components/admin-division-detail/divisionDetail.component').then(
+                  (mod) => mod.DivisionDetailComponent
+                ),
+            },
+            {
+              path: 'list',
+              loadComponent: () =>
+                import('./components/admin-division-list/divisionList.component').then(
+                  (mod) => mod.DivisionListComponent
+                ),
+            },
+            {
+              path: '',
+              redirectTo: '/admin/division/list',
+              pathMatch: 'full',
+            },
+
+            { path: '**', component: PageNotFoundComponent },
+          ],
+
+          },
+      // { path: 'division-detail', component: DivisionDetailComponent },
       { path: 'season-setup', component: SeasonSetupComponent },
       { path: 'teams', component: TeamListComponent },
       {
@@ -72,13 +99,7 @@ export const ADMINROUTES: Routes = [
         loadChildren: () =>
           import('./director/director.module').then((m) => m.DirectorModule),
       },
-      // {
-      //   path: 'registrations',
-      //   loadChildren: () =>
-      //     import(
-      //       './registrations-and-payments/registrations-and-payments.module'
-      //     ).then((m) => m.RegistrationsAndPaymentsModule),
-      // },
+
       {
         path: 'content',
         component: ContentShellComponent,
@@ -86,7 +107,6 @@ export const ADMINROUTES: Routes = [
         children: [
           {
             path: 'edit',
-            // component: ContentEditComponent,
             loadComponent: () =>
               import('./web-content/components/content-edit/content-edit.component').then(
                 (mod) => mod.ContentEditComponent
@@ -94,7 +114,6 @@ export const ADMINROUTES: Routes = [
           },
           {
             path: 'list',
-            // component: ContentListComponent,
             loadComponent: () =>
               import('./web-content/components/content-list/contentList.component').then(
                 (mod) => mod.ContentListComponent

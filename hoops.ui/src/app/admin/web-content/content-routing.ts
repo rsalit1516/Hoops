@@ -12,7 +12,6 @@ export const CONTENT_ROUTES: Routes = [
   },
   {
     path: 'list',
-    //      component: ContentListComponent,
     loadComponent: () =>
       import('./components/content-list/contentList.component').then(
         (mod) => mod.ContentListComponent

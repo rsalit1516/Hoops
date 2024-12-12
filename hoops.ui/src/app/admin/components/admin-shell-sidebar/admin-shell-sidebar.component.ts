@@ -47,7 +47,6 @@ export class AdminShellSidebarComponent {
     { name: 'People', route: '/admin/people', isSelected: false },
     { name: 'Users', route: '/admin/users', isSelected: false },
     { name: 'Uniform Colors', route: '/admin/colors', isSelected: false },
-
   ];
 
   constructor (@Inject(Router) private router: Router) { }
@@ -72,7 +71,6 @@ export class AdminShellSidebarComponent {
 
     this.router.navigate([item.route]);
   }
-
 }
 
 class nav {

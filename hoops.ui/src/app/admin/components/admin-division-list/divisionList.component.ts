@@ -28,6 +28,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { SeasonSelectComponent } from '@app/admin/admin-shared/season-select/season-select.component';
 
 @Component({
     selector: 'csbc-division-list',
@@ -43,7 +44,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
         MatFormFieldModule,
         MatInputModule,
         MatRadioModule,
-        DatePipe,
+      DatePipe,
+        SeasonSelectComponent
     ]
 })
 
@@ -74,7 +76,7 @@ export class DivisionListComponent implements OnInit, OnChanges {
     'divisionDescription',
     'minDate',
     'maxDate',
-    'view',
+    // 'view',
     'teams',
   ];
   dataSource!: MatTableDataSource<Division>;
@@ -139,6 +141,10 @@ export class DivisionListComponent implements OnInit, OnChanges {
   }
   addDivision() {
     console.log('Add Division');
+    let division = new Division();
+    this._divisionService.setCurrentDivision(division);
+    this.store.dispatch(new adminActions.SetSelectedDivision(division));
+    this.router.navigate(['./admin/division/edit']);
   }
   viewTeams(division: any) {
     console.log(division);
@@ -148,6 +154,6 @@ export class DivisionListComponent implements OnInit, OnChanges {
   getRecord(division: any) {
     this._divisionService.setCurrentDivision(division);
     this.store.dispatch(new adminActions.SetSelectedDivision(division));
-    this.router.navigate(['./admin/division-detail']);
+    this.router.navigate(['./admin/division/edit']);
   }
 }

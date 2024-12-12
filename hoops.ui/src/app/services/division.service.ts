@@ -121,7 +121,7 @@ export class DivisionService {
   ) {
     this.store.pipe(select(fromAdmin.getSelectedSeason)).subscribe(season => {
       this.season = season;
-      console.log(this.season);
+      // console.log(this.season);
     });
   }
 

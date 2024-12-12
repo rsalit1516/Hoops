@@ -164,7 +164,7 @@ button {
 }
 
 fieldset {
-  border: 1px solid v.$color;
+  border: .5px solid color.adjust(v.$color, $lightness: 20%);
   border-radius: v.$border-radius;
   margin-left: 2rem;
   margin-bottom: 1rem;
