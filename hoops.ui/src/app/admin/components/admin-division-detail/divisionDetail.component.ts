@@ -12,7 +12,11 @@ import {
   FormsModule,
   ReactiveFormsModule,
   Validators,
+  FormGroup,
+  FormBuilder,
+  FormControl,
 } from '@angular/forms';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 import { Division } from '../../../domain/division';
 import { DivisionService } from '@app/services/division.service';
@@ -26,37 +30,74 @@ import * as fromAdmin from '../../state';
 import { NewDivisionSelectorComponent } from '@app/admin/admin-shared/new-division-selector/new-division-selector.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
+import { ConfirmDialogComponent } from '@app/admin/shared/confirm-dialog/confirm-dialog.component';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { DateTime } from 'luxon';
 
 @Component({
-    selector: 'csbc-division-detail',
-    templateUrl: './divisionDetail.component.html',
-    styleUrls: [
-        '../../admin.component.scss',
-        '../../../shared/scss/forms.scss',
-        '../../../shared/scss/cards.scss',
-    ],
-    imports: [
-        CommonModule,
-        FormsModule,
-        MatCardModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatRadioModule,
-        MatSelectModule,
-        MatOptionModule,
-        NewDivisionSelectorComponent
-    ],
-    // changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [DivisionService]
+  selector: 'csbc-division-detail',
+  templateUrl: './divisionDetail.component.html',
+  styleUrls: [
+    '../../admin.component.scss',
+    '../../../shared/scss/forms.scss',
+    '../../../shared/scss/cards.scss',
+  ],
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterModule,
+    MatCardModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatRadioModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatDialogModule,
+    MatButtonModule,
+    NewDivisionSelectorComponent,
+    ConfirmDialogComponent,
+  ],
+  // changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [DivisionService],
 })
 export class DivisionDetailComponent implements OnInit {
+  store = inject(Store<fromAdmin.State>);
+  dialog = inject(MatDialog);
+  divisionService = inject(DivisionService);
+
   selectedDivision = signal<Division>(new Division());
-  private store = inject(Store<fromAdmin.State>);
+  selectedDivisionDescription: string = ''; // = signal<Division>(new Division());
+  get division() {
+    //this will do the trick
+    return this.divisionService.getCurrentDivision();
+  }
+  set division(value) { }
 
-  divisionForm: UntypedFormGroup;
+  nameControl = new FormControl('', Validators.required);
 
-  genders = [ 'M', 'F' ];
+  divisionForm = this.fb.group({
+    name: this.nameControl, //this.division.divisionDescription,
+    maxDate1: [
+      formatDate(this.division.maxDate, 'yyyy-MM-dd', 'en'),
+      [Validators.required],
+    ],
+    //this.division.maxDate,
+    minDate1: [
+      formatDate(this.division.minDate, 'yyyy-MM-dd', 'en'),
+      Validators.required,
+    ], //this.division.minDate,
+    gender1: [''],
+    maxDate2: [''], //this.division.maxDate,
+    minDate2: [''], //this.division.minDate,
+    gender2: [''],
+    director: [''],
+    seasonId: [''], //this.division.seasonId,
+    divisionId: [''], //this.division.seasonId,
+  });
+
+  genders = ['M', 'F'];
   minDateHint = 'Min date: mm//dd/yyyy';
   maxDateHint = 'Max date: mm//dd/yyyy';
 
@@ -68,51 +109,14 @@ export class DivisionDetailComponent implements OnInit {
   languageFormat = 'en';
   hideName = false;
 
-  get division(){
-      //this will do the trick
-          return this.divisionService.getCurrentDivision();
-        }
-  set division(value) {
-  }
+  selectedItem: string = '';
 
-  divisionService = inject(DivisionService);
-  selectedItem: string ='';
-
-  selectItem (item: string) {
+  selectItem(item: string) {
     this.selectedItem = item;
   }
-  constructor (private fb: UntypedFormBuilder) {
-
+  constructor(private fb: FormBuilder) {
     console.log(this.divisionService.getCurrentDivision());
     // this.division = this.divisionService.getCurrentDivision();
-    this.divisionForm = this.fb.group({
-      name: ['', Validators.required], //this.division.divisionDescription,
-      maxDate1: [ formatDate(this.division.maxDate, 'yyyy-MM-dd', 'en'), [ Validators.required ] ],
-      //this.division.maxDate,
-      minDate1: [formatDate(this.division.minDate, 'yyyy-MM-dd', 'en'), Validators.required], //this.division.minDate,
-      gender1: [''],
-      maxDate2: [''], //this.division.maxDate,
-      minDate2: [''], //this.division.minDate,
-      gender2: [''],
-      director: [''],
-      seasonId: [''], //this.division.seasonId,
-      divisionId: [''], //this.division.seasonId,
-    });
-    effect(() => {
-      // console.log(this.divisionService.division());// this.division.update(this.divisionService.currentDivision);
-      this.divisionForm.get('name')?.setValue(this.divisionService.division().divisionDescription);
-      // this.divisionForm.get('name')?
-      if (this.divisionService.division().maxDate !== undefined) {
-        this.divisionForm.get('maxDate1')?.setValue(formatDate(this.divisionService.division().maxDate, this.dateFormat, this.languageFormat));
-        this.divisionForm.get('minDate1')?.setValue(formatDate(this.divisionService.division().minDate, this.dateFormat, this.languageFormat));
-        this.divisionForm.get('gender1')?.setValue(this.divisionService.division().gender);
-      }
-      if (this.divisionService.division().maxDate2 !== undefined) {
-        this.divisionForm.get('maxDate2')?.setValue(formatDate(this.divisionService.division().maxDate2, this.dateFormat, this.languageFormat));
-        this.divisionForm.get('minDate2')?.setValue(formatDate(this.divisionService.division().minDate2, this.dateFormat, this.languageFormat));
-        this.divisionForm.get('gender2')?.setValue(this.divisionService.division().gender2);
-      }
-    });
   }
   ngOnInit(): void {
     console.log(this.divisionService.getCurrentDivision());
@@ -121,21 +125,54 @@ export class DivisionDetailComponent implements OnInit {
     this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
       if (division !== null) {
         if (division?.divisionDescription !== undefined) {
-          this.selectedDivision.update(() => division);
+          const matchingDivision = this.divisionService.getmatchingDivision(
+            division.divisionDescription
+          );
+          console.log(matchingDivision);
+
+          this.selectedDivisionDescription = matchingDivision;
           console.log(division);
-          this.divisionForm.get('name')?.setValue(division.divisionDescription);
-          this.divisionForm.get('maxDate1')?.setValue(formatDate(division.maxDate, this.dateFormat, this.languageFormat));
-          this.divisionForm.get('minDate1')?.setValue(formatDate(division.minDate, this.dateFormat, this.languageFormat));
-          this.divisionForm.get('gender1')?.setValue(this.selectedDivision().gender);
+          this.nameControl?.setValue(matchingDivision);
+          this.divisionForm
+            .get('maxDate1')
+            ?.setValue(
+              formatDate(division.maxDate, this.dateFormat, this.languageFormat)
+            );
+          this.divisionForm
+            .get('minDate1')
+            ?.setValue(
+              formatDate(division.minDate, this.dateFormat, this.languageFormat)
+            );
+          this.divisionForm
+            .get('gender1')
+            ?.setValue(this.selectedDivision().gender);
           if (division.maxDate2 !== null) {
-            this.divisionForm.get('maxDate2')?.setValue(formatDate(division.maxDate2, this.dateFormat, this.languageFormat));
+            this.divisionForm
+              .get('maxDate2')
+              ?.setValue(
+                formatDate(
+                  division.maxDate2,
+                  this.dateFormat,
+                  this.languageFormat
+                )
+              );
           }
           // this.divisionForm.get('maxDate2')?.setValue(formatDate(division.maxDate2, this.dateFormat, this.languageFormat));
           if (division.minDate2 !== null) {
-            this.divisionForm.get('minDate2')?.setValue(formatDate(division.minDate2, this.dateFormat, this.languageFormat));
+            this.divisionForm
+              .get('minDate2')
+              ?.setValue(
+                formatDate(
+                  division.minDate2,
+                  this.dateFormat,
+                  this.languageFormat
+                )
+              );
           }
           if (division.maxDate2 !== null || division.minDate2 !== null) {
-            this.divisionForm.get('gender2')?.setValue(this.selectedDivision().gender2);
+            this.divisionForm
+              .get('gender2')
+              ?.setValue(this.selectedDivision().gender2);
           }
         } else {
           this.hideName = true;
@@ -148,24 +185,31 @@ export class DivisionDetailComponent implements OnInit {
     // Subscribe to the signal to get updated values
     //this.newDivision.update(x => this.divisionService.division());
     //console.log(this.newDivision());
-
   }
 
-  save () {
+  save() {
     let division = new Division();
-    division.divisionDescription = this.divisionForm.get('name')?.value;
-    division.maxDate = this.divisionForm.get('maxDate1')?.value;
-    division.minDate = this.divisionForm.get('minDate1')?.value;
-    division.gender = this.divisionForm.get('gender1')?.value;
+    division.divisionDescription = this.divisionForm.get('name')?.value ?? '';
+    division.maxDate = new Date(
+      this.divisionForm.get('maxDate1')?.value ?? DateTime.now().toISO()
+    );
+    division.minDate = new Date(
+      this.divisionForm.get('minDate1')?.value ?? DateTime.now().toISO()
+    );
+    division.gender = this.divisionForm.get('gender1')?.value ?? '';
     if (division.maxDate2 !== null) {
-      division.maxDate2 = this.divisionForm.get('maxDate2')?.value;
+      division.maxDate2 = new Date(
+        this.divisionForm.get('maxDate2')?.value ?? DateTime.now().toISO()
+      );
     }
     // this.divisionForm.get('maxDate2')?.setValue(formatDate(division.maxDate2, this.dateFormat, this.languageFormat));
     if (division.minDate2 !== null) {
-      division.minDate = this.divisionForm.get('minDate2')?.value;
+      division.minDate = new Date(
+        this.divisionForm.get('minDate2')?.value ?? DateTime.now().toISO()
+      );
     }
     if (division.maxDate2 !== null || division.minDate2 !== null) {
-      division.gender2 = this.divisionForm.get('gender2')?.value;
+      division.gender2 = this.divisionForm.get('gender2')?.value ?? '';
     }
     division.divisionId = this.divisionService.division().divisionId;
     division.companyId = 1; // get from constants
@@ -187,8 +231,22 @@ export class DivisionDetailComponent implements OnInit {
   protected onInputDivisionName(event: Event) {
     this.divisionNameValue.set((event.target as HTMLInputElement).value);
   }
-  divisionSelected ($event: any) {
+  divisionSelected($event: any) {
     this.divisionService.createTemporaryDivision($event.value);
     this.hideNameInput.set($event.value !== 'other');
+  }
+  deleteRecord() {
+    //TODO:  Fix delete method
+  }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(result);
+      if (result) {
+        this.deleteRecord();
+      }
+    });
   }
 }

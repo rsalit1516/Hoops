@@ -14,7 +14,6 @@ import {
   FormBuilder,
   ReactiveFormsModule
 } from '@angular/forms';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 import { Content } from '../../../../domain/content';
 import { ContentService } from '../../content.service';
@@ -37,6 +36,7 @@ import { ConfirmDialogComponent } from '@app/admin/shared/confirm-dialog/confirm
 import { Constants } from '@app/shared/constants';
 import { State } from '../../../state/index';
 import { WebContent } from '@app/domain/webContent';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'csbc-content-edit',
@@ -69,6 +69,9 @@ export class ContentEditComponent implements OnInit {
   readonly store = inject(Store<fromContent.State>);
   private fb = inject(FormBuilder);
   contentService = inject(ContentService);
+  route = inject(ActivatedRoute);
+  router = inject(Router);
+  dialog = inject(MatDialog);
 
   contentForm = this.fb.group({
     title: new FormControl('', {
@@ -123,10 +126,7 @@ export class ContentEditComponent implements OnInit {
 
   constructor (
     // @Inject(FormBuilder) private fb: FormBuilder,
-    private route: ActivatedRoute,
-    private router: Router,
 
-    public dialog: MatDialog
   ) { }
 
   ngOnInit (): void {
