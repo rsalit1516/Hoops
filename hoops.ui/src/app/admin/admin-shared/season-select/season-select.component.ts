@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 
 import * as fromAdmin from '../../state';
 import { Observable } from 'rxjs';
 import { Season } from '@app/domain/season';
 import * as adminActions from '../../state/admin.actions';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { subscribeOn } from 'rxjs-compat/operator/subscribeOn';
+import { UntypedFormControl, FormsModule } from '@angular/forms';
 import { SeasonService } from '../services/season.service';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { MatOptionModule } from '@angular/material/core';
@@ -51,21 +50,8 @@ export class SeasonSelectComponent implements OnInit {
   }
 
   ngOnInit() {
-//     this.seasonComponent = this.selectForm.get('seasonControl') as UntypedFormControl;
-    // this.seasonComponent?.valueChanges.subscribe((value) => {
-    //   console.log(value);
-    //   let selectedSeason = new Season();
-    //   if (value !== 0) {
-    //     selectedSeason = this.seasonService.getSeason(value);
-    //   }
-    //   console.log(selectedSeason);
-    //   this.store.dispatch(new adminActions.SetSelectedSeason(selectedSeason));
-    // });
     this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
-      console.log(season);
       if (season.seasonId !== undefined && season !== this.selectedSeason) {
-        // this.selectedSeason = season;
-        // this.seasonComponent?.setValue(season.seasonId);
         this.selectedValue = season.seasonId;
       }
     });
