@@ -74,7 +74,10 @@ namespace Hoops.Infrastructure.Repository
         {
             int id = 0;
             var person = context.Set<Person>().FirstOrDefault(n => n.LastName == name);
-            id = person.PersonId;
+            if (person != null)
+            {
+                id = person.PersonId;
+            }
 
             return id;
         }
@@ -85,7 +88,7 @@ namespace Hoops.Infrastructure.Repository
         }
         public IQueryable<Person> FindPeopleByLastAndFirstName(string lastName, string firstName, bool playerOnly)
         {
-            IQueryable<Person> person = null;
+            IQueryable<Person> person = context.Set<Person>().Where(p => false);
             if (!String.IsNullOrEmpty(lastName) && (!String.IsNullOrEmpty(firstName)))
             {
                 person = context.Set<Person>().Where(n => n.LastName.StartsWith(lastName) && n.FirstName.StartsWith(firstName));
@@ -201,9 +204,13 @@ namespace Hoops.Infrastructure.Repository
         public List<string> GetParents(int personId)
         {
             var child = context.Set<Person>().Find(personId);
-            var parents = context.Set<Person>()
-                            .Where(p => p.HouseId == (child.HouseId) && (p.Parent == true))
-                            .Select(person => person.LastName + ", " + person.FirstName).ToList();
+            var parents = new List<string>();
+            if (child != null)
+            {
+                parents = context.Set<Person>()
+                                        .Where(p => p.HouseId == (child.HouseId) && (p.Parent == true))
+                                        .Select(person => person.LastName + ", " + person.FirstName).ToList();
+            }
             return parents;
             
         }
