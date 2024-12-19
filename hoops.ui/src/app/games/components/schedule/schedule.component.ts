@@ -14,7 +14,10 @@ import { CommonModule, NgFor } from '@angular/common';
 
 @Component({
     selector: 'csbc-schedule',
-    templateUrl: './schedule.component.html',
+  template:
+    `<div *ngFor="let data of dailySchedule()">
+    <daily-schedule [games]="data" [canEdit]="canEdit"></daily-schedule>
+  </div>`,
     styleUrls: ['./schedule.component.scss'],
     imports: [CommonModule, DailyScheduleComponent]
 })
