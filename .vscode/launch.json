@@ -4,41 +4,44 @@
    // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
    "version": "0.2.0",
    "configurations": [
-
     {
         "name": "C#: hoops.api Debug",
         "type": "dotnet",
         "request": "launch",
         "projectPath": "${workspaceFolder}/hoops.api/hoops.api.csproj"
     },
-        {
-            "name": ".NET Core Launch (web)",
-            "type": "coreclr",
-            "request": "launch",
-            "preLaunchTask": "build",
-            // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/Hoops.Api/bin/Debug/netcoreapp3.1/hoops.dll",
-            "args": [],
-            "cwd": "${workspaceFolder}/Hoops.Api",
-            "stopAtEntry": false,
-            // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
-            "serverReadyAction": {
-                "action": "openExternally",
-                "pattern": "^\\s*Now listening on:\\s+(https?://\\S+)"
-            },
-            "env": {
-                "ASPNETCORE_ENVIRONMENT": "Development"
-            },
-            "sourceFileMap": {
-                "/Views": "${workspaceFolder}/Views"
-            },
-            "enableStepFiltering": false
+    {
+        "name": ".NET Core Launch (web)",
+        "type": "coreclr",
+        "request": "launch",
+        "preLaunchTask": "build",
+        "program": "${workspaceFolder}/Hoops.Api/bin/Debug/netcoreapp3.1/hoops.dll",
+        "args": [],
+        "cwd": "${workspaceFolder}/Hoops.Api",
+        "stopAtEntry": false,
+        "serverReadyAction": {
+            "action": "openExternally",
+            "pattern": "^\\s*Now listening on:\\s+(https?://\\S+)"
         },
-        {
-            "name": ".NET Core Attach",
-            "type": "coreclr",
-            "request": "attach",
-            "processId": "${command:pickProcess}"
-        }
-    ]
+        "env": {
+            "ASPNETCORE_ENVIRONMENT": "Development"
+        },
+        "sourceFileMap": {
+            "/Views": "${workspaceFolder}/Views"
+        },
+        "enableStepFiltering": false
+    },
+    {
+        "name": ".NET Core Attach",
+        "type": "coreclr",
+        "request": "attach",
+        "processId": "${command:pickProcess}"
+    },
+    {
+        "type": "chrome",
+        "name": "http://127.0.0.1:3000/hoops.ui/src/app/games/components/daily-schedule/daily-schedule.component.html",
+        "request": "launch",
+        "url": "http://127.0.0.1:3000/hoops.ui/src/app/games/components/daily-schedule/daily-schedule.component.html"
+    }
+]
 }

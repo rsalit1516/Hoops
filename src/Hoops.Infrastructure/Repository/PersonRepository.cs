@@ -74,7 +74,10 @@ namespace Hoops.Infrastructure.Repository
         {
             int id = 0;
             var person = context.Set<Person>().FirstOrDefault(n => n.LastName == name);
-            id = person.PersonId;
+            if (person != null)
+            {
+                id = person.PersonId;
+            }
 
             return id;
         }
@@ -85,12 +88,12 @@ namespace Hoops.Infrastructure.Repository
         }
         public IQueryable<Person> FindPeopleByLastAndFirstName(string lastName, string firstName, bool playerOnly)
         {
-            IQueryable<Person> person = null;
+            IQueryable<Person> person = context.Set<Person>().Where(p => false);
             if (!String.IsNullOrEmpty(lastName) && (!String.IsNullOrEmpty(firstName)))
             {
                 person = context.Set<Person>().Where(n => n.LastName.StartsWith(lastName) && n.FirstName.StartsWith(firstName));
             }
-            else if (!String.IsNullOrEmpty(lastName) && (String.IsNullOrEmpty(firstName)))
+            else if (!String.IsNullOrEmpty(lastName) && String.IsNullOrEmpty(firstName))
             {
                 person = context.Set<Person>().Where(n => n.LastName.StartsWith(lastName));
             }
@@ -122,7 +125,7 @@ namespace Hoops.Infrastructure.Repository
             var person = context.Set<Person>().FirstOrDefault(n => n.Email == email);
             if (person != null)
                 id = person.PersonId;
-            return (id);
+            return id;
         }
 
         public IQueryable<Person> GetByGroup(int companyId, int seasonId, GroupTypes.GroupType group)
@@ -180,8 +183,9 @@ namespace Hoops.Infrastructure.Repository
 
         public IQueryable<Person> GetADs(int companyId)
         {
-            var people = context.Set<Person>().Where(p => p.CompanyId == companyId)
-                                .Where(p => p.Ad == true);
+            var people = context.Set<Person>()
+              .Where(p => p.CompanyId == companyId)
+              .Where(p => p.Ad == true);
             return people;
         }
 
@@ -201,9 +205,13 @@ namespace Hoops.Infrastructure.Repository
         public List<string> GetParents(int personId)
         {
             var child = context.Set<Person>().Find(personId);
-            var parents = context.Set<Person>()
-                            .Where(p => p.HouseId == (child.HouseId) && (p.Parent == true))
-                            .Select(person => person.LastName + ", " + person.FirstName).ToList();
+            var parents = new List<string>();
+            if (child != null)
+            {
+                parents = [.. context.Set<Person>()
+                                        .Where(p => p.HouseId == child.HouseId && (p.Parent == true))
+                                        .Select(person => person.LastName + ", " + person.FirstName)];
+            }
             return parents;
             
         }
