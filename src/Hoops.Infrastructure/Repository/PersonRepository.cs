@@ -84,7 +84,7 @@ namespace Hoops.Infrastructure.Repository
         public Person FindPersonByLastAndFirstName(string lastName, string firstName)
         {
             var person = context.Set<Person>().FirstOrDefault(n => n.LastName == lastName && n.FirstName == firstName);
-            return person;
+            return person ?? new Person();
         }
         public IQueryable<Person> FindPeopleByLastAndFirstName(string lastName, string firstName, bool playerOnly)
         {
@@ -115,7 +115,7 @@ namespace Hoops.Infrastructure.Repository
             }
             else
             {
-                return person;
+                return person ?? new List<Person>().AsQueryable();
             }
         }
 
