@@ -79,7 +79,7 @@ namespace Hoops.Infrastructure.Repository
             {
                 // logger.LogInformation("Retrieving season teams: " + teams.Count.ToString());
             }
-            return teams;
+            return teams ?? new List<Team>();
         }
 
     public IQueryable<Team> GetDivisionTeams(int divisionId)
@@ -100,12 +100,14 @@ namespace Hoops.Infrastructure.Repository
                 if (color != null)
                 {
                     team.TeamName = color.ColorName.ToUpper() + " (" + team.TeamNumber.ToString() + ")";
-                    if (color != null)
-                    {
-                        team.TeamColor = color.ColorName;
-                    }
-                }
+                    
+                            team.TeamColor = color.ColorName;
+                    
                 team.TeamColor = color.ColorName;
+                 } else {
+                        team.TeamColor = "";
+
+                 }
             }
             else
                 team.TeamName = team.TeamNumber;

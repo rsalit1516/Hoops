@@ -122,18 +122,18 @@ namespace Hoops.Infrastructure.Repository
             var person = personRepo.GetById(peopleId);
             var seasonDivisions = GetDivisions(seasonId);
             var division = seasonDivisions
-                .FirstOrDefault(GetPlayerDivisionPredicate(person, (DateTime)person.BirthDate));
+                .FirstOrDefault(GetPlayerDivisionPredicate(person, (DateTime?)person.BirthDate ?? DateTime.MinValue));
 
             var playerRepo = new PlayerRepository(context);
             var player = playerRepo.GetPlayerByPersonAndSeasonId(peopleId, seasonId);
-            if (player != null && (bool)player.PlaysDown)
+            if (player != null && player.PlaysDown == true)
             {
                 var divisionDown = seasonDivisions
-                                .FirstOrDefault(GetPlayerDivisionPredicate(person, (DateTime)person.BirthDate.Value.AddYears(1)));
+                                .FirstOrDefault(GetPlayerDivisionPredicate(person, (DateTime)(person.BirthDate?.AddYears(1) ?? DateTime.MinValue)));
                 if (divisionDown == division)
                 {
                     divisionDown = seasonDivisions
-                                .FirstOrDefault(GetPlayerDivisionPredicate(person, (DateTime)person.BirthDate.Value.AddYears(2)));
+                                .FirstOrDefault(GetPlayerDivisionPredicate(person, (DateTime)(person.BirthDate?.AddYears(2)?? DateTime.MinValue)));
                 }
                 if (divisionDown != null)
                     division = divisionDown;
@@ -142,14 +142,18 @@ namespace Hoops.Infrastructure.Repository
             if (person.GiftedLevelsUp == 1)
             {
                 var divisionUp = seasonDivisions
-                               .FirstOrDefault(GetPlayerDivisionPredicate(person, (DateTime)person.BirthDate.Value.AddYears(-1)));
+                               .FirstOrDefault(GetPlayerDivisionPredicate(person, (DateTime)(person.BirthDate?.AddYears(-1) ?? DateTime.MinValue)));
                 if (divisionUp == division && person.Gender == "F")
                 {
                     divisionUp = seasonDivisions
-                                .FirstOrDefault(GetPlayerDivisionPredicate(person, (DateTime)person.BirthDate.Value.AddYears(-2)));
+                                .FirstOrDefault(GetPlayerDivisionPredicate(person, (DateTime)(person.BirthDate?.AddYears(-2) ?? DateTime.MinValue)));
                 }
                 if (divisionUp != null)
                     division = divisionUp;
+            }
+            if (division == null)
+            {
+                throw new Exception("Division not found for the given criteria.");
             }
             return division.DivisionId;
         }

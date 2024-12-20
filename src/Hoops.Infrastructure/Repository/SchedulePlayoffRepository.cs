@@ -18,6 +18,7 @@ namespace Hoops.Infrastructure.Repository
         public SchedulePlayoffRepository()
         {
             context = new hoopsContext();
+            _logger = new Logger<SchedulePlayoffRepository>(new LoggerFactory());
         }
 
         #region IRepository<T> Members
@@ -29,7 +30,7 @@ namespace Hoops.Infrastructure.Repository
         public SchedulePlayoff GetByScheduleAndGameNo(int scheduleNo, int gameNo)
         {
             var game = context.Set<SchedulePlayoff>().FirstOrDefault(s => s.ScheduleNumber == scheduleNo && s.GameNumber == gameNo);
-            return game;
+            return game ?? new SchedulePlayoff();
         }
 
         #endregion
@@ -57,7 +58,7 @@ namespace Hoops.Infrastructure.Repository
                              GameNumber = sp.GameNumber,
                              LocationNumber = sp.LocationNumber,
                              GameDate = sp.GameDate,
-                             GameTime = ConvertTime((DateTime)sp.GameDate, sp.GameTime),
+                             GameTime = sp.GameDate.HasValue ? ConvertTime(sp.GameDate.Value, sp.GameTime) : sp.GameTime,
                              VisitingTeam = sp.VisitingTeam,
                              HomeTeam = sp.HomeTeam,
                              Descr = sp.Descr,
