@@ -55,7 +55,7 @@ namespace Hoops.Infrastructure.Tests.Repository
         {
             // Arrange
             var personId = 1;
-            _mockDbSet.Setup(m => m.Find(personId)).Returns((Person)null);
+            _mockDbSet.Setup(m => m.Find(personId)).Returns((Person?)null);
 
             // Act
             var result = _repository.GetParents(personId);
