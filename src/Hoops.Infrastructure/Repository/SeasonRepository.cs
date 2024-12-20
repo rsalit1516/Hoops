@@ -49,11 +49,12 @@ namespace Hoops.Infrastructure.Repository
                         .FirstOrDefaultAsync(n =>
                             (n.CurrentSeason == true) &&
                             (n.CompanyId == companyId));
-                if (season == null)
+                var result = await season;
+                if (result == null)
                 {
                     throw new Exception("Season not found");
                 }
-                return await season;
+                return result;
             }
             catch
             {
@@ -73,7 +74,7 @@ namespace Hoops.Infrastructure.Repository
                             (n.Description == seasonDescription) &&
                             (n.CompanyId == companyId));
 
-                return season.SeasonId;
+                return season?.SeasonId ?? 0;
             }
             catch
             {
