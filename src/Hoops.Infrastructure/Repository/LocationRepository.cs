@@ -12,6 +12,10 @@ namespace Hoops.Infrastructure.Repository
         public Location GetByName( string locationName)
         {
             var location = context.Set<Location>().FirstOrDefault(c => c.LocationName == locationName);
+            if (location == null)
+            {
+                throw new InvalidOperationException($"Location with name '{locationName}' not found.");
+            }
             return location;
         }
 

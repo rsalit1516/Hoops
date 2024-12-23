@@ -1,12 +1,8 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Hoops.Infrastructure.Data;
-using Hoops.Infrastructure.Repository;
 using Hoops.Core.Models;
-using Hoops.Core.ViewModels;
 using Hoops.Core.Interface;
 using Microsoft.Extensions.Logging;
 
@@ -19,7 +15,7 @@ namespace csbc_server.Controllers
         private readonly hoopsContext _context;
         private readonly IPersonRepository repository;
         private readonly ILogger<PersonController> _logger;
-        private int companyId = 1;
+        private readonly int companyId = 1;
 
         public PersonController(IPersonRepository repository, ILogger<PersonController> logger)
         {
@@ -31,11 +27,19 @@ namespace csbc_server.Controllers
 
         // GET: api/User
         [HttpGet]
-        public ActionResult<IEnumerable<Person>> GetADPeople()
+        public ActionResult<IEnumerable<Person>> GetPeople()
         {   
             _logger.LogInformation("Retrieving ADs");
-            var games = repository.GetADs(companyId);
-            return Ok(games);
+            var people = repository.GetAll();
+            return Ok(people);
         }        
+         [HttpGet]
+         [Route("GetADs")]
+        public async Task<ActionResult<IEnumerable<Person>>> GetADPeople()
+        {   
+            _logger.LogInformation("Retrieving ADs");
+            var people = await repository.GetADs(companyId);
+            return Ok(people);
+        }       
     }
 }

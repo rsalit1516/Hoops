@@ -12,5 +12,7 @@ export class PeopleService {
 
   constructor() { }
 
-  getData(): Observable<any> { return this.http.get<any>(this.dataService.peopleUrl); }
+  getData(): Observable<any> {
+    return this.http.get<any>(this.dataService.peopleUrl);
+  }
 }

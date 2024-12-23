@@ -69,7 +69,7 @@ namespace Hoops.Infrastructure.Repository
                 dir.City = director.City;
                 dir.State = director.State;
                 dir.Zip = director.Zip;
-                dir.CompanyId = (int)director.CompanyId;
+                dir.CompanyId = director.CompanyId ?? 0;
 
                 vwDirectors.Add(dir);
             }

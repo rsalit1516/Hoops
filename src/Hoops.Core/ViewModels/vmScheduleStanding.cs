@@ -1,3 +1,5 @@
+#nullable enable
+
 namespace Hoops.Core.ViewModels;
 
 public class ScheduleStandingsVM

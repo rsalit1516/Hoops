@@ -2,6 +2,7 @@
 using System.Linq;
 using Hoops.Core.Models;
 using Hoops.Core.Enum;
+using System.Threading.Tasks;
 
 namespace Hoops.Core.Interface
 {
@@ -13,7 +14,7 @@ namespace Hoops.Core.Interface
         int FindByEmail(string email);
         IQueryable<Person> GetByGroup(int companyId, int seasonId, GroupTypes.GroupType group);
         int GetBccList(string lastName, string firstName);
-        IQueryable<Person> GetADs(int companyId);
+        Task<IQueryable<Person>> GetADs(int companyId);
         void RemoveFromHousehold(int p);
         List<string> GetParents(int personId); 
     }

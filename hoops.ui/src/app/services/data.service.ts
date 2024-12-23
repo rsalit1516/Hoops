@@ -32,6 +32,7 @@ export class DataService {
   seasonUrl = this.baseUrl + '/api/Season/';
   currentSeasonUrl = this.baseUrl + '/api/Season/GetCurrentSeason';
   peopleUrl = this.baseUrl + '/api/People';
+  getADsUrl = this.baseUrl + '/api/People';
 
   standingsUrl =
     this.baseUrl + '/api/ScheduleGame/getStandings';

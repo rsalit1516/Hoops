@@ -3,6 +3,7 @@ using Hoops.Core.Models;
 using Hoops.Core.Interface;
 using Hoops.Core.Enum;
 using Hoops.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hoops.Infrastructure.Repository
 {
@@ -181,12 +182,13 @@ namespace Hoops.Infrastructure.Repository
         //    return new List<Person>();
         //}
 
-        public IQueryable<Person> GetADs(int companyId)
+        public async Task<IQueryable<Person>> GetADs(int companyId)
         {
-            var people = context.Set<Person>()
+            var people = await context.Set<Person>()
               .Where(p => p.CompanyId == companyId)
-              .Where(p => p.Ad == true);
-            return people;
+              .Where(p => p.Ad == true)
+              .ToListAsync();
+            return (IQueryable<Person>)people;
         }
 
         public void RemoveFromHousehold(int p)

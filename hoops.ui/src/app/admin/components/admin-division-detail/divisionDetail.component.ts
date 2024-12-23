@@ -16,7 +16,7 @@ import {
   FormBuilder,
   FormControl,
 } from '@angular/forms';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 import { Division } from '../../../domain/division';
 import { DivisionService } from '@app/services/division.service';
