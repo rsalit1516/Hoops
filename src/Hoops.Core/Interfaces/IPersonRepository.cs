@@ -14,7 +14,7 @@ namespace Hoops.Core.Interface
         int FindByEmail(string email);
         IQueryable<Person> GetByGroup(int companyId, int seasonId, GroupTypes.GroupType group);
         int GetBccList(string lastName, string firstName);
-        Task<IQueryable<Person>> GetADs(int companyId);
+        IQueryable<Person> GetADs(int companyId);
         void RemoveFromHousehold(int p);
         List<string> GetParents(int personId); 
     }

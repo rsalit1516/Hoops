@@ -1,10 +1,11 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Hoops.Infrastructure.Data;
 using Hoops.Core.Models;
 using Hoops.Core.Interface;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace csbc_server.Controllers
 {
@@ -35,10 +36,10 @@ namespace csbc_server.Controllers
         }        
          [HttpGet]
          [Route("GetADs")]
-        public async Task<ActionResult<IEnumerable<Person>>> GetADPeople()
+        public ActionResult<IEnumerable<Person>> GetADPeople()
         {   
             _logger.LogInformation("Retrieving ADs");
-            var people = await repository.GetADs(companyId);
+            var people = repository.GetADs(companyId);
             return Ok(people);
         }       
     }
