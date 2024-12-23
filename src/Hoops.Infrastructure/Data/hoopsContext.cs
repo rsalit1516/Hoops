@@ -5,10 +5,68 @@ namespace Hoops.Infrastructure.Data;
 
 public partial class hoopsContext : DbContext
 {
-    public hoopsContext() { }
+    public hoopsContext()
+    {
+        Coaches = null!;
+        Colors = null!;
+        Companies = null!;
+        Content = null!;
+        Directors = null!;
+        Divisions = null!;
+        Households = null!;
+        Location = null!;
+        People = null!;
+        Players = null!;
+        Roles = null!;
+        ScheduleDivTeams = null!;
+        ScheduleGames = null!;
+        ScheduleLocations = null!;
+        SchedulePlayoffs = null!;
+        Seasons = null!;
+        SponsorFees = null!;
+        SponsorPayments = null!;
+        SponsorProfiles = null!;
+        Sponsors = null!;
+        Teams = null!;
+        Users = null!;
+        Version = null!;
+        WebContents = null!;
+        WebContentTypes = null!;
+        VwCoaches = null!;
+        VwDirectors = null!;
+    }
 
     public hoopsContext(DbContextOptions<hoopsContext> options)
-        : base(options) {}
+        : base(options)
+    {
+        Coaches = null!;
+        Colors = null!;
+        Companies = null!;
+        Content = null!;
+        Directors = null!;
+        Divisions = null!;
+        Households = null!;
+        Location = null!;
+        People = null!;
+        Players = null!;
+        Roles = null!;
+        ScheduleDivTeams = null!;
+        ScheduleGames = null!;
+        ScheduleLocations = null!;
+        SchedulePlayoffs = null!;
+        Seasons = null!;
+        SponsorFees = null!;
+        SponsorPayments = null!;
+        SponsorProfiles = null!;
+        Sponsors = null!;
+        Teams = null!;
+        Users = null!;
+        Version = null!;
+        WebContents = null!;
+        WebContentTypes = null!;
+        VwCoaches = null!;
+        VwDirectors = null!;
+    }
 
 
     public virtual DbSet<Coach> Coaches { get; set; }
@@ -239,10 +297,6 @@ public partial class hoopsContext : DbContext
 
             entity.HasIndex(e => new { e.Phone, e.Email, e.HouseId })
                 .HasDatabaseName("idx_DCh_2775_2774_Household");
-
-            entity.Property(e => e.HouseId)
-                .HasColumnName("HouseID")
-                .ValueGeneratedNever();
 
             entity.Property(e => e.Address1).HasMaxLength(50);
             entity.Property(e => e.Address2).HasMaxLength(50);

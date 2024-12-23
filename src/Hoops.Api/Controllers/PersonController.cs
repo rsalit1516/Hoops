@@ -33,7 +33,7 @@ namespace csbc_server.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Person>> GetADPeople()
         {   
-             _logger.LogInformation("Retrieving season games");
+            _logger.LogInformation("Retrieving ADs");
             var games = repository.GetADs(companyId);
             return Ok(games);
         }        
