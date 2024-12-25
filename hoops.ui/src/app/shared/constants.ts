@@ -25,4 +25,32 @@ export class Constants {
 
   /* company */
   public static COMPANYID = 1;
+
+  /* urls */
+  baseUrl = Constants.DEFAULTURL;
+  dotNetCoreUrl = environment.apiUrl;
+  getActiveWebContentUrl = this.dotNetCoreUrl + '/api/webcontent/getActiveWebContent';
+  loginUrl = this.baseUrl + '/api/User/login';
+  directorUrl = this.baseUrl + '/api/Director';
+  seasonGamesUrl = this.baseUrl + '/api/Schedulegame/getSeasonGames';
+  seasonDivisionsUrl = this.baseUrl + '/api/division/GetSeasonDivisions/';
+  playoffGameUrl = this.baseUrl + '/api/SchedulePlayoff/GetSeasonGames';
+  getCurrentSeasonUrl = this.baseUrl + '/api/season/getCurrentSeason';
+  getSeasonTeamsUrl = this.baseUrl + '/api/Team/GetSeasonTeams/';
+  getColorUrl = this.baseUrl + '/api/Color';
+  getLocationUrl = this.baseUrl + '/api/Location';
+  teamPostUrl = this.baseUrl + '/api/Team';
+  teamPutUrl = this.baseUrl + '/api/Team/';
+  getContentUrl = this.baseUrl + '/api/webcontent';
+  getActiveContentUrl = this.baseUrl + '/api/webcontent/getActiveWebContent';
+  postContentUrl = this.baseUrl + '/api/WebContent';
+  putContentUrl = this.baseUrl + '/api/WebContent/';
+  getCurrentSponsors = this.baseUrl + '/api/Sponsor/GetSeasonSponsors/';
+  getLocations = this.baseUrl + '/api/Locations/';
+  seasonUrl = this.baseUrl + '/api/Season/';
+  currentSeasonUrl = this.baseUrl + '/api/Season/GetCurrentSeason';
+  peopleUrl = this.baseUrl + '/api/People';
+  getADsUrl = this.baseUrl + '/api/People/GetADs';
+  standingsUrl = this.baseUrl + '/api/ScheduleGame/getStandings';
+
 }

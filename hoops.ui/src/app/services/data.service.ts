@@ -32,10 +32,9 @@ export class DataService {
   seasonUrl = this.baseUrl + '/api/Season/';
   currentSeasonUrl = this.baseUrl + '/api/Season/GetCurrentSeason';
   peopleUrl = this.baseUrl + '/api/People';
-  getADsUrl = this.baseUrl + '/api/People';
 
-  standingsUrl =
-    this.baseUrl + '/api/ScheduleGame/getStandings';
+  standingsUrl = this.baseUrl + '/api/ScheduleGame/getStandings';
+
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -44,17 +43,21 @@ export class DataService {
 
   constructor (private _http: HttpClient) {
     this.webUrl = environment.apiUrl;
-    // this.webUrl = 'http://csbc-webapi.azurewebsites.net';
-    // this.webUrl = 'https://apicsbc.azurewebsites.net';
     this.dotNetCoreUrl = environment.apiUrl;
     this.getActiveWebContentUrl = this.dotNetCoreUrl + '/api/webcontent/getActiveWebContent';
   }
 
-
-
-
+  get(url: string, data: string) {
+    return this._http
+      .get(url, this.httpOptions)
+      .pipe(
+      tap((data) => {
+        console.log('getContent: ' + JSON.stringify(data))
+  }),
+      catchError(this.handleError('get ', data))
+    );
+  }
   post<T>(data: T, url: string): Observable<T> {
-
     console.log(data);
     console.log(url);
     return this._http
