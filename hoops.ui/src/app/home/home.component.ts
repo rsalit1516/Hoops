@@ -82,7 +82,7 @@ export class HomeComponent implements OnInit {
         this.gameStore.dispatch(new gameActions.LoadDivisions());
         this.store.dispatch(new gameActions.LoadTeams());
         this.store.dispatch(new gameActions.LoadGames());
-        this.store.dispatch(new gameActions.LoadPlayoffGames());
+        // this.store.dispatch(new gameActions.LoadPlayoffGames());
       }
     });
 

@@ -5,7 +5,7 @@ import { Season } from '../domain/season';
 import { DataService } from './data.service';
 import { SeasonService } from './season.service';
 import { HttpClient } from '@angular/common/http';
-import { Injectable, Signal, computed, effect, signal } from '@angular/core';
+import { Injectable, Signal, computed, effect, inject, signal } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 
@@ -16,6 +16,14 @@ import { Constants } from '@app/shared/constants';
   providedIn: 'root',
 })
 export class DivisionService {
+  /* dependency injection */
+  private constants = inject(Constants);
+  private _http = inject(HttpClient);
+  private dataService = inject(DataService);
+  private seasonService = inject(SeasonService);
+  private store = inject(Store<fromAdmin.State>);
+
+
   _division = signal<Division>(new Division());
   get division() {
     return this._division;
@@ -35,9 +43,22 @@ export class DivisionService {
 
   }
 
+  // signal state initialization
+  public state = signal<DivisionState>({
+    isLoading: false,
+    currentDivision: undefined,
+    seasonDivisions: [],
+    error: null
+  })
+
+  /* selectors */
+  isLoading = computed(() => this.state().isLoading);
+  currentDivision = computed(() => this.state().currentDivision);
+  seasinDivisions = computed(() => this.state().seasonDivisions);
+  error = computed(() => this.state().error);
 
   private divisionUrl =
-    this.dataService.webUrl + '/api/division/GetSeasonDivisions/';
+    this.constants.seasonDivisionsUrl;
 
   private season: Season | undefined;
   private _seasonId!: number;
@@ -49,7 +70,7 @@ export class DivisionService {
   }
   // divisions: Division[];
   private selectedSeason$ = this.store.pipe(select(fromAdmin.getSelectedSeason)).subscribe(season => this.season == season);
-  private currentDivision = signal<Division>({
+  private initializeDivision = signal<Division>({
     divisionId: 0,
     divisionDescription: '',
     minDate: new Date(),
@@ -65,17 +86,17 @@ export class DivisionService {
   setCurrentDivision(division: Division): void {
     //this.currentDivision.set(division(
     console.log(division);
-    this.currentDivision.update(division => ({
-      ...division as Division,
-      divisionId: division.divisionId,
-      divisionDescription: division.divisionDescription,
-      minDate: division.minDate,
-      maxDate: division.maxDate,
-      gender: division.gender,
+    // this.currentDivision.update(division => ({
+    //   ...division as Division,
+    //   divisionId: division.divisionId,
+    //   divisionDescription: division.divisionDescription,
+    //   minDate: division.minDate,
+    //   maxDate: division.maxDate,
+    //   gender: division.gender,
       // minDate2: division.minDate2,
       // maxDate2: division.maxDate2,
       // gender2: division.gender2,
-    }));
+    // }));
 
     console.log(this.currentDivision());
     this.getDefaultDivision(Constants.TR2COED);
@@ -90,10 +111,10 @@ export class DivisionService {
     this.getDefaultDivision(Constants.WOMEN);
   }
 
-  getCurrentDivision(): Division {
-    // console.log(this.currentDivision());
-    return this.currentDivision();
-  }
+  // getCurrentDivision(): Division {
+  //   // console.log(this.currentDivision());
+  //   return this.state()['currentDivision'];
+  // }
 
   divisions = signal<Division[]>([]);
 
@@ -113,12 +134,7 @@ export class DivisionService {
       catchError(this.dataService.handleError('getSeasonDivisions', null))
     );
 
-  constructor(
-    private _http: HttpClient,
-    public dataService: DataService,
-    public seasonService: SeasonService,
-    private store: Store<fromAdmin.State>
-  ) {
+  constructor() {
     this.store.pipe(select(fromAdmin.getSelectedSeason)).subscribe(season => {
       this.season = season;
       // console.log(this.season);
@@ -287,4 +303,11 @@ export class DivisionService {
     }
     return 'Other'
   }
+}
+
+export interface DivisionState {
+  isLoading: boolean;
+  currentDivision: Division | undefined;
+  seasonDivisions: Division[];
+  error: string | null;
 }

@@ -7,11 +7,8 @@ using Hoops.Infrastructure.Data;
 
 namespace Hoops.Infrastructure.Repository
 {
-    public class DivisionRepository : EFRepository<Division>, IDivisionRepository
+    public class DivisionRepository(hoopsContext context) : EFRepository<Division>(context), IDivisionRepository
     {
-
-        public DivisionRepository(hoopsContext context) : base(context) { }
-
         public IQueryable<VwDivision> LoadDivisions(int seasonId)
         {
             try

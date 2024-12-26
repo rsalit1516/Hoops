@@ -54,8 +54,8 @@ namespace Hoops.Controllers
         /// </summary>
         /// <param name="seasonId"></param>
         /// <returns></returns>
-        [Route("GetSeasonGames")]
-        [HttpGet]
+        // [Route("GetSeasonGames")]
+        [HttpGet("season/{seasonId}", Name = "GetSeasonGames")]
         public IActionResult GetSeasonGames(int seasonId)
         {
             _logger.LogInformation("Retrieving season games");

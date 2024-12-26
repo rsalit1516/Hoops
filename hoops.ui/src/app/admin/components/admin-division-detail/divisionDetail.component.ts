@@ -69,23 +69,19 @@ export class DivisionDetailComponent implements OnInit {
 
   selectedDivision = signal<Division>(new Division());
   selectedDivisionDescription: string = ''; // = signal<Division>(new Division());
-  get division() {
-    //this will do the trick
-    return this.divisionService.getCurrentDivision();
-  }
-  set division(value) { }
+  division = signal<Division>(new Division());
 
   nameControl = new FormControl('', Validators.required);
 
   divisionForm = this.fb.group({
     name: this.nameControl, //this.division.divisionDescription,
     maxDate1: [
-      formatDate(this.division.maxDate, 'yyyy-MM-dd', 'en'),
+      formatDate(this.division()!.maxDate, 'yyyy-MM-dd', 'en'),
       [Validators.required],
     ],
     //this.division.maxDate,
     minDate1: [
-      formatDate(this.division.minDate, 'yyyy-MM-dd', 'en'),
+      formatDate(this.division()!.minDate, 'yyyy-MM-dd', 'en'),
       Validators.required,
     ], //this.division.minDate,
     gender1: [''],
@@ -115,12 +111,12 @@ export class DivisionDetailComponent implements OnInit {
     this.selectedItem = item;
   }
   constructor(private fb: FormBuilder) {
-    console.log(this.divisionService.getCurrentDivision());
+    console.log(this.divisionService.currentDivision());
     // this.division = this.divisionService.getCurrentDivision();
   }
   ngOnInit(): void {
-    console.log(this.divisionService.getCurrentDivision());
-    this.division = this.divisionService.getCurrentDivision();
+    console.log(this.divisionService.currentDivision());
+    this.division.set(this.divisionService.currentDivision()!);
     console.log(this.division);
     this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
       if (division !== null) {
