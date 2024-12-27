@@ -51,7 +51,7 @@ export class Constants {
   public static seasonUrl = Constants.DEFAULTURL + '/api/Season/';
   public static currentSeasonUrl = Constants.DEFAULTURL + '/api/Season/GetCurrentSeason';
   public static peopleUrl = Constants.DEFAULTURL + '/api/People';
-  public static getADsUrl = Constants.DEFAULTURL + '/api/People/GetADs';
+  public static GET_ADS_URL = Constants.DEFAULTURL + '/api/People/GetADs';
   public static standingsUrl = Constants.DEFAULTURL + '/api/ScheduleGame/getStandings';
 
 }

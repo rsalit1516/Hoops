@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace csbc_server.Controllers
+namespace Hoops.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

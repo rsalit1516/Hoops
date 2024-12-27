@@ -10,14 +10,13 @@ import {Constants } from '../shared/constants';
 export class PeopleService {
   http = inject(HttpClient);
   dataService = inject(DataService);
-  constants = inject(Constants);
 
   constructor() { }
 
   getData(): Observable<any> {
-    return this.http.get<any>(this.constants.peopleUrl);
+    return this.http.get<any>(Constants.peopleUrl);
   }
   getADPeople(): Observable<any> {
-    return this.http.get<any>(this.constants.getADsUrl);
+    return this.http.get<any>(Constants.GET_ADS_URL);
   }
 }

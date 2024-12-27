@@ -193,8 +193,20 @@
         <div class="col-6">
           <fieldset>
             <mat-form-field floatLabel="auto">
-              <mat-label for="divisionForm.get('director')">Director</mat-label>
-              <input matInput type="text" formControlName="director" />
+              <!-- <mat-label for="divisionForm.get('director')">Director</mat-label>
+              <input matInput type="text" formControlName="director" /> -->
+
+              <mat-label>AD</mat-label>
+              <mat-select
+                placeholder="Select AD"
+                [(value)]="selectedDivisionDescription"
+                formControlName="name"
+              >
+                @for (ad of ads(); track
+                ad) {
+                <mat-option [value]="ad"> {{ ad }} </mat-option>
+                }
+              </mat-select>
             </mat-form-field>
           </fieldset>
         </div>

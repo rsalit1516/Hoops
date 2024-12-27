@@ -17,6 +17,7 @@ import {
   FormControl,
 } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 import { Division } from '../../../domain/division';
 import { DivisionService } from '@app/services/division.service';
@@ -34,6 +35,7 @@ import { ConfirmDialogComponent } from '@app/admin/shared/confirm-dialog/confirm
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { DateTime } from 'luxon';
+import { PeopleService } from '@app/services/people.service';
 
 @Component({
   selector: 'csbc-division-detail',
@@ -66,22 +68,28 @@ export class DivisionDetailComponent implements OnInit {
   store = inject(Store<fromAdmin.State>);
   dialog = inject(MatDialog);
   divisionService = inject(DivisionService);
+  peopleService = inject(PeopleService);
 
   selectedDivision = signal<Division>(new Division());
   selectedDivisionDescription: string = ''; // = signal<Division>(new Division());
   division = signal<Division>(new Division());
+  ads = toSignal(this.peopleService.getADPeople());
 
   nameControl = new FormControl('', Validators.required);
 
   divisionForm = this.fb.group({
     name: this.nameControl, //this.division.divisionDescription,
     maxDate1: [
-      formatDate(this.division()!.maxDate, 'yyyy-MM-dd', 'en'),
+      this.division() && this.division().maxDate
+        ? formatDate(this.division().maxDate, 'yyyy-MM-dd', 'en')
+        : '',
       [Validators.required],
     ],
     //this.division.maxDate,
     minDate1: [
-      formatDate(this.division()!.minDate, 'yyyy-MM-dd', 'en'),
+      this.division() && this.division().minDate
+        ? formatDate(this.division().minDate, 'yyyy-MM-dd', 'en')
+        : '',
       Validators.required,
     ], //this.division.minDate,
     gender1: [''],
