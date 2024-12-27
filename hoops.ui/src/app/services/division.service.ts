@@ -17,7 +17,7 @@ import { Constants } from '@app/shared/constants';
 })
 export class DivisionService {
   /* dependency injection */
-  private constants = inject(Constants);
+  // private constants = inject(Constants);
   private _http = inject(HttpClient);
   private dataService = inject(DataService);
   private seasonService = inject(SeasonService);
@@ -57,8 +57,7 @@ export class DivisionService {
   seasinDivisions = computed(() => this.state().seasonDivisions);
   error = computed(() => this.state().error);
 
-  private divisionUrl =
-    this.constants.seasonDivisionsUrl;
+  private divisionUrl = Constants.SEASON_DIVISIONS_URL;
 
   private season: Season | undefined;
   private _seasonId!: number;

@@ -1,7 +1,6 @@
 import {environment} from '../../environments/environment';
 export class Constants {
   public static ALLTEAMS = 'All Teams';
-  public static DEFAULTURL = environment.apiUrl;
 
   /* literals */
   public static GAMESMENU = 'Games';
@@ -27,30 +26,32 @@ export class Constants {
   public static COMPANYID = 1;
 
   /* urls */
-  baseUrl = Constants.DEFAULTURL;
-  dotNetCoreUrl = environment.apiUrl;
-  getActiveWebContentUrl = this.dotNetCoreUrl + '/api/webcontent/getActiveWebContent';
-  loginUrl = this.baseUrl + '/api/User/login';
-  directorUrl = this.baseUrl + '/api/Director';
-  seasonGamesUrl = this.baseUrl + '/api/Schedulegame/getSeasonGames';
-  seasonDivisionsUrl = this.baseUrl + '/api/division/GetSeasonDivisions/';
-  playoffGameUrl = this.baseUrl + '/api/SchedulePlayoff/GetSeasonGames';
-  getCurrentSeasonUrl = this.baseUrl + '/api/season/getCurrentSeason';
-  getSeasonTeamsUrl = this.baseUrl + '/api/Team/GetSeasonTeams/';
-  getColorUrl = this.baseUrl + '/api/Color';
-  getLocationUrl = this.baseUrl + '/api/Location';
-  teamPostUrl = this.baseUrl + '/api/Team';
-  teamPutUrl = this.baseUrl + '/api/Team/';
-  getContentUrl = this.baseUrl + '/api/webcontent';
-  getActiveContentUrl = this.baseUrl + '/api/webcontent/getActiveWebContent';
-  postContentUrl = this.baseUrl + '/api/WebContent';
-  putContentUrl = this.baseUrl + '/api/WebContent/';
-  getCurrentSponsors = this.baseUrl + '/api/Sponsor/GetSeasonSponsors/';
-  getLocations = this.baseUrl + '/api/Locations/';
-  seasonUrl = this.baseUrl + '/api/Season/';
-  currentSeasonUrl = this.baseUrl + '/api/Season/GetCurrentSeason';
-  peopleUrl = this.baseUrl + '/api/People';
-  getADsUrl = this.baseUrl + '/api/People/GetADs';
-  standingsUrl = this.baseUrl + '/api/ScheduleGame/getStandings';
+  public static DEFAULTURL = environment.apiUrl;
+
+  public static baseUrl = Constants.DEFAULTURL;
+  public static dotNetCoreUrl = environment.apiUrl;
+  public static getActiveWebContentUrl = Constants.DEFAULTURL + '/api/webcontent/getActiveWebContent';
+  public static loginUrl = Constants.DEFAULTURL + '/api/User/login';
+  public static directorUrl = Constants.DEFAULTURL + '/api/Director';
+  public static seasonGamesUrl = Constants.DEFAULTURL + '/api/Schedulegame/getSeasonGames';
+  public static SEASON_DIVISIONS_URL = Constants.DEFAULTURL + '/api/division/GetSeasonDivisions/';
+  public static playoffGameUrl = Constants.DEFAULTURL + '/api/SchedulePlayoff/GetSeasonGames';
+  public static getCurrentSeasonUrl = Constants.DEFAULTURL + '/api/season/getCurrentSeason';
+  public static getSeasonTeamsUrl = Constants.DEFAULTURL + '/api/Team/GetSeasonTeams/';
+  public static getColorUrl = Constants.DEFAULTURL + '/api/Color';
+  public static getLocationUrl = Constants.DEFAULTURL + '/api/Location';
+  public static teamPostUrl = Constants.DEFAULTURL + '/api/Team';
+  public static teamPutUrl = Constants.DEFAULTURL + '/api/Team/';
+  public static getContentUrl = Constants.DEFAULTURL + '/api/webcontent';
+  public static getActiveContentUrl = Constants.DEFAULTURL + '/api/webcontent/getActiveWebContent';
+  public static postContentUrl = Constants.DEFAULTURL + '/api/WebContent';
+  public static putContentUrl = Constants.DEFAULTURL + '/api/WebContent/';
+  public static getCurrentSponsors = Constants.DEFAULTURL + '/api/Sponsor/GetSeasonSponsors/';
+  public static getLocations = Constants.DEFAULTURL + '/api/Locations/';
+  public static seasonUrl = Constants.DEFAULTURL + '/api/Season/';
+  public static currentSeasonUrl = Constants.DEFAULTURL + '/api/Season/GetCurrentSeason';
+  public static peopleUrl = Constants.DEFAULTURL + '/api/People';
+  public static getADsUrl = Constants.DEFAULTURL + '/api/People/GetADs';
+  public static standingsUrl = Constants.DEFAULTURL + '/api/ScheduleGame/getStandings';
 
 }
