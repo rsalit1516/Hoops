@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DataService } from './data.service';
 import {Constants } from '../shared/constants';
+import { Person } from '@app/domain/person';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,6 @@ export class PeopleService {
     return this.http.get<any>(Constants.peopleUrl);
   }
   getADPeople(): Observable<any> {
-    return this.http.get<any>(Constants.GET_ADS_URL);
+    return this.http.get<Person[]>(Constants.GET_ADS_URL);
   }
 }

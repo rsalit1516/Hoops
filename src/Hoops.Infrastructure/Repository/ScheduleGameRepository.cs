@@ -10,6 +10,17 @@ namespace Hoops.Infrastructure.Repository
 {
     public class ScheduleGameRepository : EFRepository<ScheduleGame>, IScheduleGameRepository
     {
+        public void Add(ScheduleGame game)
+        {
+            context.ScheduleGames.Add(game);
+            context.SaveChanges();
+        }
+
+        public bool Exists(int id)
+        {
+            return context.ScheduleGames.Any(g => g.ScheduleGamesId == id);
+        }
+    
         private readonly ILogger<ScheduleGameRepository> _logger;
         public ScheduleGameRepository(hoopsContext context, ILogger<ScheduleGameRepository> logger) : base(context)
         {

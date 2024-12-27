@@ -3,20 +3,15 @@ import {
   OnInit,
   inject,
   signal,
-  ChangeDetectionStrategy,
-  effect,
 } from '@angular/core';
 import {
-  UntypedFormGroup,
-  UntypedFormBuilder,
   FormsModule,
   ReactiveFormsModule,
   Validators,
-  FormGroup,
   FormBuilder,
   FormControl,
 } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 
 import { Division } from '../../../domain/division';
@@ -62,7 +57,7 @@ import { PeopleService } from '@app/services/people.service';
     ConfirmDialogComponent,
   ],
   // changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [DivisionService],
+  providers: [DivisionService, PeopleService],
 })
 export class DivisionDetailComponent implements OnInit {
   store = inject(Store<fromAdmin.State>);
