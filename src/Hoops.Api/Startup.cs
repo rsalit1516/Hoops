@@ -39,58 +39,58 @@ namespace Hoops.Api
             //                .GetConnectionString("hoopsContext")));
             if (Environment.IsDevelopment())
             {
-                services
+                _ = services
                     .AddDbContext<hoopsContext>(options =>
                         options
                             .UseSqlServer(Configuration
                                 .GetConnectionString("hoopsContext"),
                             builder =>
                             {
-                                builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
+                                _ = builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
                             }));
             }
             else
             {
-                services
+                _ = services
                     .AddDbContext<hoopsContext>(options =>
                         options
                            .UseSqlServer(Configuration
                                 .GetConnectionString("hoopsContext"),
                             builder =>
                             {
-                                builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
+                                _ = builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
                             }));
             }
 
-            services.AddTransient<hoopsContext>();
-            services.AddTransient<ISeasonRepository, SeasonRepository>();
-            services.AddTransient<IDivisionRepository, DivisionRepository>();
-            services.AddScoped<IRepository<User>, UserRepository>();
-            services.AddTransient<IDirectorRepository, DirectorRepository>();
-            services.AddTransient<ITeamRepository, TeamRepository>();
-            services.AddTransient<IColorRepository, ColorRepository>();
-            services.AddTransient<IScheduleGameRepository, ScheduleGameRepository>();
-            services.AddTransient<ISchedulePlayoffRepository, SchedulePlayoffRepository>();
-            services.AddTransient<IWebContentRepository, WebContentRepository>();
-            services.AddTransient<IWebContentTypeRepository, WebContentTypeRepository>();
-            services.AddTransient<ISponsorRepository, SponsorRepository>();
-            services.AddTransient<IPersonRepository, PersonRepository>();
-            _ = services.AddTransient<ILocationRepository, LocationRepository>();
+            _ = services.AddScoped<hoopsContext>();
+            _ = services.AddScoped<ISeasonRepository, SeasonRepository>();
+            _ = services.AddScoped<IDivisionRepository, DivisionRepository>();
+            _ = services.AddScoped<IRepository<User>, UserRepository>();
+            _ = services.AddScoped<IDirectorRepository, DirectorRepository>();
+            _ = services.AddScoped<ITeamRepository, TeamRepository>();
+            _ = services.AddScoped<IColorRepository, ColorRepository>();
+            _ = services.AddScoped<IScheduleGameRepository, ScheduleGameRepository>();
+            _ = services.AddScoped<ISchedulePlayoffRepository, SchedulePlayoffRepository>();
+            _ = services.AddScoped<IWebContentRepository, WebContentRepository>();
+            _ = services.AddScoped<IWebContentTypeRepository, WebContentTypeRepository>();
+            _ = services.AddScoped<ISponsorRepository, SponsorRepository>();
+            _ = services.AddScoped<IPersonRepository, PersonRepository>();
+            _ = services.AddScoped<ILocationRepository, LocationRepository>();
 
-            services.AddCors(options =>
+            _ = services.AddCors(options =>
                    {
                        options.AddPolicy(name: MyAllowSpecificOrigins,
                                          builder =>
                                          {
-                                             builder.WithOrigins("http://localhost:4200",
+                                             _ = builder.WithOrigins("http://localhost:4200",
                                                                  "http://localhost50364",
                                                                  "https://csbchoops.com")
                                               .AllowAnyHeader()
                                         .AllowAnyMethod();
                                          });
                    });
-            services.AddControllers();
-            services
+            _ = services.AddControllers();
+            _ = services
                 .AddSwaggerGen(c =>
                 {
                     c
@@ -125,7 +125,7 @@ namespace Hoops.Api
                         Path.Combine(AppContext.BaseDirectory, xmlFile);
                     // c.IncludeXmlComments(xmlPath);
                 });
-            services.AddControllers();
+            _ = services.AddControllers();
 
             // call data initializer
             //var seed = new Seed();
@@ -137,15 +137,15 @@ namespace Hoops.Api
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                _ = app.UseDeveloperExceptionPage();
             }
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
-            app.UseSwagger();
+            _ = app.UseSwagger();
 
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
             // specifying the Swagger JSON endpoint.
-            app
+            _ = app
                 .UseSwaggerUI(c =>
                 {
                     c
@@ -154,15 +154,15 @@ namespace Hoops.Api
                     c.RoutePrefix = string.Empty;
                 });
 
-            app.UseHttpsRedirection();
-            app.UseRouting();
-            app.UseCors(MyAllowSpecificOrigins);
-            app.UseAuthorization();
+            _ = app.UseHttpsRedirection();
+            _ = app.UseRouting();
+            _ = app.UseCors(MyAllowSpecificOrigins);
+            _ = app.UseAuthorization();
 
-            app
+            _ = app
                 .UseEndpoints(endpoints =>
                 {
-                    endpoints.MapControllers();
+                    _ = endpoints.MapControllers();
                 });
         }
     }
