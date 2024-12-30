@@ -157,8 +157,8 @@ namespace Hoops.Api
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseCors(MyAllowSpecificOrigins);
-            app.UseAuthorization();
-
+            app.UseAuthentication();
+app.UseAuthorization(); 
             app
                 .UseEndpoints(endpoints =>
                 {
