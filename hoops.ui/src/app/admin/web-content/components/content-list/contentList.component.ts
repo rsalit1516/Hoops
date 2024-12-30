@@ -1,4 +1,4 @@
-import { Component, OnInit, output, inject } from '@angular/core';
+import { Component, OnInit, output, inject, AfterViewInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -14,6 +14,8 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { ContentListToolbarComponent } from '../content-list-toolbar/content-list-toolbar.component';
 import { DateTime } from 'luxon';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 
 @Component({
   selector: 'csbc-content-list',
@@ -29,12 +31,17 @@ import { DateTime } from 'luxon';
     MatTableModule,
     MatIconModule,
     ContentListToolbarComponent,
+    MatSortModule,
+    MatPaginatorModule
   ],
 })
-export class ContentListComponent implements OnInit {
+export class ContentListComponent implements OnInit, AfterViewInit {
   router = inject(Router);
   store = inject(Store<fromContent.State>);
   readonly selectedContent = output<Content>();
+  @ViewChild('contentPaginator') paginator: MatPaginator = inject(MatPaginator);
+  @ViewChild(MatSort) sort: MatSort = inject(MatSort);
+
   contents$!: Observable<WebContent[]>;
   errorMessage: string | undefined;
   pageTitle: string | undefined;
@@ -50,12 +57,17 @@ export class ContentListComponent implements OnInit {
   data: WebContent[] = [];
   filterValue = '';
 
-  constructor() {}
+  constructor () {
+    // this.dataSource.paginator = this.paginator;
+    // this.dataSource.sort = this.sort;
+
+  }
 
   ngOnInit() {
     this.pageTitle = 'Web Site Messages';
     this.refreshData();
     this.dataSource = new MatTableDataSource<WebContent>(this.data);
+
     this.dataSource.filterPredicate = (data: WebContent, filter: string) => {
       const today = DateTime.now().startOf('day').toJSDate();
       const expirationDateString = data.expirationDate.toString();
@@ -68,7 +80,12 @@ export class ContentListComponent implements OnInit {
       isActive ? this.applyFilter() : this.clearFilter();
     });
   }
-  refreshData() {
+  ngAfterViewInit () {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
+  refreshData () {
     this.store.select(fromContent.getContentList).subscribe((data) => {
       this.data = data;
       this.dataSource._updateChangeSubscription();

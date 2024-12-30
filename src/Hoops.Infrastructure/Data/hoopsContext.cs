@@ -5,67 +5,71 @@ namespace Hoops.Infrastructure.Data;
 
 public partial class hoopsContext : DbContext
 {
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
     public hoopsContext()
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
     {
-        Coaches = null!;
-        Colors = null!;
-        Companies = null!;
-        Content = null!;
-        Directors = null!;
-        Divisions = null!;
-        Households = null!;
-        Location = null!;
-        People = null!;
-        Players = null!;
-        Roles = null!;
-        ScheduleDivTeams = null!;
-        ScheduleGames = null!;
-        ScheduleLocations = null!;
-        SchedulePlayoffs = null!;
-        Seasons = null!;
-        SponsorFees = null!;
-        SponsorPayments = null!;
-        SponsorProfiles = null!;
-        Sponsors = null!;
-        Teams = null!;
-        Users = null!;
-        Version = null!;
-        WebContents = null!;
-        WebContentTypes = null!;
-        VwCoaches = null!;
-        VwDirectors = null!;
+        // Coaches = null!;
+        // Colors = null!;
+        // Companies = null!;
+        // Content = null!;
+        // Directors = null!;
+        // Divisions = null!;
+        // Households = null!;
+        // Location = null!;
+        // People = null!;
+        // Players = null!;
+        // Roles = null!;
+        // ScheduleDivTeams = null!;
+        // ScheduleGames = null!;
+        // ScheduleLocations = null!;
+        // SchedulePlayoffs = null!;
+        // Seasons = null!;
+        // SponsorFees = null!;
+        // SponsorPayments = null!;
+        // SponsorProfiles = null!;
+        // Sponsors = null!;
+        // Teams = null!;
+        // Users = null!;
+        // Version = null!;
+        // WebContents = null!;
+        // WebContentTypes = null!;
+        // VwCoaches = null!;
+        // VwDirectors = null!;
     }
 
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
     public hoopsContext(DbContextOptions<hoopsContext> options)
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
         : base(options)
     {
-        Coaches = null!;
-        Colors = null!;
-        Companies = null!;
-        Content = null!;
-        Directors = null!;
-        Divisions = null!;
-        Households = null!;
-        Location = null!;
-        People = null!;
-        Players = null!;
-        Roles = null!;
-        ScheduleDivTeams = null!;
-        ScheduleGames = null!;
-        ScheduleLocations = null!;
-        SchedulePlayoffs = null!;
-        Seasons = null!;
-        SponsorFees = null!;
-        SponsorPayments = null!;
-        SponsorProfiles = null!;
-        Sponsors = null!;
-        Teams = null!;
-        Users = null!;
-        Version = null!;
-        WebContents = null!;
-        WebContentTypes = null!;
-        VwCoaches = null!;
-        VwDirectors = null!;
+        // Coaches = null!;
+        // Colors = null!;
+        // Companies = null!;
+        // Content = null!;
+        // Directors = null!;
+        // Divisions = null!;
+        // Households = null!;
+        // Location = null!;
+        // People = null!;
+        // Players = null!;
+        // Roles = null!;
+        // ScheduleDivTeams = null!;
+        // ScheduleGames = null!;
+        // ScheduleLocations = null!;
+        // SchedulePlayoffs = null!;
+        // Seasons = null!;
+        // SponsorFees = null!;
+        // SponsorPayments = null!;
+        // SponsorProfiles = null!;
+        // Sponsors = null!;
+        // Teams = null!;
+        // Users = null!;
+        // Version = null!;
+        // WebContents = null!;
+        // WebContentTypes = null!;
+        // VwCoaches = null!;
+        // VwDirectors = null!;
     }
 
 

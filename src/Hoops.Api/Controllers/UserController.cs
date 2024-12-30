@@ -23,9 +23,9 @@ namespace csbc_server.Controllers
 
         // GET: api/User
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public ActionResult<IEnumerable<User>> GetUsers()
         {   
-            return await _context.Users.ToListAsync();
+            return _context.Users.ToList();
         }
 
         // GET: api/User/5
