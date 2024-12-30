@@ -74,14 +74,15 @@ export class DivisionDetailComponent implements OnInit {
   nameControl = new FormControl('', Validators.required);
 
   divisionForm = this.fb.group({
-    name: this.nameControl, //this.division.divisionDescription,
+    //this.division.divisionDescription,
+    name: [''],
     maxDate1: [
-      formatDate(this.division()!.maxDate, 'yyyy-MM-dd', 'en'),
+      this.division()?.maxDate ? formatDate(this.division()!.maxDate, 'yyyy-MM-dd', 'en') : '',
       [Validators.required],
     ],
     //this.division.maxDate,
     minDate1: [
-      formatDate(this.division()!.minDate, 'yyyy-MM-dd', 'en'),
+      this.division()?.minDate ? formatDate(this.division()!.minDate, 'yyyy-MM-dd', 'en') : '',
       Validators.required,
     ], //this.division.minDate,
     gender1: [''],
