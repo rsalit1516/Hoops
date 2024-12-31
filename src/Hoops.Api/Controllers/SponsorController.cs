@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using Hoops.Core.Interface;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Hoops.Api.Controllers
 {
