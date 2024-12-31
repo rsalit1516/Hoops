@@ -204,7 +204,7 @@
               >
                 @for (ad of ads(); track
                 ad) {
-                <mat-option [value]="ad"> {{ ad }} </mat-option>
+                <mat-option [value]="ad.personId"> {{ ad.lastName + ', ' + ad.firstName }} </mat-option>
                 }
               </mat-select>
             </mat-form-field>
