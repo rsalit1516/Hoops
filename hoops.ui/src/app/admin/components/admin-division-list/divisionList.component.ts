@@ -5,6 +5,7 @@ import {
   Input,
   input,
   inject,
+  Signal,
 } from '@angular/core';
 
 import { SeasonService } from '../../../services/season.service';
@@ -29,6 +30,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { SeasonSelectComponent } from '@app/admin/admin-shared/season-select/season-select.component';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'csbc-division-list',
@@ -66,7 +68,7 @@ export class DivisionListComponent implements OnInit, OnChanges {
   //     }
   //  }
   // @Input() selectedSeason: Season;
-  divisions: Division[] | undefined;
+  // divisions: Division[] | undefined;
   // subscription: Subscription;
   errorMessage: string | undefined;
   selectedDivision: Division | undefined;
@@ -81,19 +83,23 @@ export class DivisionListComponent implements OnInit, OnChanges {
   ];
   dataSource!: MatTableDataSource<Division>;
   divisions$: Observable<Division[]> | undefined;
+  divisions: Signal<Division[] | undefined> | undefined;
 
   constructor() {}
 
   ngOnInit() {
     this.store.pipe(select(fromAdmin.getSelectedSeason)).subscribe((season) => {
       this.seasonId = season.seasonId;
+      this._divisionService.seasonId = this.seasonId!;
+      // console.log(this.divisions());
+      // this.dataSource = new MatTableDataSource(this._divisionService.divisions());
       this.store.select(fromAdmin.getSeasonDivisions).subscribe((divisions) => {
-        this.divisions = divisions;
-        this.dataSource = new MatTableDataSource(divisions);
+         // this.divisions = toSignal(divisions);
+         this.dataSource = new MatTableDataSource(divisions);
 
         //turn this to effect or load into store
         //this.store.dispatch(new adminActions.)
-      });
+         });
     });
   }
 
@@ -157,3 +163,7 @@ export class DivisionListComponent implements OnInit, OnChanges {
     this.router.navigate(['./admin/division/edit']);
   }
 }
+function WriteableSignal(arg0: Observable<Division[]>) {
+  throw new Error('Function not implemented.');
+}
+

@@ -16,6 +16,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { LocationService } from '@app/admin/admin-shared/services/location.service';
 import { AdminShellSidebarComponent } from '@app/admin/components/admin-shell-sidebar/admin-shell-sidebar.component';
+import { SeasonService } from '@app/services/season.service';
 
 @Component({
     selector: 'csbc-admin-shell',
@@ -52,6 +53,7 @@ export class AdminShellComponent implements OnInit {
   showColors = false;
   showUsers = false;
   shouldRun = true;
+  seasonService = inject(SeasonService);
   colorService = inject(ColorService);
   locationService = inject(LocationService);
   store = inject(Store<fromAdmin.State>);
@@ -59,6 +61,10 @@ export class AdminShellComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
+    this.seasonService.getCurrentSeason().subscribe((season) => {
+      this.seasonService.selectedSeason.set(season);
+      // console.log(season);
+    });
     this.store.dispatch(new contentActions.LoadAdminContent());
     this.store.dispatch(new adminActions.LoadSeasons());
     this.store.select(fromAdmin.getSeasons).subscribe((seasons) => {

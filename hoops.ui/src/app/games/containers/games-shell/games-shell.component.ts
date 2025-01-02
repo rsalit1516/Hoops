@@ -48,7 +48,7 @@ export class GamesShellComponent implements OnInit {
   games: Game[] | undefined;
   currentSeason$: Observable<any> | undefined; // = this.seasonService.currentSeason$.subscribe(season => this.seasonDescription = season.description);
   seasonDescription: string | undefined;
-  divisions$ = this.divisionService.divisions$;
+  // divisions$ = this.divisionService.divisions();
   games$ = this._gameService.seasonGames$;
 
   // TODO: this is a bug that needs to be fixed!

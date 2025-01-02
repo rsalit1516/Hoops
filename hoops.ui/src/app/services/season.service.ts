@@ -1,4 +1,4 @@
-import { Inject, Injectable, signal, WritableSignal } from '@angular/core';
+import { inject, Inject, Injectable, Signal, signal, WritableSignal } from '@angular/core';
 import { map, tap, shareReplay } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
 
@@ -6,16 +6,19 @@ import { Season } from '../domain/season';
 import { DataService } from './data.service';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Injectable()
 export class SeasonService {
+  private http = inject(HttpClient);
+  private dataService = inject(DataService);
   private _seasonUrl = this.dataService.seasonUrl + 'getCurrentSeason';
   private _seasonsUrl = this.dataService.seasonUrl + 'GetAll';
-  public currentSeason!: Observable<Season>;
+  // public currentSeason!: Observable<Season>;
   // private selectedSeason = new Subject<Season>();
-  selectedSeason?: Season | null;
+  // selectedSeason?: Season | null;
   season = signal(new Season());
-  public selectedSeason$: Observable<Season>;
+  // public selectedSeason$: Observable<Season>;
   seasons: Season[] | undefined;
   seasons$ = this.http.get<Season[]>(this._seasonsUrl).pipe(
     // tap(data => console.log('All seasons: ' + JSON.stringify(data))),
@@ -28,19 +31,18 @@ export class SeasonService {
     map(season => season as Season),
     tap(data => console.log('All: ' + JSON.stringify(data))),
     catchError(this.dataService.handleError('getCurrentSeason', null))
-  );
-
-  constructor(private http: HttpClient, @Inject(DataService) private dataService: DataService) {
-
-    this.selectedSeason$ = this.currentSeason;
-    // .currentSeason = this.getCurrent();
-    // this.currentSeason.subscribe((s) =>
-    //   this.selectedSeason = s);
+    );
+  public getCurrentSeason(): Observable<Season | undefined> {
+    return this.http.get<Season>(this.dataService.currentSeasonUrl);
   }
+  currentSeason = toSignal(this.getCurrentSeason());
+  selectedSeason: WritableSignal<Season | undefined> = signal(undefined);
 
-  setSelectedSeason(season: Observable<Season>) {
-    this.selectedSeason$ = season;
-  }
+  constructor() {}
+
+  // setSelectedSeason(season: Observable<Season>) {
+  //   this.selectedSeason$ = season;
+  // }
 
   getSeasons(): Observable<Season[]> {
     return this.http.get<Season[]>(this._seasonsUrl).pipe(

@@ -1,16 +1,25 @@
-import { map, tap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
 import { Division } from '../domain/division';
 import { Season } from '../domain/season';
 import { DataService } from './data.service';
 import { SeasonService } from './season.service';
 import { HttpClient } from '@angular/common/http';
-import { Injectable, Signal, computed, effect, inject, signal } from '@angular/core';
+import {
+  Injectable,
+  Signal,
+  WritableSignal,
+  computed,
+  effect,
+  inject,
+  signal,
+} from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 
 import * as fromAdmin from '../admin/state';
 import { Constants } from '@app/shared/constants';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +31,6 @@ export class DivisionService {
   private dataService = inject(DataService);
   private seasonService = inject(SeasonService);
   private store = inject(Store<fromAdmin.State>);
-
 
   _division = signal<Division>(new Division());
   get division() {
@@ -39,22 +47,21 @@ export class DivisionService {
     // this.division.set(division);
     this.updateDivision(division);
     console.log(this.division());
-    this.currentDivision
-
+    this.currentDivision;
   }
 
   // signal state initialization
   public state = signal<DivisionState>({
     isLoading: false,
-    currentDivision: undefined,
-    seasonDivisions: [],
-    error: null
-  })
 
+    seasonDivisions: [],
+    error: null,
+  });
+  currentDivision = signal<Division | undefined>(undefined);
   /* selectors */
   isLoading = computed(() => this.state().isLoading);
-  currentDivision = computed(() => this.state().currentDivision);
-  seasinDivisions = computed(() => this.state().seasonDivisions);
+  // currentDivision = computed(() => this.state().currentDivision);
+  seasonDivisions = computed(() => this.state().seasonDivisions);
   error = computed(() => this.state().error);
 
   private divisionUrl = Constants.SEASON_DIVISIONS_URL;
@@ -68,7 +75,10 @@ export class DivisionService {
     this._seasonId = seasonId;
   }
   // divisions: Division[];
-  private selectedSeason$ = this.store.pipe(select(fromAdmin.getSelectedSeason)).subscribe(season => this.season == season);
+  private selectedSeason$ = this.store
+    .pipe(select(fromAdmin.getSelectedSeason))
+    .subscribe((season) => this.season == season);
+
   private initializeDivision = signal<Division>({
     divisionId: 0,
     divisionDescription: '',
@@ -85,6 +95,7 @@ export class DivisionService {
   setCurrentDivision(division: Division): void {
     //this.currentDivision.set(division(
     console.log(division);
+    this.currentDivision.set(division);
     // this.currentDivision.update(division => ({
     //   ...division as Division,
     //   divisionId: division.divisionId,
@@ -92,51 +103,62 @@ export class DivisionService {
     //   minDate: division.minDate,
     //   maxDate: division.maxDate,
     //   gender: division.gender,
-      // minDate2: division.minDate2,
-      // maxDate2: division.maxDate2,
-      // gender2: division.gender2,
+    // minDate2: division.minDate2,
+    // maxDate2: division.maxDate2,
+    // gender2: division.gender2,
     // }));
 
     console.log(this.currentDivision());
-    this.getDefaultDivision(Constants.TR2COED);
-    this.getDefaultDivision(Constants.TR4);
-    this.getDefaultDivision(Constants.SIBOYS);
-    this.getDefaultDivision(Constants.INTGIRLS);
-    this.getDefaultDivision(Constants.JVGIRLS);
-    this.getDefaultDivision(Constants.SJVBOYS);
-    this.getDefaultDivision(Constants.HSGIRLS);
-    this.getDefaultDivision(Constants.HSBOYS);
-    this.getDefaultDivision(Constants.MEN);
-    this.getDefaultDivision(Constants.WOMEN);
+    // this.getDefaultDivision(Constants.TR2COED);
+    // this.getDefaultDivision(Constants.TR4);
+    // this.getDefaultDivision(Constants.SIBOYS);
+    // this.getDefaultDivision(Constants.INTGIRLS);
+    // this.getDefaultDivision(Constants.JVGIRLS);
+    // this.getDefaultDivision(Constants.SJVBOYS);
+    // this.getDefaultDivision(Constants.HSGIRLS);
+    // this.getDefaultDivision(Constants.HSBOYS);
+    // this.getDefaultDivision(Constants.MEN);
+    // this.getDefaultDivision(Constants.WOMEN);
+  }
+  divisions: WritableSignal<Division[] | undefined> = signal<
+    Division[] | undefined
+  >(undefined);
+
+  getDivisionsData(): Observable<Division[]> {
+    // return this.store.pipe(
+    //   select(fromAdmin.getSelectedSeason),
+
+    //   switchMap((season) => {
+    //     this.season = season;
+
+        console.log(this.season);
+
+        return this._http
+          .get<Division[]>(this.divisionUrl + this.season!.seasonId)
+          .pipe(
+            tap((data) => {console.log(data)}),
+            catchError(() => of([])));
   }
 
-  // getCurrentDivision(): Division {
-  //   // console.log(this.currentDivision());
-  //   return this.state()['currentDivision'];
-  // }
 
-  divisions = signal<Division[]>([]);
-
-  divisions$ = this._http
-    .get<Division[]>(this.divisionUrl + this.selectedSeason$)
-    .pipe(
-      map((divisions) => {
-        divisions.map(
-          (division) =>
-          ({
-            ...division,
-          } as Division)
-        ),
-          this.divisions.set(divisions);
-      }),
-      // tap(data => console.log('All: ' + JSON.stringify(data))),
-      catchError(this.dataService.handleError('getSeasonDivisions', null))
-    );
+  // .pipe(
+  //   map((divisions) => {
+  //     divisions.map(
+  //       (division) =>
+  //       ({
+  //         ...division,
+  //       } as Division)
+  //     ),
+  //       this.divisions.set(divisions);
+  //   }),
+  // tap(data => console.log('All: ' + JSON.stringify(data))),
+  // // catchError(this.dataService.handleError('getSeasonDivisions', null))
+  // );
 
   constructor() {
-    this.store.pipe(select(fromAdmin.getSelectedSeason)).subscribe(season => {
+    this.store.pipe(select(fromAdmin.getSelectedSeason)).subscribe((season) => {
       this.season = season;
-      // console.log(this.season);
+      console.log(this.season);
     });
   }
 
@@ -144,18 +166,18 @@ export class DivisionService {
     if (seasonId === undefined) {
       seasonId = 2202;
     }
-    return this._http.get<Division[]>(this.divisionUrl + seasonId).pipe(
-      catchError(this.dataService.handleError('getSeasonDivisions', []))
-    );
+    return this._http
+      .get<Division[]>(this.divisionUrl + seasonId)
+      .pipe(catchError(this.dataService.handleError('getSeasonDivisions', [])));
   }
 
   getSeasonDivisions(season: Observable<Season>): Observable<Division[]> {
     season.subscribe(
       (d) =>
-      (this.divisionUrl =
-        this.dataService.webUrl +
-        '/api/division/GetSeasonDivisions/' +
-        d.seasonId)
+        (this.divisionUrl =
+          this.dataService.webUrl +
+          '/api/division/GetSeasonDivisions/' +
+          d.seasonId)
     );
     this.seasonId = 2193;
     if (season !== undefined) {
@@ -170,9 +192,9 @@ export class DivisionService {
     }
     this.divisionUrl =
       this.dataService.webUrl + '/api/division/GetSeasonDivisions/2083'; // + this.seasonId;
-    return this._http.get<Division[]>(this.divisionUrl).pipe(
-      catchError(this.dataService.handleError('getSeasonDivisions', []))
-    );
+    return this._http
+      .get<Division[]>(this.divisionUrl)
+      .pipe(catchError(this.dataService.handleError('getSeasonDivisions', [])));
   }
   getSelectedSeasonDivisions() {
     this._http.get<Division[]>(this.divisionUrl + this.seasonId);
@@ -188,7 +210,7 @@ export class DivisionService {
       Constants.HSGIRLS,
       Constants.HSBOYS,
       Constants.MEN,
-      Constants.WOMEN
+      Constants.WOMEN,
     ];
   }
 
@@ -206,7 +228,7 @@ export class DivisionService {
         division.minDate2 = this.getDivisionMinDate(9);
         division.maxDate2 = this.getDivisionMaxDate(6);
         division.gender2 = 'F';
-        break
+        break;
       }
       case Constants.TR4: {
         division.divisionDescription = Constants.TR4;
@@ -294,19 +316,18 @@ export class DivisionService {
     console.log(division);
   }
   getmatchingDivision(division: string): string {
-
     for (const item of this.standardDivisions()) {
       if (item.toLowerCase() === division.toLowerCase()) {
         return item;
       }
     }
-    return 'Other'
+    return 'Other';
   }
 }
 
 export interface DivisionState {
   isLoading: boolean;
-  currentDivision: Division | undefined;
+  // currentDivision: Division | undefined;
   seasonDivisions: Division[];
   error: string | null;
 }
