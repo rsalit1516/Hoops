@@ -83,11 +83,11 @@ export class DivisionListComponent implements OnInit, OnChanges {
   ];
   dataSource!: MatTableDataSource<Division>;
   divisions$: Observable<Division[]> | undefined;
-  divisions: Signal<Division[] | undefined> | undefined;
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit() {
+    console.log(this._divisionService.divisions());
     this.store.pipe(select(fromAdmin.getSelectedSeason)).subscribe((season) => {
       this.seasonId = season.seasonId;
       this._divisionService.seasonId = this.seasonId!;

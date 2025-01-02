@@ -66,7 +66,14 @@ export class DivisionService {
 
   private divisionUrl = Constants.SEASON_DIVISIONS_URL;
 
-  private season: Season | undefined;
+  private _season: Season | undefined;
+  set season(value: Season | undefined) {
+    this._season = value;
+  }
+  get season() {
+    return this._season;
+  }
+
   private _seasonId!: number;
   get seasonId() {
     return this._seasonId;
@@ -96,17 +103,6 @@ export class DivisionService {
     //this.currentDivision.set(division(
     console.log(division);
     this.currentDivision.set(division);
-    // this.currentDivision.update(division => ({
-    //   ...division as Division,
-    //   divisionId: division.divisionId,
-    //   divisionDescription: division.divisionDescription,
-    //   minDate: division.minDate,
-    //   maxDate: division.maxDate,
-    //   gender: division.gender,
-    // minDate2: division.minDate2,
-    // maxDate2: division.maxDate2,
-    // gender2: division.gender2,
-    // }));
 
     console.log(this.currentDivision());
     // this.getDefaultDivision(Constants.TR2COED);
@@ -125,35 +121,15 @@ export class DivisionService {
   >(undefined);
 
   getDivisionsData(): Observable<Division[]> {
-    // return this.store.pipe(
-    //   select(fromAdmin.getSelectedSeason),
-
-    //   switchMap((season) => {
-    //     this.season = season;
-
-        console.log(this.season);
-
-        return this._http
-          .get<Division[]>(this.divisionUrl + this.season!.seasonId)
-          .pipe(
-            tap((data) => {console.log(data)}),
-            catchError(() => of([])));
+    return this._http
+      .get<Division[]>(this.divisionUrl + this.season!.seasonId)
+      .pipe(
+        tap((data) => {
+          console.log(data);
+        }),
+        catchError(() => of([]))
+      );
   }
-
-
-  // .pipe(
-  //   map((divisions) => {
-  //     divisions.map(
-  //       (division) =>
-  //       ({
-  //         ...division,
-  //       } as Division)
-  //     ),
-  //       this.divisions.set(divisions);
-  //   }),
-  // tap(data => console.log('All: ' + JSON.stringify(data))),
-  // // catchError(this.dataService.handleError('getSeasonDivisions', null))
-  // );
 
   constructor() {
     this.store.pipe(select(fromAdmin.getSelectedSeason)).subscribe((season) => {
