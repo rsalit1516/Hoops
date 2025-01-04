@@ -1,4 +1,4 @@
-import { map, switchMap, tap } from 'rxjs/operators';
+import { delay, map, switchMap, tap } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
 import { Division } from '../domain/division';
 import { Season } from '../domain/season';
@@ -14,12 +14,12 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 
 import * as fromAdmin from '../admin/state';
 import { Constants } from '@app/shared/constants';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 
 @Injectable({
   providedIn: 'root',
@@ -53,16 +53,20 @@ export class DivisionService {
   // signal state initialization
   public state = signal<DivisionState>({
     isLoading: false,
-
+    currentSeason: undefined,
+    currentDivision: undefined,
     seasonDivisions: [],
     error: null,
   });
-  currentDivision = signal<Division | undefined>(undefined);
-  /* selectors */
+
+  // selectors
   isLoading = computed(() => this.state().isLoading);
-  // currentDivision = computed(() => this.state().currentDivision);
+  currentSeason = computed(() => this.state().currentSeason);
+  currentDivision = computed(() => this.state().currentDivision);
   seasonDivisions = computed(() => this.state().seasonDivisions);
   error = computed(() => this.state().error);
+
+  private selectedIdSubject = new Subject<number>();
 
   private divisionUrl = Constants.SEASON_DIVISIONS_URL;
 
@@ -99,59 +103,80 @@ export class DivisionService {
     companyId: 1,
   });
 
-  setCurrentDivision(division: Division): void {
-    //this.currentDivision.set(division(
-    console.log(division);
-    this.currentDivision.set(division);
-
-    console.log(this.currentDivision());
-    // this.getDefaultDivision(Constants.TR2COED);
-    // this.getDefaultDivision(Constants.TR4);
-    // this.getDefaultDivision(Constants.SIBOYS);
-    // this.getDefaultDivision(Constants.INTGIRLS);
-    // this.getDefaultDivision(Constants.JVGIRLS);
-    // this.getDefaultDivision(Constants.SJVBOYS);
-    // this.getDefaultDivision(Constants.HSGIRLS);
-    // this.getDefaultDivision(Constants.HSBOYS);
-    // this.getDefaultDivision(Constants.MEN);
-    // this.getDefaultDivision(Constants.WOMEN);
-  }
   divisions: WritableSignal<Division[] | undefined> = signal<
     Division[] | undefined
   >(undefined);
 
-  getDivisionsData(): Observable<Division[]> {
-    return this._http
-      .get<Division[]>(this.divisionUrl + this.season!.seasonId)
-      .pipe(
-        tap((data) => {
-          console.log(data);
-        }),
-        catchError(() => of([]))
-      );
-  }
 
   constructor() {
     this.store.pipe(select(fromAdmin.getSelectedSeason)).subscribe((season) => {
       this.season = season;
-      console.log(this.season);
     });
+    this.selectedIdSubject.pipe(
+      // Set the loading indicator
+      tap(() => this.setLoadingIndicator(true)),
+      // Set the current member
+      tap(id => this.setCurrentDivision(id)),
+      // Get the related todos
+      switchMap(id => this.getDivisionsData(id)),
+      // To better see the loading message
+      delay(1000),
+      // Ensure the observables are finalized when this service is destroyed
+      takeUntilDestroyed()
+    )
+    .subscribe(seasonDivisions => this.setSeasonDivisions(seasonDivisions));
+  }
+  setSeasonDivisions(seasonDivisions: Division[]): void {
+    throw new Error('Method not implemented.');
+  }
+  setLoadingIndicator(isLoading: boolean): void {
+    this.state.update(state => ({
+      ...state,
+      isLoading: isLoading
+    }));
   }
 
-  getDivisions(seasonId: number): Observable<Division[]> {
-    if (seasonId === undefined) {
-      seasonId = 2202;
-    }
-    return this._http
-      .get<Division[]>(this.divisionUrl + seasonId)
-      .pipe(catchError(this.dataService.handleError('getSeasonDivisions', [])));
+  setCurrentDivision(id: number): void {
+    console.log(id);
+    const division = this.getCurrentDivisionById(id);
+    this.state.update(state => ({
+      ...state,
+      currentMember: division,
+      memberToDos: []
+    }));
   }
+
+  getDivisionsData(id: number): Observable<Division[]> {
+    return this._http
+      .get<Division[]>(Constants.SEASON_DIVISIONS_URL + id)
+      .pipe(catchError(() => of([])));
+  }
+
+  getCurrentDivisionById(id: number) {
+    let division = new Division();
+    for (const item of this.seasonDivisions()) {
+      if (item.divisionId === id) {
+        division = item;
+        return division;
+      }
+    }
+    return division;
+  }
+
+  // getDivisions(seasonId: number): Observable<Division[]> {
+  //   if (seasonId === undefined) {
+  //     seasonId = 2202;
+  //   }
+  //   return this._http
+  //     .get<Division[]>(this.divisionUrl + seasonId)
+  //     .pipe(catchError(this.dataService.handleError('getSeasonDivisions', [])));
+  // }
 
   getSeasonDivisions(season: Observable<Season>): Observable<Division[]> {
     season.subscribe(
       (d) =>
         (this.divisionUrl =
-          this.dataService.webUrl +
+          Constants.SEASON_DIVISIONS_URL+
           '/api/division/GetSeasonDivisions/' +
           d.seasonId)
     );
@@ -167,13 +192,13 @@ export class DivisionService {
       this.seasonId = 2193;
     }
     this.divisionUrl =
-      this.dataService.webUrl + '/api/division/GetSeasonDivisions/2083'; // + this.seasonId;
+    Constants.SEASON_DIVISIONS_URL + '/api/division/GetSeasonDivisions/2083'; // + this.seasonId;
     return this._http
       .get<Division[]>(this.divisionUrl)
       .pipe(catchError(this.dataService.handleError('getSeasonDivisions', [])));
   }
   getSelectedSeasonDivisions() {
-    this._http.get<Division[]>(this.divisionUrl + this.seasonId);
+    this._http.get<Division[]>(Constants.SEASON_DIVISIONS_URL+ this.seasonId);
   }
   standardDivisions() {
     return [
@@ -303,7 +328,8 @@ export class DivisionService {
 
 export interface DivisionState {
   isLoading: boolean;
-  // currentDivision: Division | undefined;
+  currentSeason: Season | undefined;
+  currentDivision: Division | undefined;
   seasonDivisions: Division[];
   error: string | null;
 }

@@ -59,7 +59,7 @@ export class AdminDivisionShellComponent implements OnInit {
   addDivision() {
     console.log('Add Division');
     let division = new Division();
-    this._divisionService.setCurrentDivision(division);
+    this._divisionService.setCurrentDivision(division.divisionId);
     this.store.dispatch(new adminActions.SetSelectedDivision(division));
 
     this.router.navigate(['./admin/division-detail']);

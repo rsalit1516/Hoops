@@ -31,6 +31,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { SeasonSelectComponent } from '@app/admin/admin-shared/season-select/season-select.component';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
     selector: 'csbc-division-list',
@@ -53,11 +54,17 @@ import { toSignal } from '@angular/core/rxjs-interop';
 
 export class DivisionListComponent implements OnInit, OnChanges {
   selectedSeason = input<Season>();
-  private _divisionService = inject(DivisionService);
+  private divisionService = inject(DivisionService);
   private seasonService = inject(SeasonService);
   private store = inject(Store<fromAdmin.State>);
   private router = inject(Router);
 
+    // Signals
+    // users = this.userService.members;
+    isLoading = this.divisionService.isLoading;
+    currentDivision = this.divisionService.currentDivision;
+    //todosForMember = this.divisionService.filteredToDos;
+    errorMessage = this.divisionService.error;
   //  set selectedSeason(value: Season) {
   //     console.log(value);
   //     if (value !== undefined) {
@@ -70,7 +77,7 @@ export class DivisionListComponent implements OnInit, OnChanges {
   // @Input() selectedSeason: Season;
   // divisions: Division[] | undefined;
   // subscription: Subscription;
-  errorMessage: string | undefined;
+  error: string | undefined;
   selectedDivision: Division | undefined;
   seasonId: number | undefined;
   displayedColumns = [
@@ -87,10 +94,10 @@ export class DivisionListComponent implements OnInit, OnChanges {
   constructor() { }
 
   ngOnInit() {
-    console.log(this._divisionService.divisions());
+    console.log(this.divisionService.divisions());
     this.store.pipe(select(fromAdmin.getSelectedSeason)).subscribe((season) => {
       this.seasonId = season.seasonId;
-      this._divisionService.seasonId = this.seasonId!;
+      this.divisionService.seasonId = this.seasonId!;
       // console.log(this.divisions());
       // this.dataSource = new MatTableDataSource(this._divisionService.divisions());
       this.store.select(fromAdmin.getSeasonDivisions).subscribe((divisions) => {
@@ -148,7 +155,7 @@ export class DivisionListComponent implements OnInit, OnChanges {
   addDivision() {
     console.log('Add Division');
     let division = new Division();
-    this._divisionService.setCurrentDivision(division);
+    this.divisionService.setCurrentDivision(division.divisionId);
     this.store.dispatch(new adminActions.SetSelectedDivision(division));
     this.router.navigate(['./admin/division/edit']);
   }
@@ -158,12 +165,23 @@ export class DivisionListComponent implements OnInit, OnChanges {
     this.router.navigate(['./admin/season-setup']);
   }
   getRecord(division: any) {
-    this._divisionService.setCurrentDivision(division);
+    this.divisionService.setCurrentDivision(division);
     this.store.dispatch(new adminActions.SetSelectedDivision(division));
     this.router.navigate(['./admin/division/edit']);
   }
 }
-function WriteableSignal(arg0: Observable<Division[]>) {
-  throw new Error('Function not implemented.');
-}
 
+  // This should be somewhere reusable
+  export function setErrorMessage(err: HttpErrorResponse): string {
+    let errorMessage: string;
+    if (err.error instanceof ErrorEvent) {
+      // A client-side or network error occurred. Handle it accordingly.
+      errorMessage = `An error occurred: ${err.error.message}`;
+    } else {
+      // The backend returned an unsuccessful response code.
+      // The response body may contain clues as to what went wrong,
+      errorMessage = `Backend returned code ${err.status}: ${err.message}`;
+    }
+    console.error(err);
+    return errorMessage;
+  }
