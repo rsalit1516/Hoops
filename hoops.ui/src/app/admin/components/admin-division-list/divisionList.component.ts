@@ -165,7 +165,7 @@ export class DivisionListComponent implements OnInit, OnChanges {
     this.router.navigate(['./admin/season-setup']);
   }
   getRecord(division: any) {
-    this.divisionService.setCurrentDivision(division);
+    this.divisionService.setCurrentDivision(division.divisionId);
     this.store.dispatch(new adminActions.SetSelectedDivision(division));
     this.router.navigate(['./admin/division/edit']);
   }

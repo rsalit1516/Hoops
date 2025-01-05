@@ -154,10 +154,14 @@ export class DivisionService {
 
   getCurrentDivisionById(id: number) {
     let division = new Division();
+    console.log(this.seasonDivisions());
+    console.log(id);
     for (const item of this.seasonDivisions()) {
+      console.log(item);
       if (item.divisionId === id) {
         division = item;
-        return division;
+        console.log(division);
+        return item;
       }
     }
     return division;
@@ -172,31 +176,10 @@ export class DivisionService {
   //     .pipe(catchError(this.dataService.handleError('getSeasonDivisions', [])));
   // }
 
-  getSeasonDivisions(season: Observable<Season>): Observable<Division[]> {
-    season.subscribe(
-      (d) =>
-        (this.divisionUrl =
-          Constants.SEASON_DIVISIONS_URL+
-          '/api/division/GetSeasonDivisions/' +
-          d.seasonId)
-    );
-    this.seasonId = 2193;
-    if (season !== undefined) {
-      if (this.season !== undefined && this.season.seasonId == undefined) {
-        this.seasonId = 2193;
-      } else {
-        season.subscribe((s) => (this.seasonId = s.seasonId ?? 0));
-      }
-    }
-    if (this.seasonId === undefined) {
-      this.seasonId = 2193;
-    }
-    this.divisionUrl =
-    Constants.SEASON_DIVISIONS_URL + '/api/division/GetSeasonDivisions/2083'; // + this.seasonId;
-    return this._http
-      .get<Division[]>(this.divisionUrl)
-      .pipe(catchError(this.dataService.handleError('getSeasonDivisions', [])));
+  getSeasonDivisions(id: number) {
+    return toSignal(this.getDivisionsData(id));
   }
+
   getSelectedSeasonDivisions() {
     this._http.get<Division[]>(Constants.SEASON_DIVISIONS_URL+ this.seasonId);
   }
