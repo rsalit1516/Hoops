@@ -132,7 +132,7 @@ export class DivisionDetailComponent implements OnInit {
 
           this.selectedDivisionDescription = matchingDivision;
           console.log(division);
-          this.nameControl?.setValue(matchingDivision);
+          this.divisionForm.get('name')?.setValue(matchingDivision);
           this.divisionForm
             .get('maxDate1')
             ?.setValue(
