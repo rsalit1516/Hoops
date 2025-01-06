@@ -7,6 +7,7 @@ using Hoops.Infrastructure.Data;
 using Hoops.Core.Models;
 using Hoops.Core.ViewModels;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Hoops.Controllers
 {
