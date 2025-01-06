@@ -34,6 +34,7 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
     MatSortModule,
     MatPaginatorModule
   ],
+  providers: [MatSort, MatPaginator],
 })
 export class ContentListComponent implements OnInit, AfterViewInit {
   router = inject(Router);
@@ -41,7 +42,8 @@ export class ContentListComponent implements OnInit, AfterViewInit {
   readonly selectedContent = output<Content>();
   @ViewChild('contentPaginator') paginator: MatPaginator = inject(MatPaginator);
   @ViewChild(MatSort) sort: MatSort = inject(MatSort);
-
+  showFirstLastButtons = true;
+  pageSize = 10;
   contents$!: Observable<WebContent[]>;
   errorMessage: string | undefined;
   pageTitle: string | undefined;

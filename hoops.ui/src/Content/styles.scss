@@ -598,3 +598,11 @@ a {
   color:v.$color !important;
   font-size: 1.1rem;
 }
+::ng-deep .mat-paginator .mat-icon-button {
+
+  fill: white !important; /* Force the color change */
+}
+::ng-deep .mat-paginator .mat-icon {
+  fill: white !important; /* Force the color change */
+}
+

@@ -22,8 +22,23 @@ div {
 .mat-header-cell {
   font-size: 1.1em;
 }
-// .mat-cell {
-//   // display:block; // flex prevents padding from working
-//   // min-height:auto; // overrides the 'inherit' that set the min height of the row
-//   padding: 12px 8px 12px 4px;
-// }
+
+::ng-deep .mat-paginator .mat-paginator-range-actions .mat-icon-button {
+  fill: white; /* Change this to your desired color */
+}
+::ng-deep .mat-paginator .mat-paginator-range-actions .mat-icon {
+  fill: white; /* Change this to your desired color */
+}
+.mat-mdc-paginator-icon-button svg {
+  fill: white !important; /* Change this to your desired color */
+}
+.mat-paginator .mat-paginator-range-actions .mat-icon-button {
+  color: white; /* Change this to your desired color */
+}
+
+.mat-paginator .mat-paginator-range-actions .mat-icon {
+  color: white; /* Change this to your desired color */
+}
+.mat-mdc-paginator-icon {
+  fill: green !important;
+}

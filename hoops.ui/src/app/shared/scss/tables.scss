@@ -124,3 +124,7 @@ td {
 .mat-mdc-header-row {
   height: 24px;
 }
+
+.mat-mdc-icon-button img, .mat-mdc-icon-button svg {
+  fill: v.$table-font-color;
+}
