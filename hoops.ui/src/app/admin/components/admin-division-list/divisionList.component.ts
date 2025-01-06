@@ -13,11 +13,9 @@ import { DivisionService } from '../../../services/division.service';
 import { Division } from '../../../domain/division';
 import { Season } from '../../../domain/season';
 import { Store, select } from '@ngrx/store';
-// import { CsbcSeasonSelectComponent } from '../../shared/season-select/csbc-season-select.component';
 import * as fromAdmin from '../../state';
 import * as adminActions from '../../state/admin.actions';
 
-import { LoadDivisions } from '../../state/admin.actions';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -30,7 +28,6 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { SeasonSelectComponent } from '@app/admin/admin-shared/season-select/season-select.component';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
@@ -144,7 +141,8 @@ export class DivisionListComponent implements OnInit, OnChanges {
           gender: data[ i ].gender,
           minDate2: data[ i ].minDate2,
           maxDate2: data[ i ].maxDate2,
-          gender2: data[ i ].gender2
+          gender2: data[ i ].gender2,
+          ad: data[i].ad
         };
         divisions.push(division);
       }

@@ -101,6 +101,7 @@ export class DivisionService {
     gender2: 'M',
     seasonId: 0,
     companyId: 1,
+    ad: 0,
   });
 
   divisions: WritableSignal<Division[] | undefined> = signal<
