@@ -7,6 +7,9 @@ import { DataService } from './data.service';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { Constants } from '@app/shared/constants';
+
+
 
 @Injectable()
 export class SeasonService {
@@ -60,7 +63,7 @@ export class SeasonService {
 
   postSeason(season: Season): Observable<Season | null> {
     console.log('posting season');
-    return this.dataService.post<Season>(season, this.dataService.seasonUrl);
+    return this.dataService.post<Season>(season, Constants.seasonUrl);
   }
 
   putSeason(season: Season): any {
