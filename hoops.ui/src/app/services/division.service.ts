@@ -5,14 +5,7 @@ import { Season } from '../domain/season';
 import { DataService } from './data.service';
 import { SeasonService } from './season.service';
 import { HttpClient } from '@angular/common/http';
-import {
-  Injectable,
-  Signal,
-  WritableSignal,
-  computed,
-  effect,
-  inject,
-  signal,
+import { Injectable, Signal, WritableSignal, computed, effect, inject, signal,
 } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
 import { select, Store } from '@ngrx/store';
@@ -27,10 +20,10 @@ import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 export class DivisionService {
   /* dependency injection */
   // private constants = inject(Constants);
-  private _http = inject(HttpClient);
-  private dataService = inject(DataService);
-  private seasonService = inject(SeasonService);
-  private store = inject(Store<fromAdmin.State>);
+  #http = inject(HttpClient);
+  #dataService = inject(DataService);
+  #seasonService = inject(SeasonService);
+  #store = inject(Store<fromAdmin.State>);
 
   _division = signal<Division>(new Division());
   get division() {
@@ -66,7 +59,7 @@ export class DivisionService {
   seasonDivisions = computed(() => this.state().seasonDivisions);
   error = computed(() => this.state().error);
 
-  private selectedIdSubject = new Subject<number>();
+  private selectedIdSubject = new Subject<Division>();
 
   private divisionUrl = Constants.SEASON_DIVISIONS_URL;
 
@@ -86,7 +79,7 @@ export class DivisionService {
     this._seasonId = seasonId;
   }
   // divisions: Division[];
-  private selectedSeason$ = this.store
+  private selectedSeason$ = this.#store
     .pipe(select(fromAdmin.getSelectedSeason))
     .subscribe((season) => this.season == season);
 
@@ -110,22 +103,22 @@ export class DivisionService {
 
 
   constructor() {
-    this.store.pipe(select(fromAdmin.getSelectedSeason)).subscribe((season) => {
+    this.#store.pipe(select(fromAdmin.getSelectedSeason)).subscribe((season) => {
       this.season = season;
     });
     this.selectedIdSubject.pipe(
       // Set the loading indicator
       tap(() => this.setLoadingIndicator(true)),
-      // Set the current member
-      tap(id => this.setCurrentDivision(id)),
-      // Get the related todos
-      switchMap(id => this.getDivisionsData(id)),
+      tap(division => this.setCurrent(division)),
+      tap(division => console.log(division)),
+
+      // switchMap(id => this.getDivisionsData(id)),
       // To better see the loading message
       delay(1000),
       // Ensure the observables are finalized when this service is destroyed
       takeUntilDestroyed()
     )
-    .subscribe(seasonDivisions => this.setSeasonDivisions(seasonDivisions));
+    //.subscribe(seasonDivisions => this.setSeasonDivisions(seasonDivisions));
   }
   setSeasonDivisions(seasonDivisions: Division[]): void {
     throw new Error('Method not implemented.');
@@ -146,11 +139,21 @@ export class DivisionService {
     }));
     console.log(this.state());
   }
+  setCurrent (division: Division): void {
+    this.state.update(state => ({
+      ...state,
+      currentDivision: division
+    }));
+    console.log(this.state);
+  }
 
   getDivisionsData(id: number): Observable<Division[]> {
-    return this._http
+    return this.#http
       .get<Division[]>(Constants.SEASON_DIVISIONS_URL + id)
       .pipe(catchError(() => of([])));
+  }
+  getDvision (division: Division) {
+    this.selectedIdSubject.next(division);
   }
 
   getCurrentDivisionById(id: number) {
@@ -168,21 +171,12 @@ export class DivisionService {
     return division;
   }
 
-  // getDivisions(seasonId: number): Observable<Division[]> {
-  //   if (seasonId === undefined) {
-  //     seasonId = 2202;
-  //   }
-  //   return this._http
-  //     .get<Division[]>(this.divisionUrl + seasonId)
-  //     .pipe(catchError(this.dataService.handleError('getSeasonDivisions', [])));
-  // }
-
   getSeasonDivisions(id: number) {
     return toSignal(this.getDivisionsData(id));
   }
 
   getSelectedSeasonDivisions() {
-    this._http.get<Division[]>(Constants.SEASON_DIVISIONS_URL+ this.seasonId);
+    this.#http.get<Division[]>(Constants.SEASON_DIVISIONS_URL+ this.seasonId);
   }
   standardDivisions() {
     return [
@@ -300,13 +294,13 @@ export class DivisionService {
   save(division: Division) {
     console.log(division);
     if (division.divisionId !== 0) {
-      return this._http
+      return this.#http
         .put<Division>(Constants.DIVISION_URL + '/' + division.divisionId, division)
-        .pipe(catchError(this.dataService.handleError('saveDivision', division)));
+        .pipe(catchError(this.#dataService.handleError('saveDivision', division)));
     }  else {
-      return this._http
+      return this.#http
         .post<Division>(Constants.DIVISION_URL, division)
-        .pipe(catchError(this.dataService.handleError('saveDivision', division)));
+        .pipe(catchError(this.#dataService.handleError('saveDivision', division)));
     }
   }
 

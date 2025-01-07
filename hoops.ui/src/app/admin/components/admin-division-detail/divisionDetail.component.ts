@@ -103,14 +103,14 @@ export class DivisionDetailComponent implements OnInit {
   selectItem(item: string) {
     this.selectedItem = item;
   }
-  constructor(private fb: FormBuilder) {
-    console.log(this.divisionService.currentDivision());
-    // this.division = this.divisionService.getCurrentDivision();
-  }
+  constructor(private fb: FormBuilder) {}
   ngOnInit(): void {
     console.log(this.divisionService.currentDivision());
-    this.division.set(this.divisionService.currentDivision()!);
+    // this.division.set(this.divisionService.currentDivision()!);
     console.log(this.division);
+    let currentDivision = this.divisionService.currentDivision();
+    console.log(currentDivision);
+
     this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
       if (division !== null) {
         if (division?.divisionDescription !== undefined) {
@@ -176,7 +176,8 @@ export class DivisionDetailComponent implements OnInit {
     //console.log(this.newDivision());
   }
 
-  save() {
+  save () {
+    console.log('Save');
     let division = new Division();
     division.divisionDescription = this.divisionForm.get('name')?.value ?? '';
     division.maxDate = new Date(
