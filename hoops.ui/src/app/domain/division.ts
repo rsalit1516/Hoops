@@ -10,6 +10,6 @@ export class Division {
   public minDate2!: Date;
   public maxDate2!: Date;
   gender2: string = 'M';
-  ad: number = 0;
+  directorId: number = 0;
 
 }

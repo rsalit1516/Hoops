@@ -1,16 +1,5 @@
-import {
-  Component,
-  OnInit,
-  inject,
-  signal,
-} from '@angular/core';
-import {
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-  FormBuilder,
-  FormControl,
-} from '@angular/forms';
+import { Component, OnInit, inject, signal } from '@angular/core';
+import { FormsModule, ReactiveFormsModule, Validators, FormBuilder, FormControl} from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 
@@ -211,12 +200,21 @@ export class DivisionDetailComponent implements OnInit {
     if (division.maxDate2 !== null || division.minDate2 !== null) {
       division.gender2 = this.divisionForm.get('gender2')?.value ?? '';
     }
-    division.divisionId = this.divisionService.division().divisionId;
-    division.companyId = 1; // get from constants
-    division.seasonId = this.divisionService.division().seasonId;
+    if (this.divisionService.currentDivision() == undefined) {
+      throw new Error('Division is not defined');
+    } else {
+      let _division = this.divisionService.currentDivision();
+      if (_division!.divisionId === undefined) {
+        division.divisionId = 0;
+      } else {
+        division.divisionId = _division!.divisionId;
+      }
+      division.companyId = 1; // get from constants
+      division.seasonId = this.divisionService.division().seasonId;
 
-    console.log(division);
-    this.divisionService.save(division);
+      console.log(division);
+      this.divisionService.save(division);
+    }
   }
 
   updateErrorMessage() {

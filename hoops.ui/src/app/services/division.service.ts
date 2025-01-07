@@ -101,7 +101,7 @@ export class DivisionService {
     gender2: 'M',
     seasonId: 0,
     companyId: 1,
-    ad: 0,
+    directorId: 0,
   });
 
   divisions: WritableSignal<Division[] | undefined> = signal<
@@ -142,9 +142,9 @@ export class DivisionService {
     const division = this.getCurrentDivisionById(id);
     this.state.update(state => ({
       ...state,
-      currentMember: division,
-      memberToDos: []
+      currentDivision: division
     }));
+    console.log(this.state());
   }
 
   getDivisionsData(id: number): Observable<Division[]> {
@@ -299,7 +299,17 @@ export class DivisionService {
 
   save(division: Division) {
     console.log(division);
+    if (division.divisionId !== 0) {
+      return this._http
+        .put<Division>(Constants.DIVISION_URL + '/' + division.divisionId, division)
+        .pipe(catchError(this.dataService.handleError('saveDivision', division)));
+    }  else {
+      return this._http
+        .post<Division>(Constants.DIVISION_URL, division)
+        .pipe(catchError(this.dataService.handleError('saveDivision', division)));
+    }
   }
+
   getmatchingDivision(division: string): string {
     for (const item of this.standardDivisions()) {
       if (item.toLowerCase() === division.toLowerCase()) {

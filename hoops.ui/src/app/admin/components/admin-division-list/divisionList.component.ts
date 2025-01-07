@@ -142,7 +142,7 @@ export class DivisionListComponent implements OnInit, OnChanges {
           minDate2: data[ i ].minDate2,
           maxDate2: data[ i ].maxDate2,
           gender2: data[ i ].gender2,
-          ad: data[i].ad
+          directorId: data[i].directorId
         };
         divisions.push(division);
       }
