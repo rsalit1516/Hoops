@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, WritableSignal, inject, signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, Validators, FormBuilder, FormControl} from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -51,18 +51,17 @@ import { PeopleService } from '@app/services/people.service';
 export class DivisionDetailComponent implements OnInit {
   store = inject(Store<fromAdmin.State>);
   dialog = inject(MatDialog);
-  divisionService = inject(DivisionService);
-  peopleService = inject(PeopleService);
+  #divisionService = inject(DivisionService);
+  #peopleService = inject(PeopleService);
 
   selectedDivision = signal<Division>(new Division());
   selectedDivisionDescription: string = ''; // = signal<Division>(new Division());
   division = signal<Division>(new Division());
-  ads = toSignal(this.peopleService.getADPeople());
+  ads = toSignal(this.#peopleService.getADPeople());
 
   nameControl = new FormControl('', Validators.required);
-
+  standardDivisions: WritableSignal<string[]> = signal(this.#divisionService.standardDivisions());
   divisionForm = this.fb.group({
-    //this.division.divisionDescription,
     name: [''],
     maxDate1: [
       this.division() && this.division().maxDate
@@ -70,7 +69,6 @@ export class DivisionDetailComponent implements OnInit {
         : '',
       [Validators.required],
     ],
-    //this.division.maxDate,
     minDate1: [
       this.division() && this.division().minDate
         ? formatDate(this.division().minDate, 'yyyy-MM-dd', 'en')
@@ -105,16 +103,16 @@ export class DivisionDetailComponent implements OnInit {
   }
   constructor(private fb: FormBuilder) {}
   ngOnInit(): void {
-    console.log(this.divisionService.currentDivision());
+    console.log(this.#divisionService.currentDivision());
     // this.division.set(this.divisionService.currentDivision()!);
     console.log(this.division);
-    let currentDivision = this.divisionService.currentDivision();
+    let currentDivision = this.#divisionService.currentDivision();
     console.log(currentDivision);
 
     this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
       if (division !== null) {
         if (division?.divisionDescription !== undefined) {
-          const matchingDivision = this.divisionService.getmatchingDivision(
+          const matchingDivision = this.#divisionService.getmatchingDivision(
             division.divisionDescription
           );
           console.log(matchingDivision);
@@ -201,20 +199,20 @@ export class DivisionDetailComponent implements OnInit {
     if (division.maxDate2 !== null || division.minDate2 !== null) {
       division.gender2 = this.divisionForm.get('gender2')?.value ?? '';
     }
-    if (this.divisionService.currentDivision() == undefined) {
+    if (this.#divisionService.currentDivision() == undefined) {
       throw new Error('Division is not defined');
     } else {
-      let _division = this.divisionService.currentDivision();
+      let _division = this.#divisionService.currentDivision();
       if (_division!.divisionId === undefined) {
         division.divisionId = 0;
       } else {
         division.divisionId = _division!.divisionId;
       }
       division.companyId = 1; // get from constants
-      division.seasonId = this.divisionService.division().seasonId;
+      division.seasonId = this.#divisionService.division().seasonId;
 
       console.log(division);
-      this.divisionService.save(division);
+      this.#divisionService.save(division);
     }
   }
 
@@ -231,7 +229,7 @@ export class DivisionDetailComponent implements OnInit {
     this.divisionNameValue.set((event.target as HTMLInputElement).value);
   }
   divisionSelected($event: any) {
-    this.divisionService.createTemporaryDivision($event.value);
+    this.#divisionService.createTemporaryDivision($event.value);
     this.hideNameInput.set($event.value !== 'other');
   }
   deleteRecord() {
@@ -247,5 +245,8 @@ export class DivisionDetailComponent implements OnInit {
         this.deleteRecord();
       }
     });
+  }
+  isFormDirty(): boolean {
+    return this.divisionForm.dirty;
   }
 }

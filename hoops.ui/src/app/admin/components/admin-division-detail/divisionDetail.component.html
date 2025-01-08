@@ -20,7 +20,7 @@
                 formControlName="name"
                 (selectionChange)="divisionSelected($event)"
               >
-                @for (division of divisionService.standardDivisions(); track
+                @for (division of standardDivisions(); track
                 division) {
                 <mat-option [value]="division"> {{ division }} </mat-option>
                 }
@@ -36,27 +36,6 @@
                 value="selectedDivision().divisionDescription"
               />
             </mat-form-field>
-            <!-- <mat-form-field
-              hintLabel="Enter the Division - (max 50 characters)"
-              hidden = "hideName"
-            >
-              <mat-label for="name">Division</mat-label>
-              <input
-                matInput
-                id="name"
-                type="text"
-                formControlName="name"
-                value="selectedDivision().divisionDescription"
-                [ngClass]="{
-                  'has-error':
-                    (divisionForm.get('name')?.touched ||
-                      divisionForm.get('name')?.dirty) &&
-                    !divisionForm.get('name')?.valid
-                }"
-                (input)="onInputDivisionName($event)"
-              />
-            </mat-form-field>
-            <csbc-new-division-selector></csbc-new-division-selector> -->
           </fieldset>
           </div>
         </div>
@@ -214,7 +193,8 @@
     </form>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-raised-button color="primary" (click)="save()">Save</button>
+    <button mat-raised-button color="primary" (click)="save()"
+    [disabled]="!divisionForm.valid || !divisionForm.dirty">Save</button>
     <button
     type="button"
     mat-raised-button
@@ -228,7 +208,7 @@
   <button
     type="button"
     mat-raised-button
-    [routerLink]="['/admin/content']"
+    [routerLink]="['/admin/division']"
     color="primary"
   >
     Cancel
