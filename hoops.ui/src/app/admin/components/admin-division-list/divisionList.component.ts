@@ -51,17 +51,17 @@ import { HttpErrorResponse } from '@angular/common/http';
 
 export class DivisionListComponent implements OnInit, OnChanges {
   selectedSeason = input<Season>();
-  private divisionService = inject(DivisionService);
-  private seasonService = inject(SeasonService);
+  #divisionService = inject(DivisionService);
+  #seasonService = inject(SeasonService);
   private store = inject(Store<fromAdmin.State>);
   private router = inject(Router);
 
   // Signals
   // users = this.userService.members;
-  isLoading = this.divisionService.isLoading;
+  isLoading = this.#divisionService.isLoading;
   // currentDivision = this.divisionService.currentDivision;
   //todosForMember = this.divisionService.filteredToDos;
-  errorMessage = this.divisionService.error;
+  errorMessage = this.#divisionService.error;
   //  set selectedSeason(value: Season) {
   //     console.log(value);
   //     if (value !== undefined) {
@@ -91,10 +91,10 @@ export class DivisionListComponent implements OnInit, OnChanges {
   constructor () { }
 
   ngOnInit () {
-    console.log(this.divisionService.divisions());
+    console.log(this.#divisionService.divisions());
     this.store.pipe(select(fromAdmin.getSelectedSeason)).subscribe((season) => {
       this.seasonId = season.seasonId;
-      this.divisionService.seasonId = this.seasonId!;
+      this.#divisionService.seasonId = this.seasonId!;
       // console.log(this.divisions());
       // this.dataSource = new MatTableDataSource(this._divisionService.divisions());
       this.store.select(fromAdmin.getSeasonDivisions).subscribe((divisions) => {
@@ -153,7 +153,7 @@ export class DivisionListComponent implements OnInit, OnChanges {
   addDivision () {
     console.log('Add Division');
     let division = new Division();
-    this.divisionService.setCurrentDivision(division.divisionId);
+    this.#divisionService.setCurrentDivision(division.divisionId);
     this.store.dispatch(new adminActions.SetSelectedDivision(division));
     this.router.navigate(['./admin/division/edit']);
   }
@@ -164,8 +164,8 @@ export class DivisionListComponent implements OnInit, OnChanges {
   }
   getRecord (division: any) {
     //this.divisionService.setCurrentDivision(division.divisionId);
-    this.divisionService.setCurrent(division);
-    console.log(this.divisionService.currentDivision());
+    this.#divisionService.setCurrent(division);
+    console.log(this.#divisionService.currentDivision());
     //this.divisionService.getDvision(division);
     //console.log(this.divisionService.currentDivision());
     this.store.dispatch(new adminActions.SetSelectedDivision(division));

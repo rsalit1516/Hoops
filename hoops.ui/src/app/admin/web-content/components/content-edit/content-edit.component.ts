@@ -19,7 +19,9 @@ import { Content } from '../../../../domain/content';
 import { ContentService } from '../../content.service';
 import { Store, select } from '@ngrx/store';
 
-import * as fromContent from '../../../state';
+import * as fromContent from '@app/admin/state';
+import * as contentActions from '@app/admin/state/admin.actions';
+
 import { WebContentType } from '@app/domain/webContentType';
 import { FloatLabelType } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
@@ -63,7 +65,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
     MatSelectModule,
     ConfirmDialogComponent,
   ],
-  providers: [ContentService],
+  providers: [ ContentService ]
 })
 export class ContentEditComponent implements OnInit {
   readonly store = inject(Store<fromContent.State>);
@@ -133,7 +135,9 @@ export class ContentEditComponent implements OnInit {
     this.pageTitle = 'Edit Web Content Messages';
     this.hideId = true;
 
-
+    // this.record$.pipe(takeUntil(this.destroy$)).subscribe((record) => {
+    //   if (record) { this.recordForm.patchValue(record); }
+    // });
     this.getContent();
   }
 
@@ -186,7 +190,7 @@ export class ContentEditComponent implements OnInit {
   }
   saveContent () {
     console.log(this.contentForm.value);
-    if (this.contentForm.dirty) {
+    if ( this.contentForm.valid && this.contentForm.dirty ) {
       let content = new WebContent();
       const form = this.contentForm.value;
       // content.webContentType = this.getWebContentType(
@@ -205,6 +209,7 @@ export class ContentEditComponent implements OnInit {
       content.companyId = Constants.COMPANYID;
       content.webContentTypeId = form.webContentTypeControl!;
       this.contentService.saveContent(content);
+      this.store.dispatch(new contentActions.SetAllContent());
       this.router.navigate([ '/admin/content' ]);
     }
   }
@@ -263,5 +268,8 @@ export class ContentEditComponent implements OnInit {
         this.deleteRecord();
       }
     });
+  }
+  isFormDirty(): boolean {
+    return this.contentForm.dirty;
   }
 }

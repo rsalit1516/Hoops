@@ -133,14 +133,14 @@
           formControlName="webContentId"
         />
       </mat-card-content>
-      <div>{{contentForm.valid}}</div>
+      <!-- <div>{{contentForm.valid}}</div> -->
       <mat-card-actions>
         <div class="button-row">
           <button
             type="button"
             mat-raised-button
             type="submit"
-            [disabled]="!contentForm.valid"
+            [disabled]="!contentForm.valid || !contentForm.dirty"
             color="primary"
           >
             Save
