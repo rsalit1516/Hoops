@@ -209,7 +209,7 @@ export class ContentEditComponent implements OnInit {
       content.companyId = Constants.COMPANYID;
       content.webContentTypeId = form.webContentTypeControl!;
       this.contentService.saveContent(content);
-      this.store.dispatch(new contentActions.SetAllContent());
+      this.store.dispatch(new contentActions.LoadAdminContent());
       this.router.navigate([ '/admin/content' ]);
     }
   }
