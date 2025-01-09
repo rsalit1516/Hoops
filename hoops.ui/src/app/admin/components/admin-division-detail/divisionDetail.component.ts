@@ -55,7 +55,8 @@ export class DivisionDetailComponent implements OnInit {
   #peopleService = inject(PeopleService);
 
   selectedDivision = signal<Division>(new Division());
-  selectedDivisionDescription: string = ''; // = signal<Division>(new Division());
+  selectedDivisionDescription: string = ''; // =
+  directorId: number = 0;
   division = signal<Division>(new Division());
   ads = toSignal(this.#peopleService.getADPeople());
 
@@ -65,13 +66,13 @@ export class DivisionDetailComponent implements OnInit {
     name: [''],
     maxDate1: [
       this.division() && this.division().maxDate
-        ? formatDate(this.division().maxDate, 'yyyy-MM-dd', 'en')
+        ? formatDate(this.division().maxDate ?? new Date(), 'yyyy-MM-dd', 'en')
         : '',
       [Validators.required],
     ],
     minDate1: [
       this.division() && this.division().minDate
-        ? formatDate(this.division().minDate, 'yyyy-MM-dd', 'en')
+        ? formatDate(this.division().minDate ?? new Date(), 'yyyy-MM-dd', 'en')
         : '',
       Validators.required,
     ], //this.division.minDate,
@@ -120,20 +121,24 @@ export class DivisionDetailComponent implements OnInit {
           this.selectedDivisionDescription = matchingDivision;
           console.log(division);
           this.divisionForm.get('name')?.setValue(matchingDivision);
-          this.divisionForm
-            .get('maxDate1')
-            ?.setValue(
-              formatDate(division.maxDate, this.dateFormat, this.languageFormat)
-            );
-          this.divisionForm
-            .get('minDate1')
-            ?.setValue(
-              formatDate(division.minDate, this.dateFormat, this.languageFormat)
-            );
+          if (division.maxDate !== undefined) {
+            this.divisionForm
+              .get('maxDate1')
+              ?.setValue(
+                formatDate(division.maxDate, this.dateFormat, this.languageFormat)
+              );
+          }
+          if (division.minDate !== undefined) {
+            this.divisionForm
+              .get('minDate1')
+              ?.setValue(
+                formatDate(division.minDate, this.dateFormat, this.languageFormat)
+              );
+          }
           this.divisionForm
             .get('gender1')
             ?.setValue(this.selectedDivision().gender);
-          if (division.maxDate2 !== null) {
+          if (division.maxDate2 !== undefined) {
             this.divisionForm
               .get('maxDate2')
               ?.setValue(
@@ -145,7 +150,7 @@ export class DivisionDetailComponent implements OnInit {
               );
           }
           // this.divisionForm.get('maxDate2')?.setValue(formatDate(division.maxDate2, this.dateFormat, this.languageFormat));
-          if (division.minDate2 !== null) {
+          if (division.minDate2 !== undefined) {
             this.divisionForm
               .get('minDate2')
               ?.setValue(
@@ -177,6 +182,8 @@ export class DivisionDetailComponent implements OnInit {
   save () {
     console.log('Save');
     let division = new Division();
+    division.companyId = 1; // get from constants
+    division.seasonId = this.#divisionService.seasonId;
     division.divisionDescription = this.divisionForm.get('name')?.value ?? '';
     division.maxDate = new Date(
       this.divisionForm.get('maxDate1')?.value ?? DateTime.now().toISO()
@@ -192,7 +199,7 @@ export class DivisionDetailComponent implements OnInit {
     }
     // this.divisionForm.get('maxDate2')?.setValue(formatDate(division.maxDate2, this.dateFormat, this.languageFormat));
     if (division.minDate2 !== null) {
-      division.minDate = new Date(
+      division.minDate2 = new Date(
         this.divisionForm.get('minDate2')?.value ?? DateTime.now().toISO()
       );
     }
@@ -208,9 +215,9 @@ export class DivisionDetailComponent implements OnInit {
       } else {
         division.divisionId = _division!.divisionId;
       }
-      division.companyId = 1; // get from constants
-      division.seasonId = this.#divisionService.division().seasonId;
-
+      if (this.divisionForm.get('director')?.value !== null) {
+        division.directorId = Number(this.divisionForm.get('director')?.value) ?? 0;
+      }
       console.log(division);
       this.#divisionService.save(division);
     }

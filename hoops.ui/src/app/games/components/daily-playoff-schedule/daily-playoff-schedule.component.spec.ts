@@ -40,7 +40,7 @@ describe('DailyPlayoffScheduleComponent', () => {
         homeTeamScore: 12,
       }
     ];
-    component.playoffGames = mockPlayoffGames;
+    component.setPlayoffGames(mockPlayoffGames);
 
     component.ngOnInit();
 

@@ -95,7 +95,7 @@ export class DivisionListComponent implements OnInit, OnChanges {
     this.store.pipe(select(fromAdmin.getSelectedSeason)).subscribe((season) => {
       this.seasonId = season.seasonId;
       this.#divisionService.seasonId = this.seasonId!;
-      // console.log(this.divisions());
+      console.log(this.seasonId);
       // this.dataSource = new MatTableDataSource(this._divisionService.divisions());
       this.store.select(fromAdmin.getSeasonDivisions).subscribe((divisions) => {
         // this.divisions = toSignal(divisions);

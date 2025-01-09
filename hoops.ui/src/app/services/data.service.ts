@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Division } from '@app/domain/division';
 import { map, tap, catchError } from 'rxjs/operators';
@@ -8,6 +8,7 @@ import { Constants } from '@app/shared/constants';
 
 @Injectable()
 export class DataService {
+  #http = inject(HttpClient);
   webUrl: string;
   baseUrl = Constants.DEFAULTURL;
   dotNetCoreUrl: string;
@@ -35,21 +36,20 @@ export class DataService {
 
   standingsUrl = this.baseUrl + '/api/ScheduleGame/getStandings';
 
-  httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-    }),
-  }
+  httpOptions = new HttpHeaders({
+    'Content-Type': 'application/json'
+  });
 
-  constructor (private _http: HttpClient) {
+
+  constructor () {
     this.webUrl = environment.apiUrl;
     this.dotNetCoreUrl = environment.apiUrl;
     this.getActiveWebContentUrl = this.dotNetCoreUrl + '/api/webcontent/getActiveWebContent';
   }
 
   get(url: string, data: string) {
-    return this._http
-      .get(url, this.httpOptions)
+    return this.#http
+      .get(url, { headers: this.httpOptions })
       .pipe(
       tap((data) => {
         console.log('getContent: ' + JSON.stringify(data))
@@ -57,11 +57,11 @@ export class DataService {
       catchError(this.handleError('get ', data))
     );
   }
-  post<T>(data: T, url: string): Observable<T> {
+  post<T> (url: string, data: T ): Observable<T> {
     console.log(data);
     console.log(url);
-    return this._http
-      .post<T>(url, data, this.httpOptions)
+    return this.#http
+      .post<T>(url, data, { headers: this.httpOptions })
       .pipe(
         tap((data) => console.log('PostContent: ' + JSON.stringify(data))),
         catchError(this.handleError('Error', data)));
@@ -70,19 +70,22 @@ export class DataService {
     console.log(url);
     console.log(data);
     // let url = this.data.putContentUrl + content.webContentId;
-    return this._http
-      .put<T>(url,  data, this.httpOptions)
-      .pipe(
-        tap((data) => console.log('updateContent: ' + JSON.stringify(data))),
-        catchError(this.handleError('updateContent', data))
-      );
+    return this.#http
+      .put<T>(url, data, { headers: this.httpOptions })
+      // .pipe(
+      //   tap((data) => console.log('updateContent: ' + JSON.stringify(data))),
+      //   catchError((error) => {
+      //     this.handleError('updateContent', data)(error);
+      //     throw error;
+      //   })
+      // );
   }
 
     //TODO:  Fix delete method
   delete(url: string) {
     console.log(url);
-    return this._http
-      .delete(url, this.httpOptions)
+    return this.#http
+      .delete(url, { headers: this.httpOptions })
       .pipe(
         tap(data => console.log('deleteContent: ' + JSON.stringify(data))),
         // catchError(this.handleError('deleteContent', []))

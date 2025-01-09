@@ -63,7 +63,7 @@ export class SeasonService {
 
   postSeason(season: Season): Observable<Season | null> {
     console.log('posting season');
-    return this.dataService.post<Season>(season, Constants.seasonUrl);
+    return this.dataService.post<Season>(Constants.seasonUrl, season );
   }
 
   putSeason(season: Season): any {

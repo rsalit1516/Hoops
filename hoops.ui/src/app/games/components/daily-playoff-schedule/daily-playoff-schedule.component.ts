@@ -15,6 +15,9 @@ import { MatTableModule } from '@angular/material/table';
     ]
 })
 export class DailyPlayoffScheduleComponent {
+  setPlayoffGames (mockPlayoffGames: PlayoffGame[]) {
+    throw new Error('Method not implemented.');
+  }
   readonly playoffGames = input.required<PlayoffGame[]>();
   gameDate!: Date;
   displayedColumns = [

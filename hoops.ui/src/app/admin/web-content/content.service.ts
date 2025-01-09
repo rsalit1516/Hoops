@@ -160,7 +160,7 @@ export class ContentService {
   private createContent(content: WebContent): Observable<void | WebContent> {
 
     console.log(content);
-    return this.data.post(content, this.data.postContentUrl).pipe(
+    return this.data.post(this.data.postContentUrl, content ).pipe(
       // tap((data) => console.log('createContent: ' + JSON.stringify(data))),
       map((data) => this.store.dispatch(new contentActions.LoadAdminContent())),
       catchError(this.data.handleError('createContent', content))
