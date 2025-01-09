@@ -294,10 +294,12 @@ export class DivisionService {
   save(division: Division) {
     console.log(division);
     if (division.divisionId !== 0) {
+  console.log('update');
       return this.#dataService.put<Division>(Constants.DIVISION_URL + '/' + division.divisionId, division);
         // .put<Division>(Constants.DIVISION_URL + '/' + division.divisionId, division)
         // .pipe(catchError(this.#dataService.handleError('saveDivision', division)));
-    }  else {
+    } else {
+      console.log('post');
       return this.#dataService.post<Division>(Constants.DIVISION_URL, division);
         // .post<Division>(Constants.DIVISION_URL, division)
         // .pipe(catchError(this.#dataService.handleError('saveDivision', division)));

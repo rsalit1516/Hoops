@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit, WritableSignal, inject, signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, Validators, FormBuilder, FormControl} from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 
 import { Division } from '../../../domain/division';
@@ -53,6 +53,7 @@ export class DivisionDetailComponent implements OnInit {
   dialog = inject(MatDialog);
   #divisionService = inject(DivisionService);
   #peopleService = inject(PeopleService);
+  #router = inject(Router);
 
   selectedDivision = signal<Division>(new Division());
   selectedDivisionDescription: string = ''; // =
@@ -220,6 +221,8 @@ export class DivisionDetailComponent implements OnInit {
       }
       console.log(division);
       this.#divisionService.save(division);
+
+      this.#router.navigate([ '/admin/division' ]);
     }
   }
 

@@ -66,19 +66,20 @@ export class DataService {
         tap((data) => console.log('PostContent: ' + JSON.stringify(data))),
         catchError(this.handleError('Error', data)));
   }
-  put<T>(url: string, data: T ): Observable<T> {
-    console.log(url);
-    console.log(data);
+  put<T>(url: string, data: T): Observable<T> {
+    // console.log(url);
+    // console.log(data);
     // let url = this.data.putContentUrl + content.webContentId;
     return this.#http
       .put<T>(url, data, { headers: this.httpOptions })
-      // .pipe(
-      //   tap((data) => console.log('updateContent: ' + JSON.stringify(data))),
-      //   catchError((error) => {
-      //     this.handleError('updateContent', data)(error);
-      //     throw error;
-      //   })
-      // );
+      //.put<T>(url, data)
+      .pipe(
+        tap((data) => console.log('updateContent: ' + JSON.stringify(data))),
+        //   catchError((error) => {
+        //     this.handleError('updateContent', data)(error);
+        //     throw error;
+        // };
+      );
   }
 
     //TODO:  Fix delete method
