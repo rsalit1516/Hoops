@@ -34,7 +34,7 @@ import { HttpErrorResponse } from '@angular/common/http';
   selector: 'csbc-division-list',
   templateUrl: './divisionList.component.html',
   styleUrls: ['../../admin.component.scss'],
-  providers: [SeasonService, DivisionService],
+  // providers: [SeasonService, DivisionService],
   imports: [
     MatToolbarModule,
     FlexModule,
@@ -54,13 +54,13 @@ export class DivisionListComponent implements OnInit, OnChanges {
   #divisionService = inject(DivisionService);
   #seasonService = inject(SeasonService);
   private store = inject(Store<fromAdmin.State>);
-  private router = inject(Router);
+  #router = inject(Router);
 
   // Signals
   // users = this.userService.members;
   isLoading = this.#divisionService.isLoading;
   // currentDivision = this.divisionService.currentDivision;
-  //todosForMember = this.divisionService.filteredToDos;
+  // todosForMember = this.divisionService.filteredToDos;
   errorMessage = this.#divisionService.error;
   //  set selectedSeason(value: Season) {
   //     console.log(value);
@@ -155,12 +155,12 @@ export class DivisionListComponent implements OnInit, OnChanges {
     let division = new Division();
     this.#divisionService.setCurrentDivision(division.divisionId);
     this.store.dispatch(new adminActions.SetSelectedDivision(division));
-    this.router.navigate(['./admin/division/edit']);
+    this.#router.navigate(['./admin/division/edit']);
   }
   viewTeams (division: any) {
     console.log(division);
     this.store.dispatch(new adminActions.SetSelectedDivision(division));
-    this.router.navigate(['./admin/season-setup']);
+    this.#router.navigate(['./admin/season-setup']);
   }
   getRecord (division: any) {
     //this.divisionService.setCurrentDivision(division.divisionId);
@@ -169,7 +169,7 @@ export class DivisionListComponent implements OnInit, OnChanges {
     //this.divisionService.getDvision(division);
     //console.log(this.divisionService.currentDivision());
     this.store.dispatch(new adminActions.SetSelectedDivision(division));
-    this.router.navigate(['./admin/division/edit']);
+    this.#router.navigate(['./admin/division/edit']);
   }
 }
 

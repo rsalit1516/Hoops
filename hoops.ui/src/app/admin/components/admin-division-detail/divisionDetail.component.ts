@@ -1,4 +1,4 @@
-import { Component, OnInit, WritableSignal, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, WritableSignal, inject, signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, Validators, FormBuilder, FormControl} from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -45,8 +45,8 @@ import { PeopleService } from '@app/services/people.service';
     NewDivisionSelectorComponent,
     ConfirmDialogComponent,
   ],
-  // changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [DivisionService, PeopleService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  // providers: [DivisionService, PeopleService],
 })
 export class DivisionDetailComponent implements OnInit {
   store = inject(Store<fromAdmin.State>);
