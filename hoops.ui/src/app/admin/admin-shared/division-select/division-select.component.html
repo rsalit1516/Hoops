@@ -1,12 +1,13 @@
-<form [formGroup]="selectForm">
-  <h4>Division</h4>
+<div class="select-input">
   <mat-form-field>
-    <mat-select formControlName="divisionControl" class="form-control" >
+    <mat-label>Division</mat-label>
+
+    <mat-select [(value)] = "selectedValue" class="form-control" >
       @for( division of divisions$ | async; track division) {
-      <mat-option [value]="division">
+      <mat-option [value]="division" (click) ="changeDivision(division)">
         {{ division.divisionDescription }}
       </mat-option>
     }
     </mat-select>
   </mat-form-field>
-</form>
+</div>

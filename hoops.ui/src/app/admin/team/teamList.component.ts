@@ -3,13 +3,17 @@ import { TeamService } from '../../services/team.service';
 import { Team } from '../../domain/team';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
+import { SeasonSelectComponent } from '../admin-shared/season-select/season-select.component';
+import { DivisionSelectComponent } from '../admin-shared/division-select/division-select.component';
+import { DailyScheduleComponent } from "../../games/components/daily-schedule/daily-schedule.component";
 
 @Component({
     selector: 'csbc-team-list',
     templateUrl: './teamList.component.html',
     imports: [CommonModule,
-        MatTableModule,
-    ],
+    MatTableModule,
+    SeasonSelectComponent,
+    DivisionSelectComponent, DailyScheduleComponent],
     styleUrls: ['../../shared/scss/tables.scss',
         './team.component.scss',
         '../admin.component.scss']

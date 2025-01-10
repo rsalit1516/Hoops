@@ -29,26 +29,19 @@ export class DivisionSelectComponent implements OnInit {
   selectForm!: UntypedFormGroup;
   divisions$: Observable<Division[]>;
   divisionComponent: UntypedFormControl | null | undefined;
+  selectedValue: number | undefined;
 
   constructor(private store: Store<fromAdmin.State>, private fb: UntypedFormBuilder) {
-    this.selectForm = this.fb.group({
-      divisionControl: new UntypedFormControl(''),
-    });
     this.divisions$ = this.store.select(fromAdmin.getSeasonDivisions);
   }
 
   ngOnInit(): void {
-    this.divisionComponent = this.selectForm.get('divisionControl') as UntypedFormControl;
-    this.divisionComponent?.valueChanges.subscribe((value) => {
-      // console.log(value);
-      this.store.dispatch(new adminActions.SetSelectedDivision(value));
-    });
     this.store.pipe(select(fromAdmin.getSelectedDivision)).subscribe((division) => {
       this.divisionComponent?.setValue(division);
     });
 
   }
-  onClick(division: Division) {
-    // console.log(division);
+  changeDivision(division: Division) {
+      this.store.dispatch(new adminActions.SetSelectedDivision(division));
   }
 }
