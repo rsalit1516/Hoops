@@ -287,7 +287,6 @@ export class DivisionService {
   getDivisionMaxDate(years: number): Date {
     let year = new Date().getFullYear() - years;
     let date = new Date('08/31/' + year);
-    // console.log(date);
     return date;
   }
 

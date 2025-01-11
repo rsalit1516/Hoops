@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import * as fromAdmin from '../../state';
@@ -27,6 +27,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     ]
 })
 export class SeasonSelectComponent implements OnInit {
+  #seasonService = inject(SeasonService);
   seasons$!: Observable<Season[]>;
   // selectForm!: FormGroup;
   selected: Season | undefined;
@@ -40,12 +41,8 @@ export class SeasonSelectComponent implements OnInit {
 
   constructor(
     private store: Store<fromAdmin.State>,
-    // private fb: UntypedFormBuilder,
     private seasonService: SeasonService
   ) {
-    // this.selectForm = this.fb.group({
-    //   seasonControl: new UntypedFormControl(''),
-    // });
     this.seasons$ = this.store.select(fromAdmin.getSeasons);
   }
 
