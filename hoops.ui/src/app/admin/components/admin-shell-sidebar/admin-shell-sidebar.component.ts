@@ -32,7 +32,7 @@ export class AdminShellSidebarComponent {
   seasonSetupItems = [
     { name: 'Seasons', route: '/admin/seasons', isSelected: false },
     { name: 'Divisions', route: '/admin/division', isSelected: false },
-    { name: 'Teams', route: '/admin/teams', isSelected: false },
+    { name: 'Teams', route: '/admin/season-setup', isSelected: false },
     { name: 'Games', route: '/admin/games', isSelected: false },
   ];
   CommunicationSection = 'Communication';
