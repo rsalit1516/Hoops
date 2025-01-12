@@ -12,6 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -27,6 +28,7 @@ import { MatCardModule } from '@angular/material/card';
 export class LoginComponent implements OnInit {
   /* injected */
   #authService = inject(AuthService);
+  #router = inject(Router);
 
   loginForm = this.fb.group({
     userName: ['', Validators.required],
@@ -49,7 +51,7 @@ export class LoginComponent implements OnInit {
     this.isFormValid = false;
   }
   onCancelClick() {
-    // this.dialogRef.close();
+    this.#router.navigate(['home']);
   }
   onSubmitClick() {
     // this.loginForm.markAllAsTouched();
@@ -62,8 +64,7 @@ export class LoginComponent implements OnInit {
       this.store.select(fromUser.getCurrentUser).subscribe(user => {
         console.log(user);
         if (user !== null && user.userId !== 0) {
-          // this.dialogRef.close();
-          // route tp main page
+          this.#router.navigate(['home']);
         } else {
           this.isFormValid = false;
         }
