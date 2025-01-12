@@ -16,7 +16,9 @@ import { MatButtonModule } from '@angular/material/button';
 @Component({
     selector: 'csbc-login-dialog',
     templateUrl: './login-dialog.component.html',
-    styleUrls: ['./login-dialog.component.scss'],
+  styleUrls: ['./login-dialog.component.scss',
+    '../scss/forms.scss',
+    ],
     imports: [CommonModule, MatDialogModule, MatFormFieldModule,
         MatInputModule, MatButtonModule],
     providers: [
@@ -46,13 +48,13 @@ export class LoginDialogComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.isFormValid = true;
+    this.isFormValid = false;
   }
   onCancelClick() {
     this.dialogRef.close();
   }
   onSubmitClick() {
-    this.loginForm.markAllAsTouched();
+    // this.loginForm.markAllAsTouched();
     console.log(this.loginForm);
     if (!this.loginForm.invalid) {
       this.validateUser(
