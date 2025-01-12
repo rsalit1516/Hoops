@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input, input } from '@angular/core';
+import { Component, OnInit, ViewChild, input } from '@angular/core';
 import { Game } from '@domain/game';
 import { Store, select } from '@ngrx/store';
 import { MediaObserver } from '@angular/flex-layout';
@@ -27,7 +27,7 @@ import { MatTableModule } from '@angular/material/table';
 })
 export class DailyScheduleComponent implements OnInit {
   readonly games = input.required<Game[]>();
-  @Input() canEdit!: boolean;
+  canEdit = input.required<boolean>();
   displayedColumns = [
     'gameTime',
     'locationName',
@@ -54,7 +54,7 @@ export class DailyScheduleComponent implements OnInit {
       //   this.currentScreenWidth = change.mqAlias;
         this.setupTable();
         this.store.select(fromGames.getCanEdit).subscribe((canEdit) => {
-          this.canEdit = canEdit;
+          // this.canEdit = canEdit;
           if (canEdit === true) {
             this.displayedColumns.push('actions');
           }
