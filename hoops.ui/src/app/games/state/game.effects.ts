@@ -49,7 +49,7 @@ export class GameEffects {
     mergeMap((action) =>
       this.gameService.getGames().pipe(
         map((games) => new gameActions.LoadGamesSuccess(games)),
-        tap(games => console.log(games)),
+        // tap(games => console.log(games)),
         catchError((err) => of(new gameActions.LoadGamesFail(err)))
       )
     )

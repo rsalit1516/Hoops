@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { AuthService } from '@app/user/auth.service';
 import {
   UntypedFormBuilder,
@@ -24,6 +24,9 @@ import { MatButtonModule } from '@angular/material/button';
     ]
 })
 export class LoginDialogComponent implements OnInit {
+  /* injected */
+  #authService = inject(AuthService);
+
   loginForm = this.fb.group({
     userName: ['', Validators.required],
     password: ['', Validators.required]
@@ -39,7 +42,6 @@ export class LoginDialogComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<LoginDialogComponent>,
     private fb: UntypedFormBuilder,
-    private authService: AuthService,
     private store: Store<fromUser.State>
   ) {}
 
@@ -69,7 +71,7 @@ export class LoginDialogComponent implements OnInit {
     }
   }
   validateUser(userName: string, password: string) {
-    return this.authService.login(userName, password).subscribe(response => {
+    return this.#authService.login(userName, password).subscribe(response => {
       console.log(response);
       if (response !== null) {
         this.store.dispatch(new userActions.SetCurrentUser(response));
