@@ -1,53 +1,57 @@
-<div class="container">
-<mat-card>
-<mat-card-header>
-  <mat-card-title>Login</mat-card-title>
-</mat-card-header>
-<mat-card-content>
-  <form
-    class="login-form"
-    [formGroup]="loginForm"
-    (ngSubmit)="onSubmitClick()"
-  >
-    <mat-error *ngIf="!isFormValid" class="error"
-      >User Name or password is not valid
-    </mat-error>
-    <div>
-      <mat-form-field>
-        <mat-label for="userName">User Name</mat-label>
-        <input matInput type="text" required
-        formControlName="userName" />
-        <!-- <mat-error *ngIf="userName.errors">login name is required</mat-error> -->
-      </mat-form-field>
-    </div>
-    <div>
-      <mat-form-field>
-        <mat-label for="password">Password</mat-label>
+<div class="container d-flex justify-content-center align-items-center mt-6" style="height: 100vh;">
+  <div class="col-4">
+    <mat-card >
+      <mat-card-header>
+        <mat-card-title>Login</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <form
+          class="login-form"
+          [formGroup]="loginForm"
+          (ngSubmit)="onSubmitClick()"
+        >
+          <mat-error *ngIf="!isFormValid && loginForm.dirty" class="error"
+            >User Name or password is not valid
+          </mat-error>
+          <div>
+            <mat-form-field>
+              <mat-label for="userName">User Name</mat-label>
+              <input matInput type="text" required formControlName="userName" />
+              <!-- <mat-error *ngIf="userName.errors">login name is required</mat-error> -->
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field>
+              <mat-label for="password">Password</mat-label>
 
-        <input matInput type="password" required formControlName="password" />
-        <!-- <mat-error *ngIf="password.invalid" class="error"
+              <input
+                matInput
+                type="password"
+                required
+                formControlName="password"
+              />
+              <!-- <mat-error *ngIf="password.invalid" class="error"
         >Password is required!</mat-error
       > -->
-      </mat-form-field>
-    </div>
-  </form>
-</mat-card-content>
-<mat-card-actions>
-  <button
-    mat-raised-button
-    mat-dialog-close
-    (click)="onSubmitClick()"
-    cdkFocusInitial
-    color="primary"
-  >
-    Ok
-  </button>
+            </mat-form-field>
+          </div>
+        </form>
+      </mat-card-content>
+      <mat-card-actions>
+        <button
+          mat-raised-button
+          mat-dialog-close
+          (click)="onSubmitClick()"
+          cdkFocusInitial
+          color="primary"
+        >
+          Ok
+        </button>
 
-  <button mat-raised-button color="primary" (click)="onCancelClick()">
-    Cancel
-  </button>
-  <div>{{ loginForm.invalid }}</div>
-</mat-card-actions>
-
-</mat-card>
+        <button mat-raised-button color="primary" (click)="onCancelClick()">
+          Cancel
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
 </div>
