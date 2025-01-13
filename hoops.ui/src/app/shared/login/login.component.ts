@@ -1,9 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { AuthService } from '@app/user/auth.service';
-import {
-  UntypedFormBuilder,
-  Validators
-} from '@angular/forms';
+import { FormsModule, FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import * as userActions from '../../user/state/user.actions';
 import * as fromUser from '../../user/state';
 import { Store } from '@ngrx/store';
@@ -21,7 +18,10 @@ import { Router } from '@angular/router';
     '../scss/cards.scss',
     '../scss/forms.scss',
     ],
-    imports: [CommonModule, MatFormFieldModule,
+  imports: [ CommonModule,
+    FormsModule,
+        ReactiveFormsModule,
+    MatFormFieldModule,
   MatInputModule, MatButtonModule,
   MatCardModule],
 })
@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
   }
 
   constructor(
-    private fb: UntypedFormBuilder,
+    private fb: FormBuilder,
     private store: Store<fromUser.State>
   ) {}
 
@@ -58,8 +58,8 @@ export class LoginComponent implements OnInit {
     console.log(this.loginForm);
     if (!this.loginForm.invalid) {
       this.validateUser(
-        this.loginForm.controls['userName'].value,
-        this.loginForm.controls['password'].value
+        this.loginForm.get('userName')?.value || '',
+        this.loginForm.get('password')?.value || ''
       );
       this.store.select(fromUser.getCurrentUser).subscribe(user => {
         console.log(user);
