@@ -6,6 +6,7 @@ import * as userActions from '../user/state/user.actions';
 import * as fromUser from '../user/state';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { Constants } from '@app/shared/constants';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +32,7 @@ export class AuthService {
     let tFlag = false;
     console.log(userName + ', ' + password);
     return this.http
-      .get<User>(this.dataService.loginUrl + '/' + userName + '/' + password);
+      .get<User>(Constants.loginUrl + '/' + userName + '/' + password);
 
   }
   setUserState(user: User) {

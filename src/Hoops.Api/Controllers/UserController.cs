@@ -132,7 +132,7 @@ namespace csbc_server.Controllers
         /// <returns></returns>
         [Route("login/{userName}/{password}")]
         [HttpGet]
-        public UserVm Get(string userName, string password)
+        public ActionResult<UserVm> Get(string userName, string password)
         {
             var repo = new UserRepository(_context);
             var userVm = new UserVm();
@@ -146,6 +146,11 @@ namespace csbc_server.Controllers
                     .Select(s => s.ScreenName);
                 var divisions = _context.Divisions.Where(d => d.DirectorId == user.PersonId);
                 userVm = UserVm.ConvertToVm(user, roles, divisions);
+            }
+            else
+            {
+                // Return an error message if the user is not found
+                return BadRequest("Invalid username or password.");
             }
 
             return userVm;

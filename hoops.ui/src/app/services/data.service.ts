@@ -9,11 +9,12 @@ import { Constants } from '@app/shared/constants';
 @Injectable()
 export class DataService {
   #http = inject(HttpClient);
+
   webUrl: string;
   baseUrl = Constants.DEFAULTURL;
   dotNetCoreUrl: string;
   getActiveWebContentUrl: string;
-  loginUrl = this.baseUrl + '/api/User/login';
+  // loginUrl = this.baseUrl + '/api/User/login';
   directorUrl = this.baseUrl + '/api/Director';
   seasonGamesUrl = this.baseUrl + '/api/Schedulegame/getSeasonGames';
   seasonDivisionsUrl = this.baseUrl + '/api/division/GetSeasonDivisions/';
