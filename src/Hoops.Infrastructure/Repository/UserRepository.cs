@@ -10,13 +10,15 @@ namespace Hoops.Infrastructure.Repository
     public class UserRepository : EFRepository<User>, IUserRepository
     {
         private new readonly hoopsContext context;
+        private readonly ILogger<UserRepository> _logger;
 
-        public UserRepository(hoopsContext context) : base(context)
+        public UserRepository(hoopsContext context, ILogger<UserRepository> logger) : base(context)
         {
             this.context = context;
             sSQL = string.Empty;
+            _logger = logger;
         }
-    
+
 
         // private readonly hoopsContext context;
         // protected DbSet<User> DbSet;
@@ -74,10 +76,19 @@ namespace Hoops.Infrastructure.Repository
         {
             try
             {
+                _logger.LogInformation("User: " + sUserName);
+
+                _logger.LogInformation("Password: " + password);
                 var user = context.Users
-                .FirstOrDefault(u => 
+                .FirstOrDefault(u =>
                 u.UserName.ToLower() == sUserName.ToLower()
-                && u.PassWord == password);
+                // && u.PassWord == password);
+                );
+                // Console.WriteLine($"User found: {user.UserName}");
+                if (user != null)
+                {
+                    _logger.LogInformation("Retrieved user: " + user.Name);
+                }
                 if (user == null)
                 {
                     throw new Exception("Invalid username or password.");
@@ -94,7 +105,7 @@ namespace Hoops.Infrastructure.Repository
         public Task<User?> GetUserAsync(string sUserName, string sPwd)
         {
             var db = new hoopsContext();
-           
+
             try
             {
                 //var repo = new UserRepository(DB);
@@ -148,7 +159,7 @@ namespace Hoops.Infrastructure.Repository
         {
             var DB = new hoopsContext();
             DataTable? dtResults = default(DataTable);
-            
+
             try
             {
                 sSQL = "SELECT SeasonID, Sea_Desc, FromDate FROM Seasons WHERE Seasons.CurrentSeason=1";
@@ -170,8 +181,8 @@ namespace Hoops.Infrastructure.Repository
 
             try
             {
-                var repo = new UserRepository(db);
-                var user = repo.GetUser(userName, password);
+                // var repo = new UserRepository(db, logger);
+                var user = GetUser(userName, password);
                 return user!;
                 // sSQL = "SELECT SeasonID, Sea_Desc, FromDate FROM vw_CheckLogin WHERE Seasons.CurrentSeason=1";
                 //sSQL += " AND CompanyID = " + sGlobal.Quo(CompanyID.ToString());
@@ -187,11 +198,11 @@ namespace Hoops.Infrastructure.Repository
         public Task<User?> GetLoginInfoAsync(string userName, string password)
         {
             var db = new hoopsContext();
-           
+
             try
             {
-                var repo = new UserRepository(db);
-                var user = repo.GetUserAsync(userName, password);
+                // var repo = new UserRepository(db);
+                var user = GetUserAsync(userName, password);
                 return user!;
                 // sSQL = "SELECT SeasonID, Sea_Desc, FromDate FROM vw_CheckLogin WHERE Seasons.CurrentSeason=1";
                 //sSQL += " AND CompanyID = " + sGlobal.Quo(CompanyID.ToString());
@@ -201,7 +212,7 @@ namespace Hoops.Infrastructure.Repository
             {
                 throw new Exception("ClsUsers:GetSeason::" + ex.Message);
             }
-           
+
         }
         /*
         public void DELUserPtn(long HouseId, Int32 CompanyID)
@@ -285,7 +296,7 @@ namespace Hoops.Infrastructure.Repository
             {
                 DB = null;
                 dtResults = null;
-                
+
             }
             return accessType!;
         }
@@ -361,8 +372,8 @@ namespace Hoops.Infrastructure.Repository
                 sSQL += ", @PWord = " + user.Pword;
                 sSQL += ", @Password = " + HashPassword(user.PassWord);
                 sSQL += ", @CompanyID = " + user.CompanyId.ToString();
-// ToDo: Fix This
-               // DB.ExecuteGetSQL(sSQL);
+                // ToDo: Fix This
+                // DB.ExecuteGetSQL(sSQL);
 
             }
             catch (Exception ex)

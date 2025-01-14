@@ -2,11 +2,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Hoops.Infrastructure.Data;
-using Hoops.Infrastructure.Repository;
 using Hoops.Core.Models;
 using Hoops.Core.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Hoops.Core.Interface;
 
 namespace csbc_server.Controllers
 {
@@ -15,10 +16,15 @@ namespace csbc_server.Controllers
     public class UserController : ControllerBase
     {
         private readonly hoopsContext _context;
+        private readonly IUserRepository repository;
+        private readonly ILogger<UserController> _logger;
 
-        public UserController(hoopsContext context)
+        public UserController(hoopsContext context, IUserRepository repository, ILogger<UserController> logger)
         {
             _context = context;
+            this.repository = repository;
+            _logger = logger;
+            _logger.LogDebug(1, "NLog injected into UserController");
         }
 
         // GET: api/User
@@ -130,14 +136,15 @@ namespace csbc_server.Controllers
         /// <param name="userName"></param>
         /// <param name="password"></param>
         /// <returns></returns>
+/// 
         [Route("login/{userName}/{password}")]
         [HttpGet]
         public ActionResult<UserVm> Get(string userName, string password)
         {
-            var repo = new UserRepository(_context);
+            // var repo = new UserRepository(_context, logger);
             var userVm = new UserVm();
             //get user - what if user is invalid?
-            var user = repo.GetUser(userName, password);
+            var user = repository.GetUser(userName, password);
             if (user != null)
             {
                 var context = new hoopsContext();

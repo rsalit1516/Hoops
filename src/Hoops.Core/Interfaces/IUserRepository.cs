@@ -6,5 +6,6 @@ namespace Hoops.Core.Interface
 {
     public interface IUserRepository : IRepository<User>
     {
+        User GetUser(string userName, string password);
     }
 }

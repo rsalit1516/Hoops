@@ -6,6 +6,7 @@ using Hoops.Core.Models;
 using Hoops.Core.ViewModels;
 using Hoops.Infrastructure.Repository;
 using Hoops.Infrastructure.Data;
+using Microsoft.Extensions.Logging;
 
 namespace Hoops.Data
 {
@@ -208,7 +209,9 @@ namespace Hoops.Data
                 InitHouseholds(db);
                 InitPersonTest(db);
                 Person person;
-                var rep = new UserRepository(db);
+                var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+                var logger = loggerFactory.CreateLogger<UserRepository>();
+                var rep = new UserRepository(db, logger);
 
                 for (int i = 0; i < HouseholdLastNames.Count; i++)
                 {
