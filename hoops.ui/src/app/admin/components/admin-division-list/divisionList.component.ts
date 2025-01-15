@@ -22,7 +22,6 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { DatePipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { FlexModule } from '@angular/flex-layout/flex';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatInputModule } from '@angular/material/input';
@@ -37,7 +36,6 @@ import { HttpErrorResponse } from '@angular/common/http';
   // providers: [SeasonService, DivisionService],
   imports: [
     MatToolbarModule,
-    FlexModule,
     MatButtonModule,
     MatTableModule,
     MatIconModule,

@@ -1,1 +1,22 @@
 <p>household-search works!</p>
+<mat-card>
+<mat-card-header>
+  <mat-card-title>Household Search</mat-card-title>
+</mat-card-header>
+<mat-card-content>
+
+ <form class="form-horizontal"
+ (ngSubmit)="search()"
+ [formGroup]="searchForm">
+<Address>
+  Phone
+  Email
+
+
+</Address>
+</form>
+</mat-card-content>
+<mat-card-actions>
+  <button mat-raised-button color="primary" type="submit" >Search</button>
+</mat-card-actions>
+</mat-card>

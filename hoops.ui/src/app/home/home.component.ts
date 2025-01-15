@@ -15,7 +15,6 @@ import * as fromGames from '../games/state';
 import { SponsorListComponent } from './components/sponsor-list/sponsor-list.component';
 import { CsbcAnnouncementsComponent } from './components/announcements/announcements.component';
 import { CsbcHomeSidebarComponent } from './components/home-sidebar/home-sidebar.component';
-import { ExtendedModule } from '@angular/flex-layout/extended';
 import { NgClass } from '@angular/common';
 import { HomeCenterComponent } from './components/home-center/home-center.component';
 
@@ -26,7 +25,6 @@ import { HomeCenterComponent } from './components/home-center/home-center.compon
     imports: [
         HomeCenterComponent,
         NgClass,
-        ExtendedModule,
         CsbcHomeSidebarComponent,
         CsbcAnnouncementsComponent,
         SponsorListComponent,

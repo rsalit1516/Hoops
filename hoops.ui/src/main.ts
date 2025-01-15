@@ -32,13 +32,13 @@ if (environment.production) {
 
 bootstrapApplication(AppComponent, {
     providers: [
-        importProvidersFrom(BrowserModule, AppRoutingModule, ReactiveFormsModule, FormsModule, HomeModule, GamesModule, AdminModule, LoginRoutingModule, LayoutModule, UserModule, UserModule, StoreModule.forRoot(reducers, { metaReducers }), 
+        importProvidersFrom(BrowserModule, AppRoutingModule, ReactiveFormsModule, FormsModule, HomeModule, GamesModule, AdminModule, LoginRoutingModule, LayoutModule, UserModule, UserModule, StoreModule.forRoot(reducers, { metaReducers }),
         // StoreModule.forRoot({}),
         StoreDevtoolsModule.instrument({
             name: 'CSBC Site',
             maxAge: 25,
             logOnly: environment.production
-        , connectInZone: true}), 
+        , connectInZone: true}),
         // StoreModule.forRoot(reducers, { metaReducers }),
         EffectsModule.forRoot([]), StoreModule.forRoot({}, {
             runtimeChecks: {

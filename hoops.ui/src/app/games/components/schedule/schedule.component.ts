@@ -6,7 +6,6 @@ import * as fromUser from '../../../user/state';
 import * as gameActions from '../../state/games.actions';
 
 import { GameScoreDialogComponent } from '../game-score-dialog/game-score-dialog.component';
-import { MediaObserver } from '@angular/flex-layout';
 import { GameService } from '@app/games/game.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DailyScheduleComponent } from '../daily-schedule/daily-schedule.component';

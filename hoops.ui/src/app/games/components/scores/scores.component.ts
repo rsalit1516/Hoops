@@ -7,7 +7,6 @@ import * as fromUser from '../../../user/state';
 
 import { Game } from '@app/domain/game';
 import { User } from '@app/domain/user';
-import { MediaObserver } from '@angular/flex-layout';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
@@ -22,7 +21,7 @@ import { NgIf, DatePipe, CommonModule } from '@angular/common';
         '../../containers/games-shell/games-shell.component.scss'
     ],
   imports: [CommonModule,
-    // 
+    //
     MatTableModule,
     // NgIf,
     MatButtonModule,

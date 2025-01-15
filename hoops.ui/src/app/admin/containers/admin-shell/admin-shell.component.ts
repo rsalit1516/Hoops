@@ -1,10 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import {
-  RouterLink,
-  RouterLinkActive,
-  RouterOutlet,
-} from '@angular/router';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
 import * as adminActions from '../../state/admin.actions';
 import * as contentActions from '../../state/admin.actions';
@@ -20,30 +16,28 @@ import { SeasonService } from '@app/services/season.service';
 import { DivisionService } from '@app/services/division.service';
 
 @Component({
-    selector: 'csbc-admin-shell',
-    template: `
-  <div class="container-fluid">
-  <div class="row">
-    <div class="col-2 nav-wrapper">
-  <app-admin-shell-sidebar></app-admin-shell-sidebar>
-
+  selector: 'csbc-admin-shell',
+  template: ` <div class="container mx-auto px-4">
+    <div class="flex flex-wrap -mx-2">
+      <div class="w-2/12 px-2 nav-wrapper">
+        <app-admin-shell-sidebar class=""></app-admin-shell-sidebar>
+      </div>
+      <div class="w-10/12 px-2">
+        <router-outlet class=""></router-outlet>
+      </div>
     </div>
-    <div class="col-10">
-      <router-outlet></router-outlet>
-    </div>
-  </div>
-</div>`,
-    styleUrls: ['./admin-shell.component.scss'],
-    imports: [
-        CommonModule,
-        AdminShellSidebarComponent,
-        MatListModule,
-        RouterLink,
-        RouterLinkActive,
-        MatDividerModule,
-        NgIf,
-        RouterOutlet,
-    ]
+  </div>`,
+  styleUrls: ['./admin-shell.component.scss'],
+  imports: [
+    CommonModule,
+    AdminShellSidebarComponent,
+    MatListModule,
+    RouterLink,
+    RouterLinkActive,
+    MatDividerModule,
+    NgIf,
+    RouterOutlet,
+  ],
 })
 export class AdminShellComponent implements OnInit {
   events: string[] = [];
@@ -72,10 +66,10 @@ export class AdminShellComponent implements OnInit {
     this.store.dispatch(new contentActions.LoadAdminContent());
     this.store.dispatch(new adminActions.LoadSeasons());
     this.store.select(fromAdmin.getSeasons).subscribe((seasons) => {
-       console.log('triggering seasons')
-       this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
-         // console.log(season);
-         if (season.seasonId === undefined) {
+      console.log('triggering seasons');
+      this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
+        // console.log(season);
+        if (season.seasonId === undefined) {
           for (let i = 0; i < seasons.length; i++) {
             if (seasons[i].currentSeason === true) {
               this.store.dispatch(
@@ -85,7 +79,7 @@ export class AdminShellComponent implements OnInit {
             }
           }
         }
-       });
+      });
     });
     this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
       console.log(season);
@@ -95,15 +89,21 @@ export class AdminShellComponent implements OnInit {
           this.store.dispatch(new adminActions.LoadSeasonTeams());
           this.store.dispatch(new adminActions.LoadGames());
           // this.store.dispatch(new adminActions.LoadPlayoffGames());
-          this.store.select(fromAdmin.getSeasonDivisions).subscribe((divisions) => {
-            this.store.dispatch(new adminActions.SetSelectedDivision(divisions[ 0 ]));
-          });
+          this.store
+            .select(fromAdmin.getSeasonDivisions)
+            .subscribe((divisions) => {
+              this.store.dispatch(
+                new adminActions.SetSelectedDivision(divisions[0])
+              );
+            });
 
-          this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
-            if (division !== undefined) {
-              this.store.dispatch(new adminActions.LoadDivisionTeams());
-            }
-          });
+          this.store
+            .select(fromAdmin.getSelectedDivision)
+            .subscribe((division) => {
+              if (division !== undefined) {
+                this.store.dispatch(new adminActions.LoadDivisionTeams());
+              }
+            });
         }
       }
     });

@@ -1,95 +1,55 @@
-<mat-card class="container">
-  <mat-card-header>
-    <mat-card-title>Division Detail</mat-card-title>
+<mat-card class="container mx-auto">
+  <mat-card-header class="">
+    <mat-card-title class="">Division Detail</mat-card-title>
   </mat-card-header>
-  <mat-card-content>
-    <form
-      class="form-horizontal"
-      novalidate
-      (ngSubmit)="save()"
-      [formGroup]="divisionForm"
-    >
-        <div class="row">
-          <div class="col-12">
-            <fieldset>
-            <mat-form-field>
-              <mat-label>Division</mat-label>
-              <mat-select
-                placeholder="Select Division"
-                [(value)]="selectedDivisionDescription"
-                formControlName="name"
-                (selectionChange)="divisionSelected($event)"
-              >
+  <mat-card-content class="">
+    <form class="form-horizontal" novalidate="" (ngsubmit)="save()" [formGroup]="divisionForm">
+        <div class="flex flex-wrap -mx-2">
+          <div class="w-full px-2">
+            <fieldset class="">
+            <mat-form-field class="">
+              <mat-label class="">Division</mat-label>
+              <mat-select placeholder="Select Division" [(value)]="selectedDivisionDescription" formcontrolname="name" (selectionchange)="divisionSelected($event)" class="">
                 @for (division of standardDivisions(); track
                 division) {
-                <mat-option [value]="division"> {{ division }} </mat-option>
+                <mat-option [value]="division" class=""> {{ division }} </mat-option>
                 }
-                <mat-option value="other">Other</mat-option>
+                <mat-option value="other" class="">Other</mat-option>
               </mat-select>
             </mat-form-field>
-            <mat-form-field [hidden]="hideNameInput()">
-              <input
-                matInput
-                id="optionalname"
-                type="text"
-                formControlName="name"
-                value="selectedDivision().divisionDescription"
-              />
+            <mat-form-field [hidden]="hideNameInput()" class="">
+              <input matinput="" id="optionalname" type="text" formcontrolname="name" value="selectedDivision().divisionDescription" class="">
             </mat-form-field>
           </fieldset>
           </div>
         </div>
 
-      <div class="row">
-        <div class="col-6">
-          <fieldset>
-            <div>
-              <mat-form-field floatLabel="auto" hintLabel="{{ minDateHint }}">
-                <mat-label for="divisionForm.get('minDate')"
-                  >Min Date</mat-label
-                >
-                <input
-                  matInput
-                  id="divisionForm.get('minDate1')"
-                  required
-                  type="text"
-                  formControlName="minDate1"
-                />
+      <div class="flex flex-wrap -mx-2">
+        <div class="w-6/12 px-2">
+          <fieldset class="">
+            <div class="">
+              <mat-form-field floatlabel="auto" class="">
+                <mat-label for="divisionForm.get('minDate')" class="">Min Date</mat-label>
+                <input matinput="" id="divisionForm.get('minDate1')" required="" type="text" formcontrolname="minDate1" class="">
               </mat-form-field>
             </div>
-            <div>
-              <mat-form-field
-                floatLabel="auto"
-                hintLabel="{{ maxDateHint }}"
-                [ngClass]="{
+            <div class="">
+              <mat-form-field floatlabel="auto"  [ngClass]="{
                   'has-error':
                     (divisionForm.get('maxDate1')?.touched ||
-                      divisionForm.get('maxDate1')?.dirty) &&
+                      divisionForm.get('maxDate1')?.dirty) &amp;&amp;
                     !divisionForm.get('minDate1')?.valid
-                }"
-              >
-                <mat-label for="divisionForm.get('maxDate1')"
-                  >Max Date</mat-label
-                >
-                <input
-                  matInput
-                  id="divisionForm.get('maxDate1')"
-                  required
-                  type="text"
-                  formControlName="maxDate1"
-                />
+                }" class="">
+                <mat-label for="divisionForm.get('maxDate1')" class="">Max Date</mat-label>
+                <input matinput="" id="divisionForm.get('maxDate1')" required="" type="text" formcontrolname="maxDate1" class="">
               </mat-form-field>
             </div>
-            <div>
+            <div class="">
               <!-- <mat-form-field> -->
-              <mat-label class="control-label">Gender</mat-label>
-              <mat-radio-group
-                aria-labelledby="example-radio-group-label"
-                class="example-radio-group"
-                formControlName="gender1"
-              >
+              <mat-label class="/* control-label not found */">Gender</mat-label>
+              <mat-radio-group aria-labelledby="example-radio-group-label" class="/* example-radio-group not found */" formcontrolname="gender1">
                 @for (gender of genders; track gender) {
-                <mat-radio-button class="example-radio-button" [value]="gender">
+                <mat-radio-button class="/* example-radio-button not found */" [value]="gender">
                   {{ gender }}
                 </mat-radio-button>
                 }
@@ -100,65 +60,36 @@
         </div>
 
         <!-- male dates -->
-        <div class="col-6">
-          <fieldset>
-            <div>
-              <mat-form-field
-                hintLabel="{{ minDateHint }}"
-                floatLabel="auto"
-                [ngClass]="{
+        <div class="w-6/12 px-2">
+          <fieldset class="">
+            <div class="">
+              <mat-form-field hintLabel="{{ minDateHint }}" floatlabel="auto" [ngClass]="{
                   'has-error':
                     (divisionForm.get('minDate1')?.touched ||
-                      divisionForm.get('minDate1')?.dirty) &&
+                      divisionForm.get('minDate1')?.dirty) &amp;&amp;
                     !divisionForm.get('minDate1')?.valid
-                }"
-              >
-                <mat-label
-                  class="control-label"
-                  for="divisionForm.get('minDate2')"
-                  >min Date</mat-label
-                >
-                <input
-                  matInput
-                  id="divisionForm.get('minDate2')"
-                  type="text"
-                  formControlName="minDate2"
-                />
+                }" class="">
+                <mat-label class="/* control-label not found */" for="divisionForm.get('minDate2')">min Date</mat-label>
+                <input matinput="" id="divisionForm.get('minDate2')" type="text" formcontrolname="minDate2" class="">
               </mat-form-field>
             </div>
-            <div>
-              <mat-form-field
-                class="form-group"
-                hintLabel="{{ maxDateHint }}"
-                [ngClass]="{
+            <div class="">
+              <mat-form-field class="/* form-group not found */" hintLabel="{{ maxDateHint }}" [ngClass]="{
                   'has-error':
                     (divisionForm.get('maxDate2')?.touched ||
-                      divisionForm.get('maxDate2')?.dirty) &&
+                      divisionForm.get('maxDate2')?.dirty) &amp;&amp;
                     !divisionForm.get('minDate2')?.valid
-                }"
-              >
-                <mat-label for="divisionForm.get('maxDate2')"
-                  >max Date</mat-label
-                >
-                <input
-                  matInput
-                  id="divisionForm.get('maxDate2')"
-                  class="form-control"
-                  type="text"
-                  formControlName="maxDate2"
-                />
+                }">
+                <mat-label for="divisionForm.get('maxDate2')" class="">max Date</mat-label>
+                <input matinput="" id="divisionForm.get('maxDate2')" class="/* form-control not found */" type="text" formcontrolname="maxDate2">
               </mat-form-field>
             </div>
-            <div>
+            <div class="">
               <!-- <mat-form-field> -->
-              <mat-label>Gender</mat-label>
-              <mat-radio-group
-                aria-labelledby="example-radio-group-label"
-                class="example-radio-group"
-                formControlName="gender2"
-              >
+              <mat-label class="">Gender</mat-label>
+              <mat-radio-group aria-labelledby="example-radio-group-label" class="/* example-radio-group not found */" formcontrolname="gender2">
                 @for (gender of genders; track gender) {
-                <mat-radio-button class="example-radio-button" [value]="gender">
+                <mat-radio-button class="/* example-radio-button not found */" [value]="gender">
                   {{ gender }}
                 </mat-radio-button>
                 }
@@ -168,21 +99,18 @@
           </fieldset>
         </div>
       </div>
-      <div class="row">
-        <div class="col-6">
-          <fieldset>
-            <mat-form-field floatLabel="auto">
+      <div class="flex flex-wrap -mx-2">
+        <div class="w-6/12 px-2">
+          <fieldset class="">
+            <mat-form-field floatlabel="auto" class="">
               <!-- <mat-label for="divisionForm.get('director')">Director</mat-label>
               <input matInput type="text" formControlName="director" /> -->
 
-              <mat-label>AD</mat-label>
-              <mat-select
-                placeholder="Select AD"
-                formControlName="director"
-              >
+              <mat-label class="">AD</mat-label>
+              <mat-select placeholder="Select AD" formcontrolname="director" class="">
                 @for (ad of ads(); track
                 ad) {
-                <mat-option [value]="ad.personId"> {{ ad.lastName + ', ' + ad.firstName }} </mat-option>
+                <mat-option [value]="ad.personId" class=""> {{ ad.lastName + ', ' + ad.firstName }} </mat-option>
                 }
               </mat-select>
             </mat-form-field>
@@ -191,25 +119,13 @@
       </div>
     </form>
   </mat-card-content>
-  <mat-card-actions>
-    <button mat-raised-button color="primary" (click)="save()"
-    [disabled]="!divisionForm.valid || !divisionForm.dirty">Save</button>
-    <button
-    type="button"
-    mat-raised-button
-    type="delete"
-    color="primary"
-
-  >
+  <mat-card-actions class="">
+    <button mat-raised-button="" color="primary" (click)="save()" [disabled]="!divisionForm.valid || !divisionForm.dirty" class="">Save</button>
+    <button type="button" mat-raised-button="" color="primary" class="">
     Delete
   </button>
   <!-- <button type="button" mat-raised-button>Save and New</button> -->
-  <button
-    type="button"
-    mat-raised-button
-    [routerLink]="['/admin/division']"
-    color="primary"
-  >
+  <button type="button" mat-raised-button="" [routerLink]="['/admin/division']" color="primary" class="">
     Cancel
   </button>
     <!-- <button mat-raised-button color="warn" (click)="cancel()">Cancel</button> -->

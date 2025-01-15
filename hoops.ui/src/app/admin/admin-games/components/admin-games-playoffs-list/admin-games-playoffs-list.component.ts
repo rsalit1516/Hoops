@@ -3,7 +3,6 @@ import { Store } from '@ngrx/store';
 import { PlayoffGame } from '@app/domain/playoffGame';
 import * as fromAdmin from '../../../state';
 import * as adminActions from '../../../state/admin.actions';
-import { MediaObserver } from '@angular/flex-layout';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
@@ -15,7 +14,9 @@ import { FormsModule } from '@angular/forms';
     selector: 'app-admin-games-playoffs-list',
     templateUrl: './admin-games-playoffs-list.component.html',
     styleUrls: ['./admin-games-playoffs-list.component.scss',],
-    imports: [FormsModule, NgIf, MatTableModule, MatButtonModule, MatIconModule, DatePipe]
+  imports: [ FormsModule, NgIf, MatTableModule, MatButtonModule,
+    MatIconModule, DatePipe,
+  AdminGamesPlayoffsListComponent]
 })
 export class AdminGamesPlayoffsListComponent implements OnInit {
 title = 'Playoff Games';
@@ -29,7 +30,7 @@ displayedColumns!: string[];
   flexMediaWatcher: any;
   constructor(  private store: Store<fromAdmin.State>,
     public dialog: MatDialog,
-    private media: MediaObserver
+    // private media: MediaObserver
 ) {
   // this.flexMediaWatcher = media.media$.subscribe((change) => {
   //   if (change.mqAlias !== this.currentScreenWidth) {

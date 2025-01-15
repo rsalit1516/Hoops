@@ -1,25 +1,23 @@
-<div class="row justify-content-end mb-3">
-  <div class="col-3">
+<div class="flex flex-wrap -mx-2 justify-end mb-3">
+  <div class="w-3/12 px-2">
     <!-- <div class="dashboard-header" *ngIf="currentSeason">
           Current Season: {{ currentSeason.description }}
         </div> -->
-    <season-select></season-select>
+    <season-select class=""></season-select>
   </div>
 </div>
-<div class="row">
-  <div class="col-3">
+<div class="flex flex-wrap -mx-2">
+  <div class="w-3/12 px-2">
     <mat-card class="dashboard-card">
-      <mat-card-header>
-        <mat-card-title>Divisions</mat-card-title>
+      <mat-card-header class="">
+        <mat-card-title class="">Divisions</mat-card-title>
       </mat-card-header>
-      <mat-card-content>
+      <mat-card-content class="">
         <div class="counter-wrapper">
           <div class="counter">{{ divisionCount }} divisions</div>
         </div>
-        <mat-list role="list">
-          <mat-list-item role="listitem" *ngFor="let division of divisions"
-            [class.selected]="division === selectedDivision"
-            (click)="goToDivision(division)">{{
+        <mat-list role="list" class="">
+          <mat-list-item role="listitem" *ngfor="let division of divisions" [class.selected]="division === selectedDivision" (click)="goToDivision(division)" class="">{{
             division.divisionDescription
           }}</mat-list-item>
         </mat-list>
@@ -27,34 +25,28 @@
     </mat-card>
   </div>
 
-  <div class="col-3">
+  <div class="w-3/12 px-2">
     <mat-card class="dashboard-card">
-      <mat-card-header>
-        <mat-card-title
-          >{{ selectedDivision?.divisionDescription }} Teams</mat-card-title
-        >
+      <mat-card-header class="">
+        <mat-card-title class="">{{ selectedDivision?.divisionDescription }} Teams</mat-card-title>
       </mat-card-header>
-      <mat-card-content>
+      <mat-card-content class="">
         <div class="counter-wrapper">
           <div class="counter">{{ teamCount }} Teams:</div>
         </div>
-        <mat-list role="list">
-          <mat-list-item role="listitem"
-            *ngFor="let team of divisionTeams"
-            (click)="setTeam(team)"
-             [class.selected]="team === selectedTeam"
-          >
+        <mat-list role="list" class="">
+          <mat-list-item role="listitem" *ngfor="let team of divisionTeams" (click)="setTeam(team)" [class.selected]="team === selectedTeam" class="">
             {{ team.teamName }}
           </mat-list-item>
         </mat-list>
       </mat-card-content>
     </mat-card>
   </div>
-  <div class="col-6">
+  <div class="w-6/12 px-2">
     <mat-card class="dashboard-card">
-      <mat-card-header>
-        <mat-card-title>Season Games</mat-card-title>
-        <mat-card-subtitle>
+      <mat-card-header class="">
+        <mat-card-title class="">Season Games</mat-card-title>
+        <mat-card-subtitle class="">
         <div class="counter-wrapper">
           <div class="counter">
             {{ seasonGameCount }} {{ currentSeason.description }} games
@@ -68,8 +60,8 @@
         </div>
         </mat-card-subtitle>
       </mat-card-header>
-      <mat-card-content>
-        <admin-games-list [showScores]="false"></admin-games-list>
+      <mat-card-content class="">
+        <admin-games-list [showScores]="false" class=""></admin-games-list>
       </mat-card-content>
     </mat-card>
   </div>

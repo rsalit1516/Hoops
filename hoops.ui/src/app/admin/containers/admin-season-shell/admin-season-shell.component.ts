@@ -5,7 +5,6 @@ import { select, Store } from '@ngrx/store';
 
 import * as fromAdmin from '../../state';
 import { AdminSeasonListComponent } from '../../components/admin-season-list/admin-season-list.component';
-import { FlexModule } from '@angular/flex-layout/flex';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { AdminGamesRoutingModule } from '@app/admin/admin-games/admin-games-routing.module';

@@ -1,6 +1,5 @@
 import { Component, OnInit, inject, input, viewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { MediaObserver } from '@angular/flex-layout';
 import { Game } from '@app/domain/game';
 import * as fromAdmin from '../../state';
 import * as adminActions from '../../state/admin.actions';
@@ -14,7 +13,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 @Component({
     selector: 'admin-games-list',
-    imports: [CommonModule, MatIconModule, MatTableModule, MatPaginatorModule,
+  imports: [ CommonModule, MatIconModule, MatTableModule,
+    MatPaginatorModule,
         MatIconModule],
     templateUrl: './admin-games-list.component.html',
     styleUrls: [
@@ -43,7 +43,7 @@ export class AdminGamesListComponent implements OnInit {
   constructor(
     private store: Store<fromAdmin.State>,
 //    public dialog: MatDialog,
-    private media: MediaObserver
+    // private media: MediaObserver
   ) {
     // this.flexMediaWatcher = media.media$.subscribe((change) => {
     //   if (change.mqAlias !== this.currentScreenWidth) {

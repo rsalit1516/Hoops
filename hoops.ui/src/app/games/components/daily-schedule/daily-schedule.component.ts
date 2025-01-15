@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, Input, input } from '@angular/core';
 import { Game } from '@domain/game';
 import { Store, select } from '@ngrx/store';
-import { MediaObserver } from '@angular/flex-layout';
 import { GameScoreDialogComponent } from '../game-score-dialog/game-score-dialog.component';
 
 import * as fromGames from '../../state';

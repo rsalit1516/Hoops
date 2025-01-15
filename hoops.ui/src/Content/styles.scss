@@ -6,8 +6,15 @@
 @use "./../app//shared/scss/tables";
 @use "./../app//shared/scss/forms";
 
+@use "tailwindcss/base";
+@use "tailwindcss/components";
+@use "tailwindcss/utilities";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 // @import '~angular/material/prebuilt-themes/indigo-pink.css';
-@import "bootstrap/dist/css/bootstrap.css";
+// @import "bootstrap/dist/css/bootstrap.css";
 
 
 
