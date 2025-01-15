@@ -7,7 +7,7 @@ export const environment = {
   production: true,
   apiUrl: 'https://localhost:5001',
   environment: 'local',
-  securityEnabled: true
+  securityEnabled: false
 };
 // export const environment = {
 //   production: false,
