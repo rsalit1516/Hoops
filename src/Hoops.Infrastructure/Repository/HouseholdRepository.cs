@@ -4,6 +4,7 @@ using Hoops.Core.Interface;
 using System.Data;
 using System.Linq.Expressions;
 using Hoops.Core.Models;
+using Hoops.Core.ViewModels;
 
 namespace Hoops.Infrastructure.Repository
 {
@@ -115,6 +116,19 @@ namespace Hoops.Infrastructure.Repository
 			context.SaveChanges();
             return household;
         }    
+
+		public List<Household> SearchHouseholds(HouseholdSearchCriteria criteria) 
+		{ 
+			var query = context.Households.AsQueryable(); 
+			if (!string.IsNullOrEmpty(criteria.Name)) 
+			query = query.Where(p => p.Name.Contains(criteria.Name)); 
+			if (!string.IsNullOrEmpty(criteria.Address)) 
+			query = query.Where(p => p.Address1.Contains(criteria.Address)); 
+			if (!string.IsNullOrEmpty(criteria.Email)) 
+			query = query.Where(p => p.Email.Contains(criteria.Email)); 
+			if (!string.IsNullOrEmpty(criteria.Phone)) 
+			query = query.Where(p => p.Phone.Contains(criteria.Phone)); 
+		return query.ToList(); }
 
 	}
 }

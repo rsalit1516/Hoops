@@ -62,7 +62,7 @@ namespace Hoops.Api
                             }));
             }
 
-            _ = services.AddScoped<hoopsContext>();
+            _ = services.AddDbContext<hoopsContext>();
             _ = services.AddScoped<ISeasonRepository, SeasonRepository>();
             _ = services.AddScoped<IDivisionRepository, DivisionRepository>();
             _ = services.AddScoped<IRepository<User>, UserRepository>();
@@ -76,6 +76,8 @@ namespace Hoops.Api
             _ = services.AddScoped<ISponsorRepository, SponsorRepository>();
             _ = services.AddScoped<IPersonRepository, PersonRepository>();
             _ = services.AddScoped<ILocationRepository, LocationRepository>();
+            _ = services.AddScoped<IHouseholdRepository, HouseholdRepository>();
+            _ = services.AddScoped<IUserRepository, UserRepository>();
 
             _ = services.AddCors(options =>
                    {
@@ -89,6 +91,7 @@ namespace Hoops.Api
                                         .AllowAnyMethod();
                                          });
                    });
+            _ = services.AddLogging();
             _ = services.AddControllers();
             _ = services
                 .AddSwaggerGen(c =>

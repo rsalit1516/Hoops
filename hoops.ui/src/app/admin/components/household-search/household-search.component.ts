@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import {
   FormBuilder,
@@ -14,6 +15,7 @@ import { HouseholdService } from '@app/services/household.service';
 @Component({
   selector: 'csbc-household-search',
   imports: [
+    CommonModule,
     MatCardModule,
     FormsModule,
     ReactiveFormsModule,
@@ -24,7 +26,9 @@ import { HouseholdService } from '@app/services/household.service';
   templateUrl: './household-search.component.html',
   styleUrls: [
     './household-search.component.scss',
+    '../../admin.component.scss',
     '../../../shared/scss/forms.scss',
+    '../../../shared/scss/cards.scss',
   ],
 })
 export class HouseholdSearchComponent {
@@ -43,4 +47,8 @@ export class HouseholdSearchComponent {
   search() {
     console.log('Search submitted');
   }
+  public hasError = (controlName: string, errorName: string) => {
+    return '';
+    // this.contentForm.controls[ controlName ].hasError(errorName);
+  };
 }

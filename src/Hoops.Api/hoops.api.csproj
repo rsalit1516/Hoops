@@ -4,6 +4,7 @@
     <ProjectReference Include="..\Hoops.Core\Hoops.Core.csproj" />
     <ProjectReference Include="..\Hoops.Data\Hoops.Data.csproj" />
     <ProjectReference Include="..\Hoops.Infrastructure\Hoops.Infrastructure.csproj" />
+    <ProjectReference Include="..\Hoops.Application\Hoops.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>

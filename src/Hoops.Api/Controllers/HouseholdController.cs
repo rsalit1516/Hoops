@@ -5,6 +5,9 @@ using Hoops.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using Hoops.Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Hoops.Core.Interface;
+using Hoops.Core.ViewModels;
 
 namespace Hoops.Controllers
 {
@@ -13,10 +16,15 @@ namespace Hoops.Controllers
     public class HouseholdController : ControllerBase
     {
         private readonly hoopsContext _context;
+        private readonly IHouseholdRepository _repository;
+        private readonly ILogger<HouseholdController> _logger;
 
-        public HouseholdController(hoopsContext context)
+
+        public HouseholdController(hoopsContext context, IHouseholdRepository repository, ILogger<HouseholdController> logger)
         {
             _context = context;
+            _repository = repository;
+            _logger = logger;
         }
 
         // GET: api/Household
@@ -115,6 +123,24 @@ namespace Hoops.Controllers
         private bool HouseholdExists(int id)
         {
             return _context.Households.Any(e => e.HouseId == id);
+        }
+
+        [HttpGet("search")]
+        public ActionResult<List<Household>> Search(
+            [FromQuery] string name = null,
+        [FromQuery] string address = null,
+        [FromQuery] string email = null,
+        [FromQuery] string phone = null)
+        {
+            var searchCriteria = new HouseholdSearchCriteria
+            {
+                Name = name,
+                Address = address,
+                Email = email,
+                Phone = phone
+            };
+            var result = _repository.SearchHouseholds(searchCriteria);
+            return Ok(result);
         }
     }
 }
