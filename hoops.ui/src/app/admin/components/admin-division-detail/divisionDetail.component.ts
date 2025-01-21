@@ -105,11 +105,11 @@ export class DivisionDetailComponent implements OnInit {
   }
   constructor(private fb: FormBuilder) {}
   ngOnInit(): void {
-    console.log(this.#divisionService.currentDivision());
+    // console.log(this.#divisionService.currentDivision());
     // this.division.set(this.divisionService.currentDivision()!);
-    console.log(this.division);
+    // console.log(this.division);
     let currentDivision = this.#divisionService.currentDivision();
-    console.log(currentDivision);
+    // console.log(currentDivision);
 
     this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
       if (division !== null) {
@@ -181,7 +181,7 @@ export class DivisionDetailComponent implements OnInit {
   }
 
   save () {
-    console.log('Save');
+    // console.log('Save');
     let division = new Division();
     division.companyId = 1; // get from constants
     division.seasonId = this.#divisionService.seasonId;
@@ -219,7 +219,7 @@ export class DivisionDetailComponent implements OnInit {
       if (this.divisionForm.get('director')?.value !== null) {
         division.directorId = Number(this.divisionForm.get('director')?.value) ?? 0;
       }
-      console.log(division);
+      // console.log(division);
       this.#divisionService.save(division);
 
       this.#router.navigate([ '/admin/division' ]);

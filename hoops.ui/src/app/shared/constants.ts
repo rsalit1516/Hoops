@@ -54,5 +54,5 @@ export class Constants {
   public static peopleUrl = Constants.DEFAULTURL + '/api/People';
   public static GET_ADS_URL = Constants.DEFAULTURL + '/api/Person/GetADs';
   public static standingsUrl = Constants.DEFAULTURL + '/api/ScheduleGame/getStandings';
-
+public static searchHouseholdUrl = Constants.DEFAULTURL + '/api/Household/search';
 }

@@ -17,10 +17,12 @@
           <div class="counter">{{ divisionCount }} divisions</div>
         </div>
         <mat-list role="list" class="">
-          <mat-list-item role="listitem" *ngfor="let division of divisions" [class.selected]="division === selectedDivision" (click)="goToDivision(division)" class="">{{
+          @for (division of divisions; track division.divisionId) {
+          <mat-list-item role="listitem" [class.selected]="division === selectedDivision" (click)="goToDivision(division)" class="">{{
             division.divisionDescription
           }}</mat-list-item>
-        </mat-list>
+        }
+          </mat-list>
       </mat-card-content>
     </mat-card>
   </div>
@@ -35,9 +37,11 @@
           <div class="counter">{{ teamCount }} Teams:</div>
         </div>
         <mat-list role="list" class="">
-          <mat-list-item role="listitem" *ngfor="let team of divisionTeams" (click)="setTeam(team)" [class.selected]="team === selectedTeam" class="">
+          @for (team of teams; track team.teamId) {
+          <mat-list-item role="listitem"  (click)="setTeam(team)" [class.selected]="team === selectedTeam" class="">
             {{ team.teamName }}
           </mat-list-item>
+        }
         </mat-list>
       </mat-card-content>
     </mat-card>

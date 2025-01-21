@@ -1,18 +1,19 @@
 <p>household-search works!</p>
+<form
+class="form-horizontal"
+(ngSubmit)="search()"
+[formGroup]="searchForm"
+>
+
 <mat-card>
   <mat-card-header>
-    <mat-card-title>Household Search</mat-card-title>
+    <mat-card-title>{{pageTitle}}</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <form
-      class="form-horizontal"
-      (ngSubmit)="search()"
-      [formGroup]="searchForm"
-    >
       <div>
         <mat-form-field appearance="fill" class="full-width">
-          <mat-label htmlFor="name">Name</mat-label>
-          <input matInput formControlName="name" title="name" />
+          <mat-label htmlFor="householdName">Household Name</mat-label>
+          <input matInput formControlName="householdName" title="name" />
           <mat-hint>Search by household name </mat-hint>
           <mat-error *ngIf="hasError('subTitle', 'maxlength')"
             >You have more than 50 characters</mat-error
@@ -49,9 +50,11 @@
           >
         </mat-form-field>
       </div>
-    </form>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-raised-button color="primary" type="submit">Search</button>
+    <button mat-raised-button color="primary"
+    type="submit"
+    >Search</button>
   </mat-card-actions>
 </mat-card>
+</form>

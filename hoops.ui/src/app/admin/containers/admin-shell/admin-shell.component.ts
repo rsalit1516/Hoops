@@ -109,8 +109,6 @@ export class AdminShellComponent implements OnInit {
     });
     this.store.dispatch(new contentActions.SetAllContent());
     this.store.select(fromAdmin.getContentList).subscribe((content) => {
-      console.log(content);
-      console.log('Setting active content');
       this.store.dispatch(new contentActions.SetActiveContent());
     });
 

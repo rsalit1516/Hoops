@@ -12,7 +12,7 @@ import * as adminActions from '../state/admin.actions';
 import { Game } from '@app/domain/game';
 import { AdminGamesListComponent } from '../admin-shared/admin-games-list/admin-games-list.component';
 import { MatCardModule } from '@angular/material/card';
-import { NgFor } from '@angular/common';
+import { NgFor, NgForOf } from '@angular/common';
 import { MatListModule } from '@angular/material/list';
 import { SeasonSelectComponent } from '../admin-shared/season-select/season-select.component';
 
@@ -28,7 +28,8 @@ import { SeasonSelectComponent } from '../admin-shared/season-select/season-sele
         SeasonSelectComponent,
         MatCardModule,
         MatListModule,
-        NgFor,
+      NgFor,
+        NgForOf,
         AdminGamesListComponent,
     ]
 })

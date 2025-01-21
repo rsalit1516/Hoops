@@ -1,12 +1,6 @@
 import { Component, Inject, OnInit, inject, signal } from '@angular/core';
-import {
-  FormGroup,
-  UntypedFormControl,
-  UntypedFormBuilder,
-  ReactiveFormsModule,
-  FormControl,
-  FormsModule,
-} from '@angular/forms';
+import { FormGroup, UntypedFormControl, UntypedFormBuilder,
+  ReactiveFormsModule, FormControl, FormsModule} from '@angular/forms';
 import { Team } from '@app/domain/team';
 import { select, Store } from '@ngrx/store';
 import { from, Observable, of } from 'rxjs';
