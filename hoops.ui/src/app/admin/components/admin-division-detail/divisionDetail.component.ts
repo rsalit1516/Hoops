@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, WritableSignal, inject, signal } from '@angular/core';
+import { Component, OnInit, WritableSignal, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, Validators, FormBuilder, FormControl} from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -54,6 +54,7 @@ export class DivisionDetailComponent implements OnInit {
   #divisionService = inject(DivisionService);
   #peopleService = inject(PeopleService);
   #router = inject(Router);
+  fb = inject(FormBuilder);
 
   selectedDivision = signal<Division>(new Division());
   selectedDivisionDescription: string = ''; // =
@@ -103,7 +104,7 @@ export class DivisionDetailComponent implements OnInit {
   selectItem(item: string) {
     this.selectedItem = item;
   }
-  constructor(private fb: FormBuilder) {}
+  constructor() {}
   ngOnInit(): void {
     // console.log(this.#divisionService.currentDivision());
     // this.division.set(this.divisionService.currentDivision()!);

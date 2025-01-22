@@ -18,18 +18,21 @@ import { Router } from '@angular/router';
     '../scss/cards.scss',
     '../scss/forms.scss',
     ],
-  imports: [ CommonModule,
+  standalone: true,
+  imports: [CommonModule,
     FormsModule,
-        ReactiveFormsModule,
+    ReactiveFormsModule,
     MatFormFieldModule,
-  MatInputModule, MatButtonModule,
-  MatCardModule],
+    MatInputModule,
+    MatButtonModule,
+    MatCardModule],
 })
 export class LoginComponent implements OnInit {
   /* injected */
   #authService = inject(AuthService);
   #router = inject(Router);
-
+  fb = inject(FormBuilder);
+  store = inject(Store<fromUser.State>);
   loginForm = this.fb.group({
     userName: ['', Validators.required],
     password: ['', Validators.required]
@@ -42,10 +45,7 @@ export class LoginComponent implements OnInit {
     return this.loginForm.get('password');
   }
 
-  constructor(
-    private fb: FormBuilder,
-    private store: Store<fromUser.State>
-  ) {}
+  constructor() {}
 
   ngOnInit() {
     this.isFormValid = false;
