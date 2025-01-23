@@ -6,9 +6,7 @@ import { Constants } from '@app/shared/constants';
 import { setErrorMessage } from '@app/shared/error-message';
 import { map } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class HouseholdService {
 
   // Injected services

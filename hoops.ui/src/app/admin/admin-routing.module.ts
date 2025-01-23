@@ -16,6 +16,7 @@ import { ContentShellComponent } from './web-content/containers/content-shell/co
 import { DivisionDetailComponent } from './components/admin-division-detail/divisionDetail.component';
 import { getWebContentDataResolver } from './get-web-content-data.resolver';
 import { HouseholdShellComponent } from './containers/household-shell/household-shell.component';
+import { HouseholdService } from '@app/services/household.service';
 
 export const ADMINROUTES: Routes = [
   {
@@ -87,7 +88,11 @@ export const ADMINROUTES: Routes = [
           },
       // { path: 'division-detail', component: DivisionDetailComponent },
       { path: 'season-setup', component: SeasonSetupComponent },
-      { path: 'households', component: HouseholdShellComponent },
+      {
+        path: 'households',
+        component: HouseholdShellComponent,
+        providers: [HouseholdService],
+      },
       { path: 'teams', component: TeamListComponent },
       {
         path: 'games',
