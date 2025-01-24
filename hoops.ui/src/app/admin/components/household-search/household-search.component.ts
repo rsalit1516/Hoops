@@ -32,7 +32,7 @@ import { HouseholdService } from '@app/services/household.service';
   ],
 })
 export class HouseholdSearchComponent {
-  #householdService = inject(HouseholdService);
+  private householdService = inject(HouseholdService);
   fb = inject(FormBuilder);
 
   pageTitle = 'Household Search';
@@ -40,9 +40,9 @@ export class HouseholdSearchComponent {
   searchForm: FormGroup;
 
    // Signals to support the template
-   households = this.#householdService.households;
-   isLoading = this.#householdService.isLoading;
-   errorMessage = this.#householdService.errorMessage;
+   households = this.householdService.households;
+  //  isLoading = this.householdService.isLoading;
+   errorMessage = this.householdService.errorMessage;
   // selectedVehicle = this.#householdService.selectedHousehold;
 
   constructor() {
@@ -57,20 +57,18 @@ export class HouseholdSearchComponent {
   search() {
     console.log('Search submitted');
     console.log(this.searchForm.value);
-    this.#householdService.criteria = {
+    this.householdService.selectedCriteria.set({
       householdName: this.searchForm.value.householdName ?? '',
       address: this.searchForm.value.address ?? '',
       phone: this.searchForm.value.phone ?? '',
       email: this.searchForm.value.email ?? '',
-    };
-    let test = this.#householdService.constructQueryString(this.#householdService.criteria);
+    });
+    // let test = this.householdService.constructQueryString(this.householdService.criteria);
     // console.log('Query String: ', test);
-    this.#householdService.executeSearch();
+    this.householdService.executeSearch();
 
-    let results = this.#householdService.households();
-    console.log('Results: ', results);
-    console.log(this.#householdService.householdResource);
-    console.log(this.households);
+    let results = this.householdService.households();
+    console.log(this.households());
   }
 
   public hasError = (controlName: string, errorName: string) => {

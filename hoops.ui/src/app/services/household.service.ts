@@ -1,10 +1,10 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { computed, inject, Injectable } from '@angular/core';
-import { rxResource } from '@angular/core/rxjs-interop';
+import { computed, effect, inject, Injectable, linkedSignal, Signal, signal, WritableSignal } from '@angular/core';
+import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { Household } from '@app/domain/household';
 import { Constants } from '@app/shared/constants';
 import { setErrorMessage } from '@app/shared/error-message';
-import { map } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 
 @Injectable()
 export class HouseholdService {
@@ -14,35 +14,47 @@ export class HouseholdService {
 
   inithUrl = Constants.searchHouseholdUrl;
   searchUrl = '';
-
-  criteria: householdSearchCriteria = {
-
+  selectedCriteria = signal<householdSearchCriteria>({
     householdName: '',
     address: '',
     email: '',
     phone: ''
+  });
+  // Signal to support the template
+  criteria = linkedSignal<householdSearchCriteria>(() => this.selectedCriteria());
+
+  households: WritableSignal<Household[] | undefined> = signal<Household[] | undefined>(undefined);
+  error = computed(() => this.householdResource.error() as HttpErrorResponse);
+  errorMessage = computed(() => setErrorMessage(this.error(), 'Vehicle'));
+  // isLoading = this.householdResource.isLoading;
+
+  householdsEff = effect(() => console.log('Household data: ', this.households()));
+  executeSearch() {
+    this.searchUrl = this.constructQueryString(this.selectedCriteria());
+    // this.householdResource.reload();
+    this.searchHouseholds$().subscribe(response => {
+      this.households.set(response);
+      console.log('Household data: ', this.households());
+    });
   }
 
   // To generate an error, add characters to the URL
-  householdResource = rxResource({
-    loader: () => this.http.get<HouseholdResponse>(this.searchUrl)
+  private householdResource = rxResource({
+    loader: () => this.http.get<HouseholdResponse>(this.searchUrl, { responseType: 'json' })
       .pipe(
-      map(vr => vr.results)
-    )
+        map(vr => vr.results),
+        tap(vr => console.log(vr))
+      )
   });
 
-  executeSearch() {
-    this.householdResource.reload();
+  private searchHouseholds$(): Observable<Household[] | undefined> {
+    return this.http.get<Household[]>(this.searchUrl, { responseType: 'json' });
+  }
+  searchHouseholds() : Signal<Household[] | undefined> {
+    return toSignal(this.searchHouseholds$());
   }
 
-  households = computed(() => this.householdResource.value() ?? [] as Household[]);
-  error = computed(() => this.householdResource.error() as HttpErrorResponse);
-  errorMessage = computed(() => setErrorMessage(this.error(), 'Vehicle'));
-  isLoading = this.householdResource.isLoading;
 
-  constructor() { }
-
-  query() { }
 
   constructQueryString(criteria: householdSearchCriteria): string {
     let url = this.inithUrl;
@@ -61,6 +73,7 @@ export class HouseholdService {
       }
     }
     this.searchUrl = url;
+    console.log('Search URL: ', url);
     return url;
     // add additional criteria as needed
     // https://localhost:5001/api/Household/search?name=salit&email=richard.salit%40gmail.com

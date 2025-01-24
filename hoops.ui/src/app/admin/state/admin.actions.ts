@@ -130,7 +130,7 @@ export class LoadSeasonsFail implements Action {
 export class SetSelectedSeason implements Action {
   readonly type = AdminActionTypes.SetSelectedSeason;
   constructor(public payload: Season) {
-    console.log(payload);
+    // console.log(payload);
   }
 }
 export class SetCurrentSeason implements Action {

@@ -130,7 +130,7 @@ export class AdminEffects {
       mergeMap(action =>
         this.seasonService.currentSeason$.pipe(
           map(season => new adminActions.SetSelectedSeason(season as Season)),
-          tap(data => console.log('Current season: ' + JSON.stringify(data))),
+          // tap(data => console.log('Current season: ' + JSON.stringify(data))),
           catchError(err => of(new adminActions.LoadDivisionsFail(err)))
         )
       )
@@ -265,7 +265,7 @@ export class AdminEffects {
       mergeMap(action =>
         this.contentService.getContents().pipe(
           map(content => new adminActions.LoadAdminContentSuccess(content)),
-          tap(content => console.log(content)),
+          // tap(content => console.log(content)),
           catchError(err => of(new adminActions.LoadAdminContentFail(err)))
         )
       )
@@ -278,7 +278,7 @@ export class AdminEffects {
       switchMap(action =>
         this.contentService.getActiveContents().pipe(
           map(content => new adminActions.SetActiveContentSuccess(content)),
-          tap(response => console.log(response)),
+          // tap(response => console.log(response)),
           catchError(err => of(new adminActions.SetActiveContentFail(err)))
         )
       )
@@ -290,7 +290,7 @@ export class AdminEffects {
       switchMap(action =>
         this.contentService.getContents().pipe(
           map(content => new adminActions.SetAllContentSuccess(content)),
-          tap(response => console.log(response)),
+          // tap(response => console.log(response)),
           catchError(err => of(new adminActions.SetAllContentFail(err)))
         )
       )

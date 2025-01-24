@@ -29,6 +29,9 @@ export class HouseholdListComponent {
   #householdService = inject(HouseholdService);
 
   households = this.#householdService.households;
+  // households = this.householdService.households;
+  // isLoading = this.#householdService.isLoading;
+  errorMessage = this.#householdService.errorMessage;
 
   displayedColumns = [
     'householdName',
