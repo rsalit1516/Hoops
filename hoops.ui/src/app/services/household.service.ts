@@ -64,8 +64,10 @@ export class HouseholdService {
   searchHouseholds() : Signal<Household[] | undefined> {
     return toSignal(this.searchHouseholds$());
   }
-
-
+  getResults(criteria: householdSearchCriteria): Observable<Household[] | undefined> {
+    this.searchUrl = this.constructQueryString(criteria);
+    return this.searchHouseholds$();
+  }
   get results() {
     return this.householdsResult();
   }

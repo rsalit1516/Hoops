@@ -1,16 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
-import {
-  FormBuilder,
-  FormsModule,
-  FormGroup,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { Component, EventEmitter, inject, Output, output } from '@angular/core';
+import { FormBuilder, FormsModule, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { HouseholdService } from '@app/services/household.service';
+import { Household } from '@app/domain/household';
+import { householdSearchCriteria, HouseholdService } from '@app/services/household.service';
 
 @Component({
   selector: 'csbc-household-search',
@@ -35,40 +31,60 @@ export class HouseholdSearchComponent {
   private householdService = inject(HouseholdService);
   fb = inject(FormBuilder);
 
+  @Output() search = new EventEmitter<householdSearchCriteria>();
+
   pageTitle = 'Household Search';
 
   searchForm: FormGroup;
 
-   // Signals to support the template
-   households = this.householdService.householdsResult;
-  //  isLoading = this.householdService.isLoading;
-   errorMessage = this.householdService.errorMessage;
-  // selectedVehicle = this.#householdService.selectedHousehold;
+  criteria: string = '';
 
-  constructor() {
-    this.searchForm = this.fb.group({
-      householdName: ['' as string],
-      address: ['' as string],
-      phone: ['' as string],
-      email: ['' as string],
-    });
-  }
-
-  search() {
-    console.log('Search submitted');
-    console.log(this.searchForm.value);
-    this.householdService.selectedCriteria.set({
+  onSearch() {
+    const selectedCriteria: householdSearchCriteria = {
       householdName: this.searchForm.value.householdName ?? '',
       address: this.searchForm.value.address ?? '',
       phone: this.searchForm.value.phone ?? '',
       email: this.searchForm.value.email ?? '',
+    };
+    console.log('Search submitted');
+    console.log(selectedCriteria);
+    this.search.emit(selectedCriteria);
+  }
+
+  households = output<Household[]>();
+  // Signals to support the template
+  // households = this.householdService.householdsResult;
+  //  isLoading = this.householdService.isLoading;
+  errorMessage = this.householdService.errorMessage;
+  // selectedVehicle = this.#householdService.selectedHousehold;
+
+  constructor() {
+    this.searchForm = this.fb.group({
+      householdName: [ '' as string ],
+      address: [ '' as string ],
+      phone: [ '' as string ],
+      email: [ '' as string ],
     });
+  }
+
+  search1() {
+    console.log('Search submitted');
+    console.log(this.searchForm.value);
+    const selectedCriteria = {
+      householdName: this.searchForm.value.householdName ?? '',
+      address: this.searchForm.value.address ?? '',
+      phone: this.searchForm.value.phone ?? '',
+      email: this.searchForm.value.email ?? '',
+    };
+    //    this.householdService.selectedCriteria.set({
+
     // let test = this.householdService.constructQueryString(this.householdService.criteria);
     // console.log('Query String: ', test);
     this.householdService.executeSearch();
 
     let results = this.householdService.householdsResult();
-    console.log(this.households());
+    this.households.emit(results);
+    // console.log(this.households());
   }
 
   public hasError = (controlName: string, errorName: string) => {

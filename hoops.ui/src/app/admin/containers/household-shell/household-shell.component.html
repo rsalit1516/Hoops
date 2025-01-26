@@ -1,9 +1,9 @@
 <h1>{{pageTitle}}</h1>
 <div class="grid grid-cols-2 gap-4">
   <div >
-    <csbc-household-search></csbc-household-search>
+    <csbc-household-search (search)="onSearch($event)"></csbc-household-search>
   </div>
   <div>
-    <csbc-household-list></csbc-household-list>
+    <csbc-household-list [results]="results()"></csbc-household-list>
   </div>
 </div>
