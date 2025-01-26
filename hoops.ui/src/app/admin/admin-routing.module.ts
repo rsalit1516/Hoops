@@ -91,7 +91,7 @@ export const ADMINROUTES: Routes = [
       {
         path: 'households',
         component: HouseholdShellComponent,
-        providers: [HouseholdService],
+        // providers: [HouseholdService],
       },
       { path: 'teams', component: TeamListComponent },
       {

@@ -1,5 +1,5 @@
 import { NgFor, NgForOf } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -22,17 +22,16 @@ import { HouseholdService } from '@app/services/household.service';
   '../../../shared/scss/cards.scss',
   ]
 })
-export class HouseholdListComponent {
+export class HouseholdListComponent implements OnInit {
+
   pageTitle = 'Household List';
 
   /* injects */
-  #householdService = inject(HouseholdService);
+  private householdService = inject(HouseholdService);
 
-  households = this.#householdService.households;
+  errorMessage = this.householdService.errorMessage;
   // households = this.householdService.households;
-  // isLoading = this.#householdService.isLoading;
-  errorMessage = this.#householdService.errorMessage;
-
+  // Subscribe to the households signal and update the dataSource
   displayedColumns = [
     'householdName',
     'address',
@@ -40,6 +39,22 @@ export class HouseholdListComponent {
     'email',
   ]
   dataSource!: MatTableDataSource<Household>;
+  results: Household[] = [];
+
+  constructor() { }
+
+  ngOnInit() {
+    // this.householdService.households().subscribe(households => {
+    const households = this.householdService.results;
+    console.log('households', households);
+    this.results = this.householdService.results;
+    console .log('results', this.results);
+    this.dataSource = new MatTableDataSource(this.results);
+
+    // households = this.householdService.households;
+    // isLoading = this.#householdService.isLoading;
+
+  }
 
   getRecord(row : any){};
 

@@ -40,7 +40,7 @@ export class HouseholdSearchComponent {
   searchForm: FormGroup;
 
    // Signals to support the template
-   households = this.householdService.households;
+   households = this.householdService.householdsResult;
   //  isLoading = this.householdService.isLoading;
    errorMessage = this.householdService.errorMessage;
   // selectedVehicle = this.#householdService.selectedHousehold;
@@ -67,7 +67,7 @@ export class HouseholdSearchComponent {
     // console.log('Query String: ', test);
     this.householdService.executeSearch();
 
-    let results = this.householdService.households();
+    let results = this.householdService.householdsResult();
     console.log(this.households());
   }
 
