@@ -30,19 +30,19 @@ import { DateTime } from 'luxon';
 import { CommonModule } from '@angular/common';
 
 @Component({
-    selector: 'csbc-schedule-shell',
-    template: `
-    <div class="container">
-      <h1>{{ title }}</h1>
-      <div class="row">
-        <csbc-schedule [dailySchedule]="dailySchedule"></csbc-schedule>
-      </div>
+  selector: 'csbc-schedule-shell',
+  template: `
+  <div class="container mx-auto">
+    <h1>{{ title }}</h1>
+    <div class="row">
+    <csbc-schedule [dailySchedule]="dailySchedule"></csbc-schedule>
     </div>
+  </div>
   `,
-    styleUrls: ['./schedule-shell.component.scss'],
+  styleUrls: ['./schedule-shell.component.scss'],
   imports: [
-    CommonModule,
-    ScheduleComponent
+  CommonModule,
+  ScheduleComponent
   ]
 })
 export class ScheduleShellComponent implements OnInit {
@@ -64,10 +64,10 @@ export class ScheduleShellComponent implements OnInit {
   division: Division | undefined;
   user: User | undefined;
   games$ = this.gameService.seasonGames$.pipe(
-    catchError((err) => {
-      this.errorMessage$ = err;
-      return EMPTY;
-    })
+  catchError((err) => {
+    this.errorMessage$ = err;
+    return EMPTY;
+  })
   );
   divisionId: number | undefined;
   hasPlayoffs = false;
@@ -75,83 +75,83 @@ export class ScheduleShellComponent implements OnInit {
   dailyPlayoffSchedule!: Array<PlayoffGame[]>;
 
   constructor(
-    private store: Store<fromGames.State>,
-    private userStore: Store<fromUser.State>,
-    private divisionService: DivisionService,
-    private gameService: GameService
+  private store: Store<fromGames.State>,
+  private userStore: Store<fromUser.State>,
+  private divisionService: DivisionService,
+  private gameService: GameService
   ) {}
 
   ngOnInit() {
-    // this.divisionId = 4183;
-    console.log('schedule shell');
-    this.store.select(fromGames.getCurrentDivision).subscribe((division) => {
-      this.store.select(fromGames.getFilteredGames).subscribe((games) => {
-        this.games = games;
-        this.dailySchedule = [];
-        console.log('schedule shell - in filtered games');
-        // this.gameService.groupByDate(games).subscribe((dailyGames) => {
-        //   this.dailySchedule.push(dailyGames);
-        // });
-        this.dailySchedule = this.gameService.groupByDate(games);
-      });
-      this.store.dispatch(new gameActions.LoadDivisionPlayoffGames());
-      this.store
-        .select(fromGames.getDivisionPlayoffGames)
-        .subscribe((playoffGames) => {
-          this.playoffGames = playoffGames;
-          // console.log(playoffGames);
-          this.dailyPlayoffSchedule = [];
-          this.gameService
-            .groupPlayoffsByDate(playoffGames)
-            .subscribe((dailyPlayoffGames) => {
-              this.dailyPlayoffSchedule.push(dailyPlayoffGames);
-              console.log(this.dailyPlayoffSchedule);
-            });
-        });
+  // this.divisionId = 4183;
+  console.log('schedule shell');
+  this.store.select(fromGames.getCurrentDivision).subscribe((division) => {
+    this.store.select(fromGames.getFilteredGames).subscribe((games) => {
+    this.games = games;
+    this.dailySchedule = [];
+    console.log('schedule shell - in filtered games');
+    // this.gameService.groupByDate(games).subscribe((dailyGames) => {
+    //   this.dailySchedule.push(dailyGames);
+    // });
+    this.dailySchedule = this.gameService.groupByDate(games);
     });
+    this.store.dispatch(new gameActions.LoadDivisionPlayoffGames());
+    this.store
+    .select(fromGames.getDivisionPlayoffGames)
+    .subscribe((playoffGames) => {
+      this.playoffGames = playoffGames;
+      // console.log(playoffGames);
+      this.dailyPlayoffSchedule = [];
+      this.gameService
+      .groupPlayoffsByDate(playoffGames)
+      .subscribe((dailyPlayoffGames) => {
+        this.dailyPlayoffSchedule.push(dailyPlayoffGames);
+        console.log(this.dailyPlayoffSchedule);
+      });
+    });
+  });
   }
 
   groupByDate(games: Game[]) {
-    // console.log(games);
-    games.forEach((element) => {
-      element.gameTime = element.gameDate;
-      element.gameDate = DateTime.fromJSDate(element.gameDate).startOf('day').toJSDate();
-    });
-    const source = from(games);
+  // console.log(games);
+  games.forEach((element) => {
+    element.gameTime = element.gameDate;
+    element.gameDate = DateTime.fromJSDate(element.gameDate).startOf('day').toJSDate();
+  });
+  const source = from(games);
 
-    const t1 = of(games).pipe(
-      concatMap((res) => res),
-      groupBy((game) => game.gameDate),
-      mergeMap((group) => zip(of(group.key), group.pipe(toArray())))
-    );
-    const test = from(games).pipe(
-      // mergeMap(res => res),
-      groupBy(
-        (game) => game.gameDate,
-        (g) => g
-      ),
-      // tap(data => console.log(data)),
-      mergeMap((group) => zip(of(group.key), group.pipe(toArray()))),
-      tap((data) => console.log(data))
-    );
-    console.log(test);
-    console.log(t1);
-    // console.log(this.gamesByDate);
-    return t1;
+  const t1 = of(games).pipe(
+    concatMap((res) => res),
+    groupBy((game) => game.gameDate),
+    mergeMap((group) => zip(of(group.key), group.pipe(toArray())))
+  );
+  const test = from(games).pipe(
+    // mergeMap(res => res),
+    groupBy(
+    (game) => game.gameDate,
+    (g) => g
+    ),
+    // tap(data => console.log(data)),
+    mergeMap((group) => zip(of(group.key), group.pipe(toArray()))),
+    tap((data) => console.log(data))
+  );
+  console.log(test);
+  console.log(t1);
+  // console.log(this.gamesByDate);
+  return t1;
   }
   getCanEdit(user: User | undefined, divisionId: number): boolean {
-    console.log(divisionId);
-    if (user !== undefined) {
-      if (user.divisions !== undefined) {
-        user.divisions.forEach((element) => {
-          if (divisionId === element.divisionId) {
-            return true;
-            console.log('found ' + divisionId);
-          }
-          return false;
-        });
+  console.log(divisionId);
+  if (user !== undefined) {
+    if (user.divisions !== undefined) {
+    user.divisions.forEach((element) => {
+      if (divisionId === element.divisionId) {
+      return true;
+      console.log('found ' + divisionId);
       }
+      return false;
+    });
     }
-    return false;
+  }
+  return false;
   }
 }

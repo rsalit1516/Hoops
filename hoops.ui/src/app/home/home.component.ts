@@ -15,16 +15,18 @@ import * as fromGames from '../games/state';
 import { SponsorListComponent } from './components/sponsor-list/sponsor-list.component';
 import { CsbcAnnouncementsComponent } from './components/announcements/announcements.component';
 import { CsbcHomeSidebarComponent } from './components/home-sidebar/home-sidebar.component';
-import { NgClass } from '@angular/common';
+import { CommonModule, NgClass, NgIf } from '@angular/common';
 import { HomeCenterComponent } from './components/home-center/home-center.component';
 
 @Component({
     selector: 'csbc-home',
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.scss'],
-    imports: [
+  imports: [
+      CommonModule,
         HomeCenterComponent,
-        NgClass,
+    NgClass,
+        NgIf,
         CsbcHomeSidebarComponent,
         CsbcAnnouncementsComponent,
         SponsorListComponent,

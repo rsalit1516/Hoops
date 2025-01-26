@@ -6,7 +6,9 @@ import { Constants } from '@app/shared/constants';
 import { setErrorMessage } from '@app/shared/error-message';
 import { map, Observable, tap } from 'rxjs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class HouseholdService {
 
   // Injected services
@@ -23,18 +25,27 @@ export class HouseholdService {
   // Signal to support the template
   criteria = linkedSignal<householdSearchCriteria>(() => this.selectedCriteria());
 
-  households: WritableSignal<Household[] | undefined> = signal<Household[] | undefined>(undefined);
+  householdsResult = signal<Household[]> ([]);
   error = computed(() => this.householdResource.error() as HttpErrorResponse);
   errorMessage = computed(() => setErrorMessage(this.error(), 'Vehicle'));
   // isLoading = this.householdResource.isLoading;
 
-  householdsEff = effect(() => console.log('Household data: ', this.households()));
+  // householdsEff = effect(() => console.log('Household data: ', this.householdsResult()));
   executeSearch() {
     this.searchUrl = this.constructQueryString(this.selectedCriteria());
     // this.householdResource.reload();
     this.searchHouseholds$().subscribe(response => {
-      this.households.set(response);
-      console.log('Household data: ', this.households());
+      // const hh1 = response;
+      // console.log(hh1);
+      // let hh2: Household[] = [];
+      // if (hh1) {
+      //   hh1.forEach(element => {
+      //     hh2.push(element);
+      //   });
+      //   let counter = 0;
+      this.householdsResult.set(response!);
+      console.log(this.results);
+//       console.log('Household data: ', this.householdsResult());
     });
   }
 
@@ -55,6 +66,9 @@ export class HouseholdService {
   }
 
 
+  get results() {
+    return this.householdsResult();
+  }
 
   constructQueryString(criteria: householdSearchCriteria): string {
     let url = this.inithUrl;
@@ -73,7 +87,7 @@ export class HouseholdService {
       }
     }
     this.searchUrl = url;
-    console.log('Search URL: ', url);
+    // console.log('Search URL: ', url);
     return url;
     // add additional criteria as needed
     // https://localhost:5001/api/Household/search?name=salit&email=richard.salit%40gmail.com
