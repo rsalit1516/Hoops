@@ -3,6 +3,7 @@ import { Component, inject, Input, input, OnChanges, OnInit } from '@angular/cor
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { Household } from '@app/domain/household';
 import { HouseholdService } from '@app/services/household.service';
 
@@ -28,13 +29,15 @@ export class HouseholdListComponent implements OnInit, OnChanges {
   results = input<Household[]>();
   /* injects */
   private householdService = inject(HouseholdService);
+  #router = inject(Router);
+
 
   errorMessage = this.householdService.errorMessage;
   // households = this.householdService.households;
   // Subscribe to the households signal and update the dataSource
   displayedColumns = [
-    'householdName',
-    'address',
+    'name',
+    'address1',
     'phone',
     'email',
   ]
@@ -58,6 +61,9 @@ export class HouseholdListComponent implements OnInit, OnChanges {
     this.dataSource = new MatTableDataSource(this.results());
 //     [...this.results];
   }
-  getRecord(row : any){};
+  getRecord(row: Household) {
+    console.log('Row: ', row);
+    // this.#router.navigate(['/admin/household', row.id]);
+  };
 
 }

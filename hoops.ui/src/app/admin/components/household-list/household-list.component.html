@@ -5,16 +5,16 @@
   </mat-card-header>
   <mat-card-content>
     <table mat-table id="grd" [dataSource]="dataSource">
-      <ng-container matColumnDef="householdName">
+      <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef>Name</th>
         <td mat-cell *matCellDef="let col" class="teamName">
-          {{ col.householdName }}
+          {{ col.name }}
         </td>
       </ng-container>
-      <ng-container matColumnDef="address">
+      <ng-container matColumnDef="address1">
         <th mat-header-cell *matHeaderCellDef>Address</th>
         <td mat-cell *matCellDef="let col" class="teamName">
-          {{ col.address }}
+          {{ col.address1 }}
         </td>
       </ng-container>
       <ng-container matColumnDef="phone">

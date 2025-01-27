@@ -27,7 +27,7 @@ export class HouseholdService {
 
   householdsResult = signal<Household[]> ([]);
   error = computed(() => this.householdResource.error() as HttpErrorResponse);
-  errorMessage = computed(() => setErrorMessage(this.error(), 'Vehicle'));
+  errorMessage = computed(() => setErrorMessage(this.error(), 'Household'));
   // isLoading = this.householdResource.isLoading;
 
   // householdsEff = effect(() => console.log('Household data: ', this.householdsResult()));
