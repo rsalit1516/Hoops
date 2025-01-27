@@ -1,1 +1,62 @@
-<p>household-detail works!</p>
+<form action="" formGroupName="householdDetailForm" (ngSubmit)="onSave()">
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      {{pageTitle}}
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+<div>
+
+  <mat-form-field appearance="fill" formControlName="householdName">
+    <mat-label>Household Name</mat-label>
+    <input matInput placeholder="Enter household name" required>
+  </mat-form-field>
+</div>
+<div>
+  <mat-form-field appearance="fill" formControlName="address1">
+    <mat-label>Address 1</mat-label>
+    <input matInput placeholder="Enter address 1" required>
+  </mat-form-field>
+</div>
+<div>
+  <mat-form-field appearance="fill" formControlName="address2">
+    <mat-label>Address 2</mat-label>
+    <input matInput placeholder="Enter address 2">
+  </mat-form-field>
+</div>
+<div>
+  <mat-form-field appearance="fill" formControlName="city">
+    <mat-label>City</mat-label>
+    <input matInput placeholder="Enter city" required>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" formControlName="state">
+    <mat-label>State</mat-label>
+    <input matInput placeholder="Enter state" required>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" formControlName="zip">
+    <mat-label>Zip</mat-label>
+    <input matInput placeholder="Enter zip" required>
+  </mat-form-field>
+</div>
+<div>
+  <mat-form-field appearance="fill" formControlName="phone">
+    <mat-label>Phone</mat-label>
+    <input matInput placeholder="Enter phone number" required>
+  </mat-form-field>
+</div>
+<div>
+  <mat-form-field appearance="fill" formControlName="email">
+    <mat-label>Email</mat-label>
+    <input matInput placeholder="Enter email" required>
+  </mat-form-field>
+</div>
+  </mat-card-content>
+<mat-card-actions>
+    <button mat-raised-button color="primary" type="submit">Save</button>
+      <button mat-raised-button color="primary" type="button">Delete</button>
+</mat-card-actions>
+</mat-card>
+</form>

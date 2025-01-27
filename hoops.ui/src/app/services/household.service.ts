@@ -29,7 +29,7 @@ export class HouseholdService {
   error = computed(() => this.householdResource.error() as HttpErrorResponse);
   errorMessage = computed(() => setErrorMessage(this.error(), 'Household'));
   // isLoading = this.householdResource.isLoading;
-
+selectedHousehold =   signal<Household | null>(null);
   // householdsEff = effect(() => console.log('Household data: ', this.householdsResult()));
   executeSearch() {
     this.searchUrl = this.constructQueryString(this.selectedCriteria());

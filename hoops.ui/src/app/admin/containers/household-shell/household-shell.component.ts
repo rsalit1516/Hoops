@@ -5,13 +5,15 @@ import { HouseholdSearchComponent } from '@app/admin/components/household-search
 import { HouseholdListComponent } from '@app/admin/components/household-list/household-list.component';
 import { householdSearchCriteria, HouseholdService } from '@app/services/household.service';
 import { Household } from '@app/domain/household';
+import { HouseholdMembersComponent } from '@app/admin/components/household-members/household-members.component';
 
 @Component({
   selector: 'app-household-shell',
   imports: [ CommonModule,
     HouseholdDetailComponent,
     HouseholdSearchComponent,
-    HouseholdListComponent
+    HouseholdListComponent,
+    HouseholdMembersComponent
   ],
   templateUrl: './household-shell.component.html',
   styleUrl: './household-shell.component.scss'

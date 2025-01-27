@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'csbc-household-detail',
@@ -14,25 +15,39 @@ import { MatIconModule } from '@angular/material/icon';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    MatCardModule
 
   ],
   templateUrl: './household-detail.component.html',
-  styleUrl: './household-detail.component.scss'
+  styleUrls: [ './household-detail.component.scss',
+    '../../admin.component.scss',
+    '../../../shared/scss/forms.scss',
+    '../../../shared/scss/cards.scss',
+  ]
 })
 export class HouseholdDetailComponent implements OnInit {
   /* injected */
   #householdService = inject(HouseholdService);
-    form: FormGroup;
+  householdDetailForm: FormGroup;
+
+  pageTitle = 'Household Detail';
 
     constructor(private fb: FormBuilder) {
-      this.form = this.fb.group({
+      this.householdDetailForm = this.fb.group({
         householdName: ['', Validators.required],
-        address: ['', Validators.required],
-        members: this.fb.array([])
+        address1: [ '', Validators.required ],
+        address2: [ '' ],
+        city: [ '', Validators.required ],
+        state: [ '', Validators.required ],
+        zip: [ '', Validators.required ],
+        phone: [ '', Validators.required ],
+        email: [ '', Validators.required ],
+        // members: this.fb.array([])
       });
     }
 
@@ -41,7 +56,7 @@ export class HouseholdDetailComponent implements OnInit {
   }
 
     get members(): FormArray {
-      return (this.form?.get('members') as FormArray) || this.fb.array([]);
+      return (this.householdDetailForm?.get('members') as FormArray) || this.fb.array([]);
     }
 
     addMember() {
@@ -55,8 +70,8 @@ export class HouseholdDetailComponent implements OnInit {
       this.members.removeAt(index);
     }
 
-    onSubmit() {
-      if (this.form.valid) {
+    onSave() {
+      if (this.householdDetailForm.valid) {
         // this.#householdService.saveHousehold(this.form.value).subscribe(response => {
         //   // handle response
         // });
