@@ -1,4 +1,4 @@
-import { NgFor, NgForOf } from '@angular/common';
+import { NgFor, NgForOf, NgIf } from '@angular/common';
 import { Component, inject, Input, input, OnChanges, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
@@ -14,7 +14,8 @@ import { HouseholdService } from '@app/services/household.service';
     MatTableModule,
     MatListModule,
     NgFor,
-    NgForOf
+    NgForOf,
+    NgIf
   ],
   templateUrl: './household-list.component.html',
   styleUrls: ['./household-list.component.scss',
@@ -36,6 +37,7 @@ export class HouseholdListComponent implements OnInit, OnChanges {
   // households = this.householdService.households;
   // Subscribe to the households signal and update the dataSource
   displayedColumns = [
+    'houseId',
     'name',
     'address1',
     'phone',
@@ -63,7 +65,7 @@ export class HouseholdListComponent implements OnInit, OnChanges {
   }
   getRecord(row: Household) {
     console.log('Row: ', row);
-    // this.#router.navigate(['/admin/household', row.id]);
+    this.#router.navigate(['/admin/household', row.houseId]);
   };
 
 }

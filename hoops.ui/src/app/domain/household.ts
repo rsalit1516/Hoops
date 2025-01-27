@@ -1,5 +1,5 @@
 export class Household {
-  public householdId!: number;
+  public houseId!: number;
   public name!: string;
   public address1?: string;
   public address2?: string;

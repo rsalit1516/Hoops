@@ -3,7 +3,6 @@ import { HouseholdDetailComponent } from '@app/admin/components/household-detail
 import { CommonModule } from '@angular/common';
 import { HouseholdSearchComponent } from '@app/admin/components/household-search/household-search.component';
 import { HouseholdListComponent } from '@app/admin/components/household-list/household-list.component';
-import { MatCardModule } from '@angular/material/card';
 import { householdSearchCriteria, HouseholdService } from '@app/services/household.service';
 import { Household } from '@app/domain/household';
 

@@ -5,6 +5,12 @@
   </mat-card-header>
   <mat-card-content>
     <table mat-table id="grd" [dataSource]="dataSource">
+      <ng-container matColumnDef="houseId" >
+        <th mat-header-cell *matHeaderCellDef>HouseId</th>
+        <td mat-cell *matCellDef="let col" class="teamName">
+          {{ col.houseId }}
+        </td>
+      </ng-container>
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef>Name</th>
         <td mat-cell *matCellDef="let col" class="teamName">
