@@ -10,13 +10,13 @@ body{
   background-color: color.adjust(v.$background-color, $lightness: 10%);
 }
 
-.mat-mdc-card {
-  background-color: color.adjust(v.$card-background-color, $lightness: 5%);
-}
+// .mat-mdc-card {
+//   background-color: color.adjust(v.$card-background-color, $lightness: 5%);
+// }
 
 form {
   background-color: color.adjust(v.$card-background-color, $lightness: 10%);
-  padding: 4px;
+  padding: 16px;
 }
 
 h2 {

@@ -59,11 +59,7 @@ export class ContentListComponent implements OnInit, AfterViewInit {
   data: WebContent[] = [];
   filterValue = '';
 
-  constructor () {
-    // this.dataSource.paginator = this.paginator;
-    // this.dataSource.sort = this.sort;
-
-  }
+  constructor () {}
 
   ngOnInit() {
     this.pageTitle = 'Web Site Messages';

@@ -31,7 +31,7 @@ export class HouseholdService {
   // isLoading = this.householdResource.isLoading;
   selectedHouseholdSignal = signal<Household | null>(null);
 
-  selectedRecord = signal<Household | null>(null);
+  private selectedRecord = signal<Household | null>(null);
 
   // Expose the selected record signal
   selectedRecordSignal = this.selectedRecord.asReadonly();
