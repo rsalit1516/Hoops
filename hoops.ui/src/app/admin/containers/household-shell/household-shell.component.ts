@@ -26,13 +26,15 @@ export class HouseholdShellComponent {
   private searchCriteria = signal<householdSearchCriteria | null>(null); // Signal for search criteria
   results = signal<Household[] | undefined>([]); // Signal for search results
 
+  selectedHousehold = signal<Household | null>(null);
+
   constructor() { }
 
   onSearch(criteria: householdSearchCriteria) {
     console.log(criteria);
     this.searchCriteria.set(criteria);
     this.householdService.getResults(criteria).subscribe(data => {
-      console.log('Results', data);
+      // console.log('Results', data);
       this.results.set(data);
     });
   }

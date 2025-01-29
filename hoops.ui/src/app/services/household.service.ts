@@ -25,12 +25,38 @@ export class HouseholdService {
   // Signal to support the template
   criteria = linkedSignal<householdSearchCriteria>(() => this.selectedCriteria());
 
-  householdsResult = signal<Household[]> ([]);
+  householdsResult = signal<Household[]>([]);
   error = computed(() => this.householdResource.error() as HttpErrorResponse);
   errorMessage = computed(() => setErrorMessage(this.error(), 'Household'));
   // isLoading = this.householdResource.isLoading;
-selectedHousehold =   signal<Household | null>(null);
-  // householdsEff = effect(() => console.log('Household data: ', this.householdsResult()));
+  selectedHouseholdSignal = signal<Household | null>(null);
+
+  selectedRecord = signal<Household | null>(null);
+
+  // Expose the selected record signal
+  selectedRecordSignal = this.selectedRecord.asReadonly();
+
+  constructor() {
+    // Optional: Effect for side effects when the signal changes
+    effect(() => {
+      const record = this.selectedRecord();
+      console.log('Selected record changed:', record);
+      if (record !== null) {
+        console.log(`Record updated: ${record.name}`);
+        // Optionally trigger additional logic here
+      }
+    });
+  }
+
+  // Method to update the selected record ID
+  updateSelectedRecord(record: Household) {
+    this.selectedRecord.set(record);
+  }
+
+  get selectedHousehold() {
+    return this.selectedHouseholdSignal();
+  }
+
   executeSearch() {
     this.searchUrl = this.constructQueryString(this.selectedCriteria());
     // this.householdResource.reload();
@@ -45,7 +71,7 @@ selectedHousehold =   signal<Household | null>(null);
       //   let counter = 0;
       this.householdsResult.set(response!);
       console.log(this.results);
-//       console.log('Household data: ', this.householdsResult());
+      //       console.log('Household data: ', this.householdsResult());
     });
   }
 
@@ -61,7 +87,7 @@ selectedHousehold =   signal<Household | null>(null);
   private searchHouseholds$(): Observable<Household[] | undefined> {
     return this.http.get<Household[]>(this.searchUrl, { responseType: 'json' });
   }
-  searchHouseholds() : Signal<Household[] | undefined> {
+  searchHouseholds(): Signal<Household[] | undefined> {
     return toSignal(this.searchHouseholds$());
   }
   getResults(criteria: householdSearchCriteria): Observable<Household[] | undefined> {

@@ -66,7 +66,7 @@ export class HouseholdListComponent implements OnInit, OnChanges {
   getRecord(row: Household) {
     console.log('Row: ', row);
     // this.#router.navigate(['/admin/household', row.houseId]);
-    this.householdService.selectedHousehold.set(row);
+    this.householdService.updateSelectedRecord(row);
   };
 
 }
