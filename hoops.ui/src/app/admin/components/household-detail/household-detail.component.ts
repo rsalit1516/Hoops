@@ -61,7 +61,7 @@ export class HouseholdDetailComponent implements OnInit, OnChanges {
       console.log(record);
       if (record !== null) {
         // this.loadRecordDetails(recordId);
-this.household.set(record);
+        this.household.set(record);
         console.log(record);
         this.updateForm();
       }
@@ -117,19 +117,19 @@ this.household.set(record);
     //   this.household.set(this.#householdService.selectedHousehold);
     //   console.log('Household', this.household());
 
-      const household = this.household();
-      if (household) {
-        this.householdDetailForm.patchValue({
-          householdName: household.name,
-          address1: household.address1,
-          address2: household.address2,
-          city: household.city,
-          state: household.state,
-          zip: household.zip,
-          phone: household.phone,
-          email: household.email,
-        });
-      }
+    const household = this.household();
+    if (household) {
+      this.householdDetailForm.patchValue({
+        householdName: household.name,
+        address1: household.address1,
+        address2: household.address2,
+        city: household.city,
+        state: household.state,
+        zip: household.zip,
+        phone: household.phone,
+        email: household.email,
+      });
+    }
     // }
   }
   // get members(): FormArray {

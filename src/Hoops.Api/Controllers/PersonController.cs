@@ -42,5 +42,13 @@ namespace Hoops.Controllers
             var people = repository.GetADs(companyId);
             return Ok(people);
         }       
+         // GET: api/User
+        [HttpGet("GetHouseholdMembers/{id}")]
+        public ActionResult<IEnumerable<Person>> GetHouseholdMembers(int id)
+        {   
+            _logger.LogInformation("Retrieving household members");
+            var people = repository.GetByHousehold(id);
+            return Ok(people);
+        }        
     }
 }

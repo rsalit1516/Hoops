@@ -18,17 +18,17 @@ import { HouseholdService } from '@app/services/household.service';
     NgFor,
     NgForOf,
     NgIf,
-        MatSortModule,
-        MatPaginatorModule
+    MatSortModule,
+    MatPaginatorModule
 
   ],
   templateUrl: './household-list.component.html',
-  styleUrls: ['./household-list.component.scss',
-  '../../admin.component.scss',
-  '../../../shared/scss/tables.scss',
-  '../../../shared/scss/cards.scss',
+  styleUrls: [ './household-list.component.scss',
+    '../../admin.component.scss',
+    '../../../shared/scss/tables.scss',
+    '../../../shared/scss/cards.scss',
   ],
-  providers: [MatSort, MatPaginator]
+  providers: [ MatSort, MatPaginator ]
 })
 export class HouseholdListComponent implements OnInit, OnChanges, AfterViewInit {
   households = input<Household[]>(); // Signal
@@ -59,21 +59,21 @@ export class HouseholdListComponent implements OnInit, OnChanges, AfterViewInit 
   constructor() { }
 
   ngOnInit() {
-    console .log('results', this.results);
+    console.log('results', this.results);
     this.dataSource = new MatTableDataSource(this.results());
 
     // households = this.householdService.households;
     // isLoading = this.#householdService.isLoading;
 
   }
-  ngAfterViewInit () {
+  ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 
   ngOnChanges() {
     this.dataSource = new MatTableDataSource(this.results());
-//     [...this.results];
+    //     [...this.results];
   }
   getRecord(row: Household) {
     console.log('Row: ', row);
