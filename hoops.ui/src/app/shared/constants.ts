@@ -1,4 +1,4 @@
-import {environment} from '../../environments/environment';
+import { environment } from '../../environments/environment';
 export class Constants {
   public static ALLTEAMS = 'All Teams';
 
@@ -54,5 +54,7 @@ export class Constants {
   public static peopleUrl = Constants.DEFAULTURL + '/api/People';
   public static GET_ADS_URL = Constants.DEFAULTURL + '/api/Person/GetADs';
   public static standingsUrl = Constants.DEFAULTURL + '/api/ScheduleGame/getStandings';
-public static searchHouseholdUrl = Constants.DEFAULTURL + '/api/Household/search';
+  public static SEARCH_HOUSEHOLD_URL = Constants.DEFAULTURL + '/api/Household/search';
+  public static GET_HOUSEHOLD_MEMBERS_URL = Constants.DEFAULTURL + '/api/Person/GetHouseholdMembers';
+
 }

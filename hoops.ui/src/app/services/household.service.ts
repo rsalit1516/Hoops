@@ -2,9 +2,11 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { computed, effect, inject, Injectable, linkedSignal, Signal, signal, WritableSignal } from '@angular/core';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { Household } from '@app/domain/household';
+import { Person } from '@app/domain/person';
 import { Constants } from '@app/shared/constants';
 import { setErrorMessage } from '@app/shared/error-message';
 import { map, Observable, tap } from 'rxjs';
+import { PeopleService } from './people.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +15,9 @@ export class HouseholdService {
 
   // Injected services
   private http = inject(HttpClient);
+  #peopleService = inject(PeopleService);
 
-  inithUrl = Constants.searchHouseholdUrl;
+  inithUrl = Constants.SEARCH_HOUSEHOLD_URL;
   searchUrl = '';
   selectedCriteria = signal<householdSearchCriteria>({
     householdName: '',
@@ -51,6 +54,7 @@ export class HouseholdService {
   // Method to update the selected record ID
   updateSelectedRecord(record: Household) {
     this.selectedRecord.set(record);
+    this.getHouseholdMembers();
   }
 
   get selectedHousehold() {
@@ -59,20 +63,15 @@ export class HouseholdService {
 
   executeSearch() {
     this.searchUrl = this.constructQueryString(this.selectedCriteria());
-    // this.householdResource.reload();
     this.searchHouseholds$().subscribe(response => {
-      // const hh1 = response;
-      // console.log(hh1);
-      // let hh2: Household[] = [];
-      // if (hh1) {
-      //   hh1.forEach(element => {
-      //     hh2.push(element);
-      //   });
-      //   let counter = 0;
       this.householdsResult.set(response!);
       console.log(this.results);
       //       console.log('Household data: ', this.householdsResult());
     });
+  }
+
+  getHouseholdMembers() {
+    this.#peopleService.getHouseholdMembers(this.selectedRecordSignal()!.houseId);
   }
 
   // To generate an error, add characters to the URL
@@ -90,10 +89,17 @@ export class HouseholdService {
   searchHouseholds(): Signal<Household[] | undefined> {
     return toSignal(this.searchHouseholds$());
   }
+  // private getHouseholdMembers$(): Observable<Person[]> {
+  //   const url = Constants.GET_HOUSEHOLD_MEMBERS_URL + '/' + this.selectedRecordSignal()?.houseId;
+  //   console.log('URL: ', url);
+  //   return this.http.get<Person[]>(url, { responseType: 'json' });
+  // }
+
   getResults(criteria: householdSearchCriteria): Observable<Household[] | undefined> {
     this.searchUrl = this.constructQueryString(criteria);
     return this.searchHouseholds$();
   }
+
   get results() {
     return this.householdsResult();
   }

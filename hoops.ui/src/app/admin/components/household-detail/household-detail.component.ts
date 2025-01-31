@@ -70,25 +70,6 @@ export class HouseholdDetailComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    // this.addMember();
-    // effect(() => {
-    //   const record = this.#householdService.selectedRecordSignal();
-    //   console.log(record);
-    //   if (record !== null) {
-    //     // this.loadRecordDetails(recordId);
-    //     console.log(record);
-    //     this.updateForm();
-    //   }
-    // });
-    // effect(() => {
-    //   const record = this.#householdService.selectedRecord();
-    //   console.log(record);
-    //   if (record !== null) {
-    //     // this.loadRecordDetails(recordId);
-    //     console.log(record);
-    //     this.updateForm();
-    //   }
-    // });
 
   }
   ngOnChanges() {
