@@ -1,4 +1,4 @@
-import { NgFor, NgForOf, NgIf } from '@angular/common';
+import { DatePipe, NgFor, NgForOf, NgIf } from '@angular/common';
 import { Component, computed, effect, inject, input, linkedSignal, OnInit, ViewChild } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
@@ -20,7 +20,8 @@ import { PeopleService } from '@app/services/people.service';
     NgForOf,
     NgIf,
     MatSortModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    DatePipe
   ],
   templateUrl: './household-members.component.html',
   styleUrls: [ './household-members.component.scss',
@@ -28,7 +29,7 @@ import { PeopleService } from '@app/services/people.service';
     '../../../shared/scss/forms.scss',
     '../../../shared/scss/cards.scss',
   ],
-  providers: [ MatSort, MatPaginator ]
+  providers: [ MatSort, MatPaginator, DatePipe ]
 })
 export class HouseholdMembersComponent implements OnInit {
   pageTitle = 'Household members';
@@ -44,7 +45,7 @@ export class HouseholdMembersComponent implements OnInit {
   displayedColumns = [
     'lastName',
     'firstName',
-    'dob',
+    'birthDate',
     'gender',
     'register'
   ]

@@ -23,10 +23,10 @@
           {{ col.firstName }}
         </td>
       </ng-container>
-      <ng-container matColumnDef="dob">
+      <ng-container matColumnDef="birthDate">
         <th mat-header-cell *matHeaderCellDef>DOB</th>
         <td mat-cell *matCellDef="let col" class="teamName">
-          {{ col.dob }}
+          {{ col.birthDate | date:'yyyy-MM-dd' }}
         </td>
       </ng-container>
       <ng-container matColumnDef="gender">
