@@ -23,7 +23,7 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 export class AdminShellSidebarComponent {
   showDirectors = false;
   showHouseholds = true;
-  showPeople = false;
+  showPeople = true;
   showColors = false;
   showUsers = false;
   shouldRun = true;

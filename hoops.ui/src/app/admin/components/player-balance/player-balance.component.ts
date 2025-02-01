@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-player-balance',
+  selector: 'csbc-player-balance',
   imports: [],
   templateUrl: './player-balance.component.html',
   styleUrl: './player-balance.component.scss'

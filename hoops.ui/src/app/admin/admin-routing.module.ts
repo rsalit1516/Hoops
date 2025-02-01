@@ -93,6 +93,12 @@ export const ADMINROUTES: Routes = [
         component: HouseholdShellComponent,
         // providers: [HouseholdService],
       },
+      {
+        path: 'people',
+        loadComponent: () => import('./containers/admin-people-shell/admin-people-shell.component').then(
+          (mod) => mod.AdminPeopleShellComponent
+        ),
+      },
       { path: 'teams', component: TeamListComponent },
       {
         path: 'games',
