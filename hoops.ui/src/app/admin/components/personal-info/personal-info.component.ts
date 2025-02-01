@@ -11,7 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 
 @Component({
-  selector: 'app-personal-info',
+  selector: 'csbc-personal-info',
   imports: [
         CommonModule,
         FormsModule,
