@@ -1,8 +1,10 @@
-<h1>{{pageTitle}}</h1>
 <div>
-  <csbc-household-search (search)="onSearch($event)"></csbc-household-search>
+  <h1>{{pageTitle}}</h1>
 </div>
-<div>
+<section class="flex">
+  <csbc-household-search (search)="onSearch($event)"></csbc-household-search>
+</section>
+<div class="flex">
   <csbc-household-list [results]="results()"></csbc-household-list>
 </div>
 <div class="grid grid-cols-2 gap-4">

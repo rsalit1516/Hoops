@@ -24,6 +24,7 @@ import { first } from 'rxjs-compat/operator/first';
 export class PeopleSearchComponent {
   pageTitle = 'Search People';
   fb = inject(FormBuilder);
+  inputStyle: 'fill' | 'outline' = 'outline';
 
   searchForm = this.fb.group({
     lastName: [''],

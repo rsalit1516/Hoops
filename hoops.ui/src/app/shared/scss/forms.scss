@@ -89,11 +89,11 @@ input {
 }
 
 .mat-label {
-  color: v.$field-label !important;
+  color: v.$admin-font-color !important;
   font-size: .9rem;
   font-weight: 800;
-  padding-bottom: 6px;
-  padding-left: 12px;
+  // padding-bottom: 6px;
+  // padding-left: 12px;
 }
 
 .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-text-field__input {

@@ -40,6 +40,7 @@ export class HouseholdSearchComponent {
   @Output() search = new EventEmitter<householdSearchCriteria>();
 
   pageTitle = 'Household Search';
+  inputStyle: 'fill' | 'outline' = 'outline';
 
   searchForm: FormGroup;
   searchControl = new FormControl('');

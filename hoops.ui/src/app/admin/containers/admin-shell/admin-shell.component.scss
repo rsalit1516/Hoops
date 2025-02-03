@@ -61,6 +61,10 @@ a.mat-list-item {
   border-bottom: v.$brand-color;
   transform: scale(1.1);
   transition: border-bottom 0.3s ease color 0.3s ease, transform 0.3s ease;
+  padding-left: 24px;
+  font-weight: 700;
+  background-color:v.$sidebar-color;
+  color: v.$sidebar-menu;
 }
 .mat-drawer-content {
   overflow: hidden;
