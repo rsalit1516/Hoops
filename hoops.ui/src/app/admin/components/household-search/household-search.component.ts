@@ -1,12 +1,15 @@
-import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, inject, Output, output } from '@angular/core';
-import { FormBuilder, FormsModule, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule, NgIf } from '@angular/common';
+import { Component, EventEmitter, inject, Output, output, signal } from '@angular/core';
+import { FormBuilder, FormsModule, FormGroup, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { Household } from '@app/domain/household';
 import { householdSearchCriteria, HouseholdService } from '@app/services/household.service';
+import { combineLatest, debounceTime, switchMap } from 'rxjs';
 
 @Component({
   selector: 'csbc-household-search',
@@ -18,6 +21,9 @@ import { householdSearchCriteria, HouseholdService } from '@app/services/househo
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    MatIconModule,
+    MatToolbarModule,
+    NgIf
   ],
   templateUrl: './household-search.component.html',
   styleUrls: [
@@ -36,8 +42,14 @@ export class HouseholdSearchComponent {
   pageTitle = 'Household Search';
 
   searchForm: FormGroup;
+  searchControl = new FormControl('');
 
   criteria: string = '';
+  householdName = new FormControl('');
+  address = new FormControl('');
+  email = new FormControl('');
+  phone = new FormControl('');
+  searchResults = signal<any[]>([]);
 
   onSearch() {
     const selectedCriteria: householdSearchCriteria = {
@@ -65,6 +77,25 @@ export class HouseholdSearchComponent {
       phone: [ '' as string ],
       email: [ '' as string ],
     });
+    // Combine search values and trigger API calls when any change
+    combineLatest([
+      this.householdName.valueChanges.pipe(debounceTime(300)),
+      this.address.valueChanges.pipe(debounceTime(300)),
+      this.email.valueChanges.pipe(debounceTime(300)),
+      this.phone.valueChanges.pipe(debounceTime(300)),
+    ])
+    .pipe(
+      switchMap(([householdName, address, email, phone]) =>
+        this.householdService.fetchFilteredData({
+          householdName: householdName || '',
+          address: address || '',
+          email: email || '',
+          phone: phone || '',
+        })
+      )
+    )
+    .subscribe(results => this.searchResults.set(results));
+
   }
 
   search1() {
@@ -85,6 +116,11 @@ export class HouseholdSearchComponent {
     let results = this.householdService.householdsResult();
     this.households.emit(results);
     // console.log(this.households());
+  }
+
+
+  clearSearch() {
+    this.searchForm.reset();
   }
 
   public hasError = (controlName: string, errorName: string) => {

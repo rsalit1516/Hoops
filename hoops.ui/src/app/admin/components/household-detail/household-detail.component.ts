@@ -16,7 +16,6 @@ import { Household } from '@app/domain/household';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,

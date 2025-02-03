@@ -104,6 +104,10 @@ export class HouseholdService {
     return this.householdsResult();
   }
 
+  fetchFilteredData(filters: any): Observable<any[]> {
+    return this.http.get<any[]>('/api/search', { params: filters });
+  }
+
   constructQueryString(criteria: householdSearchCriteria): string {
     let url = this.inithUrl;
 

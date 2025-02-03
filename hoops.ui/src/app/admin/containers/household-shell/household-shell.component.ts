@@ -16,7 +16,11 @@ import { HouseholdMembersComponent } from '@app/admin/components/household-membe
     HouseholdMembersComponent
   ],
   templateUrl: './household-shell.component.html',
-  styleUrl: './household-shell.component.scss'
+  styleUrls: ['./household-shell.component.scss',
+  '../../admin.component.scss',
+  '../../../shared/scss/forms.scss',
+  '../../../shared/scss/cards.scss',
+  ]
 })
 export class HouseholdShellComponent {
   pageTitle = 'Household Management';

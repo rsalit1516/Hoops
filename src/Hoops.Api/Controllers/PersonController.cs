@@ -29,26 +29,38 @@ namespace Hoops.Controllers
         // GET: api/User
         [HttpGet]
         public ActionResult<IEnumerable<Person>> GetPeople()
-        {   
+        {
             _logger.LogInformation("Retrieving ADs");
             var people = repository.GetAll();
             return Ok(people);
-        }        
-         [HttpGet]
-         [Route("GetADs")]
+        }
+        [HttpGet]
+        [Route("GetADs")]
         public ActionResult<IEnumerable<Person>> GetADPeople()
-        {   
+        {
             _logger.LogInformation("Retrieving ADs");
             var people = repository.GetADs(companyId);
             return Ok(people);
-        }       
-         // GET: api/User
+        }
+        // GET: api/User
         [HttpGet("GetHouseholdMembers/{id}")]
         public ActionResult<IEnumerable<Person>> GetHouseholdMembers(int id)
-        {   
+        {
             _logger.LogInformation("Retrieving household members");
             var people = repository.GetByHousehold(id);
             return Ok(people);
-        }        
+        }
+        // GET: api/person/search
+        [HttpGet("search")]
+        public ActionResult<IEnumerable<Person>> Search(
+            [FromQuery] string lastName,
+            [FromQuery] string firstName,
+            [FromQuery] bool playerOnly)
+        {
+            _logger.LogInformation("Searching for people");
+            var people = repository.FindPeopleByLastAndFirstName(lastName, firstName, playerOnly);
+            return Ok(people);
+
+        }
     }
 }

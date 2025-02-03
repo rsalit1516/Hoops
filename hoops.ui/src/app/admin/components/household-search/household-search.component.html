@@ -1,9 +1,38 @@
-<form
+<mat-toolbar color="primary">
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label htmlFor="householdName">Household Name</mat-label>
+    <input matInput [formControl]="householdName" title="name" />
+    <!-- <mat-hint>Search by household name </mat-hint> -->
+  </mat-form-field>
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label htmlFor="address">Address</mat-label>
+    <input matInput [formControl]="address" title="address" />
+    <!-- <mat-hint>Search by address </mat-hint> -->
+  </mat-form-field>
+  <!-- <mat-form-field appearance="outline">
+    <mat-label>First Name</mat-label>
+    <input matInput [formControl]="firstName">
+  </mat-form-field> -->
+
+  <mat-form-field appearance="outline">
+    <mat-label>Email</mat-label>
+    <input matInput [formControl]="email">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Phone</mat-label>
+    <input matInput [formControl]="phone">
+  </mat-form-field>
+</mat-toolbar>
+
+<!-- <form
 class="form-horizontal"
 (ngSubmit)="onSearch()"
 [formGroup]="searchForm"
 >
+-->
 
+<!--
 <mat-card>
   <mat-card-header>
     <mat-card-title>{{pageTitle}}</mat-card-title>
@@ -50,4 +79,4 @@ class="form-horizontal"
     >Search</button>
   </mat-card-actions>
 </mat-card>
-</form>
+</form> -->
