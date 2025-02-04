@@ -9,7 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Household } from '@app/domain/household';
 import { householdSearchCriteria, HouseholdService } from '@app/services/household.service';
-import { combineLatest, debounceTime, switchMap } from 'rxjs';
+import { combineLatest, debounceTime, map, switchMap } from 'rxjs';
 
 @Component({
   selector: 'csbc-household-search',
@@ -73,29 +73,46 @@ export class HouseholdSearchComponent {
 
   constructor() {
     this.searchForm = this.fb.group({
-      householdName: [ '' as string ],
-      address: [ '' as string ],
-      phone: [ '' as string ],
-      email: [ '' as string ],
+      householdName: this.householdName,
+      address: this.address,
+      phone: this.phone,
+      email: this.email,
     });
     // Combine search values and trigger API calls when any change
-    combineLatest([
-      this.householdName.valueChanges.pipe(debounceTime(300)),
-      this.address.valueChanges.pipe(debounceTime(300)),
-      this.email.valueChanges.pipe(debounceTime(300)),
-      this.phone.valueChanges.pipe(debounceTime(300)),
-    ])
-    .pipe(
-      switchMap(([householdName, address, email, phone]) =>
-        this.householdService.fetchFilteredData({
-          householdName: householdName || '',
-          address: address || '',
-          email: email || '',
-          phone: phone || '',
-        })
-      )
+    this.searchForm.valueChanges.pipe(
+      debounceTime(300),
+      map(values => {
+        // this.householdService.fetchFilteredData({
+        //   householdName: values.householdName || '',
+        //   address: values.address || '',
+        //   email: values.email || '',
+        //   phone: values.phone || '',
+        // })
+        const selectedCriteria: householdSearchCriteria = {
+          householdName: this.searchForm.value.householdName ?? '',
+          address: this.searchForm.value.address ?? '',
+          phone: this.searchForm.value.phone ?? '',
+          email: this.searchForm.value.email ?? '',
+        };
+
+        this.search.emit(selectedCriteria);
+
+      })
     )
-    .subscribe(results => this.searchResults.set(results));
+      .subscribe(results => {
+        // console.log('Results: ', results);
+        // this.searchResults.set(results)
+        // this.householdService.householdsResult.set(results);
+        // const selectedCriteria: householdSearchCriteria = {
+        //   householdName: this.searchForm.value.householdName ?? '',
+        //   address: this.searchForm.value.address ?? '',
+        //   phone: this.searchForm.value.phone ?? '',
+        //   email: this.searchForm.value.email ?? '',
+        // };
+
+        // this.search.emit(selectedCriteria);
+
+      });
 
   }
 
@@ -118,7 +135,6 @@ export class HouseholdSearchComponent {
     this.households.emit(results);
     // console.log(this.households());
   }
-
 
   clearSearch() {
     this.searchForm.reset();

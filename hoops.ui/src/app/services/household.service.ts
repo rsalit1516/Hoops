@@ -105,9 +105,16 @@ export class HouseholdService {
   }
 
   fetchFilteredData(filters: any): Observable<any[]> {
-
     console.log(filters);
-    return this.http.get<any[]>('/api/search', { params: filters });
+    const filterObject: householdSearchCriteria = {
+      householdName: filters.householdName,
+      address: filters.address,
+      email: filters.email,
+      phone: filters.phone
+    };
+    this.searchUrl = this.constructQueryString(filterObject);
+    console.log('Query String: ', this.searchUrl);
+    return this.http.get<Household[]>(this.searchUrl, { responseType: 'json' });
   }
 
   constructQueryString(criteria: householdSearchCriteria): string {
