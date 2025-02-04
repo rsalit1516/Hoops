@@ -105,6 +105,8 @@ export class HouseholdService {
   }
 
   fetchFilteredData(filters: any): Observable<any[]> {
+
+    console.log(filters);
     return this.http.get<any[]>('/api/search', { params: filters });
   }
 

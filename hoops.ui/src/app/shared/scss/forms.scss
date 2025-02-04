@@ -102,6 +102,15 @@ input {
   font-weight: 700;
   padding-bottom: 6px;
   padding-left: 12px;
+
+}
+
+.mdc-text-field__input {
+  color: v.$field-label !important;
+  font-size: v.$input-font-size;
+  font-weight: 700;
+  // padding-bottom: 6px;
+  // padding-left: 12px;
 }
 
 div.mat-mdc-select-panel {
