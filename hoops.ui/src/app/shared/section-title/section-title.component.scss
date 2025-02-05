@@ -1,0 +1,9 @@
+@use '../../../Content/variables' as v;
+
+.title {
+  color: v.$color;
+  font-size: 1.1em;
+  font-weight: 700;
+  padding-top: 12px;
+  padding-bottom: 8px;
+}

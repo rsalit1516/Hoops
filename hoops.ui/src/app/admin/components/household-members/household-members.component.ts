@@ -9,6 +9,7 @@ import { Household } from '@app/domain/household';
 import { Person } from '@app/domain/person';
 import { HouseholdService } from '@app/services/household.service';
 import { PeopleService } from '@app/services/people.service';
+import { SectionTitleComponent } from '@app/shared/section-title/section-title.component';
 
 @Component({
   selector: 'csbc-household-members',
@@ -21,12 +22,13 @@ import { PeopleService } from '@app/services/people.service';
     NgIf,
     MatSortModule,
     MatPaginatorModule,
-    DatePipe
+    DatePipe,
+    SectionTitleComponent
   ],
   templateUrl: './household-members.component.html',
   styleUrls: [ './household-members.component.scss',
     '../../admin.component.scss',
-    '../../../shared/scss/forms.scss',
+    '../../../shared/scss/tables.scss',
     '../../../shared/scss/cards.scss',
   ],
   providers: [ MatSort, MatPaginator, DatePipe ]
@@ -58,14 +60,9 @@ export class HouseholdMembersComponent implements OnInit {
   constructor() {
     effect(() => {
       const record = this.#peopleService.householdMembers();
-      console.log(record);
+      // console.log(record);
       if (record !== null) {
-        // this.loadRecordDetails(recordId);
-        // this.household.set(record);
-        // this.dataSource.data = record;
         this.dataSource = new MatTableDataSource(record);
-        console.log(record);
-        //       this.updateForm();
       }
     });
 

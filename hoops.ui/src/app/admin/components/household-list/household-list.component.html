@@ -1,7 +1,9 @@
 
 <mat-card>
   <mat-card-header>
-    <mat-card-title>{{pageTitle}}</mat-card-title>
+    <mat-card-title>
+      <csbc-section-title [title]="pageTitle"></csbc-section-title>
+    </mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <table mat-table id="grd" matsort [dataSource]="dataSource">

@@ -5,17 +5,17 @@
   display: flex;
   flex-direction: column;
 }
-body{
-  color: ghostwhite;
-  background-color: color.adjust(v.$background-color, $lightness: 10%);
-}
+// body{
+//   color: ghostwhite;
+//   background-color: color.adjust(v.$background-color, $lightness: 10%);
+// }
 
 // .mat-mdc-card {
 //   background-color: color.adjust(v.$card-background-color, $lightness: 5%);
 // }
 
 form {
-  background-color: color.adjust(v.$card-background-color, $lightness: 10%);
+//  background-color: color.adjust(v.$card-background-color, $lightness: 10%);
   padding: 16px;
 }
 
@@ -59,6 +59,11 @@ label {
   margin-bottom: .9rem;
   // padding-bottom: 12px;
   color: pink
+}
+.field-label {
+  color: v.$field-label !important;
+  font-size: 1.1rem;
+  font-weight: 600;
 }
 
 select {

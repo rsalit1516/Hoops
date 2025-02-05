@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Household } from '@app/domain/household';
 import { householdSearchCriteria, HouseholdService } from '@app/services/household.service';
+import { SectionTitleComponent } from '@app/shared/section-title/section-title.component';
 import { combineLatest, debounceTime, map, switchMap } from 'rxjs';
 
 @Component({
@@ -23,7 +24,8 @@ import { combineLatest, debounceTime, map, switchMap } from 'rxjs';
     MatButtonModule,
     MatIconModule,
     MatToolbarModule,
-    NgIf
+    NgIf,
+    SectionTitleComponent
   ],
   templateUrl: './household-search.component.html',
   styleUrls: [

@@ -6,6 +6,8 @@ import { HouseholdListComponent } from '@app/admin/components/household-list/hou
 import { householdSearchCriteria, HouseholdService } from '@app/services/household.service';
 import { Household } from '@app/domain/household';
 import { HouseholdMembersComponent } from '@app/admin/components/household-members/household-members.component';
+import { SectionTitleComponent } from '@app/shared/section-title/section-title.component';
+import { ShellTitleComponent } from '@app/shared/shell-title/shell-title.component';
 
 @Component({
   selector: 'app-household-shell',
@@ -13,7 +15,8 @@ import { HouseholdMembersComponent } from '@app/admin/components/household-membe
     HouseholdDetailComponent,
     HouseholdSearchComponent,
     HouseholdListComponent,
-    HouseholdMembersComponent
+    HouseholdMembersComponent,
+    ShellTitleComponent
   ],
   templateUrl: './household-shell.component.html',
   styleUrls: ['./household-shell.component.scss',

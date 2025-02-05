@@ -8,6 +8,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Household } from '@app/domain/household';
 import { HouseholdService } from '@app/services/household.service';
+import { SectionTitleComponent } from '@app/shared/section-title/section-title.component';
 
 @Component({
   selector: 'csbc-household-list',
@@ -19,8 +20,8 @@ import { HouseholdService } from '@app/services/household.service';
     NgForOf,
     NgIf,
     MatSortModule,
-    MatPaginatorModule
-
+    MatPaginatorModule,
+    SectionTitleComponent
   ],
   templateUrl: './household-list.component.html',
   styleUrls: [ './household-list.component.scss',
