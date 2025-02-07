@@ -54,43 +54,6 @@ em {
   padding-top: 20px;
 }
 
-.mat-mdc-card {
-  border-radius: 10px;
-  background-color: $card-background-color;
-  color: $font-color-text;
-  margin-bottom: 16px;
-  padding-top: 0px;
-  padding-bottom: 12px;
-  width: 100%;
-  text-align: center;
-
-}
-
-.mat-card-title, .mat-mdc-card-title {
-  font-size: $card-title-font-size;
-  font-weight: 750;
-  font-variant: small-caps;
-  color: $color;
-  text-align: center;
-  margin-right: 4vw;
-  margin-left: 4vw;
-}
-.mat-card-header {
-  text-align: center;
-  margin: auto;
-}
-.mat-card-header-text {
-  margin: auto !important;
-}
-
-.mat-card-content {
-  font-size: $card-body;
-  color: $font-color-text;
-  font-weight: 400;
-  padding-left: auto;
-  padding-right: auto;
-  padding-top: 4px;
-}
 .top-padding {
   margin-top: 24px;
   padding-left: auto;
