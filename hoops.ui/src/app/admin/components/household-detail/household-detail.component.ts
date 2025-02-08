@@ -129,11 +129,46 @@ export class HouseholdDetailComponent implements OnInit, OnChanges {
 
   onSave() {
     if (this.householdDetailForm.valid) {
-      // this.#householdService.saveHousehold(this.form.value).subscribe(response => {
-      //   // handle response
-      // });
-    }
+      let household = this.household();
+      if (household) {
+        const householdName = this.householdDetailForm.value.householdName;
+        if (typeof householdName === 'string') {
+          household.name = householdName;
+        }
+        const address1 = this.householdDetailForm.value.address1;
+        if (typeof address1 === 'string') {
+          household.address1 = address1;
+        }
+        const address2 = this.householdDetailForm.value.address2;
+        if (typeof address2 === 'string') {
+          household.address2 = address2;
+        }
+        const city = this.householdDetailForm.value.city;
+        if (typeof city === 'string') {
+          household.city = city;
+        }
+        const state = this.householdDetailForm.value.state;
+        if (typeof state === 'string') {
+          household.state = state;
+        }
+        const zip = this.householdDetailForm.value.zip;
+        if (typeof zip === 'string') {
+          household.zip = zip;
+        }
+        const phone = this.householdDetailForm.value.phone;
+        if (typeof phone === 'string') {
+          household.phone = phone;
+        }
+        const email = this.householdDetailForm.value.email;
+        if (typeof email === 'string') {
+          household.email = email;
+        }
+        console.log(household);
+        this.#householdService.saveHousehold(household);
+      }
+    };
   }
+
 }
 
 

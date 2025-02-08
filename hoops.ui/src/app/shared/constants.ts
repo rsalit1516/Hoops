@@ -28,7 +28,7 @@ export class Constants {
   /* urls */
   public static DEFAULTURL = environment.apiUrl;
 
-  public static baseUrl = Constants.DEFAULTURL;
+  public static BASE_URL = Constants.DEFAULTURL;
   public static dotNetCoreUrl = environment.apiUrl;
   public static getActiveWebContentUrl = Constants.DEFAULTURL + '/api/webcontent/getActiveWebContent';
   public static loginUrl = Constants.DEFAULTURL + '/api/User/login';
@@ -57,5 +57,5 @@ export class Constants {
   public static SEARCH_HOUSEHOLD_URL = Constants.DEFAULTURL + '/api/Household/search';
   public static GET_HOUSEHOLD_MEMBERS_URL = Constants.DEFAULTURL + '/api/Person/GetHouseholdMembers';
   public static PEOPLE_SEARCH_URL = Constants.DEFAULTURL + '/api/Person/search';
-
+  public static SAVE_HOUSEHOLD_URL = Constants.DEFAULTURL + '/api/Household';
 }

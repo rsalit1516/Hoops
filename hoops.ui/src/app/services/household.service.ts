@@ -139,6 +139,13 @@ export class HouseholdService {
     // add additional criteria as needed
     // https://localhost:5001/api/Household/search?name=salit&email=richard.salit%40gmail.com
   }
+  saveHousehold(household: Household): Observable<Household> {
+    if (household.houseId) {
+      return this.http.put<Household>(Constants.SAVE_HOUSEHOLD_URL + '/' + household.houseId, household);
+    } else {
+      return this.http.post<Household>(Constants.SAVE_HOUSEHOLD_URL, household);
+    }
+  }
 }
 export interface householdSearchCriteria {
   householdName: string;
