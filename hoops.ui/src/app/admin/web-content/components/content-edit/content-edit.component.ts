@@ -151,6 +151,13 @@ export class ContentEditComponent implements OnInit {
       expirationDate: this.content.expirationDate,
       // webContentTypeControl: this.content.webContentType,
     });
+    const text = this.contentForm.get('body')?.value;
+    const formattedText = this.formatText(text ?? '');
+    // Use formattedText where needed
+    console.log(formattedText);
+  }
+  formatText(text: string): string {
+    return text.replace(/\n/g, '<br>');
   }
   getContent (): void {
     this.store
