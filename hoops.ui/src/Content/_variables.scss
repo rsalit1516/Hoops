@@ -24,7 +24,19 @@ $card-color: color.adjust(#d17b00, $lightness: 20%);
 $status-bar-background: color.adjust(#000000, $lightness: 10%);
 $app-bar-background: #212121;
 $color: #d17b00;
-$card-sub-title-color: #3a5794;
+$card-sub-title-color: #d17b00;
+$default-lighten: 5%;
+
+$sidebar-background-color: #232323;
+$brand-color: #d17b00;
+$default-lighten: 5%;
+
+$sidebar-background-color: #232323;
+$brand-color: #d17b00;
+$default-lighten: 5%;
+
+$sidebar-background-color: #232323;
+$brand-color: #d17b00;
 $card-highlight: $brand-color;
 
 $border-radius: 10px;

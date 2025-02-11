@@ -1,11 +1,12 @@
 <mat-card>
-  <mat-card-header>
-    <mat-card-title>{{ info().title }}</mat-card-title>
+  <mat-card-header class="title">
+    <mat-card-title class="title">{{ info().title }}</mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <div class="sub-title">{{ info().subTitle }}</div>
-    <div class="text-center">
-      <span>{{ info().body }}</span>
+    <div class="text-center body-text" >
+      <div [innerHTML]="bodyText" [hidden]="!bodyText"></div>
+      <!-- <span>{{ info().body }}</span> -->
     </div>
     <div class="infoLocation" [hidden] = "hideLocationAndDateTime()">
       <div class="text-center" [hidden]="!info().location">
