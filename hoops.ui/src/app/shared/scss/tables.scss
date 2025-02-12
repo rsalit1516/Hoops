@@ -128,3 +128,11 @@ td {
 .mat-mdc-icon-button img, .mat-mdc-icon-button svg {
   fill: v.$table-font-color;
 }
+
+.no-data {
+  color: v.$table-font-color;
+  font-size: 1.2rem;
+  font-weight: 500;
+  text-align: center;
+  padding-top: 24px;
+}

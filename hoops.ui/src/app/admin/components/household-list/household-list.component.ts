@@ -1,5 +1,5 @@
 import { NgFor, NgForOf, NgIf } from '@angular/common';
-import { AfterViewInit, Component, inject, Input, input, OnChanges, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, inject, input, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { Household } from '@app/domain/household';
 import { HouseholdService } from '@app/services/household.service';
 import { SectionTitleComponent } from '@app/shared/section-title/section-title.component';
+import { HouseholdSearchComponent } from "../household-search/household-search.component";
 
 @Component({
   selector: 'csbc-household-list',
@@ -21,8 +22,9 @@ import { SectionTitleComponent } from '@app/shared/section-title/section-title.c
     NgIf,
     MatSortModule,
     MatPaginatorModule,
-    SectionTitleComponent
-  ],
+    SectionTitleComponent,
+    HouseholdSearchComponent
+],
   templateUrl: './household-list.component.html',
   styleUrls: [ './household-list.component.scss',
     '../../admin.component.scss',
@@ -40,7 +42,7 @@ export class HouseholdListComponent implements OnInit, OnChanges, AfterViewInit 
   private householdService = inject(HouseholdService);
   #router = inject(Router);
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild('householdPaginator') paginator: MatPaginator = inject(MatPaginator);
   @ViewChild(MatSort) sort: MatSort = inject(MatSort);
   showFirstLastButtons = true;
   pageSize = 10;
@@ -55,19 +57,17 @@ export class HouseholdListComponent implements OnInit, OnChanges, AfterViewInit 
     'phone',
     'email',
   ]
-  dataSource!: MatTableDataSource<Household>;
+
+  dataSource = new MatTableDataSource<Household>([]);
 
   constructor() { }
 
   ngOnInit() {
-    console.log('results', this.results);
     this.dataSource = new MatTableDataSource(this.results());
-
-    // households = this.householdService.households;
-    // isLoading = this.#householdService.isLoading;
 
   }
   ngAfterViewInit() {
+    this.paginator.pageSize = this.pageSize;
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }

@@ -140,9 +140,12 @@ export class HouseholdService {
     // https://localhost:5001/api/Household/search?name=salit&email=richard.salit%40gmail.com
   }
   saveHousehold(household: Household): Observable<Household> {
+    console.log('Household: ', household);
     if (household.houseId) {
+      console.log('Updating household');
       return this.http.put<Household>(Constants.SAVE_HOUSEHOLD_URL + '/' + household.houseId, household);
     } else {
+      console.log('New household');
       return this.http.post<Household>(Constants.SAVE_HOUSEHOLD_URL, household);
     }
   }

@@ -40,6 +40,12 @@
             </button>
           </td>
         </ng-container>
+        <ng-container matColumnDef="nodata">
+          <td mat-footer-row *matFooterCellDef [colSpan]="displayedColumns.length" class="no-data">No Data
+            Available</td>
+        </ng-container>
+        <tr mat-footer-row [hidden]="dataSource.data.length >0" *matFooterRowDef="['nodata']">
+        </tr>
         <tr mat-header-row *matHeaderRowDef="displayedColumns" matHeaderRowDefSticky="true"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns" (click) = "editContent(row)"></tr>
       </table>
