@@ -163,7 +163,7 @@ export class HouseholdDetailComponent implements OnInit, OnChanges {
         if (typeof email === 'string') {
           household.email = email;
         }
-        console.log(household);
+        // console.log(household);
         this.#householdService.saveHousehold(household);
       }
     };

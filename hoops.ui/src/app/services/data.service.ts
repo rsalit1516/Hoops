@@ -28,7 +28,6 @@ export class DataService {
   getContentUrl = this.baseUrl + '/api/webcontent';
   getActiveContentUrl = this.baseUrl + '/api/webcontent/getActiveWebContent';
   postContentUrl = this.baseUrl + '/api/WebContent';
-  putContentUrl = this.baseUrl + '/api/WebContent/';
   getCurrentSponsors = this.baseUrl + '/api/Sponsor/GetSeasonSponsors/';
   getLocations = this.baseUrl + '/api/Locations/';
   seasonUrl = this.baseUrl + '/api/Season/';

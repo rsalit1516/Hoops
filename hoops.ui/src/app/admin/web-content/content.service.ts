@@ -168,9 +168,7 @@ export class ContentService {
   }
 
   private updateContent(content: WebContent): Observable<WebContent> {
-    console.log(this.data.putContentUrl);
-    console.log(content);
-    let url = this.data.putContentUrl + content.webContentId;
+    let url = Constants.PUT_CONTENT_URL + content.webContentId;
     console.log(url);
     // const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.put<WebContent>(url, content);

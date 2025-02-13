@@ -46,7 +46,7 @@ export class Constants {
   public static getContentUrl = Constants.DEFAULTURL + '/api/webcontent';
   public static getActiveContentUrl = Constants.DEFAULTURL + '/api/webcontent/getActiveWebContent';
   public static postContentUrl = Constants.DEFAULTURL + '/api/WebContent';
-  public static putContentUrl = Constants.DEFAULTURL + '/api/WebContent/';
+  public static PUT_CONTENT_URL = Constants.DEFAULTURL + '/api/WebContent/';
   public static getCurrentSponsors = Constants.DEFAULTURL + '/api/Sponsor/GetSeasonSponsors/';
   public static getLocations = Constants.DEFAULTURL + '/api/Locations/';
   public static seasonUrl = Constants.DEFAULTURL + '/api/Season/';
@@ -57,5 +57,5 @@ export class Constants {
   public static SEARCH_HOUSEHOLD_URL = Constants.DEFAULTURL + '/api/Household/search';
   public static GET_HOUSEHOLD_MEMBERS_URL = Constants.DEFAULTURL + '/api/Person/GetHouseholdMembers';
   public static PEOPLE_SEARCH_URL = Constants.DEFAULTURL + '/api/Person/search';
-  public static SAVE_HOUSEHOLD_URL = Constants.DEFAULTURL + '/api/Household';
+  public static SAVE_HOUSEHOLD_URL = Constants.DEFAULTURL + '/api/Household/';
 }
