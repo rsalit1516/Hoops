@@ -3,7 +3,6 @@
 
 body {
   background-color: v.$admin-background-color;
-
 }
 
 .admin-container {
@@ -76,5 +75,4 @@ a.mat-list-item {
 .mat-mdc-icon-button:disabled {
   color: color.adjust(v.$color , $lightness: -20%);
 }
-
 

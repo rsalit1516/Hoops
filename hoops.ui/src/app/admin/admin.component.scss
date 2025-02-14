@@ -255,12 +255,20 @@ div {
 
 h2 {
   color: v.$field-label;
-  font-size: .9rem;
+  font-size: 1.2rem;
   font-weight: 800;
   padding-bottom: 6px;
   padding-left: 12px;
 
 }
+h3 {
+  color: v.$field-label;
+  font-size: 1.1rem;
+  font-weight: 800;
+  padding-bottom: 6px;
+  padding-left: 12px;
+}
+
 .mat-list-text {
   font-size: .8rem;
   font-weight: 400;

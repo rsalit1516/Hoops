@@ -27,8 +27,9 @@ import { MatIconModule } from '@angular/material/icon';
   templateUrl: './household-shell.component.html',
   styleUrls: [ './household-shell.component.scss',
     '../../admin.component.scss',
-    '../../../shared/scss/forms.scss',
+    '../../containers/admin-shell/admin-shell.component.scss',
     '../../../shared/scss/cards.scss',
+    '../../../shared/scss/sidenav.scss',
   ]
 })
 export class HouseholdShellComponent implements AfterViewInit {
