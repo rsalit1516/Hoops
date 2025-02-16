@@ -165,6 +165,8 @@ export class HouseholdDetailComponent implements OnInit, OnChanges {
         }
         // console.log(household);
         this.#householdService.saveHousehold(household);
+        this.householdDetailForm.reset();
+        this.#householdService.householdSaved.set(true);
       }
     };
   }

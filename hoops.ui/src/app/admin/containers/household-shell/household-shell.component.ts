@@ -62,7 +62,15 @@ export class HouseholdShellComponent implements AfterViewInit {
           }
         }, 300);
       }
-    });        // Optionally trigger additional logic here
+    });
+    effect(() => {
+      const saved = this.householdService.householdSaved();
+      console.log(saved);
+      if (saved) {
+        this.isSidenavOpen = false;
+        this.householdService.householdSaved.set(false);
+      }
+    });// Optionally trigger additional logic here
   }
   ngAfterViewInit() {
     // Ensure the first panel expands when the sidenav opens

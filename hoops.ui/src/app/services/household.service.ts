@@ -38,6 +38,7 @@ export class HouseholdService {
 
   // Expose the selected record signal
   selectedRecordSignal = this.selectedRecord.asReadonly();
+  householdSaved = signal<boolean>(false);
 
   constructor() {
     // Optional: Effect for side effects when the signal changes
@@ -49,7 +50,10 @@ export class HouseholdService {
         // Optionally trigger additional logic here
       }
     });
-  }
+    effect(() => {
+      console.log(this.householdSaved());
+    });
+    }
 
   // Method to update the selected record ID
   updateSelectedRecord(record: Household) {
@@ -140,7 +144,7 @@ export class HouseholdService {
     // https://localhost:5001/api/Household/search?name=salit&email=richard.salit%40gmail.com
   }
   saveHousehold(household: Household): void {
-      if (household.houseId) {
+      if (household.houseId !== 0) {
         const url = Constants.SAVE_HOUSEHOLD_URL + household.houseId;
         console.log('URL: ', url);
         this.http.put<Household>(url, household).subscribe(response => {
@@ -152,7 +156,11 @@ export class HouseholdService {
           console.log('Household created:', response);
         });
       }
-    }
+  }
+  newHousehold() {
+    const household = new Household();
+    this.selectedRecord.set(household);
+  }
 }
 export interface householdSearchCriteria {
   householdName: string;

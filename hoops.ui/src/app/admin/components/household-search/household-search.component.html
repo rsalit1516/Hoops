@@ -3,6 +3,8 @@
     <csbc-section-title [title]="pageTitle"></csbc-section-title>
   </mat-toolbar-row>
   <mat-toolbar-row> -->
+<button mat-raised-button (click)="newHousehold()">New</button>
+
     <mat-form-field [appearance]="inputStyle">
       <mat-label htmlFor="householdName" class="field-label">Household Name</mat-label>
       <input matInput [formControl]="householdName" title="name" />

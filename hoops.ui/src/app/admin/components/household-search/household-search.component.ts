@@ -142,6 +142,11 @@ export class HouseholdSearchComponent {
     this.searchForm.reset();
   }
 
+  newHousehold() {
+    console.log('New Household');
+    this.householdService.newHousehold();
+  }
+
   public hasError = (controlName: string, errorName: string) => {
     return '';
     // this.contentForm.controls[ controlName ].hasError(errorName);
