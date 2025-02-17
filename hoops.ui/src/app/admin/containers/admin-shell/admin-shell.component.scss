@@ -15,6 +15,7 @@ body {
   color: v.$table-body-color;
   // border-right: $brand-color solid 1px; ;
   font-size: 1.2rem;
+  height: 100%;
 }
 
 .admin-events {
@@ -38,11 +39,11 @@ a.mat-list-item {
   font-size: 1.2rem;
 }
 
-.container {
-  margin-left: 0px;
-  padding-left: 0px;
-  width: 100%;
-}
+// .container {
+//   margin-left: 0px;
+//   padding-left: 0px;
+//   width: 100%;
+// }
 
 .mat-divider {
   background-color: v.$color;

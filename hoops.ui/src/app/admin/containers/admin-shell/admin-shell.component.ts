@@ -17,7 +17,7 @@ import { DivisionService } from '@app/services/division.service';
 
 @Component({
   selector: 'csbc-admin-shell',
-  template: ` <div class="container mx-auto px-4">
+  template: ` <div class="container mx-auto px-4 admin-container">
     <div class="flex flex-wrap -mx-2">
       <div class="w-2/12 px-2 nav-wrapper">
         <app-admin-shell-sidebar class=""></app-admin-shell-sidebar>

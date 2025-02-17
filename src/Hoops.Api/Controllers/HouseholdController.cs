@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Hoops.Core.Interface;
 using Hoops.Core.Models;
-using Microsoft.EntityFrameworkCore;
+using Hoops.Core.ViewModels;
 using Hoops.Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Hoops.Core.Interface;
-using Hoops.Core.ViewModels;
 
 namespace Hoops.Controllers
 {
@@ -19,8 +19,11 @@ namespace Hoops.Controllers
         private readonly IHouseholdRepository _repository;
         private readonly ILogger<HouseholdController> _logger;
 
-
-        public HouseholdController(hoopsContext context, IHouseholdRepository repository, ILogger<HouseholdController> logger)
+        public HouseholdController(
+            hoopsContext context,
+            IHouseholdRepository repository,
+            ILogger<HouseholdController> logger
+        )
         {
             _context = context;
             _repository = repository;
@@ -84,10 +87,12 @@ namespace Hoops.Controllers
         [HttpPost]
         public async Task<ActionResult<Household>> PostHousehold(Household household)
         {
-            _context.Households.Add(household);
+            var house = new Household();
             try
             {
-                await _context.SaveChangesAsync();
+                house = _repository.Insert(household);
+
+                // await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
@@ -101,7 +106,7 @@ namespace Hoops.Controllers
                 }
             }
 
-            return CreatedAtAction("GetHousehold", new { id = household.HouseId }, household);
+            return CreatedAtAction("GetHousehold", new { id = house.HouseId }, household);
         }
 
         // DELETE: api/Household/5
@@ -128,16 +133,17 @@ namespace Hoops.Controllers
         [HttpGet("search")]
         public ActionResult<List<Household>> Search(
             [FromQuery] string name = null,
-        [FromQuery] string address = null,
-        [FromQuery] string email = null,
-        [FromQuery] string phone = null)
+            [FromQuery] string address = null,
+            [FromQuery] string email = null,
+            [FromQuery] string phone = null
+        )
         {
             var searchCriteria = new HouseholdSearchCriteria
             {
                 Name = name,
                 Address = address,
                 Email = email,
-                Phone = phone
+                Phone = phone,
             };
             var result = _repository.SearchHouseholds(searchCriteria);
             return Ok(result);
