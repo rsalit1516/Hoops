@@ -112,18 +112,9 @@ export class HouseholdDetailComponent implements OnInit, OnChanges {
     }
     // }
   }
-  // get members(): FormArray {
-  //   return (this.householdDetailForm?.get('members') as FormArray) || this.fb.array([]);
-  // }
-
-  addMember() {
-    // this.members.push(this.fb.group({
-    //   name: ['', Validators.required],
-    //   relation: ['', Validators.required]
-    // }));
-  }
 
   removeMember(index: number) {
+    // TODO: Implement removeMember
     // this.members.removeAt(index);
   }
 

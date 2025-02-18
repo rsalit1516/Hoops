@@ -56,8 +56,9 @@
     </mat-card-content>
     <mat-card-actions>
       <button mat-raised-button color="primary" [disabled]="!householdDetailForm.valid || !householdDetailForm.dirty"
-        type="submit">Save</button>
-      <button mat-raised-button color="primary" type="button">Delete</button>
+        type="submit" [ngStyle]="{'opacity': (!householdDetailForm.valid || !householdDetailForm.dirty) ? 0.5 : 1}">Save</button>
+     
+        <!-- <button mat-raised-button color="primary" type="button">Delete</button> -->
     </mat-card-actions>
   </mat-card>
 </form>
