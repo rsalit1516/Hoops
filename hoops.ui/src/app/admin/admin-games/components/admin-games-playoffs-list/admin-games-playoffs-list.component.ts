@@ -11,7 +11,7 @@ import { NgIf, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-    selector: 'app-admin-games-playoffs-list',
+    selector: 'csbc-admin-games-playoffs-list',
     templateUrl: './admin-games-playoffs-list.component.html',
     styleUrls: ['./admin-games-playoffs-list.component.scss',],
   imports: [ FormsModule, NgIf, MatTableModule, MatButtonModule,

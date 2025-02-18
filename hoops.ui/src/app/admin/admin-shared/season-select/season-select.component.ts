@@ -15,11 +15,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 @Component({
     selector: 'season-select',
     templateUrl: './season-select.component.html',
-  styleUrls: ['./../../../shared/scss/select.scss'],
+  styleUrls: [ './../../../shared/scss/select.scss',
+    './../../../shared/scss/forms.scss' ],
   imports: [
       CommonModule,
         FormsModule,
-        // ReactiveFormsModule,
         MatFormFieldModule,
         MatSelectModule,
         MatOptionModule,
@@ -40,8 +40,7 @@ export class SeasonSelectComponent implements OnInit {
   selectedValue: number | undefined;
 
   constructor(
-    private store: Store<fromAdmin.State>,
-    private seasonService: SeasonService
+    private store: Store<fromAdmin.State>
   ) {
     this.seasons$ = this.store.select(fromAdmin.getSeasons);
   }

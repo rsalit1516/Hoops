@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, input, viewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, inject, input, viewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Game } from '@app/domain/game';
 import * as fromAdmin from '../../state';
@@ -11,27 +11,28 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 @Component({
-    selector: 'admin-games-list',
+  selector: 'csbc-admin-games-list',
   imports: [ CommonModule, MatIconModule, MatTableModule,
     MatPaginatorModule,
-        MatIconModule],
-    templateUrl: './admin-games-list.component.html',
-    styleUrls: [
-        '../../../shared/scss/tables.scss',
-        './admin-games-list.component.scss',
-        '../../admin.component.scss',
-    ]
+    MatIconModule ],
+  templateUrl: './admin-games-list.component.html',
+  styleUrls: [
+    '../../../shared/scss/tables.scss',
+    './admin-games-list.component.scss',
+    '../../admin.component.scss',
+  ],
+  providers: [ MatSort, MatPaginator ]
 })
 export class AdminGamesListComponent implements OnInit {
   readonly showScores = input<boolean>(false);
-  readonly paginator = viewChild.required(MatPaginator);
 
   dialog = inject(MatDialog);
   dataSource!: MatTableDataSource<Game>;
   games!: Game[];
   games$: Observable<Game[]> | undefined;
-  pageSizeOptions = [5, 10, 25]
+  pageSizeOptions = [ 5, 10, 25 ]
 
   displayedColumns!: string[];
   flexMediaWatcher: any;
@@ -39,18 +40,16 @@ export class AdminGamesListComponent implements OnInit {
   title = 'Game List';
   canEdit: boolean = false;
   clickedRows = new Set<Game>();
+  showFirstLastButtons = true;
+  pageSize = 10;
+
+    @ViewChild('householdPaginator') paginator: MatPaginator = inject(MatPaginator);
+    @ViewChild(MatSort) sort: MatSort = inject(MatSort);
+
 
   constructor(
-    private store: Store<fromAdmin.State>,
-//    public dialog: MatDialog,
-    // private media: MediaObserver
-  ) {
-    // this.flexMediaWatcher = media.media$.subscribe((change) => {
-    //   if (change.mqAlias !== this.currentScreenWidth) {
-    //     this.currentScreenWidth = change.mqAlias;
-        this.setupTable();
-    //   }
-    // });
+    private store: Store<fromAdmin.State>) {
+    this.setupTable();
     this.displayedColumns = [
       'gameDate',
       'gameTime',
@@ -80,8 +79,10 @@ export class AdminGamesListComponent implements OnInit {
     });
   }
   ngAfterViewInit() {
-    // this.dataSource.paginator = this.paginator();
-    // this.dataSource.sort = this.sort;
+
+    this.paginator.pageSize = this.pageSize;
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
   setupTable() {
     if (this.showScores()) {

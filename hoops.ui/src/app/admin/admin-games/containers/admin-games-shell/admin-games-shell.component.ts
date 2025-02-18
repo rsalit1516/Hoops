@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, effect, inject, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import * as adminActions from '../../../state/admin.actions';
 import * as fromAdmin from '../../../state';
 
-import { GameService } from '@app/games/game.service';
+import { GameService } from '@app/services/game.service';
 import { Season } from '../../../../domain/season';
 import { Game } from '@app/domain/game';
 import { AdminGameDetailComponent } from '../../../admin-shared/admin-game-detail/admin-game-detail.component';
@@ -15,35 +15,66 @@ import { DivisionSelectComponent } from '../../../admin-shared/division-select/d
 import { GameTypeSelectComponent } from '../../../admin-shared/game-type-select/game-type-select.component';
 import { SeasonSelectComponent } from '../../../admin-shared/season-select/season-select.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { ShellTitleComponent } from '@app/shared/shell-title/shell-title.component';
+import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
+import { MatExpansionModule, MatExpansionPanel } from '@angular/material/expansion';
 @Component({
-    selector: 'csbc-admin-games-shell',
-    templateUrl: './admin-games-shell.component.html',
-    styleUrls: [
-        './admin-games-shell.component.scss',
-        '../../../admin.component.scss',
-    ],
-    imports: [
-        MatToolbarModule,
-        SeasonSelectComponent,
-        GameTypeSelectComponent,
-        DivisionSelectComponent,
-        NgIf,
-        AdminGamesListComponent,
-        AdminGamesPlayoffsListComponent,
-        AdminGameDetailComponent,
-    ]
+  selector: 'csbc-admin-games-shell',
+  templateUrl: './admin-games-shell.component.html',
+
+  styleUrls: [
+    './admin-games-shell.component.scss',
+    '../../../admin.component.scss',
+    '../../../../shared/scss/forms.scss',
+  ],
+  imports: [
+    MatToolbarModule,
+    MatSidenavModule,
+    MatExpansionModule,
+    SeasonSelectComponent,
+    GameTypeSelectComponent,
+    DivisionSelectComponent,
+    NgIf,
+    AdminGamesListComponent,
+    AdminGamesPlayoffsListComponent,
+    AdminGameDetailComponent,
+    ShellTitleComponent
+  ]
 })
 export class AdminGamesShellComponent implements OnInit {
+  private gameService = inject(GameService);
+  pageTitle = 'Game Management';
+  isSidenavOpen = false;
+
   seasons$ = this.store.select(fromAdmin.getSeasons);
   divisions$ = this.store.select(fromAdmin.getSeasonDivisions);
   showRegularSeason = true;
   showPlayoffs = false;
   games: Game[] | undefined;
 
+  @ViewChild('sidenav') sidenav!: MatSidenav;
+  @ViewChild('firstPanel') firstPanel!: MatExpansionPanel;
+
   constructor(
     private store: Store<fromAdmin.State>,
-    private gameService: GameService
-  ) {}
+
+  ) {
+        effect(() => {
+          const record = this.gameService.selectedRecordSignal();
+          console.log('Selected record changed:', record);
+          if (record !== null) {
+            console.log(`Record updated: ${record.gameScheduleId}`);
+            this.isSidenavOpen = true;
+            // Allow the sidenav to open first, then expand the first panel
+            setTimeout(() => {
+              if (this.firstPanel) {
+                this.firstPanel.expanded = true;
+              }
+            }, 300);
+          }
+        });
+
+  }
 
   ngOnInit(): void {
     this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
@@ -85,5 +116,8 @@ export class AdminGamesShellComponent implements OnInit {
   clickedDivision(division: MouseEvent) {
     // TODO: need to change the parameter
     console.log(division);
+  }
+  newGame() {
+
   }
 }

@@ -1,4 +1,4 @@
-                                                                                              import { Injectable } from '@angular/core';
+                                                                                              import { effect, Injectable, signal } from '@angular/core';
 import { map, tap } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
@@ -7,7 +7,9 @@ import { Observable } from 'rxjs';
 import { DataService } from './data.service';
 import { Game } from '../domain/game';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class GameService {
   private _gameUrl: string;
   private _games!: Game[];
@@ -19,11 +21,24 @@ export class GameService {
   }
   standingsUrl: string;
 
+  // signals
+  private selectedRecord = signal<Game | null>(null);
+  // Expose the selected record signal
+  selectedRecordSignal = this.selectedRecord.asReadonly();
+
   public currentTeamId: string | undefined;
 
   constructor(private _http: HttpClient, public dataService: DataService) {
     this._gameUrl = this.dataService.webUrl + '/api/gameschedule';
     this.standingsUrl = this.dataService.webUrl + '/api/gameStandings';
+    effect(() => {
+          const record = this.selectedRecord();
+          console.log('Selected record changed:', record);
+          if (record !== null) {
+            console.log(`Record updated: ${record.scheduleGamesId}`);
+            // Optionally trigger additional logic here
+          }
+        });
   }
   getGames(): Observable<Game[]> {
     return this._http

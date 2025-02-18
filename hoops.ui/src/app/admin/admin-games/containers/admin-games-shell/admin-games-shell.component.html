@@ -1,23 +1,30 @@
-<div class="container-fluid">
-  <div class="row">
-    <mat-toolbar>
-    <div class="col-4">
-      <season-select></season-select>
-    </div>
-    <div class="col-4">
-      <game-type-select></game-type-select>
-    </div>
-    <div class="col-4">
-      <division-select></division-select>
-    </div>
-  </mat-toolbar>
+<div class="container mx-auto w-full">
+  <div>
+    <csbc-shell-title [title]="pageTitle"></csbc-shell-title>
   </div>
-  <div class="row">
-    <div class="col-8">
-      <admin-games-list *ngIf="showRegularSeason" [showScores]="true"></admin-games-list>
-      <app-admin-games-playoffs-list *ngIf="showPlayoffs"></app-admin-games-playoffs-list>
-    </div>
-    <div class="col-4">
-      <admin-game-detail></admin-game-detail>
-    </div>
-  </div>
+  <mat-sidenav-container class="sidenav-container" style="height: 820px;">
+    <!-- Main Content -->
+    <mat-sidenav-content>
+      <mat-toolbar color="primary">
+        <button mat-raised-button (click)="newGame()">New</button>
+
+          <season-select></season-select>
+          <game-type-select></game-type-select>
+          <division-select></division-select>
+      </mat-toolbar>
+      <div class="row">
+        <div class="col-8">
+          <csbc-admin-games-list *ngIf="showRegularSeason" [showScores]="true"></csbc-admin-games-list>
+          <csbc-admin-games-playoffs-list *ngIf="showPlayoffs"></csbc-admin-games-playoffs-list>
+        </div>
+      </div>
+    </mat-sidenav-content>>
+    <!-- Side Panel for Details -->
+    <mat-sidenav #sidenav mode="side" [opened]="isSidenavOpen" position="end">
+      <div class="sidenav-content">
+
+        <admin-game-detail></admin-game-detail>
+      </div>
+    </mat-sidenav>
+  </mat-sidenav-container>
+</div>

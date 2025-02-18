@@ -11,12 +11,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 @Component({
     selector: 'game-type-select',
     templateUrl: './game-type-select.component.html',
-    styleUrls: ['./../../../shared/scss/select.scss'],
+  styleUrls: [ './../../../shared/scss/select.scss',
+      '../../../shared/scss/forms.scss'
+    ],
     imports: [
         MatFormFieldModule,
         MatSelectModule,
         FormsModule,
-        ReactiveFormsModule,
         NgFor,
         MatOptionModule,
     ]
