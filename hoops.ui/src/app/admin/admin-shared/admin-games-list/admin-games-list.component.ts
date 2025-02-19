@@ -12,6 +12,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { GameService } from '@app/services/game.service';
 @Component({
   selector: 'csbc-admin-games-list',
   imports: [ CommonModule, MatIconModule, MatTableModule,
@@ -26,6 +27,7 @@ import { MatSort } from '@angular/material/sort';
   providers: [ MatSort, MatPaginator ]
 })
 export class AdminGamesListComponent implements OnInit {
+  gameService = inject(GameService);
   readonly showScores = input<boolean>(false);
 
   dialog = inject(MatDialog);
@@ -129,6 +131,7 @@ export class AdminGamesListComponent implements OnInit {
   }
   selectRow(row: any) {
     console.log(row);
+this.gameService.updateSelectedRecord(row);
     this.store.dispatch(new adminActions.SetSelectedGame(row));
   }
   dataExists(): boolean {

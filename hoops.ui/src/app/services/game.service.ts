@@ -99,5 +99,7 @@ export class GameService {
     return games;
   }
 
-
+updateSelectedRecord(record: Game) {
+    this.selectedRecord.set(record);
+  }
 }
