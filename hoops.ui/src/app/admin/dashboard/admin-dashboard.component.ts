@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 import * as fromAdmin from '../state';
 import * as adminActions from '../state/admin.actions';
 import { Game } from '@app/domain/game';
-import { AdminGamesListComponent } from '../admin-shared/admin-games-list/admin-games-list.component';
+import { AdminGamesListComponent } from '../admin-games/admin-games-list/admin-games-list.component';
 import { MatCardModule } from '@angular/material/card';
 import { NgFor, NgForOf } from '@angular/common';
 import { MatListModule } from '@angular/material/list';

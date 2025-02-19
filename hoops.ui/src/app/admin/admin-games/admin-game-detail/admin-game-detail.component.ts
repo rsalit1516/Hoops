@@ -1,6 +1,8 @@
 import { Component, Inject, OnInit, inject, signal } from '@angular/core';
-import { FormGroup, UntypedFormControl, UntypedFormBuilder,
-  ReactiveFormsModule, FormControl, FormsModule} from '@angular/forms';
+import {
+  FormGroup, UntypedFormControl, UntypedFormBuilder,
+  ReactiveFormsModule, FormControl, FormsModule
+} from '@angular/forms';
 import { Team } from '@app/domain/team';
 import { select, Store } from '@ngrx/store';
 import { from, Observable, of } from 'rxjs';
@@ -14,29 +16,34 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
-import { LocationService } from '../services/location.service';
+import { LocationService } from '../../admin-shared/services/location.service';
 import { Division } from '@app/domain/division';
 import { Location } from '@app/domain/location';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-    selector: 'admin-game-detail',
-    imports: [
-        CommonModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatCardModule,
-        MatSelectModule,
-        MatOptionModule,
-        MatDatepickerModule,
-        MatInputModule,
-    ],
-    templateUrl: './admin-game-detail.component.html',
-    styleUrls: [
-        '../../../shared/scss/cards.scss',
-        '../../../shared/scss/forms.scss',
-        '../../admin.component.scss',
-    ]
+  selector: 'admin-game-detail',
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatCardModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatDatepickerModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatButtonModule,
+    MatIconModule
+  ],
+  templateUrl: './admin-game-detail.component.html',
+  styleUrls: [
+    '../../../shared/scss/cards.scss',
+    '../../../shared/scss/forms.scss',
+    '../../admin.component.scss',
+  ]
 })
 export class AdminGameDetailComponent implements OnInit {
   gameEditForm = this.fb.group({
@@ -113,5 +120,5 @@ export class AdminGameDetailComponent implements OnInit {
     );
   }
 
-  save() {}
+  onSave() { }
 }

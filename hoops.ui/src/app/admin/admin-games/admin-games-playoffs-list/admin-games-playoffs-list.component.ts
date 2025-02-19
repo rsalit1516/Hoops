@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { PlayoffGame } from '@app/domain/playoffGame';
-import * as fromAdmin from '../../../state';
-import * as adminActions from '../../../state/admin.actions';
+import * as fromAdmin from '../../state';
+import * as adminActions from '../../state/admin.actions';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';

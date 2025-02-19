@@ -1,36 +1,38 @@
 import { Component, effect, inject, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 
-import * as adminActions from '../../../state/admin.actions';
-import * as fromAdmin from '../../../state';
+import * as adminActions from '../../state/admin.actions';
+import * as fromAdmin from '../../state';
 
 import { GameService } from '@app/services/game.service';
-import { Season } from '../../../../domain/season';
+import { Season } from '../../../domain/season';
 import { Game } from '@app/domain/game';
-import { AdminGameDetailComponent } from '../../../admin-shared/admin-game-detail/admin-game-detail.component';
-import { AdminGamesPlayoffsListComponent } from '../../components/admin-games-playoffs-list/admin-games-playoffs-list.component';
-import { AdminGamesListComponent } from '../../../admin-shared/admin-games-list/admin-games-list.component';
+import { AdminGameDetailComponent } from '../admin-game-detail/admin-game-detail.component';
+import { AdminGamesPlayoffsListComponent } from '../admin-games-playoffs-list/admin-games-playoffs-list.component';
+import { AdminGamesListComponent } from '../admin-games-list/admin-games-list.component';
 import { NgIf } from '@angular/common';
-import { DivisionSelectComponent } from '../../../admin-shared/division-select/division-select.component';
-import { GameTypeSelectComponent } from '../../../admin-shared/game-type-select/game-type-select.component';
-import { SeasonSelectComponent } from '../../../admin-shared/season-select/season-select.component';
+import { DivisionSelectComponent } from '../../admin-shared/division-select/division-select.component';
+import { GameTypeSelectComponent } from '../../admin-shared/game-type-select/game-type-select.component';
+import { SeasonSelectComponent } from '../../admin-shared/season-select/season-select.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ShellTitleComponent } from '@app/shared/shell-title/shell-title.component';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatExpansionModule, MatExpansionPanel } from '@angular/material/expansion';
+import { MatIconModule } from '@angular/material/icon';
 @Component({
   selector: 'csbc-admin-games-shell',
   templateUrl: './admin-games-shell.component.html',
 
   styleUrls: [
     './admin-games-shell.component.scss',
-    '../../../admin.component.scss',
-    '../../../../shared/scss/forms.scss',
+    '../../admin.component.scss',
+    '../../../shared/scss/forms.scss',
   ],
   imports: [
     MatToolbarModule,
     MatSidenavModule,
     MatExpansionModule,
+    MatIconModule,
     SeasonSelectComponent,
     GameTypeSelectComponent,
     DivisionSelectComponent,
@@ -42,7 +44,7 @@ import { MatExpansionModule, MatExpansionPanel } from '@angular/material/expansi
   ]
 })
 export class AdminGamesShellComponent implements OnInit {
-  private gameService = inject(GameService);
+  gameService = inject(GameService);
   pageTitle = 'Game Management';
   isSidenavOpen = false;
 
@@ -119,5 +121,8 @@ export class AdminGamesShellComponent implements OnInit {
   }
   newGame() {
 
+  }
+  closeSidenav() {
+    this.isSidenavOpen = false;
   }
 }
