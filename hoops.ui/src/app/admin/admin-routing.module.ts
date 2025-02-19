@@ -146,9 +146,4 @@ export const ADMINROUTES: Routes = [
     ]
   }
 ];
-
-@NgModule({
-  imports: [RouterModule.forChild(ADMINROUTES)],
-  exports: [RouterModule],
-})
-export class AdminRoutingModule { }
+export const AdminRoutingModule = RouterModule.forChild(ADMINROUTES);
