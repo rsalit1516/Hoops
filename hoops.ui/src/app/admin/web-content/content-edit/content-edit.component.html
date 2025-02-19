@@ -40,6 +40,7 @@
           </mat-form-field>
         </div>
         <!-- body -->
+<div>
         <mat-form-field class="full-width">
           <mat-label mat-label for="body">Body</mat-label>
           <textarea
@@ -52,7 +53,8 @@
             placeholder="Enter the main text to show on the notice"
           ></textarea>
         </mat-form-field>
-
+</div>
+<div>
         <!-- location -->
         <mat-form-field
           class="full-width"
@@ -67,7 +69,8 @@
           />
           <mat-hint>Enter the location for the event</mat-hint>
         </mat-form-field>
-
+      </div>
+      <div>
         <mat-form-field
           class="full-width"
           appearance="fill"
@@ -82,7 +85,8 @@
           <!-- <mat-hint>Enter the date and time for the event, if applicable</mat-hint> -->
         </mat-form-field>
         <!-- <mat-divider></mat-divider> -->
-
+      </div>
+      <div>
         <!-- web content -->
         <mat-form-field>
           <mat-label for="webContent">{{ webContent }}</mat-label>
@@ -98,7 +102,8 @@
           </mat-select>
           <!-- <mat-hint>Enter the type of notice from the dropdown</mat-hint> -->
         </mat-form-field>
-
+      </div>
+      <div>
         <!-- expiration date field -->
         <mat-form-field class="sequenceWidth" type="date">
           <mat-label>{{ expirationDate }}</mat-label>
@@ -115,6 +120,8 @@
           <mat-datepicker #picker></mat-datepicker>
           <!-- <mat-hint>Select the expiration date for the notice</mat-hint> -->
         </mat-form-field>
+      </div>
+      <div>
         <mat-form-field class="sequenceWidth">
           <mat-label>{{ contentSequence }}</mat-label>
           <input
@@ -125,6 +132,8 @@
           />
           <!-- <mat-hint>Enter a number indicating the order of the notice on the home page</mat-hint> -->
         </mat-form-field>
+      </div>
+      <div>
         <input
           id="webContentId"
           title="weContentId"
@@ -133,6 +142,7 @@
           type="text"
           formControlName="webContentId"
         />
+      </div>
       </mat-card-content>
       <!-- <div>{{contentForm.valid}}</div> -->
       <mat-card-actions>
