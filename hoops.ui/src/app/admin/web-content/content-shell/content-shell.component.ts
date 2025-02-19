@@ -1,16 +1,16 @@
 import { Component, OnInit, Input, makeEnvironmentProviders, signal, inject } from '@angular/core';
 import { Content } from '@app/domain/content';
-import { ContentService } from '../../content.service';
+import { ContentService } from '../content.service';
 import { ActivatedRoute, Router, RouterLinkWithHref, RouterOutlet, provideRouter } from '@angular/router';
 import { Store } from '@ngrx/store';
 
-import * as fromContent from '../../../state';
-import * as contentActions from '../../../state/admin.actions';
+import * as fromContent from '../../state';
+import * as contentActions from '../../state/admin.actions';
 import { CommonModule } from '@angular/common';
-import { ContentListComponent } from '../../components/content-list/contentList.component';
-import { ContentEditComponent } from '../../components/content-edit/content-edit.component';
+import { ContentListComponent } from '../content-list/contentList.component';
+import { ContentEditComponent } from '../content-edit/content-edit.component';
 import { AdminGamesRoutingModule } from '@app/admin/admin-games/admin-games-routing.module';
-import { CONTENT_ROUTES } from '../../content-routing';
+import { CONTENT_ROUTES } from '../content-routing';
 
 @Component({
     selector: 'csbc-content-shell',

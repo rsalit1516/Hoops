@@ -24,7 +24,7 @@ import { DataService } from '@app/services/data.service';
 import { Division } from '@app/domain/division';
 import { Season } from '@app/domain/season';
 import { Team } from '@app/domain/team';
-import { AdminGameService } from '../services/adminGame.service';
+import { AdminGameService } from '../admin-games/adminGame.service';
 import { PlayoffGame } from '@app/domain/playoffGame';
 import { ContentService } from '../web-content/content.service';
 import { LocationService } from '../admin-shared/services/location.service';

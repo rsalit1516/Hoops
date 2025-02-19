@@ -1,11 +1,11 @@
 import { AfterViewInit, Component, effect, inject, signal, ViewChild } from '@angular/core';
-import { HouseholdDetailComponent } from '@app/admin/components/household-detail/household-detail.component';
+import { HouseholdDetailComponent } from '@app/admin/admin-household/household-detail/household-detail.component';
 import { CommonModule } from '@angular/common';
-import { HouseholdSearchComponent } from '@app/admin/components/household-search/household-search.component';
-import { HouseholdListComponent } from '@app/admin/components/household-list/household-list.component';
+import { HouseholdSearchComponent } from '@app/admin/admin-household/household-search/household-search.component';
+import { HouseholdListComponent } from '@app/admin/admin-household/household-list/household-list.component';
 import { householdSearchCriteria, HouseholdService } from '@app/services/household.service';
 import { Household } from '@app/domain/household';
-import { HouseholdMembersComponent } from '@app/admin/components/household-members/household-members.component';
+import { HouseholdMembersComponent } from '@app/admin/admin-household/household-members/household-members.component';
 import { SectionTitleComponent } from '@app/shared/section-title/section-title.component';
 import { ShellTitleComponent } from '@app/shared/shell-title/shell-title.component';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';

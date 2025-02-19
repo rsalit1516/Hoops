@@ -3,11 +3,11 @@ import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
-import { Content } from '../../../../domain/content';
+import { Content } from '../../../domain/content';
 
-import * as fromContent from '../../../state';
-import * as contentActions from '../../../state/admin.actions';
-import { WebContent } from '../../../../domain/webContent';
+import * as fromContent from '../../state';
+import * as contentActions from '../../state/admin.actions';
+import { WebContent } from '../../../domain/webContent';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
@@ -22,8 +22,8 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
   templateUrl: './contentList.component.html',
   styleUrls: [
     './contentList.component.scss',
-    '../../../admin.component.scss',
-    '../../../../shared/scss/tables.scss',
+    '../../admin.component.scss',
+    '../../../shared/scss/tables.scss',
   ],
   imports: [
     CommonModule,

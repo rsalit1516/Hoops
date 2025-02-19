@@ -2,10 +2,10 @@ import { Component, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
-import { Content } from '../../../../domain/content';
+import { Content } from '../../../domain/content';
 
-import * as fromContent from '../../../state';
-import * as contentActions from '../../../state/admin.actions';
+import * as fromContent from '../../state';
+import * as contentActions from '../../state/admin.actions';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -16,7 +16,7 @@ import { CommonModule } from '@angular/common';
     selector: 'content-list-toolbar',
     templateUrl: './content-list-toolbar.component.html',
     styleUrls: ['./content-list-toolbar.component.scss',
-        '../../../admin.component.scss'],
+        '../../admin.component.scss'],
   imports: [
     CommonModule,
     // MatFormFieldModule,

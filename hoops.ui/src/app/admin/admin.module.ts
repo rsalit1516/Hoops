@@ -32,7 +32,7 @@ import { PaymentsComponent } from './registrations-and-payments/components/payme
 import { AdminGamesModule } from './admin-games/admin-games.module';
 
 import { AdminGamesListComponent } from './admin-games/admin-games-list/admin-games-list.component';
-import { ContentShellComponent } from './web-content/containers/content-shell/content-shell.component';
+import { ContentShellComponent } from './web-content/content-shell/content-shell.component';
 
 @NgModule({
     imports: [

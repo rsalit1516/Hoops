@@ -12,10 +12,10 @@ import { PageNotFoundComponent } from '@app/app.not-found.component';
 
 import { AuthGuard } from '../auth/auth.guard';
 import { SeasonSetupComponent } from './containers/season-setup/season-setup.component';
-import { ContentShellComponent } from './web-content/containers/content-shell/content-shell.component';
+import { ContentShellComponent } from './web-content/content-shell/content-shell.component';
 import { DivisionDetailComponent } from './components/admin-division-detail/divisionDetail.component';
 import { getWebContentDataResolver } from './get-web-content-data.resolver';
-import { HouseholdShellComponent } from './containers/household-shell/household-shell.component';
+import { HouseholdShellComponent } from './admin-household/household-shell/household-shell.component';
 import { HouseholdService } from '@app/services/household.service';
 
 export const ADMINROUTES: Routes = [
@@ -121,14 +121,14 @@ export const ADMINROUTES: Routes = [
           {
             path: 'edit',
             loadComponent: () =>
-              import('./web-content/components/content-edit/content-edit.component').then(
+              import('./web-content/content-edit/content-edit.component').then(
                 (mod) => mod.ContentEditComponent
               ),
           },
           {
             path: 'list',
             loadComponent: () =>
-              import('./web-content/components/content-list/contentList.component').then(
+              import('./web-content/content-list/contentList.component').then(
                 (mod) => mod.ContentListComponent
               ),
           },

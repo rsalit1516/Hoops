@@ -15,8 +15,8 @@ import {
   ReactiveFormsModule
 } from '@angular/forms';
 
-import { Content } from '../../../../domain/content';
-import { ContentService } from '../../content.service';
+import { Content } from '../../../domain/content';
+import { ContentService } from '../content.service';
 import { Store, select } from '@ngrx/store';
 
 import * as fromContent from '@app/admin/state';
@@ -36,7 +36,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '@app/admin/shared/confirm-dialog/confirm-dialog.component';
 import { Constants } from '@app/shared/constants';
-import { State } from '../../../state/index';
+import { State } from '../../state/index';
 import { WebContent } from '@app/domain/webContent';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
@@ -47,9 +47,9 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
   templateUrl: './content-edit.component.html',
   styleUrls: [
     './content-edit.component.scss',
-    '../../../admin.component.scss',
-    '../../../../shared/scss/forms.scss',
-    '../../../../shared/scss/cards.scss',
+    '../../admin.component.scss',
+    '../../../shared/scss/forms.scss',
+    '../../../shared/scss/cards.scss',
   ],
   imports: [
     CommonModule,
