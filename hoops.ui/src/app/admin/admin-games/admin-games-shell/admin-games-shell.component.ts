@@ -20,6 +20,8 @@ import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatExpansionModule, MatExpansionPanel } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { AdminGamesPlayoffsDetailComponent } from "../admin-games-playoffs-detail/admin-games-playoffs-detail.component";
+import { MatButtonModule } from '@angular/material/button';
+import { AdminGamesFilterComponent } from '../admin-games-filter/admin-games-filter.component';
 @Component({
   selector: 'csbc-admin-games-shell',
   templateUrl: './admin-games-shell.component.html',
@@ -34,6 +36,7 @@ import { AdminGamesPlayoffsDetailComponent } from "../admin-games-playoffs-detai
     MatSidenavModule,
     MatExpansionModule,
     MatIconModule,
+    MatButtonModule,
     SeasonSelectComponent,
     GameTypeSelectComponent,
     DivisionSelectComponent,
@@ -42,7 +45,8 @@ import { AdminGamesPlayoffsDetailComponent } from "../admin-games-playoffs-detai
     AdminGamesPlayoffsListComponent,
     AdminGameDetailComponent,
     ShellTitleComponent,
-    AdminGamesPlayoffsDetailComponent
+    AdminGamesPlayoffsDetailComponent,
+    AdminGamesFilterComponent
 ]
 })
 export class AdminGamesShellComponent implements OnInit {

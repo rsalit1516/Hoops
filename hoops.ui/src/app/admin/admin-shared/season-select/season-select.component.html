@@ -4,7 +4,9 @@
 <div class="select-input">
   <mat-form-field>
     <mat-label>Season</mat-label>
-    <mat-select [(value)]="selectedValue" class="form-control">
+    <mat-select [(value)]="selectedSeason"
+    (selectionChange)="onSeasonChange($event.value)"
+    class="form-control">
       @for( season of seasons$ | async; track season) {
       <mat-option [value]="season.seasonId" (click)="changeSeason(season)">
         {{ season.description }}

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, OnChanges } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import * as fromAdmin from '../../state';
@@ -38,7 +38,8 @@ export class SeasonSelectComponent implements OnInit {
   defaultSeason: Season | undefined;
   // selectForm!: UntypedFormGroup;
   selectedValue: number | undefined;
-
+  onChange: any;
+  
   constructor(
     private store: Store<fromAdmin.State>
   ) {
@@ -55,4 +56,9 @@ export class SeasonSelectComponent implements OnInit {
   changeSeason(season: Season) {
     this.store.dispatch(new adminActions.SetSelectedSeason(season));
   }
+  onSeasonChange (value: Season) {
+    this.selectedSeason = value;
+    this.onChange(value); // Notify the parent form
+  }
+
 }
