@@ -1,7 +1,3 @@
-<form formName="gameForm">
-  <div id="panelGames" flexLayout="row" class="table-wrapper">
-    <div>
-      <div class="table-wrapper" *ngIf="dataSource.data.length > 0">
         <mat-table #table id="grdSchedule" [dataSource]="dataSource">
           <ng-container matColumnDef="gameDate">
             <th mat-header-cell *matHeaderCellDef>Date</th>
@@ -76,11 +72,8 @@
           showFirstLastButtons
           aria-label="Select page of game"
         ></mat-paginator>
-      </div>
-
+<!--     
       <div class="table-wrapper" *ngIf="dataSource.data.length === 0">
         <div class="no-data">No data</div>
-      </div>
-    </div>
-  </div>
-</form>
+      </div> -->
+

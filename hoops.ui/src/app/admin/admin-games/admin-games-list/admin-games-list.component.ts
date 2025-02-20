@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, inject, input, viewChild } from '@angular/core';
+import { AfterViewInit, Component, OnChanges, OnInit, ViewChild, inject, input, viewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Game } from '@app/domain/game';
 import * as fromAdmin from '../../state';
@@ -26,7 +26,7 @@ import { GameService } from '@app/services/game.service';
   ],
   providers: [ MatSort, MatPaginator ]
 })
-export class AdminGamesListComponent implements OnInit {
+export class AdminGamesListComponent implements OnInit, OnChanges, AfterViewInit {
   gameService = inject(GameService);
   readonly showScores = input<boolean>(false);
 
@@ -45,8 +45,8 @@ export class AdminGamesListComponent implements OnInit {
   showFirstLastButtons = true;
   pageSize = 10;
 
-    @ViewChild('householdPaginator') paginator: MatPaginator = inject(MatPaginator);
-    @ViewChild(MatSort) sort: MatSort = inject(MatSort);
+  @ViewChild('householdPaginator') paginator: MatPaginator = inject(MatPaginator);
+  @ViewChild(MatSort) sort: MatSort = inject(MatSort);
 
 
   constructor(
@@ -81,11 +81,17 @@ export class AdminGamesListComponent implements OnInit {
     });
   }
   ngAfterViewInit() {
-
+    this.dataSource.data = this.games;
     this.paginator.pageSize = this.pageSize;
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
+
+  ngOnChanges() {
+    this.dataSource.data = this.games;
+    this.paginator.page.subscribe(() => this.refreshData());
+  }
+
   setupTable() {
     if (this.showScores()) {
       this.displayedColumns = [
@@ -131,10 +137,16 @@ export class AdminGamesListComponent implements OnInit {
   }
   selectRow(row: any) {
     console.log(row);
-this.gameService.updateSelectedRecord(row);
+    this.gameService.updateSelectedRecord(row);
     this.store.dispatch(new adminActions.SetSelectedGame(row));
   }
   dataExists(): boolean {
     return this.games.length > 0;
   }
+  refreshData () {
+      this.dataSource._updateChangeSubscription();
+      this.dataSource.disconnect()
+      this.dataSource.connect();
+  }
+
 }

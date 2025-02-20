@@ -2,22 +2,18 @@
   <div>
     <csbc-shell-title [title]="pageTitle"></csbc-shell-title>
   </div>
-  <mat-sidenav-container class="sidenav-container" style="height: 820px;">
+  <mat-sidenav-container class="sidenav-container" >
     <!-- Main Content -->
     <mat-sidenav-content>
       <mat-toolbar color="primary">
         <button mat-raised-button (click)="newGame()">New</button>
-
           <season-select></season-select>
           <game-type-select></game-type-select>
           <division-select></division-select>
       </mat-toolbar>
-      <div class="row">
-        <div class="col-8">
+<h2>Games</h2>
           <csbc-admin-games-list *ngIf="showRegularSeason" [showScores]="true"></csbc-admin-games-list>
           <csbc-admin-games-playoffs-list *ngIf="showPlayoffs"></csbc-admin-games-playoffs-list>
-        </div>
-      </div>
     </mat-sidenav-content>>
     <!-- Side Panel for Details -->
     <mat-sidenav #sidenav mode="side" [opened]="isSidenavOpen" position="end">
@@ -27,6 +23,7 @@
           <mat-icon>close</mat-icon>
         </button>
         <admin-game-detail></admin-game-detail>
+        <app-admin-games-playoffs-detail></app-admin-games-playoffs-detail>
       </div>
     </mat-sidenav>
   </mat-sidenav-container>

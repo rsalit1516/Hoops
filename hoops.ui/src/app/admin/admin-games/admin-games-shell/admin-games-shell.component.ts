@@ -19,6 +19,7 @@ import { ShellTitleComponent } from '@app/shared/shell-title/shell-title.compone
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatExpansionModule, MatExpansionPanel } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
+import { AdminGamesPlayoffsDetailComponent } from "../admin-games-playoffs-detail/admin-games-playoffs-detail.component";
 @Component({
   selector: 'csbc-admin-games-shell',
   templateUrl: './admin-games-shell.component.html',
@@ -40,8 +41,9 @@ import { MatIconModule } from '@angular/material/icon';
     AdminGamesListComponent,
     AdminGamesPlayoffsListComponent,
     AdminGameDetailComponent,
-    ShellTitleComponent
-  ]
+    ShellTitleComponent,
+    AdminGamesPlayoffsDetailComponent
+]
 })
 export class AdminGamesShellComponent implements OnInit {
   gameService = inject(GameService);

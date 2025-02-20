@@ -63,21 +63,32 @@ export class HouseholdListComponent implements OnInit, OnChanges, AfterViewInit 
   constructor() { }
 
   ngOnInit() {
+    // this.refreshData();
     this.dataSource = new MatTableDataSource(this.results());
-
+    // this.dataSource.data = this.results() || [];
+    this.refreshData();
   }
   ngAfterViewInit() {
-    this.paginator.pageSize = this.pageSize;
+    this.dataSource.data = this.results() || [];
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    this.paginator.pageSize = this.pageSize;
+    this.paginator.page.subscribe(() => this.refreshData());
   }
 
   ngOnChanges() {
-    this.dataSource = new MatTableDataSource(this.results());
-    //     [...this.results];
+    this.dataSource.data = this.results() || [];;
+    this.paginator.page.subscribe(() => this.refreshData());
   }
   getRecord(row: Household) {
     this.householdService.updateSelectedRecord(row);
   };
-
+refreshData () {
+    // this.store.select(fromContent.getContentList).subscribe((data) => {
+    //   this.data = data;
+      this.dataSource._updateChangeSubscription();
+      this.dataSource.disconnect()
+      this.dataSource.connect();
+    // });
+  }
 }

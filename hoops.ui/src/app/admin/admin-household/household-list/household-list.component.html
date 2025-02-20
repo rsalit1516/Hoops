@@ -49,7 +49,9 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns" matHeaderRowDefSticky="true"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="getRecord(row)"></tr>
       </table>
-      <mat-paginator #householdPaginator aria-label="Select page of users" [pageSizeOptions]="[5, 10, 25, 100]"
+      <mat-paginator #householdPaginator 
+      aria-label="Select page of users" 
+      [pageSizeOptions]="[5, 10, 25, 100]"
         [pageSize]="pageSize">
       </mat-paginator>
     </div>

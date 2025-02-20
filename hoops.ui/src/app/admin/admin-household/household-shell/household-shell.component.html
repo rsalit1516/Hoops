@@ -2,22 +2,7 @@
   <div>
     <csbc-shell-title [title]="pageTitle"></csbc-shell-title>
   </div>
-  <!-- <section class="mt-6"> -->
-  <!-- <csbc-household-search (search)="onSearch($event)"></csbc-household-search> -->
-  <!-- </section> -->
-  <!-- <div householdclass="mt-6"> -->
-  <!-- <csbc-household-list [results]="results()"></csbc-household-list> -->
-  <!-- </div> -->
-  <!-- <div *ngIf="householdService.selectedRecordSignal()" class="grid grid-cols-2 gap-6 mt-6"> -->
-  <!-- <div> -->
-  <!-- <csbc-household-detail></csbc-household-detail> -->
-  <!-- </div> -->
-  <!-- <div>
-      <csbc-household-members></csbc-household-members>
-    </div> -->
-  <!-- </div> -->
-
-  <mat-sidenav-container class="sidenav-container" style="height: 820px;">
+  <mat-sidenav-container class="sidenav-container" >
     <!-- Main Content -->
     <mat-sidenav-content>
       <csbc-household-search (search)="onSearch($event)"></csbc-household-search>
