@@ -2,23 +2,26 @@
   <div>
     <csbc-shell-title [title]="pageTitle"></csbc-shell-title>
   </div>
-  <mat-sidenav-container class="sidenav-container" >
+  <mat-sidenav-container class="sidenav-container">
     <!-- Main Content -->
     <mat-sidenav-content>
-      <mat-toolbar color="primary">
-        <button mat-raised-button (click)="newGame()">New</button>
-          <season-select></season-select>
-          <game-type-select></game-type-select>
-          <division-select></division-select>
-      </mat-toolbar>
-<h2>Games</h2>
-          <csbc-admin-games-list *ngIf="showRegularSeason" [showScores]="true"></csbc-admin-games-list>
-          <csbc-admin-games-playoffs-list *ngIf="showPlayoffs"></csbc-admin-games-playoffs-list>
-    </mat-sidenav-content>>
+<csbc-admin-games-filter></csbc-admin-games-filter> 
+      <h2>Games</h2>
+      <csbc-admin-games-list
+        *ngIf="showRegularSeason"
+        [showScores]="true"
+      ></csbc-admin-games-list>
+      <csbc-admin-games-playoffs-list
+        *ngIf="showPlayoffs"
+      ></csbc-admin-games-playoffs-list> </mat-sidenav-content
+    >>
     <!-- Side Panel for Details -->
     <mat-sidenav #sidenav mode="side" [opened]="isSidenavOpen" position="end">
       <div class="sidenav-content">
-        <h3>Details for {{ gameService.selectedRecordSignal()?.gameDescription }} Household</h3>
+        <h3>
+          Details for
+          {{ gameService.selectedRecordSignal()?.gameDescription }} Household
+        </h3>
         <button mat-icon-button (click)="closeSidenav()">
           <mat-icon>close</mat-icon>
         </button>
