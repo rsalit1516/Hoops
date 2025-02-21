@@ -79,6 +79,7 @@ export class HouseholdShellComponent implements AfterViewInit {
         this.firstPanel.expanded = true;
       }
     });
+    
   }
   onSearch(criteria: householdSearchCriteria) {
     console.log(criteria);
