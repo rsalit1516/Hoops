@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, OnChanges } from '@angular/core';
+import { Component, inject, OnInit, OnChanges, EventEmitter, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import * as fromAdmin from '../../state';
@@ -13,18 +13,18 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
-    selector: 'season-select',
-    templateUrl: './season-select.component.html',
-  styleUrls: [ './../../../shared/scss/select.scss',
-    './../../../shared/scss/forms.scss' ],
+  selector: 'season-select',
+  templateUrl: './season-select.component.html',
+  styleUrls: ['./../../../shared/scss/select.scss',
+    './../../../shared/scss/forms.scss'],
   imports: [
-      CommonModule,
-        FormsModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        MatOptionModule,
-        AsyncPipe,
-    ]
+    CommonModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatOptionModule,
+    AsyncPipe,
+  ]
 })
 export class SeasonSelectComponent implements OnInit {
   #seasonService = inject(SeasonService);
@@ -38,27 +38,31 @@ export class SeasonSelectComponent implements OnInit {
   defaultSeason: Season | undefined;
   // selectForm!: UntypedFormGroup;
   selectedValue: number | undefined;
-  onChange: any;
-  
-  constructor(
+
+  @Output() seasonChanged = new EventEmitter<Season>();
+
+
+  constructor (
     private store: Store<fromAdmin.State>
   ) {
     this.seasons$ = this.store.select(fromAdmin.getSeasons);
   }
 
-  ngOnInit() {
+  ngOnInit () {
     this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
       if (season.seasonId !== undefined && season !== this.selectedSeason) {
         this.selectedValue = season.seasonId;
       }
     });
   }
-  changeSeason(season: Season) {
+  changeSeason (season: Season) {
     this.store.dispatch(new adminActions.SetSelectedSeason(season));
   }
-  onSeasonChange (value: Season) {
+  onChange (value: Season) {
     this.selectedSeason = value;
-    this.onChange(value); // Notify the parent form
+    this.changeSeason(value);
+    this.seasonChanged.emit(value); // Emit the selected
+    //  season
   }
 
 }

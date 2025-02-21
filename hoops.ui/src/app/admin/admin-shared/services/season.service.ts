@@ -1,9 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Season } from '@app/domain/season';
 import { DataService } from '@app/services/data.service';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
 import * as fromAdmin from '../../state';
 
 @Injectable({
@@ -11,13 +9,14 @@ import * as fromAdmin from '../../state';
 })
 export class SeasonService {
   seasons: Season[] | undefined;
+  selectedSeason = signal<Season | undefined>(undefined);
 
-  constructor(
+  constructor (
     private store: Store<fromAdmin.State>,
     private dataService: DataService
-  ) {}
+  ) { }
 
-  getSeason(id: number): Season {
+  getSeason (id: number): Season {
     let selectedSeason = new Season();
     this.store.select(fromAdmin.getSeasons).subscribe((seasons) => {
       const s = seasons.find((season) => {
@@ -28,5 +27,8 @@ export class SeasonService {
       // return s;
     });
     return selectedSeason;
+  }
+  updateSeason (season: Season) {
+    this.selectedSeason.update(() => season);
   }
 }
