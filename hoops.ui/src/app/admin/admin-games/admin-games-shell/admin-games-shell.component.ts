@@ -1,11 +1,11 @@
-import { Component, effect, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, effect, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import * as adminActions from '../../state/admin.actions';
 import * as fromAdmin from '../../state';
 
 import { GameService } from '@app/services/game.service';
-import { Season } from '../../../domain/season';
+import { Season } from '@app/domain/season';
 import { Game } from '@app/domain/game';
 import { AdminGameDetailComponent } from '../admin-game-detail/admin-game-detail.component';
 import { AdminGamesPlayoffsListComponent } from '../admin-games-playoffs-list/admin-games-playoffs-list.component';
@@ -14,7 +14,6 @@ import { NgIf } from '@angular/common';
 import { DivisionSelectComponent } from '../../admin-shared/division-select/division-select.component';
 import { GameTypeSelectComponent } from '../../admin-shared/game-type-select/game-type-select.component';
 import { SeasonSelectComponent } from '../../admin-shared/season-select/season-select.component';
-import { MatToolbarModule } from '@angular/material/toolbar';
 import { ShellTitleComponent } from '@app/shared/shell-title/shell-title.component';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatExpansionModule, MatExpansionPanel } from '@angular/material/expansion';
@@ -32,7 +31,7 @@ import { AdminGamesFilterComponent } from '../admin-games-filter/admin-games-fil
     '../../../shared/scss/forms.scss',
   ],
   imports: [
-    MatToolbarModule,
+    // MatToolbarModule,
     MatSidenavModule,
     MatExpansionModule,
     MatIconModule,
@@ -60,6 +59,9 @@ export class AdminGamesShellComponent implements OnInit {
   showPlayoffs = false;
   games: Game[] | undefined;
 
+  selectedRecord = signal<Game | null>(null);
+  // this.gameService.selectedRecordSignal();
+
   @ViewChild('sidenav') sidenav!: MatSidenav;
   @ViewChild('firstPanel') firstPanel!: MatExpansionPanel;
 
@@ -72,6 +74,7 @@ export class AdminGamesShellComponent implements OnInit {
           console.log('Selected record changed:', record);
           if (record !== null) {
             console.log(`Record updated: ${record.gameScheduleId}`);
+            this.selectedRecord.set(record);
             this.isSidenavOpen = true;
             // Allow the sidenav to open first, then expand the first panel
             setTimeout(() => {

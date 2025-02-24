@@ -33,7 +33,8 @@ export class Constants {
   public static getActiveWebContentUrl = Constants.DEFAULTURL + '/api/webcontent/getActiveWebContent';
   public static loginUrl = Constants.DEFAULTURL + '/api/User/login';
   public static directorUrl = Constants.DEFAULTURL + '/api/Director';
-  public static seasonGamesUrl = Constants.DEFAULTURL + '/api/Schedulegame/getSeasonGames';
+  public static SEASON_GAMES_URL = Constants.DEFAULTURL + '/api/Schedulegame/getSeasonGames';
+
   public static SEASON_DIVISIONS_URL = Constants.DEFAULTURL + '/api/division/GetSeasonDivisions/';
   public static DIVISION_URL = Constants.DEFAULTURL + '/api/Division';
   public static playoffGameUrl = Constants.DEFAULTURL + '/api/SchedulePlayoff/GetSeasonGames';

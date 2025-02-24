@@ -1,17 +1,23 @@
-                                                                                              import { effect, Injectable, signal } from '@angular/core';
-import { map, tap } from 'rxjs/operators';
+                                                                                              import { computed, effect, inject, Injectable, signal } from '@angular/core';
+import { delay, map, tap } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { forkJoin, Observable } from 'rxjs';
 
 import { DataService } from './data.service';
 import { Game } from '../domain/game';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { Constants } from '@app/shared/constants';
+import { setErrorMessage } from '@app/shared/error-message';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameService {
-  private _gameUrl: string;
+     // Injected services
+     private http = inject(HttpClient);
+
+  private scheduleGamesUrl = Constants.SEASON_GAMES_URL;
   private _games!: Game[];
   get games () {
     return this._games;
@@ -28,8 +34,27 @@ export class GameService {
 
   public currentTeamId: string | undefined;
 
+// Signals managed by the service
+   selectedGames= signal<Game | undefined>(undefined);
+   private games$ = this.http.get<GameResponse>(this.scheduleGamesUrl).pipe(
+    map(vr =>
+       vr.results.map((v) => ({
+          ...v,
+       }) as Game)
+    ),
+    delay(2000)
+ );
+  private gamesResource = rxResource({
+    loader: () => this.games$
+ });
+
+  scheduleGames = computed(() => this.gamesResource.value() ?? [] as Game[]);
+  error = computed(() => this.gamesResource.error() as HttpErrorResponse);
+  errorMessage = computed(() => setErrorMessage(this.error(), 'Game'));
+  isLoading = this.gamesResource.isLoading;
+
   constructor(private _http: HttpClient, public dataService: DataService) {
-    this._gameUrl = this.dataService.webUrl + '/api/gameschedule';
+    // this._gameUrl = this.dataService.webUrl + '/api/gameschedule';
     this.standingsUrl = this.dataService.webUrl + '/api/gameStandings';
     effect(() => {
           const record = this.selectedRecord();
@@ -40,9 +65,10 @@ export class GameService {
           }
         });
   }
+
   getGames(): Observable<Game[]> {
     return this._http
-      .get<Game[]>(this._gameUrl)
+      .get<Game[]>(this.scheduleGamesUrl)
       .pipe(
         map(response => this.games),
         // tap(data => console.log('All: ' + JSON.stringify(data))),
@@ -61,7 +87,7 @@ export class GameService {
 
   getStandings(): Observable<Game[]> {
     return this._http
-      .get<any[]>(this._gameUrl)
+      .get<any[]>(this.scheduleGamesUrl)
       .pipe(
         map(response => this.games = response),
         // tap(data => console.log('All: ' + JSON.stringify(data))),
@@ -102,4 +128,10 @@ export class GameService {
 updateSelectedRecord(record: Game) {
     this.selectedRecord.set(record);
   }
+}
+export interface GameResponse {
+  count: number;
+  next: string;
+  previous: string;
+  results: Game[]
 }

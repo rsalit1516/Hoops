@@ -5,16 +5,11 @@
   <mat-sidenav-container class="sidenav-container">
     <!-- Main Content -->
     <mat-sidenav-content>
-<csbc-admin-games-filter></csbc-admin-games-filter> 
+      <csbc-admin-games-filter ()></csbc-admin-games-filter>
       <h2>Games</h2>
-      <csbc-admin-games-list
-        *ngIf="showRegularSeason"
-        [showScores]="true"
-      ></csbc-admin-games-list>
-      <csbc-admin-games-playoffs-list
-        *ngIf="showPlayoffs"
-      ></csbc-admin-games-playoffs-list> </mat-sidenav-content
-    >>
+      <csbc-admin-games-list *ngIf="showRegularSeason" [showScores]="true"></csbc-admin-games-list>
+      <csbc-admin-games-playoffs-list *ngIf="showPlayoffs"></csbc-admin-games-playoffs-list>
+    </mat-sidenav-content>>
     <!-- Side Panel for Details -->
     <mat-sidenav #sidenav mode="side" [opened]="isSidenavOpen" position="end">
       <div class="sidenav-content">
@@ -25,8 +20,8 @@
         <button mat-icon-button (click)="closeSidenav()">
           <mat-icon>close</mat-icon>
         </button>
-        <admin-game-detail></admin-game-detail>
-        <app-admin-games-playoffs-detail></app-admin-games-playoffs-detail>
+        <admin-game-detail [selectedRecord]="selectedRecord()!"></admin-game-detail>
+        <csbc-admin-games-playoffs-detail></csbc-admin-games-playoffs-detail>
       </div>
     </mat-sidenav>
   </mat-sidenav-container>
