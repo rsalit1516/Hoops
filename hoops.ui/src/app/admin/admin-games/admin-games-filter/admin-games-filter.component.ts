@@ -1,4 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { DivisionSelectComponent } from '@app/admin/admin-shared/division-select/division-select.component';
 import { GameTypeSelectComponent } from '@app/admin/admin-shared/game-type-select/game-type-select.component';
@@ -9,6 +11,8 @@ import { Season } from '@app/domain/season';
 @Component({
   selector: 'csbc-admin-games-filter',
   imports: [ MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
     SeasonSelectComponent,
     GameTypeSelectComponent,
     DivisionSelectComponent,
