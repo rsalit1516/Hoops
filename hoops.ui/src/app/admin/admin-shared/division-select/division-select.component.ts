@@ -33,7 +33,7 @@ export class DivisionSelectComponent implements OnInit {
   selectForm!: UntypedFormGroup;
   divisions$: Observable<Division[]>;
   divisionComponent: UntypedFormControl | null | undefined;
-  selectedValue: number | undefined;
+  selectedDivision: number | undefined;
 
   constructor (private store: Store<fromAdmin.State>) {
     this.divisions$ = this.store.select(fromAdmin.getSeasonDivisions);
@@ -41,7 +41,14 @@ export class DivisionSelectComponent implements OnInit {
 
   ngOnInit (): void {
     this.store.pipe(select(fromAdmin.getSelectedDivision)).subscribe((division) => {
-      this.divisionComponent?.setValue(division);
+      if (division == null) {
+      this.selectedDivision = 0;
+      } else {
+        if (division!.divisionId !== undefined && division!.divisionId !== this.selectedDivision) {
+          this.selectedDivision = division.divisionId;
+        }
+        this.divisionComponent?.setValue(division);
+      }
     });
 
   }

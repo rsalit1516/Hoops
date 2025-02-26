@@ -33,14 +33,13 @@ export class SeasonSelectComponent implements OnInit {
   selected: Season | undefined;
   seasonComponent: UntypedFormControl | null | undefined;
   seasons: Season[] | undefined;
-  selectedSeason: Season | undefined;
+  selectedSeason: number | null = null;
   // selectedSeason$: Observable<Season> | undefined;
   defaultSeason: Season | undefined;
   // selectForm!: UntypedFormGroup;
   selectedValue: number | undefined;
 
   @Output() seasonChanged = new EventEmitter<Season>();
-
 
   constructor (
     private store: Store<fromAdmin.State>
@@ -50,17 +49,19 @@ export class SeasonSelectComponent implements OnInit {
 
   ngOnInit () {
     this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
-      if (season.seasonId !== undefined && season !== this.selectedSeason) {
-        this.selectedValue = season.seasonId;
+      if (season.seasonId !== undefined && season.seasonId !== this.selectedSeason) {
+        this.selectedSeason = season.seasonId;
       }
     });
   }
   changeSeason (season: Season) {
+    console.log('Season from changeSeason = ', season);
     this.store.dispatch(new adminActions.SetSelectedSeason(season));
   }
   onChange (value: Season) {
-    this.selectedSeason = value;
+    this.selectedSeason = value.seasonId!;
     this.changeSeason(value);
+    console.log('Season from onChange = ', value);
     this.seasonChanged.emit(value); // Emit the selected
     //  season
   }
