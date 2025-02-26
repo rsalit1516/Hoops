@@ -5,7 +5,7 @@
   <mat-sidenav-container class="sidenav-container">
     <!-- Main Content -->
     <mat-sidenav-content>
-      <csbc-admin-games-filter ()></csbc-admin-games-filter>
+      <csbc-admin-games-filter></csbc-admin-games-filter>
       <h2>Games</h2>
       <csbc-admin-games-list *ngIf="showRegularSeason" [showScores]="true"></csbc-admin-games-list>
       <csbc-admin-games-playoffs-list *ngIf="showPlayoffs"></csbc-admin-games-playoffs-list>

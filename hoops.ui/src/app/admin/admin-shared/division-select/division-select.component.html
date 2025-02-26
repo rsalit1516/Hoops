@@ -6,6 +6,9 @@
     (selectionChange)="onChange($event.value)"
     class="form-control"
   >
+    <mat-option [value]="null" (click)="changeDivision(null)">
+      All
+    </mat-option>
     @for( division of divisions$ | async; track division) {
     <mat-option [value]="division" (click)="changeDivision(division)">
       {{ division.divisionDescription }}

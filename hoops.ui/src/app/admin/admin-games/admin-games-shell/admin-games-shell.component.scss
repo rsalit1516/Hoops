@@ -1,3 +1,5 @@
+@use '../../../../Content/variables' as v;
+
 .row {
   margin-top: 20px;
   margin-bottom: 20px;
@@ -7,4 +9,8 @@
 }
 .sidenav-container {
  height: 820px;
+}
+.mat-drawer-content {
+  overflow: hidden;
+  background-color: v.$admin-card-background-color;
 }

@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import * as adminActions from '../../state/admin.actions';
 import * as fromAdmin from '../../state';
 
-import { GameService } from '@app/services/game.service';
+// import { GameService } from '@app/services/game.service';
 import { Season } from '@app/domain/season';
 import { Game } from '@app/domain/game';
 import { AdminGameDetailComponent } from '../admin-game-detail/admin-game-detail.component';
@@ -21,6 +21,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { AdminGamesPlayoffsDetailComponent } from "../admin-games-playoffs-detail/admin-games-playoffs-detail.component";
 import { MatButtonModule } from '@angular/material/button';
 import { AdminGamesFilterComponent } from '../admin-games-filter/admin-games-filter.component';
+import { AdminGameService } from '../adminGame.service';
 @Component({
   selector: 'csbc-admin-games-shell',
   templateUrl: './admin-games-shell.component.html',
@@ -49,7 +50,7 @@ import { AdminGamesFilterComponent } from '../admin-games-filter/admin-games-fil
 ]
 })
 export class AdminGamesShellComponent implements OnInit {
-  gameService = inject(GameService);
+  gameService = inject(AdminGameService);
   pageTitle = 'Game Management';
   isSidenavOpen = false;
 
@@ -93,6 +94,9 @@ export class AdminGamesShellComponent implements OnInit {
       if (division !== undefined) {
         this.store.dispatch(new adminActions.LoadDivisionGames());
         this.store.dispatch(new adminActions.LoadDivisionTeams());
+        this.gameService.selectedDivision.set(division);
+        this.gameService.filteredGames();
+        console.log(this.gameService.filteredGames());
       }
     });
     this.store.select(fromAdmin.getSelectedTeam).subscribe((team) => {

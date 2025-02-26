@@ -36,7 +36,7 @@ export class AdminEffects {
   seasonDivisionsUrl = this.dataService.seasonDivisionsUrl;
   private playoffGameUrl = this.dataService.playoffGameUrl;
   divisionId!: number;
-  division!: Division;
+  division!: Division | null;
   teamId!: number;
 
   contentService = inject(ContentService);
@@ -145,17 +145,18 @@ export class AdminEffects {
       ),
       tap(([action, t]) => {
         if (t) {
-          this.divisionId = t.divisionId;
+          this.division = t;
         } else {
-          this.divisionId = 0;
+          this.division = null;
         }
       }),
-      switchMap((action) =>
-        this.gameService.filterGamesByDivision(this.divisionId).pipe(
+      switchMap(() => {
+        this.gameService.selectedDivision.set(this.division);
+        return this.gameService.filterGamesByDivision().pipe(
           map((games) => new adminActions.LoadDivisionGamesSuccess(games)),
           catchError((err) => of(new adminActions.LoadDivisionGamesFail(err)))
-        )
-      )
+        );
+      })
     ));
 
     loadTeamGames$: Observable<Action> = createEffect(() => this.actions$.pipe(

@@ -35,7 +35,7 @@ export class DivisionSelectComponent implements OnInit {
   divisionComponent: UntypedFormControl | null | undefined;
   selectedValue: number | undefined;
 
-  constructor (private store: Store<fromAdmin.State>, private fb: UntypedFormBuilder) {
+  constructor (private store: Store<fromAdmin.State>) {
     this.divisions$ = this.store.select(fromAdmin.getSeasonDivisions);
   }
 
@@ -45,11 +45,11 @@ export class DivisionSelectComponent implements OnInit {
     });
 
   }
-  changeDivision (division: Division) {
+  changeDivision (division:  Division | null) {
     this.store.dispatch(new adminActions.SetSelectedDivision(division));
   }
   onChange (value: Division) {
-    console.log(value);
+    console.log('Division = ', value);
     this.divisionChanged.emit(value);
   }
 }

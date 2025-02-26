@@ -68,6 +68,7 @@ a.mat-list-item {
 }
 .mat-drawer-content {
   overflow: hidden;
+  background-color: v.$admin-card-background-color;
 }
 .mat-mdc-icon-button:disabled {
   color: v.$color;

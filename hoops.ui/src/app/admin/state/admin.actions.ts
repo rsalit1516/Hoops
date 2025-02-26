@@ -160,7 +160,7 @@ export class LoadDivisionsFail implements Action {
 }
 export class SetSelectedDivision implements Action {
   readonly type = AdminActionTypes.SetSelectedDivision;
-  constructor(public payload: Division) {}
+  constructor(public payload: Division | null) {}
 }
 
 export class LoadSeasonTeams implements Action {

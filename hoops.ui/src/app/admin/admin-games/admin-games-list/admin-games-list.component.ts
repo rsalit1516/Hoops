@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnChanges, OnInit, ViewChild, inject, input, viewChild } from '@angular/core';
+import { AfterViewInit, Component, OnChanges, OnInit, ViewChild, effect, inject, input, viewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Game } from '@app/domain/game';
 import * as fromAdmin from '../../state';
@@ -12,7 +12,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { GameService } from '@app/services/game.service';
+import { AdminGameService } from '../adminGame.service';
 @Component({
   selector: 'csbc-admin-games-list',
   imports: [ CommonModule, MatIconModule, MatTableModule,
@@ -27,7 +27,7 @@ import { GameService } from '@app/services/game.service';
   providers: [ MatSort, MatPaginator ]
 })
 export class AdminGamesListComponent implements OnInit, OnChanges, AfterViewInit {
-  gameService = inject(GameService);
+  gameService = inject(AdminGameService);
   readonly showScores = input<boolean>(false);
 
   dialog = inject(MatDialog);
@@ -47,7 +47,7 @@ export class AdminGamesListComponent implements OnInit, OnChanges, AfterViewInit
 
   @ViewChild('householdPaginator') paginator: MatPaginator = inject(MatPaginator);
   @ViewChild(MatSort) sort: MatSort = inject(MatSort);
-
+  filteredGames = this.gameService.filteredGames;
 
   constructor(
     private store: Store<fromAdmin.State>) {
@@ -61,34 +61,38 @@ export class AdminGamesListComponent implements OnInit, OnChanges, AfterViewInit
       'homeTeamScore',
       'visitingTeamScore',
     ];
-    this.store.select(fromAdmin.getFilteredGames).subscribe((games) => {
-      this.dataSource = new MatTableDataSource(games);
+    effect(() => {
+      console.log("list component effect");
+      this.dataSource = new MatTableDataSource(this.gameService.filteredGames()!);
+    })
+  //  this.store.select(fromAdmin.getFilteredGames).subscribe((games) => {
+      // this.dataSource = new MatTableDataSource(this.filteredGames());
       // if (this.dataSource.paginator) {
       //   this.dataSource.paginator.pageSize = 10;
       // }
-    });
+    // });
   }
 
   ngOnInit(): void {
     this.setupTable();
-    this.store.select(fromAdmin.getFilteredGames).subscribe((games) => {
+    // this.store.select(fromAdmin.getFilteredGames).subscribe((games) => {
       // console.log(games);
-      this.games = games;
+      // this.games = games;
       // this.dataSource = new MatTableDataSource<Game>(games);
       // if (this.dataSource.paginator) {
       //   this.dataSource.paginator.pageSize = 10;
       // }
-    });
+    // });
   }
   ngAfterViewInit() {
-    this.dataSource.data = this.games;
-    this.paginator.pageSize = this.pageSize;
+    // this.dataSource.data = this.filteredGames();
+    // this.paginator.pageSize = this.pageSize;
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 
   ngOnChanges() {
-    this.dataSource.data = this.games;
+    // this.dataSource.data = this.filteredGames();
     this.paginator.page.subscribe(() => this.refreshData());
   }
 

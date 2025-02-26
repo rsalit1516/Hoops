@@ -1,5 +1,5 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { Game } from '@app/domain/game';
 import { DataService } from '@app/services/data.service';
 import { select, Store } from '@ngrx/store';
@@ -8,43 +8,76 @@ import * as fromGames from '../state';
 import * as gameActions from '../state/admin.actions';
 import * as fromUser from '@app/user/state';
 import { User } from '@app/domain/user';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { setErrorMessage } from '@app/shared/error-message';
+import { Division } from '@app/domain/division';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminGameService {
-  allGames: Game[] | undefined;
+  private http = inject(HttpClient);
+  private dataService = inject(DataService);
 
-  constructor(private dataService: DataService,
-    private http: HttpClient,
+  allGames: Game[] | undefined;
+  selectedDivision = signal<Division | null>(null);
+  selectedTeam = signal<number | undefined>(0);
+  // signals
+  private selectedRecord = signal<Game | null>(null);
+  // Expose the selected record signal
+  selectedRecordSignal = this.selectedRecord.asReadonly();
+  filteredGames = signal<Game[] | null> (null);
+  constructor(
     private store: Store<fromGames.State>,
     private userStore: Store<fromUser.State>
-    ) { }
+  ) {
+    effect(() => {
+      const filteredGames = this.filteredGames();
+      console.log('Filtered Games', filteredGames);
+    });
+  }
 
-  filterGamesByDivision(div: number): Observable<Game[]> {
+  filterGamesByDivision(): Observable<Game[]> {
     let games: Game[] = [];
-    let sortedDate: Game[] = [];
+    let gamesSortedByDate: Game[] = [];
     this.store.pipe(select(fromGames.getSeasonGames)).subscribe((allGames) => {
       this.allGames = allGames;
-      this.setCanEdit(div);
-      if (allGames && div !== 0) {
+      console.log('Selected Division', this.selectedDivision());
+      // console.log('allGames', allGames);
+      if (this.selectedDivision() !== null) {
+        this.setCanEdit(this.selectedDivision()!.divisionId);
+      }
+      if (allGames) {
         // console.log(div);
         for (let i = 0; i < this.allGames.length; i++) {
-          if (this.allGames[i].divisionId === div) {
+          if (this.allGames[ i ].divisionId === this.selectedDivision()?.divisionId) {
             let game = allGames[ i ];
             games.push(game);
           }
         }
+        console.log('Games', games);
         games.sort();
-        sortedDate = games.sort((a, b) => {
+        gamesSortedByDate = games.sort((a, b) => {
           return this.compare(a.gameDate!, b.gameDate!, true);
         });
-        return of(sortedDate);
+        this.filteredGames.set(gamesSortedByDate);
+        return of(gamesSortedByDate);
       }
-      return of(sortedDate);
+      return of(gamesSortedByDate);
     });
-    return of(sortedDate);
+    return of(gamesSortedByDate);
   }
+
+  private filteredGames$ = this.filterGamesByDivision();
+  private gamesResource = rxResource({
+    loader: () => this.filteredGames$
+  });
+
+  // filteredGames = computed(() => this.gamesResource.value() ?? [] as Game[]);
+  error = computed(() => this.gamesResource.error() as HttpErrorResponse);
+  errorMessage = computed(() => setErrorMessage(this.error(), 'Game'));
+  isLoading = this.gamesResource.isLoading;
+
 
   filterGamesByTeam(team: number): Observable<Game[]> {
     let games: Game[] = [];
@@ -55,7 +88,7 @@ export class AdminGameService {
       this.setCanEdit(team);
       if (allGames) {
         for (let i = 0; i < this.allGames.length; i++) {
-          if (this.allGames[i].homeTeamId === team || this.allGames[i].visitingTeamId === team) {
+          if (this.allGames[ i ].homeTeamId === team || this.allGames[ i ].visitingTeamId === team) {
             let game = allGames[ i ];
             // console.log(game);
             games.push(game);
@@ -98,4 +131,8 @@ export class AdminGameService {
     }
     return tFlag;
   }
+  updateSelectedRecord(record: Game) {
+    this.selectedRecord.set(record);
+  }
+
 }
