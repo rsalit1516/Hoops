@@ -4,7 +4,7 @@ import { Division } from '../domain/division';
 import { Season } from '../domain/season';
 import { DataService } from './data.service';
 import { SeasonService } from './season.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, httpResource } from '@angular/common/http';
 import { Injectable, Signal, WritableSignal, computed, effect, inject, signal,
 } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
@@ -13,6 +13,7 @@ import { select, Store } from '@ngrx/store';
 import * as fromAdmin from '../admin/state';
 import { Constants } from '@app/shared/constants';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { setErrorMessage } from '@app/shared/error-message';
 
 @Injectable({
   providedIn: 'root',
@@ -24,6 +25,7 @@ export class DivisionService {
   #dataService = inject(DataService);
   #seasonService = inject(SeasonService);
   #store = inject(Store<fromAdmin.State>);
+  selectedSeason = signal<Season | undefined>(undefined);
 
   _division = signal<Division>(new Division());
   get division() {
@@ -51,17 +53,24 @@ export class DivisionService {
     seasonDivisions: [],
     error: null,
   });
+  private divisionUrl = Constants.SEASON_DIVISIONS_URL;
 
+  private divisionResource = httpResource<DivisionResponse>(() =>
+    `${this.divisionUrl + this.selectedSeason()?.seasonId}`);
+
+  vehicles = computed(() => this.divisionResource.value()?.results ?? [] as Division[]);
+   error = computed(() => this.divisionResource.error() as HttpErrorResponse);
+   errorMessage = computed(() => setErrorMessage(this.error(), 'Vehicle'));
+  //  isLoading = this.divisionResource.isLoading;
   // selectors
   isLoading = computed(() => this.state().isLoading);
   currentSeason = computed(() => this.state().currentSeason);
   currentDivision = computed(() => this.state().currentDivision);
   seasonDivisions = computed(() => this.state().seasonDivisions);
-  error = computed(() => this.state().error);
+  // error = computed(() => this.state().error);
 
   private selectedIdSubject = new Subject<Division>();
 
-  private divisionUrl = Constants.SEASON_DIVISIONS_URL;
 
   private _season: Season | undefined;
   set season(value: Season | undefined) {
@@ -105,6 +114,7 @@ export class DivisionService {
   constructor() {
     this.#store.pipe(select(fromAdmin.getSelectedSeason)).subscribe((season) => {
       this.season = season;
+      this.selectedSeason.update(() => season);
     });
     this.selectedIdSubject.pipe(
       // Set the loading indicator
@@ -152,6 +162,7 @@ export class DivisionService {
       .get<Division[]>(Constants.SEASON_DIVISIONS_URL + id)
       .pipe(catchError(() => of([])));
   }
+
   getDvision (division: Division) {
     this.selectedIdSubject.next(division);
   }
@@ -321,4 +332,10 @@ export interface DivisionState {
   currentDivision: Division | undefined;
   seasonDivisions: Division[];
   error: string | null;
+}
+export interface DivisionResponse {
+  count: number;
+  next: string;
+  previous: string;
+  results: Division[]
 }

@@ -14,7 +14,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 @Component({
   selector: 'division-select',
   templateUrl: './division-select.component.html',
-  styleUrls: ['./../../../shared/scss/select.scss',
+  styleUrls: [ './../../../shared/scss/select.scss',
     './../../../shared/scss/forms.scss',
   ],
   imports: [
@@ -33,29 +33,29 @@ export class DivisionSelectComponent implements OnInit {
   selectForm!: UntypedFormGroup;
   divisions$: Observable<Division[]>;
   divisionComponent: UntypedFormControl | null | undefined;
-  selectedDivision: number | undefined;
+  selectedDivision: Division | null = null;
 
-  constructor (private store: Store<fromAdmin.State>) {
+  constructor(private store: Store<fromAdmin.State>) {
     this.divisions$ = this.store.select(fromAdmin.getSeasonDivisions);
   }
 
-  ngOnInit (): void {
+  ngOnInit(): void {
     this.store.pipe(select(fromAdmin.getSelectedDivision)).subscribe((division) => {
       if (division == null) {
-      this.selectedDivision = 0;
+        this.selectedDivision = null;
       } else {
-        if (division!.divisionId !== undefined && division!.divisionId !== this.selectedDivision) {
-          this.selectedDivision = division.divisionId;
+        if (division!.divisionId !== null) {
+          this.selectedDivision = division;
         }
         this.divisionComponent?.setValue(division);
       }
     });
 
   }
-  changeDivision (division:  Division | null) {
+  changeDivision(division: Division | null) {
     this.store.dispatch(new adminActions.SetSelectedDivision(division));
   }
-  onChange (value: Division) {
+  onChange(value: Division) {
     console.log('Division = ', value);
     this.divisionChanged.emit(value);
   }
