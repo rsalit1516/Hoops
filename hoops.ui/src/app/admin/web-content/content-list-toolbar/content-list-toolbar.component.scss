@@ -1,11 +1,11 @@
-@use '../../../../Content/variables' as *;
+@use "../../../../Content/variables" as *;
 .activeContentCheckbox {
-    border-radius: 10px;
-    background-color: $card-background-color;
-    padding-left: 16px;
-    padding-right: 12px;
-    padding-top:8px;
-    padding-bottom:8px;
-    font-size:.9em;
-    height: 42px;
+  border-radius: 10px;
+  background-color: $card-background-color;
+  padding-left: 16px;
+  padding-right: 12px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  font-size: 0.9em;
+  height: 42px;
 }
