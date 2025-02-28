@@ -104,8 +104,16 @@ a.brand {
   margin-right: 12px;
   font-variant: small-caps;
   text-decoration: none;
+  letter-spacing: 0.4rem;
 }
 
 .menu-spacer {
   width: 80px;
+}
+.mat-toolbar-row {
+  padding: 4 20px;
+  height: 46px;
+}
+.csbc {
+  background-color: v.$sidebar-menu;
 }
