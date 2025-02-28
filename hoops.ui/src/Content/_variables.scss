@@ -26,6 +26,8 @@ $app-bar-background: #212121;
 $color: #d17b00;
 $card-sub-title-color: #d17b00;
 $default-lighten: 5%;
+$csbc-background-color: color.adjust($black, $lightness: 20); ;
+
 
 $sidebar-background-color: #232323;
 $brand-color: #d17b00;
