@@ -6,15 +6,15 @@ import { select, Store } from '@ngrx/store';
 import { FormControl, FormGroup, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import * as adminActions from '../../state/admin.actions';
 import { MatOptionModule } from '@angular/material/core';
-import { NgFor, AsyncPipe } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { AsyncPipe, NgFor } from '@angular/common';
 // import { EventEmitter } from 'stream';
 
 @Component({
   selector: 'division-select',
   templateUrl: './division-select.component.html',
-  styleUrls: [ './../../../shared/scss/select.scss',
+  styleUrls: ['./../../../shared/scss/select.scss',
     './../../../shared/scss/forms.scss',
   ],
   imports: [
@@ -35,11 +35,11 @@ export class DivisionSelectComponent implements OnInit {
   divisionComponent: UntypedFormControl | null | undefined;
   selectedDivision: Division | null = null;
 
-  constructor(private store: Store<fromAdmin.State>) {
+  constructor (private store: Store<fromAdmin.State>) {
     this.divisions$ = this.store.select(fromAdmin.getSeasonDivisions);
   }
 
-  ngOnInit(): void {
+  ngOnInit (): void {
     this.store.pipe(select(fromAdmin.getSelectedDivision)).subscribe((division) => {
       if (division == null) {
         this.selectedDivision = null;
@@ -52,10 +52,10 @@ export class DivisionSelectComponent implements OnInit {
     });
 
   }
-  changeDivision(division: Division | null) {
+  changeDivision (division: Division | null) {
     this.store.dispatch(new adminActions.SetSelectedDivision(division));
   }
-  onChange(value: Division) {
+  onChange (value: Division) {
     console.log('Division = ', value);
     this.divisionChanged.emit(value);
   }
