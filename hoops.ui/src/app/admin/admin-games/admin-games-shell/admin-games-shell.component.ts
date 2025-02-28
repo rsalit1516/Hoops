@@ -47,7 +47,7 @@ import { AdminGameService } from '../adminGame.service';
     ShellTitleComponent,
     AdminGamesPlayoffsDetailComponent,
     AdminGamesFilterComponent
-]
+  ]
 })
 export class AdminGamesShellComponent implements OnInit {
   gameService = inject(AdminGameService);
@@ -66,29 +66,29 @@ export class AdminGamesShellComponent implements OnInit {
   @ViewChild('sidenav') sidenav!: MatSidenav;
   @ViewChild('firstPanel') firstPanel!: MatExpansionPanel;
 
-  constructor(
+  constructor (
     private store: Store<fromAdmin.State>,
 
   ) {
-        effect(() => {
-          const record = this.gameService.selectedRecordSignal();
-          console.log('Selected record changed:', record);
-          if (record !== null) {
-            console.log(`Record updated: ${record.gameScheduleId}`);
-            this.selectedRecord.set(record);
-            this.isSidenavOpen = true;
-            // Allow the sidenav to open first, then expand the first panel
-            setTimeout(() => {
-              if (this.firstPanel) {
-                this.firstPanel.expanded = true;
-              }
-            }, 300);
+    effect(() => {
+      const record = this.gameService.selectedRecordSignal();
+      console.log('Selected record changed:', record);
+      if (record !== null) {
+        console.log(`Record updated: ${ record.gameScheduleId }`);
+        this.selectedRecord.set(record);
+        this.isSidenavOpen = true;
+        // Allow the sidenav to open first, then expand the first panel
+        setTimeout(() => {
+          if (this.firstPanel) {
+            this.firstPanel.expanded = true;
           }
-        });
+        }, 300);
+      }
+    });
 
   }
 
-  ngOnInit(): void {
+  ngOnInit (): void {
     this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
       console.log(division);
       if (division !== undefined) {
@@ -125,17 +125,20 @@ export class AdminGamesShellComponent implements OnInit {
     });
 
   }
-  selectedSeason(season: Season) {
+  selectedSeason (season: Season) {
     // this.store.dispatch(new adminActions.SetCurrentSeason(season));
   }
-  clickedDivision(division: MouseEvent) {
+  clickedDivision (division: MouseEvent) {
     // TODO: need to change the parameter
     console.log(division);
   }
-  newGame() {
+  newGame () {
 
   }
-  closeSidenav() {
+  closeSidenav () {
     this.isSidenavOpen = false;
+  }
+  handlefilterUpdate ($event: any) {
+    console.log($event);
   }
 }

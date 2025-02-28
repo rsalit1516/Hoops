@@ -5,7 +5,8 @@ import { Season } from '../domain/season';
 import { DataService } from './data.service';
 import { SeasonService } from './season.service';
 import { HttpClient, HttpErrorResponse, httpResource } from '@angular/common/http';
-import { Injectable, Signal, WritableSignal, computed, effect, inject, signal,
+import {
+  Injectable, Signal, WritableSignal, computed, effect, inject, signal,
 } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
 import { select, Store } from '@ngrx/store';
@@ -26,17 +27,20 @@ export class DivisionService {
   #seasonService = inject(SeasonService);
   #store = inject(Store<fromAdmin.State>);
   selectedSeason = signal<Season | undefined>(undefined);
-
+  selectedDivision = signal<Division | undefined>(undefined);
+  updateSelectedDivision (division: Division) {
+    this.selectedDivision.update(() => division);
+  }
   _division = signal<Division>(new Division());
-  get division() {
+  get division () {
     return this._division;
   }
 
-  updateDivision(division: Division) {
+  updateDivision (division: Division) {
     this._division.set(division);
   }
 
-  createTemporaryDivision(divisionName: string) {
+  createTemporaryDivision (divisionName: string) {
     const division = this.getDefaultDivision(divisionName);
     console.log(division);
     // this.division.set(division);
@@ -56,11 +60,11 @@ export class DivisionService {
   private divisionUrl = Constants.SEASON_DIVISIONS_URL;
 
   private divisionResource = httpResource<DivisionResponse>(() =>
-    `${this.divisionUrl + this.selectedSeason()?.seasonId}`);
+    `${ this.divisionUrl + this.selectedSeason()?.seasonId }`);
 
   vehicles = computed(() => this.divisionResource.value()?.results ?? [] as Division[]);
-   error = computed(() => this.divisionResource.error() as HttpErrorResponse);
-   errorMessage = computed(() => setErrorMessage(this.error(), 'Vehicle'));
+  error = computed(() => this.divisionResource.error() as HttpErrorResponse);
+  errorMessage = computed(() => setErrorMessage(this.error(), 'Vehicle'));
   //  isLoading = this.divisionResource.isLoading;
   // selectors
   isLoading = computed(() => this.state().isLoading);
@@ -73,18 +77,18 @@ export class DivisionService {
 
 
   private _season: Season | undefined;
-  set season(value: Season | undefined) {
+  set season (value: Season | undefined) {
     this._season = value;
   }
-  get season() {
+  get season () {
     return this._season;
   }
 
   private _seasonId!: number;
-  get seasonId() {
+  get seasonId () {
     return this._seasonId;
   }
-  set seasonId(seasonId: number) {
+  set seasonId (seasonId: number) {
     this._seasonId = seasonId;
   }
   // divisions: Division[];
@@ -111,7 +115,7 @@ export class DivisionService {
   >(undefined);
 
 
-  constructor() {
+  constructor () {
     this.#store.pipe(select(fromAdmin.getSelectedSeason)).subscribe((season) => {
       this.season = season;
       this.selectedSeason.update(() => season);
@@ -130,17 +134,17 @@ export class DivisionService {
     )
     //.subscribe(seasonDivisions => this.setSeasonDivisions(seasonDivisions));
   }
-  setSeasonDivisions(seasonDivisions: Division[]): void {
+  setSeasonDivisions (seasonDivisions: Division[]): void {
     throw new Error('Method not implemented.');
   }
-  setLoadingIndicator(isLoading: boolean): void {
+  setLoadingIndicator (isLoading: boolean): void {
     this.state.update(state => ({
       ...state,
       isLoading: isLoading
     }));
   }
 
-  setCurrentDivision(id: number): void {
+  setCurrentDivision (id: number): void {
     console.log(id);
     const division = this.getCurrentDivisionById(id);
     this.state.update(state => ({
@@ -157,7 +161,7 @@ export class DivisionService {
     console.log(this.state);
   }
 
-  getDivisionsData(id: number): Observable<Division[]> {
+  getDivisionsData (id: number): Observable<Division[]> {
     return this.#http
       .get<Division[]>(Constants.SEASON_DIVISIONS_URL + id)
       .pipe(catchError(() => of([])));
@@ -167,7 +171,7 @@ export class DivisionService {
     this.selectedIdSubject.next(division);
   }
 
-  getCurrentDivisionById(id: number) {
+  getCurrentDivisionById (id: number) {
     let division = new Division();
     console.log(this.seasonDivisions());
     console.log(id);
@@ -182,14 +186,14 @@ export class DivisionService {
     return division;
   }
 
-  getSeasonDivisions(id: number) {
+  getSeasonDivisions (id: number) {
     return toSignal(this.getDivisionsData(id));
   }
 
-  getSelectedSeasonDivisions() {
-    this.#http.get<Division[]>(Constants.SEASON_DIVISIONS_URL+ this.seasonId);
+  getSelectedSeasonDivisions () {
+    this.#http.get<Division[]>(Constants.SEASON_DIVISIONS_URL + this.seasonId);
   }
-  standardDivisions() {
+  standardDivisions () {
     return [
       Constants.TR2COED,
       Constants.TR4,
@@ -204,7 +208,7 @@ export class DivisionService {
     ];
   }
 
-  getDefaultDivision(name: string): Division {
+  getDefaultDivision (name: string): Division {
     let division = new Division();
     division.companyId = 1;
     division.seasonId = this.season?.seasonId ?? 0;
@@ -288,35 +292,35 @@ export class DivisionService {
     return division;
   }
 
-  getDivisionMinDate(years: number): Date {
+  getDivisionMinDate (years: number): Date {
     let year = new Date().getFullYear() - years;
     let date = new Date('09/01/' + year);
     // console.log(date);
     // date.setFullYear(date.getFullYear() - years);
     return date;
   }
-  getDivisionMaxDate(years: number): Date {
+  getDivisionMaxDate (years: number): Date {
     let year = new Date().getFullYear() - years;
     let date = new Date('08/31/' + year);
     return date;
   }
 
-  save(division: Division) {
+  save (division: Division) {
     console.log(division);
     if (division.divisionId !== 0) {
-  console.log('update');
+      console.log('update');
       return this.#dataService.put<Division>(Constants.DIVISION_URL + '/' + division.divisionId, division);
-        // .put<Division>(Constants.DIVISION_URL + '/' + division.divisionId, division)
-        // .pipe(catchError(this.#dataService.handleError('saveDivision', division)));
+      // .put<Division>(Constants.DIVISION_URL + '/' + division.divisionId, division)
+      // .pipe(catchError(this.#dataService.handleError('saveDivision', division)));
     } else {
       console.log('post');
       return this.#dataService.post<Division>(Constants.DIVISION_URL, division);
-        // .post<Division>(Constants.DIVISION_URL, division)
-        // .pipe(catchError(this.#dataService.handleError('saveDivision', division)));
+      // .post<Division>(Constants.DIVISION_URL, division)
+      // .pipe(catchError(this.#dataService.handleError('saveDivision', division)));
     }
   }
 
-  getmatchingDivision(division: string): string {
+  getmatchingDivision (division: string): string {
     for (const item of this.standardDivisions()) {
       if (item.toLowerCase() === division.toLowerCase()) {
         return item;

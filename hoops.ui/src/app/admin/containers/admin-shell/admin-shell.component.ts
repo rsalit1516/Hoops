@@ -54,9 +54,9 @@ export class AdminShellComponent implements OnInit {
   store = inject(Store<fromAdmin.State>);
   divisionService = inject(DivisionService);
 
-  constructor() {}
+  constructor () { }
 
-  ngOnInit() {
+  ngOnInit () {
     this.seasonService.getCurrentSeason().subscribe((season) => {
       this.seasonService.selectedSeason.set(season);
       this.divisionService.season = season;
@@ -134,4 +134,5 @@ export class AdminShellComponent implements OnInit {
         this.store.dispatch(new adminActions.SetLocations(locations))
       );
   }
+
 }

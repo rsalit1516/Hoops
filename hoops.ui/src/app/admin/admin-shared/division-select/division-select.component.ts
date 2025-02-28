@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, inject } from '@angular/core';
 import { Division } from '@app/domain/division';
 import { Observable } from 'rxjs';
 import * as fromAdmin from '../../state';
@@ -9,6 +9,7 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { AsyncPipe, NgFor } from '@angular/common';
+import { DivisionService } from '@app/services/division.service';
 // import { EventEmitter } from 'stream';
 
 @Component({
@@ -30,6 +31,8 @@ import { AsyncPipe, NgFor } from '@angular/common';
 export class DivisionSelectComponent implements OnInit {
   // readonly selectedDivision = output<Division>();
   @Output() divisionChanged = new EventEmitter<Division>();
+  private divisionService = inject(DivisionService);
+
   selectForm!: UntypedFormGroup;
   divisions$: Observable<Division[]>;
   divisionComponent: UntypedFormControl | null | undefined;
@@ -46,6 +49,7 @@ export class DivisionSelectComponent implements OnInit {
       } else {
         if (division!.divisionId !== null) {
           this.selectedDivision = division;
+          this.divisionService.updateSelectedDivision(division!);
         }
         this.divisionComponent?.setValue(division);
       }
@@ -54,9 +58,11 @@ export class DivisionSelectComponent implements OnInit {
   }
   changeDivision (division: Division | null) {
     this.store.dispatch(new adminActions.SetSelectedDivision(division));
+    this.divisionService.updateSelectedDivision(division!);
   }
   onChange (value: Division) {
     console.log('Division = ', value);
+    this.divisionService.updateSelectedDivision(value!);
     this.divisionChanged.emit(value);
   }
 }

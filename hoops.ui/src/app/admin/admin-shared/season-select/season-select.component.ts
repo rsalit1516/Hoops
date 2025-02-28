@@ -50,12 +50,14 @@ export class SeasonSelectComponent implements OnInit {
   ngOnInit () {
     this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
       if (season.seasonId !== undefined && season.seasonId !== this.selectedSeason) {
+        this.#seasonService.updateSelectedSeason(season);
         this.selectedSeason = season.seasonId;
       }
     });
   }
   changeSeason (season: Season) {
     console.log('Season from changeSeason = ', season);
+    this.#seasonService.updateSelectedSeason(season);
     this.store.dispatch(new adminActions.SetSelectedSeason(season));
   }
   onChange (value: Season) {

@@ -28,7 +28,7 @@ export class SeasonService {
     });
     return selectedSeason;
   }
-  updateSeason (season: Season) {
+  updateSelectedSeason (season: Season) {
     this.selectedSeason.update(() => season);
   }
 }

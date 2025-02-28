@@ -190,4 +190,7 @@ export class GamesShellComponent implements OnInit {
     }
     return teams;
   }
+  handlefilterUpdate ($event: any) {
+    console.log($event);
+  }
 }
