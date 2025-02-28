@@ -6,7 +6,7 @@
     <!-- Main Content -->
     <mat-sidenav-content>
       <csbc-admin-games-filter
-        (onChange)="handlefilterUpdate($event)"
+        (gameFilterChanged)="handlefilterUpdate($event)"
       ></csbc-admin-games-filter>
       <h2>Games</h2>
       <csbc-admin-games-list

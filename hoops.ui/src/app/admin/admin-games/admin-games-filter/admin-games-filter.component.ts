@@ -65,11 +65,11 @@ export class AdminGamesFilterComponent {
     console.log('Selected season:', this.selectedSeason());
     console.log('Selected division:', this.selectedDivision());
 
-    if (this.selectedSeason() && this.selectedDivision()) {
-      this.gameFilterChanged.emit({ season: this.selectedSeason()!, gameType, division: this.selectedDivision() });
-    } else {
-      console.error('Season or Division is undefined');
-    }
+    // if (this.selectedSeason() && this.selectedDivision()) {
+    this.gameFilterChanged.emit({ season: this.selectedSeason()!, gameType, division: this.selectedDivision() });
+    // } else {
+    //   console.error('Season or Division is undefined');
+    // }
     // Handle the selected season
   }
 }

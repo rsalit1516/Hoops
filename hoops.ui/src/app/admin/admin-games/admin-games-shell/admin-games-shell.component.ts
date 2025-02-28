@@ -139,6 +139,17 @@ export class AdminGamesShellComponent implements OnInit {
     this.isSidenavOpen = false;
   }
   handlefilterUpdate ($event: any) {
-    console.log($event);
+    // console.log($event);
+    // console.log($event.division);
+    // console.log($event.season);
+    // console.log($event.gametType);
+    if ($event.gameType === 'Playoffs') {
+      this.showPlayoffs = true;
+      this.showRegularSeason = false;
+    } else {
+      this.showPlayoffs = false;
+      this.showRegularSeason = true;
+
+    }
   }
 }
