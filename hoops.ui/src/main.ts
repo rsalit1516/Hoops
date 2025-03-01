@@ -28,6 +28,9 @@ import { SeasonService } from './app/services/season.service';
 
 if (environment.production) {
   enableProdMode();
+
+  //override console.log for production
+  console.log = () => {};
 }
 
 bootstrapApplication(AppComponent, {

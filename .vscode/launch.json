@@ -5,6 +5,13 @@
    "version": "0.2.0",
    "configurations": [
     {
+        "name": "C#: Hoops-API Debug",
+        "type": "dotnet",
+        "request": "launch",
+        "projectPath": "${workspaceFolder}/hoops.api/Hoops.api.csproj"
+    },
+    
+    {
         "name": "C#: hoops.api Debug",
         "type": "dotnet",
         "request": "launch",
@@ -24,7 +31,7 @@
             "pattern": "^\\s*Now listening on:\\s+(https?://\\S+)"
         },
         "env": {
-            "ASPNETCORE_ENVIRONMENT": "Development"
+            "ASPNETCORE_ENVIRONMENT": "Production"
         },
         "sourceFileMap": {
             "/Views": "${workspaceFolder}/Views"
