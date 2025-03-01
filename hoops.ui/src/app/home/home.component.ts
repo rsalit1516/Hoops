@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 
 import { Content } from '../domain/content';
 import { ContentService } from '../services/content.service';
@@ -17,22 +17,24 @@ import { CsbcAnnouncementsComponent } from './components/announcements/announcem
 import { CsbcHomeSidebarComponent } from './components/home-sidebar/home-sidebar.component';
 import { CommonModule, NgClass, NgIf } from '@angular/common';
 import { HomeCenterComponent } from './components/home-center/home-center.component';
+import { LoggerService } from '@app/services/logging.service';
 
 @Component({
-    selector: 'csbc-home',
-    templateUrl: './home.component.html',
-    styleUrls: ['./home.component.scss'],
+  selector: 'csbc-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.scss'],
   imports: [
-      CommonModule,
-        HomeCenterComponent,
+    CommonModule,
+    HomeCenterComponent,
     NgClass,
-        NgIf,
-        CsbcHomeSidebarComponent,
-        CsbcAnnouncementsComponent,
-        SponsorListComponent,
-    ]
+    NgIf,
+    CsbcHomeSidebarComponent,
+    CsbcAnnouncementsComponent,
+    SponsorListComponent,
+  ]
 })
 export class HomeComponent implements OnInit {
+  logger = inject(LoggerService);
   coverImage: string;
   seasonInfoCount: number;
   latestNewsCount: number;
@@ -53,9 +55,7 @@ export class HomeComponent implements OnInit {
   meetingNoticeClass = 'col-sm-0 col-xs-0';
   announcementInfo = '';
 
-  constructor(
-    private _contentService: ContentService,
-    private seasonService: SeasonService,
+  constructor (
     private store: Store<fromHome.State>,
     private gameStore: Store<fromGames.State>
   ) {
@@ -67,7 +67,7 @@ export class HomeComponent implements OnInit {
     this.topImage = '../../assets/images/CSBCTopImage.jpg';
   }
 
-  ngOnInit(): void {
+  ngOnInit (): void {
     this.store.dispatch(new homeActions.LoadContent());
     this.meetingNotices$ = this.content$.pipe(
       map((results) =>
@@ -75,6 +75,7 @@ export class HomeComponent implements OnInit {
       )
     );
     this.setImageClass();
+    this.logger.log('home.component.ts ngOnInit');
     this.gameStore.dispatch(new gameActions.LoadCurrentSeason());
     this.gameStore.select(fromGames.getCurrentSeason).subscribe((season) => {
       if ((season?.seasonId !== 0) && (season?.seasonId !== undefined)) {
@@ -110,11 +111,11 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  showSeasonInfo(): boolean {
+  showSeasonInfo (): boolean {
     return this.seasonInfoCount > 0;
   }
 
-  setImageClass(): void {
+  setImageClass (): void {
     this.meetingNotices$!.subscribe((results) => {
       this.showSidebar = results.length > 0;
       if (results.length > 0) {
@@ -127,7 +128,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  setSeasonInfoClass() {
+  setSeasonInfoClass () {
     if (this.showNews()) {
       return 'col-sm-6 col-xs-12';
     } else {
@@ -143,17 +144,17 @@ export class HomeComponent implements OnInit {
   //     }
   //   }
 
-  setSeasonListClass(): string {
+  setSeasonListClass (): string {
     return this.seasonInfoCount > 1 ? 'showMultiItemList' : '';
   }
 
-  setNewsClass(): string {
+  setNewsClass (): string {
     return this.showSeasonInfo() || this.latestNewsCount > 0
       ? 'col-sm-6 col-sm-offset-0 col-xs-12'
       : 'col-sm-8 col-sm-offset-2  col-xs-12';
   }
 
-  showNews(): boolean {
+  showNews (): boolean {
     return this.latestNewsCount > 0;
   }
 }

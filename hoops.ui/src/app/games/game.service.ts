@@ -25,6 +25,7 @@ import { Team } from '@app/domain/team';
 import { DateTime } from 'luxon';
 import { PlayoffGame } from '@app/domain/playoffGame';
 import { getCurrentSeason } from './state/index';
+import { LoggerService } from '@app/services/logging.service';
 
 @Injectable({
   providedIn: 'root',
@@ -34,7 +35,7 @@ export class GameService {
   gameStore = inject(Store<fromGames.State>);
   http = inject(HttpClient);
   userStore = inject(Store<fromUser.State>);
-
+  logger = inject(LoggerService);
   seasonId: number | undefined; // = 2192; // TO DO make this is passed in!
   currentSeason$ = this.gameStore.select(fromGames.getCurrentSeason).subscribe({
     next: (season) => {
@@ -46,9 +47,9 @@ export class GameService {
   });
   handleError: ((err: any, caught: Observable<any[]>) => never) | undefined;
 
-//  //    this.seasonId;
-//   private standingsUrl =
-//     this.dataService.webUrl + '/api/ScheduleGame/getStandings';
+  //  //    this.seasonId;
+  //   private standingsUrl =
+  //     this.dataService.webUrl + '/api/ScheduleGame/getStandings';
   // private divisionUrl = this.dataService.webUrl + '/api/divisions';
 
   games: Game[] | undefined;
@@ -67,11 +68,11 @@ export class GameService {
   // );
   currentDivision$ = this.gameStore
     .pipe(select(fromGames.getCurrentDivision));
-    // .subscribe((division): number | undefined => {
-    //   return division !== undefined
-    //     ? (this.divisionId = division.divisionId)
-    //     : undefined;
-    // });
+  // .subscribe((division): number | undefined => {
+  //   return division !== undefined
+  //     ? (this.divisionId = division.divisionId)
+  //     : undefined;
+  // });
 
   divisions: Division[] | undefined;
   user: User | undefined;
@@ -124,7 +125,7 @@ export class GameService {
   // }
   getSeasonPlayoffGames (): Observable<PlayoffGame[]> {
     const url = this.dataService.playoffGameUrl + '?seasonId=' + this.seasonId;
-    // console.log(url);
+    this.logger.log(url);
     return this.http.get<PlayoffGame[]>(url).pipe(
       map((response) => (this.seasonPlayoffGames = response)),
       tap((data) => console.log('All: ' + JSON.stringify(data.length)))
@@ -244,7 +245,7 @@ export class GameService {
         groupedGames[dateKey] = [];
       } groupedGames[dateKey].push(game);
     });
-      return Object.values(groupedGames); // Convert the object to an array of arrays
+    return Object.values(groupedGames); // Convert the object to an array of arrays
   }
   groupPlayoffsByDate (games: PlayoffGame[]) {
     const source = from(games);

@@ -22,6 +22,7 @@ import { AdminGamesPlayoffsDetailComponent } from "../admin-games-playoffs-detai
 import { MatButtonModule } from '@angular/material/button';
 import { AdminGamesFilterComponent } from '../admin-games-filter/admin-games-filter.component';
 import { AdminGameService } from '../adminGame.service';
+import { LoggerService } from '@app/services/logging.service';
 @Component({
   selector: 'csbc-admin-games-shell',
   templateUrl: './admin-games-shell.component.html',
@@ -50,6 +51,7 @@ import { AdminGameService } from '../adminGame.service';
   ]
 })
 export class AdminGamesShellComponent implements OnInit {
+  logger = inject(LoggerService);
   gameService = inject(AdminGameService);
   pageTitle = 'Game Management';
   isSidenavOpen = false;
@@ -142,7 +144,7 @@ export class AdminGamesShellComponent implements OnInit {
     // console.log($event);
     // console.log($event.division);
     // console.log($event.season);
-    // console.log($event.gametType);
+    this.logger.log($event.gametType);
     if ($event.gameType === 'Playoffs') {
       this.showPlayoffs = true;
       this.showRegularSeason = false;
