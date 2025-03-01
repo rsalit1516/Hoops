@@ -10,13 +10,13 @@ import { GameService } from './game.service';
 @Injectable({
   providedIn: 'root',
 })
-export class GamesResolver  {
-  constructor(
+export class GamesResolver {
+  constructor (
     private store: Store<fromGames.State>,
     private _gameService: GameService
-  ) {}
+  ) { }
 
-  resolve(
+  resolve (
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> {
@@ -24,7 +24,7 @@ export class GamesResolver  {
       const t = this._gameService.currentSeason$; // = season.seasonID;
       this.store.dispatch(new gameActions.LoadGames());
       // this.store.dispatch(new gameActions.LoadDivisions());
-      // this.store.dispatch(new gameActions.LoadPlayoffGames());
+      this.store.dispatch(new gameActions.LoadPlayoffGames());
       this.store.dispatch(new gameActions.LoadStandings());
     });
     return of(true);

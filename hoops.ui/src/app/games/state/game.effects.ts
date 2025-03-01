@@ -59,7 +59,7 @@ export class GameEffects {
 
   loadPlayoffGames$: Observable<Action> = createEffect(() => this.actions$.pipe(
     ofType(gameActions.GameActionTypes.LoadPlayoffGames),
-    ofType(gameActions.GameActionTypes.LoadPlayoffGames),
+    // ofType(gameActions.GameActionTypes.LoadPlayoffGames),
 
     mergeMap((action) =>
       this.gameService.getSeasonPlayoffGames().pipe(

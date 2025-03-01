@@ -11,6 +11,7 @@ import { MatOptionModule } from '@angular/material/core';
 import { NgFor, CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { LoggerService } from '@app/services/logging.service';
 
 @Component({
   selector: 'csbc-game-filter',
@@ -26,6 +27,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
   ]
 })
 export class GameFilterComponent implements OnInit {
+  logger = inject(LoggerService);
   readonly divisions = input.required<Division[]>();
   currentDivision!: Division;
   readonly teams = input.required<Team[] | null>();
@@ -35,13 +37,13 @@ export class GameFilterComponent implements OnInit {
   showAllTeams!: boolean;
   readonly selectedTeam = output<Team>();
 
-  constructor () {}
+  constructor () { }
 
   ngOnInit () {
     this.showAllTeams = true;
     this.gameStore.select(fromGames.getCurrentDivision).subscribe((division) => {
       this.currentDivision = division!;
-      console.log(division);
+      this.logger.log(division);
       this.gameStore.dispatch(new gameActions.LoadFilteredGames);
       this.gameStore.dispatch(new gameActions.LoadDivisionPlayoffGames);
       this.gameStore.dispatch(new gameActions.LoadStandings);
