@@ -13,6 +13,8 @@ import {
   switchMap,
 } from 'rxjs/operators';
 import { DataService } from '@app/services/data.service';
+import { Constants } from '@app/shared/constants';
+
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Game } from '@app/domain/game';
 import * as fromGames from './state';
@@ -124,7 +126,7 @@ export class GameService {
   //     );
   // }
   getSeasonPlayoffGames (): Observable<PlayoffGame[]> {
-    const url = this.dataService.playoffGameUrl + '?seasonId=' + this.seasonId;
+    const url = Constants.PLAYOFF_GAMES_URL + '?seasonId=' + this.seasonId;
     this.logger.log(url);
     return this.http.get<PlayoffGame[]>(url).pipe(
       map((response) => (this.seasonPlayoffGames = response)),
