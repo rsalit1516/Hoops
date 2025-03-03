@@ -221,50 +221,25 @@ export class GameService {
   }
 
   groupByDate (games: Game[]): Game[][] {
-    // const source = from(games);
-    // const gDate = source.pipe(
-    //   map((s) => {
-    //     const gameDate = DateTime.fromISO(s.gameDate.toISOString()).toJSDate();// if (typeof s.gameDate === 'string') {
-    //     // if (typeof s.gameDate === 'string') {
-    //     s.gameDate = gameDateOnly;
-    //     // }
-    //     // }
-    //     console.log(s.gameDate);
-    //     return s;
-    //   })
-    // );
-
-    // const gamesByDate = source.pipe(
-    //   groupBy((game) => DateTime.fromJSDate(game.gameDate).toFormat('yyyy-MM-dd')),
-    //   mergeMap((group) => group.pipe(toArray()))
-    // );
-
-    // return gamesByDate;
     const groupedGames: { [key: string]: Game[] } = {};
     games.forEach(game => {
-      const dateKey = game.gameDateOnly!.toISOString().split('T')[0]; // Use the date part as the key
+      const dateKey = game.gameDateOnly!.toLocaleString().split('T')[0]; // Use the date part as the key
       if (!groupedGames[dateKey]) {
         groupedGames[dateKey] = [];
       } groupedGames[dateKey].push(game);
     });
     return Object.values(groupedGames); // Convert the object to an array of arrays
   }
-  groupPlayoffsByDate (games: PlayoffGame[]) {
-    const source = from(games);
-    const gDate = source.pipe(
-      map((s) => {
-        if (typeof s.gameDate === 'string') {
-          s.gameDate = DateTime.fromISO(s.gameDate).toJSDate();
-        }
-        return s;
-      })
-    );
-
-    const gamesByDate = source.pipe(
-      groupBy((game) => DateTime.fromJSDate(game.gameDate).toFormat('yyyy-MM-dd')),
-      mergeMap((group) => group.pipe(toArray()))
-    );
-    return gamesByDate;
+  groupPlayoffsByDate (games: PlayoffGame[]): PlayoffGame[][] {
+    const groupedGames: { [key: string]: PlayoffGame[] } = {};
+    games.forEach(game => {
+      const gameDate = new Date(game.gameDate);
+      const dateKey = gameDate.toLocaleDateString("en-CA");
+      if (!groupedGames[dateKey]) {
+        groupedGames[dateKey] = [];
+      } groupedGames[dateKey].push(game);
+    });
+    return Object.values(groupedGames); // Convert the object to an array of arrays
   }
 
   private sort (a: any, b: any) {
