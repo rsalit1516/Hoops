@@ -32,12 +32,12 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'csbc-schedule-shell',
   template: `
-  <div class="container mx-auto">
+  <section class="container mx-auto">
     <h1>{{ title }}</h1>
     <div class="row">
     <csbc-schedule [dailySchedule]="dailySchedule"></csbc-schedule>
     </div>
-  </div>
+</section>
   `,
   styleUrls: ['./schedule-shell.component.scss'],
   imports: [

@@ -11,10 +11,10 @@ import { PlayoffGame } from '@app/domain/playoffGame';
   imports: [CommonModule, SchedulePlayoffsComponent],
   providers: [GameService, Store],
   template: `
-    <div class="row">
+    <section class="container mx-auto">
     <h1>Playoffs</h1>
       <csbc-schedule-playoffs [playoffGames]="dailyPlayoffSchedule" />
-  </div>`,
+</section>`,
   styleUrl: './playoffs-shell.component.scss'
 })
 export class PlayoffsShellComponent implements OnInit {
