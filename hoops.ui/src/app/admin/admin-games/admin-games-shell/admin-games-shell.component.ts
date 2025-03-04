@@ -6,7 +6,7 @@ import * as fromAdmin from '../../state';
 
 // import { GameService } from '@app/services/game.service';
 import { Season } from '@app/domain/season';
-import { Game } from '@app/domain/game';
+import { RegularGame } from '@app/domain/regularGame';
 import { AdminGameDetailComponent } from '../admin-game-detail/admin-game-detail.component';
 import { AdminGamesPlayoffsListComponent } from '../admin-games-playoffs-list/admin-games-playoffs-list.component';
 import { AdminGamesListComponent } from '../admin-games-list/admin-games-list.component';
@@ -60,9 +60,9 @@ export class AdminGamesShellComponent implements OnInit {
   divisions$ = this.store.select(fromAdmin.getSeasonDivisions);
   showRegularSeason = true;
   showPlayoffs = false;
-  games: Game[] | undefined;
+  games: RegularGame[] | undefined;
 
-  selectedRecord = signal<Game | null>(null);
+  selectedRecord = signal<RegularGame | null>(null);
   // this.gameService.selectedRecordSignal();
 
   @ViewChild('sidenav') sidenav!: MatSidenav;
@@ -120,7 +120,7 @@ export class AdminGamesShellComponent implements OnInit {
       }
     });
     this.store.select(fromAdmin.getDivisionGames).subscribe((games) => {
-      this.store.dispatch(new adminActions.SetFilteredGames(games as Game[]));
+      this.store.dispatch(new adminActions.SetFilteredGames(games as RegularGame[]));
     });
     this.store.select(fromAdmin.getFilteredGames).subscribe((games) => {
       this.games = games;

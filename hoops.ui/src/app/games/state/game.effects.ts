@@ -11,7 +11,7 @@ import { getCurrentDivision, getCurrentTeam } from './';
 import { SeasonService } from '@app/services/season.service';
 import { HttpClient } from '@angular/common/http';
 import { DataService } from '@app/services/data.service';
-import { Game } from '@app/domain/game';
+import { RegularGame } from '@app/domain/regularGame';
 import { PlayoffGame } from '@app/domain/playoffGame';
 import { Division } from '@app/domain/division';
 import { Team } from '@app/domain/team';
@@ -162,7 +162,7 @@ export class GameEffects {
     switchMap((action) =>
       this.gameService.filterGamesByDivision().pipe(
         map((games) => new gameActions.LoadFilteredGamesSuccess(games)),
-        tap(response => console.log(response)),
+        // tap(response => console.log(response)),
         catchError((err) => of(new gameActions.LoadFilteredGamesFail(err)))
       )
     )
@@ -186,7 +186,7 @@ export class GameEffects {
     switchMap((action) =>
       this.gameService.divisionPlayoffGames(this.divisionId).pipe(
         map((games) => new gameActions.LoadDivisionPlayoffGamesSuccess(games)),
-        tap(response => console.log(response)),
+        // tap(response => console.log(response)),
         catchError((err) => of(new gameActions.LoadDivisionPlayoffGamesFail(err)))
       )
     )

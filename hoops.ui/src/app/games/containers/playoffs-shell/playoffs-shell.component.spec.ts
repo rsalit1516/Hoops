@@ -32,7 +32,7 @@ export class PlayoffsShellComponent implements OnInit {
           // console.log(playoffGames);
           this.dailyPlayoffSchedule = [];
           this.gameService
-            .groupPlayoffsByDate(playoffGames)
+            .groupPlayoffGamesByDate(playoffGames)
             .subscribe(games => {
               this.dailyPlayoffSchedule.push(games);
               console.log(this.dailyPlayoffSchedule);

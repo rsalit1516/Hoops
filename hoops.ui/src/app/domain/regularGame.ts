@@ -1,6 +1,6 @@
 import { Season } from './season';
 
-export class Game {
+export class RegularGame {
   public gameScheduleId!: number;
   public gameDescription!: string | null;
   public seasonId!: number;
@@ -29,7 +29,7 @@ export class Game {
   public gameType: number | null = 0;
   public gameDateOnly: Date | undefined;
 
-  constructor(
+  constructor (
     gameScheduleId: number,
     seasonId: number,
     divisionId: number,

@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 
 import * as fromAdmin from '../state';
 import * as adminActions from '../state/admin.actions';
-import { Game } from '@app/domain/game';
+import { RegularGame } from '@app/domain/regularGame';
 import { AdminGamesListComponent } from '../admin-games/admin-games-list/admin-games-list.component';
 import { MatCardModule } from '@angular/material/card';
 import { NgFor, NgForOf } from '@angular/common';
@@ -17,21 +17,21 @@ import { MatListModule } from '@angular/material/list';
 import { SeasonSelectComponent } from '../admin-shared/season-select/season-select.component';
 
 @Component({
-    selector: 'csbc-admin-dashboard',
-    templateUrl: './admin-dashboard.component.html',
-    styleUrls: [
-        '../../shared/scss/cards.scss',
-        './admin-dashboard.component.scss',
-        '../admin.component.scss'
-    ],
-    imports: [
-        SeasonSelectComponent,
-        MatCardModule,
-        MatListModule,
-      NgFor,
-        NgForOf,
-        AdminGamesListComponent,
-    ]
+  selector: 'csbc-admin-dashboard',
+  templateUrl: './admin-dashboard.component.html',
+  styleUrls: [
+    '../../shared/scss/cards.scss',
+    './admin-dashboard.component.scss',
+    '../admin.component.scss'
+  ],
+  imports: [
+    SeasonSelectComponent,
+    MatCardModule,
+    MatListModule,
+    NgFor,
+    NgForOf,
+    AdminGamesListComponent,
+  ]
 })
 export class AdminDashboardComponent implements OnInit {
   currentSeason!: Season;
@@ -39,27 +39,27 @@ export class AdminDashboardComponent implements OnInit {
   divisionCount!: number;
   teams!: Team[] | null;
   teamCount!: number;
-  seasonGames: Game[] | undefined;
+  seasonGames: RegularGame[] | undefined;
   seasonGameCount: number | undefined;
   divisionTeams!: Team[] | null;
   selectedDivision!: Division | null;
-  filteredGames!: Game[];
-  divisionGames!: Game[];
-  teamGames!: Game[];
+  filteredGames!: RegularGame[];
+  divisionGames!: RegularGame[];
+  teamGames!: RegularGame[];
   selectedTeam!: Team | null;
 
-  constructor(
+  constructor (
     private store: Store<fromAdmin.State>,
     private teamService: TeamService,
     private router: Router
-  ) {}
+  ) { }
 
-  ngOnInit() {
+  ngOnInit () {
     this.store.dispatch(new adminActions.LoadCurrentSeason());
     this.setStateSubscriptions();
     // this.router.navigate(['/admin/content/list']);
   }
-  setStateSubscriptions() {
+  setStateSubscriptions () {
     this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
       this.currentSeason = season as Season;
       // this.store.dispatch(new gameActions.LoadDivisions());
@@ -113,12 +113,12 @@ export class AdminDashboardComponent implements OnInit {
       }
     });
   }
-  goToDivision(division: Division) {
+  goToDivision (division: Division) {
     this.store.dispatch(new adminActions.SetSelectedDivision(division));
     this.selectedDivision = division;
     // this.router.navigate(['/admin/division']);
   }
-  setTeam(team: Team) {
+  setTeam (team: Team) {
     this.store.dispatch(new adminActions.SetSelectedTeam(team));
 
     // this.router.navigate(['/admin/division']);

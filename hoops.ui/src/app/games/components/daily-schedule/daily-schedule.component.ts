@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Input, input } from '@angular/core';
-import { Game } from '@domain/game';
+import { RegularGame } from '@app/domain/regularGame';
 import { Store, select } from '@ngrx/store';
 import { GameScoreDialogComponent } from '../game-score-dialog/game-score-dialog.component';
 
@@ -25,7 +25,7 @@ import { MatTableModule } from '@angular/material/table';
   ]
 })
 export class DailyScheduleComponent implements OnInit {
-  readonly games = input.required<Game[]>();
+  readonly games = input.required<RegularGame[]>();
   @Input() canEdit!: boolean;
   displayedColumns = [
     'gameTime',
@@ -36,7 +36,7 @@ export class DailyScheduleComponent implements OnInit {
     'visitingTeamScore',
     'actions',
   ];
-  data: Game[] = []; // = this.games;
+  data: RegularGame[] = []; // = this.games;
   gameDate!: Date;
   flexMediaWatcher: any;
   currentScreenWidth: string | undefined;
@@ -83,7 +83,7 @@ export class DailyScheduleComponent implements OnInit {
       ];
     }
   }
-  editGame (game: Game) {
+  editGame (game: RegularGame) {
     this.store.dispatch(new gameActions.SetCurrentGame(game));
     const dialogRef = this.dialog.open(GameScoreDialogComponent, {
       width: '500px',

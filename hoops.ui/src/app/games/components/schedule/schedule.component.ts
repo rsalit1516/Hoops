@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, input } from '@angular/core';
-import { Game } from '../../../domain/game';
+import { RegularGame } from '../../../domain/regularGame';
 import { Store } from '@ngrx/store';
 import * as fromGames from '../../state';
 import * as fromUser from '../../../user/state';
@@ -22,9 +22,9 @@ import { CommonModule, NgFor } from '@angular/common';
   imports: [CommonModule, DailyScheduleComponent]
 })
 export class ScheduleComponent implements OnInit {
-  readonly dailySchedule = input.required<Array<Game[]>>();
-  groupedGames: Game[] | undefined;
-  _gamesByDate: [Date, Game[]] | undefined;
+  readonly dailySchedule = input.required<Array<RegularGame[]>>();
+  groupedGames: RegularGame[] | undefined;
+  _gamesByDate: [Date, RegularGame[]] | undefined;
   divisionId: number | undefined;
   flexMediaWatcher: any;
   currentScreenWidth: any;
@@ -34,10 +34,10 @@ export class ScheduleComponent implements OnInit {
     return this._games;
   }
   @Input()
-  set games (games: Game[]) {
+  set games (games: RegularGame[]) {
     this._games = games;
   }
-  private _games!: Game[];
+  private _games!: RegularGame[];
   @Output()
   canEdit!: boolean;
 
@@ -61,7 +61,7 @@ export class ScheduleComponent implements OnInit {
   ngOnInit () {
   }
 
-  editGame (game: Game) {
+  editGame (game: RegularGame) {
     this.store.dispatch(new gameActions.SetCurrentGame(game));
     const dialogRef = this.dialog.open(GameScoreDialogComponent, {
       width: '500px',

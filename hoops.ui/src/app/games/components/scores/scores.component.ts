@@ -5,7 +5,7 @@ import { Store, select } from '@ngrx/store';
 import * as fromGames from '../../state';
 import * as fromUser from '../../../user/state';
 
-import { Game } from '@app/domain/game';
+import { RegularGame } from '@app/domain/regularGame';
 import { User } from '@app/domain/user';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -14,33 +14,33 @@ import { MatButtonModule } from '@angular/material/button';
 import { NgIf, DatePipe, CommonModule } from '@angular/common';
 
 @Component({
-    selector: 'csbc-scores',
-    templateUrl: './scores.component.html',
-    styleUrls: [
-        './scores.component.scss',
-        '../../containers/games-shell/games-shell.component.scss'
-    ],
+  selector: 'csbc-scores',
+  templateUrl: './scores.component.html',
+  styleUrls: [
+    './scores.component.scss',
+    '../../containers/games-shell/games-shell.component.scss'
+  ],
   imports: [CommonModule,
     //
     MatTableModule,
     // NgIf,
     MatButtonModule,
     MatIconModule,
-  // DatePipe
+    // DatePipe
   ]
 })
 export class ScoresComponent implements OnInit {
-  dataSource!: MatTableDataSource<Game>;
-  groupedGames!: Game[];
-  _gamesByDate!: [Date, Game[]];
+  dataSource!: MatTableDataSource<RegularGame>;
+  groupedGames!: RegularGame[];
+  _gamesByDate!: [Date, RegularGame[]];
   divisionId: number | undefined;
   flexMediaWatcher: any;
   currentScreenWidth: any;
-  get games() {
+  get games () {
     return this._games;
   }
   @Input()
-  set games(games: Game[]) {
+  set games (games: RegularGame[]) {
     this._games = games;
     //    console.log(games);
     this.dataSource = new MatTableDataSource(games);
@@ -49,7 +49,7 @@ export class ScoresComponent implements OnInit {
     //console.log(grouped);
     //});
   }
-  private _games!: Game[];
+  private _games!: RegularGame[];
   canEdit!: boolean;
 
   errorMessage!: string;
@@ -63,16 +63,16 @@ export class ScoresComponent implements OnInit {
     'visitingTeamScore',
     'homeTeamScore'
   ];
-  constructor(
-      @Inject(Store) private store: Store<fromGames.State>,
-      private userStore: Store<fromUser.State>,
-      public dialog: MatDialog,
-      // private media: MediaObserver
-    ) {
-      this.title = 'Schedule!';
-    }
+  constructor (
+    @Inject(Store) private store: Store<fromGames.State>,
+    private userStore: Store<fromUser.State>,
+    public dialog: MatDialog,
+    // private media: MediaObserver
+  ) {
+    this.title = 'Schedule!';
+  }
 
-  ngOnInit() {
+  ngOnInit () {
     if (this.canEdit === true) {
       this.displayedColumns.push('actions');
     }

@@ -1,6 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-import { Game } from '../../domain/game';
+import { RegularGame } from '../../domain/regularGame';
 import { GameActions, GameActionTypes } from './games.actions';
 import { Division } from '@app/domain/division';
 import { Team } from '@app/domain/team';
@@ -15,10 +15,10 @@ export interface GameState {
   currentDivision: Division | undefined;
   currentTeamId: number | undefined;
   currentTeam: Team | undefined;
-  games: Game[];
+  games: RegularGame[];
   playoffGames: PlayoffGame[];
   divisionPlayoffGames: PlayoffGame[];
-  filteredGames: Game[];
+  filteredGames: RegularGame[];
   filteredTeams: Team[];
   standings: Standing[];
   showListView: boolean;
@@ -26,7 +26,7 @@ export interface GameState {
   teams: Team[];
   showAllteams: boolean;
   canEdit: boolean;
-  currentGame: Game;
+  currentGame: RegularGame;
 }
 
 const cd = 0,
@@ -56,10 +56,10 @@ const cd = 0,
     teams: [],
     showAllteams: true,
     canEdit: false,
-    currentGame: new Game(0, 0, 0, 0),
+    currentGame: new RegularGame(0, 0, 0, 0),
   };
 
-export function reducer(state = initialState, action: GameActions): GameState {
+export function reducer (state = initialState, action: GameActions): GameState {
   switch (action.type) {
     case GameActionTypes.SetCurrentSeason:
       return {
