@@ -1,32 +1,36 @@
 import { CommonModule, NgIf } from '@angular/common';
-import { Component, Inject } from '@angular/core';
+import { Component, inject, Inject } from '@angular/core';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { FeatureFlagService } from '@app/services/featureFlag.serrvice';
 
 @Component({
-    selector: 'app-admin-shell-sidebar',
-    imports: [
-        CommonModule,
-        MatSidenavModule,
-        MatListModule,
-        RouterLink,
-        RouterLinkActive,
-        MatDividerModule,
-        NgIf,
-    ],
-    templateUrl: './admin-shell-sidebar.component.html',
-    styleUrls: ['./admin-shell-sidebar.component.scss',
-        './../../containers/admin-shell/admin-shell.component.scss']
+  selector: 'app-admin-shell-sidebar',
+  imports: [
+    CommonModule,
+    MatSidenavModule,
+    MatListModule,
+    RouterLink,
+    RouterLinkActive,
+    MatDividerModule,
+    NgIf,
+  ],
+  templateUrl: './admin-shell-sidebar.component.html',
+  styleUrls: ['./admin-shell-sidebar.component.scss',
+    './../../containers/admin-shell/admin-shell.component.scss']
 })
 export class AdminShellSidebarComponent {
-  showDirectors = false;
-  showHouseholds = true;
-  showPeople = true;
-  showColors = false;
-  showUsers = false;
-  shouldRun = true;
+  featureFlagService = inject(FeatureFlagService);
+  showDirectors = this.featureFlagService.isFeatureEnabled('adminDirectors');
+  showHouseholds = this.featureFlagService.isFeatureEnabled('adminHouseholds');
+  showPeople = this.featureFlagService.isFeatureEnabled('adminPeople');
+
+  showColors = this.featureFlagService.isFeatureEnabled('adminColors');
+  showUsers = this.featureFlagService.isFeatureEnabled('adminUsers');
+  showNotices = this.featureFlagService.isFeatureEnabled('adminNotices');
+  shouldRun = false;
 
   SeasonSetupSection = 'Season Setup';
   seasonSetupItems = [
@@ -51,12 +55,12 @@ export class AdminShellSidebarComponent {
 
   constructor (@Inject(Router) private router: Router) { }
 
-  selectedItem: nav| undefined;
+  selectedItem: nav | undefined;
 
   selectItem (item: nav) {
     this.selectedItem = item;
 
-  }  isSelected (item: nav): boolean {
+  } isSelected (item: nav): boolean {
     return item.isSelected;
   }
 

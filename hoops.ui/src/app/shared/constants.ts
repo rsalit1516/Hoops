@@ -59,4 +59,17 @@ export class Constants {
   public static GET_HOUSEHOLD_MEMBERS_URL = Constants.DEFAULTURL + '/api/Person/GetHouseholdMembers';
   public static PEOPLE_SEARCH_URL = Constants.DEFAULTURL + '/api/Person/search';
   public static SAVE_HOUSEHOLD_URL = Constants.DEFAULTURL + '/api/Household/';
+
+
 }
+export const FEATURE_FLAGS = {
+  adminHouseholds: true,  // Enabled feature
+  adminNotices: true, // Disabled feature
+  adminPeople: false,
+  adminDirectors: false,
+  adminColors: false,
+  adminUsers: false,
+  adminGames: true,
+
+};
+

@@ -42,7 +42,7 @@ export class AdminGameService {
     let gamesSortedByDate: RegularGame[] = [];
     this.store.pipe(select(fromGames.getSeasonGames)).subscribe((allGames) => {
       this.allGames = allGames;
-      console.log('Selected Division', this.selectedDivision());
+      // console.log('Selected Division', /this.selectedDivision());
       // console.log('allGames', allGames);
       if (this.selectedDivision() !== null) {
         this.setCanEdit(this.selectedDivision()!.divisionId);
@@ -55,7 +55,7 @@ export class AdminGameService {
             games.push(game);
           }
         }
-        console.log('Games', games);
+        // console.log('Games', games);
         games.sort();
         gamesSortedByDate = games.sort((a, b) => {
           return this.compare(a.gameDate!, b.gameDate!, true);

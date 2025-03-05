@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import * as fromGames from '../../state';
 import { GameService } from '@app/games/game.service';
 import { PlayoffGame } from '@app/domain/playoffGame';
+import { PlayoffGameService } from '@app/services/playoff-game.service';
 
 @Component({
   selector: 'csbc-playoffs-shell',
@@ -21,7 +22,7 @@ export class PlayoffsShellComponent implements OnInit {
   dailyPlayoffSchedule!: Array<PlayoffGame[]>;
 
   constructor (private store: Store<fromGames.State>,
-    private gameService: GameService) { }
+    private gameService: PlayoffGameService) { }
 
   ngOnInit () {
     this.store.select(fromGames.getCurrentDivision).subscribe((division) => {
@@ -32,11 +33,7 @@ export class PlayoffsShellComponent implements OnInit {
           // console.log(playoffGames);
           this.dailyPlayoffSchedule = [];
           this.gameService
-            .groupPlayoffGamesByDate(playoffGames)
-            .subscribe(games => {
-              this.dailyPlayoffSchedule.push(games);
-              console.log(this.dailyPlayoffSchedule);
-            });
+            .groupPlayoffGamesByDate(playoffGames);
         });
     });
   }

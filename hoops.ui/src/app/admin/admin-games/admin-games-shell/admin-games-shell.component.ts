@@ -117,6 +117,7 @@ export class AdminGamesShellComponent implements OnInit {
         console.log('Calling filtered games');
         this.store.dispatch(new adminActions.LoadDivisionGames());
         this.store.dispatch(new adminActions.LoadDivisionTeams());
+        this.store.dispatch(new adminActions.LoadPlayoffGames());
       }
     });
     this.store.select(fromAdmin.getDivisionGames).subscribe((games) => {
