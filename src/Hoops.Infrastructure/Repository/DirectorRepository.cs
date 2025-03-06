@@ -37,6 +37,7 @@ namespace Hoops.Infrastructure.Repository
                 {
                     d.DirectorId,
                     p.PersonId,
+                    d.Seq,                 
                     d.Title,
                     p.FirstName,
                     p.LastName,
@@ -57,6 +58,7 @@ namespace Hoops.Infrastructure.Repository
                 var dir = new VwDirector();
                 dir.DirectorId = director.DirectorId;
                 dir.PersonId = director.PersonId;
+                dir.Seq = director.Seq ?? 0;
                 dir.Title = director.Title;
                 dir.Name = director.FirstName + " " + director.LastName;
                 dir.FirstName = director.FirstName ;
@@ -75,7 +77,7 @@ namespace Hoops.Infrastructure.Repository
             }
 
             // var vwDir = vwDirectors.AsQueryable<VwDirector>();
-            return vwDirectors;
+            return [.. vwDirectors.OrderBy(p => p.Seq)];
         }
 
         public List<VwDirector> GetDirectorVolunteers(int companyId)
