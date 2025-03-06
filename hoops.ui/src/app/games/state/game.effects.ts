@@ -180,7 +180,7 @@ export class GameEffects {
       }
     }),
     switchMap(() =>
-      this.playoffGameService.divisionPlayoffGames(this.divisionId).pipe(
+      this.playoffGameService.getDivisionPlayoffGames(this.divisionId).pipe(
         map((games) => new gameActions.LoadDivisionPlayoffGamesSuccess(games)),
         // tap(response => console.log(response)),
         catchError((err) => of(new gameActions.LoadDivisionPlayoffGamesFail(err)))

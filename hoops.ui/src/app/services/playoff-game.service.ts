@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { PlayoffGame } from '@app/domain/playoffGame';
 import { Constants } from '@app/shared/constants';
 import { select, Store } from '@ngrx/store';
@@ -18,7 +18,7 @@ export class PlayoffGameService {
   private gameStore = inject(Store<fromGames.State>);
   private logger = inject(LoggerService);
 
-
+  divisionPlayoffGames = signal<PlayoffGame[] | undefined>(undefined);
   seasonId: number | undefined; // = 2192; // TO DO make this is passed in!
   seasonPlayoffGames: PlayoffGame[] | null | undefined;
   allPlayoffGames: PlayoffGame[] | undefined;
@@ -36,7 +36,7 @@ export class PlayoffGameService {
       // catchError(this.handleError)
     );
   }
-  divisionPlayoffGames (div: number): Observable<PlayoffGame[]> {
+  getDivisionPlayoffGames (div: number): Observable<PlayoffGame[]> {
     let games: PlayoffGame[] = [];
     let sortedDate: PlayoffGame[] = [];
     this.gameStore
@@ -55,6 +55,7 @@ export class PlayoffGameService {
         sortedDate = games.sort((a, b) => {
           return this.compare(a.gameDate!, b.gameDate!, true);
         });
+        this.divisionPlayoffGames.update(() => sortedDate);
         return of(sortedDate);
       });
     return of(sortedDate);
