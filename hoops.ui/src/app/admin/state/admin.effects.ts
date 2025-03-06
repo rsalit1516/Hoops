@@ -17,7 +17,7 @@ import { DivisionService } from '@app/services/division.service';
 
 import * as adminActions from './admin.actions';
 import * as fromAdmin from './';
-import { Game } from '@app/domain/game';
+import { RegularGame } from '@app/domain/regularGame';
 import { HttpClient } from '@angular/common/http';
 import { TeamService } from '../admin-shared/services/team.service';
 import { DataService } from '@app/services/data.service';
@@ -47,7 +47,7 @@ export class AdminEffects {
   public loadActiveContent$ = this.loadActiveContent();
   public loadAllContent$ = this.loadAllContent();
 
-  constructor(
+  constructor (
     private actions$: Actions,
     // private seasonService: SeasonService,
     // private divisionService: DivisionService,
@@ -56,7 +56,7 @@ export class AdminEffects {
     private teamService: TeamService,
     private dataService: DataService,
     private store: Store<fromAdmin.State>
-  ) {}
+  ) { }
 
   // tslint:disable-next-line:member-ordering
 
@@ -70,33 +70,33 @@ export class AdminEffects {
     )
   ));
 
-    // tslint:disable-next-line:member-ordering
+  // tslint:disable-next-line:member-ordering
 
-    loadDivisions$: Observable<Action> = createEffect(() => this.actions$.pipe(
-      ofType(adminActions.AdminActionTypes.LoadDivisions),
-      concatMap(action =>
-        of(action).pipe(
-          withLatestFrom(this.store.pipe(select(fromAdmin.getSelectedSeason))),
-          // tap(season => console.log(season))
-        )
-      ),
-      tap(([action, t]) => {
-        if (t) {
-          this.seasonId = t.seasonId!;
-        } else {
-          this.seasonId = 0;
-        }
-      }),
-      mergeMap(action =>
-        this.http.get<Division[]>(this.seasonDivisionsUrl + this.seasonId).pipe(
-          // tap(data => console.log('All games: ' + JSON.stringify(data))),
-          shareReplay(1),
-          map(divisions => new adminActions.LoadDivisionsSuccess(divisions)),
-          // tap(divisions => console.log(divisions)),
-          catchError(err => of(new adminActions.LoadDivisionsFail(err)))
-        )
+  loadDivisions$: Observable<Action> = createEffect(() => this.actions$.pipe(
+    ofType(adminActions.AdminActionTypes.LoadDivisions),
+    concatMap(action =>
+      of(action).pipe(
+        withLatestFrom(this.store.pipe(select(fromAdmin.getSelectedSeason))),
+        // tap(season => console.log(season))
       )
-    ));
+    ),
+    tap(([action, t]) => {
+      if (t) {
+        this.seasonId = t.seasonId!;
+      } else {
+        this.seasonId = 0;
+      }
+    }),
+    mergeMap(action =>
+      this.http.get<Division[]>(this.seasonDivisionsUrl + this.seasonId).pipe(
+        // tap(data => console.log('All games: ' + JSON.stringify(data))),
+        shareReplay(1),
+        map(divisions => new adminActions.LoadDivisionsSuccess(divisions)),
+        // tap(divisions => console.log(divisions)),
+        catchError(err => of(new adminActions.LoadDivisionsFail(err)))
+      )
+    )
+  ));
 
   // tslint:disable-next-line:member-ordering
 
@@ -116,7 +116,7 @@ export class AdminEffects {
     }),
 
     mergeMap(action =>
-      this.http.get<Game[]>(this.gameUrl + '?seasonId=' + this.seasonId).pipe(
+      this.http.get<RegularGame[]>(this.gameUrl + '?seasonId=' + this.seasonId).pipe(
         // tap(data => console.log('All admin games: ' + JSON.stringify(data))),
         shareReplay(1),
         map(games => new adminActions.LoadGamesSuccess(games)),
@@ -124,143 +124,143 @@ export class AdminEffects {
       )
     )
   ));
-    // tslint:disable-next-line:member-ordering
-    setCurrentSeason$: Observable<Action> = createEffect(() => this.actions$.pipe(
-      ofType(adminActions.AdminActionTypes.LoadCurrentSeason),
-      mergeMap(action =>
-        this.seasonService.currentSeason$.pipe(
-          map(season => new adminActions.SetSelectedSeason(season as Season)),
-          // tap(data => console.log('Current season: ' + JSON.stringify(data))),
-          catchError(err => of(new adminActions.LoadDivisionsFail(err)))
-        )
+  // tslint:disable-next-line:member-ordering
+  setCurrentSeason$: Observable<Action> = createEffect(() => this.actions$.pipe(
+    ofType(adminActions.AdminActionTypes.LoadCurrentSeason),
+    mergeMap(action =>
+      this.seasonService.currentSeason$.pipe(
+        map(season => new adminActions.SetSelectedSeason(season as Season)),
+        // tap(data => console.log('Current season: ' + JSON.stringify(data))),
+        catchError(err => of(new adminActions.LoadDivisionsFail(err)))
       )
-    ));
+    )
+  ));
 
-    loadFilteredGames$: Observable<Action> = createEffect(() => this.actions$.pipe(
-      ofType(adminActions.AdminActionTypes.LoadDivisionGames),
-      concatMap((action) =>
-        of(action).pipe(
-          withLatestFrom(this.store.pipe(select(fromAdmin.getSelectedDivision)))
-        )
-      ),
-      tap(([action, t]) => {
-        if (t) {
-          this.division = t;
-        } else {
-          this.division = null;
-        }
-      }),
-      switchMap(() => {
-        this.gameService.selectedDivision.set(this.division);
-        return this.gameService.filterGamesByDivision().pipe(
-          map((games) => new adminActions.LoadDivisionGamesSuccess(games)),
-          catchError((err) => of(new adminActions.LoadDivisionGamesFail(err)))
-        );
-      })
-    ));
-
-    loadTeamGames$: Observable<Action> = createEffect(() => this.actions$.pipe(
-      ofType(adminActions.AdminActionTypes.LoadTeamGames),
-      concatMap((action) =>
-        of(action).pipe(
-          withLatestFrom(this.store.pipe(select(fromAdmin.getSelectedTeam)))
-        )
-      ),
-      tap(([action, t]) => {
-        if (t) {
-          this.teamId = t.teamId;
-        } else {
-          this.teamId = 0;
-        }
-      }),
-      switchMap((action) =>
-        this.gameService.filterGamesByTeam(this.teamId).pipe(
-          map((games) => new adminActions.LoadTeamGamesSuccess(games)),
-          // tap(response => console.log(response)),
-          catchError((err) => of(new adminActions.LoadTeamGamesFail(err)))
-        )
+  loadFilteredGames$: Observable<Action> = createEffect(() => this.actions$.pipe(
+    ofType(adminActions.AdminActionTypes.LoadDivisionGames),
+    concatMap((action) =>
+      of(action).pipe(
+        withLatestFrom(this.store.pipe(select(fromAdmin.getSelectedDivision)))
       )
-    ));
-    loadSeasonTeam$: Observable<Action> = createEffect(() => this.actions$.pipe(
-      ofType(adminActions.AdminActionTypes.LoadSeasonTeams),
-      concatMap(action =>
-        of(action).pipe(
-          withLatestFrom(this.store.pipe(select(fromAdmin.getSelectedSeason))),
-          // tap(divisions => console.log(divisions))
-        )
-      ),
-      tap(([action, t]) => {
-        if (t) {
-          this.seasonId = t.seasonId!;
-        } else {
-          this.seasonId = 0;
-        }
-      }),
+    ),
+    tap(([action, t]) => {
+      if (t) {
+        this.division = t;
+      } else {
+        this.division = null;
+      }
+    }),
+    switchMap(() => {
+      this.gameService.selectedDivision.set(this.division);
+      return this.gameService.filterGamesByDivision().pipe(
+        map((games) => new adminActions.LoadDivisionGamesSuccess(games)),
+        catchError((err) => of(new adminActions.LoadDivisionGamesFail(err)))
+      );
+    })
+  ));
 
-      mergeMap(action =>
-        this.http.get<Team[]>(this.dataService.getSeasonTeamsUrl + this.seasonId).pipe(
-          // tap(data => console.log('All admin teams:' + JSON.stringify(data))),
+  loadTeamGames$: Observable<Action> = createEffect(() => this.actions$.pipe(
+    ofType(adminActions.AdminActionTypes.LoadTeamGames),
+    concatMap((action) =>
+      of(action).pipe(
+        withLatestFrom(this.store.pipe(select(fromAdmin.getSelectedTeam)))
+      )
+    ),
+    tap(([action, t]) => {
+      if (t) {
+        this.teamId = t.teamId;
+      } else {
+        this.teamId = 0;
+      }
+    }),
+    switchMap((action) =>
+      this.gameService.filterGamesByTeam(this.teamId).pipe(
+        map((games) => new adminActions.LoadTeamGamesSuccess(games)),
+        // tap(response => console.log(response)),
+        catchError((err) => of(new adminActions.LoadTeamGamesFail(err)))
+      )
+    )
+  ));
+  loadSeasonTeam$: Observable<Action> = createEffect(() => this.actions$.pipe(
+    ofType(adminActions.AdminActionTypes.LoadSeasonTeams),
+    concatMap(action =>
+      of(action).pipe(
+        withLatestFrom(this.store.pipe(select(fromAdmin.getSelectedSeason))),
+        // tap(divisions => console.log(divisions))
+      )
+    ),
+    tap(([action, t]) => {
+      if (t) {
+        this.seasonId = t.seasonId!;
+      } else {
+        this.seasonId = 0;
+      }
+    }),
+
+    mergeMap(action =>
+      this.http.get<Team[]>(this.dataService.getSeasonTeamsUrl + this.seasonId).pipe(
+        // tap(data => console.log('All admin teams:' + JSON.stringify(data))),
+        shareReplay(1),
+        map(teams => new adminActions.LoadSeasonTeamsSuccess(teams)),
+        // tap(teams => console.log(teams)),
+        catchError(err => of(new adminActions.LoadSeasonTeamsFail(err)))
+      )
+    )
+  ));
+  loadDivisionTeams$: Observable<Action> = createEffect(() => this.actions$.pipe(
+    ofType(adminActions.AdminActionTypes.LoadDivisionTeams),
+    concatMap((action) =>
+      of(action).pipe(
+        withLatestFrom(this.store.pipe(select(fromAdmin.getSelectedDivision)))
+      )
+    ),
+    tap(([action, t]) => {
+      if (t) {
+        // console.log(t);
+        this.divisionId = t.divisionId;
+      } else {
+        this.divisionId = 0;
+      }
+    }),
+    switchMap((action) =>
+      this.teamService.filterTeamsByDivision(this.divisionId).pipe(
+        map((teams) => new adminActions.LoadDivisionTeamsSuccess(teams)),
+        // tap(response => console.log(response)),
+        catchError((err) => of(new adminActions.LoadTeamGamesFail(err)))
+      )
+    )
+  ));
+  loadPlayoffGames$: Observable<Action> = createEffect(() => this.actions$.pipe(
+    ofType(adminActions.AdminActionTypes.LoadPlayoffGames),
+    concatMap((action) =>
+      of(action).pipe(
+        withLatestFrom(this.store.pipe(select(fromAdmin.getSelectedSeason))),
+        // tap((divisions) => console.log(divisions))
+      )
+    ),
+    tap(([action, t]) => {
+      if (t) {
+        this.seasonId = t.seasonId!;
+      } else {
+        this.seasonId = 0;
+      }
+    }),
+
+    mergeMap((action) =>
+      this.http
+        .get<PlayoffGame[]>(this.playoffGameUrl + '?seasonId=' + this.seasonId)
+        .pipe(
+          // tap(data => console.log('All playoff games: ' +this.playoffGameUrl + ' '+ JSON.stringify(data))),
           shareReplay(1),
-          map(teams => new adminActions.LoadSeasonTeamsSuccess(teams)),
-          // tap(teams => console.log(teams)),
-          catchError(err => of(new adminActions.LoadSeasonTeamsFail(err)))
+          map((games) => new adminActions.LoadPlayoffGamesSuccess(games)),
+          tap(games => console.log(games)),
+          catchError((err) => of(new adminActions.LoadPlayoffGamesFail(err)))
         )
-      )
-    ));
-    loadDivisionTeams$: Observable<Action> = createEffect(() => this.actions$.pipe(
-      ofType(adminActions.AdminActionTypes.LoadDivisionTeams),
-      concatMap((action) =>
-        of(action).pipe(
-          withLatestFrom(this.store.pipe(select(fromAdmin.getSelectedDivision)))
-        )
-      ),
-      tap(([action, t]) => {
-        if (t) {
-          // console.log(t);
-          this.divisionId = t.divisionId;
-        } else {
-          this.divisionId = 0;
-        }
-      }),
-      switchMap((action) =>
-        this.teamService.filterTeamsByDivision(this.divisionId).pipe(
-          map((teams) => new adminActions.LoadDivisionTeamsSuccess(teams)),
-          // tap(response => console.log(response)),
-          catchError((err) => of(new adminActions.LoadTeamGamesFail(err)))
-        )
-      )
-    ));
-    loadPlayoffGames$: Observable<Action> = createEffect(() => this.actions$.pipe(
-      ofType(adminActions.AdminActionTypes.LoadPlayoffGames),
-      concatMap((action) =>
-        of(action).pipe(
-          withLatestFrom(this.store.pipe(select(fromAdmin.getSelectedSeason))),
-          // tap((divisions) => console.log(divisions))
-        )
-      ),
-      tap(([action, t]) => {
-        if (t) {
-          this.seasonId = t.seasonId!;
-        } else {
-          this.seasonId = 0;
-        }
-      }),
-
-      mergeMap((action) =>
-        this.http
-          .get<PlayoffGame[]>(this.playoffGameUrl + '?seasonId=' + this.seasonId)
-          .pipe(
-            // tap(data => console.log('All playoff games: ' +this.playoffGameUrl + ' '+ JSON.stringify(data))),
-            shareReplay(1),
-            map((games) => new adminActions.LoadPlayoffGamesSuccess(games)),
-            tap(games => console.log(games)),
-            catchError((err) => of(new adminActions.LoadPlayoffGamesFail(err)))
-          )
-      )
-    ));
+    )
+  ));
 
   // tslint:disable-next-line:member-ordering
-  private loadContent() {
+  private loadContent () {
     return createEffect(() => this.actions$.pipe(
       ofType(adminActions.AdminActionTypes.LoadAdminContent),
       mergeMap(action =>
@@ -273,7 +273,7 @@ export class AdminEffects {
     ));
   }
 
-  private loadActiveContent() {
+  private loadActiveContent () {
     return createEffect(() => this.actions$.pipe(
       ofType(adminActions.AdminActionTypes.SetActiveContent),
       switchMap(action =>
@@ -285,7 +285,7 @@ export class AdminEffects {
       )
     ));
   }
-  private loadAllContent() {
+  private loadAllContent () {
     return createEffect(() => this.actions$.pipe(
       ofType(adminActions.AdminActionTypes.SetAllContent),
       switchMap(action =>

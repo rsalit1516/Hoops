@@ -9,7 +9,7 @@ import * as fromGames from '../../state';
 import * as fromUser from '../../../user/state';
 import * as gameActions from '../../state/games.actions';
 
-import { Game } from '@app/domain/game';
+import { RegularGame } from '@app/domain/regularGame';
 import { PlayoffGame } from '@app/domain/playoffGame';
 import {
   groupBy,
@@ -47,10 +47,10 @@ import { CommonModule } from '@angular/common';
 })
 export class ScheduleShellComponent implements OnInit {
   private gameService = inject(GameService);
-  games: Game[] | undefined | null;
+  games: RegularGame[] | undefined | null;
   playoffGames!: PlayoffGame[];
   title = 'Regular Season Schedule';
-  filteredGames$: Observable<Game[]> | undefined;
+  filteredGames$: Observable<RegularGame[]> | undefined;
   currentSeason$: Observable<Season> | undefined;
   divisions$: Observable<Division[]> | undefined;
   selectedDivisionId$: Observable<number> | undefined;
@@ -59,7 +59,7 @@ export class ScheduleShellComponent implements OnInit {
   errorMessage$: Observable<string> | undefined;
   selectedDivision$: Observable<any> | undefined;
   canEdit = false;
-  gamesByDate$: Observable<[Date, Game[]]> | undefined;
+  gamesByDate$: Observable<[Date, RegularGame[]]> | undefined;
   user$: Observable<User> | undefined;
   division$: Observable<Division> | undefined;
   division: Division | undefined;
@@ -72,7 +72,7 @@ export class ScheduleShellComponent implements OnInit {
   );
   divisionId: number | undefined;
   hasPlayoffs = false;
-  dailySchedule!: Array<Game[]>;
+  dailySchedule!: Array<RegularGame[]>;
 
   constructor (
     private store: Store<fromGames.State>,
@@ -84,7 +84,7 @@ export class ScheduleShellComponent implements OnInit {
       this.store.select(fromGames.getFilteredGames).subscribe((games) => {
         this.games = games;
         this.dailySchedule = [];
-        this.dailySchedule = this.gameService.groupByDate(games);
+        this.dailySchedule = this.gameService.groupRegularGamesByDate(games);
       });
       this.store.dispatch(new gameActions.LoadDivisionPlayoffGames());
     });

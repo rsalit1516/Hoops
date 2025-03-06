@@ -16,7 +16,7 @@ import { DataService } from '@app/services/data.service';
 import { Constants } from '@app/shared/constants';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Game } from '@app/domain/game';
+import { RegularGame } from '@app/domain/regularGame';
 import * as fromGames from './state';
 import * as gameActions from './state/games.actions';
 import * as fromUser from '@app/user/state';
@@ -54,14 +54,14 @@ export class GameService {
   //     this.dataService.webUrl + '/api/ScheduleGame/getStandings';
   // private divisionUrl = this.dataService.webUrl + '/api/divisions';
 
-  games: Game[] | undefined;
+  games: RegularGame[] | undefined;
   divisionId: number | undefined;
   teamId: number | undefined;
-  allGames: Game[] | undefined;
+  allGames: RegularGame[] | undefined;
   allPlayoffGames: PlayoffGame[] | undefined;
   standing: any[] | undefined;
   // divisions$: Observable<Division>;
-  seasonGames$: Observable<Game[]>;
+  seasonGames$: Observable<RegularGame[]>;
 
   divisions$ = this.gameStore.select(fromGames.getDivisions);
 
@@ -98,8 +98,8 @@ export class GameService {
     this.seasonGames$ = this.gameStore.pipe(select(fromGames.getGames));
   }
 
-  private getDivisionGames (games: Game[], divisionId: number) {
-    let g: Game[] = [];
+  private getDivisionGames (games: RegularGame[], divisionId: number) {
+    let g: RegularGame[] = [];
     // console.log(divisionId);
     // console.log(games);
     for (let i = 0; i < games.length; i++) {
@@ -113,8 +113,8 @@ export class GameService {
     console.log(g);
     return g;
   }
-  getGames (): Observable<Game[]> {
-    return this.http.get<Game[]>(this.dataService.seasonGamesUrl + '?seasonId=' + this.seasonId);
+  getGames (): Observable<RegularGame[]> {
+    return this.http.get<RegularGame[]>(this.dataService.seasonGamesUrl + '?seasonId=' + this.seasonId);
   }
   //   const divId = fromGames.getCurrentDivisionId;
   //   return this.http
@@ -141,9 +141,9 @@ export class GameService {
   //   );
   // }
 
-  filterGamesByDivision (): Observable<Game[]> {
-    let games: Game[] = [];
-    let sortedDate: Game[] = [];
+  filterGamesByDivision (): Observable<RegularGame[]> {
+    let games: RegularGame[] = [];
+    let sortedDate: RegularGame[] = [];
     let div = 0;
     this.currentDivision$.subscribe((division) => {
       // console.log(division);
@@ -197,12 +197,12 @@ export class GameService {
     return of(sortedDate);
   }
 
-  public filterGamesByTeam (currentTeam: Team | undefined): Observable<Game[]> {
+  public filterGamesByTeam (currentTeam: Team | undefined): Observable<RegularGame[]> {
     let teamId = currentTeam?.teamId;
     this.gameStore.pipe(select(fromGames.getGames)).subscribe((g) => {
       this.allGames = g;
     });
-    let games: Game[] = [];
+    let games: RegularGame[] = [];
     if (this.allGames) {
       for (let i = 0; i < this.allGames.length; i++) {
         if (
@@ -220,17 +220,18 @@ export class GameService {
     return of(games);
   }
 
-  groupByDate (games: Game[]): Game[][] {
-    const groupedGames: { [key: string]: Game[] } = {};
+  groupRegularGamesByDate (games: RegularGame[]): RegularGame[][] {
+    const groupedGames: { [key: string]: RegularGame[] } = {};
     games.forEach(game => {
-      const dateKey = game.gameDateOnly!.toLocaleString().split('T')[0]; // Use the date part as the key
+      const gameDate = new Date(game.gameDate);
+      const dateKey = gameDate.toLocaleDateString("en-CA");
       if (!groupedGames[dateKey]) {
         groupedGames[dateKey] = [];
       } groupedGames[dateKey].push(game);
     });
     return Object.values(groupedGames); // Convert the object to an array of arrays
   }
-  groupPlayoffsByDate (games: PlayoffGame[]): PlayoffGame[][] {
+  groupPlayoffGamesByDate (games: PlayoffGame[]): PlayoffGame[][] {
     const groupedGames: { [key: string]: PlayoffGame[] } = {};
     games.forEach(game => {
       const gameDate = new Date(game.gameDate);
@@ -269,7 +270,7 @@ export class GameService {
       );
   }
 
-  getDistinctDates (filteredGames: Game[]): Observable<(Date | undefined)[]> {
+  getDistinctDates (filteredGames: RegularGame[]): Observable<(Date | undefined)[]> {
     return from(filteredGames).pipe(
       map((g) => g.gameDate),
       distinct(),
@@ -322,7 +323,7 @@ export class GameService {
     homeTeamScore,
     visitingTeamScore,
   }: {
-    game: Game;
+    game: RegularGame;
     homeTeamScore: any;
     visitingTeamScore: any;
   }) {

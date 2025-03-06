@@ -9,7 +9,7 @@ import * as fromGames from '../../state';
 import * as fromUser from '../../../user/state';
 
 import * as gameActions from '../../state/games.actions';
-import { Game } from '@app/domain/game';
+import { RegularGame } from '@app/domain/regularGame';
 import { Team } from '@app/domain/team';
 import { Division } from '@app/domain/division';
 import { Observable, from, zip, of } from 'rxjs';
@@ -29,23 +29,23 @@ export class GamesShellComponent implements OnInit {
   readonly showAllTeams = input<boolean>();
   readonly currentTeam = input<string>();
   teamList: any[] | undefined;
-  filteredGames$: Observable<Game[]> | undefined;
+  filteredGames$: Observable<RegularGame[]> | undefined;
   standings$: Observable<Standing[]> | undefined;
   teams: any;
   user$ = this.userStore
     .pipe(select(fromUser.getCurrentUser))
     .subscribe((user) => (this.user = user));
-  allGames$: Observable<Game[]> | undefined;
+  allGames$: Observable<RegularGame[]> | undefined;
   errorMessage: any;
   selectedDivisionId$: Observable<number> | undefined;
   teams$: Observable<Team[]> | undefined;
   selectedTeam$: Observable<Team> | undefined;
   errorMessage$: Observable<string> | undefined;
   selectedDivision$: Observable<any> | undefined;
-  standings: Game[] | undefined;
+  standings: RegularGame[] | undefined;
   canEdit: boolean | undefined;
   user: User | undefined;
-  games: Game[] | undefined;
+  games: RegularGame[] | undefined;
   currentSeason$: Observable<any> | undefined; // = this.seasonService.currentSeason$.subscribe(season => this.seasonDescription = season.description);
   seasonDescription: string | undefined;
   // divisions$ = this.divisionService.divisions();
@@ -64,8 +64,8 @@ export class GamesShellComponent implements OnInit {
   divisions!: Division[];
   currentDivision: Division | undefined;
   filteredTeams!: Team[];
-  filteredGames!: Game[];
-  filteredGamesByDate!: Observable<Game[]>;
+  filteredGames!: RegularGame[];
+  filteredGamesByDate!: Observable<RegularGame[]>;
   constructor (
     private seasonService: SeasonService,
     private divisionService: DivisionService,

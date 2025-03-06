@@ -3,13 +3,13 @@ import { CommonModule } from '@angular/common';
 import { SchedulePlayoffsComponent } from '@app/games/components/schedule-playoffs/schedule-playoffs.component';
 import { Store } from '@ngrx/store';
 import * as fromGames from '../../state';
-import { GameService } from '@app/games/game.service';
+import { PlayoffGameService } from '@app/services/playoff-game.service';
 import { PlayoffGame } from '@app/domain/playoffGame';
 
 @Component({
   selector: 'csbc-playoffs-shell',
   imports: [CommonModule, SchedulePlayoffsComponent],
-  providers: [GameService, Store],
+  providers: [PlayoffGameService, Store],
   template: `
     <section class="container mx-auto">
     <h1>Playoffs</h1>
@@ -18,7 +18,7 @@ import { PlayoffGame } from '@app/domain/playoffGame';
   styleUrl: './playoffs-shell.component.scss'
 })
 export class PlayoffsShellComponent implements OnInit {
-  private gameService = inject(GameService);
+  private gameService = inject(PlayoffGameService);
   dailyPlayoffSchedule!: Array<PlayoffGame[]>;
 
   constructor (private store: Store<fromGames.State>) { }
@@ -32,7 +32,7 @@ export class PlayoffsShellComponent implements OnInit {
           // console.log(playoffGames);
           this.dailyPlayoffSchedule = [];
           this.dailyPlayoffSchedule = this.gameService
-            .groupPlayoffsByDate(playoffGames);
+            .groupPlayoffGamesByDate(playoffGames);
           // .subscribe(games => {
           //   this.dailyPlayoffSchedule.push(games);
           //   console.log(this.dailyPlayoffSchedule);
