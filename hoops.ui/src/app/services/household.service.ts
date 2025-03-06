@@ -40,32 +40,32 @@ export class HouseholdService {
   selectedRecordSignal = this.selectedRecord.asReadonly();
   householdSaved = signal<boolean>(false);
 
-  constructor() {
+  constructor () {
     // Optional: Effect for side effects when the signal changes
     effect(() => {
       const record = this.selectedRecord();
       console.log('Selected record changed:', record);
       if (record !== null) {
-        console.log(`Record updated: ${record.name}`);
+        console.log(`Record updated: ${ record.name }`);
         // Optionally trigger additional logic here
       }
     });
     effect(() => {
       console.log(this.householdSaved());
     });
-    }
+  }
 
   // Method to update the selected record ID
-  updateSelectedRecord(record: Household) {
+  updateSelectedRecord (record: Household) {
     this.selectedRecord.set(record);
     this.getHouseholdMembers();
   }
 
-  get selectedHousehold() {
+  get selectedHousehold () {
     return this.selectedHouseholdSignal();
   }
 
-  executeSearch() {
+  executeSearch () {
     this.searchUrl = this.constructQueryString(this.selectedCriteria());
     this.searchHouseholds$().subscribe(response => {
       this.householdsResult.set(response!);
@@ -74,7 +74,7 @@ export class HouseholdService {
     });
   }
 
-  getHouseholdMembers() {
+  getHouseholdMembers () {
     this.#peopleService.getHouseholdMembers(this.selectedRecordSignal()!.houseId);
   }
 
@@ -87,28 +87,23 @@ export class HouseholdService {
       )
   });
 
-  private searchHouseholds$(): Observable<Household[] | undefined> {
+  private searchHouseholds$ (): Observable<Household[] | undefined> {
     return this.http.get<Household[]>(this.searchUrl, { responseType: 'json' });
   }
-  searchHouseholds(): Signal<Household[] | undefined> {
+  searchHouseholds (): Signal<Household[] | undefined> {
     return toSignal(this.searchHouseholds$());
   }
-  // private getHouseholdMembers$(): Observable<Person[]> {
-  //   const url = Constants.GET_HOUSEHOLD_MEMBERS_URL + '/' + this.selectedRecordSignal()?.houseId;
-  //   console.log('URL: ', url);
-  //   return this.http.get<Person[]>(url, { responseType: 'json' });
-  // }
 
-  getResults(criteria: householdSearchCriteria): Observable<Household[] | undefined> {
+  getResults (criteria: householdSearchCriteria): Observable<Household[] | undefined> {
     this.searchUrl = this.constructQueryString(criteria);
     return this.searchHouseholds$();
   }
 
-  get results() {
+  get results () {
     return this.householdsResult();
   }
 
-  fetchFilteredData(filters: any): Observable<any[]> {
+  fetchFilteredData (filters: any): Observable<any[]> {
     console.log(filters);
     const filterObject: householdSearchCriteria = {
       householdName: filters.householdName,
@@ -121,7 +116,7 @@ export class HouseholdService {
     return this.http.get<Household[]>(this.searchUrl, { responseType: 'json' });
   }
 
-  constructQueryString(criteria: householdSearchCriteria): string {
+  constructQueryString (criteria: householdSearchCriteria): string {
     let url = this.inithUrl;
 
     if (criteria == null) {
@@ -143,21 +138,21 @@ export class HouseholdService {
     // add additional criteria as needed
     // https://localhost:5001/api/Household/search?name=salit&email=richard.salit%40gmail.com
   }
-  saveHousehold(household: Household): void {
-      if (household.houseId !== 0) {
-        const url = Constants.SAVE_HOUSEHOLD_URL + household.houseId;
-        console.log('URL: ', url);
-        this.http.put<Household>(url, household).subscribe(response => {
-          console.log('Household updated:', response);
-        });
-      } else {
-        console.log('New household');
-        this.http.post<Household>(Constants.SAVE_HOUSEHOLD_URL, household).subscribe(response => {
-          console.log('Household created:', response);
-        });
-      }
+  saveHousehold (household: Household): void {
+    if (household.houseId !== 0) {
+      const url = Constants.SAVE_HOUSEHOLD_URL + household.houseId;
+      console.log('URL: ', url);
+      this.http.put<Household>(url, household).subscribe(response => {
+        console.log('Household updated:', response);
+      });
+    } else {
+      console.log('New household');
+      this.http.post<Household>(Constants.SAVE_HOUSEHOLD_URL, household).subscribe(response => {
+        console.log('Household created:', response);
+      });
+    }
   }
-  newHousehold() {
+  newHousehold () {
     const household = new Household();
     this.selectedRecord.set(household);
   }

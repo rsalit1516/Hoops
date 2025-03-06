@@ -1,4 +1,4 @@
-import { computed, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { DataService } from '@app/services/data.service';
 import { HttpClient, HttpErrorResponse, httpResource } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -13,7 +13,10 @@ import { Constants } from '@app/shared/constants';
 })
 export class DirectorService {
   url = Constants.GET_DIRECTOR_URL;
-  // directors = signal<Director[] | null>(null);
+  private dataService = inject(DataService);
+  private http = inject(HttpClient);
+  directors: Director[] = [];
+  //directors = signal<Director[] | null>(null);
   handleError: ((err: any, caught: Observable<any[]>) => never) | undefined;
 
   // constructor(private dataService: DataService, private http: HttpClient
@@ -23,23 +26,23 @@ export class DirectorService {
   // }
 
   directorsResource = httpResource<DirectorResponse>(() =>
-    `${this.url}`);
+    `${ this.url }`);
 
-  directors = computed(() => this.directorsResource.value()?.results ?? [] as Director[]);
+  directors1 = computed(() => this.directorsResource.value()?.results ?? [] as Director[]);
   error = computed(() => this.directorsResource.error() as HttpErrorResponse);
   // errorMessage = computed(() => setErrorMessage(this.error(), 'Vehicle'));
   isLoading = this.directorsResource.isLoading;
 
-  // getDirectors(): Observable<Director[]> {
-  //   return this.http.get<Director[]>(this.url).pipe(
-  //     map(response => {
-  //       response;
-  //       this.directors.set(response)
-  //     },
-  //       // tap(data => console.log('All: ' + JSON.stringify(data))),
-  //       catchError(this.dataService.handleError('getDirectors', []))
-  //     );
-  // }
+  getDirectors (): Observable<Director[]> {
+    return this.http.get<Director[]>(this.url).pipe(
+      map(response => {
+        this.directors = response;
+        return response;
+      }),
+      tap(data => console.log('All: ' + JSON.stringify(data))),
+      catchError(this.dataService.handleError<Director[]>('getDirectors', []))
+    );
+  }
 }
 export interface DirectorResponse {
   count: number;

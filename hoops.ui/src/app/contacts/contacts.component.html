@@ -1,43 +1,48 @@
 <section class="flex justify-center mt-10">
   <div class="w-full max-w-4xl">
-      <div class="p-6">
-        <mat-card>
-          <mat-card-header>
-            <mat-card-title>{{title}}</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <table mat-table [dataSource]="directors()" class="mat-elevation-z8">
-              <!-- Title Column -->
-              <ng-container matColumnDef="title">
-              <th mat-header-cell *matHeaderCellDef> Title </th>
-              <td mat-cell *matCellDef="let contact"> {{contact.title | titlecase}} </td>
-              </ng-container>
+    <div class="p-6">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>{{ title }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <table mat-table [dataSource]="directors" class="mat-elevation-z8">
+            <!-- Title Column -->
+            <ng-container matColumnDef="title">
+              <th mat-header-cell *matHeaderCellDef>Title</th>
+              <td mat-cell *matCellDef="let contact">
+                {{ contact.title | titlecase }}
+              </td>
+            </ng-container>
 
-              <!-- Name Column -->
-              <ng-container matColumnDef="name">
-              <th mat-header-cell *matHeaderCellDef> Name </th>
-              <td mat-cell *matCellDef="let contact"> {{contact.firstName + " " + contact.lastName | titlecase}} </td>
-              </ng-container>
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>Name</th>
+              <td mat-cell *matCellDef="let contact">
+                {{ contact.firstName + " " + contact.lastName | titlecase }}
+              </td>
+            </ng-container>
 
-              <!-- Cell Phone Column -->
-              <ng-container matColumnDef="cellPhone">
-              <th mat-header-cell *matHeaderCellDef> Cell Phone </th>
-              <td mat-cell *matCellDef="let contact"> {{contact.cellPhone}} </td>
-              </ng-container>
+            <!-- Cell Phone Column -->
+            <ng-container matColumnDef="cellPhone">
+              <th mat-header-cell *matHeaderCellDef>Cell Phone</th>
+              <td mat-cell *matCellDef="let contact">
+                {{ contact.cellPhone }}
+              </td>
+            </ng-container>
 
-              <!-- Email Column -->
-              <ng-container matColumnDef="email">
-              <th mat-header-cell *matHeaderCellDef> Email </th>
-              <td mat-cell *matCellDef="let contact"> {{contact.email}} </td>
-              </ng-container>
+            <!-- Email Column -->
+            <ng-container matColumnDef="email">
+              <th mat-header-cell *matHeaderCellDef>Email</th>
+              <td mat-cell *matCellDef="let contact">{{ contact.email }}</td>
+            </ng-container>
 
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-            </table>
-
-          </mat-card-content>
-          </mat-card>
-        <!-- <div class="text-lg font-semibold">{{title}}</div>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+        </mat-card-content>
+      </mat-card>
+      <!-- <div class="text-lg font-semibold">{{title}}</div>
       </div>
       <div class="p-4">
       </div> -->
