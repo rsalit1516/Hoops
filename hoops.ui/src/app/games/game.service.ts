@@ -164,7 +164,6 @@ export class GameService {
           sortedDate = games.sort((a, b) => {
             return this.compare(a.gameDate!, b.gameDate!, true);
           });
-          console.log(sortedDate);
           return of(sortedDate);
         }
         return of(sortedDate);
