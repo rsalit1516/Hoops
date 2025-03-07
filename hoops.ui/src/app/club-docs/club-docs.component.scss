@@ -19,10 +19,11 @@ a {
 a:hover {
   font-size: 1.3rem;
 }
-.mat-card {
-  background-color: v.$card-background-color;
-  color: whitesmoke;
+.two-column-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem; /* Adjust the gap between columns as needed */
 }
-.mat-card-title {
-  font-size: 1.2rem;
+ul {
+  padding-left: 26px;
 }
