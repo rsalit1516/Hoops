@@ -6,7 +6,11 @@
           <mat-card-title>{{ title }}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <table mat-table [dataSource]="directors" class="mat-elevation-z8">
+          <table
+            mat-table
+            [dataSource]="dataResource.value()"
+            class="mat-elevation-z8"
+          >
             <!-- Title Column -->
             <ng-container matColumnDef="title">
               <th mat-header-cell *matHeaderCellDef>Title</th>

@@ -1,5 +1,5 @@
 import { Component, effect, inject, OnInit, signal } from '@angular/core';
-import { DirectorService } from '@app/admin/director/director.service';
+import { DirectorService } from '@app/services/director.service';
 import { NgFor, AsyncPipe, TitleCasePipe } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -28,6 +28,7 @@ export class ContactsComponent implements OnInit {
   // directors = this.directorService.directors;
   // Signals to support the template
   directors = this.directorService.directors;
+  dataResource = this.directorService.dataResource;
   isLoading = this.directorService.isLoading;
   // errorMessage = this.directorService.errorMessage;
   // directorModels = this.directorService.directorModels
@@ -45,11 +46,12 @@ export class ContactsComponent implements OnInit {
   }
 
   ngOnInit () {
-    this.directorService.getDirectors().subscribe((directors: Director[]) => {
-      this.directors = directors;
-      this.dataSource = new MatTableDataSource(directors);
-      console.log(this.directors);
-    });
+    // this.directorService.getDirectors().subscribe((directors: Director[]) => {
+    //   this.directors = directors;
+    //   this.dataSource = new MatTableDataSource(directors);
+    //   console.log(this.directors);
+    // });
+    this.directorService.reloadDirectors();
 
   }
 }
