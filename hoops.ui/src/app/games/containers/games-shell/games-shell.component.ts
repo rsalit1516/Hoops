@@ -2,7 +2,7 @@ import { Component, OnInit, input } from '@angular/core';
 import { SeasonService } from '@app/services/season.service';
 import { DivisionService } from '@app/services/division.service';
 import { TeamService } from '@app/services/team.service';
-import { GameService } from '../../game.service';
+import { GameService } from '@app/services/game.service';
 import { Store, select } from '@ngrx/store';
 
 import * as fromGames from '../../state';

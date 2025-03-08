@@ -1,7 +1,7 @@
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { delay, map, tap } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { forkJoin, Observable, of } from 'rxjs';
 import { DateTime } from 'luxon';
 
@@ -33,15 +33,15 @@ export class GameService {
   currentDivision$: Observable<Division | null> = of(null);
   seasonGames$: Observable<RegularGame[] | null> = of(null);
   allGames: any;
-  get games () {
+  get games() {
     return this._games;
   }
-  set games (games: RegularGame[]) {
+  set games(games: RegularGame[]) {
     this._games = games;
   }
   standingsUrl: string;
-
-  compare (a: Date | string, b: Date | string, isAsc: boolean) {
+  teamId: number | undefined;
+  compare(a: Date | string, b: Date | string, isAsc: boolean) {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 
@@ -71,20 +71,20 @@ export class GameService {
   errorMessage = computed(() => setErrorMessage(this.error(), 'Game'));
   isLoading = this.gamesResource.isLoading;
 
-  constructor (private _http: HttpClient, public dataService: DataService) {
+  constructor(private _http: HttpClient, public dataService: DataService) {
     // this._gameUrl = this.dataService.webUrl + '/api/gameschedule';
     this.standingsUrl = this.dataService.webUrl + '/api/gameStandings';
     effect(() => {
       const record = this.selectedRecord();
       console.log('Selected record changed:', record);
       if (record !== null) {
-        console.log(`Record updated: ${ record.scheduleGamesId }`);
+        console.log(`Record updated: ${record.scheduleGamesId}`);
         // Optionally trigger additional logic here
       }
     });
   }
 
-  getGames (): Observable<RegularGame[]> {
+  getGames(): Observable<RegularGame[]> {
     return this._http
       .get<RegularGame[]>(this.scheduleGamesUrl)
       .pipe(
@@ -93,7 +93,7 @@ export class GameService {
         catchError(this.dataService.handleError('getGames', []))
       );
   }
-  filterGamesByDivision (): Observable<RegularGame[]> {
+  filterGamesByDivision(): Observable<RegularGame[]> {
     let games: RegularGame[] = [];
     let sortedDate: RegularGame[] = [];
     let div = 0;
@@ -106,8 +106,8 @@ export class GameService {
         this.setCanEdit(div);
         if (seasonGames) {
           for (let i = 0; i < this.allGames.length; i++) {
-            if (this.allGames[i].divisionId === div) {
-              let game = seasonGames[i];
+            if (this.allGames[ i ].divisionId === div) {
+              let game = seasonGames[ i ];
               game.gameDateOnly = this.extractDate(game.gameDate.toString());
               games.push(game);
             }
@@ -125,7 +125,7 @@ export class GameService {
   }
 
 
-  getStandings (): Observable<RegularGame[]> {
+  getStandings(): Observable<RegularGame[]> {
     return this._http
       .get<any[]>(this.scheduleGamesUrl)
       .pipe(
@@ -135,7 +135,7 @@ export class GameService {
       );
   }
 
-  getStandingsByDivision (divisionId: number) {
+  getStandingsByDivision(divisionId: number) {
     return this.http
       .get<any[]>(this.dataService.standingsUrl + '?divisionId=' + divisionId)
       .pipe(
@@ -144,6 +144,18 @@ export class GameService {
         // catchError(this.handleError)
       );
   }
+  groupRegularGamesByDate (games: RegularGame[]): RegularGame[][] {
+    const groupedGames: { [key: string]: RegularGame[] } = {};
+    games.forEach(game => {
+      const gameDate = new Date(game.gameDate);
+      const dateKey = gameDate.toLocaleDateString("en-CA");
+      if (!groupedGames[dateKey]) {
+        groupedGames[dateKey] = [];
+      } groupedGames[dateKey].push(game);
+    });
+    return Object.values(groupedGames); // Convert the object to an array of arrays
+  }
+
   // filterGamesByDivision(allGames: Game[], divisionId: number): Game[] {
   //   let games: Game[] = [];
   //   // console.log(divisionId);
@@ -175,7 +187,7 @@ export class GameService {
   //   return games;
   // }
 
-  public filterGamesByTeam (currentTeam: Team | undefined): Observable<RegularGame[]> {
+  public filterGamesByTeam(currentTeam: Team | undefined): Observable<RegularGame[]> {
     let teamId = currentTeam?.teamId;
     this.gameStore.pipe(select(fromGames.getGames)).subscribe((g) => {
       this.allGames = g;
@@ -184,10 +196,10 @@ export class GameService {
     if (this.allGames) {
       for (let i = 0; i < this.allGames.length; i++) {
         if (
-          this.allGames[i].visitingTeamId === teamId ||
-          this.allGames[i].homeTeamId === teamId
+          this.allGames[ i ].visitingTeamId === teamId ||
+          this.allGames[ i ].homeTeamId === teamId
         ) {
-          games.push(this.allGames[i]);
+          games.push(this.allGames[ i ]);
         }
       }
     }
@@ -198,11 +210,11 @@ export class GameService {
     return of(games);
   }
 
-  updateSelectedRecord (record: RegularGame) {
+  updateSelectedRecord(record: RegularGame) {
     this.selectedRecord.set(record);
   }
 
-  getCanEdit (user: User | undefined, divisionId: number): boolean {
+  getCanEdit(user: User | undefined, divisionId: number): boolean {
     // console.log(divisionId);
     let tFlag = false;
     if (user) {
@@ -221,15 +233,46 @@ export class GameService {
     return tFlag;
   }
 
-  setCanEdit (division: number) {
+  setCanEdit(division: number) {
     this.gameStore.pipe(select(fromUser.getCurrentUser)).subscribe((user) => {
       let canEdit = this.getCanEdit(user, division);
       this.gameStore.dispatch(new gameActions.SetCanEdit(canEdit));
     });
   }
-  extractDate (date: string): Date {
+  extractDate(date: string): Date {
     return DateTime.fromISO(date).toJSDate();
   }
+    saveGame ({
+      game,
+      homeTeamScore,
+      visitingTeamScore,
+    }: {
+      game: RegularGame;
+      homeTeamScore: any;
+      visitingTeamScore: any;
+    }) {
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }),
+      };
+      game.homeTeamScore = homeTeamScore;
+      game.visitingTeamScore = visitingTeamScore;
+      console.log(game);
+      const gameUrl = this.dataService.webUrl + '/api/games/updateScores';
+      console.log(gameUrl);
+      let result = this.http
+        .put(gameUrl, game, httpOptions)
+        .subscribe((x) => console.log(x));
+      // .pipe(
+      //   tap(data => console.log(data)),
+      //   catchError(this.dataService.handleError)
+      // );
+    }
+    validateScores (homeTeamScore: any, visitorTeamScore: any) {
+      //validate scores
+      return true;
+    }
 }
 export interface GameResponse {
   count: number;

@@ -4,13 +4,9 @@ import { Division } from '@app/domain/division';
 import {
   map,
   tap,
-  catchError,
   shareReplay,
   distinct,
   toArray,
-  mergeMap,
-  groupBy,
-  switchMap,
 } from 'rxjs/operators';
 import { DataService } from '@app/services/data.service';
 import { Constants } from '@app/shared/constants';
@@ -22,11 +18,9 @@ import * as gameActions from './state/games.actions';
 import * as fromUser from '@app/user/state';
 import { Store, select } from '@ngrx/store';
 import { User } from '@app/domain/user';
-import { TeamService } from '@app/services/team.service';
 import { Team } from '@app/domain/team';
 import { DateTime } from 'luxon';
 import { PlayoffGame } from '@app/domain/playoffGame';
-import { getCurrentSeason } from './state/index';
 import { LoggerService } from '@app/services/logging.service';
 
 @Injectable({
@@ -49,11 +43,6 @@ export class GameService {
   });
   handleError: ((err: any, caught: Observable<any[]>) => never) | undefined;
 
-  //  //    this.seasonId;
-  //   private standingsUrl =
-  //     this.dataService.webUrl + '/api/ScheduleGame/getStandings';
-  // private divisionUrl = this.dataService.webUrl + '/api/divisions';
-
   games: RegularGame[] | undefined;
   divisionId: number | undefined;
   teamId: number | undefined;
@@ -68,13 +57,13 @@ export class GameService {
   // vm$ = combineLatest([this.games$, this.divisions$]).pipe(
   //   map(([games, divisions]) => ({ games, divisions }))
   // );
-  currentDivision$ = this.gameStore
-    .pipe(select(fromGames.getCurrentDivision));
-  // .subscribe((division): number | undefined => {
-  //   return division !== undefined
-  //     ? (this.divisionId = division.divisionId)
-  //     : undefined;
-  // });
+  // currentDivision$ = this.gameStore
+  //   .pipe(select(fromGames.getCurrentDivision));
+  // // .subscribe((division): number | undefined => {
+  // //   return division !== undefined
+  // //     ? (this.divisionId = division.divisionId)
+  // //     : undefined;
+  // // });
 
   divisions: Division[] | undefined;
   user: User | undefined;
@@ -125,15 +114,15 @@ export class GameService {
   //       // catchError(this.handleError)
   //     );
   // }
-  getSeasonPlayoffGames (): Observable<PlayoffGame[]> {
-    const url = Constants.PLAYOFF_GAMES_URL + '?seasonId=' + this.seasonId;
-    this.logger.log(url);
-    return this.http.get<PlayoffGame[]>(url).pipe(
-      map((response) => (this.seasonPlayoffGames = response)),
-      tap((data) => console.log('All: ' + JSON.stringify(data.length)))
-      // catchError(this.handleError)
-    );
-  }
+  // getSeasonPlayoffGames (): Observable<PlayoffGame[]> {
+  //   const url = Constants.PLAYOFF_GAMES_URL + '?seasonId=' + this.seasonId;
+  //   this.logger.log(url);
+  //   return this.http.get<PlayoffGame[]>(url).pipe(
+  //     map((response) => (this.seasonPlayoffGames = response)),
+  //     tap((data) => console.log('All: ' + JSON.stringify(data.length)))
+  //     // catchError(this.handleError)
+  //   );
+  // }
 
   // getGame(id: number): Observable<Game> {
   //   return this.getGames().pipe(
@@ -141,114 +130,114 @@ export class GameService {
   //   );
   // }
 
-  filterGamesByDivision (): Observable<RegularGame[]> {
-    let games: RegularGame[] = [];
-    let sortedDate: RegularGame[] = [];
-    let div = 0;
-    this.currentDivision$.subscribe((division) => {
-      // console.log(division);
-      div = division?.divisionId ?? 0;
-      this.seasonGames$.subscribe((seasonGames) => {
-        // console.log(seasonGames);
-        this.allGames = seasonGames;
-        this.setCanEdit(div);
-        if (seasonGames) {
-          for (let i = 0; i < this.allGames.length; i++) {
-            if (this.allGames[i].divisionId === div) {
-              let game = seasonGames[i];
-              game.gameDateOnly = this.extractDate(game.gameDate.toString());
-              games.push(game);
-            }
-          }
-          games.sort();
-          sortedDate = games.sort((a, b) => {
-            return this.compare(a.gameDate!, b.gameDate!, true);
-          });
-          return of(sortedDate);
-        }
-        return of(sortedDate);
-      });
-    });
-    return of(sortedDate);
-  }
+  // filterGamesByDivision (): Observable<RegularGame[]> {
+  //   let games: RegularGame[] = [];
+  //   let sortedDate: RegularGame[] = [];
+  //   let div = 0;
+  //   this.currentDivision$.subscribe((division) => {
+  //     // console.log(division);
+  //     div = division?.divisionId ?? 0;
+  //     this.seasonGames$.subscribe((seasonGames) => {
+  //       // console.log(seasonGames);
+  //       this.allGames = seasonGames;
+  //       this.setCanEdit(div);
+  //       if (seasonGames) {
+  //         for (let i = 0; i < this.allGames.length; i++) {
+  //           if (this.allGames[i].divisionId === div) {
+  //             let game = seasonGames[i];
+  //             game.gameDateOnly = this.extractDate(game.gameDate.toString());
+  //             games.push(game);
+  //           }
+  //         }
+  //         games.sort();
+  //         sortedDate = games.sort((a, b) => {
+  //           return this.compare(a.gameDate!, b.gameDate!, true);
+  //         });
+  //         return of(sortedDate);
+  //       }
+  //       return of(sortedDate);
+  //     });
+  //   });
+  //   return of(sortedDate);
+  // }
 
-  divisionPlayoffGames (div: number): Observable<PlayoffGame[]> {
-    let games: PlayoffGame[] = [];
-    let sortedDate: PlayoffGame[] = [];
-    this.gameStore
-      .pipe(select(fromGames.getPlayoffGames))
-      .subscribe((allPlayoffGames) => {
-        this.allPlayoffGames = allPlayoffGames;
-        if (allPlayoffGames) {
-          this.allPlayoffGames.forEach((game) => {
-            if (game.divisionId === div) {
-              // let game = allPlayoffGames[i];
-              games.push(game);
-            }
-          });
-        }
-        games.sort();
-        sortedDate = games.sort((a, b) => {
-          return this.compare(a.gameDate!, b.gameDate!, true);
-        });
-        return of(sortedDate);
-      });
-    return of(sortedDate);
-  }
+  // divisionPlayoffGames (div: number): Observable<PlayoffGame[]> {
+  //   let games: PlayoffGame[] = [];
+  //   let sortedDate: PlayoffGame[] = [];
+  //   this.gameStore
+  //     .pipe(select(fromGames.getPlayoffGames))
+  //     .subscribe((allPlayoffGames) => {
+  //       this.allPlayoffGames = allPlayoffGames;
+  //       if (allPlayoffGames) {
+  //         this.allPlayoffGames.forEach((game) => {
+  //           if (game.divisionId === div) {
+  //             // let game = allPlayoffGames[i];
+  //             games.push(game);
+  //           }
+  //         });
+  //       }
+  //       games.sort();
+  //       sortedDate = games.sort((a, b) => {
+  //         return this.compare(a.gameDate!, b.gameDate!, true);
+  //       });
+  //       return of(sortedDate);
+  //     });
+  //   return of(sortedDate);
+  // }
 
-  public filterGamesByTeam (currentTeam: Team | undefined): Observable<RegularGame[]> {
-    let teamId = currentTeam?.teamId;
-    this.gameStore.pipe(select(fromGames.getGames)).subscribe((g) => {
-      this.allGames = g;
-    });
-    let games: RegularGame[] = [];
-    if (this.allGames) {
-      for (let i = 0; i < this.allGames.length; i++) {
-        if (
-          this.allGames[i].visitingTeamId === teamId ||
-          this.allGames[i].homeTeamId === teamId
-        ) {
-          games.push(this.allGames[i]);
-        }
-      }
-    }
-    let sortedDate = games.sort((a, b) => {
-      return this.compare(a.gameDate as Date, b.gameDate as Date, true);
-    });
-    console.log(games);
-    return of(games);
-  }
+  // public filterGamesByTeam (currentTeam: Team | undefined): Observable<RegularGame[]> {
+  //   let teamId = currentTeam?.teamId;
+  //   this.gameStore.pipe(select(fromGames.getGames)).subscribe((g) => {
+  //     this.allGames = g;
+  //   });
+  //   let games: RegularGame[] = [];
+  //   if (this.allGames) {
+  //     for (let i = 0; i < this.allGames.length; i++) {
+  //       if (
+  //         this.allGames[i].visitingTeamId === teamId ||
+  //         this.allGames[i].homeTeamId === teamId
+  //       ) {
+  //         games.push(this.allGames[i]);
+  //       }
+  //     }
+  //   }
+  //   let sortedDate = games.sort((a, b) => {
+  //     return this.compare(a.gameDate as Date, b.gameDate as Date, true);
+  //   });
+  //   console.log(games);
+  //   return of(games);
+  // }
 
-  groupRegularGamesByDate (games: RegularGame[]): RegularGame[][] {
-    const groupedGames: { [key: string]: RegularGame[] } = {};
-    games.forEach(game => {
-      const gameDate = new Date(game.gameDate);
-      const dateKey = gameDate.toLocaleDateString("en-CA");
-      if (!groupedGames[dateKey]) {
-        groupedGames[dateKey] = [];
-      } groupedGames[dateKey].push(game);
-    });
-    return Object.values(groupedGames); // Convert the object to an array of arrays
-  }
-  groupPlayoffGamesByDate (games: PlayoffGame[]): PlayoffGame[][] {
-    const groupedGames: { [key: string]: PlayoffGame[] } = {};
-    games.forEach(game => {
-      const gameDate = new Date(game.gameDate);
-      const dateKey = gameDate.toLocaleDateString("en-CA");
-      if (!groupedGames[dateKey]) {
-        groupedGames[dateKey] = [];
-      } groupedGames[dateKey].push(game);
-    });
-    return Object.values(groupedGames); // Convert the object to an array of arrays
-  }
+  // groupRegularGamesByDate (games: RegularGame[]): RegularGame[][] {
+  //   const groupedGames: { [key: string]: RegularGame[] } = {};
+  //   games.forEach(game => {
+  //     const gameDate = new Date(game.gameDate);
+  //     const dateKey = gameDate.toLocaleDateString("en-CA");
+  //     if (!groupedGames[dateKey]) {
+  //       groupedGames[dateKey] = [];
+  //     } groupedGames[dateKey].push(game);
+  //   });
+  //   return Object.values(groupedGames); // Convert the object to an array of arrays
+  // }
+  // groupPlayoffGamesByDate (games: PlayoffGame[]): PlayoffGame[][] {
+  //   const groupedGames: { [key: string]: PlayoffGame[] } = {};
+  //   games.forEach(game => {
+  //     const gameDate = new Date(game.gameDate);
+  //     const dateKey = gameDate.toLocaleDateString("en-CA");
+  //     if (!groupedGames[dateKey]) {
+  //       groupedGames[dateKey] = [];
+  //     } groupedGames[dateKey].push(game);
+  //   });
+  //   return Object.values(groupedGames); // Convert the object to an array of arrays
+  // }
 
-  private sort (a: any, b: any) {
-    return this.compare(a.gameDate, b.gameDate, true);
-  }
+  // private sort (a: any, b: any) {
+  //   return this.compare(a.gameDate, b.gameDate, true);
+  // }
 
-  compare (a: Date | string, b: Date | string, isAsc: boolean) {
-    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
-  }
+  // compare (a: Date | string, b: Date | string, isAsc: boolean) {
+  //   return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  // }
   getCurrentSeason () {
     return this.gameStore.select(fromGames.getCurrentSeason).subscribe((season) => {
       if (season !== null) {
@@ -277,67 +266,11 @@ export class GameService {
     );
   }
 
-  standingsByDivision$ = combineLatest([this.currentDivision$]).pipe();
+  // standingsByDivision$ = combineLatest([this.currentDivision$]).pipe();
 
-  getCanEdit (user: User | undefined, divisionId: number): boolean {
-    // console.log(divisionId);
-    let tFlag = false;
-    if (user) {
-      if (user.userType === 2 || user.userType === 3) {
-        tFlag = true;
-        return true;
-      } else {
-        if (user.divisions) {
-          let found = user.divisions.find(
-            (div) => div.divisionId === divisionId
-          );
-          return found !== undefined;
-        }
-      }
-    }
-    return tFlag;
-  }
 
-  setCanEdit (division: number) {
-    this.gameStore.pipe(select(fromUser.getCurrentUser)).subscribe((user) => {
-      let canEdit = this.getCanEdit(user, division);
-      this.gameStore.dispatch(new gameActions.SetCanEdit(canEdit));
-    });
-  }
 
-  validateScores (homeTeamScore: any, visitorTeamScore: any) {
-    //validate scores
-    return true;
-  }
-  saveGame ({
-    game,
-    homeTeamScore,
-    visitingTeamScore,
-  }: {
-    game: RegularGame;
-    homeTeamScore: any;
-    visitingTeamScore: any;
-  }) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
-    };
-    game.homeTeamScore = homeTeamScore;
-    game.visitingTeamScore = visitingTeamScore;
-    console.log(game);
-    const gameUrl = this.dataService.webUrl + '/api/games/updateScores';
-    console.log(gameUrl);
-    let result = this.http
-      .put(gameUrl, game, httpOptions)
-      .subscribe((x) => console.log(x));
-    // .pipe(
-    //   tap(data => console.log(data)),
-    //   catchError(this.dataService.handleError)
-    // );
-  }
-
-  extractDate (date: string): Date {
-    return DateTime.fromISO(date).toJSDate();
-  }
+  // extractDate (date: string): Date {
+  //   return DateTime.fromISO(date).toJSDate();
+  // }
 }

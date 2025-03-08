@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { GameService } from '@app/games/game.service';
+import { GameService } from '@app/services/game.service';
 
 import * as fromGames from '../../state';
 import { Store, select } from '@ngrx/store';

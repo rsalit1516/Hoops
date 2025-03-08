@@ -23,7 +23,7 @@ import {
 } from 'rxjs/operators';
 import { User } from '@app/domain/user';
 import { DivisionService } from './../../../services/division.service';
-import { GameService } from '@app/games/game.service';
+import { GameService } from '@app/services/game.service';
 import { SchedulePlayoffsComponent } from '@app/games/components/schedule-playoffs/schedule-playoffs.component';
 import { ScheduleComponent } from '../../components/schedule/schedule.component';
 import { DateTime } from 'luxon';
