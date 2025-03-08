@@ -135,4 +135,8 @@ export class AdminGameService {
     this.selectedRecord.set(record);
   }
 
+  reloadGames () {
+    this.gamesResource.reload();
+    //this.store.dispatch(gameActions.loadGames());
+  }
 }

@@ -5,7 +5,7 @@ import * as fromGames from './';
 import { map, switchMap, mergeMap, catchError, tap, mapTo, withLatestFrom, concatMap, shareReplay } from 'rxjs/operators';
 import { Store, Action, select } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
-import { GameService } from '../game.service';
+import { GameService } from '../../services/game.service';
 import { TeamService } from '@app/services/team.service';
 import { getCurrentDivision, getCurrentTeam } from './';
 import { SeasonService } from '@app/services/season.service';

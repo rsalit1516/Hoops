@@ -2,7 +2,8 @@ import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { delay, map, tap } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { forkJoin, Observable } from 'rxjs';
+import { forkJoin, Observable, of } from 'rxjs';
+import { DateTime } from 'luxon';
 
 import { DataService } from './data.service';
 
@@ -10,6 +11,13 @@ import { RegularGame } from '../domain/regularGame';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { Constants } from '@app/shared/constants';
 import { setErrorMessage } from '@app/shared/error-message';
+import { Division } from '@app/domain/division';
+import * as fromGames from '../games/state';
+import * as gameActions from '../games/state/games.actions';
+import * as fromUser from '@app/user/state';
+import { select, Store } from '@ngrx/store';
+import { Team } from '@app/domain/team';
+import { User } from '@app/domain/user';
 
 @Injectable({
   providedIn: 'root'
@@ -17,9 +25,14 @@ import { setErrorMessage } from '@app/shared/error-message';
 export class GameService {
   // Injected services
   private http = inject(HttpClient);
+  gameStore = inject(Store<fromGames.State>);
 
   private scheduleGamesUrl = Constants.SEASON_GAMES_URL;
   private _games!: RegularGame[];
+  standing: any[] = [];
+  currentDivision$: Observable<Division | null> = of(null);
+  seasonGames$: Observable<RegularGame[] | null> = of(null);
+  allGames: any;
   get games () {
     return this._games;
   }
@@ -27,6 +40,10 @@ export class GameService {
     this._games = games;
   }
   standingsUrl: string;
+
+  compare (a: Date | string, b: Date | string, isAsc: boolean) {
+    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  }
 
   // signals
   private selectedRecord = signal<RegularGame | null>(null);
@@ -76,15 +93,37 @@ export class GameService {
         catchError(this.dataService.handleError('getGames', []))
       );
   }
+  filterGamesByDivision (): Observable<RegularGame[]> {
+    let games: RegularGame[] = [];
+    let sortedDate: RegularGame[] = [];
+    let div = 0;
+    this.currentDivision$.subscribe((division) => {
+      // console.log(division);
+      div = division?.divisionId ?? 0;
+      this.seasonGames$.subscribe((seasonGames) => {
+        // console.log(seasonGames);
+        this.allGames = seasonGames;
+        this.setCanEdit(div);
+        if (seasonGames) {
+          for (let i = 0; i < this.allGames.length; i++) {
+            if (this.allGames[i].divisionId === div) {
+              let game = seasonGames[i];
+              game.gameDateOnly = this.extractDate(game.gameDate.toString());
+              games.push(game);
+            }
+          }
+          games.sort();
+          sortedDate = games.sort((a, b) => {
+            return this.compare(a.gameDate!, b.gameDate!, true);
+          });
+          return of(sortedDate);
+        }
+        return of(sortedDate);
+      });
+    });
+    return of(sortedDate);
+  }
 
-  // getGame(id: number): Observable<Game> {
-  //     return this.getGames()
-  //         .pipe(
-  //             map((content: Game[]) =>
-  //                 content.find(p => p.gameId === id)
-  //         )
-  //       );
-  // }
 
   getStandings (): Observable<RegularGame[]> {
     return this._http
@@ -93,6 +132,16 @@ export class GameService {
         map(response => this.games = response),
         // tap(data => console.log('All: ' + JSON.stringify(data))),
         catchError(this.dataService.handleError('getStandings', []))
+      );
+  }
+
+  getStandingsByDivision (divisionId: number) {
+    return this.http
+      .get<any[]>(this.dataService.standingsUrl + '?divisionId=' + divisionId)
+      .pipe(
+        map((response) => (this.standing = response))
+        // tap(data => console.log('All: ' + JSON.stringify(data))),
+        // catchError(this.handleError)
       );
   }
   // filterGamesByDivision(allGames: Game[], divisionId: number): Game[] {
@@ -111,23 +160,75 @@ export class GameService {
   //   return games;
   // }
 
-  public filterGamesByTeam (allGames: RegularGame[], teamId: number): RegularGame[] {
+  // public filterGamesByTeam (allGames: RegularGame[], teamId: number): RegularGame[] {
+  //   let games: RegularGame[] = [];
+  //   if (allGames) {
+  //     for (let i = 0; i < allGames.length; i++) {
+  //       if (
+  //         allGames[i].visitingTeamNumber === teamId ||
+  //         allGames[i].homeTeamNumber === teamId
+  //       ) {
+  //         games.push(allGames[i]);
+  //       }
+  //     }
+  //   }
+  //   return games;
+  // }
+
+  public filterGamesByTeam (currentTeam: Team | undefined): Observable<RegularGame[]> {
+    let teamId = currentTeam?.teamId;
+    this.gameStore.pipe(select(fromGames.getGames)).subscribe((g) => {
+      this.allGames = g;
+    });
     let games: RegularGame[] = [];
-    if (allGames) {
-      for (let i = 0; i < allGames.length; i++) {
+    if (this.allGames) {
+      for (let i = 0; i < this.allGames.length; i++) {
         if (
-          allGames[i].visitingTeamNumber === teamId ||
-          allGames[i].homeTeamNumber === teamId
+          this.allGames[i].visitingTeamId === teamId ||
+          this.allGames[i].homeTeamId === teamId
         ) {
-          games.push(allGames[i]);
+          games.push(this.allGames[i]);
         }
       }
     }
-    return games;
+    let sortedDate = games.sort((a, b) => {
+      return this.compare(a.gameDate as Date, b.gameDate as Date, true);
+    });
+    console.log(games);
+    return of(games);
   }
 
   updateSelectedRecord (record: RegularGame) {
     this.selectedRecord.set(record);
+  }
+
+  getCanEdit (user: User | undefined, divisionId: number): boolean {
+    // console.log(divisionId);
+    let tFlag = false;
+    if (user) {
+      if (user.userType === 2 || user.userType === 3) {
+        tFlag = true;
+        return true;
+      } else {
+        if (user.divisions) {
+          let found = user.divisions.find(
+            (div) => div.divisionId === divisionId
+          );
+          return found !== undefined;
+        }
+      }
+    }
+    return tFlag;
+  }
+
+  setCanEdit (division: number) {
+    this.gameStore.pipe(select(fromUser.getCurrentUser)).subscribe((user) => {
+      let canEdit = this.getCanEdit(user, division);
+      this.gameStore.dispatch(new gameActions.SetCanEdit(canEdit));
+    });
+  }
+  extractDate (date: string): Date {
+    return DateTime.fromISO(date).toJSDate();
   }
 }
 export interface GameResponse {

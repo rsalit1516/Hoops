@@ -278,15 +278,7 @@ export class GameService {
   }
 
   standingsByDivision$ = combineLatest([this.currentDivision$]).pipe();
-  getStandingsByDivision (divisionId: number) {
-    return this.http
-      .get<any[]>(this.dataService.standingsUrl + '?divisionId=' + divisionId)
-      .pipe(
-        map((response) => (this.standing = response))
-        // tap(data => console.log('All: ' + JSON.stringify(data))),
-        // catchError(this.handleError)
-      );
-  }
+
   getCanEdit (user: User | undefined, divisionId: number): boolean {
     // console.log(divisionId);
     let tFlag = false;
