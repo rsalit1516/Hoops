@@ -19,9 +19,10 @@ import { PlayoffGame } from '@app/domain/playoffGame';
 })
 export class PlayoffsShellComponent implements OnInit {
   private gameService = inject(PlayoffGameService);
+  private store = inject(Store<fromGames.State>);
   dailyPlayoffSchedule!: Array<PlayoffGame[]>;
 
-  constructor (private store: Store<fromGames.State>) { }
+  constructor () { }
 
   ngOnInit () {
     this.store.select(fromGames.getCurrentDivision).subscribe((division) => {
@@ -29,7 +30,7 @@ export class PlayoffsShellComponent implements OnInit {
         .select(fromGames.getDivisionPlayoffGames)
         .subscribe((playoffGames) => {
           // this.dailyPlayoffSchedule = playoffGames;
-          // console.log(playoffGames);
+          console.log(playoffGames);
           this.dailyPlayoffSchedule = [];
           this.dailyPlayoffSchedule = this.gameService
             .groupPlayoffGamesByDate(playoffGames);

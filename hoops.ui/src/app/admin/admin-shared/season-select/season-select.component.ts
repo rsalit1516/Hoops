@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { Season } from '@app/domain/season';
 import * as adminActions from '../../state/admin.actions';
 import { UntypedFormControl, FormsModule } from '@angular/forms';
-import { SeasonService } from '../services/season.service';
+import { AdminSeasonService } from '../services/season.service';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
@@ -27,7 +27,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
   ]
 })
 export class SeasonSelectComponent implements OnInit {
-  #seasonService = inject(SeasonService);
+  #seasonService = inject(AdminSeasonService);
   seasons$!: Observable<Season[]>;
   // selectForm!: FormGroup;
   selected: Season | undefined;

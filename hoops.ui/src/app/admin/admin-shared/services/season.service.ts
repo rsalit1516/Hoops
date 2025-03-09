@@ -1,20 +1,20 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { Season } from '@app/domain/season';
 import { DataService } from '@app/services/data.service';
 import { Store } from '@ngrx/store';
 import * as fromAdmin from '../../state';
+import { SeasonService } from '@app/services/season.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class SeasonService {
+export class AdminSeasonService {
+  private store = inject(Store<fromAdmin.State>);
+
   seasons: Season[] | undefined;
   selectedSeason = signal<Season | undefined>(undefined);
 
-  constructor (
-    private store: Store<fromAdmin.State>,
-    private dataService: DataService
-  ) { }
+  constructor () { }
 
   getSeason (id: number): Season {
     let selectedSeason = new Season();

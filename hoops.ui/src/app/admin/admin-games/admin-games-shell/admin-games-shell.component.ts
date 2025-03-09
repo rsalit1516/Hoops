@@ -96,6 +96,7 @@ export class AdminGamesShellComponent implements OnInit {
       if (division !== undefined) {
         this.store.dispatch(new adminActions.LoadDivisionGames());
         this.store.dispatch(new adminActions.LoadDivisionTeams());
+        this.store.dispatch(new adminActions.LoadPlayoffGames());
         this.gameService.selectedDivision.set(division);
         this.gameService.filteredGames();
         console.log(this.gameService.filteredGames());
