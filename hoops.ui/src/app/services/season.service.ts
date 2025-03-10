@@ -14,13 +14,14 @@ export class SeasonService {
   /* private injections */
   #http = inject(HttpClient);
   #dataService = inject(DataService);
-  #seasonUrl = this.#dataService.seasonUrl + 'getCurrentSeason';
-  #seasonsUrl = this.#dataService.seasonUrl + 'GetAll';
+  #seasonUrl = Constants.SEASON_URL + 'getCurrentSeason';
+  #seasonsUrl = Constants.SEASON_URL + 'GetAll';
 
   // selectedSeason?: Season | null;
   season = signal(new Season());
   // public selectedSeason$: Observable<Season>;
-  seasons: Season[] | undefined;
+  seasons = signal<Season[] | undefined>(undefined);
+
   seasons$ = this.#http.get<Season[]>(this.#seasonsUrl).pipe(
     // tap(data => console.log('All seasons: ' + JSON.stringify(data))),
     shareReplay(1),
@@ -28,13 +29,13 @@ export class SeasonService {
   );
 
   currentSeason$ =
-  this.#http.get<Season>(this.#dataService.currentSeasonUrl).pipe(
+  this.#http.get<Season>(Constants.currentSeasonUrl).pipe(
     map(season => season as Season),
     // tap(data => console.log('All: ' + JSON.stringify(data))),
     catchError(this.#dataService.handleError('getCurrentSeason', null))
     );
   public getCurrentSeason(): Observable<Season | undefined> {
-    return this.#http.get<Season>(this.#dataService.currentSeasonUrl);
+    return this.#http.get<Season>(Constants.currentSeasonUrl);
   }
   currentSeason = toSignal(this.getCurrentSeason());
   selectedSeason: WritableSignal<Season | undefined> = signal(undefined);
@@ -45,23 +46,23 @@ export class SeasonService {
   //   this.selectedSeason$ = season;
   // }
 
-  getSeasons(): Observable<Season[]> {
-    return this.#http.get<Season[]>(this.#seasonsUrl).pipe(
-      map(response => this.seasons = response as Season[]),
-      tap(data => console.log('All: ' + JSON.stringify(this.seasons))),
+  getSeasons(): void {
+    this.#http.get<Season[]>(this.#seasonsUrl).pipe(
+      map(response => this.seasons.set(response as Season[])),
+      tap(data => console.log('All: ' + JSON.stringify(this.seasons()))),
       catchError(this.#dataService.handleError('getSeasons', []))
     );
   }
 
-  getSeason(id: number): Observable<Season> {
-    return this.getSeasons().pipe(
-      map((season: Season[]) => season.find(p => p.seasonId === id) as Season)
-    );
-  }
+  // getSeason(id: number): Observable<Season> {
+  //   return this.getSeasons().pipe(
+  //     map((season: Season[]) => season.find(p => p.seasonId === id) as Season)
+  //   );
+  // }
 
   postSeason(season: Season): Observable<Season | null> {
     console.log('posting season');
-    return this.#dataService.post<Season>(Constants.seasonUrl, season );
+    return this.#dataService.post<Season>(Constants.SEASON_URL, season );
   }
 
   putSeason(season: Season): any {
@@ -69,3 +70,4 @@ export class SeasonService {
   }
 
 }
+

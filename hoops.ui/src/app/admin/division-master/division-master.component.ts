@@ -15,17 +15,19 @@ import { CsbcSeasonSelectComponent } from '../../shared/season-select/csbc-seaso
 export class DivisionMasterComponent implements OnInit {
   selectedSeason?: Season;//  = signal(new Season() );
   seasonService = inject(SeasonService);
-  seasons = signal(this.seasonService.seasons);
+  seasons = signal(this.seasonService.seasons());
 
   constructor() { }
 
   ngOnInit() {
-    this.seasonService.getSeasons()
-      .subscribe(seasons => {
-        // this.seasons = seasons;
-        this.selectedSeason = seasons[ 0 ];
-        console.log(this.selectedSeason);
-      });
+    if (this.seasonService.seasons() !== undefined) {
+      this.selectedSeason = this.seasonService.seasons()![ 0 ];
+    }
+      // .subscribe(seasons => {
+      //   // this.seasons = seasons;
+      //   this.selectedSeason = seasons[ 0 ];
+      //   console.log(this.selectedSeason);
+      // });
     // this.selectedSeason.update(this.seasonService.season);
   }
   setSeason() {
