@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
@@ -14,6 +14,9 @@ import { LocationService } from '@app/admin/admin-shared/services/location.servi
 import { AdminShellSidebarComponent } from '@app/admin/components/admin-shell-sidebar/admin-shell-sidebar.component';
 import { SeasonService } from '@app/services/season.service';
 import { DivisionService } from '@app/services/division.service';
+import { Observable } from 'rxjs';
+import { Season } from '@app/domain/season';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'csbc-admin-shell',
@@ -53,8 +56,14 @@ export class AdminShellComponent implements OnInit {
   locationService = inject(LocationService);
   store = inject(Store<fromAdmin.State>);
   divisionService = inject(DivisionService);
+  // seasons$: Observable<Season[]>;
+  //selectedSeason = signal<Season | undefined>(undefined);
+  seasons = toSignal(this.store.select(fromAdmin.getSeasons));
+  selectedSeason = toSignal(this.store.select(fromAdmin.getSelectedSeason));
 
-  constructor () { }
+  constructor() {
+    this.store.dispatch(new adminActions.LoadSeasons());
+  }
 
   ngOnInit () {
     this.seasonService.getCurrentSeason().subscribe((season) => {
