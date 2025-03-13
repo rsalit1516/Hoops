@@ -48,16 +48,7 @@ export class ContactsComponent implements OnInit {
   }
 
   ngOnInit () {
-    // this.directorService.getDirectors().subscribe((directors: Director[]) => {
-    //   this.directors = directors;
-    //   this.dataSource = new MatTableDataSource(directors);
-    //   console.log(this.directors);
-    // });
-    // this.directorService.reloadDirectors();
-    console.log('Directors:', this.directors);
-    console.log(this.directorService.directors());
     this.directorService.fetchDirectors();
-    //this.directorService.directorsSignal() && this.dataSource.data.push(this.directorService.directorsSignal());
   }
 
 
