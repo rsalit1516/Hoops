@@ -203,10 +203,7 @@ export class LoadDivisionPlayoffGames implements Action {
 }
 export class LoadDivisionPlayoffGamesSuccess implements Action {
   readonly type = GameActionTypes.LoadDivisionPlayoffGamesSuccess;
-  constructor (public payload: PlayoffGame[]) {
-    console.log('load division playoff games success');
-    console.log(payload);
-  }
+  constructor (public payload: PlayoffGame[]) { }
 }
 export class LoadDivisionPlayoffGamesFail implements Action {
   readonly type = GameActionTypes.LoadDivisionPlayoffGamesFail;

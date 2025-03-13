@@ -36,7 +36,7 @@ if (environment.production) {
 
 bootstrapApplication(AppComponent, {
   providers: [
-    importProvidersFrom(BrowserModule, AppRoutingModule, ReactiveFormsModule, FormsModule, HomeModule, GamesModule, AdminModule, LoginRoutingModule, LayoutModule, UserModule, UserModule, StoreModule.forRoot(reducers, { metaReducers }),
+    importProvidersFrom(BrowserModule, AppRoutingModule, HomeModule, GamesModule, AdminModule, LoginRoutingModule, LayoutModule, UserModule, StoreModule.forRoot(reducers, { metaReducers }),
       // StoreModule.forRoot({}),
       StoreDevtoolsModule.instrument({
         name: 'CSBC Site',

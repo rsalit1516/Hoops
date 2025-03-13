@@ -62,7 +62,7 @@ export class DivisionService {
   private divisionResource = httpResource<DivisionResponse>(() =>
     `${ this.divisionUrl + this.selectedSeason()?.seasonId }`);
 
-  vehicles = computed(() => this.divisionResource.value()?.results ?? [] as Division[]);
+  divisions = computed(() => this.divisionResource.value()?.results ?? [] as Division[]);
   error = computed(() => this.divisionResource.error() as HttpErrorResponse);
   errorMessage = computed(() => setErrorMessage(this.error(), 'Vehicle'));
   //  isLoading = this.divisionResource.isLoading;
@@ -110,12 +110,20 @@ export class DivisionService {
     directorId: 0,
   });
 
-  divisions: WritableSignal<Division[] | undefined> = signal<
-    Division[] | undefined
-  >(undefined);
+  // divisions: WritableSignal<Division[] | undefined> = signal<
+  //   Division[] | undefined
+  // >(undefined);
 
 
   constructor () {
+    effect(() => {
+      const season = this.#seasonService.selectedSeason;
+      console.log(season);
+      if (season !== null) {
+        this.selectedSeason.update(() => season);
+        this.divisionResource.reload();
+      }
+    })
     this.#store.pipe(select(fromAdmin.getSelectedSeason)).subscribe((season) => {
       this.season = season;
       this.selectedSeason.update(() => season);

@@ -57,7 +57,7 @@ export class AdminGamesFilterComponent {
     console.log('Selected season:', this.selectedSeason());
     console.log('Selected division:', this.selectedDivision());
     if (!this.selectedSeason()) {
-      this.selectedSeason.update(() => this.#seasonService.selectedSeason());
+      this.#seasonService.selectSeason(this.selectedSeason()!);
     }
     if (!this.selectedDivision) {
       this.selectedDivision.update(() => this.#divisionService.selectedDivision());

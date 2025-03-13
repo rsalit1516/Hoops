@@ -13,11 +13,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 @Component({
-    selector: 'csbc-top-nav',
-    templateUrl: './top-nav.component.html',
-    styleUrls: ['./top-nav.component.scss', './../../shared/scss/menu.scss'],
-    imports: [CommonModule, MatDialogModule, MatToolbarModule,
-        MatButtonModule, MatIconModule, RouterModule, RouterLinkActive]
+  selector: 'csbc-top-nav',
+  templateUrl: './top-nav.component.html',
+  styleUrls: ['./top-nav.component.scss', './../../shared/scss/menu.scss'],
+  imports: [CommonModule, MatDialogModule, MatToolbarModule,
+    MatButtonModule, MatIconModule, RouterModule, RouterLinkActive]
 })
 export class TopNavComponent implements OnInit {
   public readonly sidenavToggle = output();
@@ -32,7 +32,7 @@ export class TopNavComponent implements OnInit {
   constants: typeof Constants;
   securityEnabled: boolean = true;
 
-  constructor(
+  constructor (
     public dialog: MatDialog,
     private store: Store<fromUser.State>,
     private route: Router
@@ -41,20 +41,18 @@ export class TopNavComponent implements OnInit {
     this.constants = Constants;
   }
 
-  ngOnInit() {
+  ngOnInit () {
     this.env = environment.environment;
     this.securityEnabled = environment.securityEnabled;
-    console.log(this.env);
     this.store.pipe(select(fromUser.getCurrentUser)).subscribe((user) => {
-      console.log(user);
       if (this.securityEnabled) {
         if (user !== null && user.userId !== 0) {
           this.currentUser = user;
           if (user) {
             this.userName = user.firstName;
             // if (this.securityEnabled) {
-              this.showAdminMenu =
-                user.screens == undefined ? false : user.screens.length > 0;
+            this.showAdminMenu =
+              user.screens == undefined ? false : user.screens.length > 0;
             // }
           }
         }
@@ -64,7 +62,7 @@ export class TopNavComponent implements OnInit {
     });
   }
 
-  openDialog() {
+  openDialog () {
     const dialogRef = this.dialog.open(LoginDialogComponent, {
       width: '480px',
     });

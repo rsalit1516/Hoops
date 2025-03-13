@@ -21,28 +21,30 @@ import { Director } from '@app/domain/director';
 })
 export class ContactsComponent implements OnInit {
   private directorService = inject(DirectorService);
-  title: string;
+  title = 'Contacts';
   directorList$: any;
-  dataSource: MatTableDataSource<Director>;
-  displayedColumns!: string[];
-  // directors = this.directorService.directors;
-  // Signals to support the template
-  directors = this.directorService.directors;
-  dataResource = this.directorService.dataResource;
+  displayedColumns = [
+    'title',
+    'name',
+    'cellPhone',
+    'email',
+  ];
+  dataSource = new MatTableDataSource<Director>([]);
+  directors = this.directorService.directors!;
   isLoading = this.directorService.isLoading;
   // errorMessage = this.directorService.errorMessage;
   // directorModels = this.directorService.directorModels
   // selectedModel = this.directorService.selectedModel;
   // triggerMessage = this.directorService.triggerMessage;
+
   constructor () {
-    this.title = 'Contacts';
-    this.displayedColumns = [
-      'title',
-      'name',
-      'cellPhone',
-      'email',
-    ];
-    this.dataSource = new MatTableDataSource(this.directors);
+    effect(() => {
+      const directors = this.directorService.directorsSignal();
+      if (directors) {
+        this.dataSource = new MatTableDataSource<Director>(directors);
+      }
+    });
+
   }
 
   ngOnInit () {
@@ -51,7 +53,12 @@ export class ContactsComponent implements OnInit {
     //   this.dataSource = new MatTableDataSource(directors);
     //   console.log(this.directors);
     // });
-    this.directorService.reloadDirectors();
-
+    // this.directorService.reloadDirectors();
+    console.log('Directors:', this.directors);
+    console.log(this.directorService.directors());
+    this.directorService.fetchDirectors();
+    //this.directorService.directorsSignal() && this.dataSource.data.push(this.directorService.directorsSignal());
   }
+
+
 }

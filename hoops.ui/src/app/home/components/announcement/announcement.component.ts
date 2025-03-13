@@ -9,28 +9,26 @@ import { WebContent } from '@app/domain/webContent';
   styleUrls: [
     '../../home.component.scss',
     '../../../shared/scss/cards.scss',
-     ],
-  imports: [ CommonModule, MatCardModule ]
+  ],
+  imports: [CommonModule, MatCardModule]
 })
 export class AnnouncementComponent implements OnInit {
   readonly info = input.required<WebContent>();
   bodyText = '';
-  constructor() { }
+  constructor () { }
 
-  ngOnInit(): void {
+  ngOnInit (): void {
     this.formattedText();
   }
 
-  hideLocationAndDateTime() {
+  hideLocationAndDateTime () {
 
     const info = this.info();
     return ((info.location === '' || info.location === null) && (info.dateAndTime === '' || info.dateAndTime === null));
   }
-  formattedText(): string {
+  formattedText (): string {
     const info = this.info();
-    console.log(info.body);
     const text = info && info.body ? info.body.replace(/\n/g, '<br>') : '';
-    console.log(text);
     this.bodyText = text;
     return text;
   }
