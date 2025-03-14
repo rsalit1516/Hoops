@@ -35,34 +35,34 @@ import { AdminGamesListComponent } from './admin-games/admin-games-list/admin-ga
 import { ContentShellComponent } from './web-content/content-shell/content-shell.component';
 
 @NgModule({
-    imports: [
+  imports: [
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
     AdminRoutingModule,
     // ContentModule,
-    ContentShellComponent,
-    DirectorModule,
+    // ContentShellComponent,
+    // DirectorModule,
     AdminGamesModule,
     AdminGamesListComponent,
     StoreModule.forFeature('admin', reducer),
     EffectsModule.forFeature([AdminEffects]),
     AdminComponent,
     AdminDashboardComponent,
-    SeasonDetailComponent,
-    SeasonListComponent,
-    DivisionDetailComponent,
-    DivisionListComponent,
-    PlayerListComponent,
-    DivisionMasterComponent,
+    // SeasonDetailComponent,
+    // SeasonListComponent,
+    // DivisionDetailComponent,
+    // DivisionListComponent,
+    // PlayerListComponent,
+    // DivisionMasterComponent,
     AdminShellComponent,
     AdminSeasonShellComponent,
     AdminSeasonListComponent,
     AdminDivisionShellComponent,
     ImportScheduleComponent,
-    SeasonSetupComponent,
-    SeasonRegistrationsComponent,
-    PaymentsComponent,
-],
+    // SeasonSetupComponent,
+    // SeasonRegistrationsComponent,
+    // PaymentsComponent,
+  ],
 })
-export class AdminModule {}
+export class AdminModule { }

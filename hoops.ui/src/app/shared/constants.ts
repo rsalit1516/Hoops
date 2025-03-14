@@ -48,7 +48,7 @@ export class Constants {
   public static getActiveContentUrl = Constants.DEFAULTURL + '/api/webcontent/getActiveWebContent';
   public static postContentUrl = Constants.DEFAULTURL + '/api/WebContent';
   public static PUT_CONTENT_URL = Constants.DEFAULTURL + '/api/WebContent/';
-  public static getCurrentSponsors = Constants.DEFAULTURL + '/api/Sponsor/GetSeasonSponsors/';
+  public static GET_SEASON_SPONSORS = Constants.DEFAULTURL + '/api/Sponsor';
   public static getLocations = Constants.DEFAULTURL + '/api/Locations/';
   public static SEASON_URL = Constants.DEFAULTURL + '/api/Season/';
   public static currentSeasonUrl = Constants.DEFAULTURL + '/api/Season/GetCurrentSeason';

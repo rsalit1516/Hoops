@@ -70,14 +70,14 @@ export class AdminShellComponent implements OnInit {
       this.seasonService.selectSeason(season!);
       // this.divisionService.season = season;
       // this.divisionService.getDivisionsData(season!.seasonId!);
-      console.log(season);
-      console.log(this.divisionService.divisions());
+      // console.log(season);
+      // console.log(this.divisionService.divisions());
     });
     this.store.dispatch(new adminActions.LoadSeasons());
     this.store.select(fromAdmin.getSeasons).subscribe((seasons) => {
       // console.log('triggering seasons');
       this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
-        console.log(season);
+        // console.log(season);
         if (season.seasonId === undefined) {
           for (let i = 0; i < seasons.length; i++) {
             if (seasons[i].currentSeason === true) {
@@ -91,7 +91,7 @@ export class AdminShellComponent implements OnInit {
       });
     });
     this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
-      console.log(season);
+      // console.log(season);
       if (season.seasonId !== undefined) {
         if (season.seasonId !== 0) {
           this.store.dispatch(new adminActions.LoadDivisions());

@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 import { DirectorService } from '@app/services/director.service';
 import { NgFor, AsyncPipe, TitleCasePipe } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -30,7 +30,12 @@ export class ContactsComponent implements OnInit {
     'email',
   ];
   dataSource = new MatTableDataSource<Director>([]);
-  directors = this.directorService.directors!;
+  // directors = this.directorService.directors!;
+  directors = computed(() => {
+    const value = this.directorService.directors();
+    console.log('Directors Service Value:', value); // Log the value here
+    return value;
+  });
   isLoading = this.directorService.isLoading;
   // errorMessage = this.directorService.errorMessage;
   // directorModels = this.directorService.directorModels
@@ -40,6 +45,7 @@ export class ContactsComponent implements OnInit {
   constructor () {
     effect(() => {
       const directors = this.directorService.directorsSignal();
+      console.log(directors)
       if (directors) {
         this.dataSource = new MatTableDataSource<Director>(directors);
       }

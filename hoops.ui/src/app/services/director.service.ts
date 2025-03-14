@@ -27,8 +27,16 @@ export class DirectorService {
   directorsResource = httpResource<DirectorResponse>(() =>
     `${ this.url }`);
 
-  directors = computed(() => this.directorsResource.value()?.results || []);
-  error = computed(() => this.directorsResource.error() as HttpErrorResponse);
+  directors = computed(() => {
+    const value = this.directorsResource.value();
+    console.log('Directors Resource Value:', value); // Log the value here
+    return value;
+  });
+  error = computed(() => {
+    const errorValue = this.directorsResource.error() as HttpErrorResponse;
+    console.log('Directors Resource Error:', errorValue); // Log the error here
+    return errorValue;
+  });
   // errorMessage = computed(() => setErrorMessage(this.error(), 'Vehicle'));
   isLoading = this.directorsResource.isLoading;
 
@@ -47,6 +55,7 @@ export class DirectorService {
         console.error('Failed to load directors', error);
       }
     );
+    this.directorsResource.reload();
   }
 
 
