@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, computed, effect, inject, Input, OnInit, signal } from '@angular/core';
 import { Observable, zip, of, from, EMPTY } from 'rxjs';
 import { Season } from '@domain/season';
 import { Division } from '@app/domain/division';
@@ -47,6 +47,8 @@ import { CommonModule } from '@angular/common';
 })
 export class ScheduleShellComponent implements OnInit {
   private gameService = inject(GameService);
+  readonly #divisionService = inject(DivisionService);
+  readonly #store = inject(Store<fromGames.State>);
   games: RegularGame[] | undefined | null;
   playoffGames!: PlayoffGame[];
   title = 'Regular Season Schedule';
@@ -73,21 +75,29 @@ export class ScheduleShellComponent implements OnInit {
   divisionId: number | undefined;
   hasPlayoffs = false;
   dailySchedule!: Array<RegularGame[]>;
-
-  constructor (
-    private store: Store<fromGames.State>,
-
-  ) { }
+  seasonDivisions = signal<Division[] > ([]);
+  // selectedDivision = signal<Division | undefined>(undefined);
+  selectedDivision = computed(() => this.#divisionService.selectedDivision());
+  constructor() {
+    effect(() => {
+      const selectedDivision = this.selectedDivision();
+      if (selectedDivision) {
+        console.log(selectedDivision);
+        //        this.#store.dispatch(new gameActions.// LoadDivisionGames(selectedDivision.divisionId));
+        this.gameService.filterGamesByDivision();
+      }
+    });
+   }
 
   ngOnInit () {
-    this.store.select(fromGames.getCurrentDivision).subscribe((division) => {
-      this.store.select(fromGames.getFilteredGames).subscribe((games) => {
+    //this.selectedDivision.set(this.#divisionService.selectedDivision()); //this.store.select(fromGames.getCurrentDivision).subscribe((division) => {
+      this.#store.select(fromGames.getFilteredGames).subscribe((games) => {
         this.games = games;
         this.dailySchedule = [];
         this.dailySchedule = this.gameService.groupRegularGamesByDate(games);
       });
-      this.store.dispatch(new gameActions.LoadDivisionPlayoffGames());
-    });
+      this.#store.dispatch(new gameActions.LoadDivisionPlayoffGames());
+    // });
   }
 
   getCanEdit (user: User | undefined, divisionId: number): boolean {

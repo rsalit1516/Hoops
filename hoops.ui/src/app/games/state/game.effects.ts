@@ -138,16 +138,16 @@ export class GameEffects {
   ));
   // tslint:disable-next-line:member-ordering
 
-  loadFilteredGames$: Observable<Action> = createEffect(() => this.actions$.pipe(
-    ofType(gameActions.GameActionTypes.LoadFilteredGames),
-    switchMap(() =>
-      this.gameService.filterGamesByDivision().pipe(
-        map((games) => new gameActions.LoadFilteredGamesSuccess(games)),
-        // tap(response => console.log(response)),
-        catchError((err) => of(new gameActions.LoadFilteredGamesFail(err)))
-      )
-    )
-  ));
+  // loadFilteredGames$: Observable<Action> = createEffect(() => this.actions$.pipe(
+  //   ofType(gameActions.GameActionTypes.LoadFilteredGames),
+  //   switchMap(() =>
+  //     this.gameService.filterGamesByDivision().pipe(
+  //       map((games) => new gameActions.LoadFilteredGamesSuccess(games)),
+  //       // tap(response => console.log(response)),
+  //       catchError((err) => of(new gameActions.LoadFilteredGamesFail(err)))
+  //     )
+  //   )
+  // ));
 
   loadDivisionPlayoffGames$: Observable<Action> = createEffect(() => this.actions$.pipe(
     ofType(gameActions.GameActionTypes.LoadDivisionPlayoffGames),

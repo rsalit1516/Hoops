@@ -52,7 +52,7 @@ import { LoggerService } from '@app/services/logging.service';
 })
 export class AdminGamesShellComponent implements OnInit {
   readonly #logger = inject(LoggerService);
-  readonly #gameService = inject(AdminGameService);
+  readonly gameService = inject(AdminGameService);
   readonly #store = inject(Store<fromAdmin.State>);
   pageTitle = 'Game Management';
   isSidenavOpen = false;
@@ -73,7 +73,7 @@ export class AdminGamesShellComponent implements OnInit {
 
   ) {
     effect(() => {
-      const record = this.#gameService.selectedRecordSignal();
+      const record = this.gameService.selectedRecordSignal();
       console.log('Selected record changed:', record);
       if (record !== null) {
         console.log(`Record updated: ${ record.gameScheduleId }`);
@@ -97,9 +97,9 @@ export class AdminGamesShellComponent implements OnInit {
         this.#store.dispatch(new adminActions.LoadDivisionGames());
         this.#store.dispatch(new adminActions.LoadDivisionTeams());
         this.#store.dispatch(new adminActions.LoadPlayoffGames());
-        this.#gameService.selectedDivision.set(division);
-        this.#gameService.filteredGames();
-        console.log(this.#gameService.filteredGames());
+        this.gameService.selectedDivision.set(division);
+        this.gameService.filteredGames();
+        console.log(this.gameService.filteredGames());
       }
     });
     this.#store.select(fromAdmin.getSelectedTeam).subscribe((team) => {

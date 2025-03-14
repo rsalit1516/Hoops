@@ -123,6 +123,7 @@ export class DivisionService {
       if (season !== null) {
         this.selectedSeason.update(() => season);
         this.divisionResource.reload();
+        this.getSeasonDivisions(season.seasonId ?? 0);
       }
     })
     this.#store.pipe(select(fromAdmin.getSelectedSeason)).subscribe((season) => {

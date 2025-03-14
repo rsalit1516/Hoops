@@ -19,6 +19,7 @@ import { select, Store } from '@ngrx/store';
 import { Team } from '@app/domain/team';
 import { User } from '@app/domain/user';
 import { SeasonService } from './season.service';
+import { DivisionService } from './division.service';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +31,7 @@ export class GameService {
   private _http = inject(HttpClient);
   public dataService = inject(DataService);
   readonly #seasonService = inject(SeasonService);
+  readonly #divisionService = inject(DivisionService);
   readonly #scheduleGamesUrl = Constants.SEASON_GAMES_URL + '?seasonid=' + this.#seasonService.selectedSeason.seasonId;
   private _games!: RegularGame[];
   standing: any[] = [];
@@ -109,21 +111,22 @@ export class GameService {
         }
       );
 }
-  filterGamesByDivision (): Observable<RegularGame[]> {
+  filterGamesByDivision (): RegularGame[] {
     let games: RegularGame[] = [];
     let sortedDate: RegularGame[] = [];
     let div = 0;
-    this.currentDivision$.subscribe((division) => {
+    const division = this.#divisionService.selectedDivision();
+    // this.currentDivision$.subscribe((division) => {
       // console.log(division);
       div = division?.divisionId ?? 0;
-      this.seasonGames$.subscribe((seasonGames) => {
+      // this.seasonGames$.subscribe((seasonGames) => {
         // console.log(seasonGames);
-        this.allGames = seasonGames;
-        this.setCanEdit(div);
-        if (seasonGames) {
+        this.allGames = this.seasonGamesSignal();
+        // this.setCanEdit(div);
+        if (this.allGames) {
           for (let i = 0; i < this.allGames.length; i++) {
             if (this.allGames[i].divisionId === div) {
-              let game = seasonGames[i];
+              let game = this.seasonGamesSignal()![i];
               game.gameDateOnly = this.extractDate(game.gameDate.toString());
               games.push(game);
             }
@@ -132,12 +135,12 @@ export class GameService {
           sortedDate = games.sort((a, b) => {
             return this.compare(a.gameDate!, b.gameDate!, true);
           });
-          return of(sortedDate);
+          return sortedDate;
         }
-        return of(sortedDate);
-      });
-    });
-    return of(sortedDate);
+        return sortedDate;
+    //   });
+    // });
+    return sortedDate;
   }
 
 
