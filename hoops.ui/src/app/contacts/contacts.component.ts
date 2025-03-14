@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 import { DirectorService } from '@app/services/director.service';
 import { NgFor, AsyncPipe, TitleCasePipe } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -21,37 +21,41 @@ import { Director } from '@app/domain/director';
 })
 export class ContactsComponent implements OnInit {
   private directorService = inject(DirectorService);
-  title: string;
+  title = 'Contacts';
   directorList$: any;
-  dataSource: MatTableDataSource<Director>;
-  displayedColumns!: string[];
-  // directors = this.directorService.directors;
-  // Signals to support the template
-  directors = this.directorService.directors;
-  dataResource = this.directorService.dataResource;
+  displayedColumns = [
+    'title',
+    'name',
+    'cellPhone',
+    'email',
+  ];
+  dataSource = new MatTableDataSource<Director>([]);
+  // directors = this.directorService.directors!;
+  directors = computed(() => {
+    const value = this.directorService.directors();
+    console.log('Directors Service Value:', value); // Log the value here
+    return value;
+  });
   isLoading = this.directorService.isLoading;
   // errorMessage = this.directorService.errorMessage;
   // directorModels = this.directorService.directorModels
   // selectedModel = this.directorService.selectedModel;
   // triggerMessage = this.directorService.triggerMessage;
+
   constructor () {
-    this.title = 'Contacts';
-    this.displayedColumns = [
-      'title',
-      'name',
-      'cellPhone',
-      'email',
-    ];
-    this.dataSource = new MatTableDataSource(this.directors);
+    effect(() => {
+      const directors = this.directorService.directorsSignal();
+      console.log(directors)
+      if (directors) {
+        this.dataSource = new MatTableDataSource<Director>(directors);
+      }
+    });
+
   }
 
   ngOnInit () {
-    // this.directorService.getDirectors().subscribe((directors: Director[]) => {
-    //   this.directors = directors;
-    //   this.dataSource = new MatTableDataSource(directors);
-    //   console.log(this.directors);
-    // });
-    this.directorService.reloadDirectors();
-
+    this.directorService.fetchDirectors();
   }
+
+
 }

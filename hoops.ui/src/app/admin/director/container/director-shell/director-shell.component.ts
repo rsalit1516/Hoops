@@ -17,7 +17,7 @@ export class DirectorShellComponent implements OnInit {
   constructor () { }
 
   ngOnInit () {
-    this.directorService.getDirectors();
+    //this.directorService.getDirectors();
     // console.log(this.directors);
     // this.datasource = this.directors;
   }

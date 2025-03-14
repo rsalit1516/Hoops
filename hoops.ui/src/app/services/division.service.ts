@@ -28,6 +28,7 @@ export class DivisionService {
   #store = inject(Store<fromAdmin.State>);
   selectedSeason = signal<Season | undefined>(undefined);
   selectedDivision = signal<Division | undefined>(undefined);
+  seasonDivisions = signal<Division[] | undefined>(undefined);
   updateSelectedDivision (division: Division) {
     this.selectedDivision.update(() => division);
   }
@@ -62,7 +63,7 @@ export class DivisionService {
   private divisionResource = httpResource<DivisionResponse>(() =>
     `${ this.divisionUrl + this.selectedSeason()?.seasonId }`);
 
-  vehicles = computed(() => this.divisionResource.value()?.results ?? [] as Division[]);
+  divisions = computed(() => this.divisionResource.value()?.results ?? [] as Division[]);
   error = computed(() => this.divisionResource.error() as HttpErrorResponse);
   errorMessage = computed(() => setErrorMessage(this.error(), 'Vehicle'));
   //  isLoading = this.divisionResource.isLoading;
@@ -70,7 +71,7 @@ export class DivisionService {
   isLoading = computed(() => this.state().isLoading);
   currentSeason = computed(() => this.state().currentSeason);
   currentDivision = computed(() => this.state().currentDivision);
-  seasonDivisions = computed(() => this.state().seasonDivisions);
+  // seasonDivisions = computed(() => this.state().seasonDivisions);
   // error = computed(() => this.state().error);
 
   private selectedIdSubject = new Subject<Division>();
@@ -110,12 +111,20 @@ export class DivisionService {
     directorId: 0,
   });
 
-  divisions: WritableSignal<Division[] | undefined> = signal<
-    Division[] | undefined
-  >(undefined);
+  // divisions: WritableSignal<Division[] | undefined> = signal<
+  //   Division[] | undefined
+  // >(undefined);
 
 
   constructor () {
+    effect(() => {
+      const season = this.#seasonService.selectedSeason;
+      console.log(season);
+      if (season !== null) {
+        this.selectedSeason.update(() => season);
+        this.divisionResource.reload();
+      }
+    })
     this.#store.pipe(select(fromAdmin.getSelectedSeason)).subscribe((season) => {
       this.season = season;
       this.selectedSeason.update(() => season);
@@ -161,10 +170,14 @@ export class DivisionService {
     console.log(this.state);
   }
 
-  getDivisionsData (id: number): Observable<Division[]> {
-    return this.#http
+  getSeasonDivisions (id: number): void {
+    this.#http
       .get<Division[]>(Constants.SEASON_DIVISIONS_URL + id)
-      .pipe(catchError(() => of([])));
+      .subscribe((data) => {
+        this.seasonDivisions.update(() => data);
+      },
+        (error) => { catchError(() => of([])) }
+      );
   }
 
   getDvision (division: Division) {
@@ -175,7 +188,7 @@ export class DivisionService {
     let division = new Division();
     console.log(this.seasonDivisions());
     console.log(id);
-    for (const item of this.seasonDivisions()) {
+    for (const item of this.seasonDivisions()!) {
       console.log(item);
       if (item.divisionId === id) {
         division = item;
@@ -186,9 +199,9 @@ export class DivisionService {
     return division;
   }
 
-  getSeasonDivisions (id: number) {
-    return toSignal(this.getDivisionsData(id));
-  }
+  // getSeasonDivisions (id: number) {
+  //   return toSignal(this.getSeasonDivisions(id));
+  // }
 
   getSelectedSeasonDivisions () {
     this.#http.get<Division[]>(Constants.SEASON_DIVISIONS_URL + this.seasonId);

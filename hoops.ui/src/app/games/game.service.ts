@@ -22,6 +22,7 @@ import { Team } from '@app/domain/team';
 import { DateTime } from 'luxon';
 import { PlayoffGame } from '@app/domain/playoffGame';
 import { LoggerService } from '@app/services/logging.service';
+import { SeasonService } from '@app/services/season.service';
 
 @Injectable({
   providedIn: 'root',
@@ -32,6 +33,7 @@ export class GameService {
   http = inject(HttpClient);
   userStore = inject(Store<fromUser.State>);
   logger = inject(LoggerService);
+  readonly #seasonService = inject(SeasonService);
   seasonId: number | undefined; // = 2192; // TO DO make this is passed in!
   currentSeason$ = this.gameStore.select(fromGames.getCurrentSeason).subscribe({
     next: (season) => {
@@ -103,7 +105,7 @@ export class GameService {
     return g;
   }
   getGames (): Observable<RegularGame[]> {
-    return this.http.get<RegularGame[]>(this.dataService.seasonGamesUrl + '?seasonId=' + this.seasonId);
+    return this.http.get<RegularGame[]>(this.dataService.seasonGamesUrl + '?seasonId=' + this.#seasonService.season().seasonId);
   }
   //   const divId = fromGames.getCurrentDivisionId;
   //   return this.http

@@ -7,6 +7,7 @@ import { Observable, map, of, tap } from 'rxjs';
 
 import * as fromGames from '../games/state';
 import { LoggerService } from './logging.service';
+import { SeasonService } from '@app/services/season.service';
 
 
 @Injectable({
@@ -17,6 +18,7 @@ export class PlayoffGameService {
   private http = inject(HttpClient);
   private gameStore = inject(Store<fromGames.State>);
   private logger = inject(LoggerService);
+  readonly #seasonService = inject(SeasonService);
 
   divisionPlayoffGames = signal<PlayoffGame[] | undefined>(undefined);
   seasonId: number | undefined; // = 2192; // TO DO make this is passed in!
@@ -28,7 +30,7 @@ export class PlayoffGameService {
   constructor () { }
 
   getSeasonPlayoffGames (): Observable<PlayoffGame[]> {
-    const url = Constants.PLAYOFF_GAMES_URL + '?seasonId=' + this.seasonId;
+    const url = Constants.PLAYOFF_GAMES_URL + '?seasonId=' + this.#seasonService.selectedSeason!.seasonId;
     this.logger.log(url);
     return this.http.get<PlayoffGame[]>(url).pipe(
       map((response) => (this.seasonPlayoffGames = response)),

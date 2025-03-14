@@ -19,50 +19,72 @@ export class DirectorService {
   url = Constants.GET_DIRECTOR_URL;
   private dataService = inject(DataService);
   private http = inject(HttpClient);
-  directors: Director[] = [];
-  directorsSignal = signal<Director | null>(null);
+  //  directors: Director[] = [];
+  directorsSignal = signal<Director[] | null>(null);
   //directors = signal<Director[] | null>(null);
   handleError: ((err: any, caught: Observable<any[]>) => never) | undefined;
-
-  // constructor(private dataService: DataService, private http: HttpClient
-  //   // , private store: Store<fromDirector.DirectorState>
-  //   ) {
-
-  // }
 
   directorsResource = httpResource<DirectorResponse>(() =>
     `${ this.url }`);
 
-  directors1 = computed(() => this.directorsResource.value()?.results ?? [] as Director[]);
-  error = computed(() => this.directorsResource.error() as HttpErrorResponse);
+  directors = computed(() => {
+    const value = this.directorsResource.value();
+    console.log('Directors Resource Value:', value); // Log the value here
+    return value;
+  });
+  error = computed(() => {
+    const errorValue = this.directorsResource.error() as HttpErrorResponse;
+    console.log('Directors Resource Error:', errorValue); // Log the error here
+    return errorValue;
+  });
   // errorMessage = computed(() => setErrorMessage(this.error(), 'Vehicle'));
   isLoading = this.directorsResource.isLoading;
 
-  dataResource = rxResource({
-    // Request function that returns the current ID
-    // request: () => ({ id: this.directorsSignal() }),
-    request: () => ({}),
-    // Loader function that fetches data using the current ID
-    loader: ({ request }) =>
-      fromFetch(this.url).pipe(
-        switchMap(response => response.json())
-      ),
-  });
+
+  constructor () {
+    // Fetch directors initially
+    this.fetchDirectors();
+  }
+
+  fetchDirectors () {
+    this.http.get<Director[]>(`${ this.url }`).subscribe(
+      (directors) => {
+        this.directorsSignal.update(() => directors);
+      },
+      (error) => {
+        console.error('Failed to load directors', error);
+      }
+    );
+    this.directorsResource.reload();
+  }
+
+
+
+  // dataResource = rxResource({
+  //   // Request function that returns the current ID
+  //   // request: () => ({ id: this.directorsSignal() }),
+  //   request: () => ({}),
+  //   // Loader function that fetches data using the current ID
+  //   loader: ({ request }) =>
+  //     fromFetch(this.url).pipe(
+  //       switchMap(response => response.json())
+  //     ),
+  // });
 
   reloadDirectors () {
-    this.dataResource.reload();
+    this.directorsResource.reload();
   }
 
-  getDirectors (): Observable<Director[]> {
-    return this.http.get<Director[]>(this.url).pipe(
-      map(response => {
-        this.directors = response;
-        return response;
-      }),
-      tap(data => console.log('All: ' + JSON.stringify(data))),
-      catchError(this.dataService.handleError<Director[]>('getDirectors', []))
-    );
-  }
+  // getDirectors (): Observable<Director[]> {
+  //   return this.http.get<Director[]>(this.url).pipe(
+  //     map(response => {
+  //       this.directors = response;
+  //       return response;
+  //     }),
+  //     tap(data => console.log('All: ' + JSON.stringify(data))),
+  //     catchError(this.dataService.handleError<Director[]>('getDirectors', []))
+  //   );
+  // }
 }
 export interface DirectorResponse {
   count: number;

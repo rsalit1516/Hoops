@@ -1,12 +1,9 @@
 import { Component, inject, OnInit } from '@angular/core';
 
-import { Content } from '../domain/content';
-import { ContentService } from '../services/content.service';
-import { SeasonService } from '../services/season.service';
 import * as fromHome from './state';
 import * as homeActions from './state/home.actions';
 import { Store, select } from '@ngrx/store';
-import { map, count } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { WebContent } from '../domain/webContent';
 
@@ -18,6 +15,8 @@ import { CsbcHomeSidebarComponent } from './components/home-sidebar/home-sidebar
 import { CommonModule, NgClass, NgIf } from '@angular/common';
 import { HomeCenterComponent } from './components/home-center/home-center.component';
 import { LoggerService } from '@app/services/logging.service';
+import { SeasonService } from '@app/services/season.service';
+import { Season } from '@app/domain/season';
 
 @Component({
   selector: 'csbc-home',
@@ -35,6 +34,10 @@ import { LoggerService } from '@app/services/logging.service';
 })
 export class HomeComponent implements OnInit {
   logger = inject(LoggerService);
+  readonly #seasonService = inject(SeasonService);
+  readonly #store = inject(Store<fromHome.State>);
+  readonly #gameStore = inject(Store<fromGames.State>);
+
   coverImage: string;
   seasonInfoCount: number;
   latestNewsCount: number;
@@ -45,7 +48,7 @@ export class HomeComponent implements OnInit {
   activeWebContent: any[] | undefined;
   webContents: WebContent[] | undefined;
   //   currentSeason$ = this.seasonService.getCurrent();
-  content$ = this.store.select(fromHome.getContent);
+  content$ = this.#store.select(fromHome.getContent);
   showSidebar$ = of(true);
   meetingNotices$: Observable<WebContent[]> | undefined;
 
@@ -56,8 +59,6 @@ export class HomeComponent implements OnInit {
   announcementInfo = '';
 
   constructor (
-    private store: Store<fromHome.State>,
-    private gameStore: Store<fromGames.State>
   ) {
     // this.store.dispatch(new homeActions.LoadContent);
     this.seasonInfoCount = 1;
@@ -68,30 +69,34 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit (): void {
-    this.store.dispatch(new homeActions.LoadContent());
+    this.#store.dispatch(new homeActions.LoadContent());
+    this.#seasonService.getCurrentSeason().subscribe((season) => {
+      this.#seasonService.currentSeason.update(() => season);
+      this.#seasonService.selectSeason(season!)
+    });
     this.meetingNotices$ = this.content$.pipe(
       map((results) =>
         results.filter((r) => r.webContentTypeDescription === 'Meeting')
       )
     );
     this.setImageClass();
-    this.logger.log('home.component.ts ngOnInit');
-    this.gameStore.dispatch(new gameActions.LoadCurrentSeason());
-    this.gameStore.select(fromGames.getCurrentSeason).subscribe((season) => {
+    this.#gameStore.dispatch(new gameActions.LoadCurrentSeason());
+    this.#gameStore.select(fromGames.getCurrentSeason).subscribe((season) => {
       if ((season?.seasonId !== 0) && (season?.seasonId !== undefined)) {
-        this.store.dispatch(new homeActions.LoadSponsors());
-        this.gameStore.dispatch(new gameActions.LoadDivisions());
-        this.store.dispatch(new gameActions.LoadTeams());
-        this.store.dispatch(new gameActions.LoadGames());
+        console.log(this.#seasonService.currentSeason());
+        this.#store.dispatch(new homeActions.LoadSponsors());
+        this.#gameStore.dispatch(new gameActions.LoadDivisions());
+        this.#store.dispatch(new gameActions.LoadTeams());
+        this.#store.dispatch(new gameActions.LoadGames());
         // this.store.dispatch(new gameActions.LoadPlayoffGames());
       }
     });
 
-    this.gameStore.select(fromGames.getCurrentSeason).subscribe((season) => {
+    this.#gameStore.select(fromGames.getCurrentSeason).subscribe((season) => {
       if (season?.seasonId !== 0) {
-        this.gameStore.select(fromGames.getDivisions).subscribe((divisions) => {
+        this.#gameStore.select(fromGames.getDivisions).subscribe((divisions) => {
           if (divisions.length > 0) {
-            this.gameStore
+            this.#gameStore
               .select(fromGames.getCurrentDivision)
               .subscribe((division) => {
                 // if (division === undefined || division.seasonId === 0) {
@@ -106,7 +111,7 @@ export class HomeComponent implements OnInit {
         });
       }
     });
-    this.store.select(fromHome.getSponsors).subscribe((sponsors) => {
+    this.#store.select(fromHome.getSponsors).subscribe((sponsors) => {
       this.showSponsors = sponsors.length > 0;
     });
   }

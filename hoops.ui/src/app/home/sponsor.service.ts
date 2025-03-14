@@ -10,12 +10,12 @@ import { catchError, map, tap } from 'rxjs/operators';
 })
 export class SponsorService {
   sponsors: Sponsor[] | undefined;
-  constructor(private _http: HttpClient, public dataService: DataService) {}
+  constructor (private _http: HttpClient, public dataService: DataService) { }
 
-  getSeasonSponsors(): Observable<Sponsor[]> {
+  getSeasonSponsors (): Observable<Sponsor[]> {
     return this._http.get<Sponsor[]>(this.dataService.getCurrentSponsors).pipe(
       map((response) => (this.sponsors = response)),
-      tap((data) => console.log('All: ' + JSON.stringify(data))),
+      // tap((data) => console.log('All: ' + JSON.stringify(data))),
       catchError(this.dataService.handleError('getGames', []))
     );
   }

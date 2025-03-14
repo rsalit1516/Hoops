@@ -31,32 +31,27 @@ import { LocationService } from '../admin-shared/services/location.service';
 
 @Injectable()
 export class AdminEffects {
+  contentService = inject(ContentService);
+  seasonService = inject(SeasonService);
+  locationService = inject(LocationService);
+  actions$ = inject(Actions);
+  http = inject(HttpClient);
+  gameService = inject(AdminGameService);
+  teamService = inject(TeamService);
+  dataService = inject(DataService);
+  store = inject(Store<fromAdmin.State>);
+
   seasonId!: number;
   gameUrl = this.dataService.seasonGamesUrl;
   seasonDivisionsUrl = this.dataService.seasonDivisionsUrl;
-  private playoffGameUrl = this.dataService.playoffGameUrl;
+  readonly #playoffGameUrl = this.dataService.playoffGameUrl;
   divisionId!: number;
   division!: Division | null;
   teamId!: number;
 
-  contentService = inject(ContentService);
-  seasonService = inject(SeasonService);
-  locationService = inject(LocationService);
-
   public loadContent$ = this.loadContent();
   public loadActiveContent$ = this.loadActiveContent();
   public loadAllContent$ = this.loadAllContent();
-
-  constructor (
-    private actions$: Actions,
-    // private seasonService: SeasonService,
-    // private divisionService: DivisionService,
-    private http: HttpClient,
-    private gameService: AdminGameService,
-    private teamService: TeamService,
-    private dataService: DataService,
-    private store: Store<fromAdmin.State>
-  ) { }
 
   // tslint:disable-next-line:member-ordering
 
@@ -88,7 +83,7 @@ export class AdminEffects {
       }
     }),
     mergeMap(action =>
-      this.http.get<Division[]>(this.seasonDivisionsUrl + this.seasonId).pipe(
+      this.http.get<Division[]>(this.seasonDivisionsUrl + this.seasonService.selectedSeason!.seasonId).pipe(
         // tap(data => console.log('All games: ' + JSON.stringify(data))),
         shareReplay(1),
         map(divisions => new adminActions.LoadDivisionsSuccess(divisions)),
@@ -116,12 +111,13 @@ export class AdminEffects {
     }),
 
     mergeMap(action =>
-      this.http.get<RegularGame[]>(this.gameUrl + '?seasonId=' + this.seasonId).pipe(
-        // tap(data => console.log('All admin games: ' + JSON.stringify(data))),
-        shareReplay(1),
-        map(games => new adminActions.LoadGamesSuccess(games)),
-        catchError(err => of(new adminActions.LoadGamesFail(err)))
-      )
+      this.http.get<RegularGame[]>(this.gameUrl + '?seasonId=' + this.seasonService.season().seasonId)
+        .pipe(
+          // tap(data => console.log('All admin games: ' + JSON.stringify(data))),
+          shareReplay(1),
+          map(games => new adminActions.LoadGamesSuccess(games)),
+          catchError(err => of(new adminActions.LoadGamesFail(err)))
+        )
     )
   ));
   // tslint:disable-next-line:member-ordering
@@ -248,7 +244,7 @@ export class AdminEffects {
 
     mergeMap((action) =>
       this.http
-        .get<PlayoffGame[]>(this.playoffGameUrl + '?seasonId=' + this.seasonId)
+        .get<PlayoffGame[]>(this.#playoffGameUrl + '?seasonId=' + this.seasonId)
         .pipe(
           // tap(data => console.log('All playoff games: ' +this.playoffGameUrl + ' '+ JSON.stringify(data))),
           shareReplay(1),

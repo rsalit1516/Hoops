@@ -22,6 +22,7 @@ export class GamesResolver {
   ): Observable<boolean> {
     this.store.select(fromGames.getCurrentSeason).subscribe((season) => {
       const t = this._gameService.currentSeason$; // = season.seasonID;
+      console.log('Season ID: ', t);
       this.store.dispatch(new gameActions.LoadGames());
       // this.store.dispatch(new gameActions.LoadDivisions());
       this.store.dispatch(new gameActions.LoadPlayoffGames());
