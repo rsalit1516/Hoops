@@ -33,7 +33,6 @@ export class ContactsComponent implements OnInit {
   // directors = this.directorService.directors!;
   directors = computed(() => {
     const value = this.directorService.directors();
-    console.log('Directors Service Value:', value); // Log the value here
     return value;
   });
   isLoading = this.directorService.isLoading;
@@ -45,7 +44,6 @@ export class ContactsComponent implements OnInit {
   constructor () {
     effect(() => {
       const directors = this.directorService.directorsSignal();
-      console.log(directors)
       if (directors) {
         this.dataSource = new MatTableDataSource<Director>(directors);
       }
@@ -56,6 +54,4 @@ export class ContactsComponent implements OnInit {
   ngOnInit () {
     this.directorService.fetchDirectors();
   }
-
-
 }

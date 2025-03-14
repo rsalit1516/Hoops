@@ -17,26 +17,23 @@ import { Team } from '@app/domain/team';
 
 @Injectable()
 export class GameEffects {
-  private http = inject(HttpClient);
-  private seasonService = inject(SeasonService);
-  private gameService = inject(GameService);
-  private playoffGameService = inject(PlayoffGameService);
-  private teamService = inject(TeamService);
-  private dataService = inject(DataService);
+  readonly http = inject(HttpClient);
+  readonly seasonService = inject(SeasonService);
+  readonly gameService = inject(GameService);
+  readonly playoffGameService = inject(PlayoffGameService);
+  readonly teamService = inject(TeamService);
+  readonly dataService = inject(DataService);
+  readonly actions$ = inject(Actions);
+  readonly store = inject(Store<fromGames.State>);
 
   seasonId!: number;
   index!: number;
   currentSeasonId: number | undefined;
   divisionId$!: Observable<number>;
   divisionId!: number;
-  private divisionStartUrl = this.dataService.seasonDivisionsUrl;
+  readonly divisionStartUrl = this.dataService.seasonDivisionsUrl;
   teamId: any;
   team: Team | undefined;
-
-  constructor (
-    private actions$: Actions,
-    private store: Store<fromGames.State>
-  ) { }
 
   // tslint:disable-next-line:member-ordering
 
@@ -45,7 +42,7 @@ export class GameEffects {
     mergeMap(() =>
       this.gameService.getGames().pipe(
         map((games) => new gameActions.LoadGamesSuccess(games)),
-        // tap(games => console.log(games)),
+        tap(games => console.log(games)),
         catchError((err) => of(new gameActions.LoadGamesFail(err)))
       )
     )
@@ -75,7 +72,7 @@ export class GameEffects {
     mergeMap(() =>
       this.seasonService.currentSeason$.pipe(
         map((season) => new gameActions.LoadCurrentSeasonSuccess(season)),
-        // tap((data) => console.log(data)),
+        // tap((data) => console.log(this.seasonService.selectedSeason)),
         catchError((err) => of(new gameActions.LoadCurrentSeasonFail(err)))
       )
     )
@@ -85,21 +82,9 @@ export class GameEffects {
 
   loadDivisions$: Observable<Action> = createEffect(() => this.actions$.pipe(
     ofType(gameActions.GameActionTypes.LoadDivisions),
-    concatMap((action) =>
-      of(action).pipe(
-        withLatestFrom(this.store.pipe(select(fromGames.getCurrentSeason))),
-        // tap((divisions) => console.log(divisions))
-      )
-    ),
-    tap(([, t]) => {
-      if (t) {
-        this.seasonId = t.seasonId!
-      } else {
-        this.seasonId = 0;
-      }
-    }),
     mergeMap(() =>
-      this.http.get<Division[]>(this.divisionStartUrl + this.seasonId).pipe(
+      this.http.get<Division[]>(this.divisionStartUrl + this.seasonService.selectedSeason.seasonId)
+        .pipe(
         shareReplay(1),
         map((divisions) => new gameActions.LoadDivisionsSuccess(divisions)),
         catchError((err) => of(new gameActions.LoadDivisionsFail(err)))

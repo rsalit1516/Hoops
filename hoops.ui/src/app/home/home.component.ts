@@ -38,13 +38,12 @@ export class HomeComponent implements OnInit {
   readonly #store = inject(Store<fromHome.State>);
   readonly #gameStore = inject(Store<fromGames.State>);
 
-  coverImage: string;
-  seasonInfoCount: number;
-  latestNewsCount: number;
-  meetingNoticeCount: number;
-  topImage: string;
+  coverImage = 'images/sky.jpg';
+  seasonInfoCount: number = 1;
+  latestNewsCount: number = 0
+  meetingNoticeCount: number = 0;
+  topImage = '../../assets/images/CSBCTopImage.jpg';
   errorMessage: string | undefined;
-
   activeWebContent: any[] | undefined;
   webContents: WebContent[] | undefined;
   //   currentSeason$ = this.seasonService.getCurrent();
@@ -58,38 +57,25 @@ export class HomeComponent implements OnInit {
   meetingNoticeClass = 'col-sm-0 col-xs-0';
   announcementInfo = '';
 
-  constructor (
-  ) {
-    // this.store.dispatch(new homeActions.LoadContent);
-    this.seasonInfoCount = 1;
-    this.latestNewsCount = 0;
-    this.meetingNoticeCount = 0;
-    this.coverImage = 'images/sky.jpg';
-    this.topImage = '../../assets/images/CSBCTopImage.jpg';
-  }
+  constructor () {}
 
   ngOnInit (): void {
     this.#store.dispatch(new homeActions.LoadContent());
-    this.#seasonService.getCurrentSeason().subscribe((season) => {
-      this.#seasonService.currentSeason.update(() => season);
-      this.#seasonService.selectSeason(season!)
-    });
     this.meetingNotices$ = this.content$.pipe(
       map((results) =>
         results.filter((r) => r.webContentTypeDescription === 'Meeting')
       )
     );
     this.setImageClass();
-    this.#gameStore.dispatch(new gameActions.LoadCurrentSeason());
+    // this.#gameStore.dispatch(new gameActions.LoadCurrentSeason());
     this.#gameStore.select(fromGames.getCurrentSeason).subscribe((season) => {
       if ((season?.seasonId !== 0) && (season?.seasonId !== undefined)) {
-        console.log(this.#seasonService.currentSeason());
         this.#store.dispatch(new homeActions.LoadSponsors());
         this.#gameStore.dispatch(new gameActions.LoadDivisions());
-        this.#store.dispatch(new gameActions.LoadTeams());
-        this.#store.dispatch(new gameActions.LoadGames());
+        this.#gameStore.dispatch(new gameActions.LoadTeams());
+        this.#gameStore.dispatch(new gameActions.LoadGames());
         // this.store.dispatch(new gameActions.LoadPlayoffGames());
-      }
+       }
     });
 
     this.#gameStore.select(fromGames.getCurrentSeason).subscribe((season) => {

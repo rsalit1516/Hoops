@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { Observable, of, combineLatest, from } from 'rxjs';
 import { Division } from '@app/domain/division';
 import {
@@ -52,42 +52,17 @@ export class GameService {
   allPlayoffGames: PlayoffGame[] | undefined;
   standing: any[] | undefined;
   // divisions$: Observable<Division>;
-  seasonGames$: Observable<RegularGame[]>;
+  // seasonGames$: Observable<RegularGame[]>;
 
   divisions$ = this.gameStore.select(fromGames.getDivisions);
-
-  // vm$ = combineLatest([this.games$, this.divisions$]).pipe(
-  //   map(([games, divisions]) => ({ games, divisions }))
-  // );
-  // currentDivision$ = this.gameStore
-  //   .pipe(select(fromGames.getCurrentDivision));
-  // // .subscribe((division): number | undefined => {
-  // //   return division !== undefined
-  // //     ? (this.divisionId = division.divisionId)
-  // //     : undefined;
-  // // });
+  seasonGames$ = this.gameStore.pipe(select(fromGames.getGames));
 
   divisions: Division[] | undefined;
   user: User | undefined;
   seasonPlayoffGames: PlayoffGame[] | null | undefined;
-  // divisionGames$ = this.allGames$.pipe(
-  //   map(games => this.getDivisionGames(games, this.divisionId))
-  // );
+  seasonGamesSignal = signal<RegularGame[] | null>(null);
 
-  constructor () {
-    this.gameStore.select(fromGames.getCurrentSeason).subscribe({
-      next: (season) => {
-        // console.log(season);
-        if (season !== undefined && season !== null) {
-          this.seasonId = season.seasonId;
-        }
-      },
-    });
-    // this.currentDivision$ = this.gameStore.select(fromGames.getCurrentDivision)
-
-    // this.getCurrentSeason();
-    this.seasonGames$ = this.gameStore.pipe(select(fromGames.getGames));
-  }
+  constructor () {}
 
   private getDivisionGames (games: RegularGame[], divisionId: number) {
     let g: RegularGame[] = [];
@@ -105,8 +80,10 @@ export class GameService {
     return g;
   }
   getGames (): Observable<RegularGame[]> {
-    return this.http.get<RegularGame[]>(this.dataService.seasonGamesUrl + '?seasonId=' + this.#seasonService.season().seasonId);
+    return this.http.get<RegularGame[]>(Constants.SEASON_GAMES_URL + '?seasonId=' + this.#seasonService.selectedSeason.seasonId);
   }
+
+
   //   const divId = fromGames.getCurrentDivisionId;
   //   return this.http
   //     .get<Game[]>(this.dataService.seasonGamesUrl + this.currentSeason$)

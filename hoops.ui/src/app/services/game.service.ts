@@ -30,7 +30,7 @@ export class GameService {
   private _http = inject(HttpClient);
   public dataService = inject(DataService);
   readonly #seasonService = inject(SeasonService);
-  readonly #scheduleGamesUrl = Constants.SEASON_GAMES_URL + '?seasonid=' + this.#seasonService.currentSeason()?.seasonId;
+  readonly #scheduleGamesUrl = Constants.SEASON_GAMES_URL + '?seasonid=' + this.#seasonService.selectedSeason.seasonId;
   private _games!: RegularGame[];
   standing: any[] = [];
   currentDivision$: Observable<Division | null> = of(null);
@@ -52,6 +52,9 @@ export class GameService {
   private selectedRecord = signal<RegularGame | null>(null);
   // Expose the selected record signal
   selectedRecordSignal = this.selectedRecord.asReadonly();
+
+  seasonGamesSignal = signal<RegularGame[] | null>(null);
+
 
   public currentTeamId: string | undefined;
 
@@ -95,6 +98,17 @@ export class GameService {
         catchError(this.dataService.handleError('getGames', []))
       );
   }
+  fetchSeasonGames() {
+    console.log(this.#scheduleGamesUrl);
+    this.http.get<RegularGame[]>(Constants.SEASON_GAMES_URL + '?seasonId=' + this.#seasonService.selectedSeason.seasonId).
+      subscribe(
+        (games) => {
+          this.seasonGames$ = of(games);
+          this.seasonGamesSignal.set(games);
+          console.log(games);
+        }
+      );
+}
   filterGamesByDivision (): Observable<RegularGame[]> {
     let games: RegularGame[] = [];
     let sortedDate: RegularGame[] = [];

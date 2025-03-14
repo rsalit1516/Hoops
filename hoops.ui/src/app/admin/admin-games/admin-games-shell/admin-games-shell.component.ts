@@ -51,13 +51,13 @@ import { LoggerService } from '@app/services/logging.service';
   ]
 })
 export class AdminGamesShellComponent implements OnInit {
-  logger = inject(LoggerService);
-  gameService = inject(AdminGameService);
+  readonly #logger = inject(LoggerService);
+  readonly #gameService = inject(AdminGameService);
+  readonly #store = inject(Store<fromAdmin.State>);
   pageTitle = 'Game Management';
   isSidenavOpen = false;
-
-  seasons$ = this.store.select(fromAdmin.getSeasons);
-  divisions$ = this.store.select(fromAdmin.getSeasonDivisions);
+  seasons$ = this.#store.select(fromAdmin.getSeasons);
+  divisions$ = this.#store.select(fromAdmin.getSeasonDivisions);
   showRegularSeason = true;
   showPlayoffs = false;
   games: RegularGame[] | undefined;
@@ -69,11 +69,11 @@ export class AdminGamesShellComponent implements OnInit {
   @ViewChild('firstPanel') firstPanel!: MatExpansionPanel;
 
   constructor (
-    private store: Store<fromAdmin.State>,
+
 
   ) {
     effect(() => {
-      const record = this.gameService.selectedRecordSignal();
+      const record = this.#gameService.selectedRecordSignal();
       console.log('Selected record changed:', record);
       if (record !== null) {
         console.log(`Record updated: ${ record.gameScheduleId }`);
@@ -91,40 +91,40 @@ export class AdminGamesShellComponent implements OnInit {
   }
 
   ngOnInit (): void {
-    this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
+    this.#store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
       console.log(division);
       if (division !== undefined) {
-        this.store.dispatch(new adminActions.LoadDivisionGames());
-        this.store.dispatch(new adminActions.LoadDivisionTeams());
-        this.store.dispatch(new adminActions.LoadPlayoffGames());
-        this.gameService.selectedDivision.set(division);
-        this.gameService.filteredGames();
-        console.log(this.gameService.filteredGames());
+        this.#store.dispatch(new adminActions.LoadDivisionGames());
+        this.#store.dispatch(new adminActions.LoadDivisionTeams());
+        this.#store.dispatch(new adminActions.LoadPlayoffGames());
+        this.#gameService.selectedDivision.set(division);
+        this.#gameService.filteredGames();
+        console.log(this.#gameService.filteredGames());
       }
     });
-    this.store.select(fromAdmin.getSelectedTeam).subscribe((team) => {
+    this.#store.select(fromAdmin.getSelectedTeam).subscribe((team) => {
       console.log(team);
       if (team !== undefined) {
-        this.store.dispatch(new adminActions.LoadTeamGames());
+        this.#store.dispatch(new adminActions.LoadTeamGames());
         // this.store.dispatch(new adminActions.LoadDivisionTeams());
       }
     });
-    this.store.select(fromAdmin.getGameType).subscribe((gameType) => {
+    this.#store.select(fromAdmin.getGameType).subscribe((gameType) => {
       console.log(gameType);
       console.log((gameType === 'Regular Season'));
       this.showPlayoffs = (gameType === 'Playoffs');
       this.showRegularSeason = (gameType === 'Regular Season');
       if (gameType !== undefined) {
         console.log('Calling filtered games');
-        this.store.dispatch(new adminActions.LoadDivisionGames());
-        this.store.dispatch(new adminActions.LoadDivisionTeams());
-        this.store.dispatch(new adminActions.LoadPlayoffGames());
+        this.#store.dispatch(new adminActions.LoadDivisionGames());
+        this.#store.dispatch(new adminActions.LoadDivisionTeams());
+        this.#store.dispatch(new adminActions.LoadPlayoffGames());
       }
     });
-    this.store.select(fromAdmin.getDivisionGames).subscribe((games) => {
-      this.store.dispatch(new adminActions.SetFilteredGames(games as RegularGame[]));
+    this.#store.select(fromAdmin.getDivisionGames).subscribe((games) => {
+      this.#store.dispatch(new adminActions.SetFilteredGames(games as RegularGame[]));
     });
-    this.store.select(fromAdmin.getFilteredGames).subscribe((games) => {
+    this.#store.select(fromAdmin.getFilteredGames).subscribe((games) => {
       this.games = games;
     });
 
@@ -146,7 +146,7 @@ export class AdminGamesShellComponent implements OnInit {
     // console.log($event);
     // console.log($event.division);
     // console.log($event.season);
-    this.logger.log($event.gametType);
+    this.#logger.log($event.gametType);
     if ($event.gameType === 'Playoffs') {
       this.showPlayoffs = true;
       this.showRegularSeason = false;

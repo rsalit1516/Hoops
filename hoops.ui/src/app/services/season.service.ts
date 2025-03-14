@@ -30,20 +30,22 @@ export class SeasonService {
     shareReplay(1),
     // catchError(this.dataService.handleError)
   );
+  currentSeason = signal<Season | undefined>(undefined);
 
   currentSeason$ =
     this.#http.get<Season>(Constants.currentSeasonUrl).pipe(
       map(season => season as Season),
+      tap(data => this.currentSeason.set(data)),
+      tap(data => this.selectSeason(data)),
       // tap(data => console.log('All: ' + JSON.stringify(data))),
       catchError(this.#dataService.handleError('getCurrentSeason', null))
     );
   public getCurrentSeason (): Observable<Season | undefined> {
     return this.#http.get<Season>(Constants.currentSeasonUrl);
   }
-  currentSeason = signal<Season | undefined>(undefined);
-  private _selectedSeason = signal<Season | null>(null);
+  private _selectedSeason = signal<Season>(new Season());
 
-  get selectedSeason (): Season | null {
+  get selectedSeason (): Season  {
     return this._selectedSeason();
   }
 

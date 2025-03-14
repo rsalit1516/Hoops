@@ -1,4 +1,4 @@
-import { Component, OnInit, input } from '@angular/core';
+import { Component, OnInit, inject, input } from '@angular/core';
 import { SeasonService } from '@app/services/season.service';
 import { DivisionService } from '@app/services/division.service';
 import { TeamService } from '@app/services/team.service';
@@ -26,6 +26,13 @@ import { GamesTopMenuComponent } from '../../components/games-top-menu/games-top
   imports: [GamesTopMenuComponent, RouterOutlet]
 })
 export class GamesShellComponent implements OnInit {
+  private seasonService = inject(SeasonService);
+  private divisionService = inject(DivisionService);
+  private _teamService = inject(TeamService);
+  private _gameService = inject(GameService);
+  private store = inject(Store<fromGames.State>);
+  private userStore = inject(Store<fromUser.State>);
+
   readonly showAllTeams = input<boolean>();
   readonly currentTeam = input<string>();
   teamList: any[] | undefined;
@@ -66,14 +73,7 @@ export class GamesShellComponent implements OnInit {
   filteredTeams!: Team[];
   filteredGames!: RegularGame[];
   filteredGamesByDate!: Observable<RegularGame[]>;
-  constructor (
-    private seasonService: SeasonService,
-    private divisionService: DivisionService,
-    private _teamService: TeamService,
-    private _gameService: GameService,
-    private store: Store<fromGames.State>,
-    private userStore: Store<fromUser.State>
-  ) {
+  constructor () {
     this.selectedDivisionId = 1;
   }
 

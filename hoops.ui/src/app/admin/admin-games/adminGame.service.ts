@@ -33,7 +33,7 @@ export class AdminGameService {
   ) {
     effect(() => {
       const filteredGames = this.filteredGames();
-      console.log('Filtered Games', filteredGames);
+      // console.log('Filtered Games', filteredGames);
     });
   }
 
