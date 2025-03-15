@@ -75,10 +75,10 @@ export class ScheduleShellComponent implements OnInit {
   divisionId: number | undefined;
   hasPlayoffs = false;
   dailySchedule!: Array<RegularGame[]>;
-  seasonDivisions = signal<Division[] > ([]);
+  seasonDivisions = signal<Division[]>([]);
   // selectedDivision = signal<Division | undefined>(undefined);
   selectedDivision = computed(() => this.#divisionService.selectedDivision());
-  constructor() {
+  constructor () {
     effect(() => {
       const selectedDivision = this.selectedDivision();
       if (selectedDivision) {
@@ -89,16 +89,16 @@ export class ScheduleShellComponent implements OnInit {
         this.dailySchedule = this.gameService.groupRegularGamesByDate(this.games!);
       }
     });
-   }
+  }
 
   ngOnInit () {
     //this.selectedDivision.set(this.#divisionService.selectedDivision()); //this.store.select(fromGames.getCurrentDivision).subscribe((division) => {
-      this.#store.select(fromGames.getFilteredGames).subscribe((games) => {
-        this.games = games;
-        this.dailySchedule = [];
-        this.dailySchedule = this.gameService.groupRegularGamesByDate(games);
-      });
-      this.#store.dispatch(new gameActions.LoadDivisionPlayoffGames());
+    this.#store.select(fromGames.getFilteredGames).subscribe((games) => {
+      this.games = games;
+      this.dailySchedule = [];
+      this.dailySchedule = this.gameService.groupRegularGamesByDate(games);
+    });
+    this.#store.dispatch(new gameActions.LoadDivisionPlayoffGames());
     // });
   }
 
@@ -116,5 +116,11 @@ export class ScheduleShellComponent implements OnInit {
       }
     }
     return false;
+  }
+  getDailySchedule (games: RegularGame[]) {
+    this.games = games;
+    this.dailySchedule = [];
+    this.dailySchedule = this.gameService.groupRegularGamesByDate(games);
+
   }
 }
