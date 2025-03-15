@@ -45,10 +45,13 @@
         "processId": "${command:pickProcess}"
     },
     {
-        "type": "chrome",
-        "name": "http://127.0.0.1:3000/hoops.ui/src/app/games/components/daily-schedule/daily-schedule.component.html",
+        "type": "edge",
+        "name": "Launch Edge",
         "request": "launch",
-        "url": "http://127.0.0.1:3000/hoops.ui/src/app/games/components/daily-schedule/daily-schedule.component.html"
+        "url": "http://localhost:4200",
+      "webRoot": "${workspaceFolder}",
+      "sourceMaps": true,
+      "trace": true
     }
 ]
 }

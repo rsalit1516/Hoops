@@ -20,6 +20,7 @@ import { Team } from '@app/domain/team';
 import { User } from '@app/domain/user';
 import { SeasonService } from './season.service';
 import { DivisionService } from './division.service';
+import { LoggerService } from './logging.service';
 
 @Injectable({
   providedIn: 'root'
@@ -32,10 +33,19 @@ export class GameService {
   public dataService = inject(DataService);
   readonly #seasonService = inject(SeasonService);
   readonly #divisionService = inject(DivisionService);
+  readonly #logger = inject(LoggerService);
   readonly #scheduleGamesUrl = Constants.SEASON_GAMES_URL + '?seasonid=' + this.#seasonService.selectedSeason.seasonId;
   private _games!: RegularGame[];
   standing: any[] = [];
   currentDivision$: Observable<Division | null> = of(null);
+  filteredGames = signal<RegularGame[]>([]);
+  selectedDivision = computed(() => {
+    this.#divisionService.selectedDivision();
+    this.#logger.log('selectedDivision', this.#divisionService.selectedDivision());
+    this.filteredGames.update(() => this.filterGamesByDivision());
+    this.#logger.log(this.games);
+    const dailySchedule = this.groupRegularGamesByDate(this.games);
+  });
   seasonGames$: Observable<RegularGame[] | null> = of(null);
   allGames: any;
   get games () {
@@ -101,19 +111,19 @@ export class GameService {
       );
   }
   fetchSeasonGames() {
-    console.log(this.#scheduleGamesUrl);
+    // console.log(this.#scheduleGamesUrl);
     this.http.get<RegularGame[]>(Constants.SEASON_GAMES_URL + '?seasonId=' + this.#seasonService.selectedSeason.seasonId).
       subscribe(
         (games) => {
           this.seasonGames$ = of(games);
           this.seasonGamesSignal.set(games);
-          console.log(games);
+          // console.log(games);
         }
       );
 }
   filterGamesByDivision (): RegularGame[] {
     let games: RegularGame[] = [];
-    let sortedDate: RegularGame[] = [];
+    let filteredGamesByDate: RegularGame[] = [];
     let div = 0;
     const division = this.#divisionService.selectedDivision();
     // this.currentDivision$.subscribe((division) => {
@@ -132,15 +142,15 @@ export class GameService {
             }
           }
           games.sort();
-          sortedDate = games.sort((a, b) => {
+          filteredGamesByDate = games.sort((a, b) => {
             return this.compare(a.gameDate!, b.gameDate!, true);
           });
-          return sortedDate;
+          return filteredGamesByDate;
         }
-        return sortedDate;
+        return filteredGamesByDate;
     //   });
     // });
-    return sortedDate;
+    return filteredGamesByDate;
   }
 
 

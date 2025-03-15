@@ -26,7 +26,9 @@
 			"sash.hoverBorder": "#c02e6a",
 			"statusBarItem.remoteBackground": "#972453",
 			"statusBarItem.remoteForeground": "#e7e7e7",
-			"commandCenter.border": "#e7e7e799"
+			"commandCenter.border": "#e7e7e799",
+			"statusBar.border": "#972453",
+			"titleBar.border": "#972453"
 		},
 		"peacock.color": "#972453",
 		"dotnet-test-explorer.testProjectPath": "hoops.test"

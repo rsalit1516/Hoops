@@ -84,7 +84,9 @@ export class ScheduleShellComponent implements OnInit {
       if (selectedDivision) {
         console.log(selectedDivision);
         //        this.#store.dispatch(new gameActions.// LoadDivisionGames(selectedDivision.divisionId));
+        // this.gameService.currentDivision$
         this.gameService.filterGamesByDivision();
+        this.dailySchedule = this.gameService.groupRegularGamesByDate(this.games!);
       }
     });
    }

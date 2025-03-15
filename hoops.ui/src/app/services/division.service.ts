@@ -15,6 +15,7 @@ import * as fromAdmin from '../admin/state';
 import { Constants } from '@app/shared/constants';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { setErrorMessage } from '@app/shared/error-message';
+import { LoggerService } from './logging.service';
 
 @Injectable({
   providedIn: 'root',
@@ -26,6 +27,7 @@ export class DivisionService {
   #dataService = inject(DataService);
   #seasonService = inject(SeasonService);
   #store = inject(Store<fromAdmin.State>);
+  #logger = inject(LoggerService);
   selectedSeason = signal<Season | undefined>(undefined);
   selectedDivision = signal<Division | undefined>(undefined);
   seasonDivisions = signal<Division[] | undefined>(undefined);
@@ -119,11 +121,11 @@ export class DivisionService {
   constructor () {
     effect(() => {
       const season = this.#seasonService.selectedSeason;
-      console.log(season);
       if (season !== null) {
         this.selectedSeason.update(() => season);
         this.divisionResource.reload();
         this.getSeasonDivisions(season.seasonId ?? 0);
+        this.#logger.log(season);
       }
     })
     this.#store.pipe(select(fromAdmin.getSelectedSeason)).subscribe((season) => {
@@ -171,11 +173,14 @@ export class DivisionService {
     console.log(this.state);
   }
 
-  getSeasonDivisions (id: number): void {
+  getSeasonDivisions(id: number): void {
+    const url = Constants.SEASON_DIVISIONS_URL + id;
+    // this.#logger.log(url);
     this.#http
-      .get<Division[]>(Constants.SEASON_DIVISIONS_URL + id)
+      .get<Division[]>(url)
       .subscribe((data) => {
         this.seasonDivisions.update(() => data);
+        // console.log(this.seasonDivisions());
       },
         (error) => { catchError(() => of([])) }
       );

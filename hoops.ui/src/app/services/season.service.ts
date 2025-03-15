@@ -43,6 +43,14 @@ export class SeasonService {
   public getCurrentSeason (): Observable<Season | undefined> {
     return this.#http.get<Season>(Constants.currentSeasonUrl);
   }
+  fetchCurrentSeason() {
+    this.getCurrentSeason().subscribe((season) => {
+      if (season) {
+        this.currentSeason.set(season);
+        this.selectSeason(season);
+      }
+    });
+  }
   private _selectedSeason = signal<Season>(new Season());
 
   get selectedSeason (): Season  {

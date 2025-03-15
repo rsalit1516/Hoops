@@ -26,9 +26,9 @@ import { GamesTopMenuComponent } from '../../components/games-top-menu/games-top
   imports: [GamesTopMenuComponent, RouterOutlet]
 })
 export class GamesShellComponent implements OnInit {
-  private seasonService = inject(SeasonService);
-  private divisionService = inject(DivisionService);
-  private _teamService = inject(TeamService);
+  readonly #seasonService = inject(SeasonService);
+  readonly #divisionService = inject(DivisionService);
+  readonly #teamService = inject(TeamService);
   private _gameService = inject(GameService);
   private store = inject(Store<fromGames.State>);
   private userStore = inject(Store<fromUser.State>);
