@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { AuthService } from './auth.service';
+import { AuthService } from '@app/services/auth.service';
 import { Store, select } from '@ngrx/store';
 import { NgIf } from '@angular/common';
 

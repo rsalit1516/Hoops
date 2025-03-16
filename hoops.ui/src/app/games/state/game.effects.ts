@@ -58,7 +58,7 @@ export class GameEffects {
       this.playoffGameService.getSeasonPlayoffGames().pipe(
         // tap(data => console.log('All playoff games: ' +this.playoffGameUrl + ' '+ JSON.stringify(data))),
         shareReplay(1),
-        map((games) => new gameActions.LoadPlayoffGamesSuccess(games)),
+        map((games) => new gameActions.LoadPlayoffGamesSuccess(games!)),
         tap(games => console.log(games)),
         catchError((err) => of(new gameActions.LoadPlayoffGamesFail(err)))
       )
@@ -149,29 +149,29 @@ export class GameEffects {
   //   )
   // ));
 
-  loadDivisionPlayoffGames$: Observable<Action> = createEffect(() => this.actions$.pipe(
-    ofType(gameActions.GameActionTypes.LoadDivisionPlayoffGames),
-    concatMap((action) =>
-      of(action).pipe(
-        withLatestFrom(this.store.pipe(select(getCurrentDivision)))
-      )
-    ),
-    tap(([, t]) => {
-      if (t) {
-        // console.log(t);
-        this.divisionId = t.divisionId;
-      } else {
-        this.divisionId = 0;
-      }
-    }),
-    switchMap(() =>
-      this.playoffGameService.getDivisionPlayoffGames(this.divisionId).pipe(
-        map((games) => new gameActions.LoadDivisionPlayoffGamesSuccess(games)),
-        // tap(response => console.log(response)),
-        catchError((err) => of(new gameActions.LoadDivisionPlayoffGamesFail(err)))
-      )
-    )
-  ));
+  // loadDivisionPlayoffGames$: Observable<Action> = createEffect(() => this.actions$.pipe(
+  //   ofType(gameActions.GameActionTypes.LoadDivisionPlayoffGames),
+  //   concatMap((action) =>
+  //     of(action).pipe(
+  //       withLatestFrom(this.store.pipe(select(getCurrentDivision)))
+  //     )
+  //   ),
+  //   tap(([, t]) => {
+  //     if (t) {
+  //       // console.log(t);
+  //       this.divisionId = t.divisionId;
+  //     } else {
+  //       this.divisionId = 0;
+  //     }
+  //   }),
+  //   switchMap(() =>
+  //     this.playoffGameService.getDivisionPlayoffGames(this.divisionId)
+  //       map((games) => new gameActions.LoadDivisionPlayoffGamesSuccess(games)),
+  //       // tap(response => console.log(response)),
+  //       catchError((err) => of(new gameActions.LoadDivisionPlayoffGamesFail(err)))
+  //     )
+  //   )
+  // ));
 
 
   // tslint:disable-next-line:member-ordering

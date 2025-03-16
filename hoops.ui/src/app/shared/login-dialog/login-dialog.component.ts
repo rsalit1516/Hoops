@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { AuthService } from '@app/user/auth.service';
+import { AuthService } from '@app/services/auth.service';
 import {
   UntypedFormBuilder,
   Validators

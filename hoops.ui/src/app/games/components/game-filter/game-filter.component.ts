@@ -1,22 +1,23 @@
-import { Component, OnInit, inject, input, output } from '@angular/core';
+import { Component, OnInit, computed, effect, inject, input, output } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import * as fromGames from '../../state';
 import * as gameActions from '../../state/games.actions';
 import { Division } from '@app/domain/division';
 import { Team } from '@app/domain/team';
-import { GameService } from '@app/games/game.service';
+import { GameService } from '@app/services/game.service';
 import { FormsModule } from '@angular/forms';
 import { MatOptionModule } from '@angular/material/core';
 import { NgFor, CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { LoggerService } from '@app/services/logging.service';
+import { DivisionService } from '@app/services/division.service';
 
 @Component({
   selector: 'csbc-game-filter',
   templateUrl: './game-filter.component.html',
-  styleUrls: ['./game-filter.component.scss'],
+  styleUrls: [ './game-filter.component.scss' ],
   imports: [
     CommonModule,
     FormsModule,
@@ -27,8 +28,10 @@ import { LoggerService } from '@app/services/logging.service';
   ]
 })
 export class GameFilterComponent implements OnInit {
-  logger = inject(LoggerService);
+  readonly #logger = inject(LoggerService);
+  readonly #divisionService = inject(DivisionService);
   readonly divisions = input.required<Division[]>();
+  readonly #gameService = inject(GameService);
   currentDivision!: Division;
   readonly teams = input.required<Team[] | null>();
   divisionService = inject(GameService);
@@ -36,29 +39,35 @@ export class GameFilterComponent implements OnInit {
   currentTeam!: Team;
   showAllTeams!: boolean;
   readonly selectedTeam = output<Team>();
+  selectedDivision = computed(() => this.#divisionService.selectedDivision);
+  constructor() {
+    effect(() => {
+      this.#logger.log(this.selectedDivision());
+      this.#gameService.filterGamesByDivision();
+    });
+  }
 
-  constructor () { }
-
-  ngOnInit () {
+  ngOnInit() {
     this.showAllTeams = true;
     this.gameStore.select(fromGames.getCurrentDivision).subscribe((division) => {
       this.currentDivision = division!;
-      this.logger.log(division);
+      this.#logger.log(division);
       this.gameStore.dispatch(new gameActions.LoadFilteredGames);
       this.gameStore.dispatch(new gameActions.LoadDivisionPlayoffGames);
       this.gameStore.dispatch(new gameActions.LoadStandings);
     });
   }
 
-  onDivisionChange (val: Division) {
+  onDivisionChange(val: Division) {
     console.log(val);
     if (val !== undefined) {
       this.currentDivision = val;
+      this.#divisionService.selectedDivision.update(() => val);
       this.gameStore.dispatch(new gameActions.SetCurrentDivision(val));
     }
   }
 
-  onTeamChange (val: Team) {
+  onTeamChange(val: Team) {
     if (val !== undefined && val !== this.currentTeam) {
       this.currentTeam = val;
       this.gameStore.dispatch(new gameActions.SetCurrentTeam(val));

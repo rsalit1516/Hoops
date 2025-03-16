@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { AuthService } from '@app/user/auth.service';
+import { AuthService } from '@app/services/auth.service';
 import { FormsModule, FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import * as userActions from '../../user/state/user.actions';
 import * as fromUser from '../../user/state';

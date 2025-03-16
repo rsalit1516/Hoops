@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, input } from '@angular/core';
+import { Component, OnInit, computed, effect, inject, input } from '@angular/core';
 import { SeasonService } from '@app/services/season.service';
 import { DivisionService } from '@app/services/division.service';
 import { TeamService } from '@app/services/team.service';
@@ -29,7 +29,7 @@ export class GamesShellComponent implements OnInit {
   readonly #seasonService = inject(SeasonService);
   readonly #divisionService = inject(DivisionService);
   readonly #teamService = inject(TeamService);
-  private _gameService = inject(GameService);
+  readonly #gameService = inject(GameService);
   private store = inject(Store<fromGames.State>);
   private userStore = inject(Store<fromUser.State>);
 
@@ -39,9 +39,9 @@ export class GamesShellComponent implements OnInit {
   filteredGames$: Observable<RegularGame[]> | undefined;
   standings$: Observable<Standing[]> | undefined;
   teams: any;
-  user$ = this.userStore
-    .pipe(select(fromUser.getCurrentUser))
-    .subscribe((user) => (this.user = user));
+  // user$ = this.userStore
+  //   .pipe(select(fromUser.getCurrentUser))
+  //   .subscribe((user) => (this.user.update(() => user)));
   allGames$: Observable<RegularGame[]> | undefined;
   errorMessage: any;
   selectedDivisionId$: Observable<number> | undefined;
@@ -51,12 +51,12 @@ export class GamesShellComponent implements OnInit {
   selectedDivision$: Observable<any> | undefined;
   standings: RegularGame[] | undefined;
   canEdit: boolean | undefined;
-  user: User | undefined;
+  // user: User | undefined;
   games: RegularGame[] | undefined;
   currentSeason$: Observable<any> | undefined; // = this.seasonService.currentSeason$.subscribe(season => this.seasonDescription = season.description);
   seasonDescription: string | undefined;
   // divisions$ = this.divisionService.divisions();
-  games$ = this._gameService.seasonGames$;
+  games$ = this.#gameService.seasonGames$;
 
   // TODO: this is a bug that needs to be fixed!
   // gameDivisionFilter$ = this._gameService.games$
@@ -68,13 +68,37 @@ export class GamesShellComponent implements OnInit {
   divisionId: any;
   divisionId$!: Observable<number> | undefined;
   selectedDivisionId: number;
-  divisions!: Division[];
-  currentDivision: Division | undefined;
-  filteredTeams!: Team[];
+  // divisions!: Division[];
+  // currentDivision: Division | undefined;
+  // filteredTeams!: Team[];
   filteredGames!: RegularGame[];
   filteredGamesByDate!: Observable<RegularGame[]>;
+
+    // Signals for reactive state
+    divisions = computed(() => this.store.selectSignal(fromGames.getDivisions)());
+    currentDivision = computed(() => this.store.selectSignal(fromGames.getCurrentDivision)());
+    filteredTeams = computed(() => this.store.selectSignal(fromGames.getFilteredTeams)());
+    user = computed(() => this.store.selectSignal(fromUser.getCurrentUser)());
+
   constructor () {
     this.selectedDivisionId = 1;
+    effect(() => {
+      const divisions = this.divisions();
+      if (divisions && divisions.length > 0) {
+        this.store.dispatch(new gameActions.SetCurrentDivision(divisions[0]));
+      }
+    });
+
+    // Effect to handle side effects when the current division changes
+    effect(() => {
+      const division = this.currentDivision();
+      if (division) {
+        this.store.dispatch(new gameActions.LoadFilteredTeams());
+        this.store.dispatch(new gameActions.LoadFilteredGames());
+        this.store.dispatch(new gameActions.LoadDivisionPlayoffGames());
+      }
+    });
+
   }
 
   ngOnInit () {
@@ -83,7 +107,10 @@ export class GamesShellComponent implements OnInit {
   setStateSubscriptions () {
     this.store
       .select(fromGames.getDivisions)
-      .subscribe((divisions) => (this.divisions = divisions));
+      .subscribe((divisions) => {
+        // Update the divisions signal with the new value
+        this.store.dispatch(new gameActions.SetDivisions(divisions));
+      });
     this.divisionId$ = this.store.pipe(
       select(fromGames.getCurrentDivisionId)
     ) as Observable<number>;
@@ -96,22 +123,22 @@ export class GamesShellComponent implements OnInit {
       }
     });
 
-    this.store.pipe(select(fromUser.getCurrentUser)).subscribe((user) => {
-      this.user = user;
-    });
-    this.store.select(fromGames.getCurrentDivision).subscribe((division) => {
-      this.currentDivision = division;
-      const divId = division?.divisionId as number;
-      console.log(division);
-      if (division) {
-        this.store.dispatch(new gameActions.LoadFilteredTeams());
-        this.store.dispatch(new gameActions.LoadFilteredGames());
-        this.store.dispatch(new gameActions.LoadDivisionPlayoffGames());
-        this.store.select(fromGames.getFilteredTeams).subscribe((teams) => {
-          this.filteredTeams = teams;
-        });
-      }
-    });
+    // this.store.pipe(select(fromUser.getCurrentUser)).subscribe((user) => {
+    //   this.user = user;
+    // });
+    // this.store.select(fromGames.getCurrentDivision).subscribe((division) => {
+    //   this.currentDivision = division;
+    //   const divId = division?.divisionId as number;
+    //   // console.log(division);
+    //   if (division) {
+    //     this.store.dispatch(new gameActions.LoadFilteredTeams());
+    //     this.store.dispatch(new gameActions.LoadFilteredGames());
+    //     this.store.dispatch(new gameActions.LoadDivisionPlayoffGames());
+    //     this.store.select(fromGames.getFilteredTeams).subscribe((teams) => {
+    //       this.filteredTeams = teams;
+    //     });
+    //   }
+    // });
     // this.store.select(fromGames.getFilteredGames).subscribe(games => {
     //   this.filteredGames = games;
     //   this.filteredGamesByDate = this._gameService.groupByDate(games);
@@ -125,13 +152,13 @@ export class GamesShellComponent implements OnInit {
 
   divisionSelected (division: Division): void {
     this.store.dispatch(new gameActions.SetCurrentDivision(division));
-    console.log(this.user$);
+    // console.log(this.user$);
     if (division !== undefined) {
-      this.store.dispatch(
-        new gameActions.SetCanEdit(
-          this._gameService.getCanEdit(this.user, division.divisionId)
-        )
-      );
+      // this.store.dispatch(
+        // new gameActions.SetCanEdit(
+        //   this.#gameService.getCanEdit(this.user, division.divisionId)
+        // )
+      // );
     }
   }
   teamSelected (team: Team): void {

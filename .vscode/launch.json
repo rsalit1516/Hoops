@@ -49,7 +49,7 @@
         "name": "Launch Edge",
         "request": "launch",
         "url": "http://localhost:4200",
-      "webRoot": "${workspaceFolder}",
+      "webRoot": "../hoops.ui/src/app",
       "sourceMaps": true,
       "trace": true
     }

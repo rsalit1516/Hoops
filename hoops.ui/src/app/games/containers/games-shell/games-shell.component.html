@@ -1,6 +1,6 @@
 <csbc-games-top-menu
-  [divisions]="divisions"
-  [teams]="filteredTeams"
+  [divisions]="divisions()"
+  [teams]="filteredTeams()"
   (selectedDivision)="divisionSelected($event)"
 ></csbc-games-top-menu>
 <div class="games-wrapper">

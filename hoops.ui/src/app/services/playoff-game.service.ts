@@ -1,44 +1,59 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { PlayoffGame } from '@app/domain/playoffGame';
 import { Constants } from '@app/shared/constants';
 import { select, Store } from '@ngrx/store';
-import { Observable, map, of, tap } from 'rxjs';
+import { Observable, catchError, map, of, tap } from 'rxjs';
 
 import * as fromGames from '../games/state';
 import { LoggerService } from './logging.service';
 import { SeasonService } from '@app/services/season.service';
+import { DivisionService } from './division.service';
+import { DataService } from './data.service';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class PlayoffGameService {
-
+  readonly #divisionService = inject(DivisionService);
   private http = inject(HttpClient);
   private gameStore = inject(Store<fromGames.State>);
   private logger = inject(LoggerService);
   readonly #seasonService = inject(SeasonService);
+  readonly #dataService = inject(DataService);
 
   divisionPlayoffGames = signal<PlayoffGame[] | undefined>(undefined);
   seasonId: number | undefined; // = 2192; // TO DO make this is passed in!
-  seasonPlayoffGames: PlayoffGame[] | null | undefined;
+  seasonPlayoffGames = signal<PlayoffGame[]>([]);
   allPlayoffGames: PlayoffGame[] | undefined;
+  playoffGames$: Observable<PlayoffGame[]> | undefined;
+  selectedDivision = computed(() => {
+    const division = this.#divisionService.currentDivision();
+    if (division) {
+      this.divisionPlayoffGames.update(() => this.getDivisionPlayoffGames(division.directorId));
+    }
+  });
 
+  constructor() { }
 
-
-  constructor () { }
-
-  getSeasonPlayoffGames (): Observable<PlayoffGame[]> {
+  getSeasonPlayoffGames(): Observable<PlayoffGame[] | null> {
     const url = Constants.PLAYOFF_GAMES_URL + '?seasonId=' + this.#seasonService.selectedSeason!.seasonId;
     this.logger.log(url);
     return this.http.get<PlayoffGame[]>(url).pipe(
-      map((response) => (this.seasonPlayoffGames = response)),
-      tap((data) => console.log('All: ' + JSON.stringify(data.length)))
-      // catchError(this.handleError)
+      // map((response) => (this.seasonPlayoffGames = response)),
+      tap((data) => console.log('All: ' + JSON.stringify(data.length))),
+      catchError(this.#dataService.handleError('getCurrentSeason', null))
     );
   }
-  getDivisionPlayoffGames (div: number): Observable<PlayoffGame[]> {
+  fetchSeasonPlayoffGames() {
+    this.getSeasonPlayoffGames().subscribe((playoffGames) => {
+      if (playoffGames) {
+        this.seasonPlayoffGames.update(() => playoffGames);
+      }
+    });
+  }
+  getDivisionPlayoffGames(div: number): PlayoffGame[] {
     let games: PlayoffGame[] = [];
     let sortedDate: PlayoffGame[] = [];
     this.gameStore
@@ -58,22 +73,22 @@ export class PlayoffGameService {
           return this.compare(a.gameDate!, b.gameDate!, true);
         });
         this.divisionPlayoffGames.update(() => sortedDate);
-        return of(sortedDate);
+        return (sortedDate);
       });
-    return of(sortedDate);
+    return (sortedDate);
   }
-  groupPlayoffGamesByDate (games: PlayoffGame[]): PlayoffGame[][] {
-    const groupedGames: { [key: string]: PlayoffGame[] } = {};
+  groupPlayoffGamesByDate(games: PlayoffGame[]): PlayoffGame[][] {
+    const groupedGames: { [ key: string ]: PlayoffGame[] } = {};
     games.forEach(game => {
       const gameDate = new Date(game.gameDate);
       const dateKey = gameDate.toLocaleDateString("en-CA");
-      if (!groupedGames[dateKey]) {
-        groupedGames[dateKey] = [];
-      } groupedGames[dateKey].push(game);
+      if (!groupedGames[ dateKey ]) {
+        groupedGames[ dateKey ] = [];
+      } groupedGames[ dateKey ].push(game);
     });
     return Object.values(groupedGames); // Convert the object to an array of arrays
   }
-  compare (a: Date | string, b: Date | string, isAsc: boolean) {
+  compare(a: Date | string, b: Date | string, isAsc: boolean) {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 }

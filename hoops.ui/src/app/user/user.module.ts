@@ -8,7 +8,7 @@ import { reducer } from './state/user.reducer';
 // import { AuthService } from './auth.service';
 import { LoginComponent } from './login.component';
 import { UserComponent } from './user.component';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../services/auth.service';
 
 @NgModule({
     exports: [],
