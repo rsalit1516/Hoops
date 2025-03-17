@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit } from '@angular/core';
 import { UntypedFormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Color } from '@app/domain/color';
 import { Division } from '@app/domain/division';
@@ -18,6 +18,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
+import { AuthService } from '@app/services/auth.service';
 
 @Component({
     selector: 'app-admin-team-detail',
@@ -42,6 +43,8 @@ import { MatCardModule } from '@angular/material/card';
     ]
 })
 export class AdminTeamDetailComponent implements OnInit {
+  readonly #authService = inject(AuthService);
+  user = computed(() => this.#authService.currentUser());
   editTeamForm = this.fb.group({
     // teamName: [''],
     teamNo: [''],
@@ -54,7 +57,7 @@ export class AdminTeamDetailComponent implements OnInit {
   selectedDivision$ = this.store.select(fromAdmin.getSelectedDivision);
   selectedSeason$ = this.store.select(fromAdmin.getSelectedSeason);
   selectedDivision: Division | null | undefined;
-  user!: User;
+
   title = 'Team';
 
   constructor(
@@ -64,9 +67,6 @@ export class AdminTeamDetailComponent implements OnInit {
     private teamService: TeamService
   ) {
     this.colors$ = this.store.select(fromAdmin.getColors);
-    this.store
-      .select(fromUser.getCurrentUser)
-      .subscribe((user) => (this.user = user));
   }
 
   ngOnInit(): void {
@@ -108,7 +108,7 @@ let newTeam  = new Team();
       divisionId: this.selectedDivision?.divisionId as number,
       teamNumber: this.editTeamForm.value.teamNo,
       teamColorId: this.editTeamForm.value.color,
-      createdUser: this.user.userName,
+      createdUser: this.user()!.userName,
       createdDate: new Date()
     };
     this.teamService.saveTeam(team);

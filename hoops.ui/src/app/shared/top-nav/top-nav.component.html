@@ -43,7 +43,7 @@
   <div class="flex justify-end ml-auto" >
     <button
       mat-raised-button
-      *ngIf="!currentUser"
+      *ngIf="!user()"
       routerLink="/login"
       matTooltip="Login for division directors"
       matTooltipClass="tooltip"
@@ -51,7 +51,7 @@
     >
       Login
     </button>
-    <p readonly *ngIf="currentUser">Hello {{ userName }}</p>
+    <p readonly *ngIf="user()">Hello {{ userName }}</p>
   </div>
   </mat-toolbar-row>
 </mat-toolbar>

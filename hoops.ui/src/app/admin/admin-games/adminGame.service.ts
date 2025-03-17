@@ -11,6 +11,7 @@ import { User } from '@app/domain/user';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { setErrorMessage } from '@app/shared/error-message';
 import { Division } from '@app/domain/division';
+import { AuthService } from '@app/services/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ import { Division } from '@app/domain/division';
 export class AdminGameService {
   private http = inject(HttpClient);
   private dataService = inject(DataService);
-
+readonly #authService = inject(AuthService);
   allGames: RegularGame[] | undefined;
   selectedDivision = signal<Division | null>(null);
   selectedTeam = signal<number | undefined>(0);
@@ -27,7 +28,8 @@ export class AdminGameService {
   // Expose the selected record signal
   selectedRecordSignal = this.selectedRecord.asReadonly();
   filteredGames = signal<RegularGame[] | null>(null);
-  constructor (
+  curentUser = computed(() => this.#authService.currentUser());
+  constructor(
     private store: Store<fromGames.State>,
     private userStore: Store<fromUser.State>
   ) {
@@ -78,7 +80,6 @@ export class AdminGameService {
   errorMessage = computed(() => setErrorMessage(this.error(), 'Game'));
   isLoading = this.gamesResource.isLoading;
 
-
   filterGamesByTeam (team: number): Observable<RegularGame[]> {
     let games: RegularGame[] = [];
     let sortedDate: RegularGame[] = [];
@@ -109,9 +110,7 @@ export class AdminGameService {
   }
 
   setCanEdit (division: number) {
-    this.store.pipe(select(fromUser.getCurrentUser)).subscribe((user) => {
-      let canEdit = this.getCanEdit(user, division);
-    });
+    let canEdit = this.getCanEdit(this.curentUser(), division);
   }
   getCanEdit (user: User | undefined, divisionId: number): boolean {
     // console.log(divisionId);

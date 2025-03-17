@@ -21,6 +21,7 @@ import { User } from '@app/domain/user';
 import { SeasonService } from './season.service';
 import { DivisionService } from './division.service';
 import { LoggerService } from './logging.service';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -33,12 +34,14 @@ export class GameService {
   public dataService = inject(DataService);
   readonly #seasonService = inject(SeasonService);
   readonly #divisionService = inject(DivisionService);
+  readonly #authService = inject(AuthService);
   readonly #logger = inject(LoggerService);
   readonly #scheduleGamesUrl = Constants.SEASON_GAMES_URL + '?seasonid=' + this.#seasonService.selectedSeason.seasonId;
   private _games!: RegularGame[];
   standing: any[] = [];
   currentDivision$: Observable<Division | null> = of(null);
   filteredGames = signal<RegularGame[]>([]);
+currentUser = computed(() => this.#authService.currentUser());
   selectedDivision = computed(() => {
     this.#divisionService.selectedDivision();
     this.#logger.log('selectedDivision', this.#divisionService.selectedDivision());
@@ -263,10 +266,8 @@ export class GameService {
   }
 
   setCanEdit (division: number) {
-    this.gameStore.pipe(select(fromUser.getCurrentUser)).subscribe((user) => {
-      let canEdit = this.getCanEdit(user, division);
+      let canEdit = this.getCanEdit(this.currentUser(), division);
       this.gameStore.dispatch(new gameActions.SetCanEdit(canEdit));
-    });
   }
   extractDate (date: string): Date {
     return DateTime.fromISO(date).toJSDate();

@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { tap } from 'rxjs/operators';
 
 import { Observable, of } from 'rxjs';
@@ -11,20 +11,21 @@ import * as userActions from '@app/user/state/user.actions';
 
 import { Constants } from '../shared/constants';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthService {
   readonly http = inject(HttpClient);
   readonly dataService = inject(DataService);
   readonly store = inject(Store<fromUser.State>);
 
-  currentUser: User | undefined;
+  currentUser = signal< User | undefined>(undefined);
     redirectUrl: string | undefined;
     loginUrl: string | undefined;
     user: User | undefined;
 
     constructor(
-    ) {
-    }
+    ) {}
 
     isLoggedIn(): boolean {
       return !!this.currentUser;
@@ -39,9 +40,10 @@ export class AuthService {
     }
     setUserState(user: User) {
       this.store.dispatch(new userActions.SetCurrentUser(user));
+      this.currentUser.set(user);
     }
 
     logout(): void {
-      this.currentUser = undefined;
+      this.currentUser.set(undefined);
     }
 }

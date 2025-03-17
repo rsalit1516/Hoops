@@ -18,6 +18,7 @@ import { User } from '@app/domain/user';
 import { SchedulePlayoffsComponent } from '@app/games/components/schedule-playoffs/schedule-playoffs.component';
 import { RouterOutlet } from '@angular/router';
 import { GamesTopMenuComponent } from '../../components/games-top-menu/games-top-menu.component';
+import { AuthService } from '@app/services/auth.service';
 
 @Component({
   selector: 'csbc-games-shell',
@@ -32,7 +33,7 @@ export class GamesShellComponent implements OnInit {
   readonly #gameService = inject(GameService);
   private store = inject(Store<fromGames.State>);
   private userStore = inject(Store<fromUser.State>);
-
+readonly #authService = inject(AuthService);
   readonly showAllTeams = input<boolean>();
   readonly currentTeam = input<string>();
   teamList: any[] | undefined;
@@ -78,7 +79,7 @@ export class GamesShellComponent implements OnInit {
     divisions = computed(() => this.store.selectSignal(fromGames.getDivisions)());
     currentDivision = computed(() => this.store.selectSignal(fromGames.getCurrentDivision)());
     filteredTeams = computed(() => this.store.selectSignal(fromGames.getFilteredTeams)());
-    user = computed(() => this.store.selectSignal(fromUser.getCurrentUser)());
+  user = computed(() => this.#authService.currentUser()); 
 
   constructor () {
     this.selectedDivisionId = 1;

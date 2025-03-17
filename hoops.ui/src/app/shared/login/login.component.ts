@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit } from '@angular/core';
 import { AuthService } from '@app/services/auth.service';
 import { FormsModule, FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import * as userActions from '../../user/state/user.actions';
@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
   get password() {
     return this.loginForm.get('password');
   }
-
+currentUser = computed(() => this.#authService.currentUser());
   constructor() {}
 
   ngOnInit() {
@@ -61,15 +61,15 @@ export class LoginComponent implements OnInit {
         this.loginForm.get('userName')?.value || '',
         this.loginForm.get('password')?.value || ''
       );
-      this.store.select(fromUser.getCurrentUser).subscribe(user => {
-        console.log(user);
-        if (user !== null && user.userId !== 0) {
+      // this.store.select(fromUser.getCurrentUser).subscribe(user => {
+        console.log(this.currentUser());
+        if (this.currentUser() !== null && this.currentUser()!.userId !== 0) {
           this.#router.navigate(['home']);
         } else {
           this.isFormValid = false;
         }
 
-      });
+      // });
     }
   }
   validateUser(userName: string, password: string) {
@@ -77,6 +77,7 @@ export class LoginComponent implements OnInit {
       console.log(response);
       if (response !== null) {
         this.store.dispatch(new userActions.SetCurrentUser(response));
+        this.#authService.currentUser.set(response);
       }
     });
   }

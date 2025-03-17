@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { Observable, of, combineLatest, from } from 'rxjs';
 import { Division } from '@app/domain/division';
 import {
@@ -23,6 +23,7 @@ import { DateTime } from 'luxon';
 import { PlayoffGame } from '@app/domain/playoffGame';
 import { LoggerService } from '@app/services/logging.service';
 import { SeasonService } from '@app/services/season.service';
+import { AuthService } from '@app/services/auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -34,6 +35,7 @@ export class GameService {
   userStore = inject(Store<fromUser.State>);
   logger = inject(LoggerService);
   readonly #seasonService = inject(SeasonService);
+  readonly #authService = inject(AuthService);
   seasonId: number | undefined; // = 2192; // TO DO make this is passed in!
   currentSeason$ = this.gameStore.select(fromGames.getCurrentSeason).subscribe({
     next: (season) => {
@@ -56,7 +58,7 @@ export class GameService {
 
   divisions$ = this.gameStore.select(fromGames.getDivisions);
   seasonGames$ = this.gameStore.pipe(select(fromGames.getGames));
-
+currentUser = computed(() => this.#authService.currentUser());
   divisions: Division[] | undefined;
   user: User | undefined;
   seasonPlayoffGames: PlayoffGame[] | null | undefined;
