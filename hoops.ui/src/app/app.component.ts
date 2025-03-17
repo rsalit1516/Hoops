@@ -19,9 +19,9 @@ import { DivisionService } from './services/division.service';
   styleUrls: [
     './app.component.scss'
   ],
-  imports: [ SidenavListComponent,
+  imports: [SidenavListComponent,
     TopNavComponent, RouterOutlet,
-    MatSidenavModule, MatNativeDateModule ]
+    MatSidenavModule, MatNativeDateModule]
 })
 export class AppComponent implements OnInit {
   readonly #router = inject(Router);
@@ -34,22 +34,22 @@ export class AppComponent implements OnInit {
   title = 'CSBC Hoops';
   season = computed(() => this.#seasonService.selectedSeason);
 
-  constructor() {
+  constructor () {
     effect(() => {
       const season = this.season();
       this.#logger.log(season);
 
       if ((season !== undefined) && (season.seasonId !== undefined) && (season.seasonId !== 0)) {
-        this.#divisionService.getSeasonDivisions(season!.seasonId!);
-        this.#gameStore.dispatch(new gameActions.LoadGames());
-        this.#gameService.fetchSeasonGames();
+        //         this.#divisionService.getSeasonDivisions(season!.seasonId!);
+        // this.#gameStore.dispatch(new gameActions.LoadGames());
+        //        this.#gameService.fetchSeasonGames();
       }
     });
   }
-  ngOnInit() {
-    this.#gameStore.dispatch(new gameActions.LoadCurrentSeason());
+  ngOnInit () {
+    // this.#gameStore.dispatch(new gameActions.LoadCurrentSeason());
     this.#seasonService.fetchCurrentSeason();
-    this.#router.navigate([ '' ])
+    this.#router.navigate([''])
   }
   public onToggleSidenav = () => {
     this.sidenavToggle.emit();
