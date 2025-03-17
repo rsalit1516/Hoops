@@ -4,7 +4,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { FeatureFlagService } from '@app/services/featureFlag.serrvice';
+import { FeatureFlagService } from '@app/services/featureFlag.service';
 
 @Component({
   selector: 'app-admin-shell-sidebar',

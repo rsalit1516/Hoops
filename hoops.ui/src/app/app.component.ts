@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit, output } from '@angular/core';
+import { Component, computed, effect, inject, OnInit, output } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { TopNavComponent } from './shared/top-nav/top-nav.component';
 import { SidenavListComponent } from './shared/sidenav-list/sidenav-list.component';
@@ -32,10 +32,11 @@ export class AppComponent implements OnInit {
   readonly #logger = inject(LoggerService);
   public readonly sidenavToggle = output();
   title = 'CSBC Hoops';
+  season = computed(() => this.#seasonService.selectedSeason);
 
   constructor() {
     effect(() => {
-      const season = this.#seasonService.currentSeason();
+      const season = this.season();
       this.#logger.log(season);
 
       if ((season !== undefined) && (season.seasonId !== undefined) && (season.seasonId !== 0)) {

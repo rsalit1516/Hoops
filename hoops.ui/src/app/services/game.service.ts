@@ -42,13 +42,7 @@ export class GameService {
   currentDivision$: Observable<Division | null> = of(null);
   filteredGames = signal<RegularGame[]>([]);
 currentUser = computed(() => this.#authService.currentUser());
-  selectedDivision = computed(() => {
-    this.#divisionService.selectedDivision();
-    this.#logger.log('selectedDivision', this.#divisionService.selectedDivision());
-    this.filteredGames.update(() => this.filterGamesByDivision());
-    this.#logger.log(this.games);
-    const dailySchedule = this.groupRegularGamesByDate(this.games);
-  });
+  selectedDivision = computed(() => this.#divisionService.selectedDivision());
   seasonGames$: Observable<RegularGame[] | null> = of(null);
   allGames: any;
   get games () {
@@ -83,6 +77,8 @@ currentUser = computed(() => this.#authService.currentUser());
     ),
     delay(2000)
   );
+
+
   private gamesResource = rxResource({
     loader: () => this.games$
   });
@@ -91,7 +87,7 @@ currentUser = computed(() => this.#authService.currentUser());
   error = computed(() => this.gamesResource.error() as HttpErrorResponse);
   errorMessage = computed(() => setErrorMessage(this.error(), 'Game'));
   isLoading = this.gamesResource.isLoading;
-
+  dailySchedule = signal<RegularGame[][]>([]);
   constructor () {
     // this._gameUrl = this.dataService.webUrl + '/api/gameschedule';
     this.standingsUrl = this.dataService.webUrl + '/api/gameStandings';
@@ -100,6 +96,19 @@ currentUser = computed(() => this.#authService.currentUser());
       if (record !== null) {
         console.log(`Record updated: ${ record.scheduleGamesId }`);
         // Optionally trigger additional logic here
+      }
+    });
+    effect(() => {
+      const selectedDivision = this.selectedDivision();
+      if (selectedDivision) {
+        console.log(selectedDivision);
+        this.gameStore.dispatch(new gameActions.LoadDivisionGames());
+        // this.gameService.currentDivision$
+        const test = this.filterGamesByDivision();
+        this.filteredGames.update(() => test);
+        const dailyGames = this.groupRegularGamesByDate(this.filteredGames());
+        this.dailySchedule.update(() => dailyGames);
+        console.log(this.dailySchedule);
       }
     });
   }
@@ -128,12 +137,12 @@ currentUser = computed(() => this.#authService.currentUser());
     let games: RegularGame[] = [];
     let filteredGamesByDate: RegularGame[] = [];
     let div = 0;
-    const division = this.#divisionService.selectedDivision();
+    // const division = this.#divisionService.selectedDivision();
     // this.currentDivision$.subscribe((division) => {
       // console.log(division);
-      div = division?.divisionId ?? 0;
+      div = this.selectedDivision()?.divisionId ?? 0;
       // this.seasonGames$.subscribe((seasonGames) => {
-        // console.log(seasonGames);
+        console.log(this.seasonGamesSignal());
         this.allGames = this.seasonGamesSignal();
         // this.setCanEdit(div);
         if (this.allGames) {

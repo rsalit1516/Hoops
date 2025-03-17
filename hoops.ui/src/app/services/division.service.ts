@@ -28,7 +28,7 @@ export class DivisionService {
   #seasonService = inject(SeasonService);
   #store = inject(Store<fromAdmin.State>);
   #logger = inject(LoggerService);
-  selectedSeason = signal<Season | undefined>(undefined);
+  selectedSeason = computed(() => this.#seasonService.selectedSeason);
   selectedDivision = signal<Division | undefined>(undefined);
   seasonDivisions = signal<Division[] | undefined>(undefined);
   updateSelectedDivision (division: Division) {
@@ -120,17 +120,16 @@ export class DivisionService {
 
   constructor () {
     effect(() => {
-      const season = this.#seasonService.selectedSeason;
+      const season = this.selectedSeason();
       if (season !== null) {
-        this.selectedSeason.update(() => season);
         this.divisionResource.reload();
         this.getSeasonDivisions(season.seasonId ?? 0);
         this.#logger.log(season);
+        console.log(this.seasonDivisions());
       }
     })
     this.#store.pipe(select(fromAdmin.getSelectedSeason)).subscribe((season) => {
       this.season = season;
-      this.selectedSeason.update(() => season);
     });
     this.selectedIdSubject.pipe(
       // Set the loading indicator
@@ -180,7 +179,8 @@ export class DivisionService {
       .get<Division[]>(url)
       .subscribe((data) => {
         this.seasonDivisions.update(() => data);
-        // console.log(this.seasonDivisions());
+        this.setCurrentDivision(data[0].divisionId);
+        console.log(this.seasonDivisions());
       },
         (error) => { catchError(() => of([])) }
       );

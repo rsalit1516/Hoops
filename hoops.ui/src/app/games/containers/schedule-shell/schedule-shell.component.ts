@@ -28,6 +28,7 @@ import { SchedulePlayoffsComponent } from '@app/games/components/schedule-playof
 import { ScheduleComponent } from '../../components/schedule/schedule.component';
 import { DateTime } from 'luxon';
 import { CommonModule } from '@angular/common';
+import { LoggerService } from '@app/services/logging.service';
 
 @Component({
   selector: 'csbc-schedule-shell',
@@ -46,9 +47,10 @@ import { CommonModule } from '@angular/common';
   ]
 })
 export class ScheduleShellComponent implements OnInit {
-  private gameService = inject(GameService);
+  readonly #gameService = inject(GameService);
   readonly #divisionService = inject(DivisionService);
   readonly #store = inject(Store<fromGames.State>);
+  readonly #loggerService = inject(LoggerService);
   games: RegularGame[] | undefined | null;
   playoffGames!: PlayoffGame[];
   title = 'Regular Season Schedule';
@@ -66,7 +68,7 @@ export class ScheduleShellComponent implements OnInit {
   division$: Observable<Division> | undefined;
   division: Division | undefined;
   user: User | undefined;
-  games$ = this.gameService.seasonGames$.pipe(
+  games$ = this.#gameService.seasonGames$.pipe(
     catchError((err) => {
       this.errorMessage$ = err;
       return EMPTY;
@@ -78,15 +80,17 @@ export class ScheduleShellComponent implements OnInit {
   seasonDivisions = signal<Division[]>([]);
   // selectedDivision = signal<Division | undefined>(undefined);
   selectedDivision = computed(() => this.#divisionService.selectedDivision());
-  constructor () {
+filteredGames = computed (() => this.#gameService.filteredGames());
+  constructor() {
     effect(() => {
       const selectedDivision = this.selectedDivision();
       if (selectedDivision) {
-        console.log(selectedDivision);
+        this.#loggerService.log(selectedDivision);
         //        this.#store.dispatch(new gameActions.// LoadDivisionGames(selectedDivision.divisionId));
         // this.gameService.currentDivision$
-        this.gameService.filterGamesByDivision();
-        this.dailySchedule = this.gameService.groupRegularGamesByDate(this.games!);
+        // this.gameService.filterGamesByDivision();
+        this.dailySchedule = this.#gameService.groupRegularGamesByDate(this.games!);
+        this.#loggerService.log(this.dailySchedule);
       }
     });
   }
@@ -96,7 +100,7 @@ export class ScheduleShellComponent implements OnInit {
     this.#store.select(fromGames.getFilteredGames).subscribe((games) => {
       this.games = games;
       this.dailySchedule = [];
-      this.dailySchedule = this.gameService.groupRegularGamesByDate(games);
+      this.dailySchedule = this.#gameService.groupRegularGamesByDate(games);
     });
     this.#store.dispatch(new gameActions.LoadDivisionPlayoffGames());
     // });
@@ -120,7 +124,7 @@ export class ScheduleShellComponent implements OnInit {
   getDailySchedule (games: RegularGame[]) {
     this.games = games;
     this.dailySchedule = [];
-    this.dailySchedule = this.gameService.groupRegularGamesByDate(games);
+    this.dailySchedule = this.#gameService.groupRegularGamesByDate(games);
 
   }
 }

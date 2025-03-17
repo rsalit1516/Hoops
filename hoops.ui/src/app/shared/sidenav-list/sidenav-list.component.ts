@@ -17,12 +17,13 @@ import { AuthService } from '@app/services/auth.service';
 })
 export class SidenavListComponent implements OnInit {
   readonly #authService = inject(AuthService);
+  readonly store = inject(Store<fromUser.State>);
   readonly sidenavClose = output();
   showAdminMenu = false;
   // currentUser: User | undefined;
   userName: string | undefined;
   currentUser = computed(() => this.#authService.currentUser());
-  constructor(private store: Store<fromUser.State>) { }
+  constructor() { }
 
   ngOnInit() {
     // this.store.pipe(select(fromUser.getCurrentUser)).subscribe(user => {

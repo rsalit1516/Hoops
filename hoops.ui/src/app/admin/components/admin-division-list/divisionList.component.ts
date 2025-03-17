@@ -151,8 +151,9 @@ export class DivisionListComponent implements OnInit, OnChanges {
   addDivision () {
     console.log('Add Division');
     let division = new Division();
-    this.#divisionService.setCurrentDivision(division.divisionId);
-    this.store.dispatch(new adminActions.SetSelectedDivision(division));
+
+    // this.#divisionService.setCurrentDivision(division.divisionId);
+    // this.store.dispatch(new adminActions.SetSelectedDivision(division));
     this.#router.navigate(['./admin/division/edit']);
   }
   viewTeams (division: any) {
