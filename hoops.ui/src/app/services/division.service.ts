@@ -195,7 +195,6 @@ export class DivisionService {
     console.log(this.seasonDivisions());
     console.log(id);
     for (const item of this.seasonDivisions()!) {
-      console.log(item);
       if (item.divisionId === id) {
         division = item;
         console.log(division);
