@@ -1,32 +1,22 @@
-import { Component, computed, effect, inject, Input, OnInit, signal } from '@angular/core';
-import { Observable, zip, of, from, EMPTY } from 'rxjs';
+import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
+import { Observable, EMPTY } from 'rxjs';
 import { Season } from '@domain/season';
 import { Division } from '@app/domain/division';
 import { Team } from '@app/domain/team';
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 
 import * as fromGames from '../../state';
-import * as fromUser from '../../../user/state';
 import * as gameActions from '../../state/games.actions';
 
 import { RegularGame } from '@app/domain/regularGame';
 import { PlayoffGame } from '@app/domain/playoffGame';
 import {
-  groupBy,
-  mergeMap,
-  toArray,
-  tap,
-  map,
-  concatMap,
   catchError,
-  take,
 } from 'rxjs/operators';
 import { User } from '@app/domain/user';
 import { DivisionService } from './../../../services/division.service';
 import { GameService } from '@app/services/game.service';
-import { SchedulePlayoffsComponent } from '@app/games/components/schedule-playoffs/schedule-playoffs.component';
 import { ScheduleComponent } from '../../components/schedule/schedule.component';
-import { DateTime } from 'luxon';
 import { CommonModule } from '@angular/common';
 import { LoggerService } from '@app/services/logging.service';
 
@@ -36,7 +26,7 @@ import { LoggerService } from '@app/services/logging.service';
   <section class="container mx-auto">
     <h1>{{ title }}</h1>
     <div class="row">
-    <csbc-schedule [dailySchedule]="dailySchedule"></csbc-schedule>
+    <csbc-schedule/>
     </div>
 </section>
   `,
@@ -76,12 +66,12 @@ export class ScheduleShellComponent implements OnInit {
   );
   divisionId: number | undefined;
   hasPlayoffs = false;
-  dailySchedule!: Array<RegularGame[]>;
+  dailySchedule = computed(() => this.#gameService.dailySchedule);
   seasonDivisions = signal<Division[]>([]);
   // selectedDivision = signal<Division | undefined>(undefined);
   selectedDivision = computed(() => this.#divisionService.selectedDivision());
-filteredGames = computed (() => this.#gameService.filteredGames());
-  constructor() {
+  filteredGames = computed(() => this.#gameService.filteredGames());
+  constructor () {
     effect(() => {
       const selectedDivision = this.selectedDivision();
       if (selectedDivision) {
@@ -89,7 +79,7 @@ filteredGames = computed (() => this.#gameService.filteredGames());
         //        this.#store.dispatch(new gameActions.// LoadDivisionGames(selectedDivision.divisionId));
         // this.gameService.currentDivision$
         // this.gameService.filterGamesByDivision();
-        this.dailySchedule = this.#gameService.groupRegularGamesByDate(this.games!);
+        // this.dailySchedule = this.#gameService.groupRegularGamesByDate(this.games!);
         this.#loggerService.log(this.dailySchedule);
       }
     });
@@ -97,12 +87,12 @@ filteredGames = computed (() => this.#gameService.filteredGames());
 
   ngOnInit () {
     //this.selectedDivision.set(this.#divisionService.selectedDivision()); //this.store.select(fromGames.getCurrentDivision).subscribe((division) => {
-    this.#store.select(fromGames.getFilteredGames).subscribe((games) => {
-      this.games = games;
-      this.dailySchedule = [];
-      this.dailySchedule = this.#gameService.groupRegularGamesByDate(games);
-    });
-    this.#store.dispatch(new gameActions.LoadDivisionPlayoffGames());
+    // this.#store.select(fromGames.getFilteredGames).subscribe((games) => {
+    //   this.games = games;
+    //   this.dailySchedule = [];
+    //   this.dailySchedule = this.#gameService.groupRegularGamesByDate(games);
+    // });
+    // this.#store.dispatch(new gameActions.LoadDivisionPlayoffGames());
     // });
   }
 
@@ -121,10 +111,10 @@ filteredGames = computed (() => this.#gameService.filteredGames());
     }
     return false;
   }
-  getDailySchedule (games: RegularGame[]) {
-    this.games = games;
-    this.dailySchedule = [];
-    this.dailySchedule = this.#gameService.groupRegularGamesByDate(games);
+  // getDailySchedule (games: RegularGame[]) {
+  //   this.games = games;
+  //   this.dailySchedule = [];
+  //   this.dailySchedule = this.#gameService.groupRegularGamesByDate(games);
 
-  }
+  // }
 }

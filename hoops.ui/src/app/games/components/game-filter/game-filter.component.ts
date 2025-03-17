@@ -17,7 +17,7 @@ import { DivisionService } from '@app/services/division.service';
 @Component({
   selector: 'csbc-game-filter',
   templateUrl: './game-filter.component.html',
-  styleUrls: [ './game-filter.component.scss' ],
+  styleUrls: ['./game-filter.component.scss'],
   imports: [
     CommonModule,
     FormsModule,
@@ -40,25 +40,26 @@ export class GameFilterComponent implements OnInit {
   showAllTeams!: boolean;
   readonly selectedTeam = output<Team>();
   selectedDivision = computed(() => this.#divisionService.selectedDivision);
-  constructor() {
-    effect(() => {
-      this.#logger.log(this.selectedDivision());
-      this.#gameService.filterGamesByDivision();
-    });
+  // divisions = computed(() => this.#divisionService.seasonDivisions);
+  constructor () {
+    // effect(() => {
+    //   this.#logger.log(this.selectedDivision());
+    //   this.#gameService.filterGamesByDivision();
+    // });
   }
 
-  ngOnInit() {
+  ngOnInit () {
     this.showAllTeams = true;
-    this.gameStore.select(fromGames.getCurrentDivision).subscribe((division) => {
-      this.currentDivision = division!;
-      this.#logger.log(division);
-      this.gameStore.dispatch(new gameActions.LoadFilteredGames);
-      this.gameStore.dispatch(new gameActions.LoadDivisionPlayoffGames);
-      this.gameStore.dispatch(new gameActions.LoadStandings);
-    });
+    // this.gameStore.select(fromGames.getCurrentDivision).subscribe((division) => {
+    //   this.currentDivision = division!;
+    //   this.#logger.log(division);
+    //   this.gameStore.dispatch(new gameActions.LoadFilteredGames);
+    //   this.gameStore.dispatch(new gameActions.LoadDivisionPlayoffGames);
+    //   this.gameStore.dispatch(new gameActions.LoadStandings);
+    // });
   }
 
-  onDivisionChange(val: Division) {
+  onDivisionChange (val: Division) {
     console.log(val);
     if (val !== undefined) {
       this.currentDivision = val;
@@ -67,7 +68,7 @@ export class GameFilterComponent implements OnInit {
     }
   }
 
-  onTeamChange(val: Team) {
+  onTeamChange (val: Team) {
     if (val !== undefined && val !== this.currentTeam) {
       this.currentTeam = val;
       this.gameStore.dispatch(new gameActions.SetCurrentTeam(val));

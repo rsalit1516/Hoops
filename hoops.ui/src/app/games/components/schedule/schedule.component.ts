@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, input } from '@angular/core';
+import { Component, OnInit, Input, Output, input, computed, inject } from '@angular/core';
 import { RegularGame } from '../../../domain/regularGame';
 import { Store } from '@ngrx/store';
 import * as fromGames from '../../state';
@@ -6,7 +6,7 @@ import * as fromUser from '../../../user/state';
 import * as gameActions from '../../state/games.actions';
 
 import { GameScoreDialogComponent } from '../game-score-dialog/game-score-dialog.component';
-import { GameService } from '@app/games/game.service';
+import { GameService } from '@app/services/game.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DailyScheduleComponent } from '../daily-schedule/daily-schedule.component';
 import { CommonModule, NgFor } from '@angular/common';
@@ -22,7 +22,8 @@ import { CommonModule, NgFor } from '@angular/common';
   imports: [CommonModule, DailyScheduleComponent]
 })
 export class ScheduleComponent implements OnInit {
-  readonly dailySchedule = input.required<Array<RegularGame[]>>();
+  readonly #gameService = inject(GameService);
+  readonly dailySchedule = computed(() => this.#gameService.dailySchedule());
   groupedGames: RegularGame[] | undefined;
   _gamesByDate: [Date, RegularGame[]] | undefined;
   divisionId: number | undefined;

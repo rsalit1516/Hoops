@@ -33,7 +33,7 @@ export class GamesShellComponent implements OnInit {
   readonly #gameService = inject(GameService);
   private store = inject(Store<fromGames.State>);
   private userStore = inject(Store<fromUser.State>);
-readonly #authService = inject(AuthService);
+  readonly #authService = inject(AuthService);
   readonly showAllTeams = input<boolean>();
   readonly currentTeam = input<string>();
   teamList: any[] | undefined;
@@ -69,17 +69,17 @@ readonly #authService = inject(AuthService);
   divisionId: any;
   divisionId$!: Observable<number> | undefined;
   selectedDivisionId: number;
-  // divisions!: Division[];
+
   // currentDivision: Division | undefined;
   // filteredTeams!: Team[];
   filteredGames!: RegularGame[];
   filteredGamesByDate!: Observable<RegularGame[]>;
 
-    // Signals for reactive state
-    divisions = computed(() => this.store.selectSignal(fromGames.getDivisions)());
-    currentDivision = computed(() => this.store.selectSignal(fromGames.getCurrentDivision)());
-    filteredTeams = computed(() => this.store.selectSignal(fromGames.getFilteredTeams)());
-  user = computed(() => this.#authService.currentUser()); 
+  // Signals for reactive state
+  divisions = computed(() => this.#divisionService.seasonDivisions()!);
+  currentDivision = computed(() => this.store.selectSignal(fromGames.getCurrentDivision)());
+  filteredTeams = computed(() => this.store.selectSignal(fromGames.getFilteredTeams)());
+  user = computed(() => this.#authService.currentUser());
 
   constructor () {
     this.selectedDivisionId = 1;
@@ -156,9 +156,9 @@ readonly #authService = inject(AuthService);
     // console.log(this.user$);
     if (division !== undefined) {
       // this.store.dispatch(
-        // new gameActions.SetCanEdit(
-        //   this.#gameService.getCanEdit(this.user, division.divisionId)
-        // )
+      // new gameActions.SetCanEdit(
+      //   this.#gameService.getCanEdit(this.user, division.divisionId)
+      // )
       // );
     }
   }

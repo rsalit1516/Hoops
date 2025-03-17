@@ -1,11 +1,12 @@
 <div class="filter-divisions" class="filter-wrapper">
   <mat-form-field>
     <mat-label>Divisions</mat-label>
-    <mat-select [(value)]="currentDivision" #divisionSelect (selectionChange)="onDivisionChange(divisionSelect.value)">
-      <mat-option
-        *ngFor="let division of divisions()"
-        [value]="division"
-      >
+    <mat-select
+      [(value)]="currentDivision"
+      #divisionSelect
+      (selectionChange)="onDivisionChange(divisionSelect.value)"
+    >
+      <mat-option *ngFor="let division of divisions()" [value]="division">
         {{ division.divisionDescription }}
       </mat-option>
     </mat-select>
@@ -13,9 +14,8 @@
 
   <mat-form-field>
     <mat-label>Teams</mat-label>
-    <mat-select  #teamSelect (selectionChange)="onTeamChange(teamSelect.value)">
-      <mat-option *ngFor="let team of teams()"
-      [value]="team">
+    <mat-select #teamSelect (selectionChange)="onTeamChange(teamSelect.value)">
+      <mat-option *ngFor="let team of teams()" [value]="team">
         {{ team.teamName }}
       </mat-option>
     </mat-select>

@@ -112,13 +112,14 @@ export class GameService {
       const selectedDivision = this.selectedDivision();
       if (selectedDivision) {
         console.log(selectedDivision);
-        this.gameStore.dispatch(new gameActions.LoadDivisionGames());
+        // this.gameStore.dispatch(new gameActions.LoadDivisionGames());
         // this.gameService.currentDivision$
         const test = this.filterGamesByDivision();
         this.filteredGames.update(() => test);
+        console.log(test);
         const dailyGames = this.groupRegularGamesByDate(this.filteredGames());
         this.dailySchedule.update(() => dailyGames);
-        console.log(this.dailySchedule);
+        console.log(this.dailySchedule());
       }
     });
   }
@@ -152,12 +153,12 @@ export class GameService {
     // console.log(division);
     div = this.selectedDivision()?.divisionId ?? 0;
     // this.seasonGames$.subscribe((seasonGames) => {
-    console.log(this.seasonGamesSignal());
+    // console.log(this.seasonGamesSignal());
     this.allGames = this.seasonGamesSignal();
     // this.setCanEdit(div);
-    if (this.allGames) {
-      for (let i = 0; i < this.allGames.length; i++) {
-        if (this.allGames[i].divisionId === div) {
+    if (this.seasonGamesSignal()) {
+      for (let i = 0; i < this.seasonGamesSignal()!.length; i++) {
+        if (this.seasonGamesSignal()![i].divisionId === div) {
           let game = this.seasonGamesSignal()![i];
           game.gameDateOnly = this.extractDate(game.gameDate.toString());
           games.push(game);
@@ -167,6 +168,7 @@ export class GameService {
       filteredGamesByDate = games.sort((a, b) => {
         return this.compare(a.gameDate!, b.gameDate!, true);
       });
+      console.log(filteredGamesByDate);
       return filteredGamesByDate;
     }
     return filteredGamesByDate;
