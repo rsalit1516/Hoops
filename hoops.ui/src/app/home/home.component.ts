@@ -57,7 +57,7 @@ export class HomeComponent implements OnInit {
   meetingNoticeClass = 'col-sm-0 col-xs-0';
   announcementInfo = '';
 
-  constructor () {}
+  constructor () { }
 
   ngOnInit (): void {
     this.#store.dispatch(new homeActions.LoadContent());
@@ -71,11 +71,11 @@ export class HomeComponent implements OnInit {
     this.#gameStore.select(fromGames.getCurrentSeason).subscribe((season) => {
       if ((season?.seasonId !== 0) && (season?.seasonId !== undefined)) {
         this.#store.dispatch(new homeActions.LoadSponsors());
-        this.#gameStore.dispatch(new gameActions.LoadDivisions());
+        // this.#gameStore.dispatch(new gameActions.LoadDivisions());
         this.#gameStore.dispatch(new gameActions.LoadTeams());
-        this.#gameStore.dispatch(new gameActions.LoadGames());
+        // this.#gameStore.dispatch(new gameActions.LoadGames());
         // this.store.dispatch(new gameActions.LoadPlayoffGames());
-       }
+      }
     });
 
     this.#gameStore.select(fromGames.getCurrentSeason).subscribe((season) => {

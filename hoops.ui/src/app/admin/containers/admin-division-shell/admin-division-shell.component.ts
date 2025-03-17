@@ -50,16 +50,16 @@ export class AdminDivisionShellComponent implements OnInit {
   router = inject(Router);
   _divisionService = inject(DivisionService);
   title = 'Divisions';
-  constructor(private store: Store<fromAdmin.State>) {}
+  constructor (private store: Store<fromAdmin.State>) { }
 
-  ngOnInit() {
+  ngOnInit () {
     // this.store.dispatch(new adminActions.LoadSeasons());
     //this.store.dispatch(new adminActions.LoadLocations());
   }
-  addDivision() {
+  addDivision () {
     console.log('Add Division');
     let division = new Division();
-    this._divisionService.setCurrentDivision(division.divisionId);
+    this._divisionService.selectedDivision.update(() => division);
     this.store.dispatch(new adminActions.SetSelectedDivision(division));
 
     this.router.navigate(['./admin/division-detail']);

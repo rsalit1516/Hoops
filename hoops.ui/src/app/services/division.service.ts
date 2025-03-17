@@ -122,32 +122,32 @@ export class DivisionService {
     effect(() => {
       const season = this.selectedSeason();
       if (season !== null) {
-        this.divisionResource.reload();
+        //         this.divisionResource.reload();
         this.getSeasonDivisions(season.seasonId ?? 0);
         this.#logger.log(season);
-        console.log(this.seasonDivisions());
+        //     console.log(this.seasonDivisions());
       }
     })
-    this.#store.pipe(select(fromAdmin.getSelectedSeason)).subscribe((season) => {
-      this.season = season;
-    });
-    this.selectedIdSubject.pipe(
-      // Set the loading indicator
-      tap(() => this.setLoadingIndicator(true)),
-      tap(division => this.setCurrent(division)),
-      tap(division => console.log(division)),
+    // this.#store.pipe(select(fromAdmin.getSelectedSeason)).subscribe((season) => {
+    //   this.season = season;
+    // });
+    // this.selectedIdSubject.pipe(
+    //   // Set the loading indicator
+    //   tap(() => this.setLoadingIndicator(true)),
+    //   tap(division => this.setCurrent(division)),
+    //   tap(division => console.log(division)),
 
-      // switchMap(id => this.getDivisionsData(id)),
-      // To better see the loading message
-      delay(1000),
-      // Ensure the observables are finalized when this service is destroyed
-      takeUntilDestroyed()
-    )
+    // switchMap(id => this.getDivisionsData(id)),
+    // To better see the loading message
+    // delay(1000),
+    // Ensure the observables are finalized when this service is destroyed
+    //   takeUntilDestroyed()
+    // )
     //.subscribe(seasonDivisions => this.setSeasonDivisions(seasonDivisions));
   }
-  setSeasonDivisions (seasonDivisions: Division[]): void {
-    throw new Error('Method not implemented.');
-  }
+  // setSeasonDivisions (seasonDivisions: Division[]): void {
+  //   throw new Error('Method not implemented.');
+  // }
   setLoadingIndicator (isLoading: boolean): void {
     this.state.update(state => ({
       ...state,
@@ -172,14 +172,15 @@ export class DivisionService {
     console.log(this.state);
   }
 
-  getSeasonDivisions(id: number): void {
+  getSeasonDivisions (id: number): void {
     const url = Constants.SEASON_DIVISIONS_URL + id;
     // this.#logger.log(url);
     this.#http
       .get<Division[]>(url)
       .subscribe((data) => {
         this.seasonDivisions.update(() => data);
-        this.setCurrentDivision(data[0].divisionId);
+        this.selectedDivision.update(() => data[0]);
+        // this.selectedDivision
         console.log(this.seasonDivisions());
       },
         (error) => { catchError(() => of([])) }

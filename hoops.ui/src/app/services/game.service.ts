@@ -41,7 +41,8 @@ export class GameService {
   standing: any[] = [];
   currentDivision$: Observable<Division | null> = of(null);
   filteredGames = signal<RegularGame[]>([]);
-currentUser = computed(() => this.#authService.currentUser());
+  currentUser = computed(() => this.#authService.currentUser());
+  selectedSeason = computed(() => this.#seasonService.selectedSeason);
   selectedDivision = computed(() => this.#divisionService.selectedDivision());
   seasonGames$: Observable<RegularGame[] | null> = of(null);
   allGames: any;
@@ -98,6 +99,15 @@ currentUser = computed(() => this.#authService.currentUser());
         // Optionally trigger additional logic here
       }
     });
+
+    effect(() => {
+      const selectedSeason = this.selectedSeason();
+      if (selectedSeason) {
+        console.log(selectedSeason);
+        this.fetchSeasonGames();
+      }
+    });
+
     effect(() => {
       const selectedDivision = this.selectedDivision();
       if (selectedDivision) {
@@ -122,7 +132,7 @@ currentUser = computed(() => this.#authService.currentUser());
         catchError(this.dataService.handleError('getGames', []))
       );
   }
-  fetchSeasonGames() {
+  fetchSeasonGames () {
     // console.log(this.#scheduleGamesUrl);
     this.http.get<RegularGame[]>(Constants.SEASON_GAMES_URL + '?seasonId=' + this.#seasonService.selectedSeason.seasonId).
       subscribe(
@@ -132,34 +142,34 @@ currentUser = computed(() => this.#authService.currentUser());
           // console.log(games);
         }
       );
-}
+  }
   filterGamesByDivision (): RegularGame[] {
     let games: RegularGame[] = [];
     let filteredGamesByDate: RegularGame[] = [];
     let div = 0;
     // const division = this.#divisionService.selectedDivision();
     // this.currentDivision$.subscribe((division) => {
-      // console.log(division);
-      div = this.selectedDivision()?.divisionId ?? 0;
-      // this.seasonGames$.subscribe((seasonGames) => {
-        console.log(this.seasonGamesSignal());
-        this.allGames = this.seasonGamesSignal();
-        // this.setCanEdit(div);
-        if (this.allGames) {
-          for (let i = 0; i < this.allGames.length; i++) {
-            if (this.allGames[i].divisionId === div) {
-              let game = this.seasonGamesSignal()![i];
-              game.gameDateOnly = this.extractDate(game.gameDate.toString());
-              games.push(game);
-            }
-          }
-          games.sort();
-          filteredGamesByDate = games.sort((a, b) => {
-            return this.compare(a.gameDate!, b.gameDate!, true);
-          });
-          return filteredGamesByDate;
+    // console.log(division);
+    div = this.selectedDivision()?.divisionId ?? 0;
+    // this.seasonGames$.subscribe((seasonGames) => {
+    console.log(this.seasonGamesSignal());
+    this.allGames = this.seasonGamesSignal();
+    // this.setCanEdit(div);
+    if (this.allGames) {
+      for (let i = 0; i < this.allGames.length; i++) {
+        if (this.allGames[i].divisionId === div) {
+          let game = this.seasonGamesSignal()![i];
+          game.gameDateOnly = this.extractDate(game.gameDate.toString());
+          games.push(game);
         }
-        return filteredGamesByDate;
+      }
+      games.sort();
+      filteredGamesByDate = games.sort((a, b) => {
+        return this.compare(a.gameDate!, b.gameDate!, true);
+      });
+      return filteredGamesByDate;
+    }
+    return filteredGamesByDate;
     //   });
     // });
     return filteredGamesByDate;
@@ -275,8 +285,8 @@ currentUser = computed(() => this.#authService.currentUser());
   }
 
   setCanEdit (division: number) {
-      let canEdit = this.getCanEdit(this.currentUser(), division);
-      this.gameStore.dispatch(new gameActions.SetCanEdit(canEdit));
+    let canEdit = this.getCanEdit(this.currentUser(), division);
+    this.gameStore.dispatch(new gameActions.SetCanEdit(canEdit));
   }
   extractDate (date: string): Date {
     return DateTime.fromISO(date).toJSDate();

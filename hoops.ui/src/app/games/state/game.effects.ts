@@ -80,18 +80,18 @@ export class GameEffects {
 
   // tslint:disable-next-line:member-ordering
 
-  loadDivisions$: Observable<Action> = createEffect(() => this.actions$.pipe(
-    ofType(gameActions.GameActionTypes.LoadDivisions),
-    mergeMap(() =>
-      this.http.get<Division[]>(this.divisionStartUrl + this.seasonService.selectedSeason.seasonId)
-        .pipe(
-        shareReplay(1),
-        map((divisions) => new gameActions.LoadDivisionsSuccess(divisions)),
-        catchError((err) => of(new gameActions.LoadDivisionsFail(err)))
-      ),
-    ),
+  // loadDivisions$: Observable<Action> = createEffect(() => this.actions$.pipe(
+  //   ofType(gameActions.GameActionTypes.LoadDivisions),
+  //   mergeMap(() =>
+  //     this.http.get<Division[]>(this.divisionStartUrl + this.seasonService.selectedSeason.seasonId)
+  //       .pipe(
+  //       shareReplay(1),
+  //       map((divisions) => new gameActions.LoadDivisionsSuccess(divisions)),
+  //       catchError((err) => of(new gameActions.LoadDivisionsFail(err)))
+  //     ),
+  //   ),
 
-  ));
+  // ));
 
   // tslint:disable-next-line:member-ordering
 
