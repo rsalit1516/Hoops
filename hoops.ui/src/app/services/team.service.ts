@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { map, tap } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
 
@@ -12,11 +12,23 @@ import { DataService } from './data.service';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { Constants } from '@app/shared/constants';
+import { DivisionService } from './division.service';
+import { SeasonService } from './season.service';
 
-@Injectable()
+
+@Injectable({
+  providedIn:'root',
+})
 export class TeamService {
+  readonly #http = inject(HttpClient);
+  readonly #dataService = inject(DataService);
+  readonly #store = inject(Store<fromGames.State>);
+  readonly #divisionService = inject(DivisionService);
+  readonly #seasonService = inject(SeasonService);
   seasonId: number | undefined; // = 2192; // TO DO make this is passed in!
-  currentSeason$ = this.store.select(fromGames.getCurrentSeason).subscribe({
+  selectedSeason = computed(() => this.#seasonService.selectedSeason);
+  selectedDivision = computed(() => this.#divisionService.selectedDivision());
+  currentSeason$ = this.#store.select(fromGames.getCurrentSeason).subscribe({
     next: (season) => {
       // console.log(season);
       if (season !== undefined && season !== null) {
@@ -24,27 +36,48 @@ export class TeamService {
       }
     },
   });
-
+  seasonTeams = signal<Team[] | undefined>(undefined);
+  divisionTeams = signal<Team[]>([]);
   teams!: Team[];
+  selectedTeam = signal<Team | undefined>(undefined);
 
-  private teamUrl = this.dataService.webUrl + '/api/Team/getSeasonTeams/';
+  private teamUrl = Constants.GET_SEASON_TEAMS_URL;
 
-  constructor(
-    private _http: HttpClient,
-    public dataService: DataService,
-    private store: Store<fromGames.State>
-  ) {}
+  constructor() {
+    effect(() => {
+      console.log(this.selectedSeason());
+      if (this.selectedSeason() !== undefined) {
+        // this.getSeasonTeams();
+        console.log(this.seasonTeams());
+      }
+    });
+    effect(() => {
+      console.log(this.selectedDivision());
+      if (this.selectedDivision() !== undefined) {
+        const divisionTeams = this.filterTeamsByDivision(this.selectedDivision()!.divisionId);
+        this.divisionTeams.update(() => divisionTeams);
+        this.selectedTeam.update(() => this.divisionTeams()[0]);
+      }
+    });
+}
 
-  getTeams(): Observable<Team[]> {
-    return this._http.get<Team[]>(this.teamUrl + this.seasonId).pipe(
-      map((teams) => {
-        return teams;
-      }),
+  getSeasonTeams(): void {
+    const url = this.teamUrl + this.selectedSeason()!.seasonId;
+    this.#http.get<Team[]>(url).subscribe(
+      (teams) => {
+        this.seasonTeams.update(() => teams);
+        this.selectedTeam.update(() => this.seasonTeams()![0]);
+      },
       // tap(data => console.log('All: ' + JSON.stringify(data))),
-      catchError(this.dataService.handleError('getTeams', []))
+      catchError(this.#dataService.handleError('getTeams', []))
     );
   }
-  filterTeamsByDivision(div: number): Observable<Team[]> {
+  // fetchSeasonTeams(): void {
+  //   this.getSeasonTeams().subscribe((teams) => {
+  //   })
+  // }
+  filterTeamsByDivision(div: number): Team[] {
+
     let filteredTeams: Team[] = [];
     const teamId: number = 0;
     const divisionId: number = 0;
@@ -52,18 +85,18 @@ export class TeamService {
     const teamName: string = Constants.ALLTEAMS;
     const teamNumber: string = '0';
     const team = new Team(teamId, divisionId, teamName, teamNumber);
+    console.log(team);
     filteredTeams.push(team);
 
-    this.store.pipe(select(fromGames.getTeams)).subscribe((allTeams) => {
-      // console.log(allTeams);
-      allTeams.forEach((element) => {
+    if (this.seasonTeams() !== undefined) {
+      this.seasonTeams()!.forEach((element) => {
         // console.log(element);
         if (element.divisionId === div) {
           filteredTeams.push(element);
         }
       });
-    });
-    return of(filteredTeams);
+  }
+    return filteredTeams;
   }
 
   // getTeam(id: number): Observable<Team> {

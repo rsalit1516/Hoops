@@ -126,16 +126,16 @@ export class GameEffects {
 
   // tslint:disable-next-line:member-ordering
 
-  loadTeams$: Observable<Action> = createEffect(() => this.actions$.pipe(
-    ofType(gameActions.GameActionTypes.LoadTeams),
-    mergeMap(() =>
-      this.teamService.getTeams().pipe(
-        map((teams) => new gameActions.LoadTeamsSuccess(teams)),
-        // tap((response) => console.log(response)),
-        catchError((err) => of(new gameActions.LoadDivisionsFail(err)))
-      )
-    )
-  ));
+  // loadTeams$: Observable<Action> = createEffect(() => this.actions$.pipe(
+  //   ofType(gameActions.GameActionTypes.LoadTeams),
+  //   mergeMap(() =>
+  //     this.teamService.getSeasonTeams().pipe(
+  //       map((teams) => new gameActions.LoadTeamsSuccess(teams)),
+  //       // tap((response) => console.log(response)),
+  //       catchError((err) => of(new gameActions.LoadDivisionsFail(err)))
+  //     )
+  //   )
+  // ));
   // tslint:disable-next-line:member-ordering
 
   // loadFilteredGames$: Observable<Action> = createEffect(() => this.actions$.pipe(
@@ -202,29 +202,29 @@ export class GameEffects {
 
   // tslint:disable-next-line:member-ordering
 
-  loadFilteredTeams$: Observable<Action> = createEffect(() => this.actions$.pipe(
-    ofType(gameActions.GameActionTypes.LoadFilteredTeams),
-    concatMap((action) =>
-      of(action).pipe(
-        withLatestFrom(this.store.pipe(select(getCurrentDivision)))
-      )
-    ),
-    tap(([, t]) => {
-      if (t) {
-        // console.log(t);
-        this.divisionId = t.divisionId;
-      } else {
-        this.divisionId = 0;
-      }
-    }),
-    switchMap(() =>
-      this.teamService.filterTeamsByDivision(this.divisionId).pipe(
-        map((teams) => new gameActions.LoadFilteredTeamsSuccess(teams)),
-        // tap(response => console.log(response)),
-        catchError((err) => of(new gameActions.LoadFilteredTeamsFail(err)))
-      )
-    )
-  ));
+  // loadFilteredTeams$: Observable<Action> = createEffect(() => this.actions$.pipe(
+  //   ofType(gameActions.GameActionTypes.LoadFilteredTeams),
+  //   concatMap((action) =>
+  //     of(action).pipe(
+  //       withLatestFrom(this.store.pipe(select(getCurrentDivision)))
+  //     )
+  //   ),
+  //   tap(([, t]) => {
+  //     if (t) {
+  //       // console.log(t);
+  //       this.divisionId = t.divisionId;
+  //     } else {
+  //       this.divisionId = 0;
+  //     }
+  //   }),
+  //   switchMap(() =>
+  //     this.teamService.filterTeamsByDivision(this.divisionId).pipe(
+  //       map((teams) => new gameActions.LoadFilteredTeamsSuccess(teams)),
+  //       // tap(response => console.log(response)),
+  //       catchError((err) => of(new gameActions.LoadFilteredTeamsFail(err)))
+  //     )
+  //   )
+  // ));
 
   // tslint:disable-next-line:member-ordering
 

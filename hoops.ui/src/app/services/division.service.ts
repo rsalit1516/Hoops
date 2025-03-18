@@ -1,4 +1,3 @@
-import { delay, map, switchMap, tap } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
 import { Division } from '../domain/division';
 import { Season } from '../domain/season';
@@ -6,14 +5,13 @@ import { DataService } from './data.service';
 import { SeasonService } from './season.service';
 import { HttpClient, HttpErrorResponse, httpResource } from '@angular/common/http';
 import {
-  Injectable, Signal, WritableSignal, computed, effect, inject, signal,
+  Injectable, computed, effect, inject, signal,
 } from '@angular/core';
-import { Observable, of, Subject } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 
 import * as fromAdmin from '../admin/state';
 import { Constants } from '@app/shared/constants';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { setErrorMessage } from '@app/shared/error-message';
 import { LoggerService } from './logging.service';
 

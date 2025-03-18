@@ -28,9 +28,9 @@ import { AuthService } from './auth.service';
 })
 export class GameService {
   // Injected services
-  private http = inject(HttpClient);
+  readonly #http = inject(HttpClient);
   gameStore = inject(Store<fromGames.State>);
-  private _http = inject(HttpClient);
+
   public dataService = inject(DataService);
   readonly #seasonService = inject(SeasonService);
   readonly #divisionService = inject(DivisionService);
@@ -70,7 +70,7 @@ export class GameService {
 
   // Signals managed by the service
   selectedGames = signal<RegularGame | undefined>(undefined);
-  private games$ = this.http.get<GameResponse>(this.#scheduleGamesUrl).pipe(
+  private games$ = this.#http.get<GameResponse>(this.#scheduleGamesUrl).pipe(
     map(vr =>
       vr.results.map((v) => ({
         ...v,
@@ -116,7 +116,6 @@ export class GameService {
         // this.gameService.currentDivision$
         const test = this.filterGamesByDivision();
         this.filteredGames.update(() => test);
-        console.log(test);
         const dailyGames = this.groupRegularGamesByDate(this.filteredGames());
         this.dailySchedule.update(() => dailyGames);
         console.log(this.dailySchedule());
@@ -125,7 +124,7 @@ export class GameService {
   }
 
   getGames (): Observable<RegularGame[]> {
-    return this._http
+    return this.#http
       .get<RegularGame[]>(this.#scheduleGamesUrl)
       .pipe(
         map(response => this.games),
@@ -135,7 +134,7 @@ export class GameService {
   }
   fetchSeasonGames () {
     // console.log(this.#scheduleGamesUrl);
-    this.http.get<RegularGame[]>(Constants.SEASON_GAMES_URL + '?seasonId=' + this.#seasonService.selectedSeason.seasonId).
+    this.#http.get<RegularGame[]>(Constants.SEASON_GAMES_URL + '?seasonId=' + this.#seasonService.selectedSeason.seasonId).
       subscribe(
         (games) => {
           this.seasonGames$ = of(games);
@@ -168,7 +167,6 @@ export class GameService {
       filteredGamesByDate = games.sort((a, b) => {
         return this.compare(a.gameDate!, b.gameDate!, true);
       });
-      console.log(filteredGamesByDate);
       return filteredGamesByDate;
     }
     return filteredGamesByDate;
@@ -179,7 +177,7 @@ export class GameService {
 
 
   getStandings (): Observable<RegularGame[]> {
-    return this._http
+    return this.#http
       .get<any[]>(this.#scheduleGamesUrl)
       .pipe(
         map(response => this.games = response),
@@ -189,7 +187,7 @@ export class GameService {
   }
 
   getStandingsByDivision (divisionId: number) {
-    return this.http
+    return this.#http
       .get<any[]>(this.dataService.standingsUrl + '?divisionId=' + divisionId)
       .pipe(
         map((response) => (this.standing = response))
@@ -312,7 +310,7 @@ export class GameService {
     console.log(game);
     const gameUrl = this.dataService.webUrl + '/api/games/updateScores';
     console.log(gameUrl);
-    let result = this.http
+    let result = this.#http
       .put(gameUrl, game, httpOptions)
       .subscribe((x) => console.log(x));
     // .pipe(

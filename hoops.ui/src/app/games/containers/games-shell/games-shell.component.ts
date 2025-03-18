@@ -77,18 +77,19 @@ export class GamesShellComponent implements OnInit {
 
   // Signals for reactive state
   divisions = computed(() => this.#divisionService.seasonDivisions()!);
-  currentDivision = computed(() => this.store.selectSignal(fromGames.getCurrentDivision)());
-  filteredTeams = computed(() => this.store.selectSignal(fromGames.getFilteredTeams)());
+  currentDivision = computed(() => this.#divisionService.currentDivision());
+  filteredTeams = computed(() => this.#teamService.divisionTeams());
+
   user = computed(() => this.#authService.currentUser());
 
   constructor () {
     this.selectedDivisionId = 1;
-    effect(() => {
-      const divisions = this.divisions();
-      if (divisions && divisions.length > 0) {
-        this.store.dispatch(new gameActions.SetCurrentDivision(divisions[0]));
-      }
-    });
+    // effect(() => {
+    //   const divisions = this.divisions();
+    //   if (divisions && divisions.length > 0) {
+    //     this.store.dispatch(new gameActions.SetCurrentDivision(divisions[0]));
+    //   }
+    // });
 
     // Effect to handle side effects when the current division changes
     effect(() => {

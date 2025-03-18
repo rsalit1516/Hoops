@@ -13,6 +13,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { LoggerService } from '@app/services/logging.service';
 import { DivisionService } from '@app/services/division.service';
+import { TeamService } from '@app/services/team.service';
 
 @Component({
   selector: 'csbc-game-filter',
@@ -32,21 +33,18 @@ export class GameFilterComponent implements OnInit {
   readonly #divisionService = inject(DivisionService);
   readonly divisions = input.required<Division[]>();
   readonly #gameService = inject(GameService);
-  currentDivision!: Division;
+readonly #teamService = inject(TeamService);
   readonly teams = input.required<Team[] | null>();
-  divisionService = inject(GameService);
+  // divisionService = inject(GameService);
   gameStore = inject(Store<fromGames.State>);
   currentTeam!: Team;
   showAllTeams!: boolean;
   readonly selectedTeam = output<Team>();
   selectedDivision = computed(() => this.#divisionService.selectedDivision);
-  // divisions = computed(() => this.#divisionService.seasonDivisions);
-  constructor () {
-    // effect(() => {
-    //   this.#logger.log(this.selectedDivision());
-    //   this.#gameService.filterGamesByDivision();
-    // });
-  }
+  currentDivision: Division | undefined;
+  // selectedDivision = computed(() => this.#divisionService.selectedDivision());
+  // // divisions = computed(() => this.#divisionService.seasonDivisions);
+  constructor () {}
 
   ngOnInit () {
     this.showAllTeams = true;
@@ -62,16 +60,17 @@ export class GameFilterComponent implements OnInit {
   onDivisionChange (val: Division) {
     console.log(val);
     if (val !== undefined) {
-      this.currentDivision = val;
+      // this.currentDivision = val;
       this.#divisionService.selectedDivision.update(() => val);
-      this.gameStore.dispatch(new gameActions.SetCurrentDivision(val));
+      // this.gameStore.dispatch(new gameActions.SetCurrentDivision(val));
     }
   }
 
   onTeamChange (val: Team) {
     if (val !== undefined && val !== this.currentTeam) {
       this.currentTeam = val;
-      this.gameStore.dispatch(new gameActions.SetCurrentTeam(val));
+      this.#teamService.selectedTeam.update(() => val);
+      // this.gameStore.dispatch(new gameActions.SetCurrentTeam(val));
       // this.store.dispatch(new gameActions.LoadTeamGames);
     }
   }
