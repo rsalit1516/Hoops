@@ -17,7 +17,7 @@ import { SeasonService } from './season.service';
 
 
 @Injectable({
-  providedIn:'root',
+  providedIn: 'root',
 })
 export class TeamService {
   readonly #http = inject(HttpClient);
@@ -43,12 +43,12 @@ export class TeamService {
 
   private teamUrl = Constants.GET_SEASON_TEAMS_URL;
 
-  constructor() {
+  constructor () {
     effect(() => {
       console.log(this.selectedSeason());
       if (this.selectedSeason() !== undefined) {
-        // this.getSeasonTeams();
-        console.log(this.seasonTeams());
+        this.getSeasonTeams();
+        //console.log(this.seasonTeams());
       }
     });
     effect(() => {
@@ -59,10 +59,11 @@ export class TeamService {
         this.selectedTeam.update(() => this.divisionTeams()[0]);
       }
     });
-}
+  }
 
-  getSeasonTeams(): void {
+  getSeasonTeams (): void {
     const url = this.teamUrl + this.selectedSeason()!.seasonId;
+    console.log('getting season teams');
     this.#http.get<Team[]>(url).subscribe(
       (teams) => {
         this.seasonTeams.update(() => teams);
@@ -76,7 +77,7 @@ export class TeamService {
   //   this.getSeasonTeams().subscribe((teams) => {
   //   })
   // }
-  filterTeamsByDivision(div: number): Team[] {
+  filterTeamsByDivision (div: number): Team[] {
 
     let filteredTeams: Team[] = [];
     const teamId: number = 0;
@@ -95,7 +96,7 @@ export class TeamService {
           filteredTeams.push(element);
         }
       });
-  }
+    }
     return filteredTeams;
   }
 

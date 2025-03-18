@@ -14,6 +14,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { LoggerService } from '@app/services/logging.service';
 import { DivisionService } from '@app/services/division.service';
 import { TeamService } from '@app/services/team.service';
+import { SeasonService } from '@app/services/season.service';
 
 @Component({
   selector: 'csbc-game-filter',
@@ -33,7 +34,8 @@ export class GameFilterComponent implements OnInit {
   readonly #divisionService = inject(DivisionService);
   readonly divisions = input.required<Division[]>();
   readonly #gameService = inject(GameService);
-readonly #teamService = inject(TeamService);
+  readonly #teamService = inject(TeamService);
+  readonly #seasonService = inject(SeasonService);
   readonly teams = input.required<Team[] | null>();
   // divisionService = inject(GameService);
   gameStore = inject(Store<fromGames.State>);
@@ -44,10 +46,11 @@ readonly #teamService = inject(TeamService);
   currentDivision: Division | undefined;
   // selectedDivision = computed(() => this.#divisionService.selectedDivision());
   // // divisions = computed(() => this.#divisionService.seasonDivisions);
-  constructor () {}
+  constructor () { }
 
   ngOnInit () {
     this.showAllTeams = true;
+    this.#seasonService.fetchCurrentSeason();
     // this.gameStore.select(fromGames.getCurrentDivision).subscribe((division) => {
     //   this.currentDivision = division!;
     //   this.#logger.log(division);

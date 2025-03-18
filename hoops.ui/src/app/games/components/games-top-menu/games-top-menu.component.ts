@@ -17,11 +17,11 @@ import { PlayoffGameService } from '@app/services/playoff-game.service';
 @Component({
   selector: 'csbc-games-top-menu',
   templateUrl: './games-top-menu.component.html',
-  styleUrls: [ '../../../shared/scss/select.scss',
+  styleUrls: ['../../../shared/scss/select.scss',
     './games-top-menu.component.scss'
   ],
-  imports: [ CommonModule, RouterModule, RouterLinkActive,
-    MatToolbarModule, MatTabsModule, GameFilterComponent ]
+  imports: [CommonModule, RouterModule, RouterLinkActive,
+    MatToolbarModule, MatTabsModule, GameFilterComponent]
 })
 export class GamesTopMenuComponent implements OnInit {
   private router = inject(Router);
@@ -40,12 +40,12 @@ export class GamesTopMenuComponent implements OnInit {
   divisionPlayoffGames = computed(() => this.#playoffGameService.divisionPlayoffGames);
   hasPlayoffs = computed(() => this.#playoffGameService.divisionPlayoffGames.length > 0);
   hasStandings = true;
-  currentSeason = computed(() => this.#seasonService.currentSeason());
-  seasonDescription = computed(() => this.currentSeason()!.description);
+  currentSeason = computed(() => this.#seasonService.selectedSeason);
+  seasonDescription = computed(() => this.#seasonService.selectedSeason.description);
 
-  constructor() { }
+  constructor () { }
 
-  ngOnInit() {
+  ngOnInit () {
 
     //.currentSeason$.subscribe(season => this.seasonDescription = season.description);
     //this.store.select(fromGames.getCurrentSeason).subscribe((currentSeason) => {
@@ -60,17 +60,17 @@ export class GamesTopMenuComponent implements OnInit {
       this.hasStandings = standings.length > 0;
     });
   }
-  onTabChanged(event: MatTabChangeEvent): void {
+  onTabChanged (event: MatTabChangeEvent): void {
     switch (event.tab.textLabel) {
       case 'Schedule': // index of the tab
         // this is our stub tab for link
-        this.router.navigate([ '/games/schedule' ]);
+        this.router.navigate(['/games/schedule']);
         break;
       case 'Playoffs':
-        this.router.navigate([ '/games/playoffs' ]);
+        this.router.navigate(['/games/playoffs']);
         break;
       case 'Standings':
-        this.router.navigate([ '/games/standings' ]);
+        this.router.navigate(['/games/standings']);
         break;
     }
   }

@@ -48,7 +48,7 @@ export class AppComponent implements OnInit {
   }
   ngOnInit () {
     // this.#gameStore.dispatch(new gameActions.LoadCurrentSeason());
-    this.#seasonService.fetchCurrentSeason();
+    //    this.#seasonService.fetchCurrentSeason();
     this.#router.navigate([''])
   }
   public onToggleSidenav = () => {
