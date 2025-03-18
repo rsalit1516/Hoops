@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { computed, inject, Injectable, signal } from '@angular/core';
+import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { PlayoffGame } from '@app/domain/playoffGame';
 import { Constants } from '@app/shared/constants';
 import { select, Store } from '@ngrx/store';
@@ -28,14 +28,23 @@ export class PlayoffGameService {
   seasonPlayoffGames = signal<PlayoffGame[]>([]);
   allPlayoffGames: PlayoffGame[] | undefined;
   playoffGames$: Observable<PlayoffGame[]> | undefined;
-  selectedDivision = computed(() => {
-    const division = this.#divisionService.currentDivision();
-    if (division) {
-      this.divisionPlayoffGames.update(() => this.getDivisionPlayoffGames(division.directorId));
-    }
-  });
+  selectedSeason = computed(() => this.#seasonService.selectedSeason);
+  selectedDivision = computed(() => this.#divisionService.currentDivision());
 
-  constructor() { }
+  constructor() {
+    effect(() => {
+      console.log(this.selectedSeason());
+      if (this.selectedSeason() !== undefined) {
+        this.fetchSeasonPlayoffGames();
+      }
+    });
+    effect(() => {
+      console.log(this.selectedDivision());
+      if (this.selectedDivision() !== undefined) {
+        this.getDivisionPlayoffGames();
+      }
+    });
+  }
 
   getSeasonPlayoffGames(): Observable<PlayoffGame[] | null> {
     const url = Constants.PLAYOFF_GAMES_URL + '?seasonId=' + this.#seasonService.selectedSeason!.seasonId;
@@ -53,29 +62,27 @@ export class PlayoffGameService {
       }
     });
   }
-  getDivisionPlayoffGames(div: number): PlayoffGame[] {
+  getDivisionPlayoffGames(): void {
+    const allPlayoffGames = this.seasonPlayoffGames
+    const division = this.selectedDivision();
     let games: PlayoffGame[] = [];
     let sortedDate: PlayoffGame[] = [];
-    this.gameStore
-      .pipe(select(fromGames.getPlayoffGames))
-      .subscribe((allPlayoffGames) => {
-        this.allPlayoffGames = allPlayoffGames;
-        if (allPlayoffGames) {
-          this.allPlayoffGames.forEach((game) => {
-            if (game.divisionId === div) {
-              // let game = allPlayoffGames[i];
-              games.push(game);
-            }
-          });
+
+    if (allPlayoffGames()) {
+      allPlayoffGames().forEach((game) => {
+        if (game.divisionId === this.selectedDivision()!.divisionId!) {
+          // let game = allPlayoffGames[i];
+          games.push(game);
         }
-        games.sort();
-        sortedDate = games.sort((a, b) => {
-          return this.compare(a.gameDate!, b.gameDate!, true);
-        });
-        this.divisionPlayoffGames.update(() => sortedDate);
-        return (sortedDate);
       });
-    return (sortedDate);
+    }
+    games.sort();
+    sortedDate = games.sort((a, b) => {
+      return this.compare(a.gameDate!, b.gameDate!, true);
+    });
+    this.divisionPlayoffGames.update(() => sortedDate);
+    // return (sortedDate);
+
   }
   groupPlayoffGamesByDate(games: PlayoffGame[]): PlayoffGame[][] {
     const groupedGames: { [ key: string ]: PlayoffGame[] } = {};
