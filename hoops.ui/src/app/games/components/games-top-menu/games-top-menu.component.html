@@ -5,10 +5,10 @@
   <mat-toolbar>
     <mat-toolbar-row>
       <a class="btn" routerLink="/games/schedule" routerLinkActive="/games/schedule">Schedule</a>
-      <div *ngIf="hasPlayoffs">
+      <div *ngIf="hasPlayoffs()">
         <a class="btn" routerLink="/games/playoffs">Playoffs</a>
       </div>
-      <div *ngIf="hasStandings">
+      <div *ngIf="hasStandings()">
         <a class="btn" routerLink="/games/standings">Standings</a>
       </div>
     </mat-toolbar-row>

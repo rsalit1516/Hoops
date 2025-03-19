@@ -82,8 +82,7 @@ export class PlayoffGameService {
       return this.compare(a.gameDate!, b.gameDate!, true);
     });
     this.divisionPlayoffGames.update(() => sortedDate);
-    // return (sortedDate);
-
+    console.log(sortedDate);
   }
   groupPlayoffGamesByDate(games: PlayoffGame[]): PlayoffGame[][] {
     const groupedGames: { [ key: string ]: PlayoffGame[] } = {};

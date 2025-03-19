@@ -22,6 +22,7 @@ import { SeasonService } from './season.service';
 import { DivisionService } from './division.service';
 import { LoggerService } from './logging.service';
 import { AuthService } from './auth.service';
+import { Standing } from '@app/domain/standing';
 
 @Injectable({
   providedIn: 'root'
@@ -39,6 +40,7 @@ export class GameService {
   readonly #scheduleGamesUrl = Constants.SEASON_GAMES_URL + '?seasonid=' + this.#seasonService.selectedSeason.seasonId;
   private _games!: RegularGame[];
   standing: any[] = [];
+  divisionStandings = signal<Standing[]>([]);
   currentDivision$: Observable<Division | null> = of(null);
   filteredGames = signal<RegularGame[]>([]);
   currentUser = computed(() => this.#authService.currentUser());
@@ -119,6 +121,7 @@ export class GameService {
         const dailyGames = this.groupRegularGamesByDate(this.filteredGames());
         this.dailySchedule.update(() => dailyGames);
         console.log(this.dailySchedule());
+        this.fetchStandingsByDivision();
       }
     });
   }
@@ -188,13 +191,23 @@ export class GameService {
 
   getStandingsByDivision (divisionId: number) {
     return this.#http
-      .get<any[]>(this.dataService.standingsUrl + '?divisionId=' + divisionId)
+      .get<any[]>(Constants.GET_STANDINGS_URL + '?divisionId=' + divisionId)
       .pipe(
         map((response) => (this.standing = response))
         // tap(data => console.log('All: ' + JSON.stringify(data))),
         // catchError(this.handleError)
       );
   }
+  fetchStandingsByDivision() {
+    this.getStandingsByDivision(this.selectedDivision()!.divisionId).subscribe((standings) => {
+      if (standings) {
+        this.divisionStandings.update(() => standings);
+      } else {
+        this.divisionStandings.update(() => []);
+      }
+    });
+  }
+
   groupRegularGamesByDate (games: RegularGame[]): RegularGame[][] {
     const groupedGames: { [key: string]: RegularGame[] } = {};
     games.forEach(game => {

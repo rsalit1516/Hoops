@@ -1,10 +1,10 @@
-import { Component, OnInit, Output, computed, inject, input, output } from '@angular/core';
+import { Component, OnInit, Output, computed, effect, inject, input, output, signal } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as fromGames from '../../state';
 import { Subject, Observable } from 'rxjs';
 import { Division } from '@app/domain/division';
 import { SeasonService } from '@app/services/season.service';
-import { GameService } from '@app/games/game.service';
+import { GameService } from '@app/services/game.service';
 import { Season } from '@app/domain/season';
 import { Team } from '@app/domain/team';
 import { Router, RouterLinkActive, RouterModule } from '@angular/router';
@@ -33,17 +33,36 @@ export class GamesTopMenuComponent implements OnInit {
   readonly selectedDivision = output<Division>();
   private errorMessageSubject = new Subject<string>();
   readonly #seasonService = inject(SeasonService);
+readonly #gameService = inject(GameService);
   readonly #playoffGameService = inject(PlayoffGameService);
   filteredTeams!: Team[];
   selectedDivisionId$: Observable<number> | undefined;
   season: Season | undefined;
-  divisionPlayoffGames = computed(() => this.#playoffGameService.divisionPlayoffGames);
-  hasPlayoffs = computed(() => this.#playoffGameService.divisionPlayoffGames.length > 0);
-  hasStandings = true;
+  divisionPlayoffGames = computed(() => this.#playoffGameService.divisionPlayoffGames());
+  hasPlayoffs = signal(false);
+  divisionStandings = computed(() => this.#gameService.divisionStandings());
+  hasStandings = signal(false);
   currentSeason = computed(() => this.#seasonService.selectedSeason);
   seasonDescription = computed(() => this.#seasonService.selectedSeason.description);
 
-  constructor () { }
+  constructor() {
+    effect(() => {
+      console.log(this.divisionPlayoffGames());
+      if (this.divisionPlayoffGames() !== undefined) {
+        this.hasPlayoffs.update(() => this.divisionPlayoffGames()!.length > 0);
+      } else {
+      this.hasPlayoffs.update(() => false);
+    }
+    });
+    effect(() => {
+      console.log(this.divisionStandings());
+      if (this.divisionStandings() !== undefined) {
+        this.hasStandings.update(() => this.divisionStandings().length > 0);
+      } else {
+        this.hasStandings.update(() => false);
+      }
+    });
+  }
 
   ngOnInit () {
 
@@ -56,9 +75,6 @@ export class GamesTopMenuComponent implements OnInit {
     //   .subscribe((playoffs) => {
     //     this.hasPlayoffs = playoffs.length > 0;
     //   });
-    this.store.select(fromGames.getStandings).subscribe((standings) => {
-      this.hasStandings = standings.length > 0;
-    });
   }
   onTabChanged (event: MatTabChangeEvent): void {
     switch (event.tab.textLabel) {

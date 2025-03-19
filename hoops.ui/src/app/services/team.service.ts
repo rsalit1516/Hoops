@@ -52,9 +52,10 @@ export class TeamService {
       }
     });
     effect(() => {
-      console.log(this.selectedDivision());
+      // console.log(this.selectedDivision());
       if (this.selectedDivision() !== undefined) {
         const divisionTeams = this.filterTeamsByDivision(this.selectedDivision()!.divisionId);
+        // console.log(divisionTeams);
         this.divisionTeams.update(() => divisionTeams);
         this.selectedTeam.update(() => this.divisionTeams()[0]);
       }
