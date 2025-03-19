@@ -2,7 +2,7 @@
   <mat-form-field>
     <mat-label>Divisions</mat-label>
     <mat-select
-      [(value)]="selectedDivision"
+      [(value)]="division"
       #divisionSelect
       (selectionChange)="onDivisionChange(divisionSelect.value)"
     >
@@ -14,7 +14,8 @@
 
   <mat-form-field>
     <mat-label>Teams</mat-label>
-    <mat-select #teamSelect (selectionChange)="onTeamChange(teamSelect.value)">
+    <mat-select #teamSelect (selectionChange)="onTeamChange(teamSelect.value)"
+      [(value)]="team">
       <mat-option *ngFor="let team of teams()" [value]="team">
         {{ team.teamName }}
       </mat-option>

@@ -41,15 +41,27 @@ export class GameFilterComponent implements OnInit {
   gameStore = inject(Store<fromGames.State>);
   currentTeam!: Team;
   showAllTeams!: boolean;
-  readonly selectedTeam = output<Team>();
+  // readonly selectedTeam = output<Team>();
   selectedDivision = computed(() => this.#divisionService.selectedDivision);
+  selectedTeam = computed(() => this.#teamService.selectedTeam());
+
+  division = this.selectedDivision();
+  team = this.selectedTeam();
   currentDivision: Division | undefined;
   // selectedDivision = computed(() => this.#divisionService.selectedDivision());
   // // divisions = computed(() => this.#divisionService.seasonDivisions);
-  constructor () { }
+  constructor() {
+    effect(() => {
+      this.division = this.selectedDivision();
+    });
+    effect(() => {
+      this.team = this.selectedTeam();
+    });
+  }
 
   ngOnInit () {
     this.showAllTeams = true;
+
     // this.#seasonService.fetchCurrentSeason();
     // this.gameStore.select(fromGames.getCurrentDivision).subscribe((division) => {
     //   this.currentDivision = division!;
@@ -70,7 +82,7 @@ export class GameFilterComponent implements OnInit {
   }
 
   onTeamChange (val: Team) {
-    if (val !== undefined && val !== this.currentTeam) {
+    if (val !== undefined) {
       this.currentTeam = val;
       this.#teamService.selectedTeam.update(() => val);
       // this.gameStore.dispatch(new gameActions.SetCurrentTeam(val));
