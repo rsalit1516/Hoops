@@ -29,7 +29,7 @@ export class PlayoffGameService {
   allPlayoffGames: PlayoffGame[] | undefined;
   playoffGames$: Observable<PlayoffGame[]> | undefined;
   selectedSeason = computed(() => this.#seasonService.selectedSeason);
-  selectedDivision = computed(() => this.#divisionService.currentDivision());
+  selectedDivision = computed(() => this.#divisionService.selectedDivision());
 
   constructor() {
     effect(() => {
@@ -61,6 +61,7 @@ export class PlayoffGameService {
         this.seasonPlayoffGames.update(() => playoffGames);
       }
     });
+    // console.log(this.seasonPlayoffGames());
   }
   getDivisionPlayoffGames(): void {
     const allPlayoffGames = this.seasonPlayoffGames

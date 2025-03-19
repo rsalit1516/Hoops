@@ -50,7 +50,7 @@ export class GameFilterComponent implements OnInit {
 
   ngOnInit () {
     this.showAllTeams = true;
-    this.#seasonService.fetchCurrentSeason();
+    // this.#seasonService.fetchCurrentSeason();
     // this.gameStore.select(fromGames.getCurrentDivision).subscribe((division) => {
     //   this.currentDivision = division!;
     //   this.#logger.log(division);
@@ -61,10 +61,10 @@ export class GameFilterComponent implements OnInit {
   }
 
   onDivisionChange (val: Division) {
-    console.log(val);
+    // console.log(val);
     if (val !== undefined) {
       // this.currentDivision = val;
-      this.#divisionService.selectedDivision.update(() => val);
+      this.#divisionService.updateSelectedDivision(val);
       // this.gameStore.dispatch(new gameActions.SetCurrentDivision(val));
     }
   }

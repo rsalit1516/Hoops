@@ -85,7 +85,7 @@ export class TeamService {
     const name: string = Constants.ALLTEAMS;
     const teamName: string = Constants.ALLTEAMS;
     const teamNumber: string = '0';
-    const team = new Team(teamId, divisionId, teamName, teamNumber);
+    const team = new Team(teamId, divisionId, name, teamName, teamNumber);
     console.log(team);
     filteredTeams.push(team);
 
