@@ -34,18 +34,7 @@ export class AppComponent implements OnInit {
   title = 'CSBC Hoops';
   season = computed(() => this.#seasonService.selectedSeason);
 
-  constructor () {
-    effect(() => {
-      const season = this.season();
-      this.#logger.log(season);
-
-      if ((season !== undefined) && (season.seasonId !== undefined) && (season.seasonId !== 0)) {
-        //         this.#divisionService.getSeasonDivisions(season!.seasonId!);
-        // this.#gameStore.dispatch(new gameActions.LoadGames());
-        //        this.#gameService.fetchSeasonGames();
-      }
-    });
-  }
+  constructor () {}
   ngOnInit () {
     // this.#gameStore.dispatch(new gameActions.LoadCurrentSeason());
     this.#seasonService.fetchCurrentSeason();
