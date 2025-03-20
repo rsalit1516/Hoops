@@ -54,7 +54,8 @@ export class GameService {
   set games (games: RegularGame[]) {
     this._games = games;
   }
-  standingsUrl: string;
+  standingsUrl = this.dataService.webUrl + '/api/gameStandings';
+
   teamId: number | undefined;
   compare (a: Date | string, b: Date | string, isAsc: boolean) {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
@@ -93,7 +94,7 @@ export class GameService {
   dailySchedule = signal<RegularGame[][]>([]);
   constructor () {
     // this._gameUrl = this.dataService.webUrl + '/api/gameschedule';
-    this.standingsUrl = this.dataService.webUrl + '/api/gameStandings';
+
     effect(() => {
       const record = this.selectedRecord();
       if (record !== null) {
@@ -198,7 +199,7 @@ export class GameService {
         // catchError(this.handleError)
       );
   }
-  fetchStandingsByDivision() {
+  fetchStandingsByDivision () {
     this.getStandingsByDivision(this.selectedDivision()!.divisionId).subscribe((standings) => {
       if (standings) {
         this.divisionStandings.update(() => standings);

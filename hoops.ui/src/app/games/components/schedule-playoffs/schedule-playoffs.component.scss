@@ -1,4 +1,4 @@
-@use '../../../../content/_variables' as *;
+@use "../../../../content/_variables" as *;
 
 .table-striped > tbody > tr {
   background-color: $card-background-color;
@@ -42,45 +42,40 @@
   margin-left: 20px;
   margin-right: 20px;
   background-color: $card-background-color;
-  font: .9rem
+  font: 0.9rem;
 }
 @media screen and (max-width: 600px) {
   .table-wrapper {
     padding-left: 2px;
     padding-right: 2px;
     margin-left: 2px;
-    margin-right: 2px;  }
+    margin-right: 2px;
+  }
 
-    .location {
-      font-size:.7em;
-      font-weight: 500;
-      // width: 180px;
+  .location {
+    font-size: 0.7em;
+    font-weight: 500;
+    // width: 180px;
   }
 }
 .date {
-
   font-weight: 600;
   // width: 100px;
   padding-left: 10px;
 }
 
 .team {
-
   font-weight: 700;
   // width: 260px;
-
 }
 .homeTeam {
   font-weight: 700;
   // width: 260px;
-
-
 }
 
 .location {
   font-weight: 500;
   // width: 180px;
-
 }
 .edit {
   display: inline-block;
@@ -88,16 +83,14 @@
   padding-left: 10px;
 }
 .row {
-  border-top: 1px solid whitesmoke ;
+  border-top: 1px solid whitesmoke;
   padding-top: 8px;
   padding-bottom: 8px;
-
 }
 
 :root {
   --color-primary: blue;
   --background-color: blue;
-
 }
 .gamedate {
   color: $brand-color;
@@ -106,8 +99,6 @@
   padding-left: 24px;
   padding-top: 10px;
   padding-bottom: 8px;
-
-
 }
 .mat-table {
   background-color: red;
@@ -124,7 +115,7 @@
   font-weight: 700;
   font-size: $table-font-size;
 }
-.mat-table  .mat-header-row {
+.mat-table .mat-header-row {
   // border-bottom-width: thin;
   // border-bottom-style: solid;
   // border-bottom-color: white;
@@ -144,7 +135,11 @@
   font-size: $table-font-size;
 }
 
-.mat-column-gameTime, .mat-column-locationName, .mat-column-homeTeamScore, .mat-column-visitingTeamScore, .mat-column-actions     {
+.mat-column-gameTime,
+.mat-column-locationName,
+.mat-column-homeTeamScore,
+.mat-column-visitingTeamScore,
+.mat-column-actions {
   word-wrap: break-word !important;
   flex: 0 0 28% !important;
   width: 10% !important;
@@ -157,7 +152,8 @@
   -webkit-hyphens: auto;
   hyphens: auto;
 }
-.mat-column-visitingTeam, .mat-column-homeTeam {
+.mat-column-visitingTeam,
+.mat-column-homeTeam {
   word-wrap: break-word !important;
   flex: 0 0 28% !important;
   width: 15% !important;
@@ -175,4 +171,9 @@ h1 {
   padding-top: 20px;
   color: $brand-color;
   text-align: center;
+}
+.row {
+  border-top: 1px solid whitesmoke;
+  padding-top: 8px;
+  padding-bottom: 8px;
 }

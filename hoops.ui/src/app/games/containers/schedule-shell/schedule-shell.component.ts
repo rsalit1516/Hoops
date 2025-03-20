@@ -117,4 +117,5 @@ export class ScheduleShellComponent implements OnInit {
   //   this.dailySchedule = this.#gameService.groupRegularGamesByDate(games);
 
   // }
+
 }

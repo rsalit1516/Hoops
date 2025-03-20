@@ -1,28 +1,32 @@
-import { Component, input } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Store } from '@ngrx/store';
-import * as fromGames from '../../state';
 import { PlayoffGame } from '@domain/playoffGame';
 import { DailyPlayoffScheduleComponent } from '../daily-playoff-schedule/daily-playoff-schedule.component';
+import { PlayoffGameService } from '@app/services/playoff-game.service';
 
 @Component({
   selector: 'csbc-schedule-playoffs',
   template: `
-      <div *ngFor="let data of playoffGames()">
+@for( data of dailyPlayoffSchedule(); track $index) {
+      <div >
         <csbc-daily-playoff-schedule [playoffGames]="data">
         </csbc-daily-playoff-schedule>
       </div>
+}
   `,
   styleUrls: ['./schedule-playoffs.component.scss'],
   imports: [CommonModule, DailyPlayoffScheduleComponent],
-  providers: [Store]
 })
 export class SchedulePlayoffsComponent {
   readonly playoffGames = input.required<Array<PlayoffGame[]>>();
+  readonly #playoffGameService = inject(PlayoffGameService);
   public games: PlayoffGame[] | undefined;
 
+  dailyPlayoffSchedule = computed(() => this.#playoffGameService.dailyPlayoffSchedule())
 
-  constructor (private store: Store<fromGames.State>) {
+
+  constructor () {
+    console.log(this.playoffGames);
   }
 
 

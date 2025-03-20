@@ -68,7 +68,7 @@ export class GamesShellComponent implements OnInit {
   // ) as Game[]);
   divisionId: any;
   divisionId$!: Observable<number> | undefined;
-  selectedDivisionId: number;
+  selectedDivisionId: number = 1;
 
   // currentDivision: Division | undefined;
   // filteredTeams!: Team[];
@@ -81,16 +81,8 @@ export class GamesShellComponent implements OnInit {
   filteredTeams = computed(() => this.#teamService.divisionTeams());
 
   user = computed(() => this.#authService.currentUser());
-test =  this.seasonService.season1();
+  test = this.seasonService.season1();
   constructor () {
-    this.selectedDivisionId = 1;
-    // effect(() => {
-    //   const divisions = this.divisions();
-    //   if (divisions && divisions.length > 0) {
-    //     this.store.dispatch(new gameActions.SetCurrentDivision(divisions[0]));
-    //   }
-    // });
-
     // Effect to handle side effects when the current division changes
     effect(() => {
       const division = this.currentDivision();
