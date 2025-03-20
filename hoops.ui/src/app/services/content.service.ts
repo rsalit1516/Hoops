@@ -4,7 +4,9 @@ import { DataService } from './data.service';
 import { WebContent } from '../domain/webContent';
 import { Observable } from 'rxjs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class ContentService {
   private _webContentUrl: string;
   getActiveContent$ = this._http.get<WebContent[]>(

@@ -15,8 +15,8 @@ import { AuthService } from '../services/auth.service';
     imports: [
         CommonModule,
         StoreModule.forFeature('user', reducer),
-        LoginComponent,
-        UserComponent
+        // LoginComponent,
+        // UserComponent
     ],
     providers: [AuthService]
 })

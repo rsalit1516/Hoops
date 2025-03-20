@@ -5,7 +5,7 @@ import { Store, select } from '@ngrx/store';
 
 import * as fromGames from './state';
 import * as gameActions from './state/games.actions';
-import { GameService } from './game.service';
+import { GameService } from '@app/services/game.service';
 
 @Injectable({
   providedIn: 'root',
@@ -20,14 +20,6 @@ export class GamesResolver {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> {
-//    this.store.select(fromGames.getCurrentSeason).subscribe((season) => {
-//      const t = this._gameService.currentSeason$; // = season.seasonID;
-//      console.log('Season ID: ', t);
-//      this.store.dispatch(new gameActions.LoadGames());
-      // this.store.dispatch(new gameActions.LoadDivisions());
-//      this.store.dispatch(new gameActions.LoadPlayoffGames());
-//      this.store.dispatch(new gameActions.LoadStandings());
-//    });
     return of(true);
   }
 }

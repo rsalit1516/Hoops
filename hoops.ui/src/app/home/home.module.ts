@@ -19,20 +19,8 @@ import { CsbcAnnouncementsComponent } from './components/announcements/announcem
 
 @NgModule({
     imports: [
-    CommonModule,
-    // NgbModule,
-    CsbcAnnouncementsComponent,
     StoreModule.forFeature('home', reducer),
     EffectsModule.forFeature([HomeEffects]),
-    HomeComponent,
-    HomeCenterComponent,
-    CsbcHomeSidebarComponent,
-    MeetingComponent,
-    SponsorListingComponent,
-    SponsorListComponent
 ],
-    providers: [
-        ContentService
-    ]
 })
 export class HomeModule { }

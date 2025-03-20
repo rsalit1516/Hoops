@@ -13,7 +13,7 @@ import { GameEffects } from './state/game.effects';
 import { GameFilterComponent } from './components/game-filter/game-filter.component';
 import { GamesShellComponent } from './containers/games-shell/games-shell.component';
 import { EffectsModule } from '@ngrx/effects';
-import { GameService } from './game.service';
+import { GameService } from '@app/services/game.service';
 import { GameSortPipe } from './game-sort.pipe';
 import { GamesTopMenuComponent } from './components/games-top-menu/games-top-menu.component';
 import { ScheduleShellComponent } from './containers/schedule-shell/schedule-shell.component';

@@ -1,6 +1,6 @@
 import { Component, computed, inject, OnInit } from '@angular/core';
 import { AuthService } from '@app/services/auth.service';
-import { FormsModule, FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
+import { FormsModule, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import * as userActions from '../../user/state/user.actions';
 import * as fromUser from '../../user/state';
 import { Store } from '@ngrx/store';
@@ -14,18 +14,18 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss',
+  styleUrls: [ './login.component.scss',
     '../scss/cards.scss',
     '../scss/forms.scss',
-    ],
+  ],
   standalone: true,
-  imports: [CommonModule,
+  imports: [ CommonModule,
     FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatCardModule],
+    MatCardModule ],
 })
 export class LoginComponent implements OnInit {
   /* injected */
@@ -34,8 +34,8 @@ export class LoginComponent implements OnInit {
   fb = inject(FormBuilder);
   store = inject(Store<fromUser.State>);
   loginForm = this.fb.group({
-    userName: ['', Validators.required],
-    password: ['', Validators.required]
+    userName: [ '', Validators.required ],
+    password: [ '', Validators.required ]
   });
   isFormValid: boolean = false;
   get userName() {
@@ -44,14 +44,14 @@ export class LoginComponent implements OnInit {
   get password() {
     return this.loginForm.get('password');
   }
-currentUser = computed(() => this.#authService.currentUser());
-  constructor() {}
+  currentUser = computed(() => this.#authService.currentUser());
+  constructor() { }
 
   ngOnInit() {
     this.isFormValid = false;
   }
   onCancelClick() {
-    this.#router.navigate(['home']);
+    this.#router.navigate([ 'home' ]);
   }
   onSubmitClick() {
     // this.loginForm.markAllAsTouched();
@@ -62,12 +62,12 @@ currentUser = computed(() => this.#authService.currentUser());
         this.loginForm.get('password')?.value || ''
       );
       // this.store.select(fromUser.getCurrentUser).subscribe(user => {
-        console.log(this.currentUser());
-        if (this.currentUser() !== null && this.currentUser()!.userId !== 0) {
-          this.#router.navigate(['home']);
-        } else {
-          this.isFormValid = false;
-        }
+      console.log(this.currentUser());
+      if (this.currentUser() !== null && this.currentUser()!.userId !== 0) {
+        this.#router.navigate([ 'home' ]);
+      } else {
+        this.isFormValid = false;
+      }
 
       // });
     }

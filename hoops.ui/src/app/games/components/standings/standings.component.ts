@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, input } from '@angular/core';
 import { Standing } from '@domain/standing';
-import { GameService } from './../../game.service';
+import { GameService} from '@app/services/game.service';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 
@@ -34,7 +34,7 @@ export class StandingsComponent implements OnInit {
   // displayedColumns = ['teamName', 'won', 'lost', 'pct', 'streak'];
   displayedColumns = ['teamName', 'won', 'lost', 'pct', 'pf', 'pa'];
   dataSource: MatTableDataSource<Standing>;
-  constructor(private gameService: GameService) {
+  constructor() {
     this.title = 'Standings';
     this.dataSource = new MatTableDataSource(this.standings);
   }
