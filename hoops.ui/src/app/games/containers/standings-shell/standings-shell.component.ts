@@ -1,4 +1,4 @@
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, inject, OnInit, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Standing } from '@app/domain/standing';
 import { Season } from '@app/domain/season';
@@ -8,39 +8,28 @@ import { Store, select } from '@ngrx/store';
 import * as fromGames from '../../state';
 import { CommonModule } from '@angular/common';
 import { StandingsComponent } from '@app/games/components/standings/standings.component';
+import { GameService } from '@app/services/game.service';
 
 
 @Component({
-    selector: 'csbc-standings-shell',
-    imports: [CommonModule, StandingsComponent],
-    template: `<div class="container mx-auto">
+  selector: 'csbc-standings-shell',
+  imports: [ CommonModule, StandingsComponent ],
+  template: `<div class="container mx-auto">
   <div>
-    <h1>Standings</h1>
-    <csbc-standings [standings]="(standings$ | async) ?? []"></csbc-standings>
+    <h1>{{title}}</h1>
+    <csbc-standings [standings]="divisionStandings() ?? []"></csbc-standings>
   </div>
 </div>
 `,
-    styleUrls: ['./standings-shell.component.scss', '../../../../Content/styles.scss']
+  styleUrls: [
+    './standings-shell.component.scss',
+    '../../../shared/scss/tables.scss',
+    '../../../../Content/styles.scss' ]
 })
-export class StandingsShellComponent implements OnInit {
-  standings$: Observable<Standing[]>;
-  currentSeason$: Observable<Season> | undefined;
-  divisions$: Observable<Division[]> | undefined;
-  selectedDivisionId$: Observable<number> | undefined;
-  errorMessage$: Observable<string> | undefined;
-  selectedDivision$: Observable<any> | undefined;
+export class StandingsShellComponent {
+  readonly #gameService = inject(GameService);
 
-  constructor(private store: Store<fromGames.State>) {
-    this.standings$ = this.store.pipe(select(fromGames.getStandings));
-  }
-
-  ngOnInit() {
-    this.setStateSubscriptions();
-  }
-
-  setStateSubscriptions() {
-    console.log('ScheduleShell - set subscriptions');
-    // this.standings$ = this.store.pipe(select(fromGames.getStandings));
-  }
+  title = 'Standings';
+  divisionStandings = this.#gameService.divisionStandings;
 
 }

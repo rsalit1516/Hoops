@@ -81,8 +81,6 @@ export class GameService {
     ),
     delay(2000)
   );
-
-
   private gamesResource = rxResource({
     loader: () => this.games$
   });
