@@ -32,11 +32,12 @@ import { SeasonService } from '@app/services/season.service';
 export class GameFilterComponent implements OnInit {
   readonly #logger = inject(LoggerService);
   readonly #divisionService = inject(DivisionService);
-  readonly divisions = input.required<Division[]>();
   readonly #gameService = inject(GameService);
   readonly #teamService = inject(TeamService);
   readonly #seasonService = inject(SeasonService);
+  readonly divisions = input.required<Division[]>();
   readonly teams = input.required<Team[] | null>();
+  readonly display = input.required<string>();
   // divisionService = inject(GameService);
   gameStore = inject(Store<fromGames.State>);
   currentTeam!: Team;
@@ -50,7 +51,7 @@ export class GameFilterComponent implements OnInit {
   currentDivision: Division | undefined;
   // selectedDivision = computed(() => this.#divisionService.selectedDivision());
   // // divisions = computed(() => this.#divisionService.seasonDivisions);
-  constructor() {
+  constructor () {
     effect(() => {
       this.division = this.selectedDivision();
     });

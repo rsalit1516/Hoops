@@ -30,10 +30,11 @@ export class GamesTopMenuComponent implements OnInit {
   divisions = input.required<Division[]>();
   teams = input.required<Team[]>();
   @Output() currentDivision: Division | undefined;
+  display = signal<string>('schedule');
   readonly selectedDivision = output<Division>();
   private errorMessageSubject = new Subject<string>();
   readonly #seasonService = inject(SeasonService);
-readonly #gameService = inject(GameService);
+  readonly #gameService = inject(GameService);
   readonly #playoffGameService = inject(PlayoffGameService);
   filteredTeams!: Team[];
   selectedDivisionId$: Observable<number> | undefined;
@@ -45,14 +46,14 @@ readonly #gameService = inject(GameService);
   currentSeason = computed(() => this.#seasonService.selectedSeason);
   seasonDescription = computed(() => this.#seasonService.selectedSeason.description);
 
-  constructor() {
+  constructor () {
     effect(() => {
       console.log(this.divisionPlayoffGames());
       if (this.divisionPlayoffGames() !== undefined) {
         this.hasPlayoffs.update(() => this.divisionPlayoffGames()!.length > 0);
       } else {
-      this.hasPlayoffs.update(() => false);
-    }
+        this.hasPlayoffs.update(() => false);
+      }
     });
     effect(() => {
       console.log(this.divisionStandings());
@@ -64,28 +65,21 @@ readonly #gameService = inject(GameService);
     });
   }
 
-  ngOnInit () {
+  ngOnInit () { }
 
-    //.currentSeason$.subscribe(season => this.seasonDescription = season.description);
-    //this.store.select(fromGames.getCurrentSeason).subscribe((currentSeason) => {
-    //  this.seasonDescription = currentSeason?.description;
-    //});
-    // this.store
-    //   .select(fromGames.getDivisionPlayoffGames)
-    //   .subscribe((playoffs) => {
-    //     this.hasPlayoffs = playoffs.length > 0;
-    //   });
-  }
   onTabChanged (event: MatTabChangeEvent): void {
     switch (event.tab.textLabel) {
       case 'Schedule': // index of the tab
         // this is our stub tab for link
+        this.display.update(() => 'schedule');
         this.router.navigate(['/games/schedule']);
         break;
       case 'Playoffs':
+        this.display.update(() => 'playoffs');
         this.router.navigate(['/games/playoffs']);
         break;
       case 'Standings':
+        this.display.update(() => 'standings');
         this.router.navigate(['/games/standings']);
         break;
     }

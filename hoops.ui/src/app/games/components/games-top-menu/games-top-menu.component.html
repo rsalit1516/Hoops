@@ -4,7 +4,12 @@
   </div>
   <mat-toolbar>
     <mat-toolbar-row>
-      <a class="btn" routerLink="/games/schedule" routerLinkActive="/games/schedule">Schedule</a>
+      <a
+        class="btn"
+        routerLink="/games/schedule"
+        routerLinkActive="/games/schedule"
+        >Schedule</a
+      >
       <div *ngIf="hasPlayoffs()">
         <a class="btn" routerLink="/games/playoffs">Playoffs</a>
       </div>
@@ -13,8 +18,12 @@
       </div>
     </mat-toolbar-row>
     <mat-toolbar-row>
-      <csbc-game-filter [divisions]="divisions()" [teams]="teams()" class=""></csbc-game-filter>
-
+      <csbc-game-filter
+        [divisions]="divisions()"
+        [teams]="teams()"
+        [display]="display()"
+        class=""
+      ></csbc-game-filter>
     </mat-toolbar-row>
   </mat-toolbar>
 </div>

@@ -121,7 +121,6 @@ export class GameService {
         this.filteredGames.update(() => test);
         const dailyGames = this.groupRegularGamesByDate(this.filteredGames());
         this.dailySchedule.update(() => dailyGames);
-        console.log(this.dailySchedule());
         this.fetchStandingsByDivision();
       }
     });
