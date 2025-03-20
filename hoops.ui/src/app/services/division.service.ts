@@ -58,6 +58,7 @@ export class DivisionService {
     seasonDivisions: [],
     error: null,
   });
+  seasonR = computed(() => this.#seasonService.season1);
   private divisionUrl = Constants.SEASON_DIVISIONS_URL;
 
   private divisionResource = httpResource<DivisionResponse>(() =>
@@ -75,7 +76,6 @@ export class DivisionService {
   // error = computed(() => this.state().error);
 
   private selectedIdSubject = new Subject<Division>();
-
 
   private _season: Season | undefined;
   set season (value: Season | undefined) {

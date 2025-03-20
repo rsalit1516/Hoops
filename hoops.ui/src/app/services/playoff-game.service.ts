@@ -47,13 +47,17 @@ export class PlayoffGameService {
   }
 
   getSeasonPlayoffGames(): Observable<PlayoffGame[] | null> {
-    const url = Constants.PLAYOFF_GAMES_URL + '?seasonId=' + this.#seasonService.selectedSeason!.seasonId;
-    this.logger.log(url);
-    return this.http.get<PlayoffGame[]>(url).pipe(
-      // map((response) => (this.seasonPlayoffGames = response)),
-      tap((data) => console.log('All: ' + JSON.stringify(data.length))),
-      catchError(this.#dataService.handleError('getCurrentSeason', null))
-    );
+    if (this.#seasonService.selectedSeason === undefined) {
+      return of(null);
+    } else {
+      const url = Constants.PLAYOFF_GAMES_URL + '?seasonId=' + this.#seasonService.selectedSeason!.seasonId;
+      this.logger.log(url);
+      return this.http.get<PlayoffGame[]>(url).pipe(
+        // map((response) => (this.seasonPlayoffGames = response)),
+        tap((data) => console.log('All: ' + JSON.stringify(data.length))),
+        catchError(this.#dataService.handleError('getCurrentSeason', null))
+      );
+    }
   }
   fetchSeasonPlayoffGames() {
     this.getSeasonPlayoffGames().subscribe((playoffGames) => {

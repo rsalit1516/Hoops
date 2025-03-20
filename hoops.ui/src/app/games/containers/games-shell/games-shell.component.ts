@@ -27,7 +27,7 @@ import { AuthService } from '@app/services/auth.service';
   imports: [GamesTopMenuComponent, RouterOutlet]
 })
 export class GamesShellComponent implements OnInit {
-  readonly #seasonService = inject(SeasonService);
+  readonly seasonService = inject(SeasonService);
   readonly #divisionService = inject(DivisionService);
   readonly #teamService = inject(TeamService);
   readonly #gameService = inject(GameService);
@@ -81,7 +81,7 @@ export class GamesShellComponent implements OnInit {
   filteredTeams = computed(() => this.#teamService.divisionTeams());
 
   user = computed(() => this.#authService.currentUser());
-
+test =  this.seasonService.season1();
   constructor () {
     this.selectedDivisionId = 1;
     // effect(() => {
