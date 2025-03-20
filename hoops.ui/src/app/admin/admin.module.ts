@@ -36,33 +36,11 @@ import { ContentShellComponent } from './web-content/content-shell/content-shell
 
 @NgModule({
   imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    FormsModule,
     AdminRoutingModule,
-    // ContentModule,
-    // ContentShellComponent,
-    // DirectorModule,
     AdminGamesModule,
-    AdminGamesListComponent,
     StoreModule.forFeature('admin', reducer),
     EffectsModule.forFeature([AdminEffects]),
-    AdminComponent,
-    AdminDashboardComponent,
-    // SeasonDetailComponent,
-    // SeasonListComponent,
-    // DivisionDetailComponent,
-    // DivisionListComponent,
-    // PlayerListComponent,
-    // DivisionMasterComponent,
-    AdminShellComponent,
-    AdminSeasonShellComponent,
-    AdminSeasonListComponent,
-    AdminDivisionShellComponent,
-    ImportScheduleComponent,
-    // SeasonSetupComponent,
-    // SeasonRegistrationsComponent,
-    // PaymentsComponent,
+
   ],
 })
 export class AdminModule { }
