@@ -36,7 +36,8 @@ export class ContentService {
   selectedContent$!: Observable<any>;
   standardNotice = 1;
   activeWebContent = signal<WebContent[]>([]);
-  public get selectedContent (): any {
+  allWebContent = signal<WebContent[]>([]);
+  public get selectedContent(): any {
     return this._selectedContent;
   }
   public set selectedContent (value: any) {
@@ -50,11 +51,18 @@ export class ContentService {
     catchError(this.data.handleError('getContents', []))
   );
 
-
   getContents (): Observable<WebContent[]> {
     return this.http.get<WebContent[]>(this.data.getContentUrl);
   }
-
+  fetchAllContents() {
+    this.http.get<WebContent[]>(this.data.getContentUrl).subscribe((data) => {
+      this.allWebContent.update(() => data);
+    });
+  }
+  retrieveAllContents() {
+    return httpResource<ContentResponse>(() =>
+      `${Constants.getContentUrl}`);
+  }
   private activeContentResource = httpResource<ContentResponse>(() => `${ Constants.getActiveWebContentUrl }`);
   activeContent = computed(() => this.activeContentResource.value()?.results ?? [] as WebContent[]);
   error = computed(() => this.activeContentResource.error() as HttpErrorResponse);
@@ -66,11 +74,7 @@ export class ContentService {
     this.contentsS.set(data);
     // console.log(this.contentsS);
   });
-  constructor () {
-    // effect(() => {
-    //   console.log(this.activeContentResource);
-
-    // });
+  constructor() {
   }
   fetchActiveContents () {
     this.http.get<WebContent[]>(

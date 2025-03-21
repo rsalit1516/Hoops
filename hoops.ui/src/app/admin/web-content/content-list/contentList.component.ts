@@ -1,4 +1,4 @@
-import { Component, OnInit, output, inject, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit, output, inject, AfterViewInit, ViewChild, computed, effect } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -16,6 +16,7 @@ import { ContentListToolbarComponent } from '../content-list-toolbar/content-lis
 import { DateTime } from 'luxon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
+import { ContentService } from '../content.service';
 
 @Component({
   selector: 'csbc-content-list',
@@ -39,9 +40,11 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 export class ContentListComponent implements OnInit, AfterViewInit {
   router = inject(Router);
   store = inject(Store<fromContent.State>);
+readonly #contentService = inject(ContentService);
   readonly selectedContent = output<Content>();
   @ViewChild('contentPaginator') paginator: MatPaginator = inject(MatPaginator);
   @ViewChild(MatSort) sort: MatSort = inject(MatSort);
+allWebContent = computed(() => this.#contentService.allWebContent);
   showFirstLastButtons = true;
   pageSize = 10;
   contents$!: Observable<WebContent[]>;
@@ -59,7 +62,13 @@ export class ContentListComponent implements OnInit, AfterViewInit {
   data: WebContent[] = [];
   filterValue = '';
 
-  constructor () {}
+  constructor() {
+    effect(() => {
+      this.data = this.#contentService.allWebContent();
+      this.refreshData();
+      console.log(this.data); 
+    });
+  }
 
   ngOnInit() {
     this.pageTitle = 'Web Site Messages';
@@ -84,12 +93,12 @@ export class ContentListComponent implements OnInit, AfterViewInit {
   }
 
   refreshData () {
-    this.store.select(fromContent.getContentList).subscribe((data) => {
-      this.data = data;
+    // this.store.select(fromContent.getContentList).subscribe((data) => {
+      // this.data = data;
       this.dataSource._updateChangeSubscription();
       this.dataSource.disconnect()
       this.dataSource.connect();
-    });
+
   }
   editContent(content: Content) {
     this.store.dispatch(new contentActions.SetSelectedContent(content));

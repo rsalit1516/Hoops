@@ -1,15 +1,10 @@
 import { Component, OnInit, NgZone, viewChild } from '@angular/core';
-import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 import { Store } from '@ngrx/store';
 
 import * as fromContent from './state';
-import * as contentActions from './state/admin.actions';
 import { MatSidenav } from '@angular/material/sidenav';
-import * as adminActions from './state/admin.actions';
-import * as fromAdmin from './state';
-import * as fromUser from '../user/state';
 
 class MenuItem {
   routerLink: string | undefined;
@@ -34,16 +29,7 @@ export class AdminComponent implements OnInit {
   private mediaMatcher: MediaQueryList = matchMedia(
     `(max-width: ${ SMALL_WIDTH_BREAKPOINT }px)`
   );
-  options: UntypedFormGroup;
-
-  constructor (zone: NgZone, private router: Router, fb: UntypedFormBuilder, private store: Store<fromContent.State>
-  ) {
-    this.options = fb.group({
-      bottom: 0,
-      fixed: false,
-      top: 0
-    });
-  }
+  constructor () {}
   ngOnInit () {
     // this.user = this.userService.user;
     // TODO: get user types!

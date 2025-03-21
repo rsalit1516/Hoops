@@ -1,16 +1,12 @@
-import { Component, OnInit, Input, makeEnvironmentProviders, signal, inject } from '@angular/core';
+import { Component, OnInit, makeEnvironmentProviders, inject } from '@angular/core';
 import { Content } from '@app/domain/content';
-import { ContentService } from '../content.service';
-import { ActivatedRoute, Router, RouterLinkWithHref, RouterOutlet, provideRouter } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { Router, RouterLinkWithHref, RouterOutlet } from '@angular/router';
 
-import * as fromContent from '../../state';
-import * as contentActions from '../../state/admin.actions';
 import { CommonModule } from '@angular/common';
 import { ContentListComponent } from '../content-list/contentList.component';
 import { ContentEditComponent } from '../content-edit/content-edit.component';
-import { AdminGamesRoutingModule } from '@app/admin/admin-games/admin-games-routing.module';
 import { CONTENT_ROUTES } from '../content-routing';
+import { ContentService } from '../content.service';
 
 @Component({
     selector: 'csbc-content-shell',
@@ -30,6 +26,7 @@ import { CONTENT_ROUTES } from '../content-routing';
 
 export class ContentShellComponent implements OnInit {
   router = inject(Router);
+  #contentService = inject(ContentService);
   content!: Content;
 
   title = 'Web Site Notifications';
@@ -38,6 +35,7 @@ export class ContentShellComponent implements OnInit {
     const environmentProviders = makeEnvironmentProviders([
       { provide: CONTENT_ROUTES, useValue: CONTENT_ROUTES  },
     ]);
+    this.#contentService.fetchAllContents();
   }
 
   selectedContent() {
