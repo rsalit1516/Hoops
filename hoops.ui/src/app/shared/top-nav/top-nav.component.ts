@@ -12,13 +12,12 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
-import { FlexModule } from '@angular/flex-layout';
 @Component({
     selector: 'csbc-top-nav',
     templateUrl: './top-nav.component.html',
     styleUrls: ['./top-nav.component.scss', './../../shared/scss/menu.scss'],
     imports: [CommonModule, MatDialogModule, MatToolbarModule,
-        MatButtonModule, MatIconModule, RouterModule, FlexModule, RouterLinkActive]
+        MatButtonModule, MatIconModule, RouterModule, RouterLinkActive]
 })
 export class TopNavComponent implements OnInit {
   public readonly sidenavToggle = output();
@@ -31,6 +30,7 @@ export class TopNavComponent implements OnInit {
   };
   env: any;
   constants: typeof Constants;
+  securityEnabled: boolean = true;
 
   constructor(
     public dialog: MatDialog,
@@ -43,18 +43,19 @@ export class TopNavComponent implements OnInit {
 
   ngOnInit() {
     this.env = environment.environment;
-    // console.log(this.env);
+    this.securityEnabled = environment.securityEnabled;
+    console.log(this.env);
     this.store.pipe(select(fromUser.getCurrentUser)).subscribe((user) => {
-      // console.log(user);
-      if (this.env === 'Production') {
+      console.log(user);
+      if (this.securityEnabled) {
         if (user !== null && user.userId !== 0) {
           this.currentUser = user;
           if (user) {
             this.userName = user.firstName;
-            if (this.env !== 'Production') {
+            // if (this.securityEnabled) {
               this.showAdminMenu =
                 user.screens == undefined ? false : user.screens.length > 0;
-            }
+            // }
           }
         }
       } else {
@@ -69,7 +70,7 @@ export class TopNavComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
+      // console.log('The dialog was closed');
     });
   }
   public onToggleSidenav = () => {

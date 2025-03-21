@@ -7,6 +7,7 @@
 
 .mat-sidenav {
   color: white;
+  background-color: v.$admin-card-background-color;
 }
 
 .mat-list-item-content {
@@ -16,7 +17,9 @@
 
 .mat-toolbar {
   background-color: v.$admin-background-color;
-  padding-bottom: 8px;
+  padding-bottom: 4px;
+  padding-top: 8px;
+  height: 80px;
 }
 
 .main {
@@ -99,7 +102,7 @@ li.subheading {
   text-align: center;
   padding-top: 8px;
   padding-bottom: 8px;
-  font-size: 1em;
+  font-size: 1rem;
   background-color: gray;
 }
 
@@ -215,10 +218,6 @@ nav:hover .forAnimate {
   opacity: 1;
 }
 
-section {
-  padding-left: 15px;
-}
-
 div {
   color: v.$brand-color;
 }
@@ -256,12 +255,20 @@ div {
 
 h2 {
   color: v.$field-label;
-  font-size: .9rem;
+  font-size: 1.2rem;
   font-weight: 800;
   padding-bottom: 6px;
   padding-left: 12px;
 
 }
+h3 {
+  color: v.$field-label;
+  font-size: 1.1rem;
+  font-weight: 800;
+  padding-bottom: 6px;
+  padding-left: 12px;
+}
+
 .mat-list-text {
   font-size: .8rem;
   font-weight: 400;

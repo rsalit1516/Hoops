@@ -10,7 +10,7 @@ namespace Hoops.Infrastructure.Repository
  
         public Color GetByName(int companyId, string colorName)
         {
-            var color = context.Set<Color>().FirstOrDefault(c => c.ColorName == colorName && c.CompanyId == companyId);
+            var color = context.Set<Color>().FirstOrDefault(c => c.ColorName == colorName && c.CompanyId == companyId) ?? throw new InvalidOperationException($"Color with name '{colorName}' and company ID '{companyId}' not found.");
             return color;
         }
 

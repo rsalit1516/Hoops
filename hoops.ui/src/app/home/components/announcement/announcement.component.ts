@@ -4,21 +4,34 @@ import { MatCardModule } from '@angular/material/card';
 import { WebContent } from '@app/domain/webContent';
 
 @Component({
-    selector: 'csbc-announcement',
-    templateUrl: './announcement.component.html',
-    styleUrls: ['./../../../../Content/styles.scss',
-        '../../home.component.scss'],
-    imports: [CommonModule, MatCardModule]
+  selector: 'csbc-announcement',
+  templateUrl: './announcement.component.html',
+  styleUrls: [
+    '../../home.component.scss',
+    '../../../shared/scss/cards.scss',
+     ],
+  imports: [ CommonModule, MatCardModule ]
 })
 export class AnnouncementComponent implements OnInit {
   readonly info = input.required<WebContent>();
-  constructor() {}
+  bodyText = '';
+  constructor() { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.formattedText();
+  }
 
   hideLocationAndDateTime() {
 
     const info = this.info();
-    return ((info.location === '' || info.location === null) && (info.dateAndTime === '' || info.dateAndTime === null) );
+    return ((info.location === '' || info.location === null) && (info.dateAndTime === '' || info.dateAndTime === null));
+  }
+  formattedText(): string {
+    const info = this.info();
+    console.log(info.body);
+    const text = info && info.body ? info.body.replace(/\n/g, '<br>') : '';
+    console.log(text);
+    this.bodyText = text;
+    return text;
   }
 }

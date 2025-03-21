@@ -5,19 +5,11 @@
   display: flex;
   flex-direction: column;
 }
-body{
-  color: ghostwhite;
-  background-color: color.adjust(v.$background-color, $lightness: 10%);
-}
 
-.mat-mdc-card {
-  background-color: color.adjust(v.$card-background-color, $lightness: 5%);
-}
-
-form {
-  background-color: color.adjust(v.$card-background-color, $lightness: 10%);
-  padding: 4px;
-}
+// form {
+//  background-color: color.adjust(v.$card-background-color, $lightness: 10%);
+  // padding: 16px;
+// }
 
 h2 {
   color: v.$color;
@@ -60,6 +52,11 @@ label {
   // padding-bottom: 12px;
   color: pink
 }
+.field-label {
+  color: v.$field-label !important;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
 
 select {
   width: 100%;
@@ -89,11 +86,11 @@ input {
 }
 
 .mat-label {
-  color: v.$field-label !important;
+  color: v.$admin-font-color !important;
   font-size: .9rem;
   font-weight: 800;
-  padding-bottom: 6px;
-  padding-left: 12px;
+  // padding-bottom: 6px;
+  // padding-left: 12px;
 }
 
 .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-text-field__input {
@@ -102,6 +99,15 @@ input {
   font-weight: 700;
   padding-bottom: 6px;
   padding-left: 12px;
+
+}
+
+.mdc-text-field__input {
+  color: v.$field-label !important;
+  font-size: v.$input-font-size;
+  font-weight: 700;
+  // padding-bottom: 6px;
+  // padding-left: 12px;
 }
 
 div.mat-mdc-select-panel {
@@ -135,6 +141,11 @@ div.mat-mdc-select-panel {
   padding-right: 12px;
 }
 
+::ng-deep .mat-mdc-input-element {
+  caret-color: white;
+  color: white;
+}
+
 .button-row {
   margin-right: 8px;
 }
@@ -164,9 +175,10 @@ button {
 }
 
 fieldset {
-  border: 1px solid v.$color;
+  border: .5px solid color.adjust(v.$color, $lightness: 50%);
   border-radius: v.$border-radius;
   margin-left: 2rem;
+  margin-right: 2rem;
   margin-bottom: 1rem;
   padding: 1rem;
 }

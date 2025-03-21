@@ -1,33 +1,75 @@
-                                                                                              import { Injectable } from '@angular/core';
-import { map, tap } from 'rxjs/operators';
+import { computed, effect, inject, Injectable, signal } from '@angular/core';
+import { delay, map, tap } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { forkJoin, Observable } from 'rxjs';
 
 import { DataService } from './data.service';
-import { Game } from '../domain/game';
 
-@Injectable()
+import { RegularGame } from '../domain/regularGame';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { Constants } from '@app/shared/constants';
+import { setErrorMessage } from '@app/shared/error-message';
+
+@Injectable({
+  providedIn: 'root'
+})
 export class GameService {
-  private _gameUrl: string;
-  private _games!: Game[];
+  // Injected services
+  private http = inject(HttpClient);
+
+  private scheduleGamesUrl = Constants.SEASON_GAMES_URL;
+  private _games!: RegularGame[];
   get games () {
     return this._games;
   }
-  set games (games: Game[]) {
+  set games (games: RegularGame[]) {
     this._games = games;
   }
   standingsUrl: string;
 
+  // signals
+  private selectedRecord = signal<RegularGame | null>(null);
+  // Expose the selected record signal
+  selectedRecordSignal = this.selectedRecord.asReadonly();
+
   public currentTeamId: string | undefined;
 
-  constructor(private _http: HttpClient, public dataService: DataService) {
-    this._gameUrl = this.dataService.webUrl + '/api/gameschedule';
+  // Signals managed by the service
+  selectedGames = signal<RegularGame | undefined>(undefined);
+  private games$ = this.http.get<GameResponse>(this.scheduleGamesUrl).pipe(
+    map(vr =>
+      vr.results.map((v) => ({
+        ...v,
+      }) as RegularGame)
+    ),
+    delay(2000)
+  );
+  private gamesResource = rxResource({
+    loader: () => this.games$
+  });
+
+  scheduleGames = computed(() => this.gamesResource.value() ?? [] as RegularGame[]);
+  error = computed(() => this.gamesResource.error() as HttpErrorResponse);
+  errorMessage = computed(() => setErrorMessage(this.error(), 'Game'));
+  isLoading = this.gamesResource.isLoading;
+
+  constructor (private _http: HttpClient, public dataService: DataService) {
+    // this._gameUrl = this.dataService.webUrl + '/api/gameschedule';
     this.standingsUrl = this.dataService.webUrl + '/api/gameStandings';
+    effect(() => {
+      const record = this.selectedRecord();
+      console.log('Selected record changed:', record);
+      if (record !== null) {
+        console.log(`Record updated: ${ record.scheduleGamesId }`);
+        // Optionally trigger additional logic here
+      }
+    });
   }
-  getGames(): Observable<Game[]> {
+
+  getGames (): Observable<RegularGame[]> {
     return this._http
-      .get<Game[]>(this._gameUrl)
+      .get<RegularGame[]>(this.scheduleGamesUrl)
       .pipe(
         map(response => this.games),
         // tap(data => console.log('All: ' + JSON.stringify(data))),
@@ -44,9 +86,9 @@ export class GameService {
   //       );
   // }
 
-  getStandings(): Observable<Game[]> {
+  getStandings (): Observable<RegularGame[]> {
     return this._http
-      .get<any[]>(this._gameUrl)
+      .get<any[]>(this.scheduleGamesUrl)
       .pipe(
         map(response => this.games = response),
         // tap(data => console.log('All: ' + JSON.stringify(data))),
@@ -69,8 +111,8 @@ export class GameService {
   //   return games;
   // }
 
-  public filterGamesByTeam(allGames: Game[], teamId: number): Game[] {
-    let games: Game[] = [];
+  public filterGamesByTeam (allGames: RegularGame[], teamId: number): RegularGame[] {
+    let games: RegularGame[] = [];
     if (allGames) {
       for (let i = 0; i < allGames.length; i++) {
         if (
@@ -84,5 +126,13 @@ export class GameService {
     return games;
   }
 
-
+  updateSelectedRecord (record: RegularGame) {
+    this.selectedRecord.set(record);
+  }
+}
+export interface GameResponse {
+  count: number;
+  next: string;
+  previous: string;
+  results: RegularGame[]
 }

@@ -9,7 +9,7 @@ import * as fromGames from '../../state';
 import * as fromUser from '../../../user/state';
 
 import * as gameActions from '../../state/games.actions';
-import { Game } from '@app/domain/game';
+import { RegularGame } from '@app/domain/regularGame';
 import { Team } from '@app/domain/team';
 import { Division } from '@app/domain/division';
 import { Observable, from, zip, of } from 'rxjs';
@@ -20,35 +20,35 @@ import { RouterOutlet } from '@angular/router';
 import { GamesTopMenuComponent } from '../../components/games-top-menu/games-top-menu.component';
 
 @Component({
-    selector: 'csbc-games-shell',
-    templateUrl: './games-shell.component.html',
-    styleUrls: ['./games-shell.component.scss'],
-    imports: [GamesTopMenuComponent, RouterOutlet]
+  selector: 'csbc-games-shell',
+  templateUrl: './games-shell.component.html',
+  styleUrls: ['./games-shell.component.scss'],
+  imports: [GamesTopMenuComponent, RouterOutlet]
 })
 export class GamesShellComponent implements OnInit {
   readonly showAllTeams = input<boolean>();
   readonly currentTeam = input<string>();
   teamList: any[] | undefined;
-  filteredGames$: Observable<Game[]> | undefined;
+  filteredGames$: Observable<RegularGame[]> | undefined;
   standings$: Observable<Standing[]> | undefined;
   teams: any;
   user$ = this.userStore
     .pipe(select(fromUser.getCurrentUser))
     .subscribe((user) => (this.user = user));
-  allGames$: Observable<Game[]> | undefined;
+  allGames$: Observable<RegularGame[]> | undefined;
   errorMessage: any;
   selectedDivisionId$: Observable<number> | undefined;
   teams$: Observable<Team[]> | undefined;
   selectedTeam$: Observable<Team> | undefined;
   errorMessage$: Observable<string> | undefined;
   selectedDivision$: Observable<any> | undefined;
-  standings: Game[] | undefined;
+  standings: RegularGame[] | undefined;
   canEdit: boolean | undefined;
   user: User | undefined;
-  games: Game[] | undefined;
+  games: RegularGame[] | undefined;
   currentSeason$: Observable<any> | undefined; // = this.seasonService.currentSeason$.subscribe(season => this.seasonDescription = season.description);
   seasonDescription: string | undefined;
-  divisions$ = this.divisionService.divisions$;
+  // divisions$ = this.divisionService.divisions();
   games$ = this._gameService.seasonGames$;
 
   // TODO: this is a bug that needs to be fixed!
@@ -64,9 +64,9 @@ export class GamesShellComponent implements OnInit {
   divisions!: Division[];
   currentDivision: Division | undefined;
   filteredTeams!: Team[];
-  filteredGames!: Game[];
-  filteredGamesByDate!: Observable<Game[]>;
-  constructor(
+  filteredGames!: RegularGame[];
+  filteredGamesByDate!: Observable<RegularGame[]>;
+  constructor (
     private seasonService: SeasonService,
     private divisionService: DivisionService,
     private _teamService: TeamService,
@@ -77,10 +77,10 @@ export class GamesShellComponent implements OnInit {
     this.selectedDivisionId = 1;
   }
 
-  ngOnInit() {
+  ngOnInit () {
     this.setStateSubscriptions();
   }
-  setStateSubscriptions() {
+  setStateSubscriptions () {
     this.store
       .select(fromGames.getDivisions)
       .subscribe((divisions) => (this.divisions = divisions));
@@ -91,8 +91,8 @@ export class GamesShellComponent implements OnInit {
     // this.filteredGames$ = this.store.pipe(select(fromGames.getFilteredGames));
     // this.standings$ = this.store.pipe(select(fromGames.getStandings));
     this.store.select(fromGames.getDivisions).subscribe((divisions) => {
-      if (divisions[ 0 ]) {
-        this.store.dispatch(new gameActions.SetCurrentDivision(divisions[ 0 ]));
+      if (divisions[0]) {
+        this.store.dispatch(new gameActions.SetCurrentDivision(divisions[0]));
       }
     });
 
@@ -118,12 +118,12 @@ export class GamesShellComponent implements OnInit {
     //   console.log(this.filteredGames);
     // })
   }
-  public filterByDivision(divisionId: number): void {
+  public filterByDivision (divisionId: number): void {
     console.log(divisionId);
     this.teamList = [];
   }
 
-  divisionSelected(division: Division): void {
+  divisionSelected (division: Division): void {
     this.store.dispatch(new gameActions.SetCurrentDivision(division));
     console.log(this.user$);
     if (division !== undefined) {
@@ -134,11 +134,11 @@ export class GamesShellComponent implements OnInit {
       );
     }
   }
-  teamSelected(team: Team): void {
+  teamSelected (team: Team): void {
     this.store.dispatch(new gameActions.SetCurrentTeam(team));
   }
 
-  getCanEdit(user: User, divisionId: number): boolean {
+  getCanEdit (user: User, divisionId: number): boolean {
     let canEdit = false;
     if (user && user.divisions) {
       user.divisions.forEach((element) => {
@@ -151,7 +151,7 @@ export class GamesShellComponent implements OnInit {
     return canEdit;
   }
 
-  setDivisionData(data: any[]): Division[] {
+  setDivisionData (data: any[]): Division[] {
     let divisions: Division[] = [];
     // console.log(data);
     for (let i = 0; i <= data.length; i++) {
@@ -163,19 +163,19 @@ export class GamesShellComponent implements OnInit {
           divisionId: data[i].divisionId,
           divisionDescription: data[i].divisionDescription,
           minDate: data[i].minDate,
-          maxDate: data[ i ].maxDate,
-          gender: data[ i ].gender,
+          maxDate: data[i].maxDate,
+          gender: data[i].gender,
           minDate2: data[i].minDate2,
-          maxDate2: data[ i ].maxDate2,
-          gender2: data[ i ].gender2,
-
+          maxDate2: data[i].maxDate2,
+          gender2: data[i].gender2,
+          directorId: data[i].directorId
         };
         divisions.push(division);
       }
     }
     return divisions;
   }
-  setTeamData(data: any[]): Team[] {
+  setTeamData (data: any[]): Team[] {
     let teams: Team[] = [];
     for (let i = 0; i <= data.length; i++) {
       if (data[i] !== undefined) {
@@ -189,5 +189,8 @@ export class GamesShellComponent implements OnInit {
       console.log(teams);
     }
     return teams;
+  }
+  handlefilterUpdate ($event: any) {
+    console.log($event);
   }
 }

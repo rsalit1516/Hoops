@@ -19,9 +19,9 @@ namespace Hoops.Controllers
         private readonly IScheduleGameRepository repository;
         private readonly ILogger<ScheduleGameController> _logger;
 
-        public ScheduleGameController(IScheduleGameRepository repository, ILogger<ScheduleGameController> logger)
+        public ScheduleGameController(hoopsContext context, IScheduleGameRepository repository, ILogger<ScheduleGameController> logger)
         {
-            _context = new hoopsContext();
+            _context = context;
             this.repository = repository;
             _logger = logger;
             _logger.LogDebug(1, "NLog injected into ScheduleGameController");
@@ -68,7 +68,7 @@ namespace Hoops.Controllers
         [HttpGet]
         public IActionResult GetStandings(int divisionId)
         {
-            _logger.LogInformation("Retrieving division standings");
+            _logger.LogInformation("Updating schedule game");
             return Ok(repository.GetStandings(divisionId));
         }
 
@@ -111,8 +111,8 @@ namespace Hoops.Controllers
         [HttpPost]
         public async Task<ActionResult<ScheduleGame>> PostScheduleGame(ScheduleGame scheduleGame)
         {
-            _context.ScheduleGames.Add(scheduleGame);
-            await _context.SaveChangesAsync();
+            repository.Add(scheduleGame);
+            await repository.SaveChangesAsync();
 
             return CreatedAtAction("GetScheduleGame", new { id = scheduleGame.ScheduleGamesId }, scheduleGame);
         }
@@ -127,15 +127,15 @@ namespace Hoops.Controllers
                 return NotFound();
             }
 
-            _context.ScheduleGames.Remove(scheduleGame);
-            await _context.SaveChangesAsync();
+            repository.Delete(scheduleGame);
+            await repository.SaveChangesAsync();
 
             return scheduleGame;
         }
 
         private bool ScheduleGameExists(int id)
         {
-            return _context.ScheduleGames.Any(e => e.ScheduleGamesId == id);
+            return repository.Exists(id);
         }
 
 

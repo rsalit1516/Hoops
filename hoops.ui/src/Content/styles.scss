@@ -6,10 +6,16 @@
 @use "./../app//shared/scss/tables";
 @use "./../app//shared/scss/forms";
 
+@use "tailwindcss/base";
+@use "tailwindcss/components";
+@use "tailwindcss/utilities";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 // @import '~angular/material/prebuilt-themes/indigo-pink.css';
-@import "bootstrap/dist/css/bootstrap.css";
-
-
+// @import "bootstrap/dist/css/bootstrap.css";
 
 /*#region Override background color theme */
 
@@ -33,8 +39,11 @@ body{
 
 h1 {
   padding-top: 20px;
+  padding-bottom: 20px;
   color: v.$brand-color;
   text-align: center;
+  font-size: 1.5rem;
+
 }
 .card-title {
   border-bottom-color: white;
@@ -598,3 +607,11 @@ a {
   color:v.$color !important;
   font-size: 1.1rem;
 }
+::ng-deep .mat-paginator .mat-icon-button {
+
+  fill: white !important; /* Force the color change */
+}
+::ng-deep .mat-paginator .mat-icon {
+  fill: white !important; /* Force the color change */
+}
+

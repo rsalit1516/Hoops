@@ -14,13 +14,13 @@ import { HomeEffects } from './state/home.effects';
 import { MeetingComponent } from './components/meeting/meeting.component';
 import { SponsorListingComponent } from './components/sponsor-listing/sponsor-listing.component';
 import { SponsorListComponent } from './components/sponsor-list/sponsor-list.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+// import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CsbcAnnouncementsComponent } from './components/announcements/announcements.component';
 
 @NgModule({
     imports: [
     CommonModule,
-    NgbModule,
+    // NgbModule,
     CsbcAnnouncementsComponent,
     StoreModule.forFeature('home', reducer),
     EffectsModule.forFeature([HomeEffects]),

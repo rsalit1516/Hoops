@@ -8,7 +8,7 @@
         ></span>
       </a>
       <!-- <mat-divider></mat-divider> -->
-      <!-- <a
+      <a
         mat-list-item
         *ngIf="showDirectors"
         routerLink="/admin/director"
@@ -23,12 +23,12 @@
         >Households</a
       >
       <a
-        mat-list-item
         *ngIf="showPeople"
+        mat-list-item
         routerLink="/admin/people"
         routerLinkActive="active"
         >People</a
-      > -->
+      >
       <!-- <a
         mat-list-item
         *ngIf="showColors"
@@ -50,9 +50,10 @@
           showPeople ||
           showColors ||
           showUsers
-        "></mat-divider>
+        "
+      ></mat-divider>
       <!-- <a mat-list-item routerLink="./director" routerLinkActive="active">Directors</a> -->
-      <h3 mat-subheader>{{SeasonSetupSection}}</h3>
+      <h3 mat-subheader>{{ SeasonSetupSection }}</h3>
       <mat-list-item
         *ngFor="let item of seasonSetupItems"
         (click)="navigate(item)"
@@ -60,25 +61,28 @@
       >
         {{ item.name }}
       </mat-list-item>
-     <h3 mat-subheader>{{CommunicationSection}}</h3>
-      <mat-list-item
-        *ngFor="let item of communicationItems"
-        (click)="navigate(item)"
-        [ngClass]="{ 'selected-list-item': isSelected(item) }"
-      >
-        {{ item.name }}
-      </mat-list-item>
-
+      <h3 mat-subheader *ngIf="showNotices">
+        {{ CommunicationSection }}
+      </h3>
+      <div *ngIf="showNotices">
+        <mat-list-item
+          *ngFor="let item of communicationItems"
+          (click)="navigate(item)"
+          [ngClass]="{ 'selected-list-item': isSelected(item) }"
+        >
+          {{ item.name }}
+        </mat-list-item>
+      </div>
       <div *ngIf="showPeopleSection">
-      <h3 mat-subheader>{{PeopleSection}}</h3>
-      <mat-list-item
-        *ngFor="let item of peopleItems"
-        (click)="navigate(item)"
-        [ngClass]="{ 'selected-list-item': isSelected(item) }"
-      >
-        {{ item.name }}
-      </mat-list-item>
-    </div>
+        <h3 mat-subheader>{{ PeopleSection }}</h3>
+        <mat-list-item
+          *ngFor="let item of peopleItems"
+          (click)="navigate(item)"
+          [ngClass]="{ 'selected-list-item': isSelected(item) }"
+        >
+          {{ item.name }}
+        </mat-list-item>
+      </div>
     </mat-nav-list>
   </mat-sidenav-content>
 </mat-sidenav-container>

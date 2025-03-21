@@ -1,0 +1,181 @@
+<section class="container">
+  <mat-card class="row">
+    <mat-card-title>{{ pageTitle }}</mat-card-title>
+    <form novalidate (ngSubmit)="saveContent()" [formGroup]="contentForm">
+      <mat-card-content>
+        <div class="col-md-10">
+          <mat-form-field
+            hintLabel="Enter the event title - (not more then 50 characters long)"
+            appearance="fill"
+            class="full-width"
+            [floatLabel]="getFloatLabelValue()"
+          >
+            <mat-label>Title</mat-label>
+            <input
+              matInput
+              formControlName="title"
+              title="title"
+              (input)="onInput($event)"
+            />
+            <mat-hint align="end">{{ value().length }}/50</mat-hint>
+
+            <mat-error *ngIf="hasError('title', 'required')"
+              >Name is required</mat-error
+            >
+            <mat-error *ngIf="hasError('title', 'maxlength')"
+              >You have more than 50 characters</mat-error
+            >
+          </mat-form-field>
+        </div>
+        <div class="col-md-10">
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label htmlFor="subtitle">Sub-title</mat-label>
+            <input matInput formControlName="subTitle" title="subtitle" />
+            <mat-hint
+              >Add a sub-title. Not more then 50 characters long.
+            </mat-hint>
+            <mat-error *ngIf="hasError('subTitle', 'maxlength')"
+              >You have more than 50 characters</mat-error
+            >
+          </mat-form-field>
+        </div>
+        <!-- body -->
+<div>
+        <mat-form-field class="full-width">
+          <mat-label mat-label for="body">Body</mat-label>
+          <textarea
+            matInput
+            type="text"
+            rows="6"
+            formControlName="body"
+            title="body"
+
+            placeholder="Enter the main text to show on the notice"
+          ></textarea>
+        </mat-form-field>
+</div>
+<div>
+        <!-- location -->
+        <mat-form-field
+          class="full-width"
+          appearance="fill"
+          [floatLabel]="getFloatLabelValue()"
+        >
+          <mat-label for="location">{{ location }}</mat-label>
+          <input
+            matInput
+            title="location"
+            formControlName="location"
+          />
+          <mat-hint>Enter the location for the event</mat-hint>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field
+          class="full-width"
+          appearance="fill"
+          [floatLabel]="getFloatLabelValue()"
+        >
+          <mat-label>Date and Time</mat-label>
+          <input
+            matInput
+            formControlName="dateAndTime"
+          />
+          <mat-hint>Enter the date and time for the event</mat-hint>
+          <!-- <mat-hint>Enter the date and time for the event, if applicable</mat-hint> -->
+        </mat-form-field>
+        <!-- <mat-divider></mat-divider> -->
+      </div>
+      <div>
+        <!-- web content -->
+        <mat-form-field>
+          <mat-label for="webContent">{{ webContent }}</mat-label>
+          <mat-select
+            title="webContent"
+            formControlName="webContentTypeControl"
+          >
+            @for (webContentType of contentTypes; track webContentType) {
+            <mat-option [value]="webContentType.webContentTypeId">{{
+              webContentType.webContentTypeDescription
+            }}</mat-option>
+            }
+          </mat-select>
+          <!-- <mat-hint>Enter the type of notice from the dropdown</mat-hint> -->
+        </mat-form-field>
+      </div>
+      <div>
+        <!-- expiration date field -->
+        <mat-form-field class="sequenceWidth" type="date">
+          <mat-label>{{ expirationDate }}</mat-label>
+          <input
+            matInput
+            title="expirationDate"
+            [matDatepicker]="picker"
+            formControlName="expirationDate"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <!-- <mat-hint>Select the expiration date for the notice</mat-hint> -->
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field class="sequenceWidth">
+          <mat-label>{{ contentSequence }}</mat-label>
+          <input
+            matInput
+            title="contentSequence"
+            formControlName="contentSequence"
+            type="number"
+          />
+          <!-- <mat-hint>Enter a number indicating the order of the notice on the home page</mat-hint> -->
+        </mat-form-field>
+      </div>
+      <div>
+        <input
+          id="webContentId"
+          title="weContentId"
+          class="form-control"
+          [hidden]="hideId"
+          type="text"
+          formControlName="webContentId"
+        />
+      </div>
+      </mat-card-content>
+      <!-- <div>{{contentForm.valid}}</div> -->
+      <mat-card-actions>
+        <div class="button-row">
+          <button
+            type="button"
+            mat-raised-button
+            type="submit"
+            [disabled]="!contentForm.valid || !contentForm.dirty"
+            color="primary"
+          >
+            Save
+          </button>
+          <button
+            type="button"
+            mat-raised-button
+            type="delete"
+            color="primary"
+            (click)="openDialog()"
+          >
+            Delete
+          </button>
+          <!-- <button type="button" mat-raised-button>Save and New</button> -->
+          <button
+            type="button"
+            mat-raised-button
+            [routerLink]="['/admin/content']"
+            color="primary"
+          >
+            Cancel
+          </button>
+        </div>
+      </mat-card-actions>
+    </form>
+  </mat-card>
+</section>

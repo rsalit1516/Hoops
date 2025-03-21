@@ -4,17 +4,17 @@ import { GameService } from '@app/games/game.service';
 
 import * as fromGames from '../../state';
 import { Store, select } from '@ngrx/store';
-import { Game } from '@app/domain/game';
+import { RegularGame } from '@app/domain/regularGame';
 import { MatDialogRef, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
-    selector: 'game-score-dialog',
-    templateUrl: './game-score-dialog.component.html',
-    styleUrls: ['./game-score-dialog.component.scss'],
-    imports: [MatDialogTitle, MatDialogContent, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatDialogActions, MatButtonModule, MatDialogClose]
+  selector: 'game-score-dialog',
+  templateUrl: './game-score-dialog.component.html',
+  styleUrls: ['./game-score-dialog.component.scss'],
+  imports: [MatDialogTitle, MatDialogContent, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatDialogActions, MatButtonModule, MatDialogClose]
 })
 export class GameScoreDialogComponent implements OnInit {
   gameScoreForm = this.fb.group({
@@ -24,36 +24,36 @@ export class GameScoreDialogComponent implements OnInit {
     visitorTeamScore: new UntypedFormControl('')
   });
   game$: any;
-  game!: Game;
+  game!: RegularGame;
 
-  constructor(
+  constructor (
     public dialogRef: MatDialogRef<GameScoreDialogComponent>,
     private fb: UntypedFormBuilder,
     private gameService: GameService,
     private store: Store<fromGames.State>
-  ) {}
+  ) { }
 
-  ngOnInit() {
+  ngOnInit () {
     this.game$ = this.store
       .pipe(select(fromGames.getCurrentGame))
       .subscribe(game => {
         this.game = game;
         console.log(game);
         console.log(this.gameScoreForm.controls['homeTeamName']);
-       // this.gameScoreForm.controls['homeTeamName'].setValue(game.homeTeamName);
-       // this.gameScoreForm.controls['visitorTeamName'].setValue(game.visitingTeamName);
+        // this.gameScoreForm.controls['homeTeamName'].setValue(game.homeTeamName);
+        // this.gameScoreForm.controls['visitorTeamName'].setValue(game.visitingTeamName);
         if (game.homeTeamScore !== null) {
-           this.gameScoreForm.controls['homeTeamScore'].setValue(game.homeTeamScore);
-         }
-         if (game.visitingTeamScore !== null) {
-           this.gameScoreForm.controls['visitorTeamScore'].setValue(game.visitingTeamScore);
-         }
+          this.gameScoreForm.controls['homeTeamScore'].setValue(game.homeTeamScore);
+        }
+        if (game.visitingTeamScore !== null) {
+          this.gameScoreForm.controls['visitorTeamScore'].setValue(game.visitingTeamScore);
+        }
       });
   }
-  onCancelClick() {
+  onCancelClick () {
     this.dialogRef.close();
   }
-  onSubmitClick() {
+  onSubmitClick () {
     console.log(this.gameScoreForm);
     if (
       this.validate(
@@ -66,7 +66,7 @@ export class GameScoreDialogComponent implements OnInit {
       this.dialogRef.close();
     }
   }
-  validate(homeTeamScore: string, visitorTeamScore: string) {
+  validate (homeTeamScore: string, visitorTeamScore: string) {
     const valid = this.gameService.validateScores(
       homeTeamScore,
       visitorTeamScore

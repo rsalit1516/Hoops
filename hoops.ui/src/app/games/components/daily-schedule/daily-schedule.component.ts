@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, Input, input } from '@angular/core';
-import { Game } from '@domain/game';
+import { RegularGame } from '@app/domain/regularGame';
 import { Store, select } from '@ngrx/store';
-import { MediaObserver } from '@angular/flex-layout';
 import { GameScoreDialogComponent } from '../game-score-dialog/game-score-dialog.component';
 
 import * as fromGames from '../../state';
@@ -14,19 +13,19 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 
 @Component({
-    selector: 'daily-schedule',
-    templateUrl: './daily-schedule.component.html',
-    styleUrls: ['./daily-schedule.component.scss',
-        './../../../shared/scss/tables.scss'],
+  selector: 'csbc-daily-schedule',
+  templateUrl: './daily-schedule.component.html',
+  styleUrls: ['./daily-schedule.component.scss',
+    './../../../shared/scss/tables.scss'],
   imports: [
-      CommonModule,
-        MatTableModule,
-        MatButtonModule,
-        MatIconModule,
-    ]
+    CommonModule,
+    MatTableModule,
+    MatButtonModule,
+    MatIconModule,
+  ]
 })
 export class DailyScheduleComponent implements OnInit {
-  readonly games = input.required<Game[]>();
+  readonly games = input.required<RegularGame[]>();
   @Input() canEdit!: boolean;
   displayedColumns = [
     'gameTime',
@@ -37,33 +36,33 @@ export class DailyScheduleComponent implements OnInit {
     'visitingTeamScore',
     'actions',
   ];
-  data: Game[] = []; // = this.games;
+  data: RegularGame[] = []; // = this.games;
   gameDate!: Date;
   flexMediaWatcher: any;
   currentScreenWidth: string | undefined;
-  constructor(
+  constructor (
     private store: Store<fromGames.State>,
     public dialog: MatDialog,
     // private media: MediaObserver
-  ) {}
+  ) { }
 
-  ngOnInit() {
+  ngOnInit () {
     this.data = this.games();
     // this.flexMediaWatcher = this.media.media$.subscribe((change) => {
-      // if (change.mqAlias !== this.currentScreenWidth) {
-      //   this.currentScreenWidth = change.mqAlias;
-        this.setupTable();
-        this.store.select(fromGames.getCanEdit).subscribe((canEdit) => {
-          this.canEdit = canEdit;
-          if (canEdit === true) {
-            this.displayedColumns.push('actions');
-          }
-        });
-      // }
+    // if (change.mqAlias !== this.currentScreenWidth) {
+    //   this.currentScreenWidth = change.mqAlias;
+    this.setupTable();
+    this.store.select(fromGames.getCanEdit).subscribe((canEdit) => {
+      this.canEdit = canEdit;
+      if (canEdit === true) {
+        this.displayedColumns.push('actions');
+      }
+    });
+    // }
     // });
-    // this.gameDate! = this.data[0].gameDate as Date;
+    this.gameDate! = this.data[0].gameDate as Date;
   }
-  setupTable() {
+  setupTable () {
     if (this.currentScreenWidth === 'xs') {
       // only display internalId on larger screens
       //this.displayedColumns.shift(); // remove 'internalId'
@@ -84,7 +83,7 @@ export class DailyScheduleComponent implements OnInit {
       ];
     }
   }
-  editGame(game: Game) {
+  editGame (game: RegularGame) {
     this.store.dispatch(new gameActions.SetCurrentGame(game));
     const dialogRef = this.dialog.open(GameScoreDialogComponent, {
       width: '500px',

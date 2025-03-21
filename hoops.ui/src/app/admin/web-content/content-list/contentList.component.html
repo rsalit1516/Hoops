@@ -1,0 +1,63 @@
+<div class="container">
+  <div id="panelContent" class="row">
+    <content-list-toolbar></content-list-toolbar>
+  </div>
+  <div class="row">
+    <div class="table-wrapper">
+      <table mat-table id="grdSchedule" matSort [dataSource]="dataSource">
+        <ng-container matColumnDef="title">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef>Title</th>
+          <td mat-cell *matCellDef="let content">
+            {{ content.title }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="dateAndTime">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef>Date And Time</th>
+          <td mat-cell *matCellDef="let content" class="time">
+            {{ content.dateAndTime }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="location">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef>Location</th>
+          <td mat-cell *matCellDef="let content" class="time">
+            {{ content.location }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="expirationDate">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef>Expiry Date</th>
+          <td mat-cell *matCellDef="let content" class="date">
+            {{ content.expirationDate | date: "M/d/yy" }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let content">
+            <button mat-raised-button class="edit" (click)="cloneContent(content)" mat-button>
+              <mat-icon>file_copy</mat-icon>
+              Clone
+            </button>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="nodata">
+          <td mat-footer-row *matFooterCellDef [colSpan]="displayedColumns.length" class="no-data">No Data
+            Available</td>
+        </ng-container>
+        <tr mat-footer-row [hidden]="dataSource.data.length >0" *matFooterRowDef="['nodata']">
+        </tr>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns" matHeaderRowDefSticky="true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns" (click) = "editContent(row)"></tr>
+      </table>
+       <mat-paginator #contentPaginator aria-label="Select page of users"
+       [pageSizeOptions]="[5, 10, 25, 100]"
+       [pageSize]="pageSize"
+       [showFirstLastButtons]="showFirstLastButtons"
+>
+      </mat-paginator>
+    </div>
+    <!-- </div> -->
+  </div>
+
+
+</div>

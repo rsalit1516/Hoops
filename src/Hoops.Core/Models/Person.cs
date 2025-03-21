@@ -14,19 +14,29 @@ namespace Hoops.Core.Models
         public int? CompanyId { get; set; }
         [Column("MainHouseID")]
         public int? HouseId { get; set; }
+        [MaxLength(50)]
         public string FirstName { get; set; }
+        [MaxLength(50)]
         public string LastName { get; set; }
+        [MaxLength(25)]
         public string Workphone { get; set; }
+        [MaxLength(15)]
         public string Cellphone { get; set; }
+        [MaxLength(50)]
         public string Email { get; set; }
         public bool? Suspended { get; set; }
+        [MaxLength(15)]
         public string LatestSeason { get; set; }
+        [MaxLength(20)]
         public string LatestShirtSize { get; set; }
         public int? LatestRating { get; set; }
+        [DataType(DataType.DateTime)]
         public DateTime? BirthDate { get; set; }
         [Column("BC")]
         public bool? Bc { get; set; }
+        [MaxLength(1)]
         public string Gender { get; set; }
+        [MaxLength(50)]
         public string SchoolName { get; set; }
         public int? Grade { get; set; }
         [Column("GiftedLevelsUP")]
@@ -47,12 +57,14 @@ namespace Hoops.Core.Models
         public bool? Printing { get; set; }
         public bool? Equipment { get; set; }
         public bool? Electrician { get; set; }
+        [Column(TypeName = "smalldatetime")]
         public DateTime? CreatedDate { get; set; }
+        [MaxLength(20)]
         public string CreatedUser { get; set; }
         [Column("TEMPID")]
         public int? TempId { get; set; }
 
-        [ForeignKey("HouseID")]
+        [ForeignKey("HouseId")]
         public virtual Household Household { get; set; } //this should be part of data model - but its not
     }
 }

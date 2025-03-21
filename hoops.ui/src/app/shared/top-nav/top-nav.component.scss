@@ -1,5 +1,5 @@
-@use 'sass:color';
-@use  "../../../Content/variables" as v;
+@use "sass:color";
+@use "../../../Content/variables" as v;
 
 .mat-sidenav-container {
   background-color: v.$background-color;
@@ -23,7 +23,7 @@ a {
   color: color.adjust(v.$navbar-color, $lightness: 50%);
 }
 
-ul>li {
+ul > li {
   display: inline-block;
   padding: 4% 4%;
   width: 30%;
@@ -34,42 +34,42 @@ ul>li {
 }
 
 .navbar-brand {
-  color:v.$brand-color;
+  color: v.$brand-color;
   font-size: 1.5em;
   font-weight: 800;
 }
 
 .navbar {
-  background-color:v.$navbar-background-color;
-  color:v.$navbar-color;
+  background-color: v.$navbar-background-color;
+  color: v.$navbar-color;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
 }
 
 .navbar-inverse {
-  background-color:v.$navbar-background-color;
+  background-color: v.$navbar-background-color;
 }
 
 .navbar-inverse .navbar-brand {
-  color:v.$navbar-background-color;
+  color: v.$navbar-background-color;
 }
 
 .navbar-inverse .navbar-nav li a {
-  color:v.$navbar-color;
+  color: v.$navbar-color;
 }
 
-.navbar-inverse .navbar-nav .active>a {
-  background-color:v.$navbar-background-color;
+.navbar-inverse .navbar-nav .active > a {
+  background-color: v.$navbar-background-color;
   color: white;
 }
 
-.navbar-inverse .navbar-nav .active:hover>a {
-  background-color:v.$navbar-background-color;
+.navbar-inverse .navbar-nav .active:hover > a {
+  background-color: v.$navbar-background-color;
   color: white;
 }
 
 .navbar .brand-title {
   margin-left: 2em;
-  color:v.$navbar-color;
+  color: v.$navbar-color;
 }
 
 .navbar-logo img {
@@ -87,7 +87,7 @@ p {
 }
 
 button {
-  background-color:v.$navbar-color;
+  background-color: v.$navbar-color;
   font-weight: 600;
 }
 
@@ -99,13 +99,22 @@ button {
 }
 
 a.brand {
-  color:v.$navbar-color;
-  font-size:v.$heading-font-size;
+  color: v.$navbar-color;
+  font-size: v.$heading-font-size;
   margin-right: 12px;
   font-variant: small-caps;
+  font-weight: 800;
   text-decoration: none;
+  letter-spacing: 0.5rem;
 }
 
 .menu-spacer {
   width: 80px;
+}
+.mat-toolbar-row {
+  padding: 4 20px;
+  height: 46px;
+}
+.csbc {
+  background-color: v.$csbc-background-color;
 }

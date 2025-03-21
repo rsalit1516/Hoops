@@ -42,7 +42,7 @@ namespace Hoops.Infrastructure.Repository
         public int FindCompanyByName(string name)
         {
             int id = 0;
-            string companyTableName = context.Set<Company>().ToString();
+            string companyTableName = context.Set<Company>()?.ToString() ?? string.Empty;
             var company = context.Set<Company>().FirstOrDefault(n => n.CompanyName == name);
             if (company==null)
                 id = 0;

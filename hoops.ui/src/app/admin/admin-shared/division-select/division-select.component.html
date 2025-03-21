@@ -1,12 +1,17 @@
-<form [formGroup]="selectForm">
-  <h4>Division</h4>
-  <mat-form-field>
-    <mat-select formControlName="divisionControl" class="form-control" >
-      @for( division of divisions$ | async; track division) {
-      <mat-option [value]="division">
-        {{ division.divisionDescription }}
-      </mat-option>
+<mat-form-field>
+  <mat-label>Division</mat-label>
+  <mat-select
+    [(value)]="selectedDivision"
+    (selectionChange)="onChange($event.value)"
+    class="form-control"
+  >
+    <mat-option [value]="null" (click)="changeDivision(null)">
+      All
+    </mat-option>
+    @for( division of divisions$ | async; track division) {
+    <mat-option [value]="division" (click)="changeDivision(division)">
+      {{ division.divisionDescription }}
+    </mat-option>
     }
-    </mat-select>
-  </mat-form-field>
-</form>
+  </mat-select>
+</mat-form-field>

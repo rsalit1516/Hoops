@@ -1,0 +1,45 @@
+<div class="container mx-auto w-full">
+  <div>
+    <csbc-shell-title [title]="pageTitle"></csbc-shell-title>
+  </div>
+  <mat-sidenav-container class="sidenav-container" >
+    <!-- Main Content -->
+    <mat-sidenav-content>
+      <csbc-household-search (search)="onSearch($event)"></csbc-household-search>
+      <h2>Households</h2>
+      <csbc-household-list [results]="results()"></csbc-household-list>
+    </mat-sidenav-content>
+
+    <!-- Side Panel for Details -->
+    <mat-sidenav #sidenav mode="side" [opened]="isSidenavOpen" position="end">
+      <div class="sidenav-content">
+        <h3>Details for {{ householdService.selectedRecordSignal()?.name }} Household</h3>
+        <button mat-icon-button (click)="closeSidenav()">
+          <mat-icon>close</mat-icon>
+        </button>
+
+        <mat-accordion>
+          <mat-expansion-panel #firstPanel>
+            <mat-expansion-panel-header>
+              <mat-panel-title> Household Info </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div>
+              <csbc-household-detail></csbc-household-detail>
+            </div>
+          </mat-expansion-panel>
+
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title> Household Members </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div>
+              <csbc-household-members></csbc-household-members>
+            </div>
+            <p>More details here...</p>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+    </mat-sidenav>
+  </mat-sidenav-container>
+
+</div>

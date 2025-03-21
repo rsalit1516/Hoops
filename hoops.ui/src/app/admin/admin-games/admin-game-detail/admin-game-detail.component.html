@@ -1,0 +1,90 @@
+<form [formGroup]="gameEditForm" class="form-container" (ngSubmit)="onSave()">
+
+  <mat-card>
+    <!-- <mat-card-title>Game Details</mat-card-title> -->
+    <mat-card-content>
+      <div>
+        <mat-form-field class="form-control" appearance="fill">
+          <mat-label>Game Date</mat-label>
+          <input matInput [matDatepicker]="picker" value="gameDate" formControlName="gameDate"
+            placeholder="Game Date" />
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field class="form-control" appearance="fill">
+          <mat-label>Game Time</mat-label>
+          <input matInput value="gameTime" placeholder="06:00" formControlName="gameTime" placeholder="Game Time" />
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field class="form-control" appearance="fill">
+          <mat-label>Location</mat-label>
+          <!-- <input matInput value="locationName" formControlName="locationName" />
+          -->
+          <mat-select formControlName="locationName" class="form-control">
+            @for(location of locations$ | async; track location) {
+            <mat-option [value]="location.locationNumber">
+              {{ location.locationName }}
+            </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field class="form-control" appearance="fill">
+          <mat-label>Visitor Team</mat-label>
+          <mat-select formControlName="visitorTeam" class="form-control">
+            @for(team of divisionTeams$ | async; track team) {
+            <mat-option [value]="team.teamId">
+              {{ team.teamName }}
+            </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field class="form-control" appearance="fill">
+          <mat-label>HomeTeam</mat-label>
+          <mat-select formControlName="homeTeam" class="form-control">
+            @for(team of divisionTeams$ | async;track team) {
+            <mat-option [value]="team.teamId">
+              {{ team.teamName }}
+            </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="Primary" type="submit"
+        [disabled]="!gameEditForm.valid || !gameEditForm.dirty">Save</button>
+      <button mat-raised-button color="Primary" type="button">Cancel</button>
+    </mat-card-actions>
+  </mat-card>
+</form>
+
+<!-- divisionId(pin):4126
+companyId(pin):null
+seasonId(pin):2204
+divisionDescription(pin):"SI BOYS"
+gameDate(pin):"2021-12-06T18:00:00"
+gameTimeString(pin):"1899-12-30 18:00:00"
+gameTime(pin):"1899-12-30T18:00:00"
+locationName(pin):"Gym East"
+gameNumber(pin):1
+visitingTeamNumber(pin):61
+homeTeamNumber(pin):18
+visitingTeamSeasonNumber(pin):12
+homeTeamSeasonNumber(pin):3
+visitingTeamName(pin):"WHITE (12)"
+homeTeamName(pin):"ROYAL BLUE (03)"
+scheduleNumber(pin):74
+homeTeamScore(pin):21
+visitingTeamScore(pin):22
+gameDescription(pin):null
+visitingTeamId(pin):7498
+homeTeamId(pin):7486
+gameType(pin):0
+ -->

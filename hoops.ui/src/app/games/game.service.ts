@@ -13,8 +13,10 @@ import {
   switchMap,
 } from 'rxjs/operators';
 import { DataService } from '@app/services/data.service';
+import { Constants } from '@app/shared/constants';
+
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Game } from '@app/domain/game';
+import { RegularGame } from '@app/domain/regularGame';
 import * as fromGames from './state';
 import * as gameActions from './state/games.actions';
 import * as fromUser from '@app/user/state';
@@ -25,6 +27,7 @@ import { Team } from '@app/domain/team';
 import { DateTime } from 'luxon';
 import { PlayoffGame } from '@app/domain/playoffGame';
 import { getCurrentSeason } from './state/index';
+import { LoggerService } from '@app/services/logging.service';
 
 @Injectable({
   providedIn: 'root',
@@ -34,7 +37,7 @@ export class GameService {
   gameStore = inject(Store<fromGames.State>);
   http = inject(HttpClient);
   userStore = inject(Store<fromUser.State>);
-
+  logger = inject(LoggerService);
   seasonId: number | undefined; // = 2192; // TO DO make this is passed in!
   currentSeason$ = this.gameStore.select(fromGames.getCurrentSeason).subscribe({
     next: (season) => {
@@ -46,19 +49,19 @@ export class GameService {
   });
   handleError: ((err: any, caught: Observable<any[]>) => never) | undefined;
 
-//  //    this.seasonId;
-//   private standingsUrl =
-//     this.dataService.webUrl + '/api/ScheduleGame/getStandings';
+  //  //    this.seasonId;
+  //   private standingsUrl =
+  //     this.dataService.webUrl + '/api/ScheduleGame/getStandings';
   // private divisionUrl = this.dataService.webUrl + '/api/divisions';
 
-  games: Game[] | undefined;
+  games: RegularGame[] | undefined;
   divisionId: number | undefined;
   teamId: number | undefined;
-  allGames: Game[] | undefined;
+  allGames: RegularGame[] | undefined;
   allPlayoffGames: PlayoffGame[] | undefined;
   standing: any[] | undefined;
   // divisions$: Observable<Division>;
-  seasonGames$: Observable<Game[]>;
+  seasonGames$: Observable<RegularGame[]>;
 
   divisions$ = this.gameStore.select(fromGames.getDivisions);
 
@@ -67,11 +70,11 @@ export class GameService {
   // );
   currentDivision$ = this.gameStore
     .pipe(select(fromGames.getCurrentDivision));
-    // .subscribe((division): number | undefined => {
-    //   return division !== undefined
-    //     ? (this.divisionId = division.divisionId)
-    //     : undefined;
-    // });
+  // .subscribe((division): number | undefined => {
+  //   return division !== undefined
+  //     ? (this.divisionId = division.divisionId)
+  //     : undefined;
+  // });
 
   divisions: Division[] | undefined;
   user: User | undefined;
@@ -95,8 +98,8 @@ export class GameService {
     this.seasonGames$ = this.gameStore.pipe(select(fromGames.getGames));
   }
 
-  private getDivisionGames (games: Game[], divisionId: number) {
-    let g: Game[] = [];
+  private getDivisionGames (games: RegularGame[], divisionId: number) {
+    let g: RegularGame[] = [];
     // console.log(divisionId);
     // console.log(games);
     for (let i = 0; i < games.length; i++) {
@@ -110,8 +113,8 @@ export class GameService {
     console.log(g);
     return g;
   }
-  getGames (): Observable<Game[]> {
-    return this.http.get<Game[]>(this.dataService.seasonGamesUrl + '?seasonId=' + this.seasonId);
+  getGames (): Observable<RegularGame[]> {
+    return this.http.get<RegularGame[]>(this.dataService.seasonGamesUrl + '?seasonId=' + this.seasonId);
   }
   //   const divId = fromGames.getCurrentDivisionId;
   //   return this.http
@@ -123,8 +126,8 @@ export class GameService {
   //     );
   // }
   getSeasonPlayoffGames (): Observable<PlayoffGame[]> {
-    const url = this.dataService.playoffGameUrl + '?seasonId=' + this.seasonId;
-    // console.log(url);
+    const url = Constants.PLAYOFF_GAMES_URL + '?seasonId=' + this.seasonId;
+    this.logger.log(url);
     return this.http.get<PlayoffGame[]>(url).pipe(
       map((response) => (this.seasonPlayoffGames = response)),
       tap((data) => console.log('All: ' + JSON.stringify(data.length)))
@@ -138,9 +141,9 @@ export class GameService {
   //   );
   // }
 
-  filterGamesByDivision (): Observable<Game[]> {
-    let games: Game[] = [];
-    let sortedDate: Game[] = [];
+  filterGamesByDivision (): Observable<RegularGame[]> {
+    let games: RegularGame[] = [];
+    let sortedDate: RegularGame[] = [];
     let div = 0;
     this.currentDivision$.subscribe((division) => {
       // console.log(division);
@@ -161,7 +164,6 @@ export class GameService {
           sortedDate = games.sort((a, b) => {
             return this.compare(a.gameDate!, b.gameDate!, true);
           });
-          console.log(sortedDate);
           return of(sortedDate);
         }
         return of(sortedDate);
@@ -194,12 +196,12 @@ export class GameService {
     return of(sortedDate);
   }
 
-  public filterGamesByTeam (currentTeam: Team | undefined): Observable<Game[]> {
+  public filterGamesByTeam (currentTeam: Team | undefined): Observable<RegularGame[]> {
     let teamId = currentTeam?.teamId;
     this.gameStore.pipe(select(fromGames.getGames)).subscribe((g) => {
       this.allGames = g;
     });
-    let games: Game[] = [];
+    let games: RegularGame[] = [];
     if (this.allGames) {
       for (let i = 0; i < this.allGames.length; i++) {
         if (
@@ -217,51 +219,27 @@ export class GameService {
     return of(games);
   }
 
-  groupByDate (games: Game[]): Game[][] {
-    // const source = from(games);
-    // const gDate = source.pipe(
-    //   map((s) => {
-    //     const gameDate = DateTime.fromISO(s.gameDate.toISOString()).toJSDate();// if (typeof s.gameDate === 'string') {
-    //     // if (typeof s.gameDate === 'string') {
-    //     s.gameDate = gameDateOnly;
-    //     // }
-    //     // }
-    //     console.log(s.gameDate);
-    //     return s;
-    //   })
-    // );
-
-    // const gamesByDate = source.pipe(
-    //   groupBy((game) => DateTime.fromJSDate(game.gameDate).toFormat('yyyy-MM-dd')),
-    //   mergeMap((group) => group.pipe(toArray()))
-    // );
-
-    // return gamesByDate;
-    const groupedGames: { [key: string]: Game[] } = {};
+  groupRegularGamesByDate (games: RegularGame[]): RegularGame[][] {
+    const groupedGames: { [key: string]: RegularGame[] } = {};
     games.forEach(game => {
-      const dateKey = game.gameDateOnly!.toISOString().split('T')[0]; // Use the date part as the key
+      const gameDate = new Date(game.gameDate);
+      const dateKey = gameDate.toLocaleDateString("en-CA");
       if (!groupedGames[dateKey]) {
         groupedGames[dateKey] = [];
       } groupedGames[dateKey].push(game);
     });
-      return Object.values(groupedGames); // Convert the object to an array of arrays
+    return Object.values(groupedGames); // Convert the object to an array of arrays
   }
-  groupPlayoffsByDate (games: PlayoffGame[]) {
-    const source = from(games);
-    const gDate = source.pipe(
-      map((s) => {
-        if (typeof s.gameDate === 'string') {
-          s.gameDate = DateTime.fromISO(s.gameDate).toJSDate();
-        }
-        return s;
-      })
-    );
-
-    const gamesByDate = source.pipe(
-      groupBy((game) => DateTime.fromJSDate(game.gameDate).toFormat('yyyy-MM-dd')),
-      mergeMap((group) => group.pipe(toArray()))
-    );
-    return gamesByDate;
+  groupPlayoffGamesByDate (games: PlayoffGame[]): PlayoffGame[][] {
+    const groupedGames: { [key: string]: PlayoffGame[] } = {};
+    games.forEach(game => {
+      const gameDate = new Date(game.gameDate);
+      const dateKey = gameDate.toLocaleDateString("en-CA");
+      if (!groupedGames[dateKey]) {
+        groupedGames[dateKey] = [];
+      } groupedGames[dateKey].push(game);
+    });
+    return Object.values(groupedGames); // Convert the object to an array of arrays
   }
 
   private sort (a: any, b: any) {
@@ -291,7 +269,7 @@ export class GameService {
       );
   }
 
-  getDistinctDates (filteredGames: Game[]): Observable<(Date | undefined)[]> {
+  getDistinctDates (filteredGames: RegularGame[]): Observable<(Date | undefined)[]> {
     return from(filteredGames).pipe(
       map((g) => g.gameDate),
       distinct(),
@@ -344,7 +322,7 @@ export class GameService {
     homeTeamScore,
     visitingTeamScore,
   }: {
-    game: Game;
+    game: RegularGame;
     homeTeamScore: any;
     visitingTeamScore: any;
   }) {

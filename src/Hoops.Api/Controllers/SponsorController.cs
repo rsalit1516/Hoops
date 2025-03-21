@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
-using Hoops.Core.Interface;
 using Microsoft.AspNetCore.Mvc;
+using Hoops.Core.Interface;
 
 namespace Hoops.Api.Controllers
 {
@@ -18,7 +18,7 @@ namespace Hoops.Api.Controllers
         /// <summary>
         /// GET: api/Season
         /// </summary>
-        [Route("GetSeasonSponsors/{seasonId}")]
+        /// [Route("GetSeasonSponsors/{seasonId}")]
         [HttpGet]
         public async Task<IActionResult> GetSeasonSponsors(int seasonId)
         {

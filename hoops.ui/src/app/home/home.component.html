@@ -1,37 +1,32 @@
-<div class="home-wrapper">
-  <div class="row center-top">
-    <div id="header">
-      <div id="logo">
-        <a href="index.html">
-          <img [src]="topImage" alt="Main image" class="img-responsive" />
-        </a>
+<div class="container mx-auto max-w-screen-lg">
+  <div >
+    <div class="mx-auto center-top">
+      <div id="header" class="">
+        <div id="logo" class="">
+          <a href="index.html" class="">
+            <img [src]="topImage" alt="Main image" class="img-responsive">
+          </a>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="row">
-    <csbc-home-center
-      class="col-sm-6 offset-sm-3 col-12 tag"
-    ></csbc-home-center>
-  </div>
-  <div class="row">
-    <div [ngClass]="meetingNoticeClass" [hidden]="!showSidebar">
-      <csbc-home-sidebar></csbc-home-sidebar>
+    <div class="mx-auto">
+      <csbc-home-center class="sm:w-6/12 w-full px-2"></csbc-home-center>
     </div>
-    <!-- <div class="row"> -->
-    <div [ngClass]="imageClass">
-      <div class="row align-items-center">
+    <div >
+      <div [ngClass]="meetingNoticeClass" [hidden]="!showSidebar" class="">
+        <csbc-home-sidebar class=""></csbc-home-sidebar>
+      </div>
+      <div [ngClass]="imageClass" class="mx-auto">
         <csbc-announcements class="announcements" [info]="announcementInfo"></csbc-announcements>
       </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-6 offset-sm-3 col-12">
-      <div class="manny">Manny Rosa - forever in our hearts at CSBC</div>
+    <div class="justify-end">
+      <!-- <div class="sm:w-6/12 px-2 w-full"> -->
+        <div class="manny">Manny Rosa - forever in our hearts at CSBC</div>
+      <!-- </div> -->
+    </div>
+    <div *ngIf="showSponsors" class="sponsor">
+      <app-sponsor-list class=""></app-sponsor-list>
     </div>
   </div>
-  @if (showSponsors) {
-  <div class="sponsor">
-    <app-sponsor-list></app-sponsor-list>
-  </div>
-  }
 </div>

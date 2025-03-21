@@ -5,12 +5,11 @@ import { select, Store } from '@ngrx/store';
 
 import * as fromAdmin from '../../state';
 import { AdminSeasonListComponent } from '../../components/admin-season-list/admin-season-list.component';
-import { FlexModule } from '@angular/flex-layout/flex';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { AdminGamesRoutingModule } from '@app/admin/admin-games/admin-games-routing.module';
-import { ContentEditComponent } from '@app/admin/web-content/components/content-edit/content-edit.component';
-import { ContentListComponent } from '@app/admin/web-content/components/content-list/contentList.component';
+import { ContentEditComponent } from '@app/admin/web-content/content-edit/content-edit.component';
+import { ContentListComponent } from '@app/admin/web-content/content-list/contentList.component';
 
 
 @Component({

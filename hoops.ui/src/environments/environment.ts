@@ -6,5 +6,11 @@
 export const environment = {
   production: false,
   apiUrl: 'https://localhost:5001',
-  environment: 'local'
+  environment: 'local',
+  securityEnabled: false
 };
+// export const environment = {
+//   production: false,
+//   apiUrl: 'https://localhost:5001',
+//   environment: 'local'
+// };

@@ -1,34 +1,20 @@
 <div class="top-menu-wrapper">
   <div class="seasonDescription">
-    <h2 class="col-12">{{ seasonDescription }}</h2>
+    <h2>{{ seasonDescription }}</h2>
   </div>
-  <div class="row mt-2">
-    <div class="col-sm-4 col-12">
-      <<mat-toolbar>
-        <a
-          mat-button
-          routerLink="/games/schedule"
-          routerLinkActive="/games/schedule"
-          >Schedule</a
-        >
-        @if (hasStandings) {
-        <a mat-button routerLink="/games/standings">Standings</a>
-        } @if (hasPlayoffs) {
-        <a mat-button routerLink="/games/playoffs">Playoffs</a>
-        }
-      </mat-toolbar>
-      <div></div>
-    </div>
+  <mat-toolbar>
+    <mat-toolbar-row>
+      <a class="btn" routerLink="/games/schedule" routerLinkActive="/games/schedule">Schedule</a>
+      <div *ngIf="hasPlayoffs">
+        <a class="btn" routerLink="/games/playoffs">Playoffs</a>
+      </div>
+      <div *ngIf="hasStandings">
+        <a class="btn" routerLink="/games/standings">Standings</a>
+      </div>
+    </mat-toolbar-row>
+    <mat-toolbar-row>
+      <csbc-game-filter [divisions]="divisions()" [teams]="teams()" class=""></csbc-game-filter>
 
-    <div class="col-sm-2 col-0"></div>
-    <div class="col-sm-6 col-12">
-      <mat-toolbar>
-        <csbc-game-filter
-          [divisions]="divisions()"
-          [teams]="teams()"
-          class=""
-        ></csbc-game-filter>
-      </mat-toolbar>
-    </div>
-  </div>
+    </mat-toolbar-row>
+  </mat-toolbar>
 </div>

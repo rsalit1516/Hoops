@@ -10,6 +10,17 @@ namespace Hoops.Infrastructure.Repository
 {
     public class ScheduleGameRepository : EFRepository<ScheduleGame>, IScheduleGameRepository
     {
+        public void Add(ScheduleGame game)
+        {
+            context.ScheduleGames.Add(game);
+            context.SaveChanges();
+        }
+
+        public bool Exists(int id)
+        {
+            return context.ScheduleGames.Any(g => g.ScheduleGamesId == id);
+        }
+    
         private readonly ILogger<ScheduleGameRepository> _logger;
         public ScheduleGameRepository(hoopsContext context, ILogger<ScheduleGameRepository> logger) : base(context)
         {
@@ -28,13 +39,14 @@ namespace Hoops.Infrastructure.Repository
 
         public ScheduleGame GetByScheduleAndGameNo(ScheduleGame game)
         {
-            var result = context.Set<ScheduleGame>().FirstOrDefault(s => s.ScheduleNumber == game.ScheduleNumber && s.GameNumber == game.GameNumber && s.DivisionId == game.DivisionId && s.SeasonId == game.SeasonId);
-            return result;
+            var result = context.Set<ScheduleGame>()
+                                .FirstOrDefault(s => s.ScheduleNumber == game.ScheduleNumber && s.GameNumber == game.GameNumber && s.DivisionId == game.DivisionId && s.SeasonId == game.SeasonId);
+            return result ?? new ScheduleGame();
         }
 
         public IEnumerable<ScheduleGame> GetSeasonGames()
         {
-            Season season = context.Seasons.FirstOrDefault(s => s.CurrentSeason == true);
+            Season season = context.Seasons.FirstOrDefault(s => s.CurrentSeason == true) ?? new Season();
             var games = context.ScheduleGames;
             return games;
         }
@@ -49,7 +61,7 @@ namespace Hoops.Infrastructure.Repository
         public ScheduleGame GetByScheduleGamesId(int scheduleGamesId)
         {
             var result = context.Set<ScheduleGame>().FirstOrDefault(s => s.ScheduleGamesId == scheduleGamesId);
-            return result;
+            return result ?? new ScheduleGame();
         }
         #endregion
 
@@ -148,7 +160,7 @@ namespace Hoops.Infrastructure.Repository
 
         public ScheduleGame GetByScheduleAndGameNo(int scheduleNo, int gameNo)
         {
-            return context.Set<ScheduleGame>().FirstOrDefault(g => g.ScheduleNumber == scheduleNo && g.GameNumber == gameNo);
+            return context.Set<ScheduleGame>().FirstOrDefault(g => g.ScheduleNumber == scheduleNo && g.GameNumber == gameNo) ?? new ScheduleGame();
         }
 
         public IEnumerable<ScheduleStandingsVM> GetStandings(int divisionId)
@@ -216,15 +228,19 @@ namespace Hoops.Infrastructure.Repository
                 var teamGames = GetTeamGames(scheduleDivTeamNumber, games);
                 // _logger.LogInformation("GetTeamRecords: DivTeam found: " + team.TeamNumber);
 
-                var teamRecord = GetTeamRecord(team, d, teamGames);
-                teamRecords.Add(teamRecord);
+                if (d != null)
+                {
+                    var teamRecord = GetTeamRecord(team, d, teamGames);
+                    teamRecords.Add(teamRecord);
+                }
             }
             return teamRecords;
         }
 
         private int GetScheduleDivTeamNumber(List<ScheduleGame> divGames, int no)
         {
-            return divGames.FirstOrDefault(t => t.DivisionId == no).ScheduleNumber;
+            var game = divGames.FirstOrDefault(t => t.DivisionId == no);
+            return game?.ScheduleNumber ?? 0;
         }
 
         private ScheduleStandingsVM GetTeamRecord(Team team, ScheduleDivTeam divTeam, IEnumerable<ScheduleGame> games)
@@ -259,8 +275,8 @@ namespace Hoops.Infrastructure.Repository
 
                         if (divTeam.TeamNumber == record.HomeTeamNumber)
                         {
-                            seasonRecord.PA += (int)record.VisitingTeamScore;
-                            seasonRecord.PF += (int)record.HomeTeamScore;
+                            seasonRecord.PA += (int)(record.VisitingTeamScore ?? 0);
+                            seasonRecord.PF += (int)(record.HomeTeamScore ?? 0);
 
                             if (record.HomeTeamScore > record.VisitingTeamScore)
                             {
@@ -277,8 +293,8 @@ namespace Hoops.Infrastructure.Repository
                         {
                             if (divTeam.TeamNumber == record.VisitingTeamNumber)
                             {
-                                seasonRecord.PF += (int)record.VisitingTeamScore;
-                                seasonRecord.PA += (int)record.HomeTeamScore;
+                                seasonRecord.PF += (int)(record.VisitingTeamScore ?? 0);
+                                seasonRecord.PA += (int)(record.HomeTeamScore ?? 0);
                                 if (record.VisitingTeamScore > record.HomeTeamScore)
                                     seasonRecord.Won++;
                                 else
@@ -381,7 +397,7 @@ namespace Hoops.Infrastructure.Repository
                          {
                              SeasonId = seasonId,
                              DivisionDescription = d.DivisionDescription,
-                             DivisionId = (int)g.DivisionId,
+                             DivisionId = g.DivisionId ?? 0,
                              GameDate = g.GameDate,
                              GameTimeString = g.GameTime,
                              LocationName = l.LocationName,
@@ -389,8 +405,8 @@ namespace Hoops.Infrastructure.Repository
                              VisitingTeamNumber = g.VisitingTeamNumber,
                              HomeTeamNumber = g.HomeTeamNumber,
                              ScheduleNumber = g.ScheduleNumber,
-                             HomeTeamScore = g.HomeTeamScore == -1 ? 0 : (int)g.HomeTeamScore,
-                             VisitingTeamScore = g.VisitingTeamScore == -1 ? 0 : (int)g.VisitingTeamScore,
+                             HomeTeamScore = g.HomeTeamScore == -1 ? 0 : (int)(g.HomeTeamScore ?? 0),
+                             VisitingTeamScore = g.VisitingTeamScore == -1 ? 0 : (int)(g.VisitingTeamScore ?? 0),
                              GameType = GameTypes.Regular
                          };
 
@@ -414,7 +430,7 @@ namespace Hoops.Infrastructure.Repository
             var seasonId = result.First().SeasonId;
             _logger.LogInformation("SeasonID=" + seasonId.ToString());
             var teamRepo = new TeamRepository(db);
-            var teams = teamRepo.GetSeasonTeams((int)seasonId);
+            var teams = teamRepo.GetSeasonTeams((int)(seasonId ?? 0));
             var schedDiv = db.Set<ScheduleDivTeam>().Where(s => s.SeasonId == seasonId).ToList();
 
             // var repoColor = new ColorRepository(context);
@@ -426,7 +442,8 @@ namespace Hoops.Infrastructure.Repository
                 if (DateTime.TryParse(game.GameTimeString, out time))
                     game.GameTime = time;
                 game.GameDate = CombineDateAndTime(game.GameDate, game.GameTime);
-                game.VisitingTeamSeasonNumber = GetTeam(schedDiv, game.ScheduleNumber, (int)game.VisitingTeamNumber, seasonId).ScheduleTeamNumber;
+                var visitingTeam = GetTeam(schedDiv, game.ScheduleNumber, game.VisitingTeamNumber ?? 0, seasonId);
+                game.VisitingTeamSeasonNumber = visitingTeam?.ScheduleTeamNumber ?? 0;
 
                 if (teams.Any())
                 {
@@ -438,7 +455,10 @@ namespace Hoops.Infrastructure.Repository
                         game.VisitingTeamId = team.TeamId;
                     }
                 }
-                game.HomeTeamSeasonNumber = GetTeam(schedDiv, game.ScheduleNumber, (int)game.HomeTeamNumber, seasonId).ScheduleTeamNumber;
+                var homeTeam = game.HomeTeamNumber.HasValue 
+                    ? GetTeam(schedDiv, game.ScheduleNumber, game.HomeTeamNumber.Value, seasonId) 
+                    : null;
+                game.HomeTeamSeasonNumber = homeTeam?.ScheduleTeamNumber ?? 0;
 
                 if (teams.Any()) ////get teamId!
                 {
@@ -460,7 +480,7 @@ namespace Hoops.Infrastructure.Repository
         {
             return schedDiv.FirstOrDefault(s => s.ScheduleNumber == scheduleNo &&
                 s.TeamNumber == teamNo &&
-                s.SeasonId == seasonId);
+                s.SeasonId == seasonId)!;
         }
 
         private List<vmGameSchedule> GetPlayoffGames(int divisionId)
@@ -495,7 +515,7 @@ namespace Hoops.Infrastructure.Repository
 
                     game.ScheduleNumber = g.ScheduleNumber;
                     //game.DivisionId = g.DivisionId;
-                    game.GameDate = (DateTime)g.GameDate;
+                    game.GameDate = g.GameDate ?? DateTime.MinValue;
                     if (DateTime.TryParse(g.GameTime, out time))
                         game.GameTime = time;
                     //game.D = g.Div_Desc;
@@ -555,7 +575,7 @@ namespace Hoops.Infrastructure.Repository
                 {
                     ScheduleNumber = g.ScheduleNumber,
                     DivisionId = g.DivisionId,
-                    GameDate = (DateTime)g.GameDate,
+                    GameDate = g.GameDate ?? DateTime.MinValue,
                     DivisionDescription = g.DivisionDescription,
                     SeasonId = seasonId,
                     LocationName = g.LocationName,

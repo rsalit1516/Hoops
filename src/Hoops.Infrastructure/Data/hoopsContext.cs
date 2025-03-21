@@ -5,10 +5,72 @@ namespace Hoops.Infrastructure.Data;
 
 public partial class hoopsContext : DbContext
 {
-    public hoopsContext() { }
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
+    public hoopsContext()
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
+    {
+        // Coaches = null!;
+        // Colors = null!;
+        // Companies = null!;
+        // Content = null!;
+        // Directors = null!;
+        // Divisions = null!;
+        // Households = null!;
+        // Location = null!;
+        // People = null!;
+        // Players = null!;
+        // Roles = null!;
+        // ScheduleDivTeams = null!;
+        // ScheduleGames = null!;
+        // ScheduleLocations = null!;
+        // SchedulePlayoffs = null!;
+        // Seasons = null!;
+        // SponsorFees = null!;
+        // SponsorPayments = null!;
+        // SponsorProfiles = null!;
+        // Sponsors = null!;
+        // Teams = null!;
+        // Users = null!;
+        // Version = null!;
+        // WebContents = null!;
+        // WebContentTypes = null!;
+        // VwCoaches = null!;
+        // VwDirectors = null!;
+    }
 
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
     public hoopsContext(DbContextOptions<hoopsContext> options)
-        : base(options) {}
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
+        : base(options)
+    {
+        // Coaches = null!;
+        // Colors = null!;
+        // Companies = null!;
+        // Content = null!;
+        // Directors = null!;
+        // Divisions = null!;
+        // Households = null!;
+        // Location = null!;
+        // People = null!;
+        // Players = null!;
+        // Roles = null!;
+        // ScheduleDivTeams = null!;
+        // ScheduleGames = null!;
+        // ScheduleLocations = null!;
+        // SchedulePlayoffs = null!;
+        // Seasons = null!;
+        // SponsorFees = null!;
+        // SponsorPayments = null!;
+        // SponsorProfiles = null!;
+        // Sponsors = null!;
+        // Teams = null!;
+        // Users = null!;
+        // Version = null!;
+        // WebContents = null!;
+        // WebContentTypes = null!;
+        // VwCoaches = null!;
+        // VwDirectors = null!;
+    }
 
 
     public virtual DbSet<Coach> Coaches { get; set; }
@@ -240,10 +302,6 @@ public partial class hoopsContext : DbContext
             entity.HasIndex(e => new { e.Phone, e.Email, e.HouseId })
                 .HasDatabaseName("idx_DCh_2775_2774_Household");
 
-            entity.Property(e => e.HouseId)
-                .HasColumnName("HouseID")
-                .ValueGeneratedNever();
-
             entity.Property(e => e.Address1).HasMaxLength(50);
             entity.Property(e => e.Address2).HasMaxLength(50);
 
@@ -284,43 +342,6 @@ public partial class hoopsContext : DbContext
             entity.HasIndex(e => new { e.FirstName, e.LastName })
                 .HasDatabaseName("idx_DCh_14287_14286_People");
 
-            entity.Property(e => e.PersonId).HasColumnName("PeopleID");
-
-            entity.Property(e => e.Ad).HasColumnName("AD");
-
-            entity.Property(e => e.Bc).HasColumnName("BC");
-
-            entity.Property(e => e.BirthDate).HasColumnType("datetime");
-
-            entity.Property(e => e.Cellphone).HasMaxLength(15);
-
-            entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
-
-            entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime").HasDefaultValue(DateTime.Now);
-
-            entity.Property(e => e.CreatedUser).HasMaxLength(20);
-
-            entity.Property(e => e.Email).HasMaxLength(50);
-
-            entity.Property(e => e.FirstName).HasMaxLength(50);
-
-            entity.Property(e => e.Gender).HasMaxLength(1);
-
-            entity.Property(e => e.GiftedLevelsUp).HasColumnName("GiftedLevelsUP");
-
-            entity.Property(e => e.LastName).HasMaxLength(50);
-
-            entity.Property(e => e.LatestSeason).HasMaxLength(15);
-
-            entity.Property(e => e.LatestShirtSize).HasMaxLength(20);
-
-            entity.Property(e => e.HouseId).HasColumnName("MainHouseID");
-
-            entity.Property(e => e.SchoolName).HasMaxLength(50);
-
-            entity.Property(e => e.TempId).HasColumnName("TEMPID");
-
-            entity.Property(e => e.Workphone).HasMaxLength(25);
         });
 
         modelBuilder.Entity<Player>(entity =>

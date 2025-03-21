@@ -1,0 +1,30 @@
+
+<form class="form-horizontal" (ngSubmit)="onSearch()" [formGroup]="searchForm">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{ pageTitle }}</mat-card-title> </mat-card-header
+    >
+    <mat-card-content>
+      <div>
+        <mat-form-field [appearance]="inputStyle" class="full-width">
+          <mat-label htmlFor="lastName">Last Name</mat-label>
+          <input matInput formControlName="lastName" title="Last Name" />
+        </mat-form-field>
+
+        <mat-form-field [appearance]=inputStyle class="full-width">
+          <mat-label htmlFor="firstName">First Name</mat-label>
+          <input matInput formControlName="firstName" title="Last Name" />
+        </mat-form-field>
+        <mat-form-field [appearance]=inputStyle class="full-width">
+          <mat-label htmlFor="playerOnly">Last Name</mat-label>
+          <mat-checkbox formControlName="playerOnly">Player Only</mat-checkbox>
+
+        </mat-form-field>
+
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="submit">Search</button>
+    </mat-card-actions>
+  </mat-card>
+</form>

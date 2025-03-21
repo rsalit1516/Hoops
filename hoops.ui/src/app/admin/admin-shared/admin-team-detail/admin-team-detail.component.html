@@ -42,7 +42,9 @@
   </mat-card-content>
   <mat-card-actions>
     <button mat-raised-button color="Primary" (click)="newTeam()">New Team</button>
-    <button mat-raised-button color="Primary" (click)="save()">Save</button>
+    <button mat-raised-button color="Primary"
+    [disabled]="!editTeamForm.valid || !editTeamForm.dirty"
+    (click)="save()">Save</button>
     <button mat-raised-button color="Primary" (click)="cancel()">Cancel</button>
   </mat-card-actions>
 </mat-card>

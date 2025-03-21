@@ -23,21 +23,21 @@ namespace Hoops.Api.Controllers.Tests
         }
 
         [Fact]
-        public void DeleteWebContent_ReturnsNotFound_WhenWebContentDoesNotExist()
+        public async Task DeleteWebContent_ReturnsNotFound_WhenWebContentDoesNotExistAsync()
         {
             // Arrange
             int webContentId = 1;
             _mockRepo.Setup(repo => repo.GetById(webContentId)).Returns((WebContent)null);
 
             // Act
-            var result = _controller.DeleteWebContent(webContentId);
+            var result = await _controller.DeleteWebContent(webContentId);
 
             // Assert
             Assert.IsType<NotFoundResult>(result.Result);
         }
 
         [Fact]
-        public void DeleteWebContent_ReturnsOk_WhenWebContentExists()
+        public async Task DeleteWebContent_ReturnsOk_WhenWebContentExists()
         {
             // Arrange
             int webContentId = 1;
@@ -45,7 +45,7 @@ namespace Hoops.Api.Controllers.Tests
             _mockRepo.Setup(repo => repo.GetById(webContentId)).Returns(webContent);
 
             // Act
-            var result = _controller.DeleteWebContent(webContentId);
+            var result = await _controller.DeleteWebContent(webContentId);
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result.Result);

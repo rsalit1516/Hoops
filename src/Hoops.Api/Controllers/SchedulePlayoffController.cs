@@ -1,13 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Hoops.Core.Models;
 using Hoops.Core.Interface;
 using Hoops.Infrastructure.Data;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Hoops.Controllers
 {
@@ -54,8 +53,8 @@ namespace Hoops.Controllers
         /// </summary>
         /// <param name="seasonId"></param>
         /// <returns></returns>
-        [Route("GetSeasonGames")]
-        [HttpGet]
+        // [Route("GetSeasonGames")]
+        [HttpGet("season/{seasonId}", Name = "GetSeasonGames")]
         public IActionResult GetSeasonGames(int seasonId)
         {
             _logger.LogInformation("Retrieving season games");

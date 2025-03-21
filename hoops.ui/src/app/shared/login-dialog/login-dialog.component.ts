@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { AuthService } from '@app/user/auth.service';
 import {
   UntypedFormBuilder,
@@ -16,7 +16,9 @@ import { MatButtonModule } from '@angular/material/button';
 @Component({
     selector: 'csbc-login-dialog',
     templateUrl: './login-dialog.component.html',
-    styleUrls: ['./login-dialog.component.scss'],
+  styleUrls: ['./login-dialog.component.scss',
+    '../scss/forms.scss',
+    ],
     imports: [CommonModule, MatDialogModule, MatFormFieldModule,
         MatInputModule, MatButtonModule],
     providers: [
@@ -24,6 +26,9 @@ import { MatButtonModule } from '@angular/material/button';
     ]
 })
 export class LoginDialogComponent implements OnInit {
+  /* injected */
+  #authService = inject(AuthService);
+
   loginForm = this.fb.group({
     userName: ['', Validators.required],
     password: ['', Validators.required]
@@ -39,18 +44,17 @@ export class LoginDialogComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<LoginDialogComponent>,
     private fb: UntypedFormBuilder,
-    private authService: AuthService,
     private store: Store<fromUser.State>
   ) {}
 
   ngOnInit() {
-    this.isFormValid = true;
+    this.isFormValid = false;
   }
   onCancelClick() {
     this.dialogRef.close();
   }
   onSubmitClick() {
-    this.loginForm.markAllAsTouched();
+    // this.loginForm.markAllAsTouched();
     console.log(this.loginForm);
     if (!this.loginForm.invalid) {
       this.validateUser(
@@ -69,7 +73,7 @@ export class LoginDialogComponent implements OnInit {
     }
   }
   validateUser(userName: string, password: string) {
-    return this.authService.login(userName, password).subscribe(response => {
+    return this.#authService.login(userName, password).subscribe(response => {
       console.log(response);
       if (response !== null) {
         this.store.dispatch(new userActions.SetCurrentUser(response));

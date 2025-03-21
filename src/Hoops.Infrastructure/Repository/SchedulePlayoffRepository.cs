@@ -18,6 +18,7 @@ namespace Hoops.Infrastructure.Repository
         public SchedulePlayoffRepository()
         {
             context = new hoopsContext();
+            _logger = new Logger<SchedulePlayoffRepository>(new LoggerFactory());
         }
 
         #region IRepository<T> Members
@@ -29,7 +30,7 @@ namespace Hoops.Infrastructure.Repository
         public SchedulePlayoff GetByScheduleAndGameNo(int scheduleNo, int gameNo)
         {
             var game = context.Set<SchedulePlayoff>().FirstOrDefault(s => s.ScheduleNumber == scheduleNo && s.GameNumber == gameNo);
-            return game;
+            return game ?? new SchedulePlayoff();
         }
 
         #endregion
@@ -47,25 +48,26 @@ namespace Hoops.Infrastructure.Repository
             var games = new List<SchedulePlayoff>();
             List<PlayoffGameVm> gamesVm = new();
 
-            var gamesl = from sp in context.SchedulePlayoffs
-                         join d in context.Divisions on sp.DivisionId equals d.DivisionId
-                         join l in context.ScheduleLocations on sp.LocationNumber equals l.LocationNumber
-                         where d.SeasonId == seasonId
-                         orderby sp.GameDate, sp.GameTime
-                         select new PlayoffGameVm
-                         {
-                             GameNumber = sp.GameNumber,
-                             LocationNumber = sp.LocationNumber,
-                             GameDate = sp.GameDate,
-                             GameTime = ConvertTime((DateTime)sp.GameDate, sp.GameTime),
-                             VisitingTeam = sp.VisitingTeam,
-                             HomeTeam = sp.HomeTeam,
-                             Descr = sp.Descr,
-                             VisitingTeamScore = sp.VisitingTeamScore,
-                             HomeTeamScore = sp.HomeTeamScore,
-                             DivisionId = sp.DivisionId,
-                             LocationName = l.LocationName
-                         };
+            var gamesl = context.SchedulePlayoffs
+                .Join(context.Divisions, sp => sp.DivisionId, d => d.DivisionId, (sp, d) => new { sp, d })
+                .Join(context.ScheduleLocations, spd => spd.sp.LocationNumber, l => l.LocationNumber, (spd, l) => new { spd.sp, spd.d, l })
+                .Where(spdl => spdl.d.SeasonId == seasonId)
+                .OrderBy(spdl => spdl.sp.GameDate)
+                .ThenBy(spdl => spdl.sp.GameTime)
+                .Select(spdl => new PlayoffGameVm
+                {
+                    GameNumber = spdl.sp.GameNumber,
+                    LocationNumber = spdl.sp.LocationNumber,
+                    GameDate = spdl.sp.GameDate,
+                    GameTime = spdl.sp.GameDate.HasValue ? ConvertTime(spdl.sp.GameDate.Value, spdl.sp.GameTime) : spdl.sp.GameTime,
+                    VisitingTeam = spdl.sp.VisitingTeam,
+                    HomeTeam = spdl.sp.HomeTeam,
+                    Descr = spdl.sp.Descr,
+                    VisitingTeamScore = spdl.sp.VisitingTeamScore,
+                    HomeTeamScore = spdl.sp.HomeTeamScore,
+                    DivisionId = spdl.sp.DivisionId,
+                    LocationName = spdl.l.LocationName
+                });
 
             return gamesl; ;
         }

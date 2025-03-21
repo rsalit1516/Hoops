@@ -2,6 +2,7 @@
 using System.Linq;
 using Hoops.Core.Models;
 using Hoops.Core.Enum;
+using System.Threading.Tasks;
 
 namespace Hoops.Core.Interface
 {
@@ -16,5 +17,6 @@ namespace Hoops.Core.Interface
         IQueryable<Person> GetADs(int companyId);
         void RemoveFromHousehold(int p);
         List<string> GetParents(int personId); 
+        IQueryable<Person> GetByHousehold(int householdId);
     }
 }

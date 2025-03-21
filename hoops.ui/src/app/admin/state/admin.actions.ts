@@ -3,7 +3,7 @@ import { Action } from '@ngrx/store';
 import { Division } from '@app/domain/division';
 import { Team } from '@app/domain/team';
 import { Season } from '@app/domain/season';
-import { Game } from '@app/domain/game';
+import { RegularGame } from '@app/domain/regularGame';
 import { Color } from '@app/domain/color';
 import { Location } from '@app/domain/location';
 import { PlayoffGame } from '@app/domain/playoffGame';
@@ -77,51 +77,51 @@ export class LoadGames implements Action {
 }
 export class LoadGamesSuccess implements Action {
   readonly type = AdminActionTypes.LoadGamesSuccess;
-  constructor(public payload: Game[]) {}
+  constructor (public payload: RegularGame[]) { }
 }
 
 export class LoadGamesFail implements Action {
   readonly type = AdminActionTypes.LoadGamesFail;
-  constructor(public payload: string) {}
+  constructor (public payload: string) { }
 }
 export class LoadDivisionGames implements Action {
   readonly type = AdminActionTypes.LoadDivisionGames;
 }
 export class LoadDivisionGamesSuccess implements Action {
   readonly type = AdminActionTypes.LoadDivisionGamesSuccess;
-  constructor(public payload: Game[]) {}
+  constructor (public payload: RegularGame[]) { }
 }
 export class LoadDivisionGamesFail implements Action {
   readonly type = AdminActionTypes.LoadDivisionGamesFail;
-  constructor(public payload: string) {}
+  constructor (public payload: string) { }
 }
 export class LoadTeamGames implements Action {
   readonly type = AdminActionTypes.LoadTeamGames;
 }
 export class LoadTeamGamesSuccess implements Action {
   readonly type = AdminActionTypes.LoadTeamGamesSuccess;
-  constructor(public payload: Game[]) {}
+  constructor (public payload: RegularGame[]) { }
 }
 export class LoadTeamGamesFail implements Action {
   readonly type = AdminActionTypes.LoadTeamGamesFail;
-  constructor(public payload: string) {}
+  constructor (public payload: string) { }
 }
 
 export class SetFilteredGames implements Action {
   readonly type = AdminActionTypes.SetFilteredGames;
-  constructor(public payload: Game[]) {}
+  constructor (public payload: RegularGame[]) { }
 }
 export class LoadSeasons implements Action {
   readonly type = AdminActionTypes.LoadSeasons;
 }
 export class LoadSeasonsSuccess implements Action {
   readonly type = AdminActionTypes.LoadSeasonsSuccess;
-  constructor(public payload: Season[]) {}
+  constructor (public payload: Season[]) { }
 }
 
 export class LoadSeasonsFail implements Action {
   readonly type = AdminActionTypes.LoadSeasonsFail;
-  constructor(public payload: string) {}
+  constructor (public payload: string) { }
 }
 // export class GetCurrentSeason implements Action {
 //   readonly type = AdminActionTypes.GetCurrentSeason;
@@ -129,19 +129,19 @@ export class LoadSeasonsFail implements Action {
 // }
 export class SetSelectedSeason implements Action {
   readonly type = AdminActionTypes.SetSelectedSeason;
-  constructor(public payload: Season) {
-    console.log(payload);
+  constructor (public payload: Season) {
+    // console.log(payload);
   }
 }
 export class SetCurrentSeason implements Action {
   readonly type = AdminActionTypes.SetCurrentSeason;
-  constructor(public payload: Season) {
+  constructor (public payload: Season) {
     // console.log(payload);
   }
 }
 export class SetSelectedSeasonId implements Action {
   readonly type = AdminActionTypes.SetSelectedSeasonId;
-  constructor(public payload: number) {
+  constructor (public payload: number) {
     // currentS
   }
 }
@@ -151,16 +151,16 @@ export class LoadDivisions implements Action {
 }
 export class LoadDivisionsSuccess implements Action {
   readonly type = AdminActionTypes.LoadDivisionsSuccess;
-  constructor(public payload: Division[]) {}
+  constructor (public payload: Division[]) { }
 }
 
 export class LoadDivisionsFail implements Action {
   readonly type = AdminActionTypes.LoadDivisionsFail;
-  constructor(public payload: string) {}
+  constructor (public payload: string) { }
 }
 export class SetSelectedDivision implements Action {
   readonly type = AdminActionTypes.SetSelectedDivision;
-  constructor(public payload: Division) {}
+  constructor (public payload: Division | null) { }
 }
 
 export class LoadSeasonTeams implements Action {
@@ -168,53 +168,53 @@ export class LoadSeasonTeams implements Action {
 }
 export class LoadSeasonTeamsSuccess implements Action {
   readonly type = AdminActionTypes.LoadSeasonTeamsSuccess;
-  constructor(public payload: Team[]) {}
+  constructor (public payload: Team[]) { }
 }
 
 export class LoadSeasonTeamsFail implements Action {
   readonly type = AdminActionTypes.LoadSeasonTeamsFail;
-  constructor(public payload: string) {}
+  constructor (public payload: string) { }
 }
 export class LoadDivisionTeams implements Action {
   readonly type = AdminActionTypes.LoadDivisionTeams;
 }
 export class LoadDivisionTeamsSuccess implements Action {
   readonly type = AdminActionTypes.LoadDivisionTeamsSuccess;
-  constructor(public payload: Team[]) {}
+  constructor (public payload: Team[]) { }
 }
 
 export class LoadDivisionTeamsFail implements Action {
   readonly type = AdminActionTypes.LoadDivisionTeamsFail;
-  constructor(public payload: string) {}
+  constructor (public payload: string) { }
 }
 export class SetSelectedTeam implements Action {
   readonly type = AdminActionTypes.SetSelectedTeam;
-  constructor(public payload: Team) {}
+  constructor (public payload: Team) { }
 }
 
 export class SetSelectedGame implements Action {
   readonly type = AdminActionTypes.SetSelectedGame;
-  constructor(public payload: Game) {}
+  constructor (public payload: RegularGame) { }
 }
 
 export class SetColors implements Action {
   readonly type = AdminActionTypes.SetColors;
-  constructor(public payload: Color[]) {}
+  constructor (public payload: Color[]) { }
 }
 
 export class SetLocations implements Action {
   readonly type = AdminActionTypes.SetLocations;
-  constructor(public payload: Location[]) {}
+  constructor (public payload: Location[]) { }
 }
 
 export class SetShowOnlyActiveWebContent implements Action {
   readonly type = AdminActionTypes.SetShowOnlyActiveWebContent;
-  constructor(public payload: boolean) {}
+  constructor (public payload: boolean) { }
 }
 
 export class SetGameType implements Action {
   readonly type = AdminActionTypes.SetGameType;
-  constructor(public payload: string) {}
+  constructor (public payload: string) { }
 }
 export class LoadPlayoffGames implements Action {
   readonly type = AdminActionTypes.LoadPlayoffGames;
@@ -222,23 +222,23 @@ export class LoadPlayoffGames implements Action {
 export class LoadPlayoffGamesSuccess implements Action {
   readonly type = AdminActionTypes.LoadPlayoffGamesSuccess;
 
-  constructor(public payload: PlayoffGame[]) {}
+  constructor (public payload: PlayoffGame[]) { }
 }
 export class LoadPlayoffGamesFail implements Action {
   readonly type = AdminActionTypes.LoadPlayoffGamesFail;
 
-  constructor(public payload: string) {}
+  constructor (public payload: string) { }
 }
 export class LoadAdminContent implements Action {
   readonly type = AdminActionTypes.LoadAdminContent;
 }
 export class LoadAdminContentSuccess implements Action {
   readonly type = AdminActionTypes.LoadAdminContentSuccess;
-  constructor(public payload: WebContent[]) {}
+  constructor (public payload: WebContent[]) { }
 }
 export class LoadAdminContentFail implements Action {
   readonly type = AdminActionTypes.LoadAdminContentFail;
-  constructor(public payload: string) {}
+  constructor (public payload: string) { }
 }
 
 export class SetAllContent implements Action {
@@ -246,11 +246,11 @@ export class SetAllContent implements Action {
 }
 export class SetAllContentSuccess implements Action {
   readonly type = AdminActionTypes.SetAllContentSuccess;
-  constructor(public payload: WebContent[]) {}
+  constructor (public payload: WebContent[]) { }
 }
 export class SetAllContentFail implements Action {
   readonly type = AdminActionTypes.SetAllContentFail;
-  constructor(public payload: String) {}
+  constructor (public payload: String) { }
 }
 
 export class SetActiveContent implements Action {
@@ -258,35 +258,35 @@ export class SetActiveContent implements Action {
 }
 export class SetActiveContentSuccess implements Action {
   readonly type = AdminActionTypes.SetActiveContentSuccess;
-  constructor(public payload: WebContent[]) {}
+  constructor (public payload: WebContent[]) { }
 }
 export class SetActiveContentFail implements Action {
   readonly type = AdminActionTypes.SetActiveContentFail;
-  constructor(public payload: String) {}
+  constructor (public payload: String) { }
 }
 
 export class SetClonedContent implements Action {
   readonly type = AdminActionTypes.SetClonedContent;
-  constructor(public payload: Content) {}
+  constructor (public payload: Content) { }
 }
 export class SetSelectedContent implements Action {
   readonly type = AdminActionTypes.SetSelectedContent;
-  constructor(public payload: Content) {}
+  constructor (public payload: Content) { }
 }
 export class SetIsActiveOnly implements Action {
   readonly type = AdminActionTypes.SetIsActiveOnly;
-  constructor(public payload: boolean) {}
+  constructor (public payload: boolean) { }
 }
 export class LoadContentTypeList implements Action {
   readonly type = AdminActionTypes.LoadContentTypeList;
 }
 export class LoadContentTypeListSuccess implements Action {
   readonly type = AdminActionTypes.LoadContentTypeListSuccess;
-  constructor(public payload: WebContentType[]) {}
+  constructor (public payload: WebContentType[]) { }
 }
 export class LoadContentTypeListFail implements Action {
   readonly type = AdminActionTypes.LoadContentTypeListFail;
-  constructor(public payload: string) {}
+  constructor (public payload: string) { }
 }
 
 export class LoadLocations implements Action {
@@ -294,11 +294,11 @@ export class LoadLocations implements Action {
 }
 export class LoadLocationsSuccess implements Action {
   readonly type = AdminActionTypes.LoadLocationsSuccess;
-  constructor(public payload: Location[]) {}
+  constructor (public payload: Location[]) { }
 }
 export class LoadLocationsFail implements Action {
   readonly type = AdminActionTypes.LoadLocationsFail;
-  constructor(public payload: string) {}
+  constructor (public payload: string) { }
 }
 
 export type AdminActions =

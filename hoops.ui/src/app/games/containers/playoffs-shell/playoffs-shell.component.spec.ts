@@ -5,25 +5,26 @@ import { Store } from '@ngrx/store';
 import * as fromGames from '../../state';
 import { GameService } from '@app/games/game.service';
 import { PlayoffGame } from '@app/domain/playoffGame';
+import { PlayoffGameService } from '@app/services/playoff-game.service';
 
 @Component({
-    selector: 'csbc-playoffs-shell',
-    imports: [CommonModule, SchedulePlayoffsComponent],
-    providers: [GameService, Store],
-    template: `
+  selector: 'csbc-playoffs-shell',
+  imports: [CommonModule, SchedulePlayoffsComponent],
+  providers: [GameService, Store],
+  template: `
     <div class="row">
     <h1>Playoffs</h1>
-      <schedule-playoffs [playoffGames]="dailyPlayoffSchedule"> </schedule-playoffs>
+      <csbc-schedule-playoffs [playoffGames]="dailyPlayoffSchedule" />
   </div>`,
-    styleUrl: './playoffs-shell.component.scss'
+  styleUrl: './playoffs-shell.component.scss'
 })
-export class PlayoffsShellComponent implements OnInit  {
+export class PlayoffsShellComponent implements OnInit {
   dailyPlayoffSchedule!: Array<PlayoffGame[]>;
 
-  constructor(private store: Store<fromGames.State>,
-    private gameService: GameService ) { }
+  constructor (private store: Store<fromGames.State>,
+    private gameService: PlayoffGameService) { }
 
-  ngOnInit() {
+  ngOnInit () {
     this.store.select(fromGames.getCurrentDivision).subscribe((division) => {
       this.store
         .select(fromGames.getDivisionPlayoffGames)
@@ -32,11 +33,7 @@ export class PlayoffsShellComponent implements OnInit  {
           // console.log(playoffGames);
           this.dailyPlayoffSchedule = [];
           this.gameService
-            .groupPlayoffsByDate(playoffGames)
-            .subscribe(games => {
-              this.dailyPlayoffSchedule.push(games);
-              console.log(this.dailyPlayoffSchedule);
-            });
+            .groupPlayoffGamesByDate(playoffGames);
         });
     });
   }

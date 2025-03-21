@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { Observable, zip, of, from, EMPTY } from 'rxjs';
 import { Season } from '@domain/season';
 import { Division } from '@app/domain/division';
@@ -9,7 +9,7 @@ import * as fromGames from '../../state';
 import * as fromUser from '../../../user/state';
 import * as gameActions from '../../state/games.actions';
 
-import { Game } from '@app/domain/game';
+import { RegularGame } from '@app/domain/regularGame';
 import { PlayoffGame } from '@app/domain/playoffGame';
 import {
   groupBy,
@@ -30,26 +30,27 @@ import { DateTime } from 'luxon';
 import { CommonModule } from '@angular/common';
 
 @Component({
-    selector: 'csbc-schedule-shell',
-    template: `
-    <div class="container">
-      <h1>{{ title }}</h1>
-      <div class="row">
-        <csbc-schedule [dailySchedule]="dailySchedule"></csbc-schedule>
-      </div>
+  selector: 'csbc-schedule-shell',
+  template: `
+  <section class="container mx-auto">
+    <h1>{{ title }}</h1>
+    <div class="row">
+    <csbc-schedule [dailySchedule]="dailySchedule"></csbc-schedule>
     </div>
+</section>
   `,
-    styleUrls: ['./schedule-shell.component.scss'],
+  styleUrls: ['./schedule-shell.component.scss'],
   imports: [
     CommonModule,
     ScheduleComponent
   ]
 })
 export class ScheduleShellComponent implements OnInit {
-  games: Game[] | undefined | null;
+  private gameService = inject(GameService);
+  games: RegularGame[] | undefined | null;
   playoffGames!: PlayoffGame[];
   title = 'Regular Season Schedule';
-  filteredGames$: Observable<Game[]> | undefined;
+  filteredGames$: Observable<RegularGame[]> | undefined;
   currentSeason$: Observable<Season> | undefined;
   divisions$: Observable<Division[]> | undefined;
   selectedDivisionId$: Observable<number> | undefined;
@@ -58,7 +59,7 @@ export class ScheduleShellComponent implements OnInit {
   errorMessage$: Observable<string> | undefined;
   selectedDivision$: Observable<any> | undefined;
   canEdit = false;
-  gamesByDate$: Observable<[Date, Game[]]> | undefined;
+  gamesByDate$: Observable<[Date, RegularGame[]]> | undefined;
   user$: Observable<User> | undefined;
   division$: Observable<Division> | undefined;
   division: Division | undefined;
@@ -71,75 +72,25 @@ export class ScheduleShellComponent implements OnInit {
   );
   divisionId: number | undefined;
   hasPlayoffs = false;
-  dailySchedule!: Array<Game[]>;
-  dailyPlayoffSchedule!: Array<PlayoffGame[]>;
+  dailySchedule!: Array<RegularGame[]>;
 
-  constructor(
+  constructor (
     private store: Store<fromGames.State>,
-    private userStore: Store<fromUser.State>,
-    private divisionService: DivisionService,
-    private gameService: GameService
-  ) {}
 
-  ngOnInit() {
-    // this.divisionId = 4183;
-    console.log('schedule shell');
+  ) { }
+
+  ngOnInit () {
     this.store.select(fromGames.getCurrentDivision).subscribe((division) => {
       this.store.select(fromGames.getFilteredGames).subscribe((games) => {
         this.games = games;
         this.dailySchedule = [];
-        console.log('schedule shell - in filtered games');
-        // this.gameService.groupByDate(games).subscribe((dailyGames) => {
-        //   this.dailySchedule.push(dailyGames);
-        // });
-        this.dailySchedule = this.gameService.groupByDate(games);
+        this.dailySchedule = this.gameService.groupRegularGamesByDate(games);
       });
       this.store.dispatch(new gameActions.LoadDivisionPlayoffGames());
-      this.store
-        .select(fromGames.getDivisionPlayoffGames)
-        .subscribe((playoffGames) => {
-          this.playoffGames = playoffGames;
-          // console.log(playoffGames);
-          this.dailyPlayoffSchedule = [];
-          this.gameService
-            .groupPlayoffsByDate(playoffGames)
-            .subscribe((dailyPlayoffGames) => {
-              this.dailyPlayoffSchedule.push(dailyPlayoffGames);
-              console.log(this.dailyPlayoffSchedule);
-            });
-        });
     });
   }
 
-  groupByDate(games: Game[]) {
-    // console.log(games);
-    games.forEach((element) => {
-      element.gameTime = element.gameDate;
-      element.gameDate = DateTime.fromJSDate(element.gameDate).startOf('day').toJSDate();
-    });
-    const source = from(games);
-
-    const t1 = of(games).pipe(
-      concatMap((res) => res),
-      groupBy((game) => game.gameDate),
-      mergeMap((group) => zip(of(group.key), group.pipe(toArray())))
-    );
-    const test = from(games).pipe(
-      // mergeMap(res => res),
-      groupBy(
-        (game) => game.gameDate,
-        (g) => g
-      ),
-      // tap(data => console.log(data)),
-      mergeMap((group) => zip(of(group.key), group.pipe(toArray()))),
-      tap((data) => console.log(data))
-    );
-    console.log(test);
-    console.log(t1);
-    // console.log(this.gamesByDate);
-    return t1;
-  }
-  getCanEdit(user: User | undefined, divisionId: number): boolean {
+  getCanEdit (user: User | undefined, divisionId: number): boolean {
     console.log(divisionId);
     if (user !== undefined) {
       if (user.divisions !== undefined) {

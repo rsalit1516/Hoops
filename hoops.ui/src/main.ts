@@ -28,31 +28,36 @@ import { SeasonService } from './app/services/season.service';
 
 if (environment.production) {
   enableProdMode();
+  // Override console methods to disable them in production
+  console.log = () => { };
+  console.warn = () => { };
+  console.error = () => { };
 }
 
 bootstrapApplication(AppComponent, {
-    providers: [
-        importProvidersFrom(BrowserModule, AppRoutingModule, ReactiveFormsModule, FormsModule, HomeModule, GamesModule, AdminModule, LoginRoutingModule, LayoutModule, UserModule, UserModule, StoreModule.forRoot(reducers, { metaReducers }), 
-        // StoreModule.forRoot({}),
-        StoreDevtoolsModule.instrument({
-            name: 'CSBC Site',
-            maxAge: 25,
-            logOnly: environment.production
-        , connectInZone: true}), 
-        // StoreModule.forRoot(reducers, { metaReducers }),
-        EffectsModule.forRoot([]), StoreModule.forRoot({}, {
-            runtimeChecks: {
-                strictStateImmutability: false,
-                strictActionImmutability: false,
-            },
-        }), StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production , connectInZone: true})),
-        SeasonService,
-        DivisionService,
-        TeamService,
-        // GameService,
-        DataService,
-        provideAnimations(),
-        provideHttpClient(withInterceptorsFromDi())
-    ]
+  providers: [
+    importProvidersFrom(BrowserModule, AppRoutingModule, ReactiveFormsModule, FormsModule, HomeModule, GamesModule, AdminModule, LoginRoutingModule, LayoutModule, UserModule, UserModule, StoreModule.forRoot(reducers, { metaReducers }),
+      // StoreModule.forRoot({}),
+      StoreDevtoolsModule.instrument({
+        name: 'CSBC Site',
+        maxAge: 25,
+        logOnly: environment.production
+        , connectInZone: true
+      }),
+      // StoreModule.forRoot(reducers, { metaReducers }),
+      EffectsModule.forRoot([]), StoreModule.forRoot({}, {
+        runtimeChecks: {
+          strictStateImmutability: false,
+          strictActionImmutability: false,
+        },
+      }), StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production, connectInZone: true })),
+    SeasonService,
+    DivisionService,
+    TeamService,
+    // GameService,
+    DataService,
+    provideAnimations(),
+    provideHttpClient(withInterceptorsFromDi())
+  ]
 })
   .catch(err => console.error(err));

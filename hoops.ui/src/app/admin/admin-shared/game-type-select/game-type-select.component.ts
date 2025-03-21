@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, OnChanges } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import * as fromAdmin from '../../state';
@@ -9,31 +9,33 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
-    selector: 'game-type-select',
-    templateUrl: './game-type-select.component.html',
-    styleUrls: ['./../../../shared/scss/select.scss'],
-    imports: [
-        MatFormFieldModule,
-        MatSelectModule,
-        FormsModule,
-        ReactiveFormsModule,
-        NgFor,
-        MatOptionModule,
-    ]
+  selector: 'game-type-select',
+  templateUrl: './game-type-select.component.html',
+  styleUrls: ['./../../../shared/scss/select.scss',
+    '../../../shared/scss/forms.scss'
+  ],
+  imports: [
+    MatFormFieldModule,
+    MatSelectModule,
+    FormsModule,
+    NgFor,
+    MatOptionModule,
+  ]
 })
 export class GameTypeSelectComponent implements OnInit {
-  selectForm!: UntypedFormGroup;
   gameTypes = ['Regular Season', 'Playoffs'];
   gameTypeComponent = new UntypedFormControl();
   selected = this.gameTypes[0];
   selectedType = this.gameTypes[0];
   gameType: string;
+  @Output() gameTypeChanged = new EventEmitter<string>();
 
-  constructor(private fb: UntypedFormBuilder, private store: Store<fromAdmin.State>) {
+
+  constructor (private fb: UntypedFormBuilder, private store: Store<fromAdmin.State>) {
     this.gameType = this.selectedType;
   }
 
-  ngOnInit(): void {
+  ngOnInit (): void {
     // this.gameTypeComponent = this.selectForm.get('gameType') as FormControl;
     // this.selectForm = this.fb.group({
     //   gametType: ['Playoffs'],
@@ -46,13 +48,17 @@ export class GameTypeSelectComponent implements OnInit {
     });
   }
 
-  changeGameType(value: string) {
+  changeGameType (value: string) {
     console.log(value);
   }
 
-  compareFn(c1: string, c2: string): boolean {
+  compareFn (c1: string, c2: string): boolean {
     console.log(c1);
     console.log(c2);
     return c1 && c2 ? c1 === c2 : c1 === c2;
+  }
+  onChange (gameType: string) {
+    console.log(gameType);
+    this.gameTypeChanged.emit(gameType);
   }
 }

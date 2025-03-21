@@ -70,12 +70,19 @@ namespace Hoops.Infrastructure.Repository
 
         #endregion
 
-        public User GetUser(string sUserName, string sPwd)
+        public User GetUser(string sUserName, string password)
         {
             try
             {
-                var user = context.Users.FirstOrDefault(u => u.UserName.ToLower() == sUserName.ToLower());
-                return user!;
+                var user = context.Users
+                .FirstOrDefault(u => 
+                u.UserName.ToLower() == sUserName.ToLower()
+                && u.PassWord == password);
+                if (user == null)
+                {
+                    throw new Exception("Invalid username or password.");
+                }
+                return user;
             }
             catch (Exception ex)
             {

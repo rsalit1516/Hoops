@@ -2,7 +2,7 @@ import { AdminActions, AdminActionTypes } from './admin.actions';
 // import * as fromRoot from '../../state/app.state';
 import { Season } from '@app/domain/season';
 import { Division } from '@app/domain/division';
-import { Game } from '@app/domain/game';
+import { RegularGame } from '@app/domain/regularGame';
 import { Team } from '@app/domain/team';
 import { Color } from '@app/domain/color';
 import { Location } from '@app/domain/location';
@@ -12,18 +12,18 @@ import { WebContent } from '@app/domain/webContent';
 import { WebContentType } from '@app/domain/webContentType';
 
 export interface AdminState {
-  divisionGames: Game[] | null;
-  teamGames: Game[] | null;
+  divisionGames: RegularGame[] | null;
+  teamGames: RegularGame[] | null;
   selectedSeason: Season;
   selectedDivision: Division | null;
   currentTeamId: number | null;
-  games: Game[];
-  filteredGames: Game[];
+  games: RegularGame[];
+  filteredGames: RegularGame[];
   seasons: Season[];
   divisions: Division[];
   divisionTeams: Team[];
   seasonDivisions: Division[];
-  selectedGame: Game | null;
+  selectedGame: RegularGame | null;
   seasonTeams: Team[] | null;
   selectedTeam: Team | null;
   colors: Color[];
@@ -69,7 +69,7 @@ const initialState: AdminState = {
   clonedContent: new Content(),
 };
 
-export function reducer(
+export function reducer (
   state = initialState,
   action: AdminActions
 ): AdminState {
@@ -180,11 +180,11 @@ export function reducer(
         ...state,
         contentTypeList: action.payload,
       };
-      case AdminActionTypes.LoadLocationsSuccess:
-        return {
-          ...state,
-          locations: action.payload,
-        };
+    case AdminActionTypes.LoadLocationsSuccess:
+      return {
+        ...state,
+        locations: action.payload,
+      };
 
     default: {
       return state;

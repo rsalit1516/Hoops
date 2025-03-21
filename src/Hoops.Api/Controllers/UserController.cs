@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Hoops.Infrastructure.Data;
 using Hoops.Infrastructure.Repository;
 using Hoops.Core.Models;
 using Hoops.Core.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace csbc_server.Controllers
 {
@@ -23,9 +23,9 @@ namespace csbc_server.Controllers
 
         // GET: api/User
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public ActionResult<IEnumerable<User>> GetUsers()
         {   
-            return await _context.Users.ToListAsync();
+            return _context.Users.ToList();
         }
 
         // GET: api/User/5
@@ -132,7 +132,7 @@ namespace csbc_server.Controllers
         /// <returns></returns>
         [Route("login/{userName}/{password}")]
         [HttpGet]
-        public UserVm Get(string userName, string password)
+        public ActionResult<UserVm> Get(string userName, string password)
         {
             var repo = new UserRepository(_context);
             var userVm = new UserVm();
@@ -146,6 +146,11 @@ namespace csbc_server.Controllers
                     .Select(s => s.ScreenName);
                 var divisions = _context.Divisions.Where(d => d.DirectorId == user.PersonId);
                 userVm = UserVm.ConvertToVm(user, roles, divisions);
+            }
+            else
+            {
+                // Return an error message if the user is not found
+                return BadRequest("Invalid username or password.");
             }
 
             return userVm;

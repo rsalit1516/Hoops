@@ -14,23 +14,28 @@ namespace Hoops.Infrastructure.Repository
         public async Task<IEnumerable<WebContentVm>> GetAllAsync(int companyId)
         {
             return await context
-                .WebContents.Join(
+                .WebContents
+                .GroupJoin(
                     context.WebContentTypes,
                     content => content.WebContentTypeId,
                     contentType => contentType.WebContentTypeId,
-                    (content, contentType) => new { content, contentType }
+                    (content, contentTypes) => new { content, contentTypes }
+                )
+                .SelectMany(
+                    x => x.contentTypes.DefaultIfEmpty(),
+                    (x, contentType) => new { x.content, contentType }
                 )
                 .Where(result => result.content.CompanyId == companyId)
                 .Select(z => new WebContentVm
                 {
                     WebContentId = z.content.WebContentId,
-                    ContentSequence = z.content.ContentSequence,
+                    ContentSequence = z.content.ContentSequence ?? 0,
                     Title = z.content.Title,
                     SubTitle = z.content.SubTitle,
                     Body = z.content.Body,
                     DateAndTime = z.content.DateAndTime,
                     Location = z.content.Location,
-                    WebContentTypeDescription = z.contentType.WebContentTypeDescription,
+                    WebContentTypeDescription = z.contentType != null ? z.contentType.WebContentTypeDescription : string.Empty,
                     ExpirationDate = z.content.ExpirationDate.HasValue
                         ? z.content.ExpirationDate.Value.Date
                         : DateTime.Now,
@@ -54,7 +59,7 @@ namespace Hoops.Infrastructure.Repository
                 .Select(z => new WebContentVm
                 {
                     WebContentId = z.content.WebContentId,
-                    ContentSequence = z.content.ContentSequence,
+                    ContentSequence = z.content.ContentSequence ?? 0,
                     Title = z.content.Title,
                     SubTitle = z.content.SubTitle,
                     Body = z.content.Body,

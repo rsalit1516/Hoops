@@ -1,47 +1,50 @@
 import { Component, OnInit, Input, Output, input } from '@angular/core';
-import { Game } from '../../../domain/game';
+import { RegularGame } from '../../../domain/regularGame';
 import { Store } from '@ngrx/store';
 import * as fromGames from '../../state';
 import * as fromUser from '../../../user/state';
 import * as gameActions from '../../state/games.actions';
 
 import { GameScoreDialogComponent } from '../game-score-dialog/game-score-dialog.component';
-import { MediaObserver } from '@angular/flex-layout';
 import { GameService } from '@app/games/game.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DailyScheduleComponent } from '../daily-schedule/daily-schedule.component';
 import { CommonModule, NgFor } from '@angular/common';
 
 @Component({
-    selector: 'csbc-schedule',
-    templateUrl: './schedule.component.html',
-    styleUrls: ['./schedule.component.scss'],
-    imports: [CommonModule, DailyScheduleComponent]
+  selector: 'csbc-schedule',
+  template: `
+    <div *ngFor="let data of dailySchedule()">
+    <csbc-daily-schedule [games]="data" [canEdit]="canEdit" />
+  </div>
+  `,
+  styleUrls: ['./schedule.component.scss'],
+  imports: [CommonModule, DailyScheduleComponent]
 })
 export class ScheduleComponent implements OnInit {
-  readonly dailySchedule = input.required<Array<Game[]>>();
-  groupedGames: Game[] | undefined;
-  _gamesByDate: [Date, Game[]] | undefined;
+  readonly dailySchedule = input.required<Array<RegularGame[]>>();
+  groupedGames: RegularGame[] | undefined;
+  _gamesByDate: [Date, RegularGame[]] | undefined;
   divisionId: number | undefined;
   flexMediaWatcher: any;
   currentScreenWidth: any;
 
 
-  get games() {
+  get games () {
     return this._games;
   }
   @Input()
-  set games(games: Game[]) {
+  set games (games: RegularGame[]) {
     this._games = games;
   }
-  private _games!: Game[];
+  private _games!: RegularGame[];
   @Output()
   canEdit!: boolean;
 
   errorMessage: string | undefined;
   public title: string;
 
-  constructor(
+  constructor (
     private store: Store<fromGames.State>,
     public dialog: MatDialog,
     // private media: MediaObserver,
@@ -55,10 +58,10 @@ export class ScheduleComponent implements OnInit {
     // this.dailySchedule = new Array<Game[]>();
   }
 
-  ngOnInit() {
+  ngOnInit () {
   }
 
-  editGame(game: Game) {
+  editGame (game: RegularGame) {
     this.store.dispatch(new gameActions.SetCurrentGame(game));
     const dialogRef = this.dialog.open(GameScoreDialogComponent, {
       width: '500px',

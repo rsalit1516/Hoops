@@ -11,7 +11,10 @@ namespace Hoops.Infrastructure.Repository
         protected hoopsContext DataContext { get; set; }
         // protected DbSet<Role> DbSet;
 
-        public RoleRepository(hoopsContext context) : base(context) { }
+        public RoleRepository(hoopsContext context) : base(context)
+        {
+            DataContext = context;
+        }
 
         #region IRepository<T> Members
 
@@ -27,7 +30,7 @@ namespace Hoops.Infrastructure.Repository
 
         public Role GetById(decimal id)
         {
-            return context.Roles.Find(id);
+            return context.Roles.Find(id)!;
         }
 
         #endregion

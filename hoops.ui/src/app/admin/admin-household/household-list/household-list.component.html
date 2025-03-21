@@ -1,0 +1,64 @@
+<!-- <mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      <csbc-section-title [title]="pageTitle"></csbc-section-title>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content> -->
+<div class="container">
+
+    <div class="table-wrapper">
+      <table mat-table id="grd" matsort [dataSource]="dataSource">
+        <ng-container matColumnDef="houseId">
+          <th mat-header-cell *matHeaderCellDef>HouseId</th>
+          <td mat-cell *matCellDef="let col" class="teamName">
+            {{ col.houseId }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Name</th>
+          <td mat-cell *matCellDef="let col" class="teamName">
+            {{ col.name }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="address1">
+          <th mat-header-cell *matHeaderCellDef>Address</th>
+          <td mat-cell *matCellDef="let col" class="teamName">
+            {{ col.address1 }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="phone">
+          <th mat-header-cell *matHeaderCellDef>Phone</th>
+          <td mat-cell *matCellDef="let col" class="teamName">
+            {{ col.phone }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef>Email</th>
+          <td mat-cell *matCellDef="let col" class="teamName">
+            {{ col.email }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="nodata">
+          <td mat-footer-row *matFooterCellDef [colSpan]="displayedColumns.length" class="no-data">No Data
+            Available</td>
+        </ng-container>
+
+        <tr mat-footer-row [hidden]="dataSource.data.length >0" *matFooterRowDef="['nodata']">
+        </tr>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns" matHeaderRowDefSticky="true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="getRecord(row)"></tr>
+      </table>
+      <mat-paginator #householdPaginator 
+      aria-label="Select page of users" 
+      [pageSizeOptions]="[5, 10, 25, 100]"
+        [pageSize]="pageSize">
+      </mat-paginator>
+    </div>
+    <!-- </mat-card-content>
+  <mat-card-actions>
+
+  </mat-card-actions>
+</mat-card> -->
+  
+</div>

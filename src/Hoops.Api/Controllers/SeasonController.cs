@@ -1,7 +1,7 @@
 using Hoops.Core.Models;
 using Hoops.Core.Interface;
-using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Hoops.Controllers
 {

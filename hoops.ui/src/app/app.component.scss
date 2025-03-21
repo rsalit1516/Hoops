@@ -408,14 +408,14 @@ th {
 }
 
 .reportLink {
-  font-size: 1em;
+  font-size: 1rem;
   color: #780505;
   padding-left: 4px;
   padding-right: 12px;
 }
 
 .reportLink a {
-  font-size: 1em;
+  font-size: 1rem;
   color: #780505;
 }
 
@@ -445,7 +445,7 @@ th {
 }
 
 .centerlow a {
-  font-size: 1em;
+  font-size: 1rem;
   font-weight: 400;
 }
 
@@ -477,6 +477,7 @@ mat-sidenav {
 
 mat-sidenav {
   width: 250px;
+  background-color: v.$background-color;
 }
 .mat-drawer-container {
   background-color: v.$background-color;
@@ -489,5 +490,5 @@ main {
 }
 
 .content-page-wrapper {
-  padding: 2em;
+  padding: 2rem;
 }

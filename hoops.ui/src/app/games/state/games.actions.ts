@@ -3,7 +3,7 @@ import { PlayoffGame } from '@domain/playoffGame';
 import { Season } from '@domain/season';
 import { Standing } from '@domain/standing';
 import { Team } from '@domain/team';
-import { Game } from '@domain/game';
+import { RegularGame } from '@app/domain/regularGame';
 
 /* NgRx */
 import { Action, Store } from '@ngrx/store';
@@ -61,33 +61,33 @@ export enum GameActionTypes {
 // Action Creators
 export class ToggleActionList implements Action {
   readonly type = GameActionTypes.ToggleGameCode;
-  constructor(public pay: boolean) {}
+  constructor (public pay: boolean) { }
 }
 export class LoadCurrentSeason implements Action {
   readonly type = GameActionTypes.LoadCurrentSeason;
 }
 export class LoadCurrentSeasonSuccess implements Action {
   readonly type = GameActionTypes.LoadCurrentSeasonSuccess;
-  constructor(public payload: Season | null) {}
+  constructor (public payload: Season | null) { }
 }
 export class LoadCurrentSeasonFail implements Action {
   readonly type = GameActionTypes.LoadCurrentSeasonFail;
-  constructor(public payload: string) {}
+  constructor (public payload: string) { }
 }
 export class SetCurrentSeason implements Action {
   readonly type = GameActionTypes.SetCurrentSeason;
-  constructor(public payload: Season | null) {}
+  constructor (public payload: Season | null) { }
 }
 export class SetCurrentDivision implements Action {
   readonly type = GameActionTypes.SetCurrentDivision;
-  constructor(public payload: Division) {
+  constructor (public payload: Division) {
     console.log('set current division');
   }
 }
 
 export class SetCurrentDivisionId implements Action {
   readonly type = GameActionTypes.SetCurrentDivisionId;
-  constructor(public payload: number) {}
+  constructor (public payload: number) { }
 }
 
 export class LoadDivisionGames implements Action {
@@ -95,7 +95,7 @@ export class LoadDivisionGames implements Action {
 }
 export class SetCurrentTeam implements Action {
   readonly type = GameActionTypes.SetCurrentTeam;
-  constructor(public payload: Team) {}
+  constructor (public payload: Team) { }
 }
 
 export class ClearCurrentGame implements Action {
@@ -108,20 +108,20 @@ export class InitializeCurrentGame implements Action {
 
 export class SetGames implements Action {
   readonly type = GameActionTypes.SetGames;
-  constructor(public payload: Game[]) {}
+  constructor (public payload: RegularGame[]) { }
 }
 export class SetDivisions implements Action {
   readonly type = GameActionTypes.SetDivisions;
-  constructor(public payload: Division[]) {}
+  constructor (public payload: Division[]) { }
 }
 
 export class SetTeams implements Action {
   readonly type = GameActionTypes.SetTeams;
-  constructor(public payload: Team[]) {}
+  constructor (public payload: Team[]) { }
 }
 export class SetAllTeams implements Action {
   readonly type = GameActionTypes.SetAllTeams;
-  constructor(public payload: boolean) {}
+  constructor (public payload: boolean) { }
 }
 
 export class LoadGames implements Action {
@@ -130,13 +130,13 @@ export class LoadGames implements Action {
 
 export class LoadGamesSuccess implements Action {
   readonly type = GameActionTypes.LoadGamesSuccess;
-  constructor(public payload: Game[]) {}
+  constructor (public payload: RegularGame[]) { }
 }
 
 export class LoadGamesFail implements Action {
   readonly type = GameActionTypes.LoadGamesFail;
 
-  constructor(public payload: string) {}
+  constructor (public payload: string) { }
 }
 export class LoadFilteredGames implements Action {
   readonly type = GameActionTypes.LoadFilteredGames;
@@ -144,13 +144,13 @@ export class LoadFilteredGames implements Action {
 
 export class LoadFilteredGamesSuccess implements Action {
   readonly type = GameActionTypes.LoadFilteredGamesSuccess;
-  constructor(public payload: Game[]) {}
+  constructor (public payload: RegularGame[]) { }
 }
 
 export class LoadFilteredGamesFail implements Action {
   readonly type = GameActionTypes.LoadFilteredGamesFail;
 
-  constructor(public payload: string) {}
+  constructor (public payload: string) { }
 }
 
 export class LoadFilteredGamesByTeam implements Action {
@@ -159,51 +159,51 @@ export class LoadFilteredGamesByTeam implements Action {
 
 export class LoadFilteredGamesByTeamSuccess implements Action {
   readonly type = GameActionTypes.LoadFilteredGamesByTeamSuccess;
-  constructor(public payload: Game[]) {}
+  constructor (public payload: RegularGame[]) { }
 }
 
 export class LoadFilteredGamesByTeamFail implements Action {
   readonly type = GameActionTypes.LoadFilteredGamesByTeamFail;
-  constructor(public payload: string) {}
+  constructor (public payload: string) { }
 }
 export class LoadStandings implements Action {
   readonly type = GameActionTypes.LoadStandings;
 }
 export class LoadStandingsSuccess implements Action {
   readonly type = GameActionTypes.LoadStandingsSuccess;
-  constructor(public payload: Standing[]) {}
+  constructor (public payload: Standing[]) { }
 }
 
 export class LoadStandingsFail implements Action {
   readonly type = GameActionTypes.LoadStandingsFail;
 
-  constructor(public payload: string) {}
+  constructor (public payload: string) { }
 }
 export class LoadDivisions implements Action {
   readonly type = GameActionTypes.LoadDivisions;
 }
 export class LoadDivisionsSuccess implements Action {
   readonly type = GameActionTypes.LoadDivisionsSuccess;
-  constructor(public payload: Division[]) {}
+  constructor (public payload: Division[]) { }
 }
 export class LoadPlayoffGames implements Action {
   readonly type = GameActionTypes.LoadPlayoffGames;
 }
 export class LoadPlayoffGamesSuccess implements Action {
   readonly type = GameActionTypes.LoadPlayoffGamesSuccess;
-  constructor(public payload: PlayoffGame[]) {}
+  constructor (public payload: PlayoffGame[]) { }
 }
 export class LoadPlayoffGamesFail implements Action {
   readonly type = GameActionTypes.LoadPlayoffGamesFail;
 
-  constructor(public payload: string) {}
+  constructor (public payload: string) { }
 }
 export class LoadDivisionPlayoffGames implements Action {
   readonly type = GameActionTypes.LoadDivisionPlayoffGames;
 }
 export class LoadDivisionPlayoffGamesSuccess implements Action {
   readonly type = GameActionTypes.LoadDivisionPlayoffGamesSuccess;
-  constructor(public payload: PlayoffGame[]) {
+  constructor (public payload: PlayoffGame[]) {
     console.log('load division playoff games success');
     console.log(payload);
   }
@@ -211,29 +211,29 @@ export class LoadDivisionPlayoffGamesSuccess implements Action {
 export class LoadDivisionPlayoffGamesFail implements Action {
   readonly type = GameActionTypes.LoadDivisionPlayoffGamesFail;
 
-  constructor(public payload: string) {}
+  constructor (public payload: string) { }
 }
 
 export class SetPlayoffGames implements Action {
   readonly type = GameActionTypes.SetPlayoffGames;
-  constructor(public payload: PlayoffGame[]) {}
+  constructor (public payload: PlayoffGame[]) { }
 }
 
 export class LoadDivisionsFail implements Action {
   readonly type = GameActionTypes.LoadDivisionsFail;
 
-  constructor(public payload: string) {}
+  constructor (public payload: string) { }
 }
 export class LoadTeams implements Action {
   readonly type = GameActionTypes.LoadTeams;
 }
 export class LoadTeamsSuccess implements Action {
   readonly type = GameActionTypes.LoadTeamsSuccess;
-  constructor(public payload: Team[]) {}
+  constructor (public payload: Team[]) { }
 }
 export class LoadTeamsFail implements Action {
   readonly type = GameActionTypes.LoadTeamsFail;
-  constructor(public payload: string) {}
+  constructor (public payload: string) { }
 }
 
 export class LoadFilteredTeams implements Action {
@@ -242,22 +242,22 @@ export class LoadFilteredTeams implements Action {
 
 export class LoadFilteredTeamsSuccess implements Action {
   readonly type = GameActionTypes.LoadFilteredTeamsSuccess;
-  constructor(public payload: Team[]) {}
+  constructor (public payload: Team[]) { }
 }
 
 export class LoadFilteredTeamsFail implements Action {
   readonly type = GameActionTypes.LoadFilteredTeamsFail;
 
-  constructor(public payload: string) {}
+  constructor (public payload: string) { }
 }
 
 export class SetCanEdit implements Action {
   readonly type = GameActionTypes.SetCanEdit;
-  constructor(public payload: boolean) {}
+  constructor (public payload: boolean) { }
 }
 export class SetCurrentGame implements Action {
   readonly type = GameActionTypes.SetCurrentGame;
-  constructor(public payload: Game) {}
+  constructor (public payload: RegularGame) { }
 }
 
 export type GameActions =

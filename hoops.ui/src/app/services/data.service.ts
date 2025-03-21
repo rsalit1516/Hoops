@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Division } from '@app/domain/division';
 import { map, tap, catchError } from 'rxjs/operators';
@@ -8,11 +8,13 @@ import { Constants } from '@app/shared/constants';
 
 @Injectable()
 export class DataService {
+  #http = inject(HttpClient);
+
   webUrl: string;
   baseUrl = Constants.DEFAULTURL;
   dotNetCoreUrl: string;
   getActiveWebContentUrl: string;
-  loginUrl = this.baseUrl + '/api/User/login';
+  // loginUrl = this.baseUrl + '/api/User/login';
   directorUrl = this.baseUrl + '/api/Director';
   seasonGamesUrl = this.baseUrl + '/api/Schedulegame/getSeasonGames';
   seasonDivisionsUrl = this.baseUrl + '/api/division/GetSeasonDivisions/';
@@ -26,58 +28,65 @@ export class DataService {
   getContentUrl = this.baseUrl + '/api/webcontent';
   getActiveContentUrl = this.baseUrl + '/api/webcontent/getActiveWebContent';
   postContentUrl = this.baseUrl + '/api/WebContent';
-  putContentUrl = this.baseUrl + '/api/WebContent/';
   getCurrentSponsors = this.baseUrl + '/api/Sponsor/GetSeasonSponsors/';
   getLocations = this.baseUrl + '/api/Locations/';
   seasonUrl = this.baseUrl + '/api/Season/';
   currentSeasonUrl = this.baseUrl + '/api/Season/GetCurrentSeason';
+  peopleUrl = this.baseUrl + '/api/People';
 
-  standingsUrl =
-    this.baseUrl + '/api/ScheduleGame/getStandings';
-  httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-    }),
-  }
+  standingsUrl = this.baseUrl + '/api/ScheduleGame/getStandings';
 
-  constructor (private _http: HttpClient) {
+  httpOptions = new HttpHeaders({
+    'Content-Type': 'application/json'
+  });
+
+
+  constructor () {
     this.webUrl = environment.apiUrl;
-    // this.webUrl = 'http://csbc-webapi.azurewebsites.net';
-    // this.webUrl = 'https://apicsbc.azurewebsites.net';
     this.dotNetCoreUrl = environment.apiUrl;
     this.getActiveWebContentUrl = this.dotNetCoreUrl + '/api/webcontent/getActiveWebContent';
   }
 
-
-
-
-  post<T>(data: T, url: string): Observable<T> {
-
+  get(url: string, data: string) {
+    return this.#http
+      .get(url, { headers: this.httpOptions })
+      .pipe(
+      tap((data) => {
+        console.log('getContent: ' + JSON.stringify(data))
+  }),
+      catchError(this.handleError('get ', data))
+    );
+  }
+  post<T> (url: string, data: T ): Observable<T> {
     console.log(data);
     console.log(url);
-    return this._http
-      .post<T>(url, data, this.httpOptions)
+    return this.#http
+      .post<T>(url, data, { headers: this.httpOptions })
       .pipe(
         tap((data) => console.log('PostContent: ' + JSON.stringify(data))),
         catchError(this.handleError('Error', data)));
   }
-  put<T>(url: string, data: T ): Observable<T> {
-    console.log(url);
-    console.log(data);
+  put<T>(url: string, data: T): Observable<T> {
+    // console.log(url);
+    // console.log(data);
     // let url = this.data.putContentUrl + content.webContentId;
-    return this._http
-      .put<T>(url,  data, this.httpOptions)
+    return this.#http
+      .put<T>(url, data, { headers: this.httpOptions })
+      //.put<T>(url, data)
       .pipe(
         tap((data) => console.log('updateContent: ' + JSON.stringify(data))),
-        catchError(this.handleError('updateContent', data))
+        //   catchError((error) => {
+        //     this.handleError('updateContent', data)(error);
+        //     throw error;
+        // };
       );
   }
 
     //TODO:  Fix delete method
   delete(url: string) {
     console.log(url);
-    return this._http
-      .delete(url, this.httpOptions)
+    return this.#http
+      .delete(url, { headers: this.httpOptions })
       .pipe(
         tap(data => console.log('deleteContent: ' + JSON.stringify(data))),
         // catchError(this.handleError('deleteContent', []))

@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, input, output } from '@angular/core';
+import { Component, OnInit, Output, inject, input, output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as fromGames from '../../state';
 import { Subject, Observable } from 'rxjs';
@@ -14,15 +14,18 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { CommonModule } from '@angular/common';
 
 @Component({
-    selector: 'csbc-games-top-menu',
-    templateUrl: './games-top-menu.component.html',
-    styleUrls: ['../../../shared/scss/select.scss',
-        './games-top-menu.component.scss'
-    ],
-    imports: [CommonModule, RouterModule, RouterLinkActive,
-        MatToolbarModule, MatTabsModule, GameFilterComponent]
+  selector: 'csbc-games-top-menu',
+  templateUrl: './games-top-menu.component.html',
+  styleUrls: ['../../../shared/scss/select.scss',
+    './games-top-menu.component.scss'
+  ],
+  imports: [CommonModule, RouterModule, RouterLinkActive,
+    MatToolbarModule, MatTabsModule, GameFilterComponent]
 })
 export class GamesTopMenuComponent implements OnInit {
+  private router = inject(Router);
+  private store = inject(Store<fromGames.State>);
+
   divisions = input.required<Division[]>();
   teams = input.required<Team[]>();
   @Output() currentDivision: Division | undefined;
@@ -35,31 +38,22 @@ export class GamesTopMenuComponent implements OnInit {
   hasPlayoffs = true;
   hasStandings = true;
 
-  constructor(
-    // private fb: FormBuilder,
-    private store: Store<fromGames.State>,
-    private gameService: GameService,
-    private seasonService: SeasonService,
-    private router: Router
-  ) {}
+  constructor () { }
 
-  ngOnInit() {
+  ngOnInit () {
     this.store.select(fromGames.getCurrentSeason).subscribe((currentSeason) => {
       this.seasonDescription = currentSeason?.description;
     });
     this.store
       .select(fromGames.getDivisionPlayoffGames)
       .subscribe((playoffs) => {
-        console.log('playoffs', playoffs);
         this.hasPlayoffs = playoffs.length > 0;
       });
     this.store.select(fromGames.getStandings).subscribe((standings) => {
       this.hasStandings = standings.length > 0;
     });
   }
-  onTabChanged(event: MatTabChangeEvent): void {
-    console.log(event.index);
-    console.log(event.tab.textLabel);
+  onTabChanged (event: MatTabChangeEvent): void {
     switch (event.tab.textLabel) {
       case 'Schedule': // index of the tab
         // this is our stub tab for link

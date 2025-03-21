@@ -1,7 +1,6 @@
-import {environment} from '../../environments/environment';
+import { environment } from '../../environments/environment';
 export class Constants {
   public static ALLTEAMS = 'All Teams';
-  public static DEFAULTURL = environment.apiUrl;
 
   /* literals */
   public static GAMESMENU = 'Games';
@@ -25,4 +24,52 @@ export class Constants {
 
   /* company */
   public static COMPANYID = 1;
+
+  /* urls */
+  public static DEFAULTURL = environment.apiUrl;
+
+  public static BASE_URL = Constants.DEFAULTURL;
+  public static dotNetCoreUrl = environment.apiUrl;
+  public static getActiveWebContentUrl = Constants.DEFAULTURL + '/api/webcontent/getActiveWebContent';
+  public static loginUrl = Constants.DEFAULTURL + '/api/User/login';
+  public static GET_DIRECTOR_URL = Constants.DEFAULTURL + '/api/Director';
+  public static SEASON_GAMES_URL = Constants.DEFAULTURL + '/api/Schedulegame/getSeasonGames';
+
+  public static SEASON_DIVISIONS_URL = Constants.DEFAULTURL + '/api/division/GetSeasonDivisions/';
+  public static DIVISION_URL = Constants.DEFAULTURL + '/api/Division';
+  public static PLAYOFF_GAMES_URL = Constants.DEFAULTURL + '/api/SchedulePlayoff/GetSeasonPlayoffGames';
+  public static getCurrentSeasonUrl = Constants.DEFAULTURL + '/api/season/getCurrentSeason';
+  public static getSeasonTeamsUrl = Constants.DEFAULTURL + '/api/Team/GetSeasonTeams/';
+  public static getColorUrl = Constants.DEFAULTURL + '/api/Color';
+  public static getLocationUrl = Constants.DEFAULTURL + '/api/Location';
+  public static teamPostUrl = Constants.DEFAULTURL + '/api/Team';
+  public static teamPutUrl = Constants.DEFAULTURL + '/api/Team/';
+  public static getContentUrl = Constants.DEFAULTURL + '/api/webcontent';
+  public static getActiveContentUrl = Constants.DEFAULTURL + '/api/webcontent/getActiveWebContent';
+  public static postContentUrl = Constants.DEFAULTURL + '/api/WebContent';
+  public static PUT_CONTENT_URL = Constants.DEFAULTURL + '/api/WebContent/';
+  public static getCurrentSponsors = Constants.DEFAULTURL + '/api/Sponsor/GetSeasonSponsors/';
+  public static getLocations = Constants.DEFAULTURL + '/api/Locations/';
+  public static seasonUrl = Constants.DEFAULTURL + '/api/Season/';
+  public static currentSeasonUrl = Constants.DEFAULTURL + '/api/Season/GetCurrentSeason';
+  public static peopleUrl = Constants.DEFAULTURL + '/api/People';
+  public static GET_ADS_URL = Constants.DEFAULTURL + '/api/Person/GetADs';
+  public static standingsUrl = Constants.DEFAULTURL + '/api/ScheduleGame/getStandings';
+  public static SEARCH_HOUSEHOLD_URL = Constants.DEFAULTURL + '/api/Household/search';
+  public static GET_HOUSEHOLD_MEMBERS_URL = Constants.DEFAULTURL + '/api/Person/GetHouseholdMembers';
+  public static PEOPLE_SEARCH_URL = Constants.DEFAULTURL + '/api/Person/search';
+  public static SAVE_HOUSEHOLD_URL = Constants.DEFAULTURL + '/api/Household/';
+
+
 }
+export const FEATURE_FLAGS = {
+  adminHouseholds: true,  // Enabled feature
+  adminNotices: true, // Disabled feature
+  adminPeople: false,
+  adminDirectors: false,
+  adminColors: false,
+  adminUsers: false,
+  adminGames: true,
+
+};
+

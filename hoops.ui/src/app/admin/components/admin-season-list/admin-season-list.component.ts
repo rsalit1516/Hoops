@@ -6,7 +6,6 @@ import * as adminActions from '../../state/admin.actions';
 import { Season } from '@app/domain/season';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { DatePipe } from '@angular/common';
-import { FlexModule } from '@angular/flex-layout/flex';
 import { AdminSeasonsToolbarComponent } from '../admin-seasons-toolbar/admin-seasons-toolbar.component';
 import { Router } from '@angular/router';
 
@@ -18,7 +17,7 @@ import { Router } from '@angular/router';
         './admin-season-list.component.scss',
         '../../admin.component.scss'
     ],
-    imports: [FlexModule, MatTableModule, DatePipe,
+    imports: [MatTableModule, DatePipe,
         AdminSeasonsToolbarComponent,
     ]
 })

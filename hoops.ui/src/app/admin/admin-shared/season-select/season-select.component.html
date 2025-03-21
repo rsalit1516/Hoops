@@ -1,10 +1,10 @@
-<!-- <form [formGroup]="selectForm"> -->
-<!-- <h4>Season</h4> -->
-
-<div class="select-season">
   <mat-form-field>
     <mat-label>Season</mat-label>
-    <mat-select [(value)]="selectedValue" class="form-control">
+    <mat-select
+      [(value)]="selectedSeason"
+      (selectionChange)="onChange($event.value)"
+      class="form-control"
+    >
       @for( season of seasons$ | async; track season) {
       <mat-option [value]="season.seasonId" (click)="changeSeason(season)">
         {{ season.description }}
@@ -12,5 +12,3 @@
       }
     </mat-select>
   </mat-form-field>
-</div>
-<!-- </form> -->

@@ -12,10 +12,11 @@ import { PageNotFoundComponent } from '@app/app.not-found.component';
 
 import { AuthGuard } from '../auth/auth.guard';
 import { SeasonSetupComponent } from './containers/season-setup/season-setup.component';
-import { ContentShellComponent } from './web-content/containers/content-shell/content-shell.component';
+import { ContentShellComponent } from './web-content/content-shell/content-shell.component';
 import { DivisionDetailComponent } from './components/admin-division-detail/divisionDetail.component';
 import { getWebContentDataResolver } from './get-web-content-data.resolver';
-
+import { HouseholdShellComponent } from './admin-household/household-shell/household-shell.component';
+import { HouseholdService } from '@app/services/household.service';
 
 export const ADMINROUTES: Routes = [
   {
@@ -56,9 +57,48 @@ export const ADMINROUTES: Routes = [
           { path: '**', component: PageNotFoundComponent },
         ],
       },
-      { path: 'division', component: AdminDivisionShellComponent },
-      { path: 'division-detail', component: DivisionDetailComponent },
+      {
+        path: 'division',
+        component: AdminDivisionShellComponent,
+        title: 'Division Module',
+        children: [
+          {
+              path: 'edit',
+              loadComponent: () =>
+                import('./components/admin-division-detail/divisionDetail.component').then(
+                  (mod) => mod.DivisionDetailComponent
+                ),
+            },
+            {
+              path: 'list',
+              loadComponent: () =>
+                import('./components/admin-division-list/divisionList.component').then(
+                  (mod) => mod.DivisionListComponent
+                ),
+            },
+            {
+              path: '',
+              redirectTo: '/admin/division/list',
+              pathMatch: 'full',
+            },
+
+            { path: '**', component: PageNotFoundComponent },
+          ],
+
+          },
+      // { path: 'division-detail', component: DivisionDetailComponent },
       { path: 'season-setup', component: SeasonSetupComponent },
+      {
+        path: 'households',
+        component: HouseholdShellComponent,
+        // providers: [HouseholdService],
+      },
+      {
+        path: 'people',
+        loadComponent: () => import('./containers/admin-people-shell/admin-people-shell.component').then(
+          (mod) => mod.AdminPeopleShellComponent
+        ),
+      },
       { path: 'teams', component: TeamListComponent },
       {
         path: 'games',
@@ -72,13 +112,7 @@ export const ADMINROUTES: Routes = [
         loadChildren: () =>
           import('./director/director.module').then((m) => m.DirectorModule),
       },
-      // {
-      //   path: 'registrations',
-      //   loadChildren: () =>
-      //     import(
-      //       './registrations-and-payments/registrations-and-payments.module'
-      //     ).then((m) => m.RegistrationsAndPaymentsModule),
-      // },
+
       {
         path: 'content',
         component: ContentShellComponent,
@@ -86,17 +120,15 @@ export const ADMINROUTES: Routes = [
         children: [
           {
             path: 'edit',
-            // component: ContentEditComponent,
             loadComponent: () =>
-              import('./web-content/components/content-edit/content-edit.component').then(
+              import('./web-content/content-edit/content-edit.component').then(
                 (mod) => mod.ContentEditComponent
               ),
           },
           {
             path: 'list',
-            // component: ContentListComponent,
             loadComponent: () =>
-              import('./web-content/components/content-list/contentList.component').then(
+              import('./web-content/content-list/contentList.component').then(
                 (mod) => mod.ContentListComponent
               ),
           },
@@ -114,9 +146,4 @@ export const ADMINROUTES: Routes = [
     ]
   }
 ];
-
-@NgModule({
-  imports: [RouterModule.forChild(ADMINROUTES)],
-  exports: [RouterModule],
-})
-export class AdminRoutingModule { }
+export const AdminRoutingModule = RouterModule.forChild(ADMINROUTES);

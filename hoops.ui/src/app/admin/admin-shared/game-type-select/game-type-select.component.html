@@ -1,15 +1,15 @@
-
-<form >
-  <h4>Game Type</h4>
-  <mat-form-field>
-    <mat-select [formControl]="gameTypeComponent" class="form-control" [compareWith]="compareFn" >
-      @for( type of gameTypes; track type) {
-      <mat-option  [value]="type">
-        {{ type }}
-      </mat-option>
+<mat-form-field>
+  <mat-label>Game Type</mat-label>
+  <mat-select
+    class="form-control"
+    [compareWith]="compareFn"
+    [value]="selectedType"
+    (selectionChange)="onChange($event.value)"
+  >
+    @for( type of gameTypes; track type) {
+    <mat-option [value]="type">
+      {{ type }}
+    </mat-option>
     }
-    </mat-select>
-  </mat-form-field>
-</form>
-
-
+  </mat-select>
+</mat-form-field>

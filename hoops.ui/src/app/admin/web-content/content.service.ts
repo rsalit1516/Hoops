@@ -160,7 +160,7 @@ export class ContentService {
   private createContent(content: WebContent): Observable<void | WebContent> {
 
     console.log(content);
-    return this.data.post(content, this.data.postContentUrl).pipe(
+    return this.data.post(this.data.postContentUrl, content ).pipe(
       // tap((data) => console.log('createContent: ' + JSON.stringify(data))),
       map((data) => this.store.dispatch(new contentActions.LoadAdminContent())),
       catchError(this.data.handleError('createContent', content))
@@ -168,9 +168,7 @@ export class ContentService {
   }
 
   private updateContent(content: WebContent): Observable<WebContent> {
-    console.log(this.data.putContentUrl);
-    console.log(content);
-    let url = this.data.putContentUrl + content.webContentId;
+    let url = Constants.PUT_CONTENT_URL + content.webContentId;
     console.log(url);
     // const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.put<WebContent>(url, content);

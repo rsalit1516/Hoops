@@ -40,12 +40,17 @@ namespace Hoops.Infrastructure.Repository
         //     myAdapter.Dispose();
         //     return dtResults;
         // }
-        public VwCoach GetCoach(int id)
+        public VwCoach? GetCoach(int id)
         {
             var coach = context.Set<Coach>().Find(id);
 
+            if (coach == null)
+            {
+                return null;
+            }
+
             VwCoach vw = new VwCoach();
-            vw.CompanyId = (int)coach.CompanyId;
+            vw.CompanyId = coach.CompanyId ?? 1;
             vw.SeasonId = coach.SeasonId;
             vw.CoachId = coach.CoachId;
             vw.Name = (coach.Person.FirstName + " " + coach.Person.LastName);
@@ -64,7 +69,7 @@ namespace Hoops.Infrastructure.Repository
         }
         public Coach GetCoachForSeason(int seasonId, int peopleId)
         {
-            return context.Set<Coach>().FirstOrDefault(c => c.SeasonId == seasonId && c.PersonId == peopleId);
+            return context.Set<Coach>().FirstOrDefault(c => c.SeasonId == seasonId && c.PersonId == peopleId)!;
         }
 
         public bool DeleteById(int id)

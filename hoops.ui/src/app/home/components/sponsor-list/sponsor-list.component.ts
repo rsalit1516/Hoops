@@ -3,14 +3,14 @@ import { Sponsor } from '@app/domain/sponsor';
 import { Store } from '@ngrx/store';
 import * as fromHome from '../../state';
 import { NgFor } from '@angular/common';
-import { NgbCarousel, NgbSlide } from '@ng-bootstrap/ng-bootstrap';
+// import { NgbCarousel, NgbSlide } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
     selector: 'app-sponsor-list',
     templateUrl: './sponsor-list.component.html',
     styleUrls: ['./sponsor-list.component.scss', '../../home.component.scss'],
-    imports: [NgbCarousel, NgFor, NgbSlide]
+    imports: [ NgFor]
 })
 export class SponsorListComponent implements OnInit {
   sponsors: Sponsor[] | undefined;

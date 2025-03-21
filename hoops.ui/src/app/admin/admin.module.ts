@@ -31,8 +31,8 @@ import { SeasonRegistrationsComponent } from './registrations-and-payments/compo
 import { PaymentsComponent } from './registrations-and-payments/components/payments/payments.component';
 import { AdminGamesModule } from './admin-games/admin-games.module';
 
-import { AdminGamesListComponent } from './admin-shared/admin-games-list/admin-games-list.component';
-import { ContentShellComponent } from './web-content/containers/content-shell/content-shell.component';
+import { AdminGamesListComponent } from './admin-games/admin-games-list/admin-games-list.component';
+import { ContentShellComponent } from './web-content/content-shell/content-shell.component';
 
 @NgModule({
     imports: [

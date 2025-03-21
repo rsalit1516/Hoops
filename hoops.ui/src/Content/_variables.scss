@@ -1,4 +1,4 @@
-@use 'sass:color';
+@use "sass:color";
 
 // default colors
 $black: #000 !default;
@@ -17,45 +17,61 @@ $basketball-color: #b86850;
 $navbar-background-color: #212121;
 $navbar-color: color.adjust($brand-color, $lightness: 10%);
 
-$sidebar-menu: color.adjust( black, $lightness: 10%);
-$card-background-color: color.adjust($black, $lightness: $default-lighten); ;
+$sidebar-menu: color.adjust(black, $lightness: 10%);
+$card-background-color: color.adjust($black, $lightness: $default-lighten);
 $card-background-color-shadow: color.adjust(#3f3f3f, $lightness: -40%);
 $card-color: color.adjust(#d17b00, $lightness: 20%);
 $status-bar-background: color.adjust(#000000, $lightness: 10%);
 $app-bar-background: #212121;
 $color: #d17b00;
-$card-sub-title-color: #3a5794;
+$card-sub-title-color: #d17b00;
+$default-lighten: 5%;
+$csbc-background-color: color.adjust($black, $lightness: 20%);
+
+$sidebar-background-color: #232323;
+$brand-color: #d17b00;
+$default-lighten: 5%;
+
+$sidebar-background-color: #232323;
+$default-lighten: 5%;
+
 $card-highlight: $brand-color;
 
 $border-radius: 10px;
 $font-color-text: rgb(238, 231, 231);
-$field-label:rgb(220, 216, 216);
+$field-label: rgb(241, 240, 240);
 $link-color: color.adjust(#d17b00, $lightness: 20%);
 
 /* table settings */
 $table-body-color: #292929;
 $table-font-color: #fce9cd;
-$table-header-background-color: color.adjust($black, $lightness: 10% );
-$table-border-color: color.adjust(white, $lightness: -20%);
-$table-font-size: 1.0rem;
+$table-header-background-color: color.adjust($black, $lightness: 10%);
+$table-border-color: rgb(112, 111, 111);
+$table-font-size: 1rem;
 $table-background-color: color.adjust($black, $lightness: 5%);
 $table-alternate-background-color: color.adjust($black, $lightness: 10%);
 $table-border-height: 40px;
 
 /* font sizes */
 $input-font-size: 1.1rem;
-$heading-font-size: 1.1rem;
-$card-body: .9rem;
+$heading-font-size: 1.4rem;
+$card-body: 0.9rem;
 $wrapper-font-size: 1rem;
 $card-title-font-size: 1.4rem;
-$button-font-size: 1.0rem;
-$select-font-size: .8rem;
+$button-font-size: 1rem;
+$select-font-size: 0.8rem;
 
 /* admin */
 $admin-background-color: color.adjust(black, $lightness: 15%);
 $admin-font-color: white;
-$admin-table-background-color: color.adjust($black, $lightness: $default-lighten);
-$admin-card-background-color: color.adjust($black, $lightness: $default-lighten);
+$admin-table-background-color: color.adjust(
+  $black,
+  $lightness: $default-lighten
+);
+$admin-card-background-color: color.adjust(
+  $black,
+  $lightness: $default-lighten
+);
 $admin-table-background-color-border: color.adjust(black, $lightness: 5%);
 $admin-input-hint-color: rgb(208, 208, 191);
-$admin-input-hint-font-size: .8rem;
+$admin-input-hint-font-size: 0.8rem;

@@ -6,15 +6,14 @@ export const CONTENT_ROUTES: Routes = [
     path: 'edit',
     //        component: ContentEditComponent,
     loadComponent: () =>
-      import('./components/content-edit/content-edit.component').then(
+      import('./content-edit/content-edit.component').then(
         (mod) => mod.ContentEditComponent
       ),
   },
   {
     path: 'list',
-    //      component: ContentListComponent,
     loadComponent: () =>
-      import('./components/content-list/contentList.component').then(
+      import('./content-list/contentList.component').then(
         (mod) => mod.ContentListComponent
       ),
   },
