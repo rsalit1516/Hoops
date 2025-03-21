@@ -93,9 +93,9 @@ export class DivisionService {
     this._seasonId = seasonId;
   }
   // divisions: Division[];
-  private selectedSeason$ = this.#store
-    .pipe(select(fromAdmin.getSelectedSeason))
-    .subscribe((season) => this.season == season);
+  // private selectedSeason$ = this.#store
+  //   .pipe(select(fromAdmin.getSelectedSeason))
+  //   .subscribe((season) => this.season == season);
 
   private initializeDivision = signal<Division>({
     divisionId: 0,

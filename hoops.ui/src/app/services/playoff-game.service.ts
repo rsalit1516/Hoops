@@ -36,13 +36,11 @@ export class PlayoffGameService {
 
   constructor () {
     effect(() => {
-      console.log(this.selectedSeason());
       if (this.selectedSeason() !== undefined) {
         this.fetchSeasonPlayoffGames();
       }
     });
     effect(() => {
-      console.log(this.selectedDivision());
       if (this.selectedDivision() !== undefined) {
         this.getDivisionPlayoffGames();
         const dailyGames = this.groupPlayoffGamesByDate(this.divisionPlayoffGames()!);

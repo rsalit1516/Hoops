@@ -25,9 +25,7 @@ export class SchedulePlayoffsComponent {
   dailyPlayoffSchedule = computed(() => this.#playoffGameService.dailyPlayoffSchedule())
 
 
-  constructor () {
-    console.log(this.playoffGames);
-  }
+  constructor () { }
 
 
 }

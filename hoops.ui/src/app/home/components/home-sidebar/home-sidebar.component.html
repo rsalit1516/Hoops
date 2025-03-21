@@ -1,8 +1,8 @@
 <section class="sidebar">
   <div class="">
     <!--<h4 class="text-center text-info">{{boardMeetingMessage}}</h4>-->
-    <div *ngFor="let info of content$ | async">
-        <csbc-meeting [info]="info"></csbc-meeting>
+    <div *ngFor="let info of content()">
+      <csbc-meeting [info]="info"></csbc-meeting>
     </div>
   </div>
 </section>

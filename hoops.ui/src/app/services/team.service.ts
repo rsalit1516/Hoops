@@ -45,7 +45,7 @@ export class TeamService {
 
   constructor () {
     effect(() => {
-      console.log(this.selectedSeason());
+      // console.log(this.selectedSeason());
       if (this.selectedSeason() !== undefined) {
         this.getSeasonTeams();
         //console.log(this.seasonTeams());
@@ -63,8 +63,11 @@ export class TeamService {
   }
 
   getSeasonTeams (): void {
+    if (this.selectedSeason() === undefined) {
+      return;
+    }
     const url = this.teamUrl + this.selectedSeason()!.seasonId;
-    console.log('getting season teams');
+    // console.log('getting season teams');
     this.#http.get<Team[]>(url).subscribe(
       (teams) => {
         this.seasonTeams.update(() => teams);
@@ -87,7 +90,6 @@ export class TeamService {
     const teamName: string = Constants.ALLTEAMS;
     const teamNumber: string = '0';
     const team = new Team(teamId, divisionId, name, teamName, teamNumber);
-    console.log(team);
     filteredTeams.push(team);
 
     if (this.seasonTeams() !== undefined) {

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, input } from '@angular/core';
+import { Component, OnInit, computed, inject, input } from '@angular/core';
 import { ContentService } from '../../../admin/web-content/content.service';
 import { DateTime } from 'luxon';
 import { Store } from '@ngrx/store';
@@ -11,93 +11,89 @@ import { CommonModule } from '@angular/common';
 import { AnnouncementComponent } from '../announcement/announcement.component';
 
 @Component({
-    selector: 'csbc-announcements',
-    templateUrl: './announcements.component.html',
-    styleUrls: ['./announcements.component.scss'],
-    imports: [CommonModule, AnnouncementComponent],
-    providers: [ContentService]
+  selector: 'csbc-announcements',
+  templateUrl: './announcements.component.html',
+  styleUrls: ['./announcements.component.scss'],
+  imports: [CommonModule, AnnouncementComponent],
+  providers: [ContentService]
 })
 export class CsbcAnnouncementsComponent implements OnInit {
-readonly info = input.required<string>();
+
+  readonly contentService = inject(ContentService);
+  readonly #store = inject(Store<fromHome.State>);
+
+  activeWebContent = computed(() => this.contentService.activeWebContent ?? [] as WebContent[]);
   seasonInfoCount = 0 as number;
   latestNewsCount!: number;
   meetingNoticeCount!: number;
-  activeWebContent!: WebContent[];
+  // activeWebContent = this.#contentService.activeContent();
   errorMessage!: string;
-  content$ = this.store.select(fromHome.getContent).pipe(
+  content$ = this.#store.select(fromHome.getContent).pipe(
     map(result => result.filter(c => c.webContentTypeDescription === 'Season Info' || c.webContentTypeDescription === 'Event')),
     map(t => t.sort(this.sortByContentSequence))
   );
-  _webContentService: ContentService;
 
-  constructor(
-    private store: Store<fromHome.State>
-  ) {
-    this._webContentService = inject(ContentService);
-
+  constructor () { }
+  ngOnInit (): void {
+    // Initialization logic here
   }
-
-  ngOnInit() {
-  }
-
-  sortByContentSequence(a: { contentSequence: number; },b: { contentSequence: number; }) {
+  sortByContentSequence (a: { contentSequence: number; }, b: { contentSequence: number; }) {
     if (a.contentSequence < b.contentSequence)
       return -1;
     if (a.contentSequence > b.contentSequence)
       return 1;
     return 0;
   }
-  getWebContent(): void {
-    this.activeWebContent = [];
-    this.store.select(fromHome.getContent).subscribe(
-      (webContents) => {
-        if (webContents !== undefined) {
-          const today = DateTime.now();
-          console.log(webContents);
-          for (let i = 0; i < webContents.length; i++) {
-              // console.log(webContents[i]);
-              this.activeWebContent.push(webContents[i]);
-          }
-        }
-        // this.activeWebContent = webContents;
-        console.log(this.activeWebContent);
-      },
-      (error) => (this.errorMessage = <any>error)
-    );
+  getWebContent (): void {
+    // this.activeWebContent = [];
+    // this.#store.select(fromHome.getContent).subscribe(
+    //   (webContents) => {
+    //     if (webContents !== undefined) {
+    //       const today = DateTime.now();
+    //       console.log(webContents);
+    //       for (let i = 0; i < webContents.length; i++) {
+    //         // console.log(webContents[i]);
+    //         this.activeWebContent.push(webContents[i]);
+    //       }
+    //     }
+    //     // this.activeWebContent = webContents;
+    //     console.log(this.activeWebContent);
+    //   },
+    //   (error) => (this.errorMessage = <any> error)
+    // );
   }
-  showNews(): boolean {
+  showNews (): boolean {
     return this.latestNewsCount > 0;
   }
-  showSeasonInfo(): boolean {
+  showSeasonInfo (): boolean {
     return this.seasonInfoCount > 0;
   }
 
-  setImageClass(): string {
+  setImageClass (): string {
     if (this.showSidebar()) {
       return 'col-sm-9';
     } else {
       return 'col-sm-12 center-block';
     }
   }
-  showSidebar(): boolean {
+  showSidebar (): boolean {
     return this.meetingNoticeCount > 0;
   }
-  setSeasonInfoClass() {
+  setSeasonInfoClass () {
     return 'col-8 offset-4 col-xs-12';
   }
 
-  setNewsClass(): string {
+  setNewsClass (): string {
     if (this.showSeasonInfo() || this.latestNewsCount > 0) {
       return 'col-sm-10 offset-sm-1 col-xs-12';
     } else {
       return 'col-sm-10 offset-sm-1 col-xs-12';
     }
   }
-  setSeasonListClass(): string {
+  setSeasonListClass (): string {
     if (this.seasonInfoCount > 1) {
       return 'showMultiItemList';
-    } else
-    {
+    } else {
       return ''
     }
   }

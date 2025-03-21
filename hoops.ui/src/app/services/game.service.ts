@@ -104,7 +104,6 @@ export class GameService {
     effect(() => {
       const selectedSeason = this.selectedSeason();
       if (selectedSeason) {
-        console.log(selectedSeason);
         this.fetchSeasonGames();
       }
     });
@@ -112,9 +111,6 @@ export class GameService {
     effect(() => {
       const selectedDivision = this.selectedDivision();
       if (selectedDivision) {
-        console.log(selectedDivision);
-        // this.gameStore.dispatch(new gameActions.LoadDivisionGames());
-        // this.gameService.currentDivision$
         const test = this.filterGamesByDivision();
         this.filteredGames.update(() => test);
         const dailyGames = this.groupRegularGamesByDate(this.filteredGames());

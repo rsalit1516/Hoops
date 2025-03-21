@@ -1,32 +1,31 @@
 import { Component, OnInit, Input, input } from '@angular/core';
 import { Standing } from '@domain/standing';
-import { GameService} from '@app/services/game.service';
+import { GameService } from '@app/services/game.service';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 
 @Component({
-    selector: 'csbc-standings',
-    imports: [CommonModule, MatTableModule],
-    templateUrl: './standings.component.html',
-    styleUrls: [
-        '../../../shared/scss/tables.scss',
-        './standings.component.scss',
-        '../../containers/games-shell/games-shell.component.scss',
-        '../../../../Content/styles.scss'
-    ]
+  selector: 'csbc-standings',
+  imports: [CommonModule, MatTableModule],
+  templateUrl: './standings.component.html',
+  styleUrls: [
+    '../../../shared/scss/tables.scss',
+    './standings.component.scss',
+    '../../containers/games-shell/games-shell.component.scss',
+    '../../../../Content/styles.scss'
+  ]
 })
 export class StandingsComponent implements OnInit {
   public title: string;
   readonly teams = input<any[]>();
 
   private _standings: Standing[] | undefined | null;
-  get standings() {
+  get standings () {
     return this._standings as Standing[];
   }
   @Input()
-  set standings(standings: Standing[]) {
+  set standings (standings: Standing[]) {
     this._standings! = standings;
-    console.log(standings);
     this.dataSource = new MatTableDataSource(standings);
   }
 
@@ -34,14 +33,12 @@ export class StandingsComponent implements OnInit {
   // displayedColumns = ['teamName', 'won', 'lost', 'pct', 'streak'];
   displayedColumns = ['teamName', 'won', 'lost', 'pct', 'pf', 'pa'];
   dataSource: MatTableDataSource<Standing>;
-  constructor() {
+  constructor () {
     this.title = 'Standings';
     this.dataSource = new MatTableDataSource(this.standings);
   }
 
-  ngOnInit() {
+  ngOnInit () {
     this.dataSource = new MatTableDataSource(this.standings);
-    console.log(this.teams());
-    console.log(this.standings);
   }
 }

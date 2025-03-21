@@ -48,7 +48,7 @@ export class GamesTopMenuComponent implements OnInit {
 
   constructor () {
     effect(() => {
-      console.log(this.divisionPlayoffGames());
+      // console.log(this.divisionPlayoffGames());
       if (this.divisionPlayoffGames() !== undefined) {
         this.hasPlayoffs.update(() => this.divisionPlayoffGames()!.length > 0);
       } else {
@@ -56,7 +56,7 @@ export class GamesTopMenuComponent implements OnInit {
       }
     });
     effect(() => {
-      console.log(this.divisionStandings());
+      // console.log(this.divisionStandings());
       if (this.divisionStandings() !== undefined) {
         this.hasStandings.update(() => this.divisionStandings().length > 0);
       } else {

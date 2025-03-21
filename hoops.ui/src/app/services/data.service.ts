@@ -1,6 +1,5 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { Division } from '@app/domain/division';
 import { map, tap, catchError } from 'rxjs/operators';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../../environments/environment';
@@ -47,17 +46,17 @@ export class DataService {
     this.getActiveWebContentUrl = this.dotNetCoreUrl + '/api/webcontent/getActiveWebContent';
   }
 
-  get(url: string, data: string) {
+  get (url: string, data: string) {
     return this.#http
       .get(url, { headers: this.httpOptions })
       .pipe(
-      tap((data) => {
-        console.log('getContent: ' + JSON.stringify(data))
-  }),
-      catchError(this.handleError('get ', data))
-    );
+        tap((data) => {
+          console.log('getContent: ' + JSON.stringify(data))
+        }),
+        catchError(this.handleError('get ', data))
+      );
   }
-  post<T> (url: string, data: T ): Observable<T> {
+  post<T> (url: string, data: T): Observable<T> {
     console.log(data);
     console.log(url);
     return this.#http
@@ -66,7 +65,7 @@ export class DataService {
         tap((data) => console.log('PostContent: ' + JSON.stringify(data))),
         catchError(this.handleError('Error', data)));
   }
-  put<T>(url: string, data: T): Observable<T> {
+  put<T> (url: string, data: T): Observable<T> {
     // console.log(url);
     // console.log(data);
     // let url = this.data.putContentUrl + content.webContentId;
@@ -82,8 +81,8 @@ export class DataService {
       );
   }
 
-    //TODO:  Fix delete method
-  delete(url: string) {
+  //TODO:  Fix delete method
+  delete (url: string) {
     console.log(url);
     return this.#http
       .delete(url, { headers: this.httpOptions })
@@ -93,7 +92,7 @@ export class DataService {
         catchError(async (error) => console.error(error))
 
       );
-    }
+  }
   /**
    * Handle Http operation that failed.
    * Let the app continue.

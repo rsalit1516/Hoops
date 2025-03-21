@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, effect, inject, linkedSignal, OnInit } from '@angular/core';
 
 import * as fromHome from './state';
 import * as homeActions from './state/home.actions';
@@ -17,6 +17,8 @@ import { HomeCenterComponent } from './components/home-center/home-center.compon
 import { LoggerService } from '@app/services/logging.service';
 import { SeasonService } from '@app/services/season.service';
 import { Season } from '@app/domain/season';
+import { Content } from '@app/domain/content';
+import { ContentService } from '@app/admin/web-content/content.service';
 
 @Component({
   selector: 'csbc-home',
@@ -37,6 +39,7 @@ export class HomeComponent implements OnInit {
   readonly #seasonService = inject(SeasonService);
   readonly #store = inject(Store<fromHome.State>);
   readonly #gameStore = inject(Store<fromGames.State>);
+  readonly #contentService = inject(ContentService);
 
   coverImage = 'images/sky.jpg';
   seasonInfoCount: number = 1;
@@ -44,62 +47,62 @@ export class HomeComponent implements OnInit {
   meetingNoticeCount: number = 0;
   topImage = '../../assets/images/CSBCTopImage.jpg';
   errorMessage: string | undefined;
-  activeWebContent: any[] | undefined;
-  webContents: WebContent[] | undefined;
+  activeWebContent = computed(() => this.#contentService.activeWebContent);
   //   currentSeason$ = this.seasonService.getCurrent();
   content$ = this.#store.select(fromHome.getContent);
   showSidebar$ = of(true);
-  meetingNotices$: Observable<WebContent[]> | undefined;
+  meetingNotices: WebContent[] | undefined;
 
   showSidebar = false;
   showSponsors = false;
   imageClass = 'col-sm-8 offset-sm-2 col-12';
   meetingNoticeClass = 'col-sm-0 col-xs-0';
-  announcementInfo = '';
+  announcementInfo: WebContent[] | undefined = [];
 
-  constructor () { }
+  constructor () {
+    effect(() => {
+      console.log(this.activeWebContent);
+      //      this.announcementInfo = this.activeWebContent;
+    });
+  }
 
   ngOnInit (): void {
-    this.#store.dispatch(new homeActions.LoadContent());
-    this.meetingNotices$ = this.content$.pipe(
-      map((results) =>
-        results.filter((r) => r.webContentTypeDescription === 'Meeting')
-      )
-    );
     this.setImageClass();
     // this.#gameStore.dispatch(new gameActions.LoadCurrentSeason());
-    this.#gameStore.select(fromGames.getCurrentSeason).subscribe((season) => {
-      if ((season?.seasonId !== 0) && (season?.seasonId !== undefined)) {
-        this.#store.dispatch(new homeActions.LoadSponsors());
-        // this.#gameStore.dispatch(new gameActions.LoadDivisions());
-        this.#gameStore.dispatch(new gameActions.LoadTeams());
-        // this.#gameStore.dispatch(new gameActions.LoadGames());
-        // this.store.dispatch(new gameActions.LoadPlayoffGames());
-      }
-    });
+    // this.#gameStore.select(fromGames.getCurrentSeason).subscribe((season) => {
+    //   if ((season?.seasonId !== 0) && (season?.seasonId !== undefined)) {
+    this.#store.dispatch(new homeActions.LoadSponsors());
+    // this.#gameStore.dispatch(new gameActions.LoadDivisions());
+    this.#gameStore.dispatch(new gameActions.LoadTeams());
+    // this.#gameStore.dispatch(new gameActions.LoadGames());
+    // this.store.dispatch(new gameActions.LoadPlayoffGames());
+    //   }
+    // });
 
-    this.#gameStore.select(fromGames.getCurrentSeason).subscribe((season) => {
-      if (season?.seasonId !== 0) {
-        this.#gameStore.select(fromGames.getDivisions).subscribe((divisions) => {
-          if (divisions.length > 0) {
-            this.#gameStore
-              .select(fromGames.getCurrentDivision)
-              .subscribe((division) => {
-                // if (division === undefined || division.seasonId === 0) {
-                //   console.log('about to dispatch');
-                //   this.gameStore.dispatch(
-                //     new gameActions.SetCurrentDivision(divisions[0])
-                //   );
-                //   // this.gameStore.dispatch(new gameActions.LoadFilteredTeams());
-                // }
-              });
-          }
-        });
-      }
-    });
-    this.#store.select(fromHome.getSponsors).subscribe((sponsors) => {
-      this.showSponsors = sponsors.length > 0;
-    });
+    // this.#gameStore.select(fromGames.getCurrentSeason).subscribe((season) => {
+    //   if (season?.seasonId !== 0) {
+    //     this.#gameStore.select(fromGames.getDivisions).subscribe((divisions) => {
+    //       if (divisions.length > 0) {
+    //         this.#gameStore
+    //           .select(fromGames.getCurrentDivision)
+    //           .subscribe((division) => {
+    // if (division === undefined || division.seasonId === 0) {
+    //   console.log('about to dispatch');
+    //   this.gameStore.dispatch(
+    //     new gameActions.SetCurrentDivision(divisions[0])
+    //   );
+    //   // this.gameStore.dispatch(new gameActions.LoadFilteredTeams());
+    // }
+    //           });
+    //       }
+    //     });
+    //   }
+    // });
+
+    // TO DO - get this from a service!
+    // this.#store.select(fromHome.getSponsors).subscribe((sponsors) => {
+    //   this.showSponsors = sponsors.length > 0;
+    // });
   }
 
   showSeasonInfo (): boolean {
@@ -107,16 +110,15 @@ export class HomeComponent implements OnInit {
   }
 
   setImageClass (): void {
-    this.meetingNotices$!.subscribe((results) => {
-      this.showSidebar = results.length > 0;
-      if (results.length > 0) {
-        this.imageClass = 'col-sm-8 col-md-9 col-12';
-        this.meetingNoticeClass = 'col-sm-4 col-md-3 col-12';
-      } else {
-        this.imageClass = 'col-sm-8 offset-sm-2 col-12';
-        this.meetingNoticeClass = 'col-0';
-      }
-    });
+    const results = this.meetingNotices!;
+    // this.showSidebar = results.length > 0;
+    // if (results.length > 0) {
+    //   this.imageClass = 'col-sm-8 col-md-9 col-12';
+    //   this.meetingNoticeClass = 'col-sm-4 col-md-3 col-12';
+    // } else {
+    //   this.imageClass = 'col-sm-8 offset-sm-2 col-12';
+    //   this.meetingNoticeClass = 'col-0';
+    // }
   }
 
   setSeasonInfoClass () {
