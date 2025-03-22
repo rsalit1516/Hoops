@@ -21,6 +21,7 @@ import { AuthService } from '@app/services/auth.service';
     MatButtonModule, MatIconModule, RouterModule, RouterLinkActive]
 })
 export class TopNavComponent implements OnInit {
+  public dialog = inject(MatDialog);
   public readonly sidenavToggle = output();
   readonly #authService = inject(AuthService);
   currentUser$: Observable<User> | undefined;
@@ -33,11 +34,7 @@ export class TopNavComponent implements OnInit {
   env: any;
   constants: typeof Constants;
   securityEnabled: boolean = true;
-  constructor (
-    public dialog: MatDialog,
-    private store: Store<fromUser.State>,
-    private route: Router
-  ) {
+  constructor ( ) {
     // this.route.events.subscribe(route => console.log(route));
     this.constants = Constants;
   }
@@ -65,7 +62,7 @@ export class TopNavComponent implements OnInit {
       width: '480px',
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe(() => {
       // console.log('The dialog was closed');
     });
   }

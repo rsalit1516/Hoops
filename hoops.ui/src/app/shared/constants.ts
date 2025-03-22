@@ -65,7 +65,7 @@ export class Constants {
 export const FEATURE_FLAGS = {
   adminHouseholds: true,  // Enabled feature
   adminNotices: true, // Disabled feature
-  adminPeople: false,
+  adminPeople: true,
   adminDirectors: false,
   adminColors: false,
   adminUsers: false,

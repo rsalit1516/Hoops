@@ -84,7 +84,7 @@ export class SeasonService {
 
   getSeasons (): void {
     this.#http.get<Season[]>(this.#seasonsUrl).pipe(
-      map(response => this.seasons.set(response as Season[])),
+      map(response => this.seasons.update(() => response as Season[])),
       tap(data => console.log('All: ' + JSON.stringify(this.seasons()))),
       catchError(this.#dataService.handleError('getSeasons', []))
     );

@@ -73,55 +73,56 @@ export class AdminShellComponent implements OnInit {
       // console.log(season);
       // console.log(this.divisionService.divisions());
     });
-    this.store.dispatch(new adminActions.LoadSeasons());
-    this.store.select(fromAdmin.getSeasons).subscribe((seasons) => {
+    // this.store.dispatch(new adminActions.LoadSeasons());
+    this.seasonService.getSeasons();
+    // this.store.select(fromAdmin.getSeasons).subscribe((seasons) => {
       // console.log('triggering seasons');
-      this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
+      // this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
         // console.log(season);
-        if (season.seasonId === undefined) {
-          for (let i = 0; i < seasons.length; i++) {
-            if (seasons[i].currentSeason === true) {
-              this.store.dispatch(
-                new adminActions.SetSelectedSeason(seasons[i])
-              );
-              break;
-            }
-          }
-        }
-      });
-    });
-    this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
+    //     if (season.seasonId === undefined) {
+    //       for (let i = 0; i < seasons.length; i++) {
+    //         if (seasons[i].currentSeason === true) {
+    //           this.store.dispatch(
+    //             new adminActions.SetSelectedSeason(seasons[i])
+    //           );
+    //           break;
+    //         }
+    //       }
+    //     }
+    //   });
+    // });
+    // this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
       // console.log(season);
-      if (season.seasonId !== undefined) {
-        if (season.seasonId !== 0) {
-          this.store.dispatch(new adminActions.LoadDivisions());
-          this.store.dispatch(new adminActions.LoadSeasonTeams());
-          this.store.dispatch(new adminActions.LoadGames());
+      // if (season.seasonId !== undefined) {
+      //   if (season.seasonId !== 0) {
+          // this.store.dispatch(new adminActions.LoadDivisions());
+          // this.store.dispatch(new adminActions.LoadSeasonTeams());
+          // this.store.dispatch(new adminActions.LoadGames());
           // this.store.dispatch(new adminActions.LoadPlayoffGames());
-          this.store
-            .select(fromAdmin.getSeasonDivisions)
-            .subscribe((divisions) => {
-              this.store.dispatch(
-                new adminActions.SetSelectedDivision(divisions[0])
-              );
-            });
+          // this.store
+          //   .select(fromAdmin.getSeasonDivisions)
+          //   .subscribe((divisions) => {
+          //     this.store.dispatch(
+          //       new adminActions.SetSelectedDivision(divisions[0])
+          //     );
+          //   });
 
-          this.store
-            .select(fromAdmin.getSelectedDivision)
-            .subscribe((division) => {
-              if (division !== undefined) {
-                this.store.dispatch(new adminActions.LoadDivisionTeams());
-              }
-            });
-        }
-      }
-    });
-    this.store.dispatch(new contentActions.LoadAdminContent());
+          // this.store
+          //   .select(fromAdmin.getSelectedDivision)
+          //   .subscribe((division) => {
+          //     if (division !== undefined) {
+          //       this.store.dispatch(new adminActions.LoadDivisionTeams());
+          //     }
+          //   });
+    //     }
+    //   }
+    // });
+    // this.store.dispatch(new contentActions.LoadAdminContent());
 
-    this.store.dispatch(new contentActions.SetAllContent());
-    this.store.select(fromAdmin.getContentList).subscribe((content) => {
-      this.store.dispatch(new contentActions.SetActiveContent());
-    });
+    // this.store.dispatch(new contentActions.SetAllContent());
+    // this.store.select(fromAdmin.getContentList).subscribe((content) => {
+    //   this.store.dispatch(new contentActions.SetActiveContent());
+    // });
 
     // this.store.select(fromAdmin.getSeasonDivisions).subscribe((divisions) => {
     //   this.store.dispatch(new adminActions.SetSelectedDivision(divisions[0]));
@@ -134,16 +135,16 @@ export class AdminShellComponent implements OnInit {
     //   });
     // });
 
-    this.colorService
-      .getColors()
-      .subscribe((colors) =>
-        this.store.dispatch(new adminActions.SetColors(colors))
-      );
-    this.locationService
-      .get()
-      .subscribe((locations) =>
-        this.store.dispatch(new adminActions.SetLocations(locations))
-      );
+    // this.colorService
+    //   .getColors()
+    //   .subscribe((colors) =>
+    //     this.store.dispatch(new adminActions.SetColors(colors))
+    //   );
+    // this.locationService
+    //   .get()
+    //   .subscribe((locations) =>
+    //     this.store.dispatch(new adminActions.SetLocations(locations))
+    //   );
   }
 
 }

@@ -22,14 +22,14 @@ import { FeatureFlagService } from '@app/services/featureFlag.service';
     './../../containers/admin-shell/admin-shell.component.scss']
 })
 export class AdminShellSidebarComponent {
-  featureFlagService = inject(FeatureFlagService);
-  showDirectors = this.featureFlagService.isFeatureEnabled('adminDirectors');
-  showHouseholds = this.featureFlagService.isFeatureEnabled('adminHouseholds');
-  showPeople = this.featureFlagService.isFeatureEnabled('adminPeople');
-
-  showColors = this.featureFlagService.isFeatureEnabled('adminColors');
-  showUsers = this.featureFlagService.isFeatureEnabled('adminUsers');
-  showNotices = this.featureFlagService.isFeatureEnabled('adminNotices');
+  readonly #featureFlagService = inject(FeatureFlagService);
+  readonly #router = inject(Router);
+  showDirectors = this.#featureFlagService.isFeatureEnabled('adminDirectors');
+  showHouseholds = this.#featureFlagService.isFeatureEnabled('adminHouseholds');
+  showPeople = this.#featureFlagService.isFeatureEnabled('adminPeople');
+  showColors = this.#featureFlagService.isFeatureEnabled('adminColors');
+  showUsers = this.#featureFlagService.isFeatureEnabled('adminUsers');
+  showNotices = this.#featureFlagService.isFeatureEnabled('adminNotices');
   shouldRun = false;
 
   SeasonSetupSection = 'Season Setup';
@@ -53,7 +53,7 @@ export class AdminShellSidebarComponent {
     { name: 'Uniform Colors', route: '/admin/colors', isSelected: false },
   ];
 
-  constructor (@Inject(Router) private router: Router) { }
+  constructor () { }
 
   selectedItem: nav | undefined;
 
@@ -73,7 +73,7 @@ export class AdminShellSidebarComponent {
       }
     });
 
-    this.router.navigate([item.route]);
+    this.#router.navigate([item.route]);
   }
 }
 

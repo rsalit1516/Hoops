@@ -70,7 +70,7 @@ export class ScheduleShellComponent implements OnInit {
   seasonDivisions = signal<Division[]>([]);
   // selectedDivision = signal<Division | undefined>(undefined);
   selectedDivision = computed(() => this.#divisionService.selectedDivision());
-  filteredGames = computed(() => this.#gameService.filteredGames());
+  filteredGames = computed(() => this.#gameService.divisionGames());
   constructor () {
     effect(() => {
       const selectedDivision = this.selectedDivision();

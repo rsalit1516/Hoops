@@ -23,6 +23,7 @@ import { DivisionService } from './division.service';
 import { LoggerService } from './logging.service';
 import { AuthService } from './auth.service';
 import { Standing } from '@app/domain/standing';
+import { TeamService } from './team.service';
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +36,7 @@ export class GameService {
   public dataService = inject(DataService);
   readonly #seasonService = inject(SeasonService);
   readonly #divisionService = inject(DivisionService);
+  readonly #teamService = inject(TeamService);
   readonly #authService = inject(AuthService);
   readonly #logger = inject(LoggerService);
   readonly #scheduleGamesUrl = Constants.SEASON_GAMES_URL + '?seasonid=' + this.#seasonService.selectedSeason.seasonId;
@@ -42,7 +44,7 @@ export class GameService {
   standing: any[] = [];
   divisionStandings = signal<Standing[]>([]);
   currentDivision$: Observable<Division | null> = of(null);
-  filteredGames = signal<RegularGame[]>([]);
+  divisionGames = signal<RegularGame[]>([]);
   currentUser = computed(() => this.#authService.currentUser());
   selectedSeason = computed(() => this.#seasonService.selectedSeason);
   selectedDivision = computed(() => this.#divisionService.selectedDivision());
@@ -90,13 +92,15 @@ export class GameService {
   errorMessage = computed(() => setErrorMessage(this.error(), 'Game'));
   isLoading = this.gamesResource.isLoading;
   dailySchedule = signal<RegularGame[][]>([]);
-  constructor () {
+  selectedTeam = computed(() => this.#teamService.selectedTeam());
+  teamGames = signal<RegularGame[]>([]);
+  constructor() {
     // this._gameUrl = this.dataService.webUrl + '/api/gameschedule';
 
     effect(() => {
       const record = this.selectedRecord();
       if (record !== null) {
-        console.log(`Record updated: ${ record.scheduleGamesId }`);
+        console.log(`Record updated: ${record.scheduleGamesId}`);
         // Optionally trigger additional logic here
       }
     });
@@ -111,12 +115,16 @@ export class GameService {
     effect(() => {
       const selectedDivision = this.selectedDivision();
       if (selectedDivision) {
-        const test = this.filterGamesByDivision();
-        this.filteredGames.update(() => test);
-        const dailyGames = this.groupRegularGamesByDate(this.filteredGames());
+        const filteredGames = this.filterGamesByDivision();
+        this.divisionGames.update(() => filteredGames);
+        const dailyGames = this.groupRegularGamesByDate(this.divisionGames());
         this.dailySchedule.update(() => dailyGames);
         this.fetchStandingsByDivision();
       }
+    });
+    effect(() => {
+      console.log(this.selectedTeam());
+      this.filterGamesByTeam();
     });
   }
 
@@ -245,19 +253,20 @@ export class GameService {
   //   return games;
   // }
 
-  public filterGamesByTeam (currentTeam: Team | undefined): Observable<RegularGame[]> {
-    let teamId = currentTeam?.teamId;
-    this.gameStore.pipe(select(fromGames.getGames)).subscribe((g) => {
-      this.allGames = g;
-    });
+  public filterGamesByTeam(): Observable<RegularGame[]> {
+    if (!this.selectedTeam()) {
+      return of([]);
+    }
+    let teamId = this.selectedTeam()!.teamId;
+
     let games: RegularGame[] = [];
-    if (this.allGames) {
-      for (let i = 0; i < this.allGames.length; i++) {
+    if (this.seasonGamesSignal()) {
+      for (let i = 0; i < this.seasonGamesSignal()!.length; i++) {
         if (
-          this.allGames[i].visitingTeamId === teamId ||
-          this.allGames[i].homeTeamId === teamId
+          (this.seasonGamesSignal() as RegularGame[])[i].visitingTeamId === teamId ||
+          (this.seasonGamesSignal() as RegularGame[])[i].homeTeamId === teamId
         ) {
-          games.push(this.allGames[i]);
+          games.push((this.seasonGamesSignal() as RegularGame[])[i]);
         }
       }
     }
@@ -265,6 +274,7 @@ export class GameService {
       return this.compare(a.gameDate as Date, b.gameDate as Date, true);
     });
     console.log(games);
+    this.teamGames.update(() => games);
     return of(games);
   }
 
