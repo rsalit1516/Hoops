@@ -1,0 +1,24 @@
+<mat-card class="dashboard-card">
+  <mat-card-header class="">
+    <mat-card-title class=""
+      >{{ selectedDivision()?.divisionDescription }} Teams</mat-card-title
+    >
+  </mat-card-header>
+  <mat-card-content class="">
+    <div class="counter-wrapper">
+      <div class="counter">{{ teamCount }} Teams:</div>
+    </div>
+    <mat-list role="list" class="">
+      @for (team of divisionTeams(); track team.teamId) {
+      <mat-list-item
+        role="listitem"
+        (click)="setTeam(team)"
+        [class.selected]="team === selectedTeam"
+        class=""
+      >
+        {{ team.teamName }}
+      </mat-list-item>
+      }
+    </mat-list>
+  </mat-card-content>
+</mat-card>

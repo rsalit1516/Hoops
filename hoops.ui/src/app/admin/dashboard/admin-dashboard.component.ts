@@ -19,6 +19,7 @@ import { SeasonService } from '@app/services/season.service';
 import { GameService } from '@app/services/game.service';
 import { DivisionService } from '@app/services/division.service';
 import { DashboardDivisionsComponent } from '../components/dashboard-divisions/dashboard-divisions.component';
+import { DashboardTeamsComponent } from "../components/dashboard-teams/dashboard-teams.component";
 
 @Component({
   selector: 'csbc-admin-dashboard',
@@ -35,7 +36,8 @@ import { DashboardDivisionsComponent } from '../components/dashboard-divisions/d
     NgFor,
     NgForOf,
     AdminGamesListComponent,
-    DashboardDivisionsComponent
+    DashboardDivisionsComponent,
+    DashboardTeamsComponent
   ]
 })
 export class AdminDashboardComponent implements OnInit {
@@ -65,7 +67,7 @@ export class AdminDashboardComponent implements OnInit {
   divisionGames = computed(() => this.#gameService.divisionGames);
   seasonGameCount = computed(() => this.#gameService.seasonGamesSignal.length ?? 0);
   teamGames = this.#gameService.teamGames;
-  constructor () {}
+  constructor () { }
 
   ngOnInit () {
     // this.store.dispatch(new adminActions.LoadCurrentSeason());
@@ -75,22 +77,22 @@ export class AdminDashboardComponent implements OnInit {
   setStateSubscriptions () {
     // this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
     //   this.currentSeason = season as Season;
-      // this.store.dispatch(new gameActions.LoadDivisions());
+    // this.store.dispatch(new gameActions.LoadDivisions());
 
-      //   this.divisionCount = divisions.length;
-      //   if (divisions.length > 0) {
-      //     this.selectedDivision = divisions[0];
-      //   }
-      // });
-      // this.store.select(fromAdmin.getSeasonTeams).subscribe((teams) => {
-      //   this.teams = teams;
-      //   this.teamCount = teams === null ? 0 : teams.length;
-      // });
+    //   this.divisionCount = divisions.length;
+    //   if (divisions.length > 0) {
+    //     this.selectedDivision = divisions[0];
+    //   }
+    // });
+    // this.store.select(fromAdmin.getSeasonTeams).subscribe((teams) => {
+    //   this.teams = teams;
+    //   this.teamCount = teams === null ? 0 : teams.length;
+    // });
 
-      // this.store.select(fromAdmin.getSeasonGames).subscribe((games) => {
-      //   this.seasonGames = games;
-      //   this.seasonGameCount = games.length;
-      // });
+    // this.store.select(fromAdmin.getSeasonGames).subscribe((games) => {
+    //   this.seasonGames = games;
+    //   this.seasonGameCount = games.length;
+    // });
     // });
     // this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
     //   this.store.select(fromAdmin.getDivisionTeams).subscribe((teams) => {
@@ -110,20 +112,20 @@ export class AdminDashboardComponent implements OnInit {
     //   if (games !== null) {
     //     this.divisionGames = games;
     //   }
-      // if (games !== null) {
-      //   this.store.dispatch(new adminActions.SetFilteredGames(games));
-      // }
-      // this.store.dispatch(new adminActions.LoadTeamGames);
+    // if (games !== null) {
+    //   this.store.dispatch(new adminActions.SetFilteredGames(games));
+    // }
+    // this.store.dispatch(new adminActions.LoadTeamGames);
     // });
 
-  //   this.#gameService.filterGamesByTeam().subscribe((games) => {
-  //     // console.log(games);
-  //     if (games !== null) {
-  //       this.teamGames = games;
-  //       this.store.dispatch(new adminActions.SetFilteredGames(games));
-  //     }
-  //   });
-   }
+    //   this.#gameService.filterGamesByTeam().subscribe((games) => {
+    //     // console.log(games);
+    //     if (games !== null) {
+    //       this.teamGames = games;
+    //       this.store.dispatch(new adminActions.SetFilteredGames(games));
+    //     }
+    //   });
+  }
   goToDivision (division: Division) {
     // this.store.dispatch(new adminActions.SetSelectedDivision(division));
     this.selectedDivision = division;

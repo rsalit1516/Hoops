@@ -17,8 +17,7 @@ interface FeatureFlags {
 })
 export class FeatureFlagService {
   private featureFlags: FeatureFlags = FEATURE_FLAGS
-  isFeatureEnabled(feature: keyof FeatureFlags): boolean {
-    console.log('FeatureFlagService.isFeatureEnabled', feature, this.featureFlags[feature]);
+  isFeatureEnabled (feature: keyof FeatureFlags): boolean {
     return this.featureFlags[feature];
   }
 }

@@ -94,13 +94,13 @@ export class GameService {
   dailySchedule = signal<RegularGame[][]>([]);
   selectedTeam = computed(() => this.#teamService.selectedTeam());
   teamGames = signal<RegularGame[]>([]);
-  constructor() {
+  constructor () {
     // this._gameUrl = this.dataService.webUrl + '/api/gameschedule';
 
     effect(() => {
       const record = this.selectedRecord();
       if (record !== null) {
-        console.log(`Record updated: ${record.scheduleGamesId}`);
+        console.log(`Record updated: ${ record.scheduleGamesId }`);
         // Optionally trigger additional logic here
       }
     });
@@ -253,7 +253,7 @@ export class GameService {
   //   return games;
   // }
 
-  public filterGamesByTeam(): Observable<RegularGame[]> {
+  public filterGamesByTeam (): Observable<RegularGame[]> {
     if (!this.selectedTeam()) {
       return of([]);
     }
@@ -273,7 +273,7 @@ export class GameService {
     let sortedDate = games.sort((a, b) => {
       return this.compare(a.gameDate as Date, b.gameDate as Date, true);
     });
-    console.log(games);
+    //console.log(games);
     this.teamGames.update(() => games);
     return of(games);
   }

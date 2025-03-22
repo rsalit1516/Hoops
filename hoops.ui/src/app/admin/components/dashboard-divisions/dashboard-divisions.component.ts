@@ -7,7 +7,7 @@ import { DivisionService } from '@app/services/division.service';
 
 @Component({
   selector: 'csbc-dashboard-divisions',
-  imports: [ MatCardModule,
+  imports: [MatCardModule,
     MatListModule,
   ],
   templateUrl: './dashboard-divisions.component.html',
@@ -15,13 +15,13 @@ import { DivisionService } from '@app/services/division.service';
     '../../../shared/scss/cards.scss',
     '../../dashboard/admin-dashboard.component.scss',
     '../../admin.component.scss'
-  ]
+  ],
 })
 export class DashboardDivisionsComponent {
   readonly #divisionService = inject(DivisionService);
   readonly router = inject(Router);
   divisionCount = computed(() => (this.#divisionService.seasonDivisions()?.length ?? 0));
-    seasonDivisions = this.#divisionService.seasonDivisions;
+  seasonDivisions = this.#divisionService.seasonDivisions;
   selectedDivision: Division | undefined;
 
   goToDivision (division: Division) {
