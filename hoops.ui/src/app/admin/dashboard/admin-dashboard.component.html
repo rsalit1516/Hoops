@@ -8,23 +8,7 @@
 </div>
 <div class="flex flex-wrap -mx-2">
   <div class="w-3/12 px-2">
-    <mat-card class="dashboard-card">
-      <mat-card-header class="">
-        <mat-card-title class="">Divisions</mat-card-title>
-      </mat-card-header>
-      <mat-card-content class="">
-        <div class="counter-wrapper">
-          <div class="counter">{{ divisionCount }} divisions</div>
-        </div>
-        <mat-list role="list" class="">
-          @for (division of divisions; track division.divisionId) {
-          <mat-list-item role="listitem" [class.selected]="division === selectedDivision" (click)="goToDivision(division)" class="">{{
-            division.divisionDescription
-          }}</mat-list-item>
-        }
-          </mat-list>
-      </mat-card-content>
-    </mat-card>
+<csbc-dashboard-divisions/>
   </div>
 
   <div class="w-3/12 px-2">
@@ -53,13 +37,13 @@
         <mat-card-subtitle class="">
         <div class="counter-wrapper">
           <div class="counter">
-            {{ seasonGameCount() }} {{ currentSeason.description }} games
+            {{ seasonGameCount() }} {{ selectedSeason().description }} games
           </div>
           <div class="counter">
             <!-- <div>{{divisionGames.length}} division games</div> -->
           </div>
           <div class="counter">
-            {{ teamGames.length }} {{ selectedTeam?.teamName }} games
+            {{ teamGames().length }} {{ selectedTeam?.teamName }} games
           </div>
         </div>
         </mat-card-subtitle>

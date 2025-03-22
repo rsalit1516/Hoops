@@ -28,14 +28,14 @@ export class TeamService {
   seasonId: number | undefined; // = 2192; // TO DO make this is passed in!
   selectedSeason = computed(() => this.#seasonService.selectedSeason);
   selectedDivision = computed(() => this.#divisionService.selectedDivision());
-  currentSeason$ = this.#store.select(fromGames.getCurrentSeason).subscribe({
-    next: (season) => {
-      // console.log(season);
-      if (season !== undefined && season !== null) {
-        this.seasonId = season.seasonId;
-      }
-    },
-  });
+  // currentSeason$ = this.#store.select(fromGames.getCurrentSeason).subscribe({
+  //   next: (season) => {
+  //     // console.log(season);
+  //     if (season !== undefined && season !== null) {
+  //       this.seasonId = season.seasonId;
+  //     }
+  //   },
+  // });
   seasonTeams = signal<Team[] | undefined>(undefined);
   divisionTeams = signal<Team[]>([]);
   teams!: Team[];

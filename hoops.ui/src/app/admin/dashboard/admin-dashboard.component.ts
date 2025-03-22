@@ -18,6 +18,7 @@ import { SeasonSelectComponent } from '../admin-shared/season-select/season-sele
 import { SeasonService } from '@app/services/season.service';
 import { GameService } from '@app/services/game.service';
 import { DivisionService } from '@app/services/division.service';
+import { DashboardDivisionsComponent } from '../components/dashboard-divisions/dashboard-divisions.component';
 
 @Component({
   selector: 'csbc-admin-dashboard',
@@ -34,6 +35,7 @@ import { DivisionService } from '@app/services/division.service';
     NgFor,
     NgForOf,
     AdminGamesListComponent,
+    DashboardDivisionsComponent
   ]
 })
 export class AdminDashboardComponent implements OnInit {
@@ -55,13 +57,14 @@ export class AdminDashboardComponent implements OnInit {
   filteredGames!: RegularGame[];
   // divisionGames!: RegularGame[];
   divisionCount = computed(() => (this.#divisionService.seasonDivisions()?.length ?? 0));
-  teamGames!: RegularGame[];
+
   selectedTeam!: Team | null;
   selectedSeason = computed(() => this.#seasonService.selectedSeason);
   seasonDivisions = computed(() => this.#divisionService.seasonDivisions);
   divisionTeams = computed(() => this.#teamService.divisionTeams);
   divisionGames = computed(() => this.#gameService.divisionGames);
-  seasonGameCount = computed(() => this.#gameService.seasonGamesSignal.length);
+  seasonGameCount = computed(() => this.#gameService.seasonGamesSignal.length ?? 0);
+  teamGames = this.#gameService.teamGames;
   constructor () {}
 
   ngOnInit () {
@@ -122,7 +125,7 @@ export class AdminDashboardComponent implements OnInit {
   //   });
    }
   goToDivision (division: Division) {
-    this.store.dispatch(new adminActions.SetSelectedDivision(division));
+    // this.store.dispatch(new adminActions.SetSelectedDivision(division));
     this.selectedDivision = division;
     // this.router.navigate(['/admin/division']);
   }

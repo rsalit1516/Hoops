@@ -237,28 +237,28 @@ export class GameEffects {
 
   // tslint:disable-next-line:member-ordering
 
-  loadFilteredGamesByTeam$: Observable<Action> = createEffect(() => this.actions$.pipe(
-    ofType(gameActions.GameActionTypes.LoadFilteredGamesByTeam),
-    concatMap((action) =>
-      of(action).pipe(
-        withLatestFrom(this.store.pipe(select(getCurrentTeam)))
-      )
-    ),
-    tap(([, t]) => {
-      if (t) {
-        // console.log(t);
-        this.team = t;
-      } else {
-        this.team = undefined;
-      }
-    }),
-    switchMap(() =>
-      this.gameService.filterGamesByTeam(this.team).pipe(
-        map((games) => new gameActions.LoadFilteredGamesByTeamSuccess(games)),
-        // tap(response => console.log(response)),
-        catchError((err) => of(new gameActions.LoadFilteredGamesByTeamFail(err)))
-      )
-    )
-  ));
+  // loadFilteredGamesByTeam$: Observable<Action> = createEffect(() => this.actions$.pipe(
+  //   ofType(gameActions.GameActionTypes.LoadFilteredGamesByTeam),
+  //   concatMap((action) =>
+  //     of(action).pipe(
+  //       withLatestFrom(this.store.pipe(select(getCurrentTeam)))
+  //     )
+  //   ),
+  //   tap(([, t]) => {
+  //     if (t) {
+  //       // console.log(t);
+  //       this.team = t;
+  //     } else {
+  //       this.team = undefined;
+  //     }
+  //   }),
+  //   switchMap(() =>
+  //     this.gameService.filterGamesByTeam(this.team).pipe(
+  //       map((games) => new gameActions.LoadFilteredGamesByTeamSuccess(games)),
+  //       // tap(response => console.log(response)),
+  //       catchError((err) => of(new gameActions.LoadFilteredGamesByTeamFail(err)))
+  //     )
+  //   )
+  // ));
 
 }

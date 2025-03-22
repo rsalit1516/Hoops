@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, OnChanges, EventEmitter, Output } from '@angular/core';
+import { Component, inject, OnInit, OnChanges, EventEmitter, Output, computed } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import * as fromAdmin from '../../state';
@@ -11,6 +11,7 @@ import { AsyncPipe, CommonModule } from '@angular/common';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { SeasonService } from '@app/services/season.service';
 
 @Component({
   selector: 'season-select',
@@ -27,43 +28,46 @@ import { MatFormFieldModule } from '@angular/material/form-field';
   ]
 })
 export class SeasonSelectComponent implements OnInit {
-  #seasonService = inject(AdminSeasonService);
+  #AdminSeasonService = inject(AdminSeasonService);
+  readonly #seasonService = inject(SeasonService);
   seasons$!: Observable<Season[]>;
   // selectForm!: FormGroup;
   selected: Season | undefined;
   seasonComponent: UntypedFormControl | null | undefined;
-  seasons: Season[] | undefined;
-  selectedSeason: number | null = null;
+  // seasons: Season[] | undefined;
+  // selectedSeason: number | null = null;
   // selectedSeason$: Observable<Season> | undefined;
   defaultSeason: Season | undefined;
   // selectForm!: UntypedFormGroup;
   selectedValue: number | undefined;
-  
+  seasons = this.#seasonService.seasons;
+  selectedSeason = computed(() => this.#seasonService.selectedSeason);
+
 
   @Output() seasonChanged = new EventEmitter<Season>();
 
   constructor (
-    private store: Store<fromAdmin.State>
+
   ) {
-    this.seasons$ = this.store.select(fromAdmin.getSeasons);
+    // this.seasons$ = this.store.select(fromAdmin.getSeasons);
   }
 
   ngOnInit () {
-    this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
-      if (season.seasonId !== undefined && season.seasonId !== this.selectedSeason) {
-        this.#seasonService.updateSelectedSeason(season);
-        this.selectedSeason = season.seasonId;
-      }
-    });
-  }
+  //   this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
+  //     if (season.seasonId !== undefined && season.seasonId !== this.selectedSeason) {
+  //       this.#seasonService.updateSelectedSeason(season);
+  //       this.selectedSeason = season.seasonId;
+  //     }
+  //   });
+   }
   changeSeason (season: Season) {
     console.log('Season from changeSeason = ', season);
-    this.#seasonService.updateSelectedSeason(season);
-    this.store.dispatch(new adminActions.SetSelectedSeason(season));
+    this.#seasonService.selectSeason(season);
+    // this.store.dispatch(new adminActions.SetSelectedSeason(season));
   }
   onChange (value: Season) {
-    this.selectedSeason = value.seasonId!;
-    this.changeSeason(value);
+    this.#seasonService.selectSeason(value);
+    // this.changeSeason(value);
     console.log('Season from onChange = ', value);
     this.seasonChanged.emit(value); // Emit the selected
     //  season

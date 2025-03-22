@@ -70,15 +70,15 @@ readonly #authService = inject(AuthService);
     return of(gamesSortedByDate);
   }
 
-  private filteredGames$ = this.filterGamesByDivision();
-  private gamesResource = rxResource({
-    loader: () => this.filteredGames$
-  });
+  // private filteredGames$ = this.filterGamesByDivision();
+  // private gamesResource = rxResource({
+  //   loader: () => this.filteredGames$
+  // });
 
   // filteredGames = computed(() => this.gamesResource.value() ?? [] as Game[]);
-  error = computed(() => this.gamesResource.error() as HttpErrorResponse);
-  errorMessage = computed(() => setErrorMessage(this.error(), 'Game'));
-  isLoading = this.gamesResource.isLoading;
+  // error = computed(() => this.gamesResource.error() as HttpErrorResponse);
+  // errorMessage = computed(() => setErrorMessage(this.error(), 'Game'));
+  // isLoading = this.gamesResource.isLoading;
 
   filterGamesByTeam (team: number): Observable<RegularGame[]> {
     let games: RegularGame[] = [];
@@ -135,7 +135,7 @@ readonly #authService = inject(AuthService);
   }
 
   reloadGames () {
-    this.gamesResource.reload();
+    // this.gamesResource.reload();
     //this.store.dispatch(gameActions.loadGames());
   }
 }

@@ -1,0 +1,18 @@
+
+<mat-card class="dashboard-card">
+  <mat-card-header class="">
+    <mat-card-title class="">Divisions</mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="">
+    <div class="counter-wrapper">
+      <div class="counter">{{ divisionCount() }} divisions</div>
+    </div>
+    <mat-list role="list" class="">
+      @for (division of seasonDivisions(); track division.divisionId) {
+      <mat-list-item role="listitem" [class.selected]="division === this.selectedDivision" (click)="goToDivision(division)" class="">{{
+        division.divisionDescription
+      }}</mat-list-item>
+    }
+      </mat-list>
+  </mat-card-content>
+</mat-card>
