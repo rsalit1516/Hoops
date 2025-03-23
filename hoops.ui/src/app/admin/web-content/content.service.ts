@@ -37,6 +37,7 @@ export class ContentService {
   standardNotice = 1;
   activeWebContent = signal<WebContent[]>([]);
   allWebContent = signal<WebContent[]>([]);
+  isActiveContent = signal<boolean>(true);
   public get selectedContent(): any {
     return this._selectedContent;
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
@@ -11,6 +11,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
+import { ContentService } from '../content.service';
 
 @Component({
     selector: 'content-list-toolbar',
@@ -26,6 +27,7 @@ import { CommonModule } from '@angular/common';
     MatCheckboxModule]
 })
 export class ContentListToolbarComponent implements OnInit {
+  readonly #contentService = inject(ContentService);
   checked = true;
   isActiveContent$ = this.store.select(fromContent.getIsActiveOnly);
   // filterForm = this.fb.group({
@@ -43,10 +45,10 @@ export class ContentListToolbarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.isActiveContent$.subscribe(isActiveContent => {
-      console.log(isActiveContent);
-      this.store.dispatch(new contentActions.SetActiveContent());
-    });
+    // this.isActiveContent$.subscribe(isActiveContent => {
+    //   console.log(isActiveContent);
+    //   this.store.dispatch(new contentActions.SetActiveContent());
+    // });
   }
 
   addContent() {
@@ -58,6 +60,7 @@ export class ContentListToolbarComponent implements OnInit {
     // const isActive = this.filterForm.value.activeContent === true;
     this.isActive.set(checked);
     console.log(checked);
-    this.store.dispatch(new contentActions.SetIsActiveOnly(checked));
+this.#contentService.isActiveContent.set(checked);
+    // this.store.dispatch(new contentActions.SetIsActiveOnly(checked));
   }
 }

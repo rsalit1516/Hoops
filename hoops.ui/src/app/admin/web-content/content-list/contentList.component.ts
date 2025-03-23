@@ -35,16 +35,17 @@ import { ContentService } from '../content.service';
     MatSortModule,
     MatPaginatorModule
   ],
-  providers: [MatSort, MatPaginator],
+  providers: [ MatSort, MatPaginator ],
 })
 export class ContentListComponent implements OnInit, AfterViewInit {
   router = inject(Router);
   store = inject(Store<fromContent.State>);
-readonly #contentService = inject(ContentService);
+
+  readonly #contentService = inject(ContentService);
   readonly selectedContent = output<Content>();
   @ViewChild('contentPaginator') paginator: MatPaginator = inject(MatPaginator);
   @ViewChild(MatSort) sort: MatSort = inject(MatSort);
-allWebContent = computed(() => this.#contentService.allWebContent);
+  allWebContent = computed(() => this.#contentService.allWebContent);
   showFirstLastButtons = true;
   pageSize = 10;
   contents$!: Observable<WebContent[]>;
@@ -64,9 +65,15 @@ allWebContent = computed(() => this.#contentService.allWebContent);
 
   constructor() {
     effect(() => {
-      this.data = this.#contentService.allWebContent();
+      if (this.#contentService.isActiveContent()) {
+        this.data = this.#contentService.activeWebContent();
+      }
+      else {
+        this.data = this.#contentService.allWebContent();
+      }
+      this.dataSource.data = this.data;
       this.refreshData();
-      console.log(this.data); 
+      console.log(this.data);
     });
   }
 
@@ -87,33 +94,33 @@ allWebContent = computed(() => this.#contentService.allWebContent);
       isActive ? this.applyFilter() : this.clearFilter();
     });
   }
-  ngAfterViewInit () {
+  ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 
-  refreshData () {
+  refreshData() {
     // this.store.select(fromContent.getContentList).subscribe((data) => {
-      // this.data = data;
-      this.dataSource._updateChangeSubscription();
-      this.dataSource.disconnect()
-      this.dataSource.connect();
+    // this.data = data;
+    this.dataSource._updateChangeSubscription();
+    this.dataSource.disconnect()
+    this.dataSource.connect();
 
   }
   editContent(content: Content) {
     this.store.dispatch(new contentActions.SetSelectedContent(content));
-    this.router.navigate(['./admin/content/edit']);
+    this.router.navigate([ './admin/content/edit' ]);
   }
   cloneContent(content: Content) {
     // this.store.dispatch(new contentActions.SetClonedContent(content));
     content.webContentId = undefined;
     this.store.dispatch(new contentActions.SetSelectedContent(content));
 
-    this.router.navigate(['./admin/content/edit']);
+    this.router.navigate([ './admin/content/edit' ]);
   }
 
   addContent(): void {
-    this.router.navigate(['./admin/content/edit']);
+    this.router.navigate([ './admin/content/edit' ]);
   }
   applyFilter(): void {
     this.dataSource.filter = 'apply';
