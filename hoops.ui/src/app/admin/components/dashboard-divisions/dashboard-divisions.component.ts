@@ -26,7 +26,8 @@ export class DashboardDivisionsComponent {
 
   goToDivision (division: Division) {
     // this.store.dispatch(new adminActions.SetSelectedDivision(division));
+  this.#divisionService.updateSelectedDivision(division);
     this.selectedDivision = division;
-    this.router.navigate(['/admin/division']);
+//    this.router.navigate(['/admin/division']);
   }
 }

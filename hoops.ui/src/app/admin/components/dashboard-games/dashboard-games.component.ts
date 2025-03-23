@@ -20,4 +20,6 @@ export class DashboardGamesComponent {
   readonly #gameService = inject(GameService);
   teamGames = this.#gameService.teamGames;
   selectedTeam = this.#gameService.selectedTeam;
+  seasonGamesCount = this.#gameService.seasonGamesSignal.length;
+  selectedSeason = this.#gameService.selectedSeason;
 }

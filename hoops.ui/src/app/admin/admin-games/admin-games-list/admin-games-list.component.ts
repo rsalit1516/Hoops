@@ -13,6 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { AdminGameService } from '../adminGame.service';
+import { GameService } from '@app/services/game.service';
 @Component({
   selector: 'csbc-admin-games-list',
   imports: [CommonModule, MatIconModule, MatTableModule,
@@ -27,7 +28,9 @@ import { AdminGameService } from '../adminGame.service';
   providers: [MatSort, MatPaginator]
 })
 export class AdminGamesListComponent implements OnInit, OnChanges, AfterViewInit {
-  gameService = inject(AdminGameService);
+  adminGameService = inject(AdminGameService);
+  gameService = inject(GameService);
+  private store = inject(Store<fromAdmin.State>);
   readonly showScores = input<boolean>(false);
 
   dialog = inject(MatDialog);
@@ -35,8 +38,6 @@ export class AdminGamesListComponent implements OnInit, OnChanges, AfterViewInit
   games!: RegularGame[];
   games$: Observable<RegularGame[]> | undefined;
   pageSizeOptions = [5, 10, 25]
-
-  displayedColumns!: string[];
   flexMediaWatcher: any;
   currentScreenWidth: any;
   title = 'Game List';
@@ -47,24 +48,24 @@ export class AdminGamesListComponent implements OnInit, OnChanges, AfterViewInit
 
   @ViewChild('householdPaginator') paginator: MatPaginator = inject(MatPaginator);
   @ViewChild(MatSort) sort: MatSort = inject(MatSort);
-  filteredGames = this.gameService.filteredGames;
-
+  filteredGames = this.gameService.teamGames;
+  displayedColumns = [
+    'gameDate',
+    'gameTime',
+    'locationName',
+    'homeTeamName',
+    'visitingTeamName',
+    'homeTeamScore',
+    'visitingTeamScore',
+  ];
   constructor (
-    private store: Store<fromAdmin.State>) {
+) {
     this.setupTable();
-    this.displayedColumns = [
-      'gameDate',
-      'gameTime',
-      'locationName',
-      'homeTeamName',
-      'visitingTeamName',
-      'homeTeamScore',
-      'visitingTeamScore',
-    ];
-    effect(() => {
-      console.log("list component effect");
-      this.dataSource = new MatTableDataSource(this.gameService.filteredGames()!);
-    })
+
+    // effect(() => {
+    //   console.log("list component effect");
+    //   this.dataSource = new MatTableDataSource(this.gameService.filteredGames()!);
+    // })
     //  this.store.select(fromAdmin.getFilteredGames).subscribe((games) => {
     // this.dataSource = new MatTableDataSource(this.filteredGames());
     // if (this.dataSource.paginator) {
@@ -78,7 +79,7 @@ export class AdminGamesListComponent implements OnInit, OnChanges, AfterViewInit
     // this.store.select(fromAdmin.getFilteredGames).subscribe((games) => {
     // console.log(games);
     // this.games = games;
-    // this.dataSource = new MatTableDataSource<Game>(games);
+    this.dataSource = new MatTableDataSource<RegularGame>(this.filteredGames());
     // if (this.dataSource.paginator) {
     //   this.dataSource.paginator.pageSize = 10;
     // }

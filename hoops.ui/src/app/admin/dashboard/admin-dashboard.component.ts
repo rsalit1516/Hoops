@@ -20,6 +20,7 @@ import { GameService } from '@app/services/game.service';
 import { DivisionService } from '@app/services/division.service';
 import { DashboardDivisionsComponent } from '../components/dashboard-divisions/dashboard-divisions.component';
 import { DashboardTeamsComponent } from "../components/dashboard-teams/dashboard-teams.component";
+import { DashboardGamesComponent } from '../components/dashboard-games/dashboard-games.component';
 
 @Component({
   selector: 'csbc-admin-dashboard',
@@ -37,7 +38,8 @@ import { DashboardTeamsComponent } from "../components/dashboard-teams/dashboard
     NgForOf,
     AdminGamesListComponent,
     DashboardDivisionsComponent,
-    DashboardTeamsComponent
+    DashboardTeamsComponent,
+    DashboardGamesComponent
   ]
 })
 export class AdminDashboardComponent implements OnInit {
@@ -67,14 +69,14 @@ export class AdminDashboardComponent implements OnInit {
   divisionGames = computed(() => this.#gameService.divisionGames);
   seasonGameCount = computed(() => this.#gameService.seasonGamesSignal.length ?? 0);
   teamGames = this.#gameService.teamGames;
-  constructor () { }
+  constructor() { }
 
-  ngOnInit () {
+  ngOnInit() {
     // this.store.dispatch(new adminActions.LoadCurrentSeason());
     this.setStateSubscriptions();
     // this.router.navigate(['/admin/content/list']);
   }
-  setStateSubscriptions () {
+  setStateSubscriptions() {
     // this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
     //   this.currentSeason = season as Season;
     // this.store.dispatch(new gameActions.LoadDivisions());
@@ -126,12 +128,12 @@ export class AdminDashboardComponent implements OnInit {
     //     }
     //   });
   }
-  goToDivision (division: Division) {
+  goToDivision(division: Division) {
     // this.store.dispatch(new adminActions.SetSelectedDivision(division));
     this.selectedDivision = division;
     // this.router.navigate(['/admin/division']);
   }
-  setTeam (team: Team) {
+  setTeam(team: Team) {
     this.store.dispatch(new adminActions.SetSelectedTeam(team));
 
     // this.router.navigate(['/admin/division']);
