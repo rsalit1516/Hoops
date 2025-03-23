@@ -40,7 +40,7 @@ export class HouseholdListComponent implements OnInit, OnChanges, AfterViewInit 
 
   /* injects */
   private householdService = inject(HouseholdService);
-  #router = inject(Router);
+  // #router = inject(Router);
 
   @ViewChild('householdPaginator') paginator: MatPaginator = inject(MatPaginator);
   @ViewChild(MatSort) sort: MatSort = inject(MatSort);

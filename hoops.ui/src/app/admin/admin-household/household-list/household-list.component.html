@@ -1,12 +1,5 @@
-<!-- <mat-card>
-  <mat-card-header>
-    <mat-card-title>
-      <csbc-section-title [title]="pageTitle"></csbc-section-title>
-    </mat-card-title>
-  </mat-card-header>
-  <mat-card-content> -->
-<div class="container">
 
+<div class="container">
     <div class="table-wrapper">
       <table mat-table id="grd" matsort [dataSource]="dataSource">
         <ng-container matColumnDef="houseId">
@@ -49,8 +42,8 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns" matHeaderRowDefSticky="true"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="getRecord(row)"></tr>
       </table>
-      <mat-paginator #householdPaginator 
-      aria-label="Select page of users" 
+      <mat-paginator #householdPaginator
+      aria-label="Select page of users"
       [pageSizeOptions]="[5, 10, 25, 100]"
         [pageSize]="pageSize">
       </mat-paginator>
@@ -60,5 +53,5 @@
 
   </mat-card-actions>
 </mat-card> -->
-  
+
 </div>

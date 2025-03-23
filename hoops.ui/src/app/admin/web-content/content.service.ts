@@ -87,7 +87,7 @@ export class ContentService {
       `${ Constants.getActiveWebContentUrl }`)
       .subscribe((data) => {
         this.activeWebContent.update(() => data);
-        console.log(this.activeWebContent());
+       // console.log(this.activeWebContent());
       });
   }
   getActiveContents (): Observable<WebContent[]> {

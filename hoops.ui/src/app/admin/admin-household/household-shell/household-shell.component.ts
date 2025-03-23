@@ -79,14 +79,14 @@ export class HouseholdShellComponent implements AfterViewInit {
         this.firstPanel.expanded = true;
       }
     });
-    
+
   }
   onSearch(criteria: householdSearchCriteria) {
     console.log(criteria);
     this.searchCriteria.set(criteria);
     this.householdService.getResults(criteria).subscribe(data => {
       // console.log('Results', data);
-      this.results.set(data);
+      this.results.update(() => data);
     });
   }
   selectRecord(record: Household) {
