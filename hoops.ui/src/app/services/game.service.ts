@@ -70,7 +70,6 @@ export class GameService {
 
   seasonGamesSignal = signal<RegularGame[] | null>(null);
 
-
   public currentTeamId: string | undefined;
 
   // Signals managed by the service
@@ -123,7 +122,7 @@ export class GameService {
       }
     });
     effect(() => {
-      console.log(this.selectedTeam());
+//      console.log(this.selectedTeam());
       this.filterGamesByTeam();
     });
   }

@@ -6,7 +6,9 @@ import {
   signal,
   ChangeDetectionStrategy,
   inject,
-  viewChildren
+  viewChildren,
+  computed,
+  effect
 } from '@angular/core';
 import {
   Validators,
@@ -30,7 +32,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatOptionModule } from '@angular/material/core';
+import { MatOptionModule, NativeDateAdapter, provideNativeDateAdapter } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialog } from '@angular/material/dialog';
@@ -65,12 +67,13 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
     MatSelectModule,
     ConfirmDialogComponent,
   ],
-  providers: [ ContentService ]
+  providers: [
+    provideNativeDateAdapter(), ]
 })
 export class ContentEditComponent implements OnInit {
   readonly store = inject(Store<fromContent.State>);
   private fb = inject(FormBuilder);
-  contentService = inject(ContentService);
+  readonly #contentService = inject(ContentService);
   route = inject(ActivatedRoute);
   router = inject(Router);
   dialog = inject(MatDialog);
@@ -102,8 +105,8 @@ export class ContentEditComponent implements OnInit {
   pageTitle: string | undefined;
   hideId: boolean | undefined;
   private baseUrl = 'api/webcontent';
-  selectedRecord$ = this.contentService.selectedContent$;
-  selectedContent!: Content;
+  selectedRecord$ = this.#contentService.selectedContent$;
+  selectedContent = computed(() => this.#contentService.selectedContent);
   contentTypes: WebContentType[] = [
     {
       webContentTypeId: 1,
@@ -126,10 +129,15 @@ export class ContentEditComponent implements OnInit {
   floatLabelType: FloatLabelType = 'auto';
   protected readonly value = signal('');
 
-  constructor (
+  constructor(){
+    effect(() => {
+      if (this.selectedContent()) {
+        this.onContentRetrieved();
+      }
+    });
     // @Inject(FormBuilder) private fb: FormBuilder,
 
-  ) { }
+   }
 
   ngOnInit (): void {
     this.pageTitle = 'Edit Web Content Messages';
@@ -138,13 +146,13 @@ export class ContentEditComponent implements OnInit {
     // this.record$.pipe(takeUntil(this.destroy$)).subscribe((record) => {
     //   if (record) { this.recordForm.patchValue(record); }
     // });
-    this.getContent();
+    // this.getContent();
   }
 
   update (): void {
     this.contentForm.patchValue({
-      title: this.selectedContent.title,
-      subTitle: this.selectedContent.subTitle,
+      title: this.content.title,
+      subTitle: this.content.subTitle,
       body: this.content.body,
       dateAndTime: this.content.dateAndTime,
       location: this.content.location,
@@ -159,41 +167,42 @@ export class ContentEditComponent implements OnInit {
   formatText(text: string): string {
     return text.replace(/\n/g, '<br>');
   }
-  getContent (): void {
-    this.store
-      .pipe(select(fromContent.getSelectedContent))
-      .subscribe((content) => {
-        if (content !== null) {
-          this.selectedContent = content;
-          this.onContentRetrieved(content);
-        }
-      });
-  }
-  onContentRetrieved (content: Content): void {
+  // getContent (): void {
+  //   this.store
+  //     .pipe(select(fromContent.getSelectedContent))
+  //     .subscribe((content) => {
+  //       if (content !== null) {
+  //         this.selectedContent = content;
+  //         this.onContentRetrieved(content);
+  //       }
+  //     });
+  // }
+  onContentRetrieved(): void {
+    const content = this.selectedContent()!;
     if (this.contentForm) {
       this.contentForm.reset();
     }
 
-    if (content.webContentId === 0) {
+    if (content()!.webContentId! === 0) {
       this.pageTitle = 'Add Notice';
     } else {
-      this.pageTitle = `Edit Notice: ${ content.title }`;
+      this.pageTitle = `Edit Notice: ${ content()!.title }`;
     }
 
     // // Update the data on the form
     this.contentForm.patchValue({
-      title: content.title,
-      subTitle: content.subTitle,
-      body: content.body,
-      dateAndTime: content.dateAndTime,
-      location: content.location,
-      expirationDate: content.expirationDate,
-      webContentId: content.webContentId,
-      contentSequence: content.contentSequence,
-      webContentTypeControl: content.webContentTypeId,
+      title: content()!.title,
+      subTitle: content()!.subTitle,
+      body: content()!.body,
+      dateAndTime: content()!.dateAndTime,
+      location: content()!.location,
+      expirationDate: content()!.expirationDate,
+      webContentId: content()!.webContentId,
+      contentSequence: content()!.contentSequence,
+      webContentTypeControl: content()!.webContentTypeId,
     });
-    this.selected = content.webContentType;
-    console.log(this.selected);
+    this.selected = content()!.webContentType;
+    // console.log(this.selected);
   }
   saveContent () {
     console.log(this.contentForm.value);
@@ -215,7 +224,7 @@ export class ContentEditComponent implements OnInit {
       content.contentSequence = form.contentSequence!;
       content.companyId = Constants.COMPANYID;
       content.webContentTypeId = form.webContentTypeControl!;
-      this.contentService.saveContent(content);
+      this.#contentService.saveContent(content);
       this.store.dispatch(new contentActions.LoadAdminContent());
       this.router.navigate([ '/admin/content' ]);
     }
@@ -260,7 +269,7 @@ export class ContentEditComponent implements OnInit {
   deleteRecord (): void {
     console.log(this.contentForm.get('webContentId')!.value);
     if (this.contentForm.get('webContentId')!.value !== 0) {
-      this.contentService.deleteContent(
+      this.#contentService.deleteContent(
         this.contentForm.get('webContentId')!.value!
       );
       // this.onSaveComplete();

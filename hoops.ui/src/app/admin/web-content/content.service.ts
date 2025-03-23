@@ -32,20 +32,25 @@ export class ContentService {
   readonly data = inject(DataService);
   readonly store = inject(Store<fromContent.State>);
 
-  private _selectedContent: any;
+  // private _selectedContent: any;
   selectedContent$!: Observable<any>;
   standardNotice = 1;
   activeWebContent = signal<WebContent[]>([]);
   allWebContent = signal<WebContent[]>([]);
   isActiveContent = signal<boolean>(true);
-  public get selectedContent(): any {
-    return this._selectedContent;
-  }
-  public set selectedContent (value: any) {
-    this._selectedContent = value;
-    this.selectedContent$ = of(value);
-    // console.log(value);
-  }
+  // public get selectedContent(): any {
+  //   return this._selectedContent;
+  // }
+  selectedContent = signal<WebContent | undefined>(undefined);
+
+  // public setSelectedContent(value: any): void {
+  //   this.selectedContent.set(value);
+  //   // console.log(value);
+  // }
+
+  // public getSelectedContent(): any {
+  //   return this.selectedContent();
+  // }
   content$ = this.http.get<WebContent[]>(this.data.getContentUrl).pipe(
     // tap((data) => console.log('All: ' + JSON.stringify(data))),
     shareReplay(1),

@@ -59,12 +59,7 @@ export class HomeComponent implements OnInit {
   meetingNoticeClass = 'col-sm-0 col-xs-0';
   announcementInfo: WebContent[] | undefined = [];
 
-  constructor () {
-    effect(() => {
-      console.log(this.activeWebContent);
-      //      this.announcementInfo = this.activeWebContent;
-    });
-  }
+  constructor() { }
 
   ngOnInit (): void {
     this.setImageClass();

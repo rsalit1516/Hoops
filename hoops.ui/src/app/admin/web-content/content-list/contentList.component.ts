@@ -90,9 +90,9 @@ export class ContentListComponent implements OnInit, AfterViewInit {
       // console.log(`Filtering ${data.expirationDate}: ${result}`);
       return result;
     };
-    this.store.select(fromContent.getIsActiveOnly).subscribe((isActive) => {
-      isActive ? this.applyFilter() : this.clearFilter();
-    });
+    // this.store.select(fromContent.getIsActiveOnly).subscribe((isActive) => {
+    //   isActive ? this.applyFilter() : this.clearFilter();
+    // });
   }
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -107,8 +107,9 @@ export class ContentListComponent implements OnInit, AfterViewInit {
     this.dataSource.connect();
 
   }
-  editContent(content: Content) {
-    this.store.dispatch(new contentActions.SetSelectedContent(content));
+  editContent(content: WebContent) {
+    // this.store.dispatch(new contentActions.SetSelectedContent(content));
+    this.#contentService.selectedContent.update(() => content);
     this.router.navigate([ './admin/content/edit' ]);
   }
   cloneContent(content: Content) {

@@ -58,8 +58,8 @@ export class AdminShellComponent implements OnInit {
   divisionService = inject(DivisionService);
   // seasons$: Observable<Season[]>;
   //selectedSeason = signal<Season | undefined>(undefined);
-  seasons = toSignal(this.store.select(fromAdmin.getSeasons));
-  selectedSeason = toSignal(this.store.select(fromAdmin.getSelectedSeason));
+  // seasons = toSignal(this.store.select(fromAdmin.getSeasons));
+  // selectedSeason = toSignal(this.store.select(fromAdmin.getSelectedSeason));
 
   constructor () {
     this.store.dispatch(new adminActions.LoadSeasons());

@@ -28,6 +28,6 @@ export class WebContent {
   public type: string = '';
   public modifiedDate: Date = DateTime.now().toJSDate();
   public modifiedUser: number = 0;
-
+webContentType: WebContentType = new WebContentType();
   constructor() {}
 }
