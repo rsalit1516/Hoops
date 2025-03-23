@@ -73,7 +73,7 @@ export class ContentService {
   activeContent = computed(() => this.activeContentResource.value()?.results ?? [] as WebContent[]);
   error = computed(() => this.activeContentResource.error() as HttpErrorResponse);
   // errorMessage = computed(() => setErrorMessage(this.error(), 'Vehicle'));
-  isLoading = this.activeContentResource.isLoading;
+  isLoading = computed(() => this.activeContentResource.isLoading);
 
   contentsS: WritableSignal<WebContent[]> = signal([]);
   private test = this.content$.subscribe((data) => {

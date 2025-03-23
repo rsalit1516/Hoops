@@ -1,11 +1,8 @@
 import { Component, OnInit, computed, effect, inject, input } from '@angular/core';
 import { ContentService } from '../../../admin/web-content/content.service';
-import { DateTime } from 'luxon';
 import { Store } from '@ngrx/store';
 
 import * as fromHome from '../../state/';
-//import * as homeActions from '../../state/home.actions';
-import { map, tap, groupBy } from 'rxjs/operators';
 import { WebContent } from '../../../domain/webContent';
 import { CommonModule } from '@angular/common';
 import { AnnouncementComponent } from '../announcement/announcement.component';
@@ -20,9 +17,12 @@ import { AnnouncementComponent } from '../announcement/announcement.component';
 export class CsbcAnnouncementsComponent implements OnInit {
 
   readonly contentService = inject(ContentService);
-  readonly #store = inject(Store<fromHome.State>);
+  // readonly #store = inject(Store<fromHome.State>);
 
   activeWebContent = computed(() => this.contentService.activeWebContent ?? [] as WebContent[]);
+  activeContent = this.contentService.activeContent;
+  error = this.contentService.error;
+  isloading = this.contentService.isLoading;
   seasonInfoCount = 0 as number;
   latestNewsCount!: number;
   meetingNoticeCount!: number;
@@ -37,8 +37,8 @@ export class CsbcAnnouncementsComponent implements OnInit {
   constructor () {
     effect(() => {
       console.log(this.webContent);
-      console.log(this.activeWebContent());
-      console.log(this.contentService.activeWebContent());
+      console.log(this.activeContent());
+      // console.log(this.contentService.activeWebContent());
 
       this.webContent = this.contentService.activeWebContent();
     });

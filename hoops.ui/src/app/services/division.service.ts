@@ -179,7 +179,7 @@ export class DivisionService {
         this.seasonDivisions.update(() => data);
         this.selectedDivision.update(() => data[0]);
         // this.selectedDivision
-        console.log(this.seasonDivisions());
+        // console.log(this.seasonDivisions());
       },
         (error) => { catchError(() => of([])) }
       );
