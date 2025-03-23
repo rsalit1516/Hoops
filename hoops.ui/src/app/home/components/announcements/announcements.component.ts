@@ -1,4 +1,4 @@
-import { Component, OnInit, computed, inject, input } from '@angular/core';
+import { Component, OnInit, computed, effect, inject, input } from '@angular/core';
 import { ContentService } from '../../../admin/web-content/content.service';
 import { DateTime } from 'luxon';
 import { Store } from '@ngrx/store';
@@ -28,12 +28,21 @@ export class CsbcAnnouncementsComponent implements OnInit {
   meetingNoticeCount!: number;
   // activeWebContent = this.#contentService.activeContent();
   errorMessage!: string;
-  content$ = this.#store.select(fromHome.getContent).pipe(
-    map(result => result.filter(c => c.webContentTypeDescription === 'Season Info' || c.webContentTypeDescription === 'Event')),
-    map(t => t.sort(this.sortByContentSequence))
-  );
+  // content$ = this.#store.select(fromHome.getContent).pipe(
+  //   map(result => result.filter(c => c.webContentTypeDescription === 'Season Info' || c.webContentTypeDescription === 'Event')),
+  //   map(t => t.sort(this.sortByContentSequence))
+  // );
 
-  constructor () { }
+  webContent: WebContent[] = [];
+  constructor () {
+    effect(() => {
+      console.log(this.webContent);
+      console.log(this.activeWebContent());
+      console.log(this.contentService.activeWebContent());
+
+      this.webContent = this.contentService.activeWebContent();
+    });
+  }
   ngOnInit (): void {
     // Initialization logic here
   }

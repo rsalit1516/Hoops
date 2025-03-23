@@ -1,6 +1,6 @@
 <div id="contentText" class="row contentText">
   <div [ngClass]="setNewsClass()">
-    @for (info of contentService.activeWebContent(); track info) {
+    @for (info of webContent; track info) {
     <div class="announcements">
       <csbc-announcement [info]="info"></csbc-announcement>
     </div>

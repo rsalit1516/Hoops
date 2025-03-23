@@ -15,9 +15,12 @@ import { WebContent } from '@app/domain/webContent';
 export class AnnouncementComponent implements OnInit {
   readonly info = input.required<WebContent>();
   bodyText = '';
-  constructor () { }
+  constructor () {
+    console.log(this.info());
+  }
 
   ngOnInit (): void {
+    console.log(this.info());
     this.formattedText();
   }
 
