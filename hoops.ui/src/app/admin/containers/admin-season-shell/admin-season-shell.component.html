@@ -1,5 +1,29 @@
-<div class="wrapper">
-  <div class="list-wrapper" >
-    <csbc-admin-season-list></csbc-admin-season-list>
+<<div class="container mx-auto w-full">
+  <div>
+    <csbc-shell-title [title]="pageTitle"></csbc-shell-title>
+  </div>
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav-content>
+      <csbc-admin-games-filter
+        (gameFilterChanged)="handlefilterUpdate($event)"
+      ></csbc-admin-games-filter>
+      <h2>Seasons</h2>
+      <csbc-admin-season-list/>
+</mat-sidenav-content>
+    <mat-sidenav #sidenav mode="side" [opened]="isSidenavOpen" position="end">
+      <div class="sidenav-content">
+        <h3>
+          Details for
+          {{ selectedSeason()}}
+          Season
+        </h3>
+        <button mat-icon-button (click)="closeSidenav()">
+          <mat-icon>close</mat-icon>
+        </button>
+        <admin-season-detail/>
+      </div>
+    </mat-sidenav>
+  </mat-sidenav-container>
+</div>
   </div>
 </div>
