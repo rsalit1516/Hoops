@@ -73,7 +73,7 @@ export class HouseholdShellComponent implements AfterViewInit {
     });// Optionally trigger additional logic here
   }
   ngAfterViewInit() {
-    // Ensure the first panel expands when the sidenav opens
+    // Ensure the first panel expands when athe sidenav opens
     this.sidenav.openedStart.subscribe(() => {
       if (this.firstPanel) {
         this.firstPanel.expanded = true;

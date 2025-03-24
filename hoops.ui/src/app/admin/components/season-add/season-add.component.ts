@@ -22,6 +22,7 @@ import { Store } from '@ngrx/store';
 import * as fromAdmin from '../../state';
 import { Season } from '@app/domain/season';
 import { Router, RouterModule } from '@angular/router';
+import { provideNativeDateAdapter } from '@angular/material/core';
 
 @Component({
     selector: 'app-season-add',
@@ -38,7 +39,8 @@ import { Router, RouterModule } from '@angular/router';
         MatSelectModule,
         MatCheckboxModule,
     ],
-    providers: [SeasonService],
+      providers: [
+        provideNativeDateAdapter(), ],
     templateUrl: './season-add.component.html',
     styleUrls: [
         '../../../shared/scss/forms.scss',

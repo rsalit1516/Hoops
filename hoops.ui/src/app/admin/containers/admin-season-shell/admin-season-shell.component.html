@@ -4,12 +4,12 @@
   </div>
   <mat-sidenav-container class="sidenav-container">
     <mat-sidenav-content>
-      <csbc-admin-games-filter
-        (gameFilterChanged)="handlefilterUpdate($event)"
-      ></csbc-admin-games-filter>
+      <div id="panelContent" class="row">
+        <app-admin-seasons-toolbar />
+      </div>
       <h2>Seasons</h2>
-      <csbc-admin-season-list/>
-</mat-sidenav-content>
+      <csbc-admin-season-list />
+    </mat-sidenav-content>
     <mat-sidenav #sidenav mode="side" [opened]="isSidenavOpen" position="end">
       <div class="sidenav-content">
         <h3>
@@ -20,10 +20,10 @@
         <button mat-icon-button (click)="closeSidenav()">
           <mat-icon>close</mat-icon>
         </button>
-        <admin-season-detail/>
+        <admin-season-add />
       </div>
     </mat-sidenav>
   </mat-sidenav-container>
-</div>
   </div>
-</div>
+  </div>
+  </div>

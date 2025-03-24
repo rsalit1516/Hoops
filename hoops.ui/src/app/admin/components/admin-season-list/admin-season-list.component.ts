@@ -1,8 +1,7 @@
-import { AfterViewInit, Component, OnInit, ViewChild, WritableSignal, computed, effect, inject, input, signal } from '@angular/core';
-import { Store, select } from '@ngrx/store';
+import { AfterViewInit, Component, OnInit, ViewChild, computed, effect, inject } from '@angular/core';
+import { Store } from '@ngrx/store';
 
 import * as fromAdmin from '../../state';
-import * as adminActions from '../../state/admin.actions';
 import { Season } from '@app/domain/season';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { DatePipe } from '@angular/common';
@@ -59,8 +58,6 @@ seasons = computed(() => this.#seasonService.seasons());
 
     effect(() => {
       this.dataSource.data = this.seasons()!;
-      console.log(this.dataSource.data);
-      console.log(this.seasons());
     });
   }
 
@@ -76,16 +73,15 @@ seasons = computed(() => this.#seasonService.seasons());
     this.dataSource.sort = this.sort;
   }
   setDisplayColumns() {
-    this.displayColumns.push('seasonId');
-    this.displayColumns.push('description');
-    this.displayColumns.push('fromDate');
-    this.displayColumns.push('toDate');
+    // this.displayColumns.push('seasonId');
+    // this.displayColumns.push('description');
+    // this.displayColumns.push('fromDate');
+    // this.displayColumns.push('toDate');
   }
   edit(row: Season) {
-    console.log(row)
     this.#seasonService.selectSeason(row);
     // this.#store.dispatch(new adminActions.SetSelectedSeason(row));
-    this.#router.navigate(['./admin/seasons/edit']);
+    // this.#router.navigate(['./admin/seasons/edit']);
 
   }
 }

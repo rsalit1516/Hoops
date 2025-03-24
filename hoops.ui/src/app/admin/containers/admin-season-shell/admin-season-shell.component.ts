@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit } from '@angular/core';
+import { AfterViewInit, Component, computed, effect, inject, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Season } from '@app/domain/season';
 import { select, Store } from '@ngrx/store';
@@ -12,9 +12,9 @@ import { ContentEditComponent } from '@app/admin/web-content/content-edit/conten
 import { ContentListComponent } from '@app/admin/web-content/content-list/contentList.component';
 import { SeasonService } from '@app/services/season.service';
 import { MatButtonModule } from '@angular/material/button';
-import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
-import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
+import { MatExpansionModule, MatExpansionPanel } from '@angular/material/expansion';
 import { AdminSeasonDetailComponent } from '@app/admin/components/admin-season-detail/admin-season-detail.component';
 import { AdminSeasonFilterComponent } from '@app/admin/components/admin-season-filter/admin-season-filter.component';
 
@@ -25,7 +25,12 @@ import { AdminSeasonFilterComponent } from '@app/admin/components/admin-season-f
     <h2>{{title}}</h2>
     <router-outlet></router-outlet>
   </section>`,
-  styleUrls: [ './admin-season-shell.component.scss' ],
+  styleUrls: [ './admin-season-shell.component.scss',
+    '../../admin.component.scss',
+    '../../containers/admin-shell/admin-shell.component.scss',
+    '../../../shared/scss/cards.scss',
+    '../../../shared/scss/sidenav.scss',
+   ],
   imports: [ CommonModule, AdminGamesRoutingModule,
     RouterOutlet, AdminSeasonListComponent,
     MatSidenavModule,
@@ -36,18 +41,45 @@ import { AdminSeasonFilterComponent } from '@app/admin/components/admin-season-f
     AdminSeasonFilterComponent
   ]
 })
-export class AdminSeasonShellComponent implements OnInit {
+export class AdminSeasonShellComponent implements OnInit, AfterViewInit {
   readonly #seasonService = inject(SeasonService);
   currentSeason$!: Observable<Season>;
   seasons$!: Observable<Season[]>;
   title = 'Seasons';
   selectedSeason = computed(() => this.#seasonService.selectedSeason);
+  isSidenavOpen = false;
+  @ViewChild('sidenav') sidenav!: MatSidenav;
+  @ViewChild('firstPanel') firstPanel!: MatExpansionPanel;
 
-  constructor(private store: Store<fromAdmin.State>) { }
+  constructor(private store: Store<fromAdmin.State>) {
+    effect(() => {
+      const record = this.#seasonService.selectedSeason;
+      console.log('Selected record changed:', record);
+      if (record !== null) {
+        console.log(`Record updated: ${record.description}`);
+        this.isSidenavOpen = true;
+        // Allow the sidenav to open first, then expand the first panel
+        setTimeout(() => {
+          if (this.firstPanel) {
+            this.firstPanel.expanded = true;
+          }
+        }, 300);
+      }
+    });
+   }
 
   ngOnInit() {
     this.#seasonService.fetchSeasons();
     this.setStateSubscriptions();
+  }
+  ngAfterViewInit() {
+    // Ensure the first panel expands when the sidenav opens
+    this.sidenav.openedStart.subscribe(() => {
+      if (this.firstPanel) {
+        this.firstPanel.expanded = true;
+      }
+    });
+
   }
   setStateSubscriptions() {
     // this.currentSeason$ = this.store.pipe(select(fromAdmin.getCurrentSeason));
