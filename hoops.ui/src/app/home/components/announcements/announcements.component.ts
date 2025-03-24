@@ -36,8 +36,8 @@ export class CsbcAnnouncementsComponent implements OnInit {
   webContent: WebContent[] = [];
   constructor () {
     effect(() => {
-      console.log(this.webContent);
-      console.log(this.activeContent());
+      // console.log(this.webContent);
+      // console.log(this.activeContent());
       // console.log(this.contentService.activeWebContent());
 
       this.webContent = this.contentService.activeWebContent();

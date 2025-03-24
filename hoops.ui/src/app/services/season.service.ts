@@ -82,12 +82,20 @@ export class SeasonService {
   errorMessage = computed(() => console.log(this.error(), 'Season'));
   isLoading = computed(() => this.seasonResource.isLoading());
 
-  getSeasons (): void {
-    this.#http.get<Season[]>(this.#seasonsUrl).pipe(
-      map(response => this.seasons.update(() => response as Season[])),
-      tap(data => console.log('All: ' + JSON.stringify(this.seasons()))),
-      catchError(this.#dataService.handleError('getSeasons', []))
-    );
+  fetchSeasons(): void {
+    this.getSeasons().subscribe({
+      next: (seasons) => {
+        this.seasons.set(seasons);
+      },
+    });
+  }
+  getSeasons (): Observable<Season[]> {
+    return this.#http.get<Season[]>(this.#seasonsUrl);
+      // .pipe(
+      // map(response => this.seasons.update(() => response as Season[])),
+      // tap(data => console.log('All: ' + JSON.stringify(this.seasons()))),
+      // catchError(this.#dataService.handleError('getSeasons', []))
+    // );
   }
 
   reloadSeasons () {

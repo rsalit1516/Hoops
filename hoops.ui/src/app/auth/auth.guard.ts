@@ -14,7 +14,7 @@ export class AuthGuard  {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    console.log('AuthGuard#canActivate called');
+    // console.log('AuthGuard#canActivate called');
     return true;
   }
   canLoad(

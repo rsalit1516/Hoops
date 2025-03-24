@@ -1,4 +1,4 @@
-import { Component, OnInit, input } from '@angular/core';
+import { Component, OnInit, WritableSignal, computed, effect, inject, input, signal } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
 import * as fromAdmin from '../../state';
@@ -8,6 +8,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { DatePipe } from '@angular/common';
 import { AdminSeasonsToolbarComponent } from '../admin-seasons-toolbar/admin-seasons-toolbar.component';
 import { Router } from '@angular/router';
+import { SeasonService } from '@app/services/season.service';
 
 @Component({
     selector: 'csbc-admin-season-list',
@@ -22,32 +23,43 @@ import { Router } from '@angular/router';
     ]
 })
 export class AdminSeasonListComponent implements OnInit {
-  private _seasons: Season[] | undefined;
-  readonly info = input<string>();
-  get seasons() {
-    return this._seasons;
-  }
-  set seasons(seasons: Season[] | undefined) {
-    this._seasons = seasons;
-  }
+  readonly #seasonService = inject(SeasonService);
+  readonly #router = inject(Router);
+  readonly #store = inject(Store<fromAdmin.State>);
+  // private _seasons: WritableSignal<Season[] | undefined> = signal<Season[] | undefined>(undefined);
+  // readonly info = input<string>();
+  // get seasons() {
+  //   return this._seasons();
+  // }
+  // set seasons(seasons: Season[] | undefined) {
+  //   this._seasons.set(seasons);
+  // }
+seasons = computed(() => this.#seasonService.seasons());
 
-  dataSource = new MatTableDataSource();
+  dataSource = new MatTableDataSource<Season>(this.seasons());
 
-  displayColumns: string[];
+  displayColumns = [
+    'seasonId',
+    'description',
+    'fromDate',
+    'toDate',
+  ];
 
-  constructor(private router: Router, private store: Store<fromAdmin.State>) {
-    this.displayColumns = [];
+  constructor() {
+
+    effect(() => {
+      this.dataSource.data = this.seasons()!;
+      console.log(this.dataSource.data);
+      console.log(this.seasons());
+    });
   }
 
   ngOnInit() {
     this.setDisplayColumns();
+    this.dataSource = new MatTableDataSource<Season>(this.seasons());
 
-    this.store.dispatch(new adminActions.LoadSeasons());
-    this.store.select(fromAdmin.getSeasons).subscribe(seasons => {
-      this.seasons = seasons;
       // console.log(seasons);
-      this.dataSource.data = seasons;
-    });
+
   }
   setDisplayColumns() {
     this.displayColumns.push('seasonId');
@@ -57,8 +69,9 @@ export class AdminSeasonListComponent implements OnInit {
   }
   edit(row: Season) {
     console.log(row)
-    this.store.dispatch(new adminActions.SetSelectedSeason(row));
-    this.router.navigate(['./admin/seasons/edit']);
+    this.#seasonService.selectSeason(row);
+    // this.#store.dispatch(new adminActions.SetSelectedSeason(row));
+    this.#router.navigate(['./admin/seasons/edit']);
 
   }
 }
