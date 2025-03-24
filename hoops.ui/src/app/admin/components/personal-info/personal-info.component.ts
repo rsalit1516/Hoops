@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -31,8 +32,10 @@ import { MatRadioModule } from '@angular/material/radio';
     '../../admin.component.scss',
     '../../../shared/scss/forms.scss',
     '../../../shared/scss/cards.scss',
-  ]
-
+  ],
+    providers: [
+      provideNativeDateAdapter(),
+    ],
 })
 export class PersonalInfoComponent {
 
