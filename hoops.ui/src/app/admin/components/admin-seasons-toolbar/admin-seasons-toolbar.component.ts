@@ -12,7 +12,7 @@ import * as adminActions from '../../state/admin.actions';
 import { Season } from '@app/domain/season';
 
 @Component({
-    selector: 'app-admin-seasons-toolbar',
+    selector: 'csbc-admin-seasons-toolbar',
     imports: [
         MatFormFieldModule,
         ReactiveFormsModule,

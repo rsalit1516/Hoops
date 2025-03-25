@@ -81,7 +81,7 @@ export class SeasonService {
   error = computed(() => this.seasonResource.error() as HttpErrorResponse);
   errorMessage = computed(() => console.log(this.error(), 'Season'));
   isLoading = computed(() => this.seasonResource.isLoading());
-
+  seasonSaved = signal<boolean>(false);
   fetchSeasons(): void {
     this.getSeasons().subscribe({
       next: (seasons) => {

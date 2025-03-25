@@ -17,32 +17,38 @@ import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatExpansionModule, MatExpansionPanel } from '@angular/material/expansion';
 import { AdminSeasonDetailComponent } from '@app/admin/components/admin-season-detail/admin-season-detail.component';
 import { AdminSeasonFilterComponent } from '@app/admin/components/admin-season-filter/admin-season-filter.component';
+import { ShellTitleComponent } from '@app/shared/shell-title/shell-title.component';
+import { AdminSeasonsToolbarComponent } from '@app/admin/components/admin-seasons-toolbar/admin-seasons-toolbar.component';
+import { SeasonAddComponent } from '@app/admin/components/season-add/season-add.component';
 
 
 @Component({
   selector: 'csbc-admin-season-shell',
-  template: `<section class="container-fluid">
-    <h2>{{title}}</h2>
-    <router-outlet></router-outlet>
-  </section>`,
+  templateUrl: './admin-season-shell.component.html',
   styleUrls: [ './admin-season-shell.component.scss',
     '../../admin.component.scss',
     '../../containers/admin-shell/admin-shell.component.scss',
     '../../../shared/scss/cards.scss',
     '../../../shared/scss/sidenav.scss',
-   ],
+  ],
   imports: [ CommonModule, AdminGamesRoutingModule,
-    RouterOutlet, AdminSeasonListComponent,
+    RouterOutlet,
+    AdminSeasonListComponent,
     MatSidenavModule,
     MatExpansionModule,
     MatIconModule,
     MatButtonModule,
     AdminSeasonDetailComponent,
-    AdminSeasonFilterComponent
+    AdminSeasonFilterComponent,
+    ShellTitleComponent,
+    AdminSeasonsToolbarComponent,
+    AdminSeasonDetailComponent,
+    SeasonAddComponent
   ]
 })
 export class AdminSeasonShellComponent implements OnInit, AfterViewInit {
   readonly #seasonService = inject(SeasonService);
+  pageTitle = 'Season Management';
   currentSeason$!: Observable<Season>;
   seasons$!: Observable<Season[]>;
   title = 'Seasons';
@@ -66,7 +72,15 @@ export class AdminSeasonShellComponent implements OnInit, AfterViewInit {
         }, 300);
       }
     });
-   }
+    effect(() => {
+      const saved = this.#seasonService.seasonSaved();
+      console.log(saved);
+      if (saved) {
+        this.isSidenavOpen = false;
+        this.#seasonService.seasonSaved.set(false);
+      }
+    });
+  }
 
   ngOnInit() {
     this.#seasonService.fetchSeasons();
@@ -84,5 +98,8 @@ export class AdminSeasonShellComponent implements OnInit, AfterViewInit {
   setStateSubscriptions() {
     // this.currentSeason$ = this.store.pipe(select(fromAdmin.getCurrentSeason));
     // this.seasons$ = this.store.pipe(select(fromAdmin.getSeasons));
+  }
+  closeSidenav() {
+    this.isSidenavOpen = false;
   }
 }
