@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UntypedFormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { SeasonAddEditComponent } from './season-add.component';
+import { SeasonAddEditComponent } from './season-add-edit.component';
 import { SeasonService } from '@app/services/season.service';
 import { CommonModule } from '@angular/common';
 
