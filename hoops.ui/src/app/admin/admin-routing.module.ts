@@ -34,9 +34,9 @@ export const ADMINROUTES: Routes = [
           {
             path: 'edit',
             loadComponent: () =>
-              import('./components/season-add/season-add.component')
+              import('./components/season-add-edit/season-add.component')
                 .then(
-                  (mod) => mod.SeasonAddComponent),
+                  (mod) => mod.SeasonAddEditComponent),
           },
           {
             path: 'list',

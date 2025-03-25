@@ -19,7 +19,7 @@ import { AdminSeasonDetailComponent } from '@app/admin/components/admin-season-d
 import { AdminSeasonFilterComponent } from '@app/admin/components/admin-season-filter/admin-season-filter.component';
 import { ShellTitleComponent } from '@app/shared/shell-title/shell-title.component';
 import { AdminSeasonsToolbarComponent } from '@app/admin/components/admin-seasons-toolbar/admin-seasons-toolbar.component';
-import { SeasonAddComponent } from '@app/admin/components/season-add/season-add.component';
+import { SeasonAddEditComponent } from '@app/admin/components/season-add-edit/season-add.component';
 
 
 @Component({
@@ -43,7 +43,7 @@ import { SeasonAddComponent } from '@app/admin/components/season-add/season-add.
     ShellTitleComponent,
     AdminSeasonsToolbarComponent,
     AdminSeasonDetailComponent,
-    SeasonAddComponent
+    SeasonAddEditComponent
   ]
 })
 export class AdminSeasonShellComponent implements OnInit, AfterViewInit {

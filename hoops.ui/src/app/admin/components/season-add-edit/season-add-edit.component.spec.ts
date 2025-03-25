@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UntypedFormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { SeasonAddComponent } from './season-add.component';
+import { SeasonAddEditComponent } from './season-add.component';
 import { SeasonService } from '@app/services/season.service';
 import { CommonModule } from '@angular/common';
 
 describe('SeasonAddComponent', () => {
-  let component: SeasonAddComponent;
-  let fixture: ComponentFixture<SeasonAddComponent>;
+  let component: SeasonAddEditComponent;
+  let fixture: ComponentFixture<SeasonAddEditComponent>;
   let seasonService: jasmine.SpyObj<SeasonService>;
 
   beforeEach(async () => {
@@ -20,10 +20,10 @@ describe('SeasonAddComponent', () => {
       imports: [ CommonModule,
         ReactiveFormsModule,
         UntypedFormBuilder,
-        SeasonAddComponent ]
+        SeasonAddEditComponent ]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(SeasonAddComponent);
+    fixture = TestBed.createComponent(SeasonAddEditComponent);
     component = fixture.componentInstance;
     seasonService = TestBed.inject(SeasonService) as jasmine.SpyObj<SeasonService>;
     fixture.detectChanges();

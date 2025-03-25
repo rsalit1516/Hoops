@@ -41,14 +41,13 @@ import { provideNativeDateAdapter } from '@angular/material/core';
   ],
   providers: [
     provideNativeDateAdapter(), ],
-  templateUrl: './season-add.component.html',
+  templateUrl: './season-add-edit.component.html',
   styleUrls: [
     '../../../shared/scss/forms.scss',
     '../../../shared/scss/cards.scss',
-    './season-add.component.scss',
   ]
 })
-export class SeasonAddComponent implements OnInit {
+export class SeasonAddEditComponent implements OnInit {
   title = 'Season';
   readonly #seasonService = inject(SeasonService);
   private fb = inject(UntypedFormBuilder);
