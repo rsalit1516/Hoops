@@ -5,26 +5,26 @@ import * as fromAdmin from '../../state';
 import { Season } from '@app/domain/season';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { DatePipe } from '@angular/common';
-import { AdminSeasonsToolbarComponent } from '../admin-seasons-toolbar/admin-seasons-toolbar.component';
+import { SeasonsToolbarComponent } from '../seasons-toolbar/seasons-toolbar.component';
 import { Router } from '@angular/router';
 import { SeasonService } from '@app/services/season.service';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 
 @Component({
-    selector: 'csbc-admin-season-list',
-    templateUrl: './admin-season-list.component.html',
-    styleUrls: [
-        './../../../shared/scss/tables.scss',
-        './admin-season-list.component.scss',
-        '../../admin.component.scss'
-    ],
-    imports: [MatTableModule, DatePipe,
-      AdminSeasonsToolbarComponent,
-      MatSortModule,
-            MatPaginatorModule
-          ],
-          providers: [ MatSort, MatPaginator ],
+  selector: 'csbc-admin-season-list',
+  templateUrl: './admin-season-list.component.html',
+  styleUrls: [
+    './../../../shared/scss/tables.scss',
+    './admin-season-list.component.scss',
+    '../../admin.component.scss'
+  ],
+  imports: [ MatTableModule, DatePipe,
+    SeasonsToolbarComponent,
+    MatSortModule,
+    MatPaginatorModule
+  ],
+  providers: [ MatSort, MatPaginator ],
 
 })
 export class AdminSeasonListComponent implements OnInit, AfterViewInit {
@@ -43,7 +43,7 @@ export class AdminSeasonListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort = inject(MatSort);
   showFirstLastButtons = true;
   pageSize = 10;
-seasons = computed(() => this.#seasonService.seasons());
+  seasons = computed(() => this.#seasonService.seasons());
 
   dataSource = new MatTableDataSource<Season>(this.seasons());
 
@@ -62,26 +62,19 @@ seasons = computed(() => this.#seasonService.seasons());
   }
 
   ngOnInit() {
-    this.setDisplayColumns();
     this.dataSource = new MatTableDataSource<Season>(this.seasons());
 
-      // console.log(seasons);
+    // console.log(seasons);
 
   }
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
-  setDisplayColumns() {
-    // this.displayColumns.push('seasonId');
-    // this.displayColumns.push('description');
-    // this.displayColumns.push('fromDate');
-    // this.displayColumns.push('toDate');
-  }
   edit(row: Season) {
     this.#seasonService.selectSeason(row);
     // this.#store.dispatch(new adminActions.SetSelectedSeason(row));
-    // this.#router.navigate(['./admin/seasons/edit']);
+    this.#router.navigate(['./admin/seasons/edit']);
 
   }
 }

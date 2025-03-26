@@ -147,10 +147,11 @@ export class SeasonAddEditComponent implements OnInit {
     }
     this.#seasonService.seasonSaved.set(true);
 
-    // this.router.navigate(['/admin/seasons']);
+    this.router.navigate(['/admin/seasons']);
   }
 
   cancel() {
-    this.#seasonService.seasonSaved.set(true);
+    // this.#seasonService.seasonSaved.set(true);
+    this.router.navigate(['/admin/season/list']);
   }
 }

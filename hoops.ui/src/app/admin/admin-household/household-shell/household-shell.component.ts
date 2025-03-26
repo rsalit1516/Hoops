@@ -35,14 +35,11 @@ import { MatIconModule } from '@angular/material/icon';
 export class HouseholdShellComponent implements AfterViewInit {
   pageTitle = 'Household Management';
   isSidenavOpen = false;
-
   householdService = inject(HouseholdService);
-
   selectedRecord = this.householdService.selectedRecordSignal();
 
   private searchCriteria = signal<householdSearchCriteria | null>(null); // Signal for search criteria
   results = signal<Household[] | undefined>([]); // Signal for search results
-
   selectedHousehold = signal<Household | null>(null);
 
   @ViewChild('sidenav') sidenav!: MatSidenav;

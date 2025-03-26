@@ -5,7 +5,9 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Constants } from '@app/shared/constants';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class DataService {
   #http = inject(HttpClient);
 
@@ -29,7 +31,7 @@ export class DataService {
   postContentUrl = this.baseUrl + '/api/WebContent';
   getCurrentSponsors = this.baseUrl + '/api/Sponsor/GetSeasonSponsors/';
   getLocations = this.baseUrl + '/api/Locations/';
-  seasonUrl = this.baseUrl + '/api/Season/';
+  // seasonUrl = this.baseUrl + '/api/Season/';
   currentSeasonUrl = this.baseUrl + '/api/Season/GetCurrentSeason';
   peopleUrl = this.baseUrl + '/api/People';
 
@@ -66,19 +68,19 @@ export class DataService {
         catchError(this.handleError('Error', data)));
   }
   put<T> (url: string, data: T): Observable<T> {
-    // console.log(url);
-    // console.log(data);
+    console.log(url);
+    console.log(data);
     // let url = this.data.putContentUrl + content.webContentId;
     return this.#http
-      .put<T>(url, data, { headers: this.httpOptions })
+      .put<T>(url, data, { headers: this.httpOptions });
       //.put<T>(url, data)
-      .pipe(
-        tap((data) => console.log('updateContent: ' + JSON.stringify(data))),
+      // .pipe(
+      //   tap((data) => console.log('updateContent: ' + JSON.stringify(data))),
         //   catchError((error) => {
         //     this.handleError('updateContent', data)(error);
         //     throw error;
         // };
-      );
+      // );
   }
 
   //TODO:  Fix delete method

@@ -13,7 +13,7 @@ import { Season } from '@app/domain/season';
 import { SeasonService } from '@app/services/season.service';
 
 @Component({
-    selector: 'csbc-admin-seasons-toolbar',
+    selector: 'csbc-seasons-toolbar',
     imports: [
         MatFormFieldModule,
         ReactiveFormsModule,
@@ -34,7 +34,7 @@ import { SeasonService } from '@app/services/season.service';
         './../../admin.component.scss',
     ]
 })
-export class AdminSeasonsToolbarComponent implements OnInit {
+export class SeasonsToolbarComponent implements OnInit {
   readonly #seasonService = inject(SeasonService)
   checked = true;
   filterForm = this.fb.group({
@@ -61,6 +61,6 @@ export class AdminSeasonsToolbarComponent implements OnInit {
     console.log(season);
 
     //this.store.dispatch(new adminActions.SetSelectedSeason(season));
-    //this.router.navigate(['./admin/seasons/edit']);
+    this.router.navigate(['./admin/seasons/edit']);
   }
 }

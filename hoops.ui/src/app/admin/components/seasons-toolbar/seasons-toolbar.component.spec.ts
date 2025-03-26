@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AdminSeasonsToolbarComponent } from './admin-seasons-toolbar.component';
+import { SeasonsToolbarComponent } from './seasons-toolbar.component';
 
 describe('AdminSeasonsToolbarComponent', () => {
-  let component: AdminSeasonsToolbarComponent;
-  let fixture: ComponentFixture<AdminSeasonsToolbarComponent>;
+  let component: SeasonsToolbarComponent;
+  let fixture: ComponentFixture<SeasonsToolbarComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AdminSeasonsToolbarComponent]
+      imports: [SeasonsToolbarComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AdminSeasonsToolbarComponent);
+    fixture = TestBed.createComponent(SeasonsToolbarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

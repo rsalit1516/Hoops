@@ -5,12 +5,12 @@
   <mat-sidenav-container class="sidenav-container">
     <mat-sidenav-content>
       <div id="panelContent" class="row">
-        <csbc-admin-seasons-toolbar />
+        <csbc-seasons-toolbar />
       </div>
       <h2>Seasons</h2>
       <csbc-admin-season-list />
     </mat-sidenav-content>
-    <mat-sidenav #sidenav mode="side" [opened]="isSidenavOpen" position="end">
+    <mat-sidenav #sidenav mode="over" [opened]="isSidenavOpen" position="end">
       <div class="sidenav-content">
         <h3>
           Details for

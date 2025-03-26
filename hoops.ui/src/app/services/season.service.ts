@@ -40,10 +40,10 @@ export class SeasonService {
       // tap(data => console.log('All: ' + JSON.stringify(data))),
       catchError(this.#dataService.handleError('getCurrentSeason', null))
     );
-  public getCurrentSeason (): Observable<Season | undefined> {
+  public getCurrentSeason(): Observable<Season | undefined> {
     return this.#http.get<Season>(Constants.currentSeasonUrl);
   }
-  fetchCurrentSeason (): Promise<void> {
+  fetchCurrentSeason(): Promise<void> {
     return new Promise((resolve, reject) => {
       this.getCurrentSeason().subscribe({
         next: (season) => {
@@ -59,21 +59,21 @@ export class SeasonService {
   }
   private _selectedSeason = signal<Season>(new Season());
 
-  get selectedSeason (): Season {
+  get selectedSeason(): Season {
     return this._selectedSeason();
   }
 
-  set selectedSeason (season: Season) {
+  set selectedSeason(season: Season) {
     this._selectedSeason.update(() => season);
   }
 
-  selectSeason (season: Season) {
+  selectSeason(season: Season) {
     this.selectedSeason = season;
   }
   // toSignal (this.getCurrentSeason());
   // selectedSeason: WritableSignal<Season | undefined> = signal(undefined);
   private seasonResource = httpResource<SeasonResponse>(() =>
-    `${ Constants.currentSeasonUrl }`);
+    `${Constants.currentSeasonUrl}`);
   vResource = httpResource<SeasonResponse>(() => Constants.currentSeasonUrl);
   season2 = computed(() => this.vResource.value()?.results
     ?? [] as Season[]);
@@ -89,16 +89,16 @@ export class SeasonService {
       },
     });
   }
-  getSeasons (): Observable<Season[]> {
+  getSeasons(): Observable<Season[]> {
     return this.#http.get<Season[]>(this.#seasonsUrl);
-      // .pipe(
-      // map(response => this.seasons.update(() => response as Season[])),
-      // tap(data => console.log('All: ' + JSON.stringify(this.seasons()))),
-      // catchError(this.#dataService.handleError('getSeasons', []))
+    // .pipe(
+    // map(response => this.seasons.update(() => response as Season[])),
+    // tap(data => console.log('All: ' + JSON.stringify(this.seasons()))),
+    // catchError(this.#dataService.handleError('getSeasons', []))
     // );
   }
 
-  reloadSeasons () {
+  reloadSeasons() {
     // this.seasonResource.reload();
   }
 
@@ -108,15 +108,45 @@ export class SeasonService {
   //   );
   // }
 
-  postSeason (season: Season): Observable<Season | null> {
+  postSeason(season: Season): Observable<Season | null> {
     console.log('posting season');
     return this.#dataService.post<Season>(Constants.SEASON_URL, season);
   }
 
-  putSeason (season: Season): any {
-    return this.#dataService.put<Season>(this.#dataService.seasonUrl, season);
+  putSeason(season: Season): Observable<Season> {
+    console.log('putting season', season);
+    console.log(this.convertToSeasonApiFormat(season));
+    const url = `${Constants.SEASON_URL}/${season.seasonId}`;
+    return this.#dataService.put<Season>(url, season);
   }
+  convertToSeasonApiFormat(season: Season): String {
+    let body = '{\n';
+    const colon = ':';
+    const comma = ',\n';
 
+    body += '"seasonId"' + colon + season.seasonId + comma;
+    body += '"companyId"' + colon + 1 + comma;
+    body += '"description"' + colon + season.description + comma;
+    body += '"fromDate"' + colon + season.fromDate + comma;
+    body += '"toDate"' + colon + season.toDate + comma;
+    // "toDate": "2025-03-26T14:40:51.137Z",
+    // "participationFee": 1600,
+    // "sponsorFee": 135,
+    // "convenienceFee": 0,
+    // "currentSeason": true,
+    // "currentSchedule": true,
+    // "currentSignUps": true,
+    // "signUpsDate": "2025-03-26T14:40:51.137Z",
+    // "signUpsEnd": "2025-04-26T14:40:51.137Z",
+    // "testSeason": true,
+    // "newSchoolYear": true,
+    // body += '"createdDate"' + colon +  "2025-03-26T14:40:51.137Z",
+    // "createdUser": "string"
+
+    return body;
+
+
+  }
 }
 export interface SeasonResponse {
   count: number;

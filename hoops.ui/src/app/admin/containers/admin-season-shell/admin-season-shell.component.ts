@@ -18,13 +18,16 @@ import { MatExpansionModule, MatExpansionPanel } from '@angular/material/expansi
 import { AdminSeasonDetailComponent } from '@app/admin/components/admin-season-detail/admin-season-detail.component';
 import { AdminSeasonFilterComponent } from '@app/admin/components/admin-season-filter/admin-season-filter.component';
 import { ShellTitleComponent } from '@app/shared/shell-title/shell-title.component';
-import { AdminSeasonsToolbarComponent } from '@app/admin/components/admin-seasons-toolbar/admin-seasons-toolbar.component';
+import { SeasonsToolbarComponent } from '@app/admin/components/seasons-toolbar/seasons-toolbar.component';
 import { SeasonAddEditComponent } from '@app/admin/components/season-add-edit/season-add-edit.component';
 
 
 @Component({
   selector: 'csbc-admin-season-shell',
-  templateUrl: './admin-season-shell.component.html',
+  template: `<section class="container-fluid">
+    <h2>{{title}}</h2>
+    <router-outlet></router-outlet>
+  </section>`,
   styleUrls: [ './admin-season-shell.component.scss',
     '../../admin.component.scss',
     '../../containers/admin-shell/admin-shell.component.scss',
@@ -41,7 +44,7 @@ import { SeasonAddEditComponent } from '@app/admin/components/season-add-edit/se
     AdminSeasonDetailComponent,
     AdminSeasonFilterComponent,
     ShellTitleComponent,
-    AdminSeasonsToolbarComponent,
+    SeasonsToolbarComponent,
     AdminSeasonDetailComponent,
     SeasonAddEditComponent
   ]
@@ -53,9 +56,9 @@ export class AdminSeasonShellComponent implements OnInit, AfterViewInit {
   seasons$!: Observable<Season[]>;
   title = 'Seasons';
   selectedSeason = computed(() => this.#seasonService.selectedSeason);
-  isSidenavOpen = false;
-  @ViewChild('sidenav') sidenav!: MatSidenav;
-  @ViewChild('firstPanel') firstPanel!: MatExpansionPanel;
+  // isSidenavOpen = false;
+  // @ViewChild('sidenav') sidenav!: MatSidenav;
+  // @ViewChild('firstPanel') firstPanel!: MatExpansionPanel;
 
   constructor(private store: Store<fromAdmin.State>) {
     effect(() => {
@@ -63,20 +66,20 @@ export class AdminSeasonShellComponent implements OnInit, AfterViewInit {
       console.log('Selected record changed:', record);
       if (record !== null) {
         console.log(`Record updated: ${record.description}`);
-        this.isSidenavOpen = true;
+        // this.isSidenavOpen = true;
         // Allow the sidenav to open first, then expand the first panel
-        setTimeout(() => {
-          if (this.firstPanel) {
-            this.firstPanel.expanded = true;
-          }
-        }, 300);
+        // setTimeout(() => {
+        //   if (this.firstPanel) {
+        //     this.firstPanel.expanded = true;
+        //   }
+        // }, 300);
       }
     });
     effect(() => {
       const saved = this.#seasonService.seasonSaved();
       console.log(saved);
       if (saved) {
-        this.isSidenavOpen = false;
+        // this.isSidenavOpen = false;
         this.#seasonService.seasonSaved.set(false);
       }
     });
@@ -88,18 +91,18 @@ export class AdminSeasonShellComponent implements OnInit, AfterViewInit {
   }
   ngAfterViewInit() {
     // Ensure the first panel expands when the sidenav opens
-    this.sidenav.openedStart.subscribe(() => {
-      if (this.firstPanel) {
-        this.firstPanel.expanded = true;
-      }
-    });
+    // this.sidenav.openedStart.subscribe(() => {
+    //   if (this.firstPanel) {
+    //     this.firstPanel.expanded = true;
+    //   }
+    // });
 
   }
   setStateSubscriptions() {
     // this.currentSeason$ = this.store.pipe(select(fromAdmin.getCurrentSeason));
     // this.seasons$ = this.store.pipe(select(fromAdmin.getSeasons));
   }
-  closeSidenav() {
-    this.isSidenavOpen = false;
-  }
+  // closeSidenav() {
+  //   this.isSidenavOpen = false;
+  // }
 }
