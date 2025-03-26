@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { Constants } from '@app/shared/constants';
 import { fromFetch } from 'rxjs/fetch';
+import { getLocaleDateFormat } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -40,10 +41,10 @@ export class SeasonService {
       // tap(data => console.log('All: ' + JSON.stringify(data))),
       catchError(this.#dataService.handleError('getCurrentSeason', null))
     );
-  public getCurrentSeason(): Observable<Season | undefined> {
+  public getCurrentSeason (): Observable<Season | undefined> {
     return this.#http.get<Season>(Constants.currentSeasonUrl);
   }
-  fetchCurrentSeason(): Promise<void> {
+  fetchCurrentSeason (): Promise<void> {
     return new Promise((resolve, reject) => {
       this.getCurrentSeason().subscribe({
         next: (season) => {
@@ -59,21 +60,21 @@ export class SeasonService {
   }
   private _selectedSeason = signal<Season>(new Season());
 
-  get selectedSeason(): Season {
+  get selectedSeason (): Season {
     return this._selectedSeason();
   }
 
-  set selectedSeason(season: Season) {
+  set selectedSeason (season: Season) {
     this._selectedSeason.update(() => season);
   }
 
-  selectSeason(season: Season) {
+  selectSeason (season: Season) {
     this.selectedSeason = season;
   }
   // toSignal (this.getCurrentSeason());
   // selectedSeason: WritableSignal<Season | undefined> = signal(undefined);
   private seasonResource = httpResource<SeasonResponse>(() =>
-    `${Constants.currentSeasonUrl}`);
+    `${ Constants.currentSeasonUrl }`);
   vResource = httpResource<SeasonResponse>(() => Constants.currentSeasonUrl);
   season2 = computed(() => this.vResource.value()?.results
     ?? [] as Season[]);
@@ -82,14 +83,14 @@ export class SeasonService {
   errorMessage = computed(() => console.log(this.error(), 'Season'));
   isLoading = computed(() => this.seasonResource.isLoading());
   seasonSaved = signal<boolean>(false);
-  fetchSeasons(): void {
+  fetchSeasons (): void {
     this.getSeasons().subscribe({
       next: (seasons) => {
         this.seasons.set(seasons);
       },
     });
   }
-  getSeasons(): Observable<Season[]> {
+  getSeasons (): Observable<Season[]> {
     return this.#http.get<Season[]>(this.#seasonsUrl);
     // .pipe(
     // map(response => this.seasons.update(() => response as Season[])),
@@ -98,7 +99,7 @@ export class SeasonService {
     // );
   }
 
-  reloadSeasons() {
+  reloadSeasons () {
     // this.seasonResource.reload();
   }
 
@@ -108,18 +109,18 @@ export class SeasonService {
   //   );
   // }
 
-  postSeason(season: Season): Observable<Season | null> {
+  postSeason (season: Season): Observable<Season | null> {
     console.log('posting season');
     return this.#dataService.post<Season>(Constants.SEASON_URL, season);
   }
 
-  putSeason(season: Season): Observable<Season> {
+  putSeason (season: Season): Observable<Season> {
     console.log('putting season', season);
     console.log(this.convertToSeasonApiFormat(season));
-    const url = `${Constants.SEASON_URL}/${season.seasonId}`;
+    const url = `${ Constants.SEASON_URL }/${ season.seasonId }`;
     return this.#dataService.put<Season>(url, season);
   }
-  convertToSeasonApiFormat(season: Season): String {
+  convertToSeasonApiFormat (season: Season): String {
     let body = '{\n';
     const colon = ':';
     const comma = ',\n';
@@ -129,19 +130,18 @@ export class SeasonService {
     body += '"description"' + colon + season.description + comma;
     body += '"fromDate"' + colon + season.fromDate + comma;
     body += '"toDate"' + colon + season.toDate + comma;
-    // "toDate": "2025-03-26T14:40:51.137Z",
-    // "participationFee": 1600,
-    // "sponsorFee": 135,
-    // "convenienceFee": 0,
-    // "currentSeason": true,
-    // "currentSchedule": true,
-    // "currentSignUps": true,
-    // "signUpsDate": "2025-03-26T14:40:51.137Z",
-    // "signUpsEnd": "2025-04-26T14:40:51.137Z",
-    // "testSeason": true,
-    // "newSchoolYear": true,
-    // body += '"createdDate"' + colon +  "2025-03-26T14:40:51.137Z",
-    // "createdUser": "string"
+    body += '"participationFee"' + colon + season.participationFee + comma;
+    body += '"sponsorFee"' + colon + season.sponsorFee + comma;
+    body += '"convenienceFee"' + colon + season.sponsorDiscount + comma;
+    body += '"currentSeason"' + colon + season.currentSchedule + comma;
+    body += '"currentSignUps"' + colon + season.currentSignUps + comma;
+    body += '"currentSeason"' + colon + season.currentSeason + comma;
+    body += '"signUpsDate"' + colon + season.onlineStarts + comma;
+    body += '"signUpsEnd"' + colon + season.onlineStops + comma;
+    body += '"testSeason"' + colon + false + comma;
+    body += '"newSchoolYear"' + colon + false + comma;
+    body += '"createdDate"' + colon + new Date().toISOString() + comma;
+    body += '"createdUser"' + colon + '""' + comma;
 
     return body;
 

@@ -27,122 +27,126 @@
               />
             </mat-form-field>
             <div class="row">
-              <div class="col-5">
-                <mat-form-field>
-                  <mat-label>Season Start</mat-label>
-                  <input
-                    matInput
-                    [matDatepicker]="startDatePicker"
-                    formControlName="startDate"
-                  />
-                  <mat-datepicker-toggle
-                    matSuffix
-                    [for]="startDatePicker"
-                  ></mat-datepicker-toggle>
-                  <mat-datepicker #startDatePicker></mat-datepicker>
-                  <mat-hint>Select the start date for the season</mat-hint>
-                </mat-form-field>
+              <div class="flex">
+                <div class="flex-1">
+                  <mat-form-field>
+                    <mat-label>Season Start</mat-label>
+                    <input
+                      matInput
+                      [matDatepicker]="startDatePicker"
+                      formControlName="startDate"
+                    />
+                    <mat-datepicker-toggle
+                      matSuffix
+                      [for]="startDatePicker"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #startDatePicker></mat-datepicker>
+                    <mat-hint>Select the start date for the season</mat-hint>
+                  </mat-form-field>
+                </div>
+                <div class="flex-1">
+                  <mat-form-field>
+                    <mat-label>Season End</mat-label>
+                    <input
+                      matInput
+                      [matDatepicker]="endDatePicker"
+                      formControlName="endDate"
+                    />
+                    <mat-datepicker-toggle
+                      matSuffix
+                      [for]="endDatePicker"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #endDatePicker></mat-datepicker>
+                  </mat-form-field>
+                </div>
               </div>
-              <div class="col-5">
-                <mat-form-field>
-                  <mat-label>Season End</mat-label>
-                  <input
-                    matInput
-                    [matDatepicker]="endDatePicker"
-                    formControlName="endDate"
-                  />
-                  <mat-datepicker-toggle
-                    matSuffix
-                    [for]="endDatePicker"
-                  ></mat-datepicker-toggle>
-                  <mat-datepicker #endDatePicker></mat-datepicker>
-                </mat-form-field>
+              <div class="flex">
+                <div class="flex-1">
+                  <mat-form-field>
+                    <mat-label>Player Fee</mat-label>
+                    <span matTextPrefix>+1 &nbsp;</span>
+                    <input
+                      matInput
+                      id="playerFee"
+                      type="number"
+                      formControlName="playerFee"
+                      value="playerFee"
+                    />
+                  </mat-form-field>
+                </div>
+                <div class="flex-1">
+                  <mat-form-field>
+                    <mat-label>Sponsor Fee</mat-label>
+                    <span matTextPrefix>+1 &nbsp;</span>
+                    <input
+                      matInput
+                      id="sponsorFee"
+                      type="number"
+                      formControlName="sponsorFee"
+                      value="sponsorFee"
+                    />
+                  </mat-form-field>
+                </div>
+                <div class="flex-1">
+                  <mat-form-field>
+                    <mat-label>Sponsor Discount</mat-label>
+                    <input
+                      matInput
+                      id="sponsorDiscount"
+                      type="text"
+                      formControlName="sponsorDiscount"
+                      value="sponsorDiscount"
+                    />
+                  </mat-form-field>
+                </div>
               </div>
-              <div class="col-4">
-                <mat-form-field>
-                  <mat-label>Player Fee</mat-label>
-                  <span matTextPrefix>+1 &nbsp;</span>
-                  <input
-                    matInput
-                    id="playerFee"
-                    type="number"
-                    formControlName="playerFee"
-                    value="playerFee"
-                  />
-                </mat-form-field>
+              <div class="flex">
+                <div class="flex-1">
+                  <mat-form-field>
+                    <mat-label>Online Start</mat-label>
+                    <input
+                      matInput
+                      [matDatepicker]="onlineStartPicker"
+                      formControlName="signUpStartDate"
+                    />
+                    <mat-datepicker-toggle
+                      matSuffix
+                      [for]="onlineStartPicker"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #onlineStartPicker></mat-datepicker>
+                  </mat-form-field>
+                </div>
+                <div class="flex-1">
+                  <mat-form-field>
+                    <mat-label>Online Stop</mat-label>
+                    <input
+                      matInput
+                      [matDatepicker]="onlineStopPicker"
+                      formControlName="signUpEndDate"
+                    />
+                    <mat-datepicker-toggle
+                      matSuffix
+                      [for]="onlineStopPicker"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #onlineStopPicker></mat-datepicker>
+                  </mat-form-field>
+                </div>
               </div>
-              <div class="col-4">
-                <mat-form-field>
-                  <mat-label>Sponsor Fee</mat-label>
-                  <span matTextPrefix>+1 &nbsp;</span>
-                  <input
-                    matInput
-                    id="sponsorFee"
-                    type="number"
-                    formControlName="sponsorFee"
-                    value="sponsorFee"
-                  />
-                </mat-form-field>
-              </div>
-              <div class="col-4">
-                <mat-form-field>
-                  <mat-label>Sponsor Discount</mat-label>
-                  <input
-                    matInput
-                    id="sponsorDiscount"
-                    type="text"
-                    formControlName="sponsorDiscount"
-                    value="sponsorDiscount"
-                  />
-                </mat-form-field>
-              </div>
-              <div class="col-5">
-                <mat-form-field>
-                  <mat-label>Online Start</mat-label>
-                  <input
-                    matInput
-                    [matDatepicker]="onlineStartPicker"
-                    formControlName="signUpStartDate"
-                  />
-                  <mat-datepicker-toggle
-                    matSuffix
-                    [for]="onlineStartPicker"
-                  ></mat-datepicker-toggle>
-                  <mat-datepicker #onlineStartPicker></mat-datepicker>
-                </mat-form-field>
-              </div>
-              <div class="col-5">
-                <mat-form-field>
-                  <mat-label>Online Stop</mat-label>
-                  <input
-                    matInput
-                    [matDatepicker]="onlineStopPicker"
-                    formControlName="signUpEndDate"
-                  />
-                  <mat-datepicker-toggle
-                    matSuffix
-                    [for]="onlineStopPicker"
-                  ></mat-datepicker-toggle>
-                  <mat-datepicker #onlineStopPicker></mat-datepicker>
-                </mat-form-field>
-              </div>
-              <div class="col-6">
-                <div class="col-11">
-                  <p>
-                    <mat-checkbox formControlName="currentSignUps"
-                      >Current Sign Ups</mat-checkbox
-                    >
-                  </p>
-                  <p>
-                    <mat-checkbox formControlName="currentSeason"
-                      >Current Season</mat-checkbox
-                    >
-                  </p>
-                  <p>
-                    <mat-checkbox formControlName="currentSchedule"
-                      >Current Schedule</mat-checkbox
-                    >
-                  </p>
+              <div class="flex">
+                <div class="flex-1">
+                  <mat-checkbox formControlName="currentSignUps"
+                    >Current Sign Ups</mat-checkbox
+                  >
+                </div>
+                <div class="flex-1">
+                  <mat-checkbox formControlName="currentSeason"
+                    >Current Season</mat-checkbox
+                  >
+                </div>
+                <div class="flex-1">
+                  <mat-checkbox formControlName="currentSchedule"
+                    >Current Schedule</mat-checkbox
+                  >
                 </div>
               </div>
             </div>
