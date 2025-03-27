@@ -60,7 +60,7 @@ export class AdminDashboardComponent implements OnInit {
   selectedDivision!: Division | null;
   filteredGames!: RegularGame[];
   // divisionGames!: RegularGame[];
-  divisionCount = computed(() => (this.#divisionService.seasonDivisions()?.length ?? 0));
+  divisionCount = computed(() => (this.#divisionService.seasonDivisions?.length ?? 0));
 
   selectedTeam!: Team | null;
   selectedSeason = computed(() => this.#seasonService.selectedSeason);

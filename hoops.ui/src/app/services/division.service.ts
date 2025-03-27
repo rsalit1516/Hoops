@@ -5,7 +5,7 @@ import { DataService } from './data.service';
 import { SeasonService } from './season.service';
 import { HttpClient, HttpErrorResponse, httpResource } from '@angular/common/http';
 import {
-  Injectable, computed, effect, inject, signal,
+  Injectable, WritableSignal, computed, effect, inject, signal,
 } from '@angular/core';
 import { of, Subject } from 'rxjs';
 import { select, Store } from '@ngrx/store';
@@ -28,7 +28,14 @@ export class DivisionService {
   #logger = inject(LoggerService);
   selectedSeason = computed(() => this.#seasonService.selectedSeason);
   selectedDivision = signal<Division | undefined>(undefined);
-  seasonDivisions = signal<Division[] | undefined>(undefined);
+  _seasonDivisions: WritableSignal<Division[]> = signal([]);
+  get seasonDivisions() {
+    return this._seasonDivisions.asReadonly();
+  }
+  updateSeasonDivisions(seasonDivisions: Division[]) {
+    this._seasonDivisions.set(seasonDivisions);
+  }
+  // seasonDivisions = signal<Division[] | undefined>(undefined);
   updateSelectedDivision (division: Division) {
     this.selectedDivision.update(() => division);
   }
@@ -120,7 +127,6 @@ export class DivisionService {
     effect(() => {
       const season = this.selectedSeason();
       if (season !== null) {
-        //         this.divisionResource.reload();
         this.getSeasonDivisions(season.seasonId ?? 0);
         this.#logger.log(season);
         //     console.log(this.seasonDivisions());
@@ -176,7 +182,7 @@ export class DivisionService {
     this.#http
       .get<Division[]>(url)
       .subscribe((data) => {
-        this.seasonDivisions.update(() => data);
+        this.updateSeasonDivisions(data);
         this.selectedDivision.update(() => data[0]);
         // this.selectedDivision
         // console.log(this.seasonDivisions());
@@ -185,15 +191,15 @@ export class DivisionService {
       );
   }
 
-  getDvision (division: Division) {
+  getDivision (division: Division) {
     this.selectedIdSubject.next(division);
   }
 
   getCurrentDivisionById (id: number) {
     let division = new Division();
-    console.log(this.seasonDivisions());
+    console.log(this.seasonDivisions);
     console.log(id);
-    for (const item of this.seasonDivisions()!) {
+    for (const item of this.seasonDivisions()) {
       if (item.divisionId === id) {
         division = item;
         console.log(division);

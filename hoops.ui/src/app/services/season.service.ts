@@ -4,7 +4,7 @@ import { catchError } from 'rxjs/operators';
 
 import { Season } from '../domain/season';
 import { DataService } from './data.service';
-import { HttpClient, HttpErrorResponse, httpResource } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, httpResource } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { Constants } from '@app/shared/constants';
@@ -24,7 +24,13 @@ export class SeasonService {
   // selectedSeason?: Season | null;
   season = signal(new Season());
   // public selectedSeason$: Observable<Season>;
-  seasons = signal<Season[] | undefined>(undefined);
+  private _seasons: WritableSignal<Season[]> = signal([]);
+  get seasons(): Season[] {
+    return this._seasons();
+  }
+  updateSeasons(seasons: Season[]) {
+    this._seasons.set(seasons);
+  }
 
   seasons$ = this.#http.get<Season[]>(this.#seasonsUrl).pipe(
     // tap(data => console.log('All seasons: ' + JSON.stringify(data))),
@@ -86,7 +92,7 @@ export class SeasonService {
   fetchSeasons (): void {
     this.getSeasons().subscribe({
       next: (seasons) => {
-        this.seasons.set(seasons);
+        this.updateSeasons(seasons);
       },
     });
   }
@@ -97,10 +103,6 @@ export class SeasonService {
     // tap(data => console.log('All: ' + JSON.stringify(this.seasons()))),
     // catchError(this.#dataService.handleError('getSeasons', []))
     // );
-  }
-
-  reloadSeasons () {
-    // this.seasonResource.reload();
   }
 
   // getSeason(id: number): Observable<Season> {
@@ -114,38 +116,45 @@ export class SeasonService {
     return this.#dataService.post<Season>(Constants.SEASON_URL, season);
   }
 
-  putSeason (season: Season): Observable<Season> {
+  putSeason (season: Season): void {
     console.log('putting season', season);
-    console.log(this.convertToSeasonApiFormat(season));
-    const url = `${ Constants.SEASON_URL }/${ season.seasonId }`;
-    return this.#dataService.put<Season>(url, season);
+    const _season = this.convertToSeasonApiFormat(season);
+    console.log(_season);
+
+    console.log(this.#dataService.httpOptions);
+    const url = `${Constants.SEASON_URL}${season.seasonId}`;
+    console.log(url);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    this.#dataService.put<Season>(url, season).subscribe({
+      next: () => {
+        console.log('Season updated', season);
+      }
+    });
+    // this.#dataService.put<Season>(url, season);
   }
-  convertToSeasonApiFormat (season: Season): String {
-    let body = '{\n';
-    const colon = ':';
-    const comma = ',\n';
-
-    body += '"seasonId"' + colon + season.seasonId + comma;
-    body += '"companyId"' + colon + 1 + comma;
-    body += '"description"' + colon + season.description + comma;
-    body += '"fromDate"' + colon + season.fromDate + comma;
-    body += '"toDate"' + colon + season.toDate + comma;
-    body += '"participationFee"' + colon + season.participationFee + comma;
-    body += '"sponsorFee"' + colon + season.sponsorFee + comma;
-    body += '"convenienceFee"' + colon + season.sponsorDiscount + comma;
-    body += '"currentSeason"' + colon + season.currentSchedule + comma;
-    body += '"currentSignUps"' + colon + season.currentSignUps + comma;
-    body += '"currentSeason"' + colon + season.currentSeason + comma;
-    body += '"signUpsDate"' + colon + season.onlineStarts + comma;
-    body += '"signUpsEnd"' + colon + season.onlineStops + comma;
-    body += '"testSeason"' + colon + false + comma;
-    body += '"newSchoolYear"' + colon + false + comma;
-    body += '"createdDate"' + colon + new Date().toISOString() + comma;
-    body += '"createdUser"' + colon + '""' + comma;
-
-    return body;
-
-
+  convertToSeasonApiFormat (season: Season): Record<string, any> {
+    return {
+      seasonId: season.seasonId,
+      companyId: 1,
+      description: season.description,
+      fromDate: season.fromDate,
+      toDate: season.toDate,
+      participationFee: season.participationFee,
+      sponsorFee: season.sponsorFee,
+      convenienceFee: season.sponsorDiscount,
+      currentSeason: season.currentSchedule,
+      currentSignUps: season.currentSignUps,
+      signUpsDate: season.onlineStarts,
+      signUpsEnd: season.onlineStops,
+      testSeason: false,
+      newSchoolYear: false,
+      createdDate: new Date().toISOString(),
+      createdUser: ""
+    };
   }
 }
 export interface SeasonResponse {

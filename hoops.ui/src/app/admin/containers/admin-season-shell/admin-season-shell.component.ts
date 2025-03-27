@@ -55,7 +55,7 @@ export class AdminSeasonShellComponent implements OnInit, AfterViewInit {
   currentSeason$!: Observable<Season>;
   seasons$!: Observable<Season[]>;
   title = 'Seasons';
-  selectedSeason = computed(() => this.#seasonService.selectedSeason);
+  // selectedSeason = computed(() => this.#seasonService.selectedSeason);
   // isSidenavOpen = false;
   // @ViewChild('sidenav') sidenav!: MatSidenav;
   // @ViewChild('firstPanel') firstPanel!: MatExpansionPanel;

@@ -37,9 +37,11 @@ export class DataService {
 
   standingsUrl = this.baseUrl + '/api/ScheduleGame/getStandings';
 
-  httpOptions = new HttpHeaders({
-    'Content-Type': 'application/json'
-  });
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+  }
 
 
   constructor () {
@@ -50,7 +52,7 @@ export class DataService {
 
   get (url: string, data: string) {
     return this.#http
-      .get(url, { headers: this.httpOptions })
+      .get(url, this.httpOptions)
       .pipe(
         tap((data) => {
           console.log('getContent: ' + JSON.stringify(data))
@@ -62,7 +64,7 @@ export class DataService {
     console.log(data);
     console.log(url);
     return this.#http
-      .post<T>(url, data, { headers: this.httpOptions })
+      .post<T>(url, data, this.httpOptions )
       .pipe(
         tap((data) => console.log('PostContent: ' + JSON.stringify(data))),
         catchError(this.handleError('Error', data)));
@@ -72,7 +74,7 @@ export class DataService {
     console.log(data);
     // let url = this.data.putContentUrl + content.webContentId;
     return this.#http
-      .put<T>(url, data, { headers: this.httpOptions });
+      .put<T>(url, data, this.httpOptions);
       //.put<T>(url, data)
       // .pipe(
       //   tap((data) => console.log('updateContent: ' + JSON.stringify(data))),
@@ -87,7 +89,7 @@ export class DataService {
   delete (url: string) {
     console.log(url);
     return this.#http
-      .delete(url, { headers: this.httpOptions })
+      .delete(url, this.httpOptions )
       .pipe(
         tap(data => console.log('deleteContent: ' + JSON.stringify(data))),
         // catchError(this.handleError('deleteContent', []))

@@ -43,7 +43,7 @@ export class AdminSeasonListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort = inject(MatSort);
   showFirstLastButtons = true;
   pageSize = 10;
-  seasons = computed(() => this.#seasonService.seasons());
+  seasons = computed(() => this.#seasonService.seasons);
 
   dataSource = new MatTableDataSource<Season>(this.seasons());
 
@@ -73,6 +73,7 @@ export class AdminSeasonListComponent implements OnInit, AfterViewInit {
   }
   edit(row: Season) {
     this.#seasonService.selectSeason(row);
+    console.log(row);
     // this.#store.dispatch(new adminActions.SetSelectedSeason(row));
     this.#router.navigate(['./admin/seasons/edit']);
 

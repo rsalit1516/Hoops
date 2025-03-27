@@ -66,7 +66,7 @@ export class SeasonAddEditComponent implements OnInit {
     sponsorDiscount: [ '' ],
     signUpStartDate: [ '' ],
     signUpEndDate: [ '' ],
-    gameSchedules: [ '' ],
+    // gameSchedules: [ '' ],
     currentSeason: [ '' ],
     currentSchedule: [ '' ],
     currentSignUps: [ '' ],
@@ -103,7 +103,7 @@ export class SeasonAddEditComponent implements OnInit {
       sponsorDiscount: this.selectedSeason().sponsorDiscount,
       signUpStartDate: this.selectedSeason().onlineStarts,
       signUpEndDate: this.selectedSeason().onlineStops,
-      gameSchedules: this.selectedSeason().gameSchedules,
+      // gameSchedules: this.selectedSeason().gameSchedules,
       currentSeason: this.selectedSeason().currentSeason,
       currentSchedule: this.selectedSeason().currentSchedule,
       currentSignUps: this.selectedSeason().currentSignUps,
@@ -126,16 +126,16 @@ export class SeasonAddEditComponent implements OnInit {
     let _season = new Season();
     _season.description = value.name;
     _season.seasonId = value.seasonId;
-    _season.fromDate = value.startDate;
-    _season.toDate = value.endDate;
-    _season.participationFee = value.playerFee;
-    _season.sponsorFee = value.sponsorFee;
-    _season.sponsorDiscount = value.sponsorDiscount;
-    _season.onlineStarts = value.signUpStartDate;
-    _season.onlineStops = value.signUpEndDate;
-    _season.gameSchedules = value.gameSchedules;
+    _season.fromDate = value.startDate != undefined ? value.startDate : null;
+    _season.toDate = value.endDate != undefined ? value.endDate : null;
+    _season.participationFee = value.playerFee != undefined ? value.playerFee : 0;
+    _season.sponsorFee = value.sponsorFee != undefined ? value.sponsorFee : 0;
+    _season.sponsorDiscount = value.sponsorDiscount != undefined ? value.sponsorDiscount : 0;
+    _season.onlineStarts = value.signUpStartDate != undefined ? value.signUpStartDate : null;
+    _season.onlineStops = value.signUpEndDate != undefined ? value.signUpEndDate : null;
+    // _season.gameSchedules = value.gameSchedules;
     _season.currentSeason = value.currentSeason;
-    _season.onlineRegistration = value.onlineRegistration;
+    _season.onlineRegistration = value.onlineRegistration !== undefined ? value.onlineRegistration : false;
     this.#seasonService.season = signal(_season);
     console.log(_season);
     if (_season.seasonId === 0) {

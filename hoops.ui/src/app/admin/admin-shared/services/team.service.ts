@@ -69,7 +69,7 @@ export class TeamService {
       .post<Team>(
         this.dataService.teamPostUrl,
         team,
-        { headers: this.dataService.httpOptions }
+         this.dataService.httpOptions
       )
       .pipe(catchError(this.dataService.handleError('addTeam', team)));
   }
@@ -96,7 +96,7 @@ export class TeamService {
       .put<Team>(
         this.dataService.teamPutUrl + team.teamId,
         team,
-        {headers: this.dataService.httpOptions}
+        this.dataService.httpOptions
       )
       .pipe(catchError(this.dataService.handleError('updateTeam', team)));
   }

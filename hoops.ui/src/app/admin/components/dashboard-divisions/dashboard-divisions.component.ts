@@ -20,7 +20,7 @@ import { DivisionService } from '@app/services/division.service';
 export class DashboardDivisionsComponent {
   readonly #divisionService = inject(DivisionService);
   readonly router = inject(Router);
-  divisionCount = computed(() => (this.#divisionService.seasonDivisions()?.length ?? 0));
+  divisionCount = computed(() => (this.#divisionService.seasonDivisions?.length ?? 0));
   seasonDivisions = this.#divisionService.seasonDivisions;
   selectedDivision: Division | undefined;
 
