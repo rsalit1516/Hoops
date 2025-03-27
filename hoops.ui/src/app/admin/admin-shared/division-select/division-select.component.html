@@ -8,7 +8,7 @@
     <mat-option [value]="null" (click)="changeDivision(null)">
       All
     </mat-option>
-    @for( division of divisions$ | async; track division) {
+    @for( division of divisionService.seasonDivisions(); track division) {
     <mat-option [value]="division" (click)="changeDivision(division)">
       {{ division.divisionDescription }}
     </mat-option>
