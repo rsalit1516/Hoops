@@ -25,10 +25,10 @@ export class SeasonService {
   season = signal(new Season());
   // public selectedSeason$: Observable<Season>;
   private _seasons: WritableSignal<Season[]> = signal([]);
-  get seasons(): Season[] {
+  get seasons (): Season[] {
     return this._seasons();
   }
-  updateSeasons(seasons: Season[]) {
+  updateSeasons (seasons: Season[]) {
     this._seasons.set(seasons);
   }
 
@@ -122,7 +122,7 @@ export class SeasonService {
     console.log(_season);
 
     console.log(this.#dataService.httpOptions);
-    const url = `${Constants.SEASON_URL}${season.seasonId}`;
+    const url = `${ Constants.SEASON_URL }${ season.seasonId }`;
     console.log(url);
     const httpOptions = {
       headers: new HttpHeaders({

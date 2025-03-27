@@ -1,14 +1,14 @@
-  <mat-form-field>
-    <mat-label>Season</mat-label>
-    <mat-select
-      [(value)]="selectedSeason"
-      (selectionChange)="onChange($event.value)"
-      class="form-control"
-    >
-      @for( season of seasons; track season) {
-      <mat-option [value]="season.seasonId" (click)="changeSeason(season)">
-        {{ season.description }}
-      </mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
+<mat-form-field>
+  <mat-label>Season</mat-label>
+  <mat-select
+    [(value)]="selectedSeason"
+    (selectionChange)="onChange($event.value)"
+    class="form-control"
+  >
+    @for( season of seasonService.seasons; track season) {
+    <mat-option [value]="season.seasonId" (click)="changeSeason(season)">
+      {{ season.description }}
+    </mat-option>
+    }
+  </mat-select>
+</mat-form-field>

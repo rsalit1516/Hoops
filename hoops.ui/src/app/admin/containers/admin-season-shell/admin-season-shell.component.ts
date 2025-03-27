@@ -28,13 +28,13 @@ import { SeasonAddEditComponent } from '@app/admin/components/season-add-edit/se
     <h2>{{title}}</h2>
     <router-outlet></router-outlet>
   </section>`,
-  styleUrls: [ './admin-season-shell.component.scss',
+  styleUrls: ['./admin-season-shell.component.scss',
     '../../admin.component.scss',
     '../../containers/admin-shell/admin-shell.component.scss',
     '../../../shared/scss/cards.scss',
     '../../../shared/scss/sidenav.scss',
   ],
-  imports: [ CommonModule, AdminGamesRoutingModule,
+  imports: [CommonModule, AdminGamesRoutingModule,
     RouterOutlet,
     AdminSeasonListComponent,
     MatSidenavModule,
@@ -60,12 +60,12 @@ export class AdminSeasonShellComponent implements OnInit, AfterViewInit {
   // @ViewChild('sidenav') sidenav!: MatSidenav;
   // @ViewChild('firstPanel') firstPanel!: MatExpansionPanel;
 
-  constructor(private store: Store<fromAdmin.State>) {
+  constructor (private store: Store<fromAdmin.State>) {
     effect(() => {
       const record = this.#seasonService.selectedSeason;
       console.log('Selected record changed:', record);
       if (record !== null) {
-        console.log(`Record updated: ${record.description}`);
+        console.log(`Record updated: ${ record.description }`);
         // this.isSidenavOpen = true;
         // Allow the sidenav to open first, then expand the first panel
         // setTimeout(() => {
@@ -85,11 +85,11 @@ export class AdminSeasonShellComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngOnInit() {
-    this.#seasonService.fetchSeasons();
+  ngOnInit () {
+    // this.#seasonService.fetchSeasons();
     this.setStateSubscriptions();
   }
-  ngAfterViewInit() {
+  ngAfterViewInit () {
     // Ensure the first panel expands when the sidenav opens
     // this.sidenav.openedStart.subscribe(() => {
     //   if (this.firstPanel) {
@@ -98,7 +98,7 @@ export class AdminSeasonShellComponent implements OnInit, AfterViewInit {
     // });
 
   }
-  setStateSubscriptions() {
+  setStateSubscriptions () {
     // this.currentSeason$ = this.store.pipe(select(fromAdmin.getCurrentSeason));
     // this.seasons$ = this.store.pipe(select(fromAdmin.getSeasons));
   }

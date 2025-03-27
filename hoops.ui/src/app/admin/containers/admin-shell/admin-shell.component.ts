@@ -51,7 +51,7 @@ export class AdminShellComponent implements OnInit {
   showColors = false;
   showUsers = false;
   shouldRun = true;
-  seasonService = inject(SeasonService);
+  readonly #seasonService = inject(SeasonService);
   colorService = inject(ColorService);
   locationService = inject(LocationService);
   store = inject(Store<fromAdmin.State>);
@@ -62,23 +62,25 @@ export class AdminShellComponent implements OnInit {
   // selectedSeason = toSignal(this.store.select(fromAdmin.getSelectedSeason));
 
   constructor () {
-    this.store.dispatch(new adminActions.LoadSeasons());
+    //    this.store.dispatch(new adminActions.LoadSeasons());
   }
 
   ngOnInit () {
-    this.seasonService.getCurrentSeason().subscribe((season) => {
-      this.seasonService.selectSeason(season!);
+    this.#seasonService.fetchSeasons();
+
+    this.#seasonService.getCurrentSeason().subscribe((season) => {
+      this.#seasonService.selectSeason(season!);
       // this.divisionService.season = season;
       // this.divisionService.getDivisionsData(season!.seasonId!);
       // console.log(season);
       // console.log(this.divisionService.divisions());
     });
     // this.store.dispatch(new adminActions.LoadSeasons());
-    this.seasonService.getSeasons();
+    this.#seasonService.getSeasons();
     // this.store.select(fromAdmin.getSeasons).subscribe((seasons) => {
-      // console.log('triggering seasons');
-      // this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
-        // console.log(season);
+    // console.log('triggering seasons');
+    // this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
+    // console.log(season);
     //     if (season.seasonId === undefined) {
     //       for (let i = 0; i < seasons.length; i++) {
     //         if (seasons[i].currentSeason === true) {
@@ -92,28 +94,28 @@ export class AdminShellComponent implements OnInit {
     //   });
     // });
     // this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
-      // console.log(season);
-      // if (season.seasonId !== undefined) {
-      //   if (season.seasonId !== 0) {
-          // this.store.dispatch(new adminActions.LoadDivisions());
-          // this.store.dispatch(new adminActions.LoadSeasonTeams());
-          // this.store.dispatch(new adminActions.LoadGames());
-          // this.store.dispatch(new adminActions.LoadPlayoffGames());
-          // this.store
-          //   .select(fromAdmin.getSeasonDivisions)
-          //   .subscribe((divisions) => {
-          //     this.store.dispatch(
-          //       new adminActions.SetSelectedDivision(divisions[0])
-          //     );
-          //   });
+    // console.log(season);
+    // if (season.seasonId !== undefined) {
+    //   if (season.seasonId !== 0) {
+    // this.store.dispatch(new adminActions.LoadDivisions());
+    // this.store.dispatch(new adminActions.LoadSeasonTeams());
+    // this.store.dispatch(new adminActions.LoadGames());
+    // this.store.dispatch(new adminActions.LoadPlayoffGames());
+    // this.store
+    //   .select(fromAdmin.getSeasonDivisions)
+    //   .subscribe((divisions) => {
+    //     this.store.dispatch(
+    //       new adminActions.SetSelectedDivision(divisions[0])
+    //     );
+    //   });
 
-          // this.store
-          //   .select(fromAdmin.getSelectedDivision)
-          //   .subscribe((division) => {
-          //     if (division !== undefined) {
-          //       this.store.dispatch(new adminActions.LoadDivisionTeams());
-          //     }
-          //   });
+    // this.store
+    //   .select(fromAdmin.getSelectedDivision)
+    //   .subscribe((division) => {
+    //     if (division !== undefined) {
+    //       this.store.dispatch(new adminActions.LoadDivisionTeams());
+    //     }
+    //   });
     //     }
     //   }
     // });
