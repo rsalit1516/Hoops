@@ -63,6 +63,7 @@ $select-font-size: 0.8rem;
 
 /* admin */
 $admin-background-color: color.adjust(black, $lightness: 15%);
+
 $admin-font-color: white;
 $admin-table-background-color: color.adjust(
   $black,
@@ -72,6 +73,7 @@ $admin-card-background-color: color.adjust(
   $black,
   $lightness: $default-lighten
 );
+$admin-input-background-color: rgb(58, 56, 56);
 $admin-table-background-color-border: color.adjust(black, $lightness: 5%);
 $admin-input-hint-color: rgb(208, 208, 191);
 $admin-input-hint-font-size: 0.8rem;
