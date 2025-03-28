@@ -91,42 +91,17 @@ export class AdminGamesShellComponent implements OnInit {
   }
 
   ngOnInit (): void {
-    this.#store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
-      console.log(division);
-      if (division !== undefined) {
-        this.#store.dispatch(new adminActions.LoadDivisionGames());
-        this.#store.dispatch(new adminActions.LoadDivisionTeams());
-        this.#store.dispatch(new adminActions.LoadPlayoffGames());
-        this.gameService.selectedDivision.set(division);
-        this.gameService.filteredGames();
-        console.log(this.gameService.filteredGames());
-      }
-    });
-    this.#store.select(fromAdmin.getSelectedTeam).subscribe((team) => {
-      console.log(team);
-      if (team !== undefined) {
-        this.#store.dispatch(new adminActions.LoadTeamGames());
-        // this.store.dispatch(new adminActions.LoadDivisionTeams());
-      }
-    });
-    this.#store.select(fromAdmin.getGameType).subscribe((gameType) => {
-      console.log(gameType);
-      console.log((gameType === 'Regular Season'));
-      this.showPlayoffs = (gameType === 'Playoffs');
-      this.showRegularSeason = (gameType === 'Regular Season');
-      if (gameType !== undefined) {
-        console.log('Calling filtered games');
-        this.#store.dispatch(new adminActions.LoadDivisionGames());
-        this.#store.dispatch(new adminActions.LoadDivisionTeams());
-        this.#store.dispatch(new adminActions.LoadPlayoffGames());
-      }
-    });
-    this.#store.select(fromAdmin.getDivisionGames).subscribe((games) => {
-      this.#store.dispatch(new adminActions.SetFilteredGames(games as RegularGame[]));
-    });
-    this.#store.select(fromAdmin.getFilteredGames).subscribe((games) => {
-      this.games = games;
-    });
+    this.gameService.filteredGames();
+    console.log(this.gameService.filteredGames());
+    // console.log((gameType === 'Regular Season'));
+    // this.showPlayoffs = (gameType === 'Playoffs');
+    // this.showRegularSeason = (gameType === 'Regular Season');
+    // if (gameType !== undefined) {
+    //   console.log('Calling filtered games');
+    //   this.#store.dispatch(new adminActions.LoadDivisionGames());
+    //   this.#store.dispatch(new adminActions.LoadDivisionTeams());
+    //   this.#store.dispatch(new adminActions.LoadPlayoffGames());
+    // }
 
   }
   selectedSeason (season: Season) {

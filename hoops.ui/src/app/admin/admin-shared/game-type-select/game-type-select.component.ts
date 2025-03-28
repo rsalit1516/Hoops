@@ -10,7 +10,22 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
   selector: 'game-type-select',
-  templateUrl: './game-type-select.component.html',
+  template: `<mat-form-field>
+  <mat-label>Game Type</mat-label>
+  <mat-select
+    class="form-control"
+    [compareWith]="compareFn"
+    [value]="selectedType"
+    (selectionChange)="onChange($event.value)"
+  >
+    @for( type of gameTypes; track type) {
+    <mat-option [value]="type">
+      {{ type }}
+    </mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+`,
   styleUrls: ['./../../../shared/scss/select.scss',
     '../../../shared/scss/forms.scss'
   ],
