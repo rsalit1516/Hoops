@@ -1,8 +1,8 @@
-<div class="container">
+<div class="container mx-auto w-full">
   <div id="panelContent" class="row">
     <csbc-seasons-toolbar/>
-  <div class="row">
-    <div class="table-wrapper">
+  <div class="flex justify-between items-center">
+    <!-- <div class="table-wrapper"> -->
       <table mat-table id="grdSchedule" matSort [dataSource]="dataSource">
         <ng-container matColumnDef="seasonId">
           <th mat-header-cell mat-sort-header *matHeaderCellDef>ID</th>
@@ -38,5 +38,5 @@
       [showFirstLastButtons]="showFirstLastButtons">
       </mat-paginator>
     </div>
-  </div>
+  <!-- </div> -->
 </div>

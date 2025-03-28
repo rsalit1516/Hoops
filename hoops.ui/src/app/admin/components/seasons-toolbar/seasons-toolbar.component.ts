@@ -24,7 +24,7 @@ import { SeasonService } from '@app/services/season.service';
   template: `
     <mat-toolbar>
   <mat-toolbar-row>
-    <div>
+    <div class="flex">
       <button mat-raised-button type="button" (click)="addSeason()">New</button>
     </div>
   </mat-toolbar-row>

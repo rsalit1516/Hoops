@@ -1,66 +1,55 @@
-<div class="container-fluid wrapper">
+<div class="container mx-auto w-full">
   <div class="row">
-    <div class="col-6">
-      <season-select></season-select>
-    </div>
-    <div class="col-6">
-      <button mat-raised-button color="primary" (click)="addDivision()">
-        Add Division
-      </button>
-    </div>
-    <div class="row">
-      <div class="col-12">
-        <div class="table-wrapper">
-          <table mat-table id="grd" [dataSource]="dataSource">
-            <ng-container matColumnDef="divisionId">
-              <th mat-header-cell *matHeaderCellDef>ID</th>
-              <td mat-cell *matCellDef="let game" class="teamName">
-                {{ game.divisionId }}
-              </td>
-            </ng-container>
-            <ng-container matColumnDef="divisionDescription">
-              <th mat-header-cell *matHeaderCellDef>Division</th>
-              <td mat-cell *matCellDef="let game" class="teamName">
-                {{ game.divisionDescription }}
-              </td>
-            </ng-container>
+    <csbc-division-toolbar />
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <div class="table-wrapper">
+        <table mat-table id="grd" [dataSource]="dataSource">
+          <ng-container matColumnDef="divisionId">
+            <th mat-header-cell *matHeaderCellDef>ID</th>
+            <td mat-cell *matCellDef="let game" class="teamName">
+              {{ game.divisionId }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="divisionDescription">
+            <th mat-header-cell *matHeaderCellDef>Division</th>
+            <td mat-cell *matCellDef="let game" class="teamName">
+              {{ game.divisionDescription }}
+            </td>
+          </ng-container>
 
-            <ng-container matColumnDef="minDate">
-              <th mat-header-cell *matHeaderCellDef>Min Date</th>
-              <td mat-cell *matCellDef="let game" class="teamName">
-                {{ game.minDate | date : "MM/dd/yyyy" }}
-              </td>
-            </ng-container>
-            <ng-container matColumnDef="maxDate">
-              <th mat-header-cell *matHeaderCellDef>Max Date</th>
-              <td mat-cell *matCellDef="let game" class="teamName">
-                {{ game.maxDate | date : "MM/dd/yyyy" }}
-              </td>
-            </ng-container>
-            <ng-container matColumnDef="teams">
-              <th mat-header-cell *matHeaderCellDef></th>
-              <td mat-cell *matCellDef="let row">
-                <button mat-button (click)="viewTeams(row)" color="primary">
-                  Teams
-                </button>
-              </td>
-            </ng-container>
+          <ng-container matColumnDef="minDate">
+            <th mat-header-cell *matHeaderCellDef>Min Date</th>
+            <td mat-cell *matCellDef="let game" class="teamName">
+              {{ game.minDate | date : "MM/dd/yyyy" }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="maxDate">
+            <th mat-header-cell *matHeaderCellDef>Max Date</th>
+            <td mat-cell *matCellDef="let game" class="teamName">
+              {{ game.maxDate | date : "MM/dd/yyyy" }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="teams">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let row">
+              <button mat-button (click)="viewTeams(row)" color="primary">
+                Teams
+              </button>
+            </td>
+          </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr
-              mat-row
-              *matRowDef="let row; columns: displayedColumns"
-              (click)="getRecord(row)"
-            ></tr>
-          </table>
-        </div>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="getRecord(row)"></tr>
+        </table>
+      </div>
 
-        <!-- <div class="col-sm-8">
+      <!-- <div class="col-sm-8">
     <div *ngIf="selectedDivision">
         <csbc-division-detail [division]="selectedDivision"></csbc-division-detail>
     </div>
 </div> -->
-      </div>
     </div>
   </div>
 </div>

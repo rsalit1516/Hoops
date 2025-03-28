@@ -125,7 +125,7 @@ export class DivisionService {
 
   constructor () {
     effect(() => {
-      const season = this.selectedSeason();
+      const season = this.#seasonService.selectedSeason;
       if (season !== null) {
         this.getSeasonDivisions(season.seasonId ?? 0);
         this.#logger.log(season);
@@ -185,7 +185,7 @@ export class DivisionService {
         this.updateSeasonDivisions(data);
         this.selectedDivision.update(() => data[0]);
         // this.selectedDivision
-        // console.log(this.seasonDivisions());
+         console.log(this.seasonDivisions());
       },
         (error) => { catchError(() => of([])) }
       );

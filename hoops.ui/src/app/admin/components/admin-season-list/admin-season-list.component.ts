@@ -30,15 +30,6 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 export class AdminSeasonListComponent implements OnInit, AfterViewInit {
   readonly #seasonService = inject(SeasonService);
   readonly #router = inject(Router);
-  readonly #store = inject(Store<fromAdmin.State>);
-  // private _seasons: WritableSignal<Season[] | undefined> = signal<Season[] | undefined>(undefined);
-  // readonly info = input<string>();
-  // get seasons() {
-  //   return this._seasons();
-  // }
-  // set seasons(seasons: Season[] | undefined) {
-  //   this._seasons.set(seasons);
-  // }
   @ViewChild('seasonPaginator') paginator: MatPaginator = inject(MatPaginator);
   @ViewChild(MatSort) sort: MatSort = inject(MatSort);
   showFirstLastButtons = true;
@@ -55,17 +46,13 @@ export class AdminSeasonListComponent implements OnInit, AfterViewInit {
   ];
 
   constructor() {
-
-    effect(() => {
-      this.dataSource.data = this.seasons()!;
-    });
+    // effect(() => {
+    //   this.dataSource.data = this.seasons()!;
+    // });
   }
 
   ngOnInit() {
     this.dataSource = new MatTableDataSource<Season>(this.seasons());
-
-    // console.log(seasons);
-
   }
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
