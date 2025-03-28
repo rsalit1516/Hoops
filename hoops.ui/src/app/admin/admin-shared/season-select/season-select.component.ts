@@ -1,6 +1,5 @@
-import { Component, inject, OnInit, EventEmitter, Output, computed } from '@angular/core';
+import { Component, inject, OnInit, computed, OnChanges } from '@angular/core';
 
-import { Observable } from 'rxjs';
 import { Season } from '@app/domain/season';
 import { UntypedFormControl, FormsModule } from '@angular/forms';
 import { AdminSeasonService } from '../services/season.service';
@@ -12,7 +11,21 @@ import { SeasonService } from '@app/services/season.service';
 
 @Component({
   selector: 'season-select',
-  templateUrl: './season-select.component.html',
+  template: `<mat-form-field>
+  <mat-label>{{title}}</mat-label>
+  <mat-select
+    [value]="selectedSeason"
+    (selectionChange)="onChange($event.value)"
+    class="form-control"
+  >
+    @for( season of seasonService.seasons; track season) {
+    <mat-option [value]="season.seasonId" (click)="changeSeason(season)">
+      {{ season.description }}
+    </mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+`,
   styleUrls: ['./../../../shared/scss/select.scss',
     './../../../shared/scss/forms.scss'],
   imports: [
@@ -27,47 +40,22 @@ import { SeasonService } from '@app/services/season.service';
 export class SeasonSelectComponent implements OnInit {
   #AdminSeasonService = inject(AdminSeasonService);
   readonly seasonService = inject(SeasonService);
-  seasons$!: Observable<Season[]>;
-  // selectForm!: FormGroup;
   selected: Season | undefined;
   seasonComponent: UntypedFormControl | null | undefined;
-  // seasons: Season[] | undefined;
-  // selectedSeason: number | null = null;
-  // selectedSeason$: Observable<Season> | undefined;
   defaultSeason: Season | undefined;
-  // selectForm!: UntypedFormGroup;
-  selectedValue: number | undefined;
   seasons = this.seasonService.seasons;
   selectedSeason = computed(() => this.seasonService.selectedSeason);
+  title = 'Select Season';
 
-
-  @Output() seasonChanged = new EventEmitter<Season>();
-
-  constructor (
-
-  ) {
-    // this.seasons$ = this.store.select(fromAdmin.getSeasons);
-  }
+  constructor () { }
 
   ngOnInit () {
-    //   this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
-    //     if (season.seasonId !== undefined && season.seasonId !== this.selectedSeason) {
-    //       this.#seasonService.updateSelectedSeason(season);
-    //       this.selectedSeason = season.seasonId;
-    //     }
-    //   });
   }
   changeSeason (season: Season) {
     console.log('Season from changeSeason = ', season);
     this.seasonService.selectSeason(season);
-    // this.store.dispatch(new adminActions.SetSelectedSeason(season));
   }
-  onChange (value: Season) {
-    this.seasonService.selectSeason(value);
-    // this.changeSeason(value);
-    console.log('Season from onChange = ', value);
-    this.seasonChanged.emit(value); // Emit the selected
-    //  season
+  onChange (season: Season) {
+    this.seasonService.selectSeason(season);
   }
-
 }
