@@ -1,9 +1,19 @@
 <mat-toolbar color="primary">
-  <button mat-fab extended type="button" (click)="newGame()"
-  aria-label="Add a game to the season schedule">
+  <button
+    mat-fab
+    extended
+    type="button"
+    (click)="newGame()"
+    aria-label="Add a game to the season schedule"
+  >
     <mat-icon>add</mat-icon>
-    New</button>
-    <season-select (seasonChanged)="handleSeasonChange($event)"></season-select>
-    <game-type-select (gameTypeChanged)="handleGameTypeChange($event)"></game-type-select>
-    <division-select (divisionChanged) = "handleDivisionChange($event)"></division-select>
+    New
+  </button>
+  <season-select />
+  <game-type-select
+    (gameTypeChanged)="handleGameTypeChange($event)"
+  ></game-type-select>
+  <division-select
+    (divisionChanged)="handleDivisionChange($event)"
+  ></division-select>
 </mat-toolbar>

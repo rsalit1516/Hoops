@@ -14,7 +14,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
-import { MatOptionModule } from '@angular/material/core';
+import { MatOptionModule, provideNativeDateAdapter } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { LocationService } from '../../admin-shared/services/location.service';
 import { Division } from '@app/domain/division';
@@ -44,7 +44,9 @@ import { RegularGame } from '@app/domain/regularGame';
     '../../../shared/scss/cards.scss',
     '../../../shared/scss/forms.scss',
     '../../admin.component.scss',
-  ]
+  ],
+  providers: [
+    provideNativeDateAdapter(),],
 })
 export class AdminGameDetailComponent implements OnInit {
   selectedRecord = input.required<RegularGame>();
