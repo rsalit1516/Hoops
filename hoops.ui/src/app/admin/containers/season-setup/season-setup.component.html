@@ -1,9 +1,12 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-4">
+<div class="container mx-auto">
+  <div class="flex">
+<div class="flex-1">
+  <button mat-raised-button (click)="newTeam()">New</button>
+</div>
+    <div class="flex-1">
       <season-select></season-select>
     </div>
-    <div class="col-4">
+    <div class="flex-1">
       <division-select></division-select>
     </div>
     <div class="col-3">
@@ -12,7 +15,7 @@
     </mat-toolbar> -->
     </div>
   </div>
-  <div class="row">
+  <div class="flex flex-wrap -mx-2">
     <div class="col-4">
       <app-admin-team-list></app-admin-team-list>
     </div>

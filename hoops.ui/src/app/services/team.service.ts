@@ -109,4 +109,55 @@ export class TeamService {
   //         map((content: Team[]) => content.find(p => p.id === id))
   //         );
   // }
+  saveTeam(team: Team): void {
+    console.log(team);
+
+    if (team.teamId === 0) {
+      this.addTeam(team).subscribe((team) => {
+        console.log(team);
+        //this.store.dispatch(new adminActions.LoadSeasonTeams());
+      });
+    } else {
+      this.updateTeam(team).subscribe((team) => {
+        // this.store.dispatch(new adminActions.LoadSeasonTeams());
+      });
+    }
+  }
+  addTeam(team: Team): Observable<Team | ArrayBuffer> {
+    console.log(this.#dataService.teamPostUrl);
+    return this.#http
+      .post<Team>(
+        this.#dataService.teamPostUrl,
+        team,
+         this.#dataService.httpOptions
+      )
+      .pipe(catchError(this.#dataService.handleError('addTeam', team)));
+  }
+  // addNewTeamDefaults(team: Team) {
+  //   this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
+  //     let d = division?.divisionId;
+  //     team.divisionId = d as number;
+  //     return team;
+  //   });
+  //   return team;
+  // }
+  // newTeam() {
+  //   let team = new Team();
+  //   team.teamId = 0;
+  //   this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
+  //     let d = division?.divisionId;
+  //     team.divisionId = d as number;
+  //     return team;
+  //   });
+  //   return team;
+  // }
+  updateTeam (team: Team) {
+    return this.#http
+      .put<Team>(
+        this.#dataService.teamPutUrl + team.teamId,
+        team,
+        this.#dataService.httpOptions
+      )
+      .pipe(catchError(this.#dataService.handleError('updateTeam', team)));
+  }
 }
