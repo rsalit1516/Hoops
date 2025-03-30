@@ -22,6 +22,7 @@ import { AuthService } from '@app/services/auth.service';
 import { DivisionService } from '@app/services/division.service';
 import { SeasonService } from '@app/services/season.service';
 import { TeamService } from '@app/services/team.service';
+import { ColorService } from '../services/color.service';
 @Component({
   selector: 'app-admin-team-detail',
   templateUrl: './admin-team-detail.component.html',
@@ -49,14 +50,15 @@ export class AdminTeamDetailComponent implements OnInit {
   readonly #teamService = inject(TeamService);
   readonly #divisionService = inject(DivisionService);
   readonly #seasonService = inject(SeasonService);
+  readonly colorService = inject(ColorService);
   private store = inject(Store<fromAdmin.State>);
   private fb = inject(UntypedFormBuilder);
 
   user = computed(() => this.#authService.currentUser());
   editTeamForm = this.fb.group({
     // teamName: [''],
-    teamNo: [ '' ],
-    color: [ '' ],
+    teamNo: [''],
+    color: [''],
     // coachName: [''],
     // sponsor: [''],
   });
@@ -69,35 +71,35 @@ export class AdminTeamDetailComponent implements OnInit {
 
   title = 'Team';
 
-  constructor(
+  constructor (
 
   ) {
     this.colors$ = this.store.select(fromAdmin.getColors);
   }
 
-  ngOnInit(): void {
+  ngOnInit (): void {
     // this.selectedDivision$.subscribe(
     //   (division) => (this.selectedDivision = division)
     // );
     // this.store.select(fromAdmin.getSelectedTeam).subscribe((team) => {
     const team = this.#teamService.selectedTeam; // this.store.select(fromAdmin.getSelectedTeam);
-      console.log(team);
-      // this.team = team as Team;
-      this.editTeamForm.patchValue({
-        // teamName: team?.teamName,
-        teamNo: team()?.teamNumber,
-        color: team()?.teamColorId,
-        // locationName: game?.locationName,
-        // homeTeam: this.homeTeam?.teamId,
-        // visitorTeam: this.visitorTeam?.teamId,
-      });
+    console.log(team);
+    // this.team = team as Team;
+    this.editTeamForm.patchValue({
+      // teamName: team?.teamName,
+      teamNo: team()?.teamNumber,
+      color: team()?.teamColorId,
+      // locationName: game?.locationName,
+      // homeTeam: this.homeTeam?.teamId,
+      // visitorTeam: this.visitorTeam?.teamId,
+    });
     // });
   }
-  newTeam() {
+  newTeam () {
     this.editTeamForm = this.fb.group({
-      teamName: [ '' ],
-      teamNo: [ '' ],
-      color: [ '' ],
+      teamName: [''],
+      teamNo: [''],
+      color: [''],
     });
     let newTeam = new Team();
 
@@ -106,7 +108,7 @@ export class AdminTeamDetailComponent implements OnInit {
     this.store.dispatch(new adminActions.SetSelectedTeam(newTeam));
 
   }
-  save() {
+  save () {
     let team: Team;
     console.log(this.team)
       ; team = {
@@ -121,5 +123,5 @@ export class AdminTeamDetailComponent implements OnInit {
     this.#teamService.saveTeam(team);
     this.newTeam();
   }
-  cancel() { }
+  cancel () { }
 }
