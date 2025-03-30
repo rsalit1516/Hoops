@@ -137,8 +137,7 @@ export class AdminShellComponent implements OnInit {
     //   });
     // });
 
-    // this.colorService
-    //   .getColors()
+    this.colorService.fetchColors();
     //   .subscribe((colors) =>
     //     this.store.dispatch(new adminActions.SetColors(colors))
     //   );
