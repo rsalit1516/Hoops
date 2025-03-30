@@ -1,11 +1,10 @@
-import { Component, OnInit, computed, effect, inject, input } from '@angular/core';
+import { Component, OnInit, computed, effect, inject, signal } from '@angular/core';
 import { ContentService } from '../../../admin/web-content/content.service';
-import { Store } from '@ngrx/store';
 
-import * as fromHome from '../../state/';
 import { WebContent } from '../../../domain/webContent';
 import { CommonModule } from '@angular/common';
 import { AnnouncementComponent } from '../announcement/announcement.component';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'csbc-announcements',
@@ -20,31 +19,44 @@ export class CsbcAnnouncementsComponent implements OnInit {
   // readonly #store = inject(Store<fromHome.State>);
 
   activeWebContent = computed(() => this.contentService.activeWebContent ?? [] as WebContent[]);
-  activeContent = this.contentService.activeContent;
-  error = this.contentService.error;
-  isloading = this.contentService.isLoading;
   seasonInfoCount = 0 as number;
   latestNewsCount!: number;
   meetingNoticeCount!: number;
-  // activeWebContent = this.#contentService.activeContent();
   errorMessage!: string;
-  // content$ = this.#store.select(fromHome.getContent).pipe(
-  //   map(result => result.filter(c => c.webContentTypeDescription === 'Season Info' || c.webContentTypeDescription === 'Event')),
-  //   map(t => t.sort(this.sortByContentSequence))
-  // );
 
-  webContent: WebContent[] = [];
+  webContent = signal<WebContent[]>([]);
+  contentResource = this.contentService.activeWebContent2;
+  contents = computed(() => this.contentService.contents);
+  // content = this.contentService.activeWebContent2;
+  x: WebContent[] = [];
+  getActiveContent () {
+
+    return this.contentService.getActiveContent().pipe(
+      map((result: WebContent[]) => result.filter((c: WebContent) => c.webContentTypeDescription === 'Season Info' || c.webContentTypeDescription === 'Event')),
+      map((result: WebContent[]) => { this.x = result; return result; }));
+  }
+
   constructor () {
     effect(() => {
-      // console.log(this.webContent);
-      // console.log(this.activeContent());
-      // console.log(this.contentService.activeWebContent());
+      console.log(this.contentService.contents());
+      // console.log(test);
+      // this.content.update(() => test.value() as WebContent[]);
+      // console.log(test.value());
+      // console.log(test.value()?.next);
+      this.webContent.update(() => this.contentService.contents());
+      console.log(this.webContent());
 
-      this.webContent = this.contentService.activeWebContent();
     });
   }
   ngOnInit (): void {
-    // Initialization logic here
+    this.getActiveContent();
+    this.contentService.fetchActiveContents();
+    // this.contentService.getActiveContent()
+    //   .subscribe((data) => {
+    //     console.log(data);
+    //     this.webContent.update(() => data);
+    //   });
+    console.log(this.contents);
   }
   sortByContentSequence (a: { contentSequence: number; }, b: { contentSequence: number; }) {
     if (a.contentSequence < b.contentSequence)
@@ -53,6 +65,7 @@ export class CsbcAnnouncementsComponent implements OnInit {
       return 1;
     return 0;
   }
+
   getWebContent (): void {
     // this.activeWebContent = [];
     // this.#store.select(fromHome.getContent).subscribe(

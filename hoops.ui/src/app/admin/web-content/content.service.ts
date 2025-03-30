@@ -1,18 +1,14 @@
-import { Injectable, WritableSignal, computed, effect, inject, signal } from '@angular/core';
-import { map, tap, shareReplay } from 'rxjs/operators';
+import { Injectable, computed, inject, signal } from '@angular/core';
+import { map, tap } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
 import {
   HttpClient,
-  HttpResponse,
   HttpParams,
-  HttpHeaders,
   httpResource,
-  HttpErrorResponse,
 } from '@angular/common/http';
 
 import { Content } from '../../domain/content';
 import { DataService } from '../../services/data.service';
-import { ConditionalExpr } from '@angular/compiler';
 
 import * as fromContent from '../state';
 import * as contentActions from '../state/admin.actions';
@@ -28,92 +24,48 @@ import { DateTime } from 'luxon';
   providedIn: 'root',
 })
 export class ContentService {
-  readonly http = inject(HttpClient);
+  readonly #http = inject(HttpClient);
   readonly data = inject(DataService);
   readonly store = inject(Store<fromContent.State>);
 
   // private _selectedContent: any;
   selectedContent$!: Observable<any>;
   standardNotice = 1;
-  activeWebContent = signal<WebContent[]>([]);
+  private _activeWebContent = signal<WebContent[]>([]);
+  public get activeWebContent () {
+    return this._activeWebContent;
+  }
+  updateActiveWebContent (value: WebContent[]) {
+    this._activeWebContent.set(value);
+  }
   allWebContent = signal<WebContent[]>([]);
   isActiveContent = signal<boolean>(true);
-  // public get selectedContent(): any {
-  //   return this._selectedContent;
-  // }
   selectedContent = signal<WebContent | undefined>(undefined);
-
-  // public setSelectedContent(value: any): void {
-  //   this.selectedContent.set(value);
-  //   // console.log(value);
-  // }
-
-  // public getSelectedContent(): any {
-  //   return this.selectedContent();
-  // }
-  content$ = this.http.get<WebContent[]>(this.data.getContentUrl).pipe(
-    // tap((data) => console.log('All: ' + JSON.stringify(data))),
-    shareReplay(1),
-    catchError(this.data.handleError('getContents', []))
-  );
-
+  contents = signal<WebContent[]>([]);
   getContents (): Observable<WebContent[]> {
-    return this.http.get<WebContent[]>(this.data.getContentUrl);
+    return this.#http.get<WebContent[]>(this.data.getContentUrl);
   }
-  fetchAllContents() {
-    this.http.get<WebContent[]>(this.data.getContentUrl).subscribe((data) => {
+  fetchAllContents () {
+    this.#http.get<WebContent[]>(this.data.getContentUrl).subscribe((data) => {
       this.allWebContent.update(() => data);
+      this.contents.set(data);
     });
   }
-  retrieveAllContents() {
+  retrieveAllContents () {
     return httpResource<ContentResponse>(() =>
-      `${Constants.getContentUrl}`);
+      `${ Constants.getContentUrl }`);
   }
-  private activeContentResource = httpResource<ContentResponse>(() => `${ Constants.getActiveWebContentUrl }`);
-  activeContent = computed(() => this.activeContentResource.value()?.results ?? [] as WebContent[]);
-  error = computed(() => this.activeContentResource.error() as HttpErrorResponse);
-  // errorMessage = computed(() => setErrorMessage(this.error(), 'Vehicle'));
-  isLoading = computed(() => this.activeContentResource.isLoading);
 
-  contentsS: WritableSignal<WebContent[]> = signal([]);
-  private test = this.content$.subscribe((data) => {
-    this.contentsS.set(data);
-    // console.log(this.contentsS);
-  });
-  constructor() {
+  getActiveContent () {
+    return this.#http.get<WebContent[]>(`${ Constants.getActiveWebContentUrl }`);
   }
   fetchActiveContents () {
-    this.http.get<WebContent[]>(
-      `${ Constants.getActiveWebContentUrl }`)
+    this.getActiveContent()
       .subscribe((data) => {
-        this.activeWebContent.update(() => data);
-       // console.log(this.activeWebContent());
+        console.log('fetchActiveContents: ' + JSON.stringify(data));
+        this.updateActiveWebContent(data);
+        console.log(this._activeWebContent());
       });
-  }
-  getActiveContents (): Observable<WebContent[]> {
-    let filteredContent: WebContent[] = [];
-
-    this.store.select(fromContent.getContentList).subscribe((contents) => {
-      if (contents !== undefined) {
-        const today = DateTime.now().toJSDate();
-        for (let i = 0; i < contents.length; i++) {
-          //console.log(contents[i].expirationDate);
-          const exp = DateTime.fromISO(contents[i].expirationDate.toString());
-          //console.log(exp);
-          const ldateTime = DateTime.fromISO(contents[i].expirationDate.toString()).toJSDate();
-          //console.log(ldateTime);
-          if (ldateTime >= today) {
-            //console.log(contents[i]);
-            filteredContent.push(contents[i]);
-            // console.log(filteredContent);
-          }
-        }
-      }
-    });
-    this.contentsS.set(filteredContent);
-    //console.log(this.contentsS);
-    console.log(filteredContent);
-    return of(filteredContent);
   }
 
   getAllContents (): Observable<WebContent[]> {
@@ -135,7 +87,7 @@ export class ContentService {
     if (webContentId === 0) {
       return of(this.initializeContent());
     }
-    return this.http.get(this.data.getContentUrl).pipe(
+    return this.#http.get(this.data.getContentUrl).pipe(
       tap((data) => {
         // this.store.dispatch(new contentActions.SetAllContent());
         // this.store.dispatch(new contentActions.SetActiveContent());
@@ -144,7 +96,11 @@ export class ContentService {
       catchError(this.data.handleError('getContent', []))
     );
   }
+  private webContentResource = httpResource(() =>
+    `${ Constants.getActiveWebContentUrl }`)
 
+  activeWebContent2 = computed(() => this.webContentResource.value() as
+    WebContent[]);
   deleteContent (webContentId: number | null) {
     console.log('Deleting content');
     let headers = new Headers({ 'Content-Type': 'application/json' });
@@ -200,7 +156,7 @@ export class ContentService {
     let url = Constants.PUT_CONTENT_URL + content.webContentId;
     console.log(url);
     // const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.put<WebContent>(url, content);
+    return this.#http.put<WebContent>(url, content);
 
   }
 
