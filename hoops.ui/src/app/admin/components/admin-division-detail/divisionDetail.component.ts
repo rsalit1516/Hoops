@@ -49,7 +49,7 @@ import { PeopleService } from '@app/services/people.service';
   // providers: [DivisionService, PeopleService],
 })
 export class DivisionDetailComponent implements OnInit {
-  store = inject(Store<fromAdmin.State>);
+  // store = inject(Store<fromAdmin.State>);
   dialog = inject(MatDialog);
   #divisionService = inject(DivisionService);
   #peopleService = inject(PeopleService);
@@ -60,7 +60,7 @@ export class DivisionDetailComponent implements OnInit {
   selectedDivisionDescription: string = ''; // =
   directorId: number = 0;
   division = signal<Division>(new Division());
-  ads = toSignal(this.#peopleService.getADPeople());
+  // ads = toSignal(this.#peopleService.getADPeople());
 
   nameControl = new FormControl('', Validators.required);
   standardDivisions: WritableSignal<string[]> = signal(this.#divisionService.standardDivisions());
@@ -82,9 +82,9 @@ export class DivisionDetailComponent implements OnInit {
     maxDate2: [''], //this.division.maxDate,
     minDate2: [''], //this.division.minDate,
     gender2: [''],
-    director: [''],
-    seasonId: [''], //this.division.seasonId,
-    divisionId: [''], //this.division.seasonId,
+    // director: [''],
+    // seasonId: [''], //this.division.seasonId,
+    // divisionId: [''], //this.division.seasonId,
   });
 
   genders = ['M', 'F'];
