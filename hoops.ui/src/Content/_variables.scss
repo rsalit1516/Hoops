@@ -69,10 +69,8 @@ $admin-table-background-color: color.adjust(
   $black,
   $lightness: $default-lighten
 );
-$admin-card-background-color: color.adjust(
-  $black,
-  $lightness: $default-lighten
-);
+$admin-card-background-color: #424242;
+
 $admin-input-background-color: rgb(58, 56, 56);
 $admin-table-background-color-border: color.adjust(black, $lightness: 5%);
 $admin-input-hint-color: rgb(208, 208, 191);
