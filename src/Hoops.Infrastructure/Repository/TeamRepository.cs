@@ -94,8 +94,6 @@ namespace Hoops.Infrastructure.Repository
         {
             if (team.TeamColorId > 0)
             {
-                // logger.LogInformation(team.TeamColorId.ToString());
-                // logger.LogInformation(team.TeamNumber);
                 var color = colors.FirstOrDefault(c => c.ColorId == team.TeamColorId);
                 if (color != null)
                 {
@@ -103,14 +101,13 @@ namespace Hoops.Infrastructure.Repository
 
                     if (String.IsNullOrEmpty(team.TeamName))
                     {
-                        team.TeamName = color.ColorName.ToUpper() + " (" + team.TeamNumber.ToString() + ")";
+                        team.TeamName = team.TeamColor.ToUpper() + " (" + team.TeamNumber.ToString() + ")";
 
                     }
                     else
                     {
-                        team.TeamName = "(" + team.TeamNumber.ToString() + ")";
+                        team.TeamName = team.TeamName + " (" + team.TeamNumber.ToString() + ")";
                     }
-
                 }
                 else
                 {
@@ -120,6 +117,7 @@ namespace Hoops.Infrastructure.Repository
                     }
                     else
                     {
+                        team.TeamName = team.TeamName + " (" + team.TeamNumber.ToString() + ")";
 
                     }
                 }
@@ -127,7 +125,6 @@ namespace Hoops.Infrastructure.Repository
             }
 
             return team;
-
         }
     }
 }
