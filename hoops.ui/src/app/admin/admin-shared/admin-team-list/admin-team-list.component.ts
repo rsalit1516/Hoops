@@ -13,7 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { TeamService } from '@app/services/team.service';
 
 @Component({
-  selector: 'app-admin-team-list',
+  selector: 'csbc-admin-team-list',
   templateUrl: './admin-team-list.component.html',
   styleUrls: [
     '../../../shared/scss/cards.scss',
@@ -38,28 +38,28 @@ export class AdminTeamListComponent implements OnInit {
   dataSource!: Team[];
   //  teams!: Team[];
   canEdit = true;
-  displayedColumns = ['teamName'];
+  displayedColumns = [ 'teamName', 'teamColor', 'teamNumber' ];
   clickedRows = new Set<Team>();
 
-  constructor () {
+  constructor() {
     effect(() => {
       this.dataSource = this.#teamService.divisionTeams();
     });
   }
 
-  ngOnInit (): void {
+  ngOnInit(): void {
     // this.store.select(fromAdmin.getDivisionTeams).subscribe((teams) => {
     this.dataSource = this.#teamService.divisionTeams();
     // });
   }
 
-  selectRow (row: any) {
+  selectRow(row: any) {
     console.log(row);
-
-    this.store.dispatch(new adminActions.SetSelectedTeam(row));
+    this.#teamService.updateSelectedTeam(row);
+    // this.store.dispatch(new adminActions.SetSelectedTeam(row));
   }
-  editTeam (team: Team) { }
-  newTeam () {
+  editTeam(team: Team) { }
+  newTeam() {
 
   }
 }

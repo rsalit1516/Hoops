@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Team } from '@app/domain/team';
 import { Store } from '@ngrx/store';
-import { TeamService } from '../../admin-shared/services/team.service';
+import { TeamService } from '@app/services/team.service';
 import * as fromAdmin from '../../state';
 import * as adminActions from '../../state/admin.actions';
 import { AdminTeamDetailComponent } from '../../admin-shared/admin-team-detail/admin-team-detail.component';
@@ -28,6 +28,7 @@ export class SeasonSetupComponent implements OnInit {
 
   ngOnInit() {
     //    this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
+    this.teamService.updateAllTeams(false);
     const division = this.#divisionService.selectedDivision(); // Use the division service to get the selected division
     // console.log(division);
     //   if (division !== undefined) {
