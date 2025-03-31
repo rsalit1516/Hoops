@@ -24,6 +24,6 @@ export class DashboardTeamsComponent {
   selectedTeam: Team | undefined;
   teamCount = this.divisionTeams?.length;
   setTeam (team: Team) {
-    this.#teamService.selectedTeam.update(() => team);
+    this.#teamService.updateSelectedTeam(team);
   }
 }

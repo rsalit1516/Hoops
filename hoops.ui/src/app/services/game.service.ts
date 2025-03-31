@@ -91,7 +91,7 @@ export class GameService {
   errorMessage = computed(() => setErrorMessage(this.error(), 'Game'));
   isLoading = this.gamesResource.isLoading;
   dailySchedule = signal<RegularGame[][]>([]);
-  selectedTeam = computed(() => this.#teamService.selectedTeam());
+  selectedTeam = computed(() => this.#teamService.selectedTeam);
   teamGames = signal<RegularGame[]>([]);
   constructor () {
     // this._gameUrl = this.dataService.webUrl + '/api/gameschedule';

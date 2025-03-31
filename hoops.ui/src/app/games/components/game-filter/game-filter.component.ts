@@ -44,7 +44,7 @@ export class GameFilterComponent implements OnInit {
   showAllTeams!: boolean;
   // readonly selectedTeam = output<Team>();
   selectedDivision = computed(() => this.#divisionService.selectedDivision);
-  selectedTeam = computed(() => this.#teamService.selectedTeam());
+  selectedTeam = computed(() => this.#teamService.selectedTeam);
 
   division = this.selectedDivision();
   team = this.selectedTeam();
@@ -85,7 +85,7 @@ export class GameFilterComponent implements OnInit {
   onTeamChange (val: Team) {
     if (val !== undefined) {
       this.currentTeam = val;
-      this.#teamService.selectedTeam.update(() => val);
+      this.#teamService.updateSelectedTeam(val);
       // this.gameStore.dispatch(new gameActions.SetCurrentTeam(val));
       // this.store.dispatch(new gameActions.LoadTeamGames);
     }

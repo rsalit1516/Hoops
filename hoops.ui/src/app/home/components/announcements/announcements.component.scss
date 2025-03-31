@@ -2,14 +2,18 @@
 @use '../../../../Content/_variables' as v;
 
 .announcements {
-  padding-top:2px;
-  margin-top:2px;
+  padding-top: 2px;
+  padding-bottom: 8px;
+  margin-top: 2px;
+  margin-bottom: 16px;
 }
+
 .panel-title {
   font-size: 1.2rem;
   text-align: center;
   background-color: #424242;
 }
+
 .mat-card-title {
   font-size: 1.5rem;
   font-weight: 720;
@@ -20,10 +24,12 @@
   padding-right: auto;
   margin: auto;
 }
+
 .mat-card-header {
   text-align: center;
   margin: auto;
 }
+
 .mat-card-header-text {
   margin: auto !important;
 }
@@ -33,16 +39,19 @@
   color: v.$font-color-text;
   font-weight: 400;
 }
+
 .top-padding {
   margin-top: 24px;
   padding-left: auto;
   padding-right: auto;
 }
+
 .sub-title {
   font-weight: 700;
   font-size: 1.1em;
 }
+
 .contentText {
-  padding-top:12px;
-  padding-bottom:12px;
+  padding-top: 12px;
+  padding-bottom: 12px;
 }

@@ -87,8 +87,8 @@ export class AdminTeamDetailComponent implements OnInit {
     // this.team = team as Team;
     this.editTeamForm.patchValue({
       // teamName: team?.teamName,
-      teamNo: team()?.teamNumber,
-      color: team()?.teamColorId,
+      teamNo: team?.teamNumber,
+      color: team?.teamColorId,
       // locationName: game?.locationName,
       // homeTeam: this.homeTeam?.teamId,
       // visitorTeam: this.visitorTeam?.teamId,

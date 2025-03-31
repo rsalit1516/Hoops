@@ -34,6 +34,7 @@ export class TeamListComponent implements OnInit {
     'teamId',
     'name',
     'teamColorId',
+    'teamNumber',
   ];
   dataSource!: MatTableDataSource<Team>;
   constructor () { }
