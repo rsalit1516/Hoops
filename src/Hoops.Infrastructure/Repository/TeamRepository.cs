@@ -61,14 +61,16 @@ namespace Hoops.Infrastructure.Repository
             {
                 var teamDiv = context.Teams
                 .Where(team => team.DivisionId == division.DivisionId);
-                var test = from team in teamDiv 
-                select new Team() { SeasonId = team.SeasonId,
-                DivisionId = team.DivisionId,
-                TeamName = team.TeamName,
-                TeamColor = team.TeamColor,
-                TeamColorId = team.TeamColorId,
-                TeamNumber = team.TeamNumber 
-                };
+                var test = from team in teamDiv
+                           select new Team()
+                           {
+                               SeasonId = team.SeasonId,
+                               DivisionId = team.DivisionId,
+                               TeamName = team.TeamName,
+                               TeamColor = team.TeamColor,
+                               TeamColorId = team.TeamColorId,
+                               TeamNumber = team.TeamNumber
+                           };
                 // logger.LogInformation("Division: " + division.DivisionId.ToString() + ": " + division.DivisionDescription);
                 foreach (Team team in teamDiv)
                 {
@@ -82,15 +84,13 @@ namespace Hoops.Infrastructure.Repository
             return teams ?? new List<Team>();
         }
 
-    public IQueryable<Team> GetDivisionTeams(int divisionId)
-    {
-        var teams = context.Teams
-                    .Where(s => s.DivisionId == divisionId);
-        return teams;
-    }
-    public Team ConvertRecordForTeamNumber(Team team, List<Color> colors)
-    {
-        if (String.IsNullOrEmpty(team.TeamName))
+        public IQueryable<Team> GetDivisionTeams(int divisionId)
+        {
+            var teams = context.Teams
+                        .Where(s => s.DivisionId == divisionId);
+            return teams;
+        }
+        public Team ConvertRecordForTeamNumber(Team team, List<Color> colors)
         {
             if (team.TeamColorId > 0)
             {
@@ -99,21 +99,36 @@ namespace Hoops.Infrastructure.Repository
                 var color = colors.FirstOrDefault(c => c.ColorId == team.TeamColorId);
                 if (color != null)
                 {
-                    team.TeamName = color.ColorName.ToUpper() + " (" + team.TeamNumber.ToString() + ")";
-                    
-                            team.TeamColor = color.ColorName;
-                    
-                team.TeamColor = color.ColorName;
-                 } else {
-                        team.TeamColor = "";
+                    team.TeamColor = color.ColorName;
 
-                 }
-            }
-            else
+                    if (String.IsNullOrEmpty(team.TeamName))
+                    {
+                        team.TeamName = color.ColorName.ToUpper() + " (" + team.TeamNumber.ToString() + ")";
+
+                    }
+                    else
+                    {
+                        team.TeamName = "(" + team.TeamNumber.ToString() + ")";
+                    }
+
+                }
+                else
+                {
+                    if (String.IsNullOrEmpty(team.TeamName))
+                    {
+                        team.TeamName = "(" + team.TeamNumber.ToString() + ")";
+                    }
+                    else
+                    {
+
+                    }
+                }
                 team.TeamName = team.TeamNumber;
+            }
+
+            return team;
+
         }
-        return team;
     }
-}
 }
 

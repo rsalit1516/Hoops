@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit } from '@angular/core';
+import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 import { UntypedFormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Color } from '@app/domain/color';
 import { Division } from '@app/domain/division';
@@ -23,6 +23,7 @@ import { DivisionService } from '@app/services/division.service';
 import { SeasonService } from '@app/services/season.service';
 import { TeamService } from '@app/services/team.service';
 import { ColorService } from '../services/color.service';
+import { LocationService } from '../services/location.service';
 @Component({
   selector: 'app-admin-team-detail',
   templateUrl: './admin-team-detail.component.html',
@@ -51,6 +52,7 @@ export class AdminTeamDetailComponent implements OnInit {
   readonly #divisionService = inject(DivisionService);
   readonly #seasonService = inject(SeasonService);
   readonly colorService = inject(ColorService);
+  readonly locationService = inject(LocationService);
   private store = inject(Store<fromAdmin.State>);
   private fb = inject(UntypedFormBuilder);
 
@@ -62,8 +64,14 @@ export class AdminTeamDetailComponent implements OnInit {
     // coachName: [''],
     // sponsor: [''],
   });
-  colors$: Observable<Color[]>;
-  team: Team | undefined;
+  // colors$: Observable<Color[]>;
+  _team = signal<Team | undefined>(undefined);
+  get team() {
+    return this._team();
+  }
+  updateTeam(val: Team) {
+    this._team.set(val);
+  }
   selectedDivision$ = this.store.select(fromAdmin.getSelectedDivision);
   selectedSeason$ = this.store.select(fromAdmin.getSelectedSeason);
   selectedSeason = computed(() => this.#seasonService.selectedSeason);
@@ -71,10 +79,12 @@ export class AdminTeamDetailComponent implements OnInit {
 
   title = 'Team';
 
-  constructor (
-
-  ) {
-    this.colors$ = this.store.select(fromAdmin.getColors);
+  constructor() {
+    // this.colors$ = this.store.select(fromAdmin.getColors);
+    effect(() => {
+      // this.updateTeam(this.#teamService.selectedTeam!);
+      this.patchTeamForm(this.#teamService.selectedTeam!);//
+    });
   }
 
   ngOnInit (): void {
@@ -82,18 +92,21 @@ export class AdminTeamDetailComponent implements OnInit {
     //   (division) => (this.selectedDivision = division)
     // );
     // this.store.select(fromAdmin.getSelectedTeam).subscribe((team) => {
-    const team = this.#teamService.selectedTeam; // this.store.select(fromAdmin.getSelectedTeam);
-    console.log(team);
+    // const team = this.#teamService.selectedTeam; // this.store.select(fromAdmin.getSelectedTeam);
+    // console.log(team);
     // this.team = team as Team;
-    this.editTeamForm.patchValue({
-      // teamName: team?.teamName,
-      teamNo: team?.teamNumber,
-      color: team?.teamColorId,
-      // locationName: game?.locationName,
-      // homeTeam: this.homeTeam?.teamId,
-      // visitorTeam: this.visitorTeam?.teamId,
-    });
+
     // });
+  }
+  patchTeamForm(team: Team) {
+    // console.log(team);
+    if (team) {
+      this.editTeamForm.patchValue({
+        teamNo: team.teamNumber,
+        color: team.teamColorId,
+       //  coach: team.coach.object
+      });
+    }
   }
   newTeam () {
     this.editTeamForm = this.fb.group({
