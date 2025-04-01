@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { select, Store } from '@ngrx/store';
+import { Constants } from '@app/shared/constants';
 
 import * as fromAdmin from '../admin/state';
 
@@ -17,11 +18,11 @@ export class LocationService {
   private dataService = inject(DataService);
   private store = inject(Store<fromAdmin.State>);
 
-  private locationUrl = this.dataService.getLocationUrl;
+  private locationUrl = Constants.GET_LOCATION_URL;
 
-  constructor() { }
+  constructor () { }
 
-  getLocations(): Observable<Location[]> {
+  getLocations (): Observable<Location[]> {
     return this._http.get<Location[]>(this.locationUrl).pipe(
       catchError(this.dataService.handleError('getLocations', []))
     );
