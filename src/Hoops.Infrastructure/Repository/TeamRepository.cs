@@ -56,8 +56,8 @@ namespace Hoops.Infrastructure.Repository
         public List<Team> GetSeasonTeams(int seasonId)
         {
             var colors = context.Colors.Where(x => x.CompanyId == 1).ToList();
-            var divisions = context.Divisions.Where(div => div.SeasonId == seasonId);
             var teams = new List<Team>();
+            var divisions = context.Divisions.Where(div => div.SeasonId == seasonId);
             foreach (Division division in divisions)
             {
                 var teamDiv = context.Teams.Where(team => team.DivisionId == division.DivisionId);
@@ -78,10 +78,7 @@ namespace Hoops.Infrastructure.Repository
                     teams.Add(ConvertRecordForTeamNumber(team, colors));
                 }
             }
-            if (teams != null)
-            {
-                // logger.LogInformation("Retrieving season teams: " + teams.Count.ToString());
-            }
+
             return teams ?? new List<Team>();
         }
 
@@ -91,50 +88,22 @@ namespace Hoops.Infrastructure.Repository
             return teams;
         }
 
-        public Team ConvertRecordForTeamNumber(Team team, List<Color> colors)
+        public static Team ConvertRecordForTeamNumber(Team team, List<Color> colors)
         {
-            if (team.TeamColorId > 0)
-            {
-                var color = colors.FirstOrDefault(c => c.ColorId == team.TeamColorId);
-                if (color != null)
-                {
-                    team.TeamColor = color.ColorName;
+            var color = colors.FirstOrDefault(c => c.ColorId == team.TeamColorId);
+            team.TeamColor = color?.ColorName;
 
-                    if (String.IsNullOrEmpty(team.TeamName))
-                    {
-                        team.TeamName =
-                            team.TeamColor.ToUpper() + " (" + team.TeamNumber.ToString() + ")";
-                    }
-                    else
-                    {
-                        team.TeamName = team.TeamName + " (" + team.TeamNumber.ToString() + ")";
-                    }
-                }
-                else
-                {
-                    if (String.IsNullOrEmpty(team.TeamName))
-                    {
-                        team.TeamName = "(" + team.TeamNumber.ToString() + ")";
-                    }
-                    else
-                    {
-                        team.TeamName = team.TeamName + " (" + team.TeamNumber.ToString() + ")";
-                    }
-                }
-                //                 team.TeamName = team.TeamNumber;
-            }
-            else
+            var teamNameSuffix = $" ({team.TeamNumber})";
+            if (string.IsNullOrEmpty(team.TeamName))
             {
-                if (String.IsNullOrEmpty(team.TeamName))
-                {
-                    team.TeamName = "(" + team.TeamNumber.ToString() + ")";
-                }
-                else
-                {
-                    team.TeamName = team.TeamName + " (" + team.TeamNumber.ToString() + ")";
-                }
+                team.TeamName = team.TeamColor?.ToUpper() ?? string.Empty;
+            }
+            else if (team.TeamColor != null)
+            {
+                team.TeamName = $"{team.TeamName} ";
             }
 
+            team.TeamName += teamNameSuffix;
             return team;
         }
     }
