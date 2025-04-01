@@ -19,42 +19,33 @@ import { SeasonService } from './season.service';
 export class TeamService {
   readonly #http = inject(HttpClient);
   readonly #dataService = inject(DataService);
-  readonly #store = inject(Store<fromGames.State>);
   readonly #divisionService = inject(DivisionService);
   readonly #seasonService = inject(SeasonService);
   seasonId: number | undefined; // = 2192; // TO DO make this is passed in!
   selectedSeason = computed(() => this.#seasonService.selectedSeason);
   selectedDivision = computed(() => this.#divisionService.selectedDivision());
-  // currentSeason$ = this.#store.select(fromGames.getCurrentSeason).subscribe({
-  //   next: (season) => {
-  //     // console.log(season);
-  //     if (season !== undefined && season !== null) {
-  //       this.seasonId = season.seasonId;
-  //     }
-  //   },
-  // });
   seasonTeams = signal<Team[] | undefined>(undefined);
   divisionTeams = signal<Team[]>([]);
   teams!: Team[];
   private _selectedTeam = signal<Team | undefined>(undefined);
 
-  get selectedTeam(): Team | undefined {
+  get selectedTeam (): Team | undefined {
     return this._selectedTeam();
   }
 
-  updateSelectedTeam(value: Team | undefined): void {
+  updateSelectedTeam (value: Team | undefined): void {
     this._selectedTeam.set(value);
   }
   _addAllTeams = signal<boolean>(false);
-  get addAllTeams(): boolean {
+  get addAllTeams (): boolean {
     return this._addAllTeams();
   }
-  updateAllTeams(value: boolean): void {
+  updateAllTeams (value: boolean): void {
     this._addAllTeams.set(value);
   }// console.log('get addAllTeams');
   private teamUrl = Constants.GET_SEASON_TEAMS_URL;
 
-  constructor() {
+  constructor () {
     effect(() => {
       // console.log(this.selectedSeason());
       if (this.selectedSeason() !== undefined) {
@@ -69,12 +60,12 @@ export class TeamService {
         // console.log(divisionTeams);
         this.divisionTeams.update(() => divisionTeams);
         console.log('Division Teams: ', this.divisionTeams());
-        this.updateSelectedTeam(this.divisionTeams()[ 0 ]);
+        this.updateSelectedTeam(this.divisionTeams()[0]);
       }
     });
   }
 
-  getSeasonTeams(): void {
+  getSeasonTeams (): void {
     if (this.selectedSeason() === undefined) {
       return;
     }
@@ -83,7 +74,7 @@ export class TeamService {
     this.#http.get<Team[]>(url).subscribe(
       (teams) => {
         this.seasonTeams.update(() => teams);
-        this.updateSelectedTeam(this.seasonTeams()![ 0 ]);
+        this.updateSelectedTeam(this.seasonTeams()![0]);
       },
       // tap(data => console.log('All: ' + JSON.stringify(data))),
       catchError(this.#dataService.handleError('getTeams', []))
@@ -93,7 +84,7 @@ export class TeamService {
   //   this.getSeasonTeams().subscribe((teams) => {
   //   })
   // }
-  filterTeamsByDivision(div: number): Team[] {
+  filterTeamsByDivision (div: number): Team[] {
 
     let filteredTeams: Team[] = [];
     if (this.addAllTeams) {
@@ -122,7 +113,7 @@ export class TeamService {
   //         map((content: Team[]) => content.find(p => p.id === id))
   //         );
   // }
-  saveTeam(team: Team): void {
+  saveTeam (team: Team): void {
     console.log(team);
 
     if (team.teamId === 0) {
@@ -136,7 +127,7 @@ export class TeamService {
       });
     }
   }
-  addTeam(team: Team): Observable<Team | ArrayBuffer> {
+  addTeam (team: Team): Observable<Team | ArrayBuffer> {
     console.log(this.#dataService.teamPostUrl);
     return this.#http
       .post<Team>(
@@ -164,7 +155,7 @@ export class TeamService {
   //   });
   //   return team;
   // }
-  updateTeam(team: Team) {
+  updateTeam (team: Team) {
     return this.#http
       .put<Team>(
         this.#dataService.teamPutUrl + team.teamId,
@@ -173,7 +164,7 @@ export class TeamService {
       )
       .pipe(catchError(this.#dataService.handleError('updateTeam', team)));
   }
-  newTeam() {
+  newTeam () {
     let team = new Team();
     team.teamId = 0;
     team.divisionId = this.#divisionService.

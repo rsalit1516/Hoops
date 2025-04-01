@@ -58,28 +58,28 @@ export class AdminTeamDetailComponent implements OnInit {
 
   user = computed(() => this.#authService.currentUser());
   editTeamForm = this.fb.group({
-    // teamName: [''],
     teamNo: [''],
     color: [''],
+    teamName: [''],
     // coachName: [''],
     // sponsor: [''],
   });
   // colors$: Observable<Color[]>;
   _team = signal<Team | undefined>(undefined);
-  get team() {
+  get team () {
     return this._team();
   }
-  updateTeam(val: Team) {
+  updateTeam (val: Team) {
     this._team.set(val);
   }
-  selectedDivision$ = this.store.select(fromAdmin.getSelectedDivision);
-  selectedSeason$ = this.store.select(fromAdmin.getSelectedSeason);
+  // selectedDivision$ = this.store.select(fromAdmin.getSelectedDivision);
+  // selectedSeason$ = this.store.select(fromAdmin.getSelectedSeason);
   selectedSeason = computed(() => this.#seasonService.selectedSeason);
   selectedDivision = computed(() => this.#divisionService.selectedDivision());
 
   title = 'Team';
 
-  constructor() {
+  constructor () {
     // this.colors$ = this.store.select(fromAdmin.getColors);
     effect(() => {
       // this.updateTeam(this.#teamService.selectedTeam!);
@@ -98,13 +98,13 @@ export class AdminTeamDetailComponent implements OnInit {
 
     // });
   }
-  patchTeamForm(team: Team) {
+  patchTeamForm (team: Team) {
     // console.log(team);
     if (team) {
       this.editTeamForm.patchValue({
         teamNo: team.teamNumber,
         color: team.teamColorId,
-       //  coach: team.coach.object
+        //  coach: team.coach.object
       });
     }
   }
