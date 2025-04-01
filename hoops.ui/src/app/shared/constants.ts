@@ -41,7 +41,7 @@ export class Constants {
   public static getCurrentSeasonUrl = Constants.DEFAULTURL + '/api/season/getCurrentSeason';
   public static GET_SEASON_TEAMS_URL = Constants.DEFAULTURL + '/api/Team/GetSeasonTeams/';
   public static getColorUrl = Constants.DEFAULTURL + '/api/Color';
-  public static getLocationUrl = Constants.DEFAULTURL + '/api/Location';
+  public static GET_LOCATION_URL = Constants.DEFAULTURL + '/api/Location';
   public static teamPostUrl = Constants.DEFAULTURL + '/api/Team';
   public static teamPutUrl = Constants.DEFAULTURL + '/api/Team/';
   public static getContentUrl = Constants.DEFAULTURL + '/api/webcontent';
