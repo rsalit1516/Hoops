@@ -19,12 +19,12 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
     './admin-season-list.component.scss',
     '../../admin.component.scss'
   ],
-  imports: [ MatTableModule, DatePipe,
+  imports: [MatTableModule, DatePipe,
     SeasonsToolbarComponent,
     MatSortModule,
     MatPaginatorModule
   ],
-  providers: [ MatSort, MatPaginator ],
+  providers: [MatSort, MatPaginator],
 
 })
 export class AdminSeasonListComponent implements OnInit, AfterViewInit {
@@ -45,21 +45,21 @@ export class AdminSeasonListComponent implements OnInit, AfterViewInit {
     'toDate',
   ];
 
-  constructor() {
+  constructor () {
     // effect(() => {
     //   this.dataSource.data = this.seasons()!;
     // });
   }
 
-  ngOnInit() {
+  ngOnInit () {
     this.dataSource = new MatTableDataSource<Season>(this.seasons());
   }
-  ngAfterViewInit() {
+  ngAfterViewInit () {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
-  edit(row: Season) {
-    this.#seasonService.selectSeason(row);
+  edit (row: Season) {
+    this.#seasonService.updateSelectedSeason(row);
     console.log(row);
     // this.#store.dispatch(new adminActions.SetSelectedSeason(row));
     this.#router.navigate(['./admin/seasons/edit']);

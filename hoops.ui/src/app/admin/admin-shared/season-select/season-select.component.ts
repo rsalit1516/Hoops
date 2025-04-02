@@ -18,7 +18,7 @@ import { SeasonService } from '@app/services/season.service';
     class="form-control"
   >
     @for( season of seasonService.seasons; track season) {
-    <mat-option [value]="season.seasonId" (click)="changeSeason(season)">
+    <mat-option [value]="season" (click)="changeSeason(season)">
       {{ season.description }}
     </mat-option>
     }
@@ -55,7 +55,7 @@ export class SeasonSelectComponent implements OnInit {
   }
   changeSeason (season: Season) {
     console.log('Season from changeSeason = ', season);
-    this.seasonService.selectSeason(season);
+    this.seasonService.updateSelectedSeason(season);
   }
 
   // onChange (season: Season) {

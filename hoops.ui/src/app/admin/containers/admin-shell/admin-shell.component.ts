@@ -69,7 +69,7 @@ export class AdminShellComponent implements OnInit {
     this.#seasonService.fetchSeasons();
 
     this.#seasonService.getCurrentSeason().subscribe((season) => {
-      this.#seasonService.selectSeason(season!);
+      this.#seasonService.updateSelectedSeason(season!);
       // this.divisionService.season = season;
       // this.divisionService.getDivisionsData(season!.seasonId!);
       // console.log(season);
