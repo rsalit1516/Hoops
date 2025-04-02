@@ -15,7 +15,6 @@ import { SeasonService } from '@app/services/season.service';
   <mat-label>{{title}}</mat-label>
   <mat-select
     [(value)]="season"
-    (selectionChange)="onChange($event.value)"
     class="form-control"
   >
     @for( season of seasonService.seasons; track season) {
@@ -34,7 +33,6 @@ import { SeasonService } from '@app/services/season.service';
     MatFormFieldModule,
     MatSelectModule,
     MatOptionModule,
-    AsyncPipe,
   ]
 })
 export class SeasonSelectComponent implements OnInit {
@@ -59,7 +57,8 @@ export class SeasonSelectComponent implements OnInit {
     console.log('Season from changeSeason = ', season);
     this.seasonService.selectSeason(season);
   }
-  onChange (season: Season) {
-    this.seasonService.selectSeason(season);
-  }
+
+  // onChange (season: Season) {
+  //   this.seasonService.selectSeason(season);
+  // }
 }
