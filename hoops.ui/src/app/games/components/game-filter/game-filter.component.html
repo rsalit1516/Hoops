@@ -1,27 +1,19 @@
-<div class="filter-divisions" class="filter-wrapper">
-  <mat-form-field>
-    <mat-label>Divisions</mat-label>
-    <mat-select
-      [(value)]="division"
-      #divisionSelect
-      (selectionChange)="onDivisionChange(divisionSelect.value)"
-    >
-      <mat-option *ngFor="let division of divisions()" [value]="division">
-        {{ division.divisionDescription }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-
-  <mat-form-field *ngIf="display() === 'schedule'">
-    <mat-label>Teams</mat-label>
-    <mat-select
-      #teamSelect
-      (selectionChange)="onTeamChange(teamSelect.value)"
-      [(value)]="team"
-    >
-      <mat-option *ngFor="let team of teams()" [value]="team">
-        {{ team.teamName }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+<div class="flex filter-divisions filter-wrapper">
+  <div class="flex-1">
+    <division-select />
+  </div>
+  <div class="flex-1">
+    <mat-form-field *ngIf="display() === 'schedule'">
+      <mat-label>Teams</mat-label>
+      <mat-select
+        #teamSelect
+        (selectionChange)="onTeamChange(teamSelect.value)"
+        [(value)]="team"
+      >
+        <mat-option *ngFor="let team of teams()" [value]="team">
+          {{ team.teamName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
 </div>

@@ -1,24 +1,19 @@
-import { Component, OnInit, Output, EventEmitter, inject } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, inject, computed, effect } from '@angular/core';
 import { Division } from '@app/domain/division';
 import { UntypedFormControl, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { AsyncPipe, NgFor } from '@angular/common';
+import { AsyncPipe, CommonModule, NgFor } from '@angular/common';
 import { DivisionService } from '@app/services/division.service';
 
 @Component({
   selector: 'division-select',
   template: `<mat-form-field>
-  <mat-label>Division</mat-label>
+  <mat-label>{{title}}</mat-label>
   <mat-select
-    [(value)]="selectedDivision"
-    (selectionChange)="onChange($event.value)"
-    class="form-control"
-  >
-    <mat-option [value]="null" (click)="changeDivision(null)">
-      All
-    </mat-option>
+    [(value)]="division"
+    class="form-control" >
     @for( division of divisionService.seasonDivisions(); track division) {
     <mat-option [value]="division" (click)="changeDivision(division)">
       {{ division.divisionDescription }}
@@ -31,27 +26,27 @@ import { DivisionService } from '@app/services/division.service';
     './../../../shared/scss/forms.scss',
   ],
   imports: [
+    CommonModule,
     FormsModule,
-    ReactiveFormsModule,
     MatFormFieldModule,
     MatSelectModule,
     NgFor,
     MatOptionModule,
-    AsyncPipe,
   ]
 })
 export class DivisionSelectComponent implements OnInit {
   // readonly selectedDivision = output<Division>();
   @Output() divisionChanged = new EventEmitter<Division>();
   readonly divisionService = inject(DivisionService);
-
-  selectForm!: UntypedFormGroup;
-  // divisions$: Observable<Division[]>;
+  title = 'Division';
   divisionComponent: UntypedFormControl | null | undefined;
-  selectedDivision: Division | null = null;
 
+  selectedDivision = computed(() => this.divisionService.selectedDivision);
+  division = this.selectedDivision();
   constructor () {
-    // this.divisions$ = this.store.select(fromAdmin.getSeasonDivisions);
+    effect(() => {
+      this.division = this.selectedDivision();
+    });
   }
 
   ngOnInit (): void {
@@ -59,10 +54,5 @@ export class DivisionSelectComponent implements OnInit {
   }
   changeDivision (division: Division | null) {
     this.divisionService.updateSelectedDivision(division!);
-  }
-  onChange (value: Division) {
-    console.log('Division = ', value);
-    this.divisionService.updateSelectedDivision(value!);
-    this.divisionChanged.emit(value);
   }
 }

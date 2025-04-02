@@ -15,11 +15,15 @@ import { LoggerService } from '@app/services/logging.service';
 import { DivisionService } from '@app/services/division.service';
 import { TeamService } from '@app/services/team.service';
 import { SeasonService } from '@app/services/season.service';
+import { DivisionSelectComponent } from '@app/admin/admin-shared/division-select/division-select.component';
 
 @Component({
   selector: 'csbc-game-filter',
   templateUrl: './game-filter.component.html',
-  styleUrls: ['./game-filter.component.scss'],
+  styleUrls: ['./game-filter.component.scss',
+    '../../../shared/scss/forms.scss',
+    '../../../shared/scss/select.scss',
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -27,15 +31,16 @@ import { SeasonService } from '@app/services/season.service';
     MatSelectModule,
     NgFor,
     MatOptionModule,
+    DivisionSelectComponent
   ]
 })
 export class GameFilterComponent implements OnInit {
   readonly #logger = inject(LoggerService);
-  readonly #divisionService = inject(DivisionService);
+  readonly divisionService = inject(DivisionService);
   readonly #gameService = inject(GameService);
   readonly #teamService = inject(TeamService);
   readonly #seasonService = inject(SeasonService);
-  readonly divisions = input.required<Division[]>();
+  // readonly divisions = input.required<Division[]>();
   readonly teams = input.required<Team[] | null>();
   readonly display = input.required<string>();
   // divisionService = inject(GameService);
@@ -43,14 +48,12 @@ export class GameFilterComponent implements OnInit {
   currentTeam!: Team;
   showAllTeams!: boolean;
   // readonly selectedTeam = output<Team>();
-  selectedDivision = computed(() => this.#divisionService.selectedDivision);
+  selectedDivision = computed(() => this.divisionService.selectedDivision);
   selectedTeam = computed(() => this.#teamService.selectedTeam);
 
   division = this.selectedDivision();
   team = this.selectedTeam();
   currentDivision: Division | undefined;
-  // selectedDivision = computed(() => this.#divisionService.selectedDivision());
-  // // divisions = computed(() => this.#divisionService.seasonDivisions);
   constructor () {
     effect(() => {
       this.division = this.selectedDivision();
@@ -62,22 +65,13 @@ export class GameFilterComponent implements OnInit {
 
   ngOnInit () {
     this.showAllTeams = true;
-
-    // this.#seasonService.fetchCurrentSeason();
-    // this.gameStore.select(fromGames.getCurrentDivision).subscribe((division) => {
-    //   this.currentDivision = division!;
-    //   this.#logger.log(division);
-    //   this.gameStore.dispatch(new gameActions.LoadFilteredGames);
-    //   this.gameStore.dispatch(new gameActions.LoadDivisionPlayoffGames);
-    //   this.gameStore.dispatch(new gameActions.LoadStandings);
-    // });
   }
 
   onDivisionChange (val: Division) {
     // console.log(val);
     if (val !== undefined) {
       // this.currentDivision = val;
-      this.#divisionService.updateSelectedDivision(val);
+      this.divisionService.updateSelectedDivision(val);
       // this.gameStore.dispatch(new gameActions.SetCurrentDivision(val));
     }
   }

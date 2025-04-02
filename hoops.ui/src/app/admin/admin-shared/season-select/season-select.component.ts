@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, computed, OnChanges } from '@angular/core';
+import { Component, inject, OnInit, computed, OnChanges, effect } from '@angular/core';
 
 import { Season } from '@app/domain/season';
 import { UntypedFormControl, FormsModule } from '@angular/forms';
@@ -14,7 +14,7 @@ import { SeasonService } from '@app/services/season.service';
   template: `<mat-form-field>
   <mat-label>{{title}}</mat-label>
   <mat-select
-    [value]="selectedSeason"
+    [(value)]="season"
     (selectionChange)="onChange($event.value)"
     class="form-control"
   >
@@ -38,16 +38,20 @@ import { SeasonService } from '@app/services/season.service';
   ]
 })
 export class SeasonSelectComponent implements OnInit {
-  #AdminSeasonService = inject(AdminSeasonService);
   readonly seasonService = inject(SeasonService);
-  selected: Season | undefined;
-  seasonComponent: UntypedFormControl | null | undefined;
+  title = 'Select Season';
+  // seasonComponent: UntypedFormControl | null | undefined;
   defaultSeason: Season | undefined;
   seasons = this.seasonService.seasons;
   selectedSeason = computed(() => this.seasonService.selectedSeason);
-  title = 'Select Season';
+  season = this.selectedSeason();
 
-  constructor () { }
+  constructor () {
+    effect(() => {
+      console.log(this.seasonService.selectedSeason);
+      this.season = this.selectedSeason();
+    });
+  }
 
   ngOnInit () {
   }
