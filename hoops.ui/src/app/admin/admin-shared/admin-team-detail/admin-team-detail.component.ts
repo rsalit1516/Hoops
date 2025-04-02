@@ -99,11 +99,12 @@ export class AdminTeamDetailComponent implements OnInit {
     // });
   }
   patchTeamForm (team: Team) {
-    // console.log(team);
+    console.log(team);
     if (team) {
       this.editTeamForm.patchValue({
         teamNo: team.teamNumber,
         color: team.teamColorId,
+        teamName: team.teamName,
         //  coach: team.coach.object
       });
     }
@@ -118,22 +119,25 @@ export class AdminTeamDetailComponent implements OnInit {
 
     newTeam.teamId = 0;
     newTeam.teamName = '';
-    this.store.dispatch(new adminActions.SetSelectedTeam(newTeam));
-
+    // this.store.dispatch(new adminActions.SetSelectedTeam(newTeam));
+    this.#teamService.updateSelectedTeam(newTeam);
   }
   save () {
     let team: Team;
     console.log(this.team)
       ; team = {
-        teamId: this.team?.teamId as number,
+        teamId: this.#teamService.selectedTeam?.teamId as number,
         name: '',
         divisionId: this.selectedDivision()?.divisionId as number,
         teamNumber: this.editTeamForm.value.teamNo,
         teamColorId: this.editTeamForm.value.color,
-        createdUser: this.user()!.userName,
+        teamName: this.editTeamForm.value.teamName,
+        // To Do: add these back
+        createdUser: 'rsalit', //this.user()!.userName,
         createdDate: new Date()
       };
     this.#teamService.saveTeam(team);
+    this.#teamService.getSeasonTeams();
     this.newTeam();
   }
   cancel () { }
