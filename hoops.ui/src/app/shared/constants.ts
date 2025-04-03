@@ -60,8 +60,24 @@ export class Constants {
   public static PEOPLE_SEARCH_URL = Constants.DEFAULTURL + '/api/Person/search';
   public static SAVE_HOUSEHOLD_URL = Constants.DEFAULTURL + '/api/Household/';
 
+}
+export const Literals = {
+  BUTTONS: {
+    SUBMIT: 'Submit',
+    CANCEL: 'Cancel',
+  },
+  MESSAGES: {
+    WELCOME: 'Welcome to the application!',
+    ERROR: 'Something went wrong. Please try again.',
+  },
+  LABELS: {
+    USERNAME: 'Username',
+    PASSWORD: 'Password',
+    SEASON_GAMES: 'Season Games',
+  }
 
 }
+
 export const FEATURE_FLAGS = {
   adminHouseholds: true,  // Enabled feature
   adminNotices: true, // Disabled feature

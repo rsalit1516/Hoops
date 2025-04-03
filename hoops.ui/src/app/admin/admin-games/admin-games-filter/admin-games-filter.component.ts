@@ -60,7 +60,7 @@ export class AdminGamesFilterComponent {
       this.#seasonService.updateSelectedSeason(this.selectedSeason()!);
     }
     if (!this.selectedDivision) {
-      this.selectedDivision.update(() => this.#divisionService.selectedDivision());
+      this.selectedDivision.update(() => this.#divisionService.selectedDivision);
     }
     console.log('Selected season:', this.selectedSeason());
     console.log('Selected division:', this.selectedDivision());

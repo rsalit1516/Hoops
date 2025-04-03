@@ -59,7 +59,7 @@ export class AdminGamesListComponent implements OnInit, OnChanges, AfterViewInit
     'visitingTeamScore',
   ];
   constructor (
-) {
+  ) {
     this.setupTable();
 
     // effect(() => {
@@ -142,8 +142,8 @@ export class AdminGamesListComponent implements OnInit, OnChanges, AfterViewInit
   }
   selectRow (row: any) {
     console.log(row);
-    this.gameService.updateSelectedRecord(row);
-    this.store.dispatch(new adminActions.SetSelectedGame(row));
+    this.gameService.updateSelectedGame(row);
+    // this.store.dispatch(new adminActions.SetSelectedGame(row));
   }
   dataExists (): boolean {
     return this.games.length > 0;

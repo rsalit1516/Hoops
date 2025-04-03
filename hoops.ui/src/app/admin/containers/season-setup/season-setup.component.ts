@@ -15,8 +15,8 @@ import { DivisionService } from '@app/services/division.service';
 @Component({
   selector: 'season-setup',
   templateUrl: './season-setup.component.html',
-  styleUrls: [ './season-setup.component.scss', '../../admin.component.scss' ],
-  imports: [ SeasonSelectComponent, DivisionSelectComponent, MatToolbarModule, MatButtonModule, AdminTeamListComponent, AdminTeamDetailComponent ]
+  styleUrls: ['./season-setup.component.scss', '../../admin.component.scss'],
+  imports: [SeasonSelectComponent, DivisionSelectComponent, MatToolbarModule, MatButtonModule, AdminTeamListComponent, AdminTeamDetailComponent]
 })
 export class SeasonSetupComponent implements OnInit {
 
@@ -24,19 +24,19 @@ export class SeasonSetupComponent implements OnInit {
   readonly #divisionService = inject(DivisionService);
   readonly store = inject(Store<fromAdmin.State>);
 
-  constructor() { }
+  constructor () { }
 
-  ngOnInit() {
+  ngOnInit () {
     //    this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
     this.teamService.updateAllTeams(false);
-    const division = this.#divisionService.selectedDivision(); // Use the division service to get the selected division
+    const division = this.#divisionService.selectedDivision; // Use the division service to get the selected division
     // console.log(division);
     //   if (division !== undefined) {
     //     this.store.dispatch(new adminActions.LoadDivisionTeams());
     //   }
     // });
   }
-  newTeam(): Team {
+  newTeam (): Team {
     return this.teamService.newTeam();
   }
 }

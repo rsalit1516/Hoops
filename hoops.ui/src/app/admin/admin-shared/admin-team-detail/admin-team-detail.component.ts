@@ -75,7 +75,7 @@ export class AdminTeamDetailComponent implements OnInit {
   // selectedDivision$ = this.store.select(fromAdmin.getSelectedDivision);
   // selectedSeason$ = this.store.select(fromAdmin.getSelectedSeason);
   selectedSeason = computed(() => this.#seasonService.selectedSeason);
-  selectedDivision = computed(() => this.#divisionService.selectedDivision());
+  selectedDivision = computed(() => this.#divisionService.selectedDivision);
 
   title = 'Team';
 

@@ -1,5 +1,6 @@
-<mat-card class="dashboard-card">  <mat-card-header class="">
-    <mat-card-title class="">Season Games</mat-card-title>
+<mat-card class="dashboard-card">
+  <mat-card-header class="">
+    <mat-card-title>{{ constants.LABELS.SEASON_GAMES }}</mat-card-title>
     <mat-card-subtitle class="">
       <div class="counter-wrapper">
         <div class="counter">
@@ -15,6 +16,6 @@
     </mat-card-subtitle>
   </mat-card-header>
   <mat-card-content class="">
-    <csbc-admin-games-list [showScores]="false" class=""></csbc-admin-games-list>
+    <csbc-admin-games-list [showScores]="false" />
   </mat-card-content>
 </mat-card>

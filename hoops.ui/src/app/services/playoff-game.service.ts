@@ -30,7 +30,7 @@ export class PlayoffGameService {
   allPlayoffGames: PlayoffGame[] | undefined;
   playoffGames$: Observable<PlayoffGame[]> | undefined;
   selectedSeason = computed(() => this.#seasonService.selectedSeason);
-  selectedDivision = computed(() => this.#divisionService.selectedDivision());
+  selectedDivision = computed(() => this.#divisionService.selectedDivision);
   dailyPlayoffSchedule = signal<PlayoffGame[][]>([]);
 
 

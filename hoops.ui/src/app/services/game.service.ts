@@ -47,7 +47,7 @@ export class GameService {
   divisionGames = signal<RegularGame[]>([]);
   currentUser = computed(() => this.#authService.currentUser());
   selectedSeason = computed(() => this.#seasonService.selectedSeason);
-  selectedDivision = computed(() => this.#divisionService.selectedDivision());
+  selectedDivision = computed(() => this.#divisionService.selectedDivision);
   seasonGames$: Observable<RegularGame[] | null> = of(null);
   allGames: any;
   get games () {
@@ -64,11 +64,25 @@ export class GameService {
   }
 
   // signals
-  private selectedRecord = signal<RegularGame | null>(null);
+  private _selectedGame = signal<RegularGame | null>(null);
   // Expose the selected record signal
-  selectedRecordSignal = this.selectedRecord.asReadonly();
+  get selectedGame () {
+    return this._selectedGame();
+  }
+  updateSelectedGame (record: RegularGame) {
+    this._selectedGame.set(record);
+  }
 
-  seasonGamesSignal = signal<RegularGame[] | null>(null);
+  selectedRecordSignal = this._selectedGame.asReadonly();
+
+  private _seasonGames = signal<RegularGame[] | null>(null);
+
+  get seasonGames () {
+    return this._seasonGames();
+  }
+  updateSeasonGames (games: RegularGame[]) {
+    this._seasonGames.set(games);
+  }
 
   public currentTeamId: string | undefined;
 
@@ -94,10 +108,8 @@ export class GameService {
   selectedTeam = computed(() => this.#teamService.selectedTeam);
   teamGames = signal<RegularGame[]>([]);
   constructor () {
-    // this._gameUrl = this.dataService.webUrl + '/api/gameschedule';
-
     effect(() => {
-      const record = this.selectedRecord();
+      const record = this.selectedGame;
       if (record !== null) {
         console.log(`Record updated: ${ record.scheduleGamesId }`);
         // Optionally trigger additional logic here
@@ -113,7 +125,7 @@ export class GameService {
 
     effect(() => {
       const selectedDivision = this.selectedDivision();
-      if (selectedDivision) {
+      if (this.#divisionService.selectedDivision!) {
         const filteredGames = this.filterGamesByDivision();
         this.divisionGames.update(() => filteredGames);
         const dailyGames = this.groupRegularGamesByDate(this.divisionGames());
@@ -122,7 +134,7 @@ export class GameService {
       }
     });
     effect(() => {
-//      console.log(this.selectedTeam());
+      //      console.log(this.selectedTeam());
       this.filterGamesByTeam();
     });
   }
@@ -141,8 +153,8 @@ export class GameService {
     this.#http.get<RegularGame[]>(Constants.SEASON_GAMES_URL + '?seasonId=' + this.#seasonService.selectedSeason.seasonId).
       subscribe(
         (games) => {
-          this.seasonGames$ = of(games);
-          this.seasonGamesSignal.set(games);
+          // this.seasonGames$ = of(games);
+          this.updateSeasonGames(games);
           // console.log(games);
         }
       );
@@ -150,19 +162,11 @@ export class GameService {
   filterGamesByDivision (): RegularGame[] {
     let games: RegularGame[] = [];
     let filteredGamesByDate: RegularGame[] = [];
-    let div = 0;
-    // const division = this.#divisionService.selectedDivision();
-    // this.currentDivision$.subscribe((division) => {
-    // console.log(division);
-    div = this.selectedDivision()?.divisionId ?? 0;
-    // this.seasonGames$.subscribe((seasonGames) => {
-    // console.log(this.seasonGamesSignal());
-    this.allGames = this.seasonGamesSignal();
-    // this.setCanEdit(div);
-    if (this.seasonGamesSignal()) {
-      for (let i = 0; i < this.seasonGamesSignal()!.length; i++) {
-        if (this.seasonGamesSignal()![i].divisionId === div) {
-          let game = this.seasonGamesSignal()![i];
+    const divisionId = this.selectedDivision()?.divisionId ?? 0;
+    if (this.seasonGames) {
+      for (let i = 0; i < this.seasonGames!.length; i++) {
+        if (this.seasonGames![i].divisionId === divisionId) {
+          let game = this.seasonGames![i];
           game.gameDateOnly = this.extractDate(game.gameDate.toString());
           games.push(game);
         }
@@ -171,6 +175,7 @@ export class GameService {
       filteredGamesByDate = games.sort((a, b) => {
         return this.compare(a.gameDate!, b.gameDate!, true);
       });
+      // this.divisionGames.update(() => filteredGamesByDate);
       return filteredGamesByDate;
     }
     return filteredGamesByDate;
@@ -259,13 +264,13 @@ export class GameService {
     let teamId = this.selectedTeam()!.teamId;
 
     let games: RegularGame[] = [];
-    if (this.seasonGamesSignal()) {
-      for (let i = 0; i < this.seasonGamesSignal()!.length; i++) {
+    if (this.seasonGames) {
+      for (let i = 0; i < this.seasonGames!.length; i++) {
         if (
-          (this.seasonGamesSignal() as RegularGame[])[i].visitingTeamId === teamId ||
-          (this.seasonGamesSignal() as RegularGame[])[i].homeTeamId === teamId
+          (this.seasonGames as RegularGame[])[i].visitingTeamId === teamId ||
+          (this.seasonGames as RegularGame[])[i].homeTeamId === teamId
         ) {
-          games.push((this.seasonGamesSignal() as RegularGame[])[i]);
+          games.push((this.seasonGames as RegularGame[])[i]);
         }
       }
     }
@@ -277,9 +282,6 @@ export class GameService {
     return of(games);
   }
 
-  updateSelectedRecord (record: RegularGame) {
-    this.selectedRecord.set(record);
-  }
 
   getCanEdit (user: User | undefined, divisionId: number): boolean {
     // console.log(divisionId);

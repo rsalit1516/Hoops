@@ -23,7 +23,7 @@ export class TeamService {
   readonly #seasonService = inject(SeasonService);
   seasonId: number | undefined; // = 2192; // TO DO make this is passed in!
   selectedSeason = computed(() => this.#seasonService.selectedSeason);
-  selectedDivision = computed(() => this.#divisionService.selectedDivision());
+  selectedDivision = computed(() => this.#divisionService._selectedDivision());
   seasonTeams = signal<Team[] | undefined>(undefined);
   divisionTeams = signal<Team[]>([]);
   teams!: Team[];
@@ -168,7 +168,7 @@ export class TeamService {
     let team = new Team();
     team.teamId = 0;
     team.divisionId = this.#divisionService.
-      selectedDivision()!.divisionId
+      _selectedDivision()!.divisionId
     return team;
 
   }

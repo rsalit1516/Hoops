@@ -113,7 +113,7 @@ export class DivisionDetailComponent implements OnInit {
     // console.log(currentDivision);
 
     // this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
-    const division = this.#divisionService.selectedDivision(); // get the current selected division
+    const division = this.#divisionService.selectedDivision; // get the current selected division
     if (division !== null) {
       if (division?.divisionDescription !== undefined) {
         const matchingDivision = this.#divisionService.getmatchingDivision(

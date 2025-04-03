@@ -50,6 +50,8 @@ import { RegularGame } from '@app/domain/regularGame';
 })
 export class AdminGameDetailComponent implements OnInit {
   selectedRecord = input.required<RegularGame>();
+  private store = inject(Store<fromAdmin.State>);
+  fb = inject(UntypedFormBuilder);
   gameEditForm = this.fb.group({
     gameDate: new FormControl('', { nonNullable: true }),
     gameTime: new FormControl('', { nonNullable: true }),
@@ -95,9 +97,7 @@ export class AdminGameDetailComponent implements OnInit {
 
 
   constructor (
-    @Inject(Store) private store: Store<fromAdmin.State>,
 
-    private fb: UntypedFormBuilder
   ) {
     this.divisionTeams$ = this.store.select(fromAdmin.getDivisionTeams);
     // this.locations$ = this.locationService.locations$;

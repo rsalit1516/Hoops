@@ -41,7 +41,7 @@ export class DivisionSelectComponent implements OnInit {
   title = 'Division';
   divisionComponent: UntypedFormControl | null | undefined;
 
-  selectedDivision = computed(() => this.divisionService.selectedDivision);
+  selectedDivision = computed(() => this.divisionService._selectedDivision);
   division = this.selectedDivision();
   constructor () {
     effect(() => {
