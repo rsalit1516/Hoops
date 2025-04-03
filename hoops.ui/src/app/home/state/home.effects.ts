@@ -55,7 +55,7 @@ export class HomeEffects {
     exhaustMap(([, currentSeason]) => {
       // const season = currentSeason;
       // const id = currentSeason?.seasonId;
-      return this.#http.get<Sponsor[]>(Constants.GET_SEASON_SPONSORS + '?seasonId=' + this.#seasonService.currentSeason()!.seasonId).pipe(
+      return this.#http.get<Sponsor[]>(Constants.GET_SEASON_SPONSORS + '?seasonId=' + this.#seasonService._currentSeason()!.seasonId).pipe(
         map(sponsors => new homeActions.LoadSponsorsSuccess(sponsors)),
         catchError((err) => of(new homeActions.LoadSponsorsFail(err)))
       );
