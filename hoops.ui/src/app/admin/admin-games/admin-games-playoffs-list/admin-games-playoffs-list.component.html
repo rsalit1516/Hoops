@@ -1,4 +1,4 @@
-<h2>{{title}}</h2>
+<h2>{{ title }}</h2>
 <form formName="gameForm">
   <div id="panelGames" flexLayout="row">
     <div>
@@ -7,13 +7,13 @@
           <ng-container matColumnDef="gameDate">
             <th mat-header-cell *matHeaderCellDef>Date</th>
             <td mat-cell *matCellDef="let game" class="date">
-              {{ game.gameDate | date: 'M/d' }}
+              {{ game.gameDate | date : "M/d" }}
             </td>
           </ng-container>
           <ng-container matColumnDef="gameTime">
             <th mat-header-cell *matHeaderCellDef>Time</th>
             <td mat-cell *matCellDef="let game" class="time">
-              {{ game.gameTime | date: 'shortTime' }}
+              {{ game.gameTime }}
             </td>
           </ng-container>
           <ng-container matColumnDef="locationName">
@@ -21,16 +21,16 @@
             <td mat-cell *matCellDef="let game" class="location">
               {{ game.locationName }}
             </td> </ng-container
-          ><ng-container matColumnDef="homeTeamName">
+          ><ng-container matColumnDef="homeTeam">
             <th mat-header-cell *matHeaderCellDef>Home</th>
             <td mat-cell *matCellDef="let game" class="teamName">
-              {{ game.homeTeamName }}
+              {{ game.homeTeam }}
             </td>
           </ng-container>
-          <ng-container matColumnDef="visitingTeamName">
+          <ng-container matColumnDef="visitingTeam">
             <th mat-header-cell *matHeaderCellDef>Visitor</th>
             <td mat-cell *matCellDef="let game" class="teamName">
-              {{ game.visitingTeamName }}
+              {{ game.visitingTeam }}
             </td>
           </ng-container>
           <ng-container matColumnDef="homeTeamScore">
@@ -48,22 +48,30 @@
           <ng-container matColumnDef="actions" *ngIf="canEdit">
             <th mat-header-cell *matHeaderCellDef>Actions</th>
             <td mat-cell *matCellDef="let game">
-              <button type="button" class="edit" *ngIf="canEdit" (click) = "editGame(game)" mat-icon-button><mat-icon>edit</mat-icon></button>
+              <button
+                type="button"
+                class="edit"
+                *ngIf="canEdit"
+                (click)="editGame(game)"
+                mat-icon-button
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
             </td>
           </ng-container>
-          <tr mat-header-row *matHeaderRowDef="displayedColumns" ></tr>
-          <tr mat-row
-          *matRowDef="let row; columns: displayedColumns"
-          (click) = "selectRow(row)"
-          [class.row-is-clicked] = clickedRows.has(row)
-></tr>
- <!-- Row shown when there is no matching data that will be provided to the wrapper table. -->
- <tr class="mat-row" *matNoDataRow>
-  <td class="mat-cell" colspan="7">No data</td>
-</tr>
-</mat-table>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: displayedColumns"
+            (click)="selectRow(row)"
+            [class.row-is-clicked]="clickedRows.has(row)"
+          ></tr>
+          <!-- Row shown when there is no matching data that will be provided to the wrapper table. -->
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="7">No data</td>
+          </tr>
+        </mat-table>
       </div>
     </div>
   </div>
 </form>
-

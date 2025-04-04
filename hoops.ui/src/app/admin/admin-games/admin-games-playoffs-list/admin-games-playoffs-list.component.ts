@@ -14,7 +14,10 @@ import { PlayoffGameService } from '@app/services/playoff-game.service';
 @Component({
   selector: 'csbc-admin-games-playoffs-list',
   templateUrl: './admin-games-playoffs-list.component.html',
-  styleUrls: ['./admin-games-playoffs-list.component.scss',],
+  styleUrls: ['./admin-games-playoffs-list.component.scss',
+    '../../admin.component.scss',
+    '../../../shared/scss/tables.scss',
+  ],
   imports: [FormsModule, NgIf, MatTableModule, MatButtonModule,
     MatIconModule, DatePipe,
     AdminGamesPlayoffsListComponent]
@@ -56,8 +59,8 @@ export class AdminGamesPlayoffsListComponent implements OnInit {
       'gameDate',
       'gameTime',
       'locationName',
-      'homeTeamName',
-      'visitingTeamName',
+      'homeTeam',
+      'visitingTeam',
       'homeTeamScore',
       'visitingTeamScore',
     ];
