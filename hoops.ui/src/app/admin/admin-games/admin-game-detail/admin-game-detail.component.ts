@@ -1,14 +1,12 @@
-import { Component, Inject, OnInit, computed, inject, input, signal, Signal, effect } from '@angular/core';
+import { Component, OnInit, computed, inject, input, effect } from '@angular/core';
 import {
-  FormGroup, UntypedFormControl, UntypedFormBuilder,
+  UntypedFormControl, UntypedFormBuilder,
   ReactiveFormsModule, FormControl, FormsModule
 } from '@angular/forms';
 import { Team } from '@app/domain/team';
-import { select, Store } from '@ngrx/store';
-import { from, Observable, of } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import * as fromAdmin from '../../state';
-import * as adminActions from '../../state/admin.actions';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -16,9 +14,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatOptionModule, provideNativeDateAdapter } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
-import { LocationService } from '../../admin-shared/services/location.service';
-import { Division } from '@app/domain/division';
-import { Location } from '@app/domain/location';
+import { LocationService } from '@app/services/location.service';
+import { Location as GymLocation } from '@app/domain/location';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RegularGame } from '@app/domain/regularGame';
@@ -70,7 +67,7 @@ export class AdminGameDetailComponent implements OnInit {
   visitorTeam!: Team | undefined;
   homeTeam: Team | undefined;
   // divisionTeams$: Observable<Team[]>;
-  locations$!: Observable<Location[]>;
+  // locations$!: Observable<Location[]>;
   visitorComponent: UntypedFormControl | null | undefined;
   gameTimeFormatted: string | undefined;
   // gameTime: string | undefined;
@@ -101,14 +98,14 @@ export class AdminGameDetailComponent implements OnInit {
   // this.gameTime = time;
 
   divisionTeams = this.#teamService.divisionTeams;
-  constructor (
-
-  ) {
+  locations = computed(() => this.locationService.locations());
+  constructor () {
     effect(() => {
       console.log(this.divisionTeams);
-      // this.locations$ = this.locationService.locations$;
-
-      // test = toSignal(this.locationService.locations$);
+    });
+    effect(() => {
+      //this.locations.set(this.locationService.locations());
+      console.log(this.locations());
     });
   }
 

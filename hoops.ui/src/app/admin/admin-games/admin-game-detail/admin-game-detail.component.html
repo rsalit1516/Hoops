@@ -36,7 +36,7 @@
             <!-- <input matInput value="locationName" formControlName="locationName" />
           -->
             <mat-select formControlName="locationName" class="form-control">
-              @for(location of locations$ | async; track location) {
+              @for(location of locationService.locations(); track location) {
               <mat-option [value]="location.locationNumber">
                 {{ location.locationName }}
               </mat-option>

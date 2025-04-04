@@ -10,7 +10,7 @@ import { CommonModule, NgIf } from '@angular/common';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { LocationService } from '@app/admin/admin-shared/services/location.service';
+import { LocationService } from '@app/services/location.service';
 import { AdminShellSidebarComponent } from '@app/admin/components/admin-shell-sidebar/admin-shell-sidebar.component';
 import { SeasonService } from '@app/services/season.service';
 import { DivisionService } from '@app/services/division.service';
@@ -52,8 +52,8 @@ export class AdminShellComponent implements OnInit {
   showUsers = false;
   shouldRun = true;
   readonly #seasonService = inject(SeasonService);
-  colorService = inject(ColorService);
-  locationService = inject(LocationService);
+  #colorService = inject(ColorService);
+  #locationService = inject(LocationService);
   store = inject(Store<fromAdmin.State>);
   divisionService = inject(DivisionService);
   // seasons$: Observable<Season[]>;
@@ -72,8 +72,8 @@ export class AdminShellComponent implements OnInit {
       this.#seasonService.updateSelectedSeason(season!);
       console.log(this.#seasonService.selectedSeason);
     });
-    // this.#seasonService.getSeasons();
-    this.colorService.fetchColors();
+    this.#colorService.fetchColors();
+    this.#locationService.fetchLocations();
   }
 
 }
