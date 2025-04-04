@@ -14,11 +14,17 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { AdminGameService } from '../adminGame.service';
 import { GameService } from '@app/services/game.service';
+import { ShellTitleComponent } from '@app/shared/shell-title/shell-title.component';
+import { AdminGamesFilterComponent } from '../admin-games-filter/admin-games-filter.component';
+import { LoggerService } from '@app/services/logging.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'csbc-admin-games-list',
   imports: [CommonModule, MatIconModule, MatTableModule,
     MatPaginatorModule,
-    MatIconModule],
+    MatIconModule,
+    ShellTitleComponent,
+  AdminGamesFilterComponent],
   templateUrl: './admin-games-list.component.html',
   styleUrls: [
     '../../../shared/scss/tables.scss',
@@ -30,9 +36,11 @@ import { GameService } from '@app/services/game.service';
 export class AdminGamesListComponent implements OnInit, OnChanges, AfterViewInit {
   adminGameService = inject(AdminGameService);
   gameService = inject(GameService);
+  readonly #router = inject(Router);
+  readonly #logger = inject(LoggerService);
   private store = inject(Store<fromAdmin.State>);
   readonly showScores = input<boolean>(false);
-
+pageTitle = 'Admin Game List';
   dialog = inject(MatDialog);
   dataSource!: MatTableDataSource<RegularGame>;
   games!: RegularGame[];
@@ -58,6 +66,8 @@ export class AdminGamesListComponent implements OnInit, OnChanges, AfterViewInit
     'homeTeamScore',
     'visitingTeamScore',
   ];
+  showPlayoffs = false;
+  showRegularSeason = true;
   constructor (
   ) {
     this.setupTable();
@@ -144,6 +154,7 @@ export class AdminGamesListComponent implements OnInit, OnChanges, AfterViewInit
     console.log(row);
     this.gameService.updateSelectedGame(row);
     // this.store.dispatch(new adminActions.SetSelectedGame(row));
+    this.#router.navigate(['./admin/games/detail']);
   }
   dataExists (): boolean {
     return this.games.length > 0;
@@ -153,5 +164,18 @@ export class AdminGamesListComponent implements OnInit, OnChanges, AfterViewInit
     this.dataSource.disconnect()
     this.dataSource.connect();
   }
+  handlefilterUpdate ($event: any) {
+    // console.log($event);
+    // console.log($event.division);
+    // console.log($event.season);
+    this.#logger.log($event.gametType);
+    if ($event.gameType === 'Playoffs') {
+      this.showPlayoffs = true;
+      this.showRegularSeason = false;
+    } else {
+      this.showPlayoffs = false;
+      this.showRegularSeason = true;
 
+    }
+  }
 }
