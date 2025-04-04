@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, computed, inject, input, signal, Signal } from '@angular/core';
+import { Component, Inject, OnInit, computed, inject, input, signal, Signal, effect } from '@angular/core';
 import {
   FormGroup, UntypedFormControl, UntypedFormBuilder,
   ReactiveFormsModule, FormControl, FormsModule
@@ -22,6 +22,8 @@ import { Location } from '@app/domain/location';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RegularGame } from '@app/domain/regularGame';
+import { DivisionService } from '@app/services/division.service';
+import { TeamService } from '@app/services/team.service';
 
 @Component({
   selector: 'admin-game-detail',
@@ -51,6 +53,10 @@ import { RegularGame } from '@app/domain/regularGame';
 export class AdminGameDetailComponent implements OnInit {
   selectedRecord = input.required<RegularGame>();
   private store = inject(Store<fromAdmin.State>);
+  readonly #divisionService = inject(DivisionService);
+  readonly #teamService = inject(TeamService);
+  readonly locationService = inject(LocationService);
+
   fb = inject(UntypedFormBuilder);
   gameEditForm = this.fb.group({
     gameDate: new FormControl('', { nonNullable: true }),
@@ -63,14 +69,13 @@ export class AdminGameDetailComponent implements OnInit {
 
   visitorTeam!: Team | undefined;
   homeTeam: Team | undefined;
-  divisionTeams$: Observable<Team[]>;
+  // divisionTeams$: Observable<Team[]>;
   locations$!: Observable<Location[]>;
   visitorComponent: UntypedFormControl | null | undefined;
   gameTimeFormatted: string | undefined;
   // gameTime: string | undefined;
   gameTime2: Date = new Date();
   pickerA: any;
-  locationService = inject(LocationService);
   getTime (value: Date | undefined) {
     // this.gameTime = time;new Date(this.selectedRecord()?.gameTime ?? ''));
     if (value === undefined) {
@@ -95,14 +100,16 @@ export class AdminGameDetailComponent implements OnInit {
   // console.log(time);
   // this.gameTime = time;
 
-
+  divisionTeams = this.#teamService.divisionTeams;
   constructor (
 
   ) {
-    this.divisionTeams$ = this.store.select(fromAdmin.getDivisionTeams);
-    // this.locations$ = this.locationService.locations$;
+    effect(() => {
+      console.log(this.divisionTeams);
+      // this.locations$ = this.locationService.locations$;
 
-    // test = toSignal(this.locationService.locations$);
+      // test = toSignal(this.locationService.locations$);
+    });
   }
 
   ngOnInit (): void {
@@ -152,9 +159,10 @@ export class AdminGameDetailComponent implements OnInit {
 
 
   getTeam (teamId: number) {
-    return this.divisionTeams$.pipe(
-      map((t) => t.find((s) => s.teamId === teamId))
-    );
+    console.log(teamId);
+    // return this.divisionTeams.pipe(
+    //   map((t) => t.find((s) => s.teamId === teamId))
+    // );
   }
 
   onSave () { }

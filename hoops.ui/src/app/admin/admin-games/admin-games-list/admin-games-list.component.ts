@@ -24,7 +24,7 @@ import { Router } from '@angular/router';
     MatPaginatorModule,
     MatIconModule,
     ShellTitleComponent,
-  AdminGamesFilterComponent],
+    AdminGamesFilterComponent],
   templateUrl: './admin-games-list.component.html',
   styleUrls: [
     '../../../shared/scss/tables.scss',
@@ -40,7 +40,7 @@ export class AdminGamesListComponent implements OnInit, OnChanges, AfterViewInit
   readonly #logger = inject(LoggerService);
   private store = inject(Store<fromAdmin.State>);
   readonly showScores = input<boolean>(false);
-pageTitle = 'Admin Game List';
+  pageTitle = 'Admin Game List';
   dialog = inject(MatDialog);
   dataSource!: MatTableDataSource<RegularGame>;
   games!: RegularGame[];
@@ -154,7 +154,7 @@ pageTitle = 'Admin Game List';
     console.log(row);
     this.gameService.updateSelectedGame(row);
     // this.store.dispatch(new adminActions.SetSelectedGame(row));
-    this.#router.navigate(['./admin/games/detail']);
+    this.#router.navigate(['./admin/games/detail-regular']);
   }
   dataExists (): boolean {
     return this.games.length > 0;

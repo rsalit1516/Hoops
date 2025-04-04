@@ -1,65 +1,86 @@
 <form [formGroup]="gameEditForm" class="form-container" (ngSubmit)="onSave()">
-
   <mat-card>
     <!-- <mat-card-title>Game Details</mat-card-title> -->
     <mat-card-content>
-      <div>
-        <mat-form-field class="form-control" appearance="fill">
-          <mat-label>Game Date</mat-label>
-          <input matInput [matDatepicker]="picker" value="gameDate" formControlName="gameDate"
-            placeholder="Game Date" />
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
+      <div class="flex">
+        <div class="flex-1">
+          <mat-form-field
+            class="form-control custom-background"
+            appearance="fill"
+          >
+            <mat-label>Game Date</mat-label>
+            <input
+              matInput
+              [matDatepicker]="picker"
+              value="gameDate"
+              formControlName="gameDate"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="flex-1">
+          <mat-form-field class="form-control" appearance="fill">
+            <mat-label>Game Time</mat-label>
+            <input matInput value="gameTime" formControlName="gameTime" />
+          </mat-form-field>
+        </div>
       </div>
-      <div>
-        <mat-form-field class="form-control" appearance="fill">
-          <mat-label>Game Time</mat-label>
-          <input matInput value="gameTime" placeholder="06:00" formControlName="gameTime" placeholder="Game Time" />
-        </mat-form-field>
-      </div>
-      <div>
-        <mat-form-field class="form-control" appearance="fill">
-          <mat-label>Location</mat-label>
-          <!-- <input matInput value="locationName" formControlName="locationName" />
+      <div class="flex">
+        <div class="flex-1">
+          <mat-form-field class="form-control" appearance="fill">
+            <mat-label>Location</mat-label>
+            <!-- <input matInput value="locationName" formControlName="locationName" />
           -->
-          <mat-select formControlName="locationName" class="form-control">
-            @for(location of locations$ | async; track location) {
-            <mat-option [value]="location.locationNumber">
-              {{ location.locationName }}
-            </mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
+            <mat-select formControlName="locationName" class="form-control">
+              @for(location of locations$ | async; track location) {
+              <mat-option [value]="location.locationNumber">
+                {{ location.locationName }}
+              </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
       </div>
-      <div>
-        <mat-form-field class="form-control" appearance="fill">
-          <mat-label>Visitor Team</mat-label>
-          <mat-select formControlName="visitorTeam" class="form-control">
-            @for(team of divisionTeams$ | async; track team) {
-            <mat-option [value]="team.teamId">
-              {{ team.teamName }}
-            </mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div>
-        <mat-form-field class="form-control" appearance="fill">
-          <mat-label>HomeTeam</mat-label>
-          <mat-select formControlName="homeTeam" class="form-control">
-            @for(team of divisionTeams$ | async;track team) {
-            <mat-option [value]="team.teamId">
-              {{ team.teamName }}
-            </mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
+      <div class="flex">
+        <div class="flex-1">
+          <mat-form-field class="form-control" appearance="fill">
+            <mat-label>Visitor Team</mat-label>
+            <mat-select formControlName="visitorTeam" class="form-control">
+              @for(team of divisionTeams(); track team) {
+              <mat-option [value]="team.teamId">
+                {{ team.teamName }}
+              </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="flex-1">
+          <mat-form-field class="form-control" appearance="fill">
+            <mat-label>HomeTeam</mat-label>
+            <mat-select formControlName="homeTeam" class="form-control">
+              @for(team of divisionTeams(); track team) {
+              <mat-option [value]="team.teamId">
+                {{ team.teamName }}
+              </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
       </div>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-raised-button color="Primary" type="submit"
-        [disabled]="!gameEditForm.valid || !gameEditForm.dirty">Save</button>
+      <button
+        mat-raised-button
+        color="Primary"
+        type="submit"
+        [disabled]="!gameEditForm.valid || !gameEditForm.dirty"
+      >
+        Save
+      </button>
       <button mat-raised-button color="Primary" type="button">Cancel</button>
     </mat-card-actions>
   </mat-card>
