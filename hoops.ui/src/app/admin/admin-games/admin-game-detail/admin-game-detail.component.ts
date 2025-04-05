@@ -16,8 +16,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { RegularGame } from '@app/domain/regularGame';
 import { DivisionService } from '@app/services/division.service';
 import { TeamService } from '@app/services/team.service';
-import { MatTimepickerModule } from '@angular/material/timepicker';
-import { DateTime } from 'luxon';
+import { MatTimepickerModule, MatTimepickerOption } from '@angular/material/timepicker';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'admin-game-detail',
@@ -51,8 +51,8 @@ export class AdminGameDetailComponent implements OnInit {
   readonly #divisionService = inject(DivisionService);
   readonly #teamService = inject(TeamService);
   readonly locationService = inject(LocationService);
-
-  fb = inject(FormBuilder);
+  readonly #router = inject(Router);
+  fb = inject(UntypedFormBuilder);
   gameEditForm = this.fb.group({
     gameDate: new FormControl<Date | null>(null, { nonNullable: false }),
     gameTime: new FormControl<Date | null>(null, { nonNullable: true }),
@@ -156,6 +156,10 @@ export class AdminGameDetailComponent implements OnInit {
     // );
   }
 
-  onSave() { }
-  cancel() { }
+  onSave () { }
+  cancel () {
+    console.log('cancel');
+    this.#router('/admin/games/list');
+    this.gameEditForm.reset();
+  }
 }
