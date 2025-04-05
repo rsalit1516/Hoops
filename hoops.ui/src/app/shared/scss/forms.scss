@@ -129,11 +129,17 @@ div.mat-mdc-select-panel {
 .mdc-list-item__primary-text {
   color: v.$field-label !important;
 }
-
+.mat-mdc-option.mdc-list-item {
+  align-items: center;
+  background-color: #333333 !important;
+  /* background: rgba(0, 0, 0, 0); */
+}
 .mdc-list-item__primary-text:selected {
   color: yellow !important;
 }
-
+.mat-timepicker-panel {
+  background-color: color.adjust(v.$admin-background-color, $lightness: 20%) !important;
+}
 .mat-mdc-raised-button:not(:disabled) {
   background-color: v.$brand-color !important;
 }

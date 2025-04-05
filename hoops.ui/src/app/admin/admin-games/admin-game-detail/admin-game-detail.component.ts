@@ -21,6 +21,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { RegularGame } from '@app/domain/regularGame';
 import { DivisionService } from '@app/services/division.service';
 import { TeamService } from '@app/services/team.service';
+import {MatTimepickerModule, MatTimepickerOption} from '@angular/material/timepicker';
 
 @Component({
   selector: 'admin-game-detail',
@@ -33,6 +34,7 @@ import { TeamService } from '@app/services/team.service';
     MatSelectModule,
     MatOptionModule,
     MatDatepickerModule,
+    MatTimepickerModule,
     MatInputModule,
     MatFormFieldModule,
     MatButtonModule,
@@ -98,14 +100,14 @@ export class AdminGameDetailComponent implements OnInit {
   // this.gameTime = time;
 
   divisionTeams = this.#teamService.divisionTeams;
-  locations = computed(() => this.locationService.locations());
+  locations = this.locationService.locations();
   constructor () {
     effect(() => {
       console.log(this.divisionTeams);
     });
     effect(() => {
       //this.locations.set(this.locationService.locations());
-      console.log(this.locations());
+      this.locations = this.locationService.locations();
     });
   }
 

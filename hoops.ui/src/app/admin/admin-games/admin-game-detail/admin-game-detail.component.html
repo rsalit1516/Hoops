@@ -25,7 +25,11 @@
         <div class="flex-1">
           <mat-form-field class="form-control" appearance="fill">
             <mat-label>Game Time</mat-label>
-            <input matInput value="gameTime" formControlName="gameTime" />
+                <input matInput [matTimepicker]="minutesPicker"
+                formControlName="gameTime">
+                <mat-timepicker-toggle matIconSuffix [for]="minutesPicker"/>
+                <mat-timepicker interval="5min" #minutesPicker/>
+            <!-- <input matInput value="gameTime" formControlName="gameTime" /> -->
           </mat-form-field>
         </div>
       </div>
@@ -36,7 +40,7 @@
             <!-- <input matInput value="locationName" formControlName="locationName" />
           -->
             <mat-select formControlName="locationName" class="form-control">
-              @for(location of locationService.locations(); track location) {
+              @for(location of locations; track location) {
               <mat-option [value]="location.locationNumber">
                 {{ location.locationName }}
               </mat-option>
