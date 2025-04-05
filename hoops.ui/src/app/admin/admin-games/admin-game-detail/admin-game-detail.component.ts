@@ -1,11 +1,7 @@
 import { Component, OnInit, computed, inject, input, effect } from '@angular/core';
-import {
-  UntypedFormControl, UntypedFormBuilder,
-  ReactiveFormsModule, FormControl, FormsModule
-} from '@angular/forms';
+import { UntypedFormControl, ReactiveFormsModule, FormControl, FormsModule, FormBuilder } from '@angular/forms';
 import { Team } from '@app/domain/team';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
 import * as fromAdmin from '../../state';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -15,13 +11,13 @@ import { MatCardModule } from '@angular/material/card';
 import { MatOptionModule, provideNativeDateAdapter } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { LocationService } from '@app/services/location.service';
-import { Location as GymLocation } from '@app/domain/location';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RegularGame } from '@app/domain/regularGame';
 import { DivisionService } from '@app/services/division.service';
 import { TeamService } from '@app/services/team.service';
-import {MatTimepickerModule, MatTimepickerOption} from '@angular/material/timepicker';
+import { MatTimepickerModule } from '@angular/material/timepicker';
+import { DateTime } from 'luxon';
 
 @Component({
   selector: 'admin-game-detail',
@@ -47,7 +43,7 @@ import {MatTimepickerModule, MatTimepickerOption} from '@angular/material/timepi
     '../../admin.component.scss',
   ],
   providers: [
-    provideNativeDateAdapter(),],
+    provideNativeDateAdapter(), ],
 })
 export class AdminGameDetailComponent implements OnInit {
   selectedRecord = input.required<RegularGame>();
@@ -56,11 +52,11 @@ export class AdminGameDetailComponent implements OnInit {
   readonly #teamService = inject(TeamService);
   readonly locationService = inject(LocationService);
 
-  fb = inject(UntypedFormBuilder);
+  fb = inject(FormBuilder);
   gameEditForm = this.fb.group({
-    gameDate: new FormControl('', { nonNullable: true }),
-    gameTime: new FormControl('', { nonNullable: true }),
-    gameTime2: new FormControl('', { nonNullable: true }),
+    gameDate: new FormControl<Date | null>(null, { nonNullable: false }),
+    gameTime: new FormControl<Date | null>(null, { nonNullable: true }),
+    gameTime2: new FormControl<Date | null>(null, { nonNullable: true }),
     locationName: new FormControl('', { nonNullable: false }),
     visitorTeam: new FormControl('', { nonNullable: true }),
     homeTeam: new FormControl('', { nonNullable: true }),
@@ -75,7 +71,7 @@ export class AdminGameDetailComponent implements OnInit {
   // gameTime: string | undefined;
   gameTime2: Date = new Date();
   pickerA: any;
-  getTime (value: Date | undefined) {
+  getTime(value: Date | undefined) {
     // this.gameTime = time;new Date(this.selectedRecord()?.gameTime ?? ''));
     if (value === undefined) {
       return '';
@@ -101,7 +97,7 @@ export class AdminGameDetailComponent implements OnInit {
 
   divisionTeams = this.#teamService.divisionTeams;
   locations = this.locationService.locations();
-  constructor () {
+  constructor() {
     effect(() => {
       console.log(this.divisionTeams);
     });
@@ -111,12 +107,10 @@ export class AdminGameDetailComponent implements OnInit {
     });
   }
 
-  ngOnInit (): void {
+  ngOnInit(): void {
     this.visitorComponent = this.gameEditForm.get(
       'visitorTeam'
-    ) as UntypedFormControl;
-    // this.store.select(fromAdmin.getSelectedGame).subscribe((game) => {
-    //   console.log(game);
+    ) as FormControl;
     //   const gameTime = new Date(game?.gameTime ?? '');
     //   console.log(gameTime);
     //   const time =
@@ -144,25 +138,24 @@ export class AdminGameDetailComponent implements OnInit {
     // });
     // console.log(this.visitorTeam);
 
-    // this.gameEditForm.patchValue({
-    //   gameDate: game?.gameDate as Date,
-    //   gameTime: this.gameTime,
-    //   locationName: game?.locationName,
-    //   homeTeam: this.homeTeam?.teamId,
-    //   visitorTeam: this.visitorTeam?.teamId,
-    // });
+    this.gameEditForm.patchValue({
+      gameDate: this.selectedRecord()?.gameDate as Date,
+      gameTime: this.selectedRecord()!.gameTime,
+      locationName: this.selectedRecord()?.locationName,
+      homeTeam: this.selectedRecord()?.homeTeamId!.toString() ?? '',
+      visitorTeam: this.selectedRecord()?.visitingTeamId!.toString() ?? '',
+    });
     // this.visitorComponent?.setValue(this.visitorTeam);
     // });
   }
 
-
-
-  getTeam (teamId: number) {
+  getTeam(teamId: number) {
     console.log(teamId);
     // return this.divisionTeams.pipe(
     //   map((t) => t.find((s) => s.teamId === teamId))
     // );
   }
 
-  onSave () { }
+  onSave() { }
+  cancel() { }
 }
