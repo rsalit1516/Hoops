@@ -25,10 +25,13 @@
         <div class="flex-1">
           <mat-form-field class="form-control" appearance="fill">
             <mat-label>Game Time</mat-label>
-                <input matInput [matTimepicker]="minutesPicker"
-                formControlName="gameTime">
-                <mat-timepicker-toggle matIconSuffix [for]="minutesPicker"/>
-                <mat-timepicker interval="5min" #minutesPicker/>
+            <input
+              matInput
+              [matTimepicker]="minutesPicker"
+              formControlName="gameTime"
+            />
+            <mat-timepicker-toggle matIconSuffix [for]="minutesPicker" />
+            <mat-timepicker interval="5min" #minutesPicker />
             <!-- <input matInput value="gameTime" formControlName="gameTime" /> -->
           </mat-form-field>
         </div>
@@ -85,7 +88,14 @@
       >
         Save
       </button>
-      <button mat-raised-button color="Primary" type="button">Cancel</button>
+      <button
+        mat-raised-button
+        color="Primary"
+        type="button"
+        (click)="cancel()"
+      >
+        Cancel
+      </button>
     </mat-card-actions>
   </mat-card>
 </form>
