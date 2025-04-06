@@ -18,6 +18,7 @@ import { DivisionService } from '@app/services/division.service';
 import { TeamService } from '@app/services/team.service';
 import { MatTimepickerModule, MatTimepickerOption } from '@angular/material/timepicker';
 import { Router } from '@angular/router';
+import { GameService } from '@app/services/game.service';
 
 @Component({
   selector: 'admin-game-detail',
@@ -46,13 +47,14 @@ import { Router } from '@angular/router';
     provideNativeDateAdapter(), ],
 })
 export class AdminGameDetailComponent implements OnInit {
-  selectedRecord = input.required<RegularGame>();
   private store = inject(Store<fromAdmin.State>);
   readonly #divisionService = inject(DivisionService);
   readonly #teamService = inject(TeamService);
   readonly locationService = inject(LocationService);
   readonly #router = inject(Router);
-  fb = inject(UntypedFormBuilder);
+  readonly gameService = inject(GameService)
+  selectedRecord = computed(() => this.gameService.selectedRecordSignal() as RegularGame | undefined);
+  fb = inject(FormBuilder);
   gameEditForm = this.fb.group({
     gameDate: new FormControl<Date | null>(null, { nonNullable: false }),
     gameTime: new FormControl<Date | null>(null, { nonNullable: true }),
@@ -99,6 +101,9 @@ export class AdminGameDetailComponent implements OnInit {
   locations = this.locationService.locations();
   constructor() {
     effect(() => {
+      console.log(this.gameService.selectedRecordSignal())
+    });
+    effect(() => {
       console.log(this.divisionTeams);
     });
     effect(() => {
@@ -131,7 +136,7 @@ export class AdminGameDetailComponent implements OnInit {
     // this.homeTeam = team;
     // });
     console.log(this.homeTeam);
-
+console.log(this.selectedRecord());
     // this.getTeam(game?.visitingTeamId as number).subscribe((team) => {
     //   // console.log(team);
     //   this.visitorTeam = team;
@@ -159,7 +164,7 @@ export class AdminGameDetailComponent implements OnInit {
   onSave () { }
   cancel () {
     console.log('cancel');
-    this.#router('/admin/games/list');
-    this.gameEditForm.reset();
+    this.#router.navigate(['./admin/games/list']);
+    // this.gameEditForm.reset();
   }
 }

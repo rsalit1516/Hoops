@@ -496,7 +496,7 @@ namespace Hoops.Infrastructure.Repository
                     game.GameTime = time;
                 game.GameDate = CombineDateAndTime(game.GameDate, game.GameTime);
 
-                var visitingTeam = game.HomeTeamNumber.HasValue
+                var visitingTeam = game.VisitingTeamNumber.HasValue
                     ? GetTeam(schedDiv, game.ScheduleNumber, game.VisitingTeamNumber ?? 0, seasonId)
                     : null;
                 game.VisitingTeamSeasonNumber = visitingTeam?.ScheduleTeamNumber ?? 0;

@@ -83,7 +83,7 @@ export class GameService {
   updateSeasonGames (games: RegularGame[]) {
     this._seasonGames.set(games);
   }
-
+  seasonGamesCount = computed(() => this.seasonGames ? this.seasonGames.length : 0);
   public currentTeamId: string | undefined;
 
   // Signals managed by the service
@@ -155,7 +155,7 @@ export class GameService {
         (games) => {
           // this.seasonGames$ = of(games);
           this.updateSeasonGames(games);
-          // console.log(games);
+          console.log(games);
         }
       );
   }
