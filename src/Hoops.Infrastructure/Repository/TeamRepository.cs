@@ -98,7 +98,7 @@ namespace Hoops.Infrastructure.Repository
             {
                 team.TeamName = team.TeamColor?.ToUpper() ?? string.Empty;
             }
-            else if (team.TeamColor != null)
+            else 
             {
                 team.TeamName = $"{team.TeamName} ";
             }
