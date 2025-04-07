@@ -172,4 +172,7 @@ export class TeamService {
     return team;
 
   }
+  getTeamByTeamId (teamId: number): Team | undefined {
+    return this.divisionTeams()!.find((team) => team.teamId === teamId);
+  }
 }

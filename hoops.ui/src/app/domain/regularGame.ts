@@ -1,4 +1,5 @@
 import { Season } from './season';
+import { Location as GymLocation } from './location';
 
 export class RegularGame {
   public gameScheduleId!: number;
@@ -9,6 +10,7 @@ export class RegularGame {
   public gameId: number | undefined;
   public locationName!: string;
   public locationNumber!: number;
+  public location: GymLocation | undefined;
   public gameDate!: Date;
   public gameTime: Date | undefined;
   public gameTimeString: string | undefined;

@@ -36,4 +36,15 @@ export class LocationService {
       catchError(this.dataService.handleError('getLocations', []))
     );
   }
+  getLocationById (locationNumber: number): GymLocation | undefined {
+    console.log('locationNumber', locationNumber);
+    console.log('locations', this._locations());
+    return this._locations().find((location) => location.locationNumber === locationNumber);
+  }
+  getLocationByName (locationName: string): GymLocation | undefined {
+    console.log('locationNamer', locationName);
+    console.log('locations', this._locations());
+    return this._locations().find((location) => location.locationName === locationName);
+  }
+
 }
