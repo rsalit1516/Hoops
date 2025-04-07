@@ -172,6 +172,11 @@ export class AdminGameDetailComponent implements OnInit {
 
   onSave () {
     console.log(this.gameEditForm.value);
+    if (this.selectedRecord()?.gameId === undefined) {
+      console.log('gameId is undefined');
+    } else {
+      this.gameService.saveExistingGame(this.gameEditForm.value as RegularGame);
+    }
   }
   cancel () {
     console.log('cancel');

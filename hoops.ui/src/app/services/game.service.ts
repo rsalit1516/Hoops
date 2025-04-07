@@ -309,7 +309,40 @@ export class GameService {
   extractDate (date: string): Date {
     return DateTime.fromISO(date).toJSDate();
   }
-  saveGame ({
+  saveExistingGame(game: RegularGame) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+    };
+    const gameUrl = this.dataService.webUrl + '/api/games/' + game.scheduleGamesId;
+    console.log(gameUrl);
+    let result = this.#http
+      .put(gameUrl, game, httpOptions)
+      .subscribe((x) => console.log(x));
+    // .pipe(
+    //   tap(data => console.log(data)),
+    //   catchError(this.dataService.handleError)
+    // );
+    // this.gameStore.dispatch(new gameActions.UpdateGame(game));
+  } 
+  saveNewGame(game: RegularGame) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+    };
+    const gameUrl = this.dataService.webUrl + '/api/games';
+    console.log(gameUrl);
+    let result = this.#http
+      .post(gameUrl, game, httpOptions)
+      .subscribe((x) => console.log(x));
+    // .pipe(
+    //   tap(data => console.log(data)),
+    //   catchError(this.dataService.handleError)
+    // );
+  }
+  saveGame({
     game,
     homeTeamScore,
     visitingTeamScore,
