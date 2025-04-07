@@ -19,6 +19,7 @@ import { TeamService } from '@app/services/team.service';
 import { MatTimepickerModule, MatTimepickerOption } from '@angular/material/timepicker';
 import { Router } from '@angular/router';
 import { GameService } from '@app/services/game.service';
+import { Location as GymLocation } from '@app/domain/location';
 
 @Component({
   selector: 'admin-game-detail',
@@ -44,7 +45,7 @@ import { GameService } from '@app/services/game.service';
     '../../admin.component.scss',
   ],
   providers: [
-    provideNativeDateAdapter(), ],
+    provideNativeDateAdapter(),],
 })
 export class AdminGameDetailComponent implements OnInit {
   private store = inject(Store<fromAdmin.State>);
@@ -59,9 +60,9 @@ export class AdminGameDetailComponent implements OnInit {
     gameDate: new FormControl<Date | null>(null, { nonNullable: false }),
     gameTime: new FormControl<Date | null>(null, { nonNullable: true }),
     gameTime2: new FormControl<Date | null>(null, { nonNullable: true }),
-    locationName: new FormControl('', { nonNullable: false }),
-    visitorTeam: new FormControl('', { nonNullable: true }),
-    homeTeam: new FormControl('', { nonNullable: true }),
+    location: new FormControl<GymLocation | undefined>(undefined, { nonNullable: false }),
+    visitorTeam: new FormControl<Team | undefined>(undefined, { nonNullable: true }),
+    homeTeam: new FormControl<Team | undefined>(undefined, { nonNullable: true }),
   });
 
   visitorTeam!: Team | undefined;
@@ -73,7 +74,9 @@ export class AdminGameDetailComponent implements OnInit {
   // gameTime: string | undefined;
   gameTime2: Date = new Date();
   pickerA: any;
-  getTime(value: Date | undefined) {
+  location: GymLocation | undefined;
+  visitingTeam: Team | undefined;
+  getTime (value: Date | undefined) {
     // this.gameTime = time;new Date(this.selectedRecord()?.gameTime ?? ''));
     if (value === undefined) {
       return '';
@@ -99,12 +102,12 @@ export class AdminGameDetailComponent implements OnInit {
 
   divisionTeams = this.#teamService.divisionTeams;
   locations = this.locationService.locations();
-  constructor() {
+  constructor () {
     effect(() => {
       console.log(this.gameService.selectedRecordSignal())
     });
     effect(() => {
-      console.log(this.divisionTeams);
+      console.log(this.divisionTeams());
     });
     effect(() => {
       //this.locations.set(this.locationService.locations());
@@ -112,7 +115,7 @@ export class AdminGameDetailComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
+  ngOnInit (): void {
     this.visitorComponent = this.gameEditForm.get(
       'visitorTeam'
     ) as FormControl;
@@ -136,32 +139,40 @@ export class AdminGameDetailComponent implements OnInit {
     // this.homeTeam = team;
     // });
     console.log(this.homeTeam);
-console.log(this.selectedRecord());
+    console.log(this.selectedRecord());
     // this.getTeam(game?.visitingTeamId as number).subscribe((team) => {
     //   // console.log(team);
     //   this.visitorTeam = team;
     // });
     // console.log(this.visitorTeam);
 
+    this.location = this.locationService.getLocationByName(this.selectedRecord()?.locationName as string ?? '') as GymLocation;
+    this.visitingTeam = this.#teamService.getTeamByTeamId(this.selectedRecord()?.visitingTeamId! ?? 0);
+    console.log(this.location);
+    console.log(this.visitingTeam);
+    this.homeTeam = this.#teamService.getTeamByTeamId(this.selectedRecord()?.homeTeamId! ?? 0)
+    console.log(this.homeTeam);
     this.gameEditForm.patchValue({
       gameDate: this.selectedRecord()?.gameDate as Date,
       gameTime: this.selectedRecord()!.gameTime,
-      locationName: this.selectedRecord()?.locationName,
-      homeTeam: this.selectedRecord()?.homeTeamId!.toString() ?? '',
-      visitorTeam: this.selectedRecord()?.visitingTeamId!.toString() ?? '',
+      location: this.location!,
+      homeTeam: this.homeTeam,
+      visitorTeam: this.visitingTeam,
     });
     // this.visitorComponent?.setValue(this.visitorTeam);
     // });
   }
 
-  getTeam(teamId: number) {
+  getTeam (teamId: number) {
     console.log(teamId);
     // return this.divisionTeams.pipe(
     //   map((t) => t.find((s) => s.teamId === teamId))
     // );
   }
 
-  onSave () { }
+  onSave () {
+    console.log(this.gameEditForm.value);
+  }
   cancel () {
     console.log('cancel');
     this.#router.navigate(['./admin/games/list']);

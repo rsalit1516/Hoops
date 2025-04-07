@@ -40,12 +40,14 @@
         <div class="flex-1">
           <mat-form-field class="form-control" appearance="fill">
             <mat-label>Location</mat-label>
-            <!-- <input matInput value="locationName" formControlName="locationName" />
-          -->
-            <mat-select formControlName="locationName" class="form-control">
-              @for(location of locations; track location) {
-              <mat-option [value]="location.locationNumber">
-                {{ location.locationName }}
+            <mat-select
+              formControlName="location"
+              [value]="location"
+              class="form-control"
+            >
+              @for(loc of locations; track loc) {
+              <mat-option [value]="loc">
+                {{ loc.locationName }}
               </mat-option>
               }
             </mat-select>
@@ -56,9 +58,13 @@
         <div class="flex-1">
           <mat-form-field class="form-control" appearance="fill">
             <mat-label>Visitor Team</mat-label>
-            <mat-select formControlName="visitorTeam" class="form-control">
+            <mat-select
+              formControlName="visitorTeam"
+              [value]="visitorTeam"
+              class="form-control"
+            >
               @for(team of divisionTeams(); track team) {
-              <mat-option [value]="team.teamId">
+              <mat-option [value]="team">
                 {{ team.teamName }}
               </mat-option>
               }
@@ -68,9 +74,13 @@
         <div class="flex-1">
           <mat-form-field class="form-control" appearance="fill">
             <mat-label>HomeTeam</mat-label>
-            <mat-select formControlName="homeTeam" class="form-control">
+            <mat-select
+              formControlName="homeTeam"
+              [value]="homeTeam"
+              class="form-control"
+            >
               @for(team of divisionTeams(); track team) {
-              <mat-option [value]="team.teamId">
+              <mat-option [value]="team">
                 {{ team.teamName }}
               </mat-option>
               }
