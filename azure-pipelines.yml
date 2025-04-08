@@ -1,22 +1,58 @@
-# Node.js with Angular
-# Build a Node.js project that uses Angular.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
-
 trigger:
-- master
+- develop # Automatically runs on changes to 'develop' branch
 
-pool:
-  vmImage: ubuntu-latest
+stages:
+- stage: Build
+  displayName: "Build Stage"
+  jobs:
+  - job: BuildFrontend
+    displayName: "Build Angular Frontend"
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '22.0' # Use the appropriate Node.js version
+      displayName: "Install Node.js"
+    - script: |
+        npm install
+        npm run build --prod
+      workingDirectory: frontend # Adjust path if needed
+      displayName: "Build Angular App"
+    - publish: frontend/dist # Publish built frontend artifacts
+      artifact: angular-frontend
 
-steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '10.x'
-  displayName: 'Install Node.js'
+  - job: BuildBackend
+    displayName: "Build .NET Backend"
+    pool:
+      vmImage: 'windows-latest'
+    steps:
+    - script: |
+        dotnet restore
+        dotnet build --configuration Release
+      workingDirectory: backend # Adjust path if needed
+      displayName: "Build .NET App"
+    - publish: backend/bin/Release/net8.0 # Publish built backend artifacts
+      artifact: dotnet-backend
 
-- script: |
-    npm install -g @angular/cli
-    npm install
-    ng build --prod
-  displayName: 'npm install and build'
+- stage: Deploy
+  displayName: "Deploy to Azure"
+  dependsOn: Build
+  jobs:
+  - deployment: DeployToAzure
+    environment: staging
+    displayName: "Deploy to Azure Staging"
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current # Get build artifacts
+          - task: AzureCLI@2
+            inputs:
+              azureSubscription: "Pay-As-You-Go"
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |
+                # Example deployment commands
+                az webapp deploy --name frontend-app-name --resource-group resource-group-name --src-path $(Pipeline.Workspace)/angular-frontend
+                az webapp deploy --name backend-app-name --resource-group resource-group-name --src-path $(Pipeline.Workspace)/dotnet-backend
