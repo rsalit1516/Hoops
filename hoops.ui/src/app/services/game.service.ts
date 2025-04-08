@@ -24,6 +24,7 @@ import { LoggerService } from './logging.service';
 import { AuthService } from './auth.service';
 import { Standing } from '@app/domain/standing';
 import { TeamService } from './team.service';
+import { RegularGameSaveObject } from '@app/domain/RegularGameSaveObject';
 
 @Injectable({
   providedIn: 'root'
@@ -309,7 +310,7 @@ export class GameService {
   extractDate (date: string): Date {
     return DateTime.fromISO(date).toJSDate();
   }
-  saveExistingGame(game: RegularGame) {
+  saveExistingGame (game: RegularGameSaveObject) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -325,8 +326,8 @@ export class GameService {
     //   catchError(this.dataService.handleError)
     // );
     // this.gameStore.dispatch(new gameActions.UpdateGame(game));
-  } 
-  saveNewGame(game: RegularGame) {
+  }
+  saveNewGame (game: RegularGameSaveObject) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -342,7 +343,7 @@ export class GameService {
     //   catchError(this.dataService.handleError)
     // );
   }
-  saveGame({
+  saveGame ({
     game,
     homeTeamScore,
     visitingTeamScore,
