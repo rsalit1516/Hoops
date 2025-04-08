@@ -39,7 +39,7 @@ import { RouterOutlet } from '@angular/router';
   ],
   imports: [
     // MatToolbarModule,
-        RouterOutlet,
+    RouterOutlet,
 
     MatSidenavModule,
     MatExpansionModule,
@@ -84,7 +84,7 @@ export class AdminGamesShellComponent implements OnInit {
       const record = this.gameService.selectedRecordSignal();
       console.log('Selected record changed:', record);
       if (record !== null) {
-        console.log(`Record updated: ${ record.gameScheduleId }`);
+        console.log(`Record updated: ${ record.scheduleGamesId }`);
         this.selectedRecord.set(record);
         this.isSidenavOpen = true;
         // Allow the sidenav to open first, then expand the first panel

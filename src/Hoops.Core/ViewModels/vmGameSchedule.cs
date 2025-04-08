@@ -6,7 +6,7 @@ namespace Hoops.Core.ViewModels
 {
     public class vmGameSchedule
     {
-
+        public int ScheduleGamesId { get; set; }
         public int DivisionId { get; set; }
         public int? CompanyId { get; set; }
         public int? SeasonId { get; set; }

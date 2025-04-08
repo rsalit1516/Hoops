@@ -446,6 +446,7 @@ namespace Hoops.Infrastructure.Repository
                 where g.LocationNumber == l.LocationNumber
                 select new vmGameSchedule
                 {
+                    ScheduleGamesId = g.ScheduleGamesId,
                     SeasonId = seasonId,
                     DivisionDescription = d.DivisionDescription,
                     DivisionId = g.DivisionId ?? 0,

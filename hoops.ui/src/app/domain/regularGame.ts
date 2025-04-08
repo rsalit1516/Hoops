@@ -2,7 +2,6 @@ import { Season } from './season';
 import { Location as GymLocation } from './location';
 
 export class RegularGame {
-  public gameScheduleId!: number;
   public gameDescription!: string | null;
   public seasonId!: number;
   public divisionId!: number;

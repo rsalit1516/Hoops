@@ -65,6 +65,7 @@ export class AdminGamesListComponent implements OnInit, OnChanges, AfterViewInit
     'visitingTeamName',
     'homeTeamScore',
     'visitingTeamScore',
+
   ];
   showPlayoffs = false;
   showRegularSeason = true;
@@ -150,10 +151,9 @@ export class AdminGamesListComponent implements OnInit, OnChanges, AfterViewInit
   editGame (game: RegularGame) {
     // TODO: implement this method
   }
-  selectRow (row: any) {
+  selectRow (row: RegularGame) {
     console.log(row);
     this.gameService.updateSelectedGame(row);
-    // this.store.dispatch(new adminActions.SetSelectedGame(row));
     this.#router.navigate(['./admin/games/detail-regular']);
   }
   dataExists (): boolean {
@@ -165,9 +165,6 @@ export class AdminGamesListComponent implements OnInit, OnChanges, AfterViewInit
     this.dataSource.connect();
   }
   handlefilterUpdate ($event: any) {
-    // console.log($event);
-    // console.log($event.division);
-    // console.log($event.season);
     this.#logger.log($event.gametType);
     if ($event.gameType === 'Playoffs') {
       this.showPlayoffs = true;

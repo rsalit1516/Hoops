@@ -17,6 +17,8 @@ import { RegularGame } from '@app/domain/regularGame';
 import { DivisionService } from '@app/services/division.service';
 import { TeamService } from '@app/services/team.service';
 import { MatTimepickerModule, MatTimepickerOption } from '@angular/material/timepicker';
+
+import { MatNativeDateModule } from '@angular/material/core';
 import { Router } from '@angular/router';
 import { GameService } from '@app/services/game.service';
 import { Location as GymLocation } from '@app/domain/location';
@@ -33,6 +35,7 @@ import { Location as GymLocation } from '@app/domain/location';
     MatOptionModule,
     MatDatepickerModule,
     MatTimepickerModule,
+    MatNativeDateModule,
     MatInputModule,
     MatFormFieldModule,
     MatButtonModule,
@@ -48,7 +51,6 @@ import { Location as GymLocation } from '@app/domain/location';
     provideNativeDateAdapter(),],
 })
 export class AdminGameDetailComponent implements OnInit {
-  private store = inject(Store<fromAdmin.State>);
   readonly #divisionService = inject(DivisionService);
   readonly #teamService = inject(TeamService);
   readonly locationService = inject(LocationService);
@@ -59,10 +61,10 @@ export class AdminGameDetailComponent implements OnInit {
   gameEditForm = this.fb.group({
     gameDate: new FormControl<Date | null>(null, { nonNullable: false }),
     gameTime: new FormControl<Date | null>(null, { nonNullable: true }),
-    gameTime2: new FormControl<Date | null>(null, { nonNullable: true }),
     location: new FormControl<GymLocation | undefined>(undefined, { nonNullable: false }),
     visitorTeam: new FormControl<Team | undefined>(undefined, { nonNullable: true }),
     homeTeam: new FormControl<Team | undefined>(undefined, { nonNullable: true }),
+    //    scheduleGamesId: new FormControl<number | undefined>(undefined, { nonNullable: true }),
   });
 
   visitorTeam!: Team | undefined;
@@ -86,9 +88,8 @@ export class AdminGameDetailComponent implements OnInit {
         minute: '2-digit',
       }) ?? '';
     }
-    // console.log(time);
-    // this.gameTime = time;
   }
+  scheduleGamesId = this.selectedRecord()?.scheduleGamesId ?? 0;
   gameTime = computed(() => this.getTime(this.selectedRecord()?.gameTime));
 
   // console.log(time);
@@ -105,6 +106,7 @@ export class AdminGameDetailComponent implements OnInit {
   constructor () {
     effect(() => {
       console.log(this.gameService.selectedRecordSignal())
+      this.scheduleGamesId = this.gameService.selectedRecordSignal()?.scheduleGamesId ?? 0;
     });
     effect(() => {
       console.log(this.divisionTeams());
@@ -172,11 +174,62 @@ export class AdminGameDetailComponent implements OnInit {
 
   onSave () {
     console.log(this.gameEditForm.value);
+
     if (this.selectedRecord()?.gameId === undefined) {
       console.log('gameId is undefined');
     } else {
       this.gameService.saveExistingGame(this.gameEditForm.value as RegularGame);
     }
+
+    /*
+    gameDate = gameDate
+    gameTime = gameTime
+
+    homeTeam
+    location
+    visitorteam
+
+    {
+  "scheduleGamesId": 0,
+  "scheduleNumber": 0,
+  "gameNumber": 0,
+  "locationNumber": 0,
+  "gameDate": "2025-04-08T11:23:50.782Z",
+  "gameTime": "string",
+  "visitingTeamNumber": 0,
+  "homeTeamNumber": 0,
+  "visitingTeamScore": 0,
+  "homeTeamScore": 0,
+  "visitingForfeited": true,
+  "homeForfeited": true,
+  "seasonId": 0,
+  "divisionId": 0
+}
+
+companyId: null
+divisionDescription:"HS BOYS"
+divisionId:4247
+gameDate:"2025-04-15T20:30:00"
+gameDescription:null
+gameNumber:49
+gameTime:"1899-12-30T20:30:00"
+gameTimeString:"1899-12-30 20:30:00"
+gameType:0
+homeTeamId:8697
+homeTeamName:"PINK (03)"
+homeTeamNumber:51
+homeTeamScore:0
+homeTeamSeasonNumber:3
+locationName:"Gym Middle"
+scheduleNumber:17
+seasonId:2218
+visitingTeamId:8710
+visitingTeamName:"KELLY GREEN (17)"
+visitingTeamNumber:131
+visitingTeamScore:0
+visitingTeamSeasonNumber:17
+
+    */
   }
   cancel () {
     console.log('cancel');

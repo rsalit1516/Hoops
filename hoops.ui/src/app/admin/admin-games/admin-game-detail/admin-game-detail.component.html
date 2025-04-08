@@ -1,6 +1,15 @@
 <form [formGroup]="gameEditForm" class="form-container" (ngSubmit)="onSave()">
   <mat-card>
-    <!-- <mat-card-title>Game Details</mat-card-title> -->
+    <mat-card-header>
+      <mat-card-title>Game Details</mat-card-title>
+      <mat-card-subtitle>
+        {{
+          scheduleGamesId === 0
+            ? "New Game"
+            : "ID: " + scheduleGamesId.toString()
+        }}
+      </mat-card-subtitle>
+    </mat-card-header>
     <mat-card-content>
       <div class="flex">
         <div class="flex-1">
