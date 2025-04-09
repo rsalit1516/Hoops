@@ -22,6 +22,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { Router } from '@angular/router';
 import { GameService } from '@app/services/game.service';
 import { Location as GymLocation } from '@app/domain/location';
+import { RegularGameSaveObject } from '@app/domain/RegularGameSaveObject';
 
 @Component({
   selector: 'admin-game-detail',
@@ -176,11 +177,14 @@ export class AdminGameDetailComponent implements OnInit {
     console.log(this.gameEditForm.value);
 
     if (this.selectedRecord()?.gameId === undefined) {
-      console.log('gameId is undefined');
-    } else {
-      this.gameService.saveExistingGame(this.gameEditForm.value as RegularGame);
+      const saveObject = this.converttoSaveFormat(this.gameEditForm.value);
+      console.log(saveObject);
+      if (this.scheduleGamesId === 0) {
+        console.log('gameId is undefined');
+      } else {
+        this.gameService.saveExistingGame(this.gameEditForm.value as RegularGame);
+      }
     }
-
     /*
     gameDate = gameDate
     gameTime = gameTime
@@ -230,6 +234,29 @@ visitingTeamScore:0
 visitingTeamSeasonNumber:17
 
     */
+  }
+  converttoSaveFormat (gameEditForm: typeof this.gameEditForm.value): RegularGameSaveObject {
+    let game = new RegularGameSaveObject();
+    game.scheduleGamesId = this.scheduleGamesId;
+    game.scheduleNumber = this.selectedRecord()?.scheduleNumber ?? 0;
+    game.gameNumber = this.selectedRecord()?.gameNumber ?? 0;
+    game.locationNumber = gameEditForm.location?.locationNumber ?? 0;
+    game.gameDate = gameEditForm.gameDate
+      ? new Date(gameEditForm.gameDate).toISOString()
+      : "";
+    // game.gameDate = gameEditForm.gameDate?.toISOString() ?? "";
+    game.gameTime = gameEditForm.gameTime
+      ? new Date(gameEditForm.gameTime).toISOString() : "";
+    game.visitingTeamNumber = gameEditForm.visitorTeam?.teamId ?? 0;
+    game.homeTeamNumber = gameEditForm.homeTeam?.teamId ?? 0;
+    game.visitingTeamScore = 0;
+    game.homeTeamScore = 0;
+    game.visitingForfeited = false;
+    game.homeForfeited = false;
+    game.seasonId = this.selectedRecord()?.seasonId ?? 0;
+    game.divisionId = this.selectedRecord()?.divisionId ?? 0;
+
+    return game;
   }
   cancel () {
     console.log('cancel');
