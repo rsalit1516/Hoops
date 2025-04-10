@@ -126,6 +126,7 @@ export class GameService {
 
     effect(() => {
       const selectedDivision = this.selectedDivision();
+      console.log(this.#divisionService.selectedDivision);
       if (this.#divisionService.selectedDivision!) {
         const filteredGames = this.filterGamesByDivision();
         this.divisionGames.update(() => filteredGames);
@@ -316,7 +317,7 @@ export class GameService {
         'Content-Type': 'application/json',
       }),
     };
-    const gameUrl = this.dataService.webUrl + '/api/games/' + game.scheduleGamesId;
+    const gameUrl = Constants.PUT_SEASON_GAME_URL + game.scheduleGamesId;
     console.log(gameUrl);
     let result = this.#http
       .put(gameUrl, game, httpOptions)
@@ -333,7 +334,7 @@ export class GameService {
         'Content-Type': 'application/json',
       }),
     };
-    const gameUrl = this.dataService.webUrl + '/api/games';
+    const gameUrl = Constants.POST_SEASON_GAME_URL;
     console.log(gameUrl);
     let result = this.#http
       .post(gameUrl, game, httpOptions)

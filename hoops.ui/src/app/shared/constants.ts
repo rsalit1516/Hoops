@@ -34,6 +34,9 @@ export class Constants {
   public static loginUrl = Constants.DEFAULTURL + '/api/User/login';
   public static GET_DIRECTOR_URL = Constants.DEFAULTURL + '/api/Director';
   public static SEASON_GAMES_URL = Constants.DEFAULTURL + '/api/Schedulegame/getSeasonGames';
+  public static PUT_SEASON_GAME_URL = Constants.DEFAULTURL + '/api/Schedulegame/';
+  public static POST_SEASON_GAME_URL = Constants.DEFAULTURL + '/api/Schedulegame';
+
 
   public static SEASON_DIVISIONS_URL = Constants.DEFAULTURL + '/api/division/GetSeasonDivisions/';
   public static DIVISION_URL = Constants.DEFAULTURL + '/api/Division';

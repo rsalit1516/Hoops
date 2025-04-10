@@ -6,7 +6,7 @@
     <csbc-admin-games-filter
       (gameFilterChanged)="handlefilterUpdate($event)"
     ></csbc-admin-games-filter>
-    <div class="flex justify-between items-center">
+    <div class="flex flex-col w-full">
       <mat-table #table id="grdSchedule" [dataSource]="dataSource">
         <ng-container matColumnDef="scheduleGamesId">
           <th mat-header-cell *matHeaderCellDef>Id</th>
@@ -82,8 +82,9 @@
         </tr>
       </mat-table>
       <mat-paginator
+        #gamesPaginator
         [pageSizeOptions]="pageSizeOptions"
-        [pageSize]="10"
+        [pageSize]="pageSize"
         showFirstLastButtons
         aria-label="Select page of game"
       ></mat-paginator>

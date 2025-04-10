@@ -1,8 +1,7 @@
-import { AfterViewInit, Component, OnChanges, OnInit, ViewChild, effect, inject, input, viewChild } from '@angular/core';
+import { AfterViewInit, Component, OnChanges, OnInit, ViewChild, effect, inject, input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { RegularGame } from '@app/domain/regularGame';
 import * as fromAdmin from '../../state';
-import * as adminActions from '../../state/admin.actions';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 // import { ReactiveFormsModule } from '@angular/forms';
@@ -54,9 +53,9 @@ export class AdminGamesListComponent implements OnInit, OnChanges, AfterViewInit
   showFirstLastButtons = true;
   pageSize = 10;
 
-  @ViewChild('householdPaginator') paginator: MatPaginator = inject(MatPaginator);
+  @ViewChild('gamesPaginator') paginator: MatPaginator = inject(MatPaginator);
   @ViewChild(MatSort) sort: MatSort = inject(MatSort);
-  filteredGames = this.gameService.teamGames;
+  filteredGames = this.gameService.divisionGames;
   displayedColumns = [
     'gameDate',
     'gameTime',
@@ -73,10 +72,15 @@ export class AdminGamesListComponent implements OnInit, OnChanges, AfterViewInit
   ) {
     this.setupTable();
 
-    // effect(() => {
-    //   console.log("list component effect");
-    //   this.dataSource = new MatTableDataSource(this.gameService.filteredGames()!);
-    // })
+    effect(() => {
+      console.log("list component effect");
+      this.dataSource = new MatTableDataSource(this.gameService.divisionGames()!);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+      this.paginator.pageSize = this.pageSize;
+      this.paginator.page.subscribe(() => this.refreshData());
+
+    })
     //  this.store.select(fromAdmin.getFilteredGames).subscribe((games) => {
     // this.dataSource = new MatTableDataSource(this.filteredGames());
     // if (this.dataSource.paginator) {
@@ -90,7 +94,7 @@ export class AdminGamesListComponent implements OnInit, OnChanges, AfterViewInit
     // this.store.select(fromAdmin.getFilteredGames).subscribe((games) => {
     // console.log(games);
     // this.games = games;
-    this.dataSource = new MatTableDataSource<RegularGame>(this.filteredGames());
+    // this.dataSource = new MatTableDataSource<RegularGame>(this.gameService.divisionGames());
     // if (this.dataSource.paginator) {
     //   this.dataSource.paginator.pageSize = 10;
     // }
@@ -106,6 +110,9 @@ export class AdminGamesListComponent implements OnInit, OnChanges, AfterViewInit
   ngOnChanges () {
     // this.dataSource.data = this.filteredGames();
     this.paginator.page.subscribe(() => this.refreshData());
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+
   }
 
   setupTable () {

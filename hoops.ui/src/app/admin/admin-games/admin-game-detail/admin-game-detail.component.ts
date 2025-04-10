@@ -240,8 +240,8 @@ visitingTeamSeasonNumber:17
     game.scheduleNumber = this.selectedRecord()?.scheduleNumber ?? 0;
     game.gameNumber = this.selectedRecord()?.gameNumber ?? 0;
     game.locationNumber = gameEditForm.location?.locationNumber ?? 0;
-    game.gameDate = gameEditForm.gameDate?.toISOString() ?? "";
-    game.gameTime = gameEditForm.gameTime?.toISOString() ?? "";
+    game.gameDate = gameEditForm.gameDate ? new Date(gameEditForm.gameDate).toISOString() : "";
+    game.gameTime = gameEditForm.gameTime ? new Date(gameEditForm.gameTime)?.toISOString() : "";
     game.visitingTeamNumber = gameEditForm.visitorTeam?.teamId ?? 0;
     game.homeTeamNumber = gameEditForm.homeTeam?.teamId ?? 0;
     game.visitingTeamScore = 0;
