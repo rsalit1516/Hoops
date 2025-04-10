@@ -32,9 +32,8 @@ import { RegularGameSaveObject } from '@app/domain/RegularGameSaveObject';
 export class GameService {
   // Injected services
   readonly #http = inject(HttpClient);
-  gameStore = inject(Store<fromGames.State>);
-
-  public dataService = inject(DataService);
+  //  gameStore = inject(Store<fromGames.State>);
+  readonly #dataService = inject(DataService);
   readonly #seasonService = inject(SeasonService);
   readonly #divisionService = inject(DivisionService);
   readonly #teamService = inject(TeamService);
@@ -57,7 +56,7 @@ export class GameService {
   set games (games: RegularGame[]) {
     this._games = games;
   }
-  standingsUrl = this.dataService.webUrl + '/api/gameStandings';
+  standingsUrl = this.#dataService.webUrl + '/api/gameStandings';
 
   teamId: number | undefined;
   compare (a: Date | string, b: Date | string, isAsc: boolean) {
@@ -147,7 +146,7 @@ export class GameService {
       .pipe(
         map(response => this.games),
         // tap(data => console.log('All: ' + JSON.stringify(data))),
-        catchError(this.dataService.handleError('getGames', []))
+        catchError(this.#dataService.handleError('getGames', []))
       );
   }
   fetchSeasonGames () {
@@ -193,7 +192,7 @@ export class GameService {
       .pipe(
         map(response => this.games = response),
         // tap(data => console.log('All: ' + JSON.stringify(data))),
-        catchError(this.dataService.handleError('getStandings', []))
+        catchError(this.#dataService.handleError('getStandings', []))
       );
   }
 
@@ -306,7 +305,7 @@ export class GameService {
 
   setCanEdit (division: number) {
     let canEdit = this.getCanEdit(this.currentUser(), division);
-    this.gameStore.dispatch(new gameActions.SetCanEdit(canEdit));
+    // this.gameStore.dispatch(new gameActions.SetCanEdit(canEdit));
   }
   extractDate (date: string): Date {
     return DateTime.fromISO(date).toJSDate();
@@ -319,8 +318,10 @@ export class GameService {
     };
     const gameUrl = Constants.PUT_SEASON_GAME_URL + game.scheduleGamesId;
     console.log(gameUrl);
+    const gameJson = JSON.stringify(game);
+    console.log(gameJson);
     let result = this.#http
-      .put(gameUrl, game, httpOptions)
+      .put(gameUrl, gameJson, httpOptions)
       .subscribe((x) => console.log(x));
     // .pipe(
     //   tap(data => console.log(data)),
@@ -361,7 +362,7 @@ export class GameService {
     game.homeTeamScore = homeTeamScore;
     game.visitingTeamScore = visitingTeamScore;
     console.log(game);
-    const gameUrl = this.dataService.webUrl + '/api/games/updateScores';
+    const gameUrl = this.#dataService.webUrl + '/api/games/updateScores';
     console.log(gameUrl);
     let result = this.#http
       .put(gameUrl, game, httpOptions)
