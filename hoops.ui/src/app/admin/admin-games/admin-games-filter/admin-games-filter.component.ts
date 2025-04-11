@@ -2,6 +2,7 @@ import { Component, EventEmitter, inject, Output, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { Router } from '@angular/router';
 import { DivisionSelectComponent } from '@app/admin/admin-shared/division-select/division-select.component';
 import { GameTypeSelectComponent } from '@app/admin/admin-shared/game-type-select/game-type-select.component';
 import { SeasonSelectComponent } from '@app/admin/admin-shared/season-select/season-select.component';
@@ -26,7 +27,7 @@ import { SeasonService } from '@app/services/season.service';
 })
 export class AdminGamesFilterComponent {
   @Output() gameFilterChanged = new EventEmitter<{ season: Season; gameType: string; division: Division }>();
-
+  readonly #router = inject(Router);
   #seasonService = inject(SeasonService);
   #divisionService = inject(DivisionService);
 
@@ -41,7 +42,7 @@ export class AdminGamesFilterComponent {
 
   // gameFilterEvent = EventEmitter(Season, gameType, Division, );
   newGame () {
-    throw new Error('Method not implemented.');
+    this.#router.navigate(['./admin/games/detail-regular']);
   }
 
   handleSeasonChange (season: Season) {
