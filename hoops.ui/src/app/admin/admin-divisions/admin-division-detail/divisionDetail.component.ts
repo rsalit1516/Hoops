@@ -1,7 +1,6 @@
 import { Component, OnInit, WritableSignal, inject, signal, ChangeDetectionStrategy, effect } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, Validators, FormBuilder, FormControl } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { toSignal } from '@angular/core/rxjs-interop';
 
 import { Division } from '../../../domain/division';
 import { DivisionService } from '@app/services/division.service';
@@ -10,8 +9,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { CommonModule, formatDate } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
-import { Store } from '@ngrx/store';
-import * as fromAdmin from '../../state';
 import { NewDivisionSelectorComponent } from '@app/admin/admin-shared/new-division-selector/new-division-selector.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
@@ -19,7 +16,6 @@ import { ConfirmDialogComponent } from '@app/admin/shared/confirm-dialog/confirm
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { DateTime } from 'luxon';
-import { PeopleService } from '@app/services/people.service';
 
 @Component({
   selector: 'csbc-division-detail',
@@ -64,12 +60,12 @@ export class DivisionDetailComponent implements OnInit {
   nameControl = new FormControl('', Validators.required);
   standardDivisions: WritableSignal<string[]> = signal(this.#divisionService.standardDivisions());
   divisionForm = this.fb.group({
-    name: [ '' ],
+    name: [''],
     maxDate1: [
       this.division() && this.division().maxDate
         ? formatDate(this.division().maxDate ?? new Date(), 'yyyy-MM-dd', 'en')
         : '',
-      [ Validators.required ],
+      [Validators.required],
     ],
     minDate1: [
       this.division() && this.division().minDate
@@ -77,16 +73,16 @@ export class DivisionDetailComponent implements OnInit {
         : '',
       Validators.required,
     ], //this.division.minDate,
-    gender1: [ '' ],
-    maxDate2: [ '' ], //this.division.maxDate,
-    minDate2: [ '' ], //this.division.minDate,
-    gender2: [ '' ],
+    gender1: [''],
+    maxDate2: [''], //this.division.maxDate,
+    minDate2: [''], //this.division.minDate,
+    gender2: [''],
     // director: [''],
     // seasonId: [''], //this.division.seasonId,
     // divisionId: [''], //this.division.seasonId,
   });
 
-  genders = [ 'M', 'F' ];
+  genders = ['M', 'F'];
   minDateHint = 'Min date: mm//dd/yyyy';
   maxDateHint = 'Max date: mm//dd/yyyy';
 
@@ -100,10 +96,10 @@ export class DivisionDetailComponent implements OnInit {
 
   selectedItem: string = '';
 
-  selectItem(item: string) {
+  selectItem (item: string) {
     this.selectedItem = item;
   }
-  constructor() {
+  constructor () {
     effect(() => {
       console.log(this.#divisionService.selectedDivision)
       this.selectedDivision = this.#divisionService.selectedDivision instanceof Division
@@ -112,7 +108,7 @@ export class DivisionDetailComponent implements OnInit {
       // patchForm();
     });
   }
-  ngOnInit(): void {
+  ngOnInit (): void {
     // console.log(this.#divisionService.currentDivision());
     // this.division.set(this.divisionService.currentDivision()!);
     // console.log(this.division);
@@ -153,7 +149,7 @@ export class DivisionDetailComponent implements OnInit {
     //console.log(this.newDivision());
   }
 
-  save() {
+  save () {
     // console.log('Save');
     let division = new Division();
     division.companyId = 1; // get from constants
@@ -195,11 +191,11 @@ export class DivisionDetailComponent implements OnInit {
       // console.log(division);
       this.#divisionService.save(division);
 
-      this.#router.navigate([ '/admin/division' ]);
+      this.#router.navigate(['/admin/division']);
     }
   }
 
-  updateErrorMessage() {
+  updateErrorMessage () {
     // if (this.email.hasError('required')) {
     //   this.errorMessage = 'You must enter a value';
     // } else if (this.email.hasError('email')) {
@@ -208,18 +204,18 @@ export class DivisionDetailComponent implements OnInit {
     //   this.errorMessage = '';
     // }
   }
-  protected onInputDivisionName(event: Event) {
+  protected onInputDivisionName (event: Event) {
     this.divisionNameValue.set((event.target as HTMLInputElement).value);
   }
-  divisionSelected($event: any) {
+  divisionSelected ($event: any) {
     this.#divisionService.createTemporaryDivision($event.value);
     this.hideNameInput.set($event.value !== 'other');
   }
-  deleteRecord() {
+  deleteRecord () {
     //TODO:  Fix delete method
   }
 
-  openDialog(): void {
+  openDialog (): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent);
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -229,7 +225,7 @@ export class DivisionDetailComponent implements OnInit {
       }
     });
   }
-  isFormDirty(): boolean {
+  isFormDirty (): boolean {
     return this.divisionForm.dirty;
   }
 }

@@ -1,30 +1,33 @@
-<form class="form-horizontal" novalidate (ngsubmit)="save()" [formGroup]="divisionForm">
+<form
+  class="form-horizontal"
+  novalidate
+  (ngsubmit)="save()"
+  [formGroup]="divisionForm"
+>
   <mat-card class="container mx-auto">
     <mat-card-header>
       <mat-card-title>Division Detail</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-
       <div class="flex flex-wrap -mx-2">
         <div class="flex-1 w-full px-2">
           <fieldset>
             <mat-form-field>
               <mat-label>Division</mat-label>
-              <mat-select placeholder="Select Division" [(value)]="selectedDivisionDescription" formcontrolname="name"
-                (selectionchange)="divisionSelected($event)">
-                @for (division of standardDivisions(); track division) {
-                <mat-option [value]="division">
+              <mat-select
+                placeholder="Select Division"
+                formControlName="name"
+                (selectionChange)="divisionSelected($event)"
+              >
+                <mat-option
+                  *ngFor="let division of standardDivisions()"
+                  [value]="division"
+                >
                   {{ division }}
                 </mat-option>
-                }
                 <mat-option value="other">Other</mat-option>
               </mat-select>
             </mat-form-field>
-            <!-- <mat-form-field [hidden]="hideNameInput()">
-              <input matInput id="optionalname"
-              type="text" formcontrolname="name"
-                value="selectedDivision().divisionDescription" />
-            </mat-form-field> -->
           </fieldset>
         </div>
       </div>
@@ -32,73 +35,64 @@
       <div class="flex flex-wrap -mx-2">
         <div class="w-6/12 px-2">
           <fieldset>
+            <mat-form-field floatLabel="auto">
+              <mat-label>Min Date</mat-label>
+              <input matInput required type="date" formControlName="minDate1" />
+            </mat-form-field>
+            <mat-form-field
+              floatLabel="auto"
+              [ngClass]="{
+                'has-error':
+                  (divisionForm.get('maxDate1')?.touched ||
+                    divisionForm.get('maxDate1')?.dirty) &&
+                  !divisionForm.get('maxDate1')?.valid
+              }"
+            >
+              <mat-label>Max Date</mat-label>
+              <input matInput required type="date" formControlName="maxDate1" />
+            </mat-form-field>
             <div>
-              <mat-form-field floatlabel="auto">
-                <mat-label for="divisionForm.get('minDate')">Min Date</mat-label>
-                <input matInput id="divisionForm.get('minDate1')" required type="date" formcontrolname="minDate1" />
-              </mat-form-field>
-            </div>
-            <div>
-              <mat-form-field floatlabel="auto" [ngClass]="{
-                  'has-error':
-                    (divisionForm.get('maxDate1')?.touched ||
-                      divisionForm.get('maxDate1')?.dirty) &amp;&amp;
-                    !divisionForm.get('minDate1')?.valid
-                }">
-                <mat-label for="divisionForm.get('maxDate1')">Max Date</mat-label>
-                <input matInput id="divisionForm.get('maxDate1')" required type="date" formcontrolname="maxDate1" />
-              </mat-form-field>
-            </div>
-            <div>
-              <mat-form-field>
-                <mat-label>Gender</mat-label>
-                <mat-radio-group aria-labelledby="example-radio-group-label" formcontrolname="gender1">
-                  @for (gender of genders; track gender) {
-                  <mat-radio-button [value]="gender">
-                    {{ gender }}
-                  </mat-radio-button>
-                  }
-                </mat-radio-group>
-              </mat-form-field>
+              <label>Gender</label>
+              <mat-radio-group formControlName="gender1">
+                <mat-radio-button
+                  *ngFor="let gender of genders"
+                  [value]="gender"
+                >
+                  {{ gender }}
+                </mat-radio-button>
+              </mat-radio-group>
             </div>
           </fieldset>
         </div>
 
         <div class="w-6/12 px-2">
           <fieldset>
+            <mat-form-field floatLabel="auto">
+              <mat-label>Min Date</mat-label>
+              <input matInput type="date" formControlName="minDate2" />
+            </mat-form-field>
+            <mat-form-field
+              floatLabel="auto"
+              [ngClass]="{
+                'has-error':
+                  (divisionForm.get('maxDate2')?.touched ||
+                    divisionForm.get('maxDate2')?.dirty) &&
+                  !divisionForm.get('maxDate2')?.valid
+              }"
+            >
+              <mat-label>Max Date</mat-label>
+              <input matInput type="date" formControlName="maxDate2" />
+            </mat-form-field>
             <div>
-              <mat-form-field hintLabel="{{ minDateHint }}" floatlabel="auto" [ngClass]="{
-                  'has-error':
-                    (divisionForm.get('minDate1')?.touched ||
-                      divisionForm.get('minDate1')?.dirty) &amp;&amp;
-                    !divisionForm.get('minDate1')?.valid
-                }">
-                <mat-label for="divisionForm.get('minDate2')">min Date</mat-label>
-                <input matInput id="divisionForm.get('minDate2')" type="date" formcontrolname="minDate2" />
-              </mat-form-field>
-            </div>
-            <div>
-              <mat-form-field hintLabel="{{ maxDateHint }}" [ngClass]="{
-                  'has-error':
-                    (divisionForm.get('maxDate2')?.touched ||
-                      divisionForm.get('maxDate2')?.dirty) &amp;&amp;
-                    !divisionForm.get('minDate2')?.valid
-                }">
-                <mat-label for="divisionForm.get('maxDate2')">max Date</mat-label>
-                <input matInput id="divisionForm.get('maxDate2')" type="date" formcontrolname="maxDate2" />
-              </mat-form-field>
-            </div>
-            <div>
-              <mat-form-field>
-                <mat-label>Gender</mat-label>
-                <mat-radio-group aria-labelledby="example-radio-group-label" formcontrolname="gender2">
-                  @for (gender of genders; track gender) {
-                  <mat-radio-button [value]="gender">
-                    {{ gender }}
-                  </mat-radio-button>
-                  }
-                </mat-radio-group>
-              </mat-form-field>
+              <label>Gender</label>
+              <mat-radio-group formControlName="gender2">
+                <mat-radio-button
+                  *ngFor="let gender of genders"
+                  [value]="gender"
+                >
+                  {{ gender }}
+                </mat-radio-button>
+              </mat-radio-group>
             </div>
           </fieldset>
         </div>
@@ -121,18 +115,23 @@
       </div>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-raised-button color="primary" type="submit" (click)="save()"
-        [disabled]="!divisionForm.valid || !divisionForm.dirty">
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="!divisionForm.valid || !divisionForm.dirty"
+      >
         Save
       </button>
-      <button type="button" mat-raised-button color="primary">
-        Delete
-      </button>
-      <!-- <button type="button" mat-raised-button>Save and New</button> -->
-      <button type="button" mat-raised-button [routerLink]="['/admin/division']" color="primary">
+      <button type="button" mat-raised-button color="primary">Delete</button>
+      <button
+        type="button"
+        mat-raised-button
+        [routerLink]="['/admin/division']"
+        color="primary"
+      >
         Cancel
       </button>
-      <!-- <button mat-raised-button color="warn" (click)="cancel()">Cancel</button> -->
     </mat-card-actions>
   </mat-card>
 </form>

@@ -1,4 +1,3 @@
-import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AdminDashboardComponent } from './dashboard/admin-dashboard.component';
@@ -13,10 +12,9 @@ import { PageNotFoundComponent } from '@app/app.not-found.component';
 import { AuthGuard } from '../auth/auth.guard';
 import { SeasonSetupComponent } from './containers/season-setup/season-setup.component';
 import { ContentShellComponent } from './web-content/content-shell/content-shell.component';
-import { DivisionDetailComponent } from './admin-divisions/admin-division-detail/divisionDetail.component';
 import { getWebContentDataResolver } from './get-web-content-data.resolver';
 import { HouseholdShellComponent } from './admin-household/household-shell/household-shell.component';
-import { HouseholdService } from '@app/services/household.service';
+import { ADMINGAMESROUTES } from './admin-games/admin-games-routing.module';
 
 export const ADMINROUTES: Routes = [
   {
@@ -63,29 +61,29 @@ export const ADMINROUTES: Routes = [
         title: 'Division Module',
         children: [
           {
-              path: 'edit',
-              loadComponent: () =>
-                import('./admin-divisions/admin-division-detail/divisionDetail.component').then(
-                  (mod) => mod.DivisionDetailComponent
-                ),
-            },
-            {
-              path: 'list',
-              loadComponent: () =>
-                import('./admin-divisions/admin-division-list/divisionList.component').then(
-                  (mod) => mod.DivisionListComponent
-                ),
-            },
-            {
-              path: '',
-              redirectTo: '/admin/division/list',
-              pathMatch: 'full',
-            },
-
-            { path: '**', component: PageNotFoundComponent },
-          ],
-
+            path: 'edit',
+            loadComponent: () =>
+              import('./admin-divisions/admin-division-detail/divisionDetail.component').then(
+                (mod) => mod.DivisionDetailComponent
+              ),
           },
+          {
+            path: 'list',
+            loadComponent: () =>
+              import('./admin-divisions/admin-division-list/divisionList.component').then(
+                (mod) => mod.DivisionListComponent
+              ),
+          },
+          {
+            path: '',
+            redirectTo: '/admin/division/list',
+            pathMatch: 'full',
+          },
+
+          { path: '**', component: PageNotFoundComponent },
+        ],
+
+      },
       // { path: 'division-detail', component: DivisionDetailComponent },
       { path: 'season-setup', component: SeasonSetupComponent },
       {
@@ -102,10 +100,11 @@ export const ADMINROUTES: Routes = [
       { path: 'teams', component: TeamListComponent },
       {
         path: 'games',
-        loadChildren: () =>
-          import('./admin-games/admin-games.module').then(
-            (g) => g.AdminGamesModule
-          ),
+        children: ADMINGAMESROUTES,
+        // loadComponent: () =>
+        //   import('./admin-games/admin-games-shell/admin-games-shell.component').then(
+        //     (g) => g.AdminGamesShellComponent
+        //   ),
       },
       {
         path: 'director',

@@ -32,7 +32,7 @@ import { SeasonAddEditComponent } from '@app/admin/components/season-add-edit/se
     '../../../shared/scss/cards.scss',
     '../../../shared/scss/sidenav.scss',
   ],
-  imports: [CommonModule, AdminGamesRoutingModule,
+  imports: [CommonModule,
     RouterOutlet,
     AdminSeasonListComponent,
     MatSidenavModule,

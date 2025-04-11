@@ -20,7 +20,7 @@ const appRoutes: Routes = [
     path: 'games',
     loadChildren: () =>
       import('./games/games.module').then(mod => mod.GamesModule),
-      resolve: {state: GamesResolver}
+    resolve: { state: GamesResolver }
   },
   {
     path: 'photos',
@@ -37,8 +37,6 @@ const appRoutes: Routes = [
 
   {
     path: 'admin',
-  //   redirectTo: '/admin/dashboard', pathMatch: 'full'
-  // }
     children: ADMINROUTES,
   },
   {
@@ -54,4 +52,4 @@ const appRoutes: Routes = [
   imports: [RouterModule.forRoot(appRoutes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
