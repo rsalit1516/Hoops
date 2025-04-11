@@ -10,7 +10,7 @@ import { CommonModule, NgIf } from '@angular/common';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { LocationService } from '@app/admin/admin-shared/services/location.service';
+import { LocationService } from '@app/services/location.service';
 import { AdminShellSidebarComponent } from '@app/admin/components/admin-shell-sidebar/admin-shell-sidebar.component';
 import { SeasonService } from '@app/services/season.service';
 import { DivisionService } from '@app/services/division.service';
@@ -52,8 +52,8 @@ export class AdminShellComponent implements OnInit {
   showUsers = false;
   shouldRun = true;
   readonly #seasonService = inject(SeasonService);
-  colorService = inject(ColorService);
-  locationService = inject(LocationService);
+  #colorService = inject(ColorService);
+  #locationService = inject(LocationService);
   store = inject(Store<fromAdmin.State>);
   divisionService = inject(DivisionService);
   // seasons$: Observable<Season[]>;
@@ -69,84 +69,11 @@ export class AdminShellComponent implements OnInit {
     this.#seasonService.fetchSeasons();
 
     this.#seasonService.getCurrentSeason().subscribe((season) => {
-      this.#seasonService.selectSeason(season!);
-      // this.divisionService.season = season;
-      // this.divisionService.getDivisionsData(season!.seasonId!);
-      // console.log(season);
-      // console.log(this.divisionService.divisions());
+      this.#seasonService.updateSelectedSeason(season!);
+      console.log(this.#seasonService.selectedSeason);
     });
-    // this.store.dispatch(new adminActions.LoadSeasons());
-    this.#seasonService.getSeasons();
-    // this.store.select(fromAdmin.getSeasons).subscribe((seasons) => {
-    // console.log('triggering seasons');
-    // this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
-    // console.log(season);
-    //     if (season.seasonId === undefined) {
-    //       for (let i = 0; i < seasons.length; i++) {
-    //         if (seasons[i].currentSeason === true) {
-    //           this.store.dispatch(
-    //             new adminActions.SetSelectedSeason(seasons[i])
-    //           );
-    //           break;
-    //         }
-    //       }
-    //     }
-    //   });
-    // });
-    // this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
-    // console.log(season);
-    // if (season.seasonId !== undefined) {
-    //   if (season.seasonId !== 0) {
-    // this.store.dispatch(new adminActions.LoadDivisions());
-    // this.store.dispatch(new adminActions.LoadSeasonTeams());
-    // this.store.dispatch(new adminActions.LoadGames());
-    // this.store.dispatch(new adminActions.LoadPlayoffGames());
-    // this.store
-    //   .select(fromAdmin.getSeasonDivisions)
-    //   .subscribe((divisions) => {
-    //     this.store.dispatch(
-    //       new adminActions.SetSelectedDivision(divisions[0])
-    //     );
-    //   });
-
-    // this.store
-    //   .select(fromAdmin.getSelectedDivision)
-    //   .subscribe((division) => {
-    //     if (division !== undefined) {
-    //       this.store.dispatch(new adminActions.LoadDivisionTeams());
-    //     }
-    //   });
-    //     }
-    //   }
-    // });
-    // this.store.dispatch(new contentActions.LoadAdminContent());
-
-    // this.store.dispatch(new contentActions.SetAllContent());
-    // this.store.select(fromAdmin.getContentList).subscribe((content) => {
-    //   this.store.dispatch(new contentActions.SetActiveContent());
-    // });
-
-    // this.store.select(fromAdmin.getSeasonDivisions).subscribe((divisions) => {
-    //   this.store.dispatch(new adminActions.SetSelectedDivision(divisions[0]));
-    // });
-    // this.store.select(fromAdmin.getSeasonTeams).subscribe((teams) => {
-    //   this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
-    //     if (division !== undefined) {
-    //       this.store.dispatch(new adminActions.LoadDivisionTeams());
-    //     }
-    //   });
-    // });
-
-    // this.colorService
-    //   .getColors()
-    //   .subscribe((colors) =>
-    //     this.store.dispatch(new adminActions.SetColors(colors))
-    //   );
-    // this.locationService
-    //   .get()
-    //   .subscribe((locations) =>
-    //     this.store.dispatch(new adminActions.SetLocations(locations))
-    //   );
+    this.#colorService.fetchColors();
+    this.#locationService.fetchLocations();
   }
 
 }

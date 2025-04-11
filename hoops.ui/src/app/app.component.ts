@@ -28,7 +28,6 @@ export class AppComponent implements OnInit {
 
   constructor () { }
   ngOnInit () {
-    // this.#gameStore.dispatch(new gameActions.LoadCurrentSeason());
     this.#seasonService.fetchCurrentSeason();
     this.#contentService.fetchActiveContents();
     this.#router.navigate([''])

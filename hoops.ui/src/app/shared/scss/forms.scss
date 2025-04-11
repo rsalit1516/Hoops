@@ -1,4 +1,4 @@
-@use 'sass:color';
+@use "sass:color";
 @use "../../../Content/variables" as v;
 
 :host {
@@ -8,7 +8,7 @@
 
 // form {
 //  background-color: color.adjust(v.$card-background-color, $lightness: 10%);
-  // padding: 16px;
+// padding: 16px;
 // }
 
 h2 {
@@ -26,7 +26,7 @@ h2 {
 
 .ng-valid[required],
 .ng-valid.required {
-  border-left: 5px solid #42A948;
+  border-left: 5px solid #42a948;
   /* green */
 }
 
@@ -48,9 +48,9 @@ h2 {
 
 label {
   display: block;
-  margin-bottom: .9rem;
+  margin-bottom: 0.9rem;
   // padding-bottom: 12px;
-  color: pink
+  color: pink;
 }
 .field-label {
   color: v.$field-label !important;
@@ -60,7 +60,7 @@ label {
 
 select {
   width: 100%;
-  padding: .9rem;
+  padding: 0.9rem;
 }
 
 input,
@@ -68,6 +68,7 @@ textarea,
 select {
   width: 100%;
   background-color: v.$admin-input-background-color;
+  caret-color: white !important;
 }
 
 input {
@@ -79,16 +80,16 @@ input {
 }
 
 .mdc-text-field--filled:not {
-  background-color: v.$card-background-color !important;
+  background-color: v.$admin-background-color !important;
 }
 
 .mdc-text-field--filled:not(.mdc-text-field--disabled) {
-  background-color: v.$background-color !important;
+  background-color: transparent !important;
 }
 
 .mat-label {
   color: v.$admin-font-color !important;
-  font-size: .9rem;
+  font-size: 0.9rem;
   font-weight: 800;
   // padding-bottom: 6px;
   // padding-left: 12px;
@@ -97,16 +98,15 @@ input {
 .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-text-field__input {
   color: v.$field-label !important;
   font-size: v.$input-font-size;
-  font-weight: 700;
+  font-weight: 500;
   padding-bottom: 6px;
   padding-left: 12px;
-
 }
 
 .mdc-text-field__input {
   color: v.$field-label !important;
   font-size: v.$input-font-size;
-  font-weight: 700;
+  font-weight: 500;
   // padding-bottom: 6px;
   // padding-left: 12px;
 }
@@ -116,7 +116,8 @@ div.mat-mdc-select-panel {
 }
 
 .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-floating-label,
-.mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-floating-label--float-above {
+.mdc-text-field--filled:not(.mdc-text-field--disabled)
+  .mdc-floating-label--float-above {
   color: v.$field-label !important;
   font-size: v.$input-font-size;
   font-weight: 500;
@@ -129,11 +130,20 @@ div.mat-mdc-select-panel {
 .mdc-list-item__primary-text {
   color: v.$field-label !important;
 }
-
+.mat-mdc-option.mdc-list-item {
+  align-items: center;
+  background-color: #333333 !important;
+  /* background: rgba(0, 0, 0, 0); */
+}
 .mdc-list-item__primary-text:selected {
   color: yellow !important;
 }
-
+.mat-timepicker-panel {
+  background-color: color.adjust(
+    v.$admin-background-color,
+    $lightness: 20%
+  ) !important;
+}
 .mat-mdc-raised-button:not(:disabled) {
   background-color: v.$brand-color !important;
 }
@@ -163,7 +173,7 @@ button {
 
 .mat-option-text {
   color: v.$admin-font-color;
-  font-size: .9rem !important;
+  font-size: 0.9rem !important;
   background-color: v.$admin-background-color;
 }
 
@@ -173,10 +183,14 @@ button {
 
 .mat-form-field {
   display: inline-flex;
+  background-color: #333333 !important;
+}
+.mat-mdc-text-field-wrapper {
+  background-color: transparent !important;
 }
 
 fieldset {
-  border: .5px solid color.adjust(v.$color, $lightness: 50%);
+  border: 0.5px solid color.adjust(v.$color, $lightness: 50%);
   border-radius: v.$border-radius;
   margin-left: 2rem;
   margin-right: 2rem;
@@ -184,31 +198,35 @@ fieldset {
   padding: 1rem;
 }
 
-input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+input::-webkit-input-placeholder {
+  /* Chrome/Opera/Safari */
   color: red;
 }
-input::-moz-placeholder { /* Firefox 19+ */
+input::-moz-placeholder {
+  /* Firefox 19+ */
   color: red;
 }
-input:-ms-input-placeholder { /* IE 10+ */
+input:-ms-input-placeholder {
+  /* IE 10+ */
   color: red;
 }
-input:-moz-placeholder { /* Firefox 18- */
+input:-moz-placeholder {
+  /* Firefox 18- */
   color: red;
 }
 
 input::placeholder {
-   opacity: 1 !important;
-   color: #FFF !important;
+  opacity: 1 !important;
+  color: #fff !important;
 }
 ::ng-deep .mat-form-field-placeholder {
   color: #757575; /* Adjust color as needed */
-  font-size: .8em !important;
+  font-size: 0.8em !important;
 }
 
 mat-form-field input::placeholder {
-   opacity: 1 !important;
-   color: v.$admin-input-hint-color !important;
+  opacity: 1 !important;
+  color: v.$admin-input-hint-color !important;
 }
 .mat-mdc-select-arrow svg {
   color: v.$admin-font-color;
@@ -219,7 +237,10 @@ mat-form-field input::placeholder {
 
 /* calendar */
 .mat-datepicker-content {
-  background-color: color.adjust(v.$admin-background-color, $lightness: 20%) !important;
+  background-color: color.adjust(
+    v.$admin-background-color,
+    $lightness: 20%
+  ) !important;
 }
 
 .mat-calendar-body-cell-content {
@@ -238,8 +259,14 @@ mat-form-field input::placeholder {
   background-color: white !important;
 }
 .mdc-checkbox__checkmark {
-  color:#a94442 !important;
+  color: #a94442 !important;
 }
 .mat-mdc-form-field-hint {
   color: v.$admin-font-color !important;
 }
+// ::ng-deep input.mat-input-element {
+//   caret-color: white; /* Change this to your desired color */
+// }
+// .mdc-text-field__input {
+//   caret-color: white !important;
+// }

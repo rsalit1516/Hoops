@@ -1,8 +1,7 @@
 <mat-form-field>
   <mat-label>Season</mat-label>
   <mat-select
-    [value]="seasonService.selectedSeason"
-    (selectionChange)="onChange($event.value)"
+    [(value)]="seasonService.selectedSeason"
     class="form-control"
   >
     @for( season of seasonService.seasons; track season) {

@@ -13,14 +13,14 @@ import { Season } from '@app/domain/season';
 import { SeasonService } from '@app/services/season.service';
 
 @Component({
-    selector: 'csbc-seasons-toolbar',
-    imports: [
-        MatFormFieldModule,
-        ReactiveFormsModule,
-        MatButtonModule,
-        MatToolbarModule,
-        MatCheckboxModule,
-    ],
+  selector: 'csbc-seasons-toolbar',
+  imports: [
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatToolbarModule,
+    MatCheckboxModule,
+  ],
   template: `
     <mat-toolbar>
   <mat-toolbar-row>
@@ -29,10 +29,10 @@ import { SeasonService } from '@app/services/season.service';
     </div>
   </mat-toolbar-row>
 </mat-toolbar>`,
-    styleUrls: [
-        './../../../shared/scss/forms.scss',
-        './../../admin.component.scss',
-    ]
+  styleUrls: [
+    './../../../shared/scss/forms.scss',
+    './../../admin.component.scss',
+  ]
 })
 export class SeasonsToolbarComponent implements OnInit {
   readonly #seasonService = inject(SeasonService)
@@ -42,21 +42,21 @@ export class SeasonsToolbarComponent implements OnInit {
   });
   title = 'Seasons List';
 
-  constructor(
+  constructor (
     private router: Router,
     // private store: Store<fromContent.State>,
     private fb: UntypedFormBuilder,
     private store: Store<fromAdmin.State>
-  ) {}
+  ) { }
 
-  ngOnInit(): void {
+  ngOnInit (): void {
     // throw new Error('Method not implemented.');
   }
 
-  addSeason() {
+  addSeason () {
     const season = new Season();
     season.seasonId = 0;
-    this.#seasonService.selectSeason(season);
+    this.#seasonService.updateSelectedSeason(season);
 
     console.log(season);
 

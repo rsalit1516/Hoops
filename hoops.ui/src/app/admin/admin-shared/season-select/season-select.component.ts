@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, computed, OnChanges } from '@angular/core';
+import { Component, inject, OnInit, computed, OnChanges, effect } from '@angular/core';
 
 import { Season } from '@app/domain/season';
 import { UntypedFormControl, FormsModule } from '@angular/forms';
@@ -14,12 +14,11 @@ import { SeasonService } from '@app/services/season.service';
   template: `<mat-form-field>
   <mat-label>{{title}}</mat-label>
   <mat-select
-    [value]="selectedSeason"
-    (selectionChange)="onChange($event.value)"
+    [(value)]="season"
     class="form-control"
   >
     @for( season of seasonService.seasons; track season) {
-    <mat-option [value]="season.seasonId" (click)="changeSeason(season)">
+    <mat-option [value]="season" (click)="changeSeason(season)">
       {{ season.description }}
     </mat-option>
     }
@@ -34,28 +33,32 @@ import { SeasonService } from '@app/services/season.service';
     MatFormFieldModule,
     MatSelectModule,
     MatOptionModule,
-    AsyncPipe,
   ]
 })
 export class SeasonSelectComponent implements OnInit {
-  #AdminSeasonService = inject(AdminSeasonService);
   readonly seasonService = inject(SeasonService);
-  selected: Season | undefined;
-  seasonComponent: UntypedFormControl | null | undefined;
+  title = 'Select Season';
+  // seasonComponent: UntypedFormControl | null | undefined;
   defaultSeason: Season | undefined;
   seasons = this.seasonService.seasons;
   selectedSeason = computed(() => this.seasonService.selectedSeason);
-  title = 'Select Season';
+  season = this.selectedSeason();
 
-  constructor () { }
+  constructor () {
+    effect(() => {
+      console.log(this.seasonService.selectedSeason);
+      this.season = this.selectedSeason();
+    });
+  }
 
   ngOnInit () {
   }
   changeSeason (season: Season) {
     console.log('Season from changeSeason = ', season);
-    this.seasonService.selectSeason(season);
+    this.seasonService.updateSelectedSeason(season);
   }
-  onChange (season: Season) {
-    this.seasonService.selectSeason(season);
-  }
+
+  // onChange (season: Season) {
+  //   this.seasonService.selectSeason(season);
+  // }
 }

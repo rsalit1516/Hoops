@@ -27,18 +27,23 @@ export class DivisionService {
   #store = inject(Store<fromAdmin.State>);
   #logger = inject(LoggerService);
   selectedSeason = computed(() => this.#seasonService.selectedSeason);
-  selectedDivision = signal<Division | undefined>(undefined);
+  _selectedDivision = signal<Division | undefined>(undefined);
+  get selectedDivision () {
+    return this._selectedDivision();
+  }
+
+  updateSelectedDivision (division: Division) {
+    this._selectedDivision.update(() => division);
+  }
+
   _seasonDivisions: WritableSignal<Division[]> = signal([]);
-  get seasonDivisions() {
+  get seasonDivisions () {
     return this._seasonDivisions.asReadonly();
   }
-  updateSeasonDivisions(seasonDivisions: Division[]) {
+  updateSeasonDivisions (seasonDivisions: Division[]) {
     this._seasonDivisions.set(seasonDivisions);
   }
   // seasonDivisions = signal<Division[] | undefined>(undefined);
-  updateSelectedDivision (division: Division) {
-    this.selectedDivision.update(() => division);
-  }
   _division = signal<Division>(new Division());
   get division () {
     return this._division;
@@ -183,9 +188,8 @@ export class DivisionService {
       .get<Division[]>(url)
       .subscribe((data) => {
         this.updateSeasonDivisions(data);
-        this.selectedDivision.update(() => data[0]);
-        // this.selectedDivision
-         console.log(this.seasonDivisions());
+        this.updateSelectedDivision(data[0]);
+        console.log(this.seasonDivisions());
       },
         (error) => { catchError(() => of([])) }
       );

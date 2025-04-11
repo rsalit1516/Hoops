@@ -33,7 +33,10 @@ export class Constants {
   public static getActiveWebContentUrl = Constants.DEFAULTURL + '/api/webcontent/getActiveWebContent';
   public static loginUrl = Constants.DEFAULTURL + '/api/User/login';
   public static GET_DIRECTOR_URL = Constants.DEFAULTURL + '/api/Director';
-  public static SEASON_GAMES_URL = Constants.DEFAULTURL + '/api/Schedulegame/getSeasonGames';
+  public static SEASON_GAMES_URL = Constants.DEFAULTURL + '/api/ScheduleGame/getSeasonGames';
+  public static PUT_SEASON_GAME_URL = Constants.DEFAULTURL + '/api/ScheduleGame/';
+  public static POST_SEASON_GAME_URL = Constants.DEFAULTURL + '/api/ScheduleGame';
+
 
   public static SEASON_DIVISIONS_URL = Constants.DEFAULTURL + '/api/division/GetSeasonDivisions/';
   public static DIVISION_URL = Constants.DEFAULTURL + '/api/Division';
@@ -41,7 +44,7 @@ export class Constants {
   public static getCurrentSeasonUrl = Constants.DEFAULTURL + '/api/season/getCurrentSeason';
   public static GET_SEASON_TEAMS_URL = Constants.DEFAULTURL + '/api/Team/GetSeasonTeams/';
   public static getColorUrl = Constants.DEFAULTURL + '/api/Color';
-  public static getLocationUrl = Constants.DEFAULTURL + '/api/Location';
+  public static GET_LOCATION_URL = Constants.DEFAULTURL + '/api/Location';
   public static teamPostUrl = Constants.DEFAULTURL + '/api/Team';
   public static teamPutUrl = Constants.DEFAULTURL + '/api/Team/';
   public static getContentUrl = Constants.DEFAULTURL + '/api/webcontent';
@@ -49,7 +52,7 @@ export class Constants {
   public static postContentUrl = Constants.DEFAULTURL + '/api/WebContent';
   public static PUT_CONTENT_URL = Constants.DEFAULTURL + '/api/WebContent/';
   public static GET_SEASON_SPONSORS = Constants.DEFAULTURL + '/api/Sponsor';
-  public static getLocations = Constants.DEFAULTURL + '/api/Locations/';
+  public static GET_LOCATIONS = Constants.DEFAULTURL + '/api/Location';
   public static SEASON_URL = Constants.DEFAULTURL + '/api/Season/';
   public static currentSeasonUrl = Constants.DEFAULTURL + '/api/Season/GetCurrentSeason';
   public static peopleUrl = Constants.DEFAULTURL + '/api/People';
@@ -60,8 +63,24 @@ export class Constants {
   public static PEOPLE_SEARCH_URL = Constants.DEFAULTURL + '/api/Person/search';
   public static SAVE_HOUSEHOLD_URL = Constants.DEFAULTURL + '/api/Household/';
 
+}
+export const Literals = {
+  BUTTONS: {
+    SUBMIT: 'Submit',
+    CANCEL: 'Cancel',
+  },
+  MESSAGES: {
+    WELCOME: 'Welcome to the application!',
+    ERROR: 'Something went wrong. Please try again.',
+  },
+  LABELS: {
+    USERNAME: 'Username',
+    PASSWORD: 'Password',
+    SEASON_GAMES: 'Season Games',
+  }
 
 }
+
 export const FEATURE_FLAGS = {
   adminHouseholds: true,  // Enabled feature
   adminNotices: true, // Disabled feature

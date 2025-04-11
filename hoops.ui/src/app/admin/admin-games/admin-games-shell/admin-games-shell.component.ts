@@ -23,17 +23,24 @@ import { MatButtonModule } from '@angular/material/button';
 import { AdminGamesFilterComponent } from '../admin-games-filter/admin-games-filter.component';
 import { AdminGameService } from '../adminGame.service';
 import { LoggerService } from '@app/services/logging.service';
+import { RouterOutlet } from '@angular/router';
 @Component({
   selector: 'csbc-admin-games-shell',
-  templateUrl: './admin-games-shell.component.html',
+  template: `<section class="container-fluid">
+  <h2>{{title}}</h2>
+  <router-outlet></router-outlet>
+</section>`,
 
   styleUrls: [
     './admin-games-shell.component.scss',
     '../../admin.component.scss',
     '../../../shared/scss/forms.scss',
+    '../../../shared/scss/cards.scss',
   ],
   imports: [
     // MatToolbarModule,
+    RouterOutlet,
+
     MatSidenavModule,
     MatExpansionModule,
     MatIconModule,
@@ -55,6 +62,7 @@ export class AdminGamesShellComponent implements OnInit {
   readonly gameService = inject(AdminGameService);
   readonly #store = inject(Store<fromAdmin.State>);
   pageTitle = 'Game Management';
+  title = 'Game Management';
   isSidenavOpen = false;
   seasons$ = this.#store.select(fromAdmin.getSeasons);
   divisions$ = this.#store.select(fromAdmin.getSeasonDivisions);
@@ -76,7 +84,7 @@ export class AdminGamesShellComponent implements OnInit {
       const record = this.gameService.selectedRecordSignal();
       console.log('Selected record changed:', record);
       if (record !== null) {
-        console.log(`Record updated: ${ record.gameScheduleId }`);
+        console.log(`Record updated: ${ record.scheduleGamesId }`);
         this.selectedRecord.set(record);
         this.isSidenavOpen = true;
         // Allow the sidenav to open first, then expand the first panel

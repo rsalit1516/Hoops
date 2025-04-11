@@ -1,13 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Hoops.Core.Interface;
+using Hoops.Core.Models;
+using Hoops.Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Hoops.Infrastructure.Data;
-using Hoops.Core.Models;
-using Hoops.Core.Interface;
 
 namespace Hoops.Controllers
 {
@@ -19,7 +18,11 @@ namespace Hoops.Controllers
         private readonly IScheduleGameRepository repository;
         private readonly ILogger<ScheduleGameController> _logger;
 
-        public ScheduleGameController(hoopsContext context, IScheduleGameRepository repository, ILogger<ScheduleGameController> logger)
+        public ScheduleGameController(
+            hoopsContext context,
+            IScheduleGameRepository repository,
+            ILogger<ScheduleGameController> logger
+        )
         {
             _context = context;
             this.repository = repository;
@@ -62,6 +65,7 @@ namespace Hoops.Controllers
             var games = repository.GetGames(seasonId);
             return Ok(games);
         }
+
         ///
         /// GET: api/GetStandings/divisionId
         [Route("GetStandings")]
@@ -114,7 +118,11 @@ namespace Hoops.Controllers
             repository.Add(scheduleGame);
             await repository.SaveChangesAsync();
 
-            return CreatedAtAction("GetScheduleGame", new { id = scheduleGame.ScheduleGamesId }, scheduleGame);
+            return CreatedAtAction(
+                "GetScheduleGame",
+                new { id = scheduleGame.ScheduleGamesId },
+                scheduleGame
+            );
         }
 
         // DELETE: api/ScheduleGame/5
@@ -137,7 +145,5 @@ namespace Hoops.Controllers
         {
             return repository.Exists(id);
         }
-
-
     }
 }

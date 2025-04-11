@@ -67,16 +67,16 @@ export class AdminDashboardComponent implements OnInit {
   seasonDivisions = computed(() => this.#divisionService.seasonDivisions);
   divisionTeams = computed(() => this.#teamService.divisionTeams);
   divisionGames = computed(() => this.#gameService.divisionGames);
-  seasonGameCount = computed(() => this.#gameService.seasonGamesSignal.length ?? 0);
+  seasonGameCount = computed(() => this.#gameService.seasonGames!.length ?? 0);
   teamGames = this.#gameService.teamGames;
-  constructor() { }
+  constructor () { }
 
-  ngOnInit() {
+  ngOnInit () {
     // this.store.dispatch(new adminActions.LoadCurrentSeason());
     this.setStateSubscriptions();
     // this.router.navigate(['/admin/content/list']);
   }
-  setStateSubscriptions() {
+  setStateSubscriptions () {
     // this.store.select(fromAdmin.getSelectedSeason).subscribe((season) => {
     //   this.currentSeason = season as Season;
     // this.store.dispatch(new gameActions.LoadDivisions());
@@ -128,12 +128,12 @@ export class AdminDashboardComponent implements OnInit {
     //     }
     //   });
   }
-  goToDivision(division: Division) {
+  goToDivision (division: Division) {
     // this.store.dispatch(new adminActions.SetSelectedDivision(division));
     this.selectedDivision = division;
     // this.router.navigate(['/admin/division']);
   }
-  setTeam(team: Team) {
+  setTeam (team: Team) {
     this.store.dispatch(new adminActions.SetSelectedTeam(team));
 
     // this.router.navigate(['/admin/division']);

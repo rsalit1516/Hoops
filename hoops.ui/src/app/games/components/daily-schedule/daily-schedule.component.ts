@@ -48,6 +48,7 @@ export class DailyScheduleComponent implements OnInit {
 
   ngOnInit () {
     this.data = this.games();
+    console.log(this.games());
     // this.flexMediaWatcher = this.media.media$.subscribe((change) => {
     // if (change.mqAlias !== this.currentScreenWidth) {
     //   this.currentScreenWidth = change.mqAlias;

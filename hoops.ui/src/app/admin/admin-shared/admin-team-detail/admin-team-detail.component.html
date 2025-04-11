@@ -1,16 +1,8 @@
-
 <mat-card>
-  <mat-card-title>{{title}}</mat-card-title>
+  <mat-card-title>{{ title }}</mat-card-title>
   <mat-card-content>
-    <form [formGroup]="editTeamForm">
-      <!-- <mat-form-field class="form-control" appearance="fill">
-        <mat-label>Team Name</mat-label>
-        <input
-          matInput
-          value="teamName"
-          formControlName="teamName"/>
-      </mat-form-field> -->
-      <mat-form-field class="form-control" appearance="fill">
+    <form [formGroup]="editTeamForm" class="flex flex-col gap-4 h-full px-3">
+      <mat-form-field class="form-control w-full" appearance="fill">
         <mat-label>Team No</mat-label>
         <input
           matInput
@@ -19,33 +11,38 @@
           formControlName="teamNo"
         />
       </mat-form-field>
-      <mat-form-field class="form-control" appearance="fill">
+      <mat-form-field class="form-control w-full" appearance="fill">
         <mat-label>Color</mat-label>
         <mat-select formControlName="color" class="form-control">
           <mat-option
-            *ngFor="let color of colors$ | async"
+            *ngFor="let color of colorService.colors()"
             [value]="color.colorId"
           >
             {{ color.colorName }}
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <!-- <mat-form-field class="form-control" appearance="fill">
-        <mat-label>Coach</mat-label>
-        <input matInput value="coach" formControlName="coachName" />
-      </mat-form-field> -->
-      <!-- <mat-form-field class="form-control" appearance="fill">
-        <mat-label>sponsor</mat-label>
-        <input matInput value="sponsor" formControlName="Sponsor" />
-      </mat-form-field> -->
+      <mat-form-field class="form-control w-full" appearance="fill">
+        <mat-label>Team Name</mat-label>
+        <input matInput value="coach" formControlName="teamName" />
+        <mat-hint align="start"
+          ><strong>(Optional) if you don't want (color - team number)</strong>
+        </mat-hint>
+      </mat-form-field>
     </form>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-raised-button color="Primary" (click)="newTeam()">New Team</button>
-    <button mat-raised-button color="Primary"
-    [disabled]="!editTeamForm.valid || !editTeamForm.dirty"
-    (click)="save()">Save</button>
+    <button mat-raised-button color="Primary" (click)="newTeam()">
+      New Team
+    </button>
+    <button
+      mat-raised-button
+      color="Primary"
+      [disabled]="!editTeamForm.valid || !editTeamForm.dirty"
+      (click)="save()"
+    >
+      Save
+    </button>
     <button mat-raised-button color="Primary" (click)="cancel()">Cancel</button>
   </mat-card-actions>
 </mat-card>
-

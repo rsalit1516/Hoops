@@ -1,29 +1,50 @@
-import { map, tap } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
-import { Division } from '../domain/division';
-import { Season } from '../domain/season';
 import { DataService } from './data.service';
-import { SeasonService } from './season.service';
 import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { select, Store } from '@ngrx/store';
+import { Injectable, inject, signal } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Constants } from '@app/shared/constants';
+import { Location as GymLocation } from '@app/domain/location';
 
-import * as fromAdmin from '../admin/state';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class LocationService {
   private _http = inject(HttpClient);
   private dataService = inject(DataService);
-  private store = inject(Store<fromAdmin.State>);
+  private locationUrl = Constants.GET_LOCATION_URL;
+  private _locations = signal<GymLocation[]>([]);
+  get locations () {
+    return this._locations;
+  }
+  updateLocations (locations: GymLocation[]) {
+    this._locations.set(locations);
+  }
 
-  private locationUrl = this.dataService.getLocationUrl;
+  constructor () { }
 
-  constructor() { }
+  fetchLocations (): void {
+    this.getLocations().subscribe((locations) => {
+      this.updateLocations(locations);
+      console.log('locations', locations);
+    });
+  }
 
-  getLocations(): Observable<Location[]> {
-    return this._http.get<Location[]>(this.locationUrl).pipe(
+  private getLocations (): Observable<GymLocation[]> {
+    return this._http.get<GymLocation[]>(this.locationUrl).pipe(
       catchError(this.dataService.handleError('getLocations', []))
     );
   }
+  getLocationById (locationNumber: number): GymLocation | undefined {
+    console.log('locationNumber', locationNumber);
+    console.log('locations', this._locations());
+    return this._locations().find((location) => location.locationNumber === locationNumber);
+  }
+  getLocationByName (locationName: string): GymLocation | undefined {
+    console.log('locationNamer', locationName);
+    console.log('locations', this._locations());
+    return this._locations().find((location) => location.locationName === locationName);
+  }
+
 }

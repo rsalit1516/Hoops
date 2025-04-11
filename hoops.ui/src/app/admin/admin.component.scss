@@ -1,5 +1,5 @@
-@use 'sass:color';
-@use '../../Content/variables' as v;
+@use "sass:color";
+@use "../../Content/variables" as v;
 
 :host {
   font-size: 1rem;
@@ -35,26 +35,30 @@ textarea {
   color: v.$field-label;
 }
 
+.mat-form-field {
+  background-color: #333333;
+}
 .mat-form-field.mat-label,
 input.mat-form-field-label {
-  font-size: .7rem !important;
+  font-size: 0.7rem !important;
   color: v.$field-label;
 }
 
-.mat-form-field+.mat-form-field.mat-form-field-label {
+.mat-form-field + .mat-form-field.mat-form-field-label {
   color: v.$field-label;
-  font-size: 1.0rem;
+  font-size: 1rem;
 }
 .mdc-icon-button {
   color: v.$field-label;
 }
 .mat-input {
-  color: v.$field-label  !important;
+  color: v.$field-label !important;
   background-color: color.adjust(v.$admin-background-color, $lightness: 5%);
 }
 
-.mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
-  color: v.$field-label  !important;
+.mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float
+  .mat-form-field-label {
+  color: v.$field-label !important;
 }
 
 label {
@@ -86,11 +90,11 @@ nav.sidebar {
   height: 100%;
 }
 
-.navbar-default>li a {
+.navbar-default > li a {
   color: white;
 }
 
-.navbar-nav>li>a {
+.navbar-nav > li > a {
   padding-top: 2px;
   padding-bottom: 2px;
   color: white;
@@ -106,7 +110,7 @@ li.subheading {
   background-color: gray;
 }
 
-li>th {
+li > th {
   background-color: black;
   color: white;
 }
@@ -132,18 +136,18 @@ table .table .table-responsive .table-condensed {
     float: right;
   }
 
-  .navbar-nav>li>a {
+  .navbar-nav > li > a {
     padding-top: 2px;
     padding-bottom: 2px;
     color: white;
   }
 
-  nav.sidebar:hover+.main {
+  nav.sidebar:hover + .main {
     margin-left: 200px;
   }
 
-  nav.sidebar.navbar.sidebar>.container .navbar-brand,
-  .navbar>.container-fluid .navbar-brand {
+  nav.sidebar.navbar.sidebar > .container .navbar-brand,
+  .navbar > .container-fluid .navbar-brand {
     margin-left: 0px;
   }
 
@@ -158,7 +162,7 @@ table .table .table-responsive .table-condensed {
     padding-right: 13px;
   }
 
-  nav.sidebar .navbar-nav>li {
+  nav.sidebar .navbar-nav > li {
     // border-bottom: 1px #e5e5e5 solid;
     padding-top: 2px;
     padding-bottom: 2px;
@@ -169,7 +173,7 @@ table .table .table-responsive .table-condensed {
     padding: 0 0px 0 0px;
   }
 
-  .navbar-inverse .navbar-nav .open .dropdown-menu>li>a {
+  .navbar-inverse .navbar-nav .open .dropdown-menu > li > a {
     color: #777;
   }
 
@@ -209,8 +213,8 @@ table .table .table-responsive .table-condensed {
   }
 }
 
-nav.sidebar .navbar-nav .open .dropdown-menu>li>a:hover,
-nav.sidebar .navbar-nav .open .dropdown-menu>li>a:focus {
+nav.sidebar .navbar-nav .open .dropdown-menu > li > a:hover,
+nav.sidebar .navbar-nav .open .dropdown-menu > li > a:focus {
   color: #ccc;
 }
 
@@ -259,7 +263,6 @@ h2 {
   font-weight: 800;
   padding-bottom: 6px;
   padding-left: 12px;
-
 }
 h3 {
   color: v.$field-label;
@@ -267,34 +270,42 @@ h3 {
   font-weight: 800;
   padding-bottom: 6px;
   padding-left: 12px;
+  background-color: #1a1a1a;
+  text-align: center;
 }
 
 .mat-list-text {
-  font-size: .8rem;
+  font-size: 0.8rem;
   font-weight: 400;
 }
-.mat-raised-button .mat-button, button {
+.mat-raised-button .mat-button,
+button {
   background-color: v.$brand-color;
   color: white;
 }
-
 
 .ng-star-inserted {
   color: v.$admin-font-color;
 }
 
-.mat-checkbox, .mdc-checkbox {
+.mat-checkbox,
+.mdc-checkbox {
   background-color: v.$card-background-color;
   color: v.$admin-font-color;
 }
 
-.mat-raised-button, button {
+.mat-raised-button,
+button {
   background-color: v.$brand-color;
   color: white;
 }
 
+.form-control .mat-input-element {
+  background-color: green;
+  font-size: 1.1rem;
+}
 .form-control {
-  background-color: v.$admin-table-background-color;
+  background-color: transparent;
   color: v.$admin-font-color;
   border-color: v.$admin-table-background-color-border;
   font-size: 1.1rem;
@@ -303,6 +314,8 @@ h3 {
   // background-color: v.$table-body-color;
   // padding: 12px;
   border-radius: 5px;
+  padding-left: 12px;
+  padding-right: 12px;
 }
 
 .row-is-clicked {
@@ -317,7 +330,7 @@ h3 {
   display: block;
   padding: 0;
 }
-  td.mat-cell:first-child {
+td.mat-cell:first-child {
   // border-left: .5px solid v.$brand-color;
   // border-bottom-left-radius: 10px;
   // border-top-left-radius: 10px;
@@ -335,7 +348,7 @@ table {
   border-spacing: 0 1px !important;
   border-collapse: separate;
   width: 100%;
-  background-color:  transparent;
+  background-color: transparent;
 }
 
 .mat-hint {
@@ -354,4 +367,4 @@ table {
 .container {
   background-color: v.$table-background-color;
   border-radius: v.$border-radius;
- }
+}

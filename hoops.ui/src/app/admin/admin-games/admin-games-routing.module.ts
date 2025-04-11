@@ -6,6 +6,8 @@ import { AdminGamesShellComponent } from './admin-games-shell/admin-games-shell.
 import { AuthGuard } from '@app/auth/auth.guard';
 import { AdminGamesListComponent } from './admin-games-list/admin-games-list.component';
 import { AdminGameDetailComponent } from './admin-game-detail/admin-game-detail.component';
+import { AdminGamesPlayoffsDetailComponent } from './admin-games-playoffs-detail/admin-games-playoffs-detail.component';
+import { AdminGamesPlayoffsListComponent } from './admin-games-playoffs-list/admin-games-playoffs-list.component';
 
 const adminGamesRoutes: Routes = [
   {
@@ -16,7 +18,9 @@ const adminGamesRoutes: Routes = [
     children: [
       { path: '', component: AdminGamesListComponent },
       { path: 'list', component: AdminGamesListComponent },
-      { path: 'detail', component: AdminGameDetailComponent },
+      { path: 'list-playoff', component: AdminGamesPlayoffsListComponent },
+      { path: 'detail-regular', component: AdminGameDetailComponent },
+      { path: 'detail-playoff', component: AdminGamesPlayoffsDetailComponent },
       { path: '**', component: PageNotFoundComponent }
     ]
   }
@@ -26,4 +30,4 @@ const adminGamesRoutes: Routes = [
   imports: [RouterModule.forChild(adminGamesRoutes)],
   exports: [RouterModule]
 })
-export class AdminGamesRoutingModule {}
+export class AdminGamesRoutingModule { }

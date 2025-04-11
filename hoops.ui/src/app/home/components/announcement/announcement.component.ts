@@ -16,7 +16,7 @@ export class AnnouncementComponent implements OnInit {
   readonly info = input.required<WebContent>();
   bodyText = '';
   constructor () {
-    console.log(this.info());
+    // console.log(this.info());
   }
 
   ngOnInit (): void {
