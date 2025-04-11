@@ -30,7 +30,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { SeasonSelectComponent } from '@app/admin/admin-shared/season-select/season-select.component';
 import { HttpErrorResponse } from '@angular/common/http';
-import { DivisionToolbarComponent } from '../division-toolbar/division-toolbar.component';
+import { DivisionToolbarComponent } from '../../components/division-toolbar/division-toolbar.component';
 
 @Component({
   selector: 'csbc-division-list',
@@ -95,9 +95,10 @@ export class DivisionListComponent implements OnInit, OnChanges {
     effect(() => {
       this.dataSource = new MatTableDataSource<Division>(this.divisionService.seasonDivisions());
     });
+
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   ngOnChanges(): void {
     // if (this.selectedSeason !== undefined) {
@@ -152,7 +153,10 @@ export class DivisionListComponent implements OnInit, OnChanges {
   }
   viewTeams(division: any) {
     console.log(division);
-    this.store.dispatch(new adminActions.SetSelectedDivision(division));
+    this.divisionService.setCurrent(division);
+    console.log(this.divisionService.currentDivision());
+    this.divisionService.updateSelectedDivision(division);
+    console.log(this.divisionService.selectedDivision);
     this.#router.navigate([ './admin/season-setup' ]);
   }
   getRecord(division: any) {

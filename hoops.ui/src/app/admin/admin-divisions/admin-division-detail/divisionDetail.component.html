@@ -1,11 +1,12 @@
-<mat-card class="container mx-auto">
-  <mat-card-header>
-    <mat-card-title>Division Detail</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <form class="form-horizontal" novalidate (ngsubmit)="save()" [formGroup]="divisionForm">
+<form class="form-horizontal" novalidate (ngsubmit)="save()" [formGroup]="divisionForm">
+  <mat-card class="container mx-auto">
+    <mat-card-header>
+      <mat-card-title>Division Detail</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+
       <div class="flex flex-wrap -mx-2">
-        <div class="w-full px-2">
+        <div class="flex-1 w-full px-2">
           <fieldset>
             <mat-form-field>
               <mat-label>Division</mat-label>
@@ -34,11 +35,7 @@
             <div>
               <mat-form-field floatlabel="auto">
                 <mat-label for="divisionForm.get('minDate')">Min Date</mat-label>
-                <input matInput
-                id="divisionForm.get('minDate1')"
-                required
-                type="date"
-                formcontrolname="minDate1" />
+                <input matInput id="divisionForm.get('minDate1')" required type="date" formcontrolname="minDate1" />
               </mat-form-field>
             </div>
             <div>
@@ -88,9 +85,7 @@
                     !divisionForm.get('minDate2')?.valid
                 }">
                 <mat-label for="divisionForm.get('maxDate2')">max Date</mat-label>
-                <input matInput
-                id="divisionForm.get('maxDate2')"
-                type="date" formcontrolname="maxDate2" />
+                <input matInput id="divisionForm.get('maxDate2')" type="date" formcontrolname="maxDate2" />
               </mat-form-field>
             </div>
             <div>
@@ -124,19 +119,20 @@
           </fieldset> -->
         </div>
       </div>
-    </form>
-  </mat-card-content>
-  <mat-card-actions>
-    <button mat-raised-button color="primary" (click)="save()" [disabled]="!divisionForm.valid || !divisionForm.dirty">
-      Save
-    </button>
-    <button type="button" mat-raised-button color="primary">
-      Delete
-    </button>
-    <!-- <button type="button" mat-raised-button>Save and New</button> -->
-    <button type="button" mat-raised-button [routerLink]="['/admin/division']" color="primary">
-      Cancel
-    </button>
-    <!-- <button mat-raised-button color="warn" (click)="cancel()">Cancel</button> -->
-  </mat-card-actions>
-</mat-card>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="submit" (click)="save()"
+        [disabled]="!divisionForm.valid || !divisionForm.dirty">
+        Save
+      </button>
+      <button type="button" mat-raised-button color="primary">
+        Delete
+      </button>
+      <!-- <button type="button" mat-raised-button>Save and New</button> -->
+      <button type="button" mat-raised-button [routerLink]="['/admin/division']" color="primary">
+        Cancel
+      </button>
+      <!-- <button mat-raised-button color="warn" (click)="cancel()">Cancel</button> -->
+    </mat-card-actions>
+  </mat-card>
+</form>

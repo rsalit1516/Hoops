@@ -13,7 +13,7 @@ import { PageNotFoundComponent } from '@app/app.not-found.component';
 import { AuthGuard } from '../auth/auth.guard';
 import { SeasonSetupComponent } from './containers/season-setup/season-setup.component';
 import { ContentShellComponent } from './web-content/content-shell/content-shell.component';
-import { DivisionDetailComponent } from './components/admin-division-detail/divisionDetail.component';
+import { DivisionDetailComponent } from './admin-divisions/admin-division-detail/divisionDetail.component';
 import { getWebContentDataResolver } from './get-web-content-data.resolver';
 import { HouseholdShellComponent } from './admin-household/household-shell/household-shell.component';
 import { HouseholdService } from '@app/services/household.service';
@@ -65,14 +65,14 @@ export const ADMINROUTES: Routes = [
           {
               path: 'edit',
               loadComponent: () =>
-                import('./components/admin-division-detail/divisionDetail.component').then(
+                import('./admin-divisions/admin-division-detail/divisionDetail.component').then(
                   (mod) => mod.DivisionDetailComponent
                 ),
             },
             {
               path: 'list',
               loadComponent: () =>
-                import('./components/admin-division-list/divisionList.component').then(
+                import('./admin-divisions/admin-division-list/divisionList.component').then(
                   (mod) => mod.DivisionListComponent
                 ),
             },

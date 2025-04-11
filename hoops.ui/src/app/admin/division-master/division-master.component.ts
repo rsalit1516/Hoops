@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 // import { CsbcSeasonSelectComponent } from '../../shared/season-select/csbc-season-select.component';
 import { Season } from '../../domain/season';
 import { SeasonService } from '../../services/season.service';
-import { DivisionListComponent } from '../components/admin-division-list/divisionList.component';
+import { DivisionListComponent } from '../admin-divisions/admin-division-list/divisionList.component';
 import { CsbcSeasonSelectComponent } from '../../shared/season-select/csbc-season-select.component';
 
 @Component({
@@ -15,13 +15,13 @@ import { CsbcSeasonSelectComponent } from '../../shared/season-select/csbc-seaso
 export class DivisionMasterComponent implements OnInit {
   selectedSeason?: Season;//  = signal(new Season() );
   seasonService = inject(SeasonService);
-  seasons = signal(this.seasonService.seasons());
+  seasons = signal(this.seasonService.selectedSeason);
 
   constructor() { }
 
   ngOnInit() {
-    if (this.seasonService.seasons() !== undefined) {
-      this.selectedSeason = this.seasonService.seasons()![ 0 ];
+    if (this.seasonService.selectedSeason !== undefined) {
+      this.selectedSeason = this.seasonService.seasons![ 0 ];
     }
       // .subscribe(seasons => {
       //   // this.seasons = seasons;

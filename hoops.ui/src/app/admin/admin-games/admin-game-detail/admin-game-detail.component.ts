@@ -1,8 +1,6 @@
-import { Component, OnInit, computed, inject, input, effect } from '@angular/core';
+import { Component, OnInit, computed, inject, effect } from '@angular/core';
 import { UntypedFormControl, ReactiveFormsModule, FormControl, FormsModule, FormBuilder } from '@angular/forms';
 import { Team } from '@app/domain/team';
-import { Store } from '@ngrx/store';
-import * as fromAdmin from '../../state';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -16,7 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { RegularGame } from '@app/domain/regularGame';
 import { DivisionService } from '@app/services/division.service';
 import { TeamService } from '@app/services/team.service';
-import { MatTimepickerModule, MatTimepickerOption } from '@angular/material/timepicker';
+import { MatTimepickerModule } from '@angular/material/timepicker';
 
 import { MatNativeDateModule } from '@angular/material/core';
 import { Router } from '@angular/router';

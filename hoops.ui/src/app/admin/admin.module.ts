@@ -8,8 +8,8 @@ import { AdminDashboardComponent } from './dashboard/admin-dashboard.component';
 import { AdminRoutingModule } from './admin-routing.module';
 import { SeasonDetailComponent } from './season/seasonDetail.component';
 import { SeasonListComponent } from './season/seasonList.component';
-import { DivisionDetailComponent } from './components/admin-division-detail/divisionDetail.component';
-import { DivisionListComponent } from './components/admin-division-list/divisionList.component';
+import { DivisionDetailComponent } from './admin-divisions/admin-division-detail/divisionDetail.component';
+import { DivisionListComponent } from './admin-divisions/admin-division-list/divisionList.component';
 import { PlayerListComponent } from './player/player-list.component';
 
 import { DivisionMasterComponent } from './division-master/division-master.component';
