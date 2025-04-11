@@ -7,7 +7,7 @@ import { CsbcClubDocsComponent } from './club-docs/csbc-club-docs.component';
 import { HomeComponent } from './home/home.component';
 import { PageNotFoundComponent } from './app.not-found.component';
 import { GamesResolver } from './games/games.resolver';
-import { ADMINROUTES } from './admin/admin-routing.module';
+import { ADMINROUTES } from './admin/admin-routing';
 import { LoginComponent } from './shared/login/login.component';
 
 const appRoutes: Routes = [

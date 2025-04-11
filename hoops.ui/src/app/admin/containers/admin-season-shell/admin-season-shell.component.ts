@@ -7,7 +7,7 @@ import * as fromAdmin from '../../state';
 import { AdminSeasonListComponent } from '../../components/admin-season-list/admin-season-list.component';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
-import { AdminGamesRoutingModule } from '@app/admin/admin-games/admin-games-routing.module';
+import { AdminGamesRoutingModule } from '@app/admin/admin-games/admin-games-routing';
 import { SeasonService } from '@app/services/season.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';

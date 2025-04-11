@@ -5,7 +5,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AdminComponent } from './admin.component';
 import { AdminDashboardComponent } from './dashboard/admin-dashboard.component';
 
-import { AdminRoutingModule } from './admin-routing.module';
+import { AdminRoutingModule } from './admin-routing';
 import { SeasonDetailComponent } from './season/seasonDetail.component';
 import { SeasonListComponent } from './season/seasonList.component';
 import { DivisionDetailComponent } from './admin-divisions/admin-division-detail/divisionDetail.component';
@@ -22,7 +22,7 @@ import { AdminEffects } from './state/admin.effects';
 import { AdminSeasonShellComponent } from './containers/admin-season-shell/admin-season-shell.component';
 import { AdminSeasonListComponent } from './components/admin-season-list/admin-season-list.component';
 
-import { AdminDivisionShellComponent } from './containers/admin-division-shell/admin-division-shell.component';
+import { AdminDivisionShellComponent } from './admin-divisions/admin-division-shell/admin-division-shell.component';
 import { DirectorModule } from './director/director.module';
 
 import { ImportScheduleComponent } from './import-schedule/import-schedule.component';

@@ -6,7 +6,7 @@ import { AdminDashboardComponent } from './dashboard/admin-dashboard.component';
 import { AdminShellComponent } from './containers/admin-shell/admin-shell.component';
 import { TeamListComponent } from './team/teamList.component';
 import { AdminSeasonShellComponent } from './containers/admin-season-shell/admin-season-shell.component';
-import { AdminDivisionShellComponent } from './containers/admin-division-shell/admin-division-shell.component';
+import { AdminDivisionShellComponent } from './admin-divisions/admin-division-shell/admin-division-shell.component';
 import { PageNotFoundComponent } from '@app/app.not-found.component';
 
 import { AuthGuard } from '../auth/auth.guard';
@@ -14,7 +14,8 @@ import { SeasonSetupComponent } from './containers/season-setup/season-setup.com
 import { ContentShellComponent } from './web-content/content-shell/content-shell.component';
 import { getWebContentDataResolver } from './get-web-content-data.resolver';
 import { HouseholdShellComponent } from './admin-household/household-shell/household-shell.component';
-import { ADMINGAMESROUTES } from './admin-games/admin-games-routing.module';
+import { ADMINGAMESROUTES } from './admin-games/admin-games-routing';
+import { CONTENT_ROUTES } from './web-content/content-routing';
 
 export const ADMINROUTES: Routes = [
   {
@@ -59,29 +60,29 @@ export const ADMINROUTES: Routes = [
         path: 'division',
         component: AdminDivisionShellComponent,
         title: 'Division Module',
-        children: [
-          {
-            path: 'edit',
-            loadComponent: () =>
-              import('./admin-divisions/admin-division-detail/divisionDetail.component').then(
-                (mod) => mod.DivisionDetailComponent
-              ),
-          },
-          {
-            path: 'list',
-            loadComponent: () =>
-              import('./admin-divisions/admin-division-list/divisionList.component').then(
-                (mod) => mod.DivisionListComponent
-              ),
-          },
-          {
-            path: '',
-            redirectTo: '/admin/division/list',
-            pathMatch: 'full',
-          },
+        // children: ADMIN_DIVISION_ROUTES,[
+        //   {
+        //     path: 'edit',
+        //     loadComponent: () =>
+        //       import('./admin-divisions/admin-division-detail/divisionDetail.component').then(
+        //         (mod) => mod.DivisionDetailComponent
+        //       ),
+        //   },
+        //   {
+        //     path: 'list',
+        //     loadComponent: () =>
+        //       import('./admin-divisions/admin-division-list/divisionList.component').then(
+        //         (mod) => mod.DivisionListComponent
+        //       ),
+        //   },
+        //   {
+        //     path: '',
+        //     redirectTo: '/admin/division/list',
+        //     pathMatch: 'full',
+        //   },
 
-          { path: '**', component: PageNotFoundComponent },
-        ],
+        //   { path: '**', component: PageNotFoundComponent },
+        // ],
 
       },
       // { path: 'division-detail', component: DivisionDetailComponent },
@@ -116,29 +117,7 @@ export const ADMINROUTES: Routes = [
         path: 'content',
         component: ContentShellComponent,
         resolve: { data: getWebContentDataResolver },
-        children: [
-          {
-            path: 'edit',
-            loadComponent: () =>
-              import('./web-content/content-edit/content-edit.component').then(
-                (mod) => mod.ContentEditComponent
-              ),
-          },
-          {
-            path: 'list',
-            loadComponent: () =>
-              import('./web-content/content-list/contentList.component').then(
-                (mod) => mod.ContentListComponent
-              ),
-          },
-          {
-            path: '',
-            redirectTo: '/admin/content/list',
-            pathMatch: 'full',
-          },
-
-          { path: '**', component: PageNotFoundComponent },
-        ],
+        children: CONTENT_ROUTES,
       },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: '**', component: PageNotFoundComponent },

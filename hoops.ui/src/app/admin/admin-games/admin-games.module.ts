@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AdminGamesRoutingModule } from './admin-games-routing.module';
+import { AdminGamesRoutingModule } from './admin-games-routing';
 import { AdminGamesShellComponent } from './admin-games-shell/admin-games-shell.component';
 
 
@@ -12,13 +12,13 @@ import { AdminGamesListComponent } from './admin-games-list/admin-games-list.com
 
 @NgModule({
     imports: [
-    CommonModule,
-    AdminGamesRoutingModule,
-    AdminGameDetailComponent,
-    AdminGamesListComponent,
-    AdminGamesShellComponent,
-    AdminGamesPlayoffsDetailComponent,
-    AdminGamesPlayoffsListComponent
-],
+        CommonModule,
+        AdminGamesRoutingModule,
+        AdminGameDetailComponent,
+        AdminGamesListComponent,
+        AdminGamesShellComponent,
+        AdminGamesPlayoffsDetailComponent,
+        AdminGamesPlayoffsListComponent
+    ],
 })
-export class AdminGamesModule {}
+export class AdminGamesModule { }
