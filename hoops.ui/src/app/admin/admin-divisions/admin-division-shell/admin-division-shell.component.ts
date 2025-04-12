@@ -17,11 +17,12 @@ import { CommonModule } from '@angular/common';
 import { Division } from '@app/domain/division';
 import { DivisionService } from '@app/services/division.service';
 import { NewDivisionSelectorComponent } from '../../admin-shared/new-division-selector/new-division-selector.component';
+import { ShellTitleComponent } from "../../../shared/shell-title/shell-title.component";
 
 @Component({
   selector: 'csbc-admin-division-shell',
-  template: `<section class="container-fluid">
-    <h2>{{ title }}</h2>
+  template: `<section class="container">
+    <csbc-shell-title [title]="title"/>
     <router-outlet></router-outlet>
   </section>`,
   styleUrls: [
@@ -42,14 +43,15 @@ import { NewDivisionSelectorComponent } from '../../admin-shared/new-division-se
     NewDivisionSelectorComponent,
     RouterOutlet,
     RouterLinkWithHref,
-  ],
+    ShellTitleComponent
+],
   providers: [DivisionService],
 })
 export class AdminDivisionShellComponent implements OnInit {
   season = input(new Season());
   router = inject(Router);
   _divisionService = inject(DivisionService);
-  title = 'Divisions';
+  title = 'Division Management';
   constructor (private store: Store<fromAdmin.State>) { }
 
   ngOnInit () {

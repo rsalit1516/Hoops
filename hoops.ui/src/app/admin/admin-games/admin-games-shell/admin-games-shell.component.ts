@@ -26,7 +26,7 @@ import { LoggerService } from '@app/services/logging.service';
 import { RouterOutlet } from '@angular/router';
 @Component({
   selector: 'csbc-admin-games-shell',
-  template: `<section class="container-fluid">
+  template: `<section class="container">
   <h2>{{title}}</h2>
   <router-outlet></router-outlet>
 </section>`,

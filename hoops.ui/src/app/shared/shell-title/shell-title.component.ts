@@ -4,7 +4,7 @@ import { Component, input } from '@angular/core';
   selector: 'csbc-shell-title',
   imports: [],
   template: `
-  <div class="title">{{title()}}</div>
+  <div class="title flex flex-1 justify-end">{{title()}}</div>
   `,
   styleUrl: './shell-title.component.scss'
 })

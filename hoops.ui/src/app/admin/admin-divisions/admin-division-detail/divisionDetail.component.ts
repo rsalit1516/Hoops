@@ -71,15 +71,20 @@ export class DivisionDetailComponent implements OnInit {
       this.division() && this.division().minDate
         ? formatDate(this.division().minDate ?? new Date(), 'yyyy-MM-dd', 'en')
         : '',
-      Validators.required,
-    ], //this.division.minDate,
+      [Validators.required],
+    ],
+    maxDate2: [
+      this.division() && this.division().maxDate2
+        ? formatDate(this.division().maxDate2 ?? new Date(), 'yyyy-MM-dd', 'en')
+        : '',
+    ],
+    minDate2: [
+      this.division() && this.division().minDate2
+        ? formatDate(this.division().minDate2 ?? new Date(), 'yyyy-MM-dd', 'en')
+        : '',
+    ],
     gender1: [''],
-    maxDate2: [''], //this.division.maxDate,
-    minDate2: [''], //this.division.minDate,
     gender2: [''],
-    // director: [''],
-    // seasonId: [''], //this.division.seasonId,
-    // divisionId: [''], //this.division.seasonId,
   });
 
   genders = ['M', 'F'];
@@ -127,17 +132,16 @@ export class DivisionDetailComponent implements OnInit {
         this.selectedDivisionDescription = matchingDivision;
         console.log(division);
         this.divisionForm.patchValue({
-          name: matchingDivision,
-          maxDate1: division.maxDate ? division.maxDate.toISOString() : '',
-          minDate1: division.minDate ? division.minDate.toISOString() : '',
+          name: division.divisionDescription,
+          maxDate1: division.maxDate ? new Date(division.maxDate).toISOString().split('T')[0] : '',
+          minDate1: division.minDate ? new Date(division.minDate).toISOString().split('T')[0] : '',
           gender1: division.gender,
-          maxDate2: division.maxDate2 ? division.maxDate2.toISOString() : '',
-          minDate2: division.minDate2 ? division.minDate2.toISOString() : '',
+          maxDate2: division.maxDate2 ? new Date(division.maxDate2).toISOString().split('T')[0] : '',
+          minDate2: division.minDate2 ? new Date(division.minDate2).toISOString().split('T')[0] : '',
           gender2: division.gender2,
-        }
-          // this.divisionForm.get('maxDate2')?.setValue(formatDate(division.maxDate2, this.dateFormat, this.languageFormat));
+        });          // this.divisionForm.get('maxDate2')?.setValue(formatDate(division.maxDate2, this.dateFormat, this.languageFormat));
 
-        )
+        
       }
     }
     // });
