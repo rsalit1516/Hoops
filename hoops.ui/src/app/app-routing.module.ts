@@ -11,7 +11,6 @@ import { ADMINROUTES } from './admin/admin-routing';
 import { LoginComponent } from './shared/login/login.component';
 
 const appRoutes: Routes = [
-  // ...ADMINROUTES,
   {
     path: 'home',
     component: HomeComponent

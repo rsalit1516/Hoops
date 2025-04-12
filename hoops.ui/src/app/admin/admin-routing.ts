@@ -16,6 +16,7 @@ import { getWebContentDataResolver } from './get-web-content-data.resolver';
 import { HouseholdShellComponent } from './admin-household/household-shell/household-shell.component';
 import { ADMINGAMESROUTES } from './admin-games/admin-games-routing';
 import { CONTENT_ROUTES } from './web-content/content-routing';
+import { ADMIN_DIVISION_ROUTES } from './admin-divisions/admin-division-routing';
 
 export const ADMINROUTES: Routes = [
   {
@@ -58,34 +59,9 @@ export const ADMINROUTES: Routes = [
       },
       {
         path: 'division',
-        component: AdminDivisionShellComponent,
         title: 'Division Module',
-        // children: ADMIN_DIVISION_ROUTES,[
-        //   {
-        //     path: 'edit',
-        //     loadComponent: () =>
-        //       import('./admin-divisions/admin-division-detail/divisionDetail.component').then(
-        //         (mod) => mod.DivisionDetailComponent
-        //       ),
-        //   },
-        //   {
-        //     path: 'list',
-        //     loadComponent: () =>
-        //       import('./admin-divisions/admin-division-list/divisionList.component').then(
-        //         (mod) => mod.DivisionListComponent
-        //       ),
-        //   },
-        //   {
-        //     path: '',
-        //     redirectTo: '/admin/division/list',
-        //     pathMatch: 'full',
-        //   },
-
-        //   { path: '**', component: PageNotFoundComponent },
-        // ],
-
+        children: ADMIN_DIVISION_ROUTES,
       },
-      // { path: 'division-detail', component: DivisionDetailComponent },
       { path: 'season-setup', component: SeasonSetupComponent },
       {
         path: 'households',
@@ -124,4 +100,4 @@ export const ADMINROUTES: Routes = [
     ]
   }
 ];
-export const AdminRoutingModule = RouterModule.forChild(ADMINROUTES);
+export const AdminRouting = RouterModule.forChild(ADMINROUTES);
