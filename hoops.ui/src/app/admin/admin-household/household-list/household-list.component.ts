@@ -1,5 +1,5 @@
 import { NgFor, NgForOf, NgIf } from '@angular/common';
-import { AfterViewInit, Component, inject, input, OnChanges, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, effect, inject, input, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
@@ -39,7 +39,7 @@ export class HouseholdListComponent implements OnInit, OnChanges, AfterViewInit 
   results = input<Household[]>();
 
   /* injects */
-  private householdService = inject(HouseholdService);
+  readonly #householdService = inject(HouseholdService);
   // #router = inject(Router);
 
   @ViewChild('householdPaginator') paginator: MatPaginator = inject(MatPaginator);
@@ -47,7 +47,7 @@ export class HouseholdListComponent implements OnInit, OnChanges, AfterViewInit 
   showFirstLastButtons = true;
   pageSize = 10;
 
-  errorMessage = this.householdService.errorMessage;
+  errorMessage = this.#householdService.errorMessage;
   // households = this.householdService.households;
   // Subscribe to the households signal and update the dataSource
   displayedColumns = [
@@ -60,7 +60,11 @@ export class HouseholdListComponent implements OnInit, OnChanges, AfterViewInit 
 
   dataSource = new MatTableDataSource<Household>([]);
 
-  constructor() { }
+  constructor() {
+    effect(() => {
+      this.dataSource = new MatTableDataSource<Household>(this.#householdService.householdSearchResults());
+    });
+  }
 
   ngOnInit() {
     // this.refreshData();
@@ -81,7 +85,7 @@ export class HouseholdListComponent implements OnInit, OnChanges, AfterViewInit 
     this.paginator.page.subscribe(() => this.refreshData());
   }
   getRecord(row: Household) {
-    this.householdService.updateSelectedRecord(row);
+    this.#householdService.updateSelectedRecord(row);
   };
 refreshData () {
     // this.store.select(fromContent.getContentList).subscribe((data) => {

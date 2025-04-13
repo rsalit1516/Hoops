@@ -96,7 +96,7 @@ export class HouseholdSearchComponent {
           phone: this.searchForm.value.phone ?? '',
           email: this.searchForm.value.email ?? '',
         };
-
+this.search1();
         this.search.emit(selectedCriteria);
 
       })
@@ -127,13 +127,13 @@ export class HouseholdSearchComponent {
       phone: this.searchForm.value.phone ?? '',
       email: this.searchForm.value.email ?? '',
     };
-    //    this.householdService.selectedCriteria.set({
+        this.householdService.selectedCriteria.set(selectedCriteria);
 
     // let test = this.householdService.constructQueryString(this.householdService.criteria);
     // console.log('Query String: ', test);
     this.householdService.executeSearch();
 
-    let results = this.householdService.householdsResult();
+    let results = this.householdService.householdSearchResults();
     this.households.emit(results);
     // console.log(this.households());
   }

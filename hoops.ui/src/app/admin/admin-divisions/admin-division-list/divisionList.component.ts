@@ -2,10 +2,8 @@ import {
   Component,
   OnInit,
   OnChanges,
-  Input,
   input,
   inject,
-  Signal,
   computed,
   effect,
 } from '@angular/core';
@@ -14,9 +12,8 @@ import { SeasonService } from '../../../services/season.service';
 import { DivisionService } from '@app/services/division.service';
 import { Division } from '../../../domain/division';
 import { Season } from '../../../domain/season';
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import * as fromAdmin from '../../state';
-import * as adminActions from '../../state/admin.actions';
 
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
@@ -28,7 +25,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { SeasonSelectComponent } from '@app/admin/admin-shared/season-select/season-select.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DivisionToolbarComponent } from '../../components/division-toolbar/division-toolbar.component';
 

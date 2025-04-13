@@ -28,7 +28,7 @@ export class HouseholdService {
   // Signal to support the template
   criteria = linkedSignal<householdSearchCriteria>(() => this.selectedCriteria());
 
-  householdsResult = signal<Household[]>([]);
+  householdSearchResults = signal<Household[]>([]);
   error = computed(() => this.householdResource.error() as HttpErrorResponse);
   errorMessage = computed(() => setErrorMessage(this.error(), 'Household'));
   // isLoading = this.householdResource.isLoading;
@@ -68,7 +68,7 @@ export class HouseholdService {
   executeSearch () {
     this.searchUrl = this.constructQueryString(this.selectedCriteria());
     this.searchHouseholds$().subscribe(response => {
-      this.householdsResult.set(response!);
+      this.householdSearchResults.set(response!);
       console.log(this.results);
       //       console.log('Household data: ', this.householdsResult());
     });
@@ -100,7 +100,7 @@ export class HouseholdService {
   }
 
   get results () {
-    return this.householdsResult();
+    return this.householdSearchResults();
   }
 
   fetchFilteredData (filters: any): Observable<any[]> {
