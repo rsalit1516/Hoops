@@ -34,10 +34,9 @@ RouterModule,
     '../../admin.component.scss',
     '../../containers/admin-shell/admin-shell.component.scss',
     '../../../shared/scss/cards.scss',
-    '../../../shared/scss/sidenav.scss',
   ]
 })
-export class HouseholdShellComponent implements AfterViewInit {
+export class HouseholdShellComponent  {
   title = 'Household Management';
   isSidenavOpen = false;
   householdService = inject(HouseholdService);
@@ -46,43 +45,9 @@ export class HouseholdShellComponent implements AfterViewInit {
   private searchCriteria = signal<householdSearchCriteria | null>(null); // Signal for search criteria
   results = signal<Household[] | undefined>([]); // Signal for search results
   selectedHousehold = signal<Household | null>(null);
-
-  @ViewChild('sidenav') sidenav!: MatSidenav;
-  @ViewChild('firstPanel') firstPanel!: MatExpansionPanel;
-
   constructor() {
-    effect(() => {
-      const record = this.householdService.selectedRecordSignal();
-      console.log('Selected record changed:', record);
-      if (record !== null) {
-        console.log(`Record updated: ${record.name}`);
-        this.isSidenavOpen = true;
-        // Allow the sidenav to open first, then expand the first panel
-        setTimeout(() => {
-          if (this.firstPanel) {
-            this.firstPanel.expanded = true;
-          }
-        }, 300);
-      }
-    });
-    effect(() => {
-      const saved = this.householdService.householdSaved();
-      console.log(saved);
-      if (saved) {
-        this.isSidenavOpen = false;
-        this.householdService.householdSaved.set(false);
-      }
-    });// Optionally trigger additional logic here
   }
-  ngAfterViewInit() {
-    // Ensure the first panel expands when athe sidenav opens
-    this.sidenav.openedStart.subscribe(() => {
-      if (this.firstPanel) {
-        this.firstPanel.expanded = true;
-      }
-    });
 
-  }
   onSearch(criteria: householdSearchCriteria) {
     console.log(criteria);
     this.searchCriteria.set(criteria);
@@ -91,11 +56,5 @@ export class HouseholdShellComponent implements AfterViewInit {
       this.results.update(() => data);
     });
   }
-  selectRecord(record: Household) {
-    this.selectedRecord = record;
-    this.isSidenavOpen = true;
-  }
-  closeSidenav() {
-    this.isSidenavOpen = false;
-  }
+
 }
