@@ -34,6 +34,7 @@ import { HouseholdSearchComponent } from "../household-search/household-search.c
   providers: [ MatSort, MatPaginator ]
 })
 export class HouseholdListComponent implements OnInit, OnChanges, AfterViewInit {
+  readonly #router = inject(Router);
   households = input<Household[]>(); // Signal
   pageTitle = 'Household List';
   results = input<Household[]>();
@@ -86,7 +87,12 @@ export class HouseholdListComponent implements OnInit, OnChanges, AfterViewInit 
   }
   getRecord(row: Household) {
     this.#householdService.updateSelectedRecord(row);
-  };
+      console.log(this.#householdService.selectedHousehold);
+      //this.divisionService.getDvision(division);
+      //console.log(this.divisionService.currentDivision());
+      // this.store.dispatch(new adminActions.SetSelectedDivision(division));
+      this.#router.navigate([ './admin/households/detail' ]);
+    }
 refreshData () {
     // this.store.select(fromContent.getContentList).subscribe((data) => {
     //   this.data = data;
