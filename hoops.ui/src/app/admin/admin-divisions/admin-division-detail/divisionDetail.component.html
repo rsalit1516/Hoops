@@ -14,19 +14,23 @@
           <fieldset>
             <mat-form-field>
               <mat-label>Division</mat-label>
-              <mat-select
+              <input matInput
+              required
+              type="text"
+              formControlName="name" />
+              <!--<mat-select
                 placeholder="Select Division"
                 formControlName="name"
                 (selectionChange)="divisionSelected($event)"
               >
-                <mat-option
+                 <mat-option
                   *ngFor="let division of standardDivisions()"
                   [value]="division"
                 >
                   {{ division }}
                 </mat-option>
                 <mat-option value="other">Other</mat-option>
-              </mat-select>
+              </mat-select> -->
             </mat-form-field>
           </fieldset>
         </div>

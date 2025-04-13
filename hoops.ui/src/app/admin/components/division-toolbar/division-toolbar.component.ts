@@ -1,11 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { Router } from '@angular/router';
 import { DivisionSelectComponent } from '@app/admin/admin-shared/division-select/division-select.component';
 import { SeasonSelectComponent } from '@app/admin/admin-shared/season-select/season-select.component';
+import { Division } from '@app/domain/division';
+import { DivisionService } from '@app/services/division.service';
 
 @Component({
   selector: 'csbc-division-toolbar',
@@ -38,6 +41,12 @@ import { SeasonSelectComponent } from '@app/admin/admin-shared/season-select/sea
   ]
 })
 export class DivisionToolbarComponent {
+  readonly #router = inject(Router);
+  readonly #divisionService = inject(DivisionService);
+
   addDivision() {
+    let division = new Division();
+    this.#divisionService.updateSelectedDivision(division);
+    this.#router.navigate([ './admin/division/edit' ]);
   }
 }

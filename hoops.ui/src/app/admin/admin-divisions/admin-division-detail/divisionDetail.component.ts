@@ -114,13 +114,7 @@ export class DivisionDetailComponent implements OnInit {
     });
   }
   ngOnInit (): void {
-    // console.log(this.#divisionService.currentDivision());
-    // this.division.set(this.divisionService.currentDivision()!);
-    // console.log(this.division);
     let currentDivision = this.#divisionService.currentDivision();
-    // console.log(currentDivision);
-
-    // this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
     const division = this.#divisionService.selectedDivision; // get the current selected division
     if (division !== null) {
       if (division?.divisionDescription !== undefined) {
@@ -141,16 +135,9 @@ export class DivisionDetailComponent implements OnInit {
           gender2: division.gender2,
         });          // this.divisionForm.get('maxDate2')?.setValue(formatDate(division.maxDate2, this.dateFormat, this.languageFormat));
 
-        
+
       }
     }
-    // });
-    // this.division = this.divisionService.division.subscribe(data =>
-
-    // console.log(data);
-    // Subscribe to the signal to get updated values
-    //this.newDivision.update(x => this.divisionService.division());
-    //console.log(this.newDivision());
   }
 
   save () {

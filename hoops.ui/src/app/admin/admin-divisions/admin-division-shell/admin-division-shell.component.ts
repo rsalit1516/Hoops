@@ -2,7 +2,6 @@ import { Component, OnInit, inject, input } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import * as fromAdmin from '../../state';
-import * as adminActions from '../../state/admin.actions';
 import { DivisionListComponent } from '../admin-division-list/divisionList.component';
 import { SeasonSelectComponent } from '../../admin-shared/season-select/season-select.component';
 import { DivisionSelectComponent } from '@app/admin/admin-shared/division-select/division-select.component';
@@ -45,7 +44,6 @@ import { ShellTitleComponent } from "../../../shared/shell-title/shell-title.com
     RouterLinkWithHref,
     ShellTitleComponent
 ],
-  providers: [DivisionService],
 })
 export class AdminDivisionShellComponent implements OnInit {
   season = input(new Season());
@@ -64,6 +62,6 @@ export class AdminDivisionShellComponent implements OnInit {
     this._divisionService.updateSelectedDivision(division);
     // this.store.dispatch(new adminActions.SetSelectedDivision(division));
 
-    this.router.navigate(['./admin/division-detail']);
+    this.router.navigate(['./admin/division/edit']);
   }
 }
