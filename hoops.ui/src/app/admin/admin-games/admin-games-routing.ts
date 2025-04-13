@@ -1,5 +1,4 @@
-import { NgModule } from '@angular/core';
-import { ROUTER_CONFIGURATION, RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
 import { PageNotFoundComponent } from '@app/app.not-found.component';
 import { AdminGamesShellComponent } from './admin-games-shell/admin-games-shell.component';

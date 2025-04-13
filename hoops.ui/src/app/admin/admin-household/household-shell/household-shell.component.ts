@@ -11,10 +11,12 @@ import { ShellTitleComponent } from '@app/shared/shell-title/shell-title.compone
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatExpansionModule, MatExpansionPanel } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-household-shell',
   imports: [ CommonModule,
+RouterModule,
     MatSidenavModule,
     MatExpansionModule,
     MatIconModule,
@@ -24,7 +26,10 @@ import { MatIconModule } from '@angular/material/icon';
     HouseholdMembersComponent,
     ShellTitleComponent
   ],
-  templateUrl: './household-shell.component.html',
+  template: `<section class="container">
+  <csbc-shell-title [title]="title"/>
+  <router-outlet></router-outlet>
+</section>`,
   styleUrls: [ './household-shell.component.scss',
     '../../admin.component.scss',
     '../../containers/admin-shell/admin-shell.component.scss',
@@ -33,7 +38,7 @@ import { MatIconModule } from '@angular/material/icon';
   ]
 })
 export class HouseholdShellComponent implements AfterViewInit {
-  pageTitle = 'Household Management';
+  title = 'Household Management';
   isSidenavOpen = false;
   householdService = inject(HouseholdService);
   selectedRecord = this.householdService.selectedRecordSignal();

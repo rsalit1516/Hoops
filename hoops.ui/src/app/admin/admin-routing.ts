@@ -13,6 +13,7 @@ import { HouseholdShellComponent } from './admin-household/household-shell/house
 import { ADMINGAMESROUTES } from './admin-games/admin-games-routing';
 import { CONTENT_ROUTES } from './web-content/content-routing';
 import { ADMIN_DIVISION_ROUTES } from './admin-divisions/admin-division-routing';
+import { ADMIN_HOUSEHOLD_ROUTES } from './admin-household/admin-household-routing';
 
 export const ADMINROUTES: Routes = [
   {
@@ -61,8 +62,7 @@ export const ADMINROUTES: Routes = [
       { path: 'season-setup', component: SeasonSetupComponent },
       {
         path: 'households',
-        component: HouseholdShellComponent,
-        // providers: [HouseholdService],
+        children: ADMIN_HOUSEHOLD_ROUTES,
       },
       {
         path: 'people',
