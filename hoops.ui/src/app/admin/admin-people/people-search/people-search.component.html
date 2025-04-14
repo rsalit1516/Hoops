@@ -1,0 +1,18 @@
+<mat-toolbar color="primary">
+  <button mat-raised-button (click)="newPerson()">New</button>
+  <div [formGroup]="searchForm" class="flex flex-wrap -mx-2">
+    <mat-form-field [appearance]="inputStyle" class="full-width">
+      <mat-label htmlFor="lastName">Last Name</mat-label>
+      <input matInput [formControl]="lastName" title="Last Name" />
+    </mat-form-field>
+
+    <mat-form-field [appearance]="inputStyle" class="full-width">
+      <mat-label htmlFor="firstName">First Name</mat-label>
+      <input matInput [formControl]="firstName" title="Last Name" />
+    </mat-form-field>
+    <mat-form-field [appearance]="inputStyle" class="full-width">
+      <mat-label htmlFor="playerOnly">Last Name</mat-label>
+      <mat-checkbox [formControl]="playerOnly">Player Only</mat-checkbox>
+    </mat-form-field>
+  </div>
+</mat-toolbar>

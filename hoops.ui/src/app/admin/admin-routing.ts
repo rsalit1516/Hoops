@@ -14,6 +14,7 @@ import { ADMINGAMESROUTES } from './admin-games/admin-games-routing';
 import { CONTENT_ROUTES } from './web-content/content-routing';
 import { ADMIN_DIVISION_ROUTES } from './admin-divisions/admin-division-routing';
 import { ADMIN_HOUSEHOLD_ROUTES } from './admin-household/admin-household-routing';
+import { ADMIN_PEOPLE_ROUTES } from './admin-people/admin-people-routing';
 
 export const ADMINROUTES: Routes = [
   {
@@ -66,9 +67,7 @@ export const ADMINROUTES: Routes = [
       },
       {
         path: 'people',
-        loadComponent: () => import('./containers/admin-people-shell/admin-people-shell.component').then(
-          (mod) => mod.AdminPeopleShellComponent
-        ),
+        children: ADMIN_PEOPLE_ROUTES,
       },
       { path: 'teams', component: TeamListComponent },
       {

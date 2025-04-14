@@ -16,7 +16,6 @@ import { combineLatest, debounceTime, map, switchMap } from 'rxjs';
   selector: 'csbc-household-search',
   imports: [
     CommonModule,
-    MatCardModule,
     FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
@@ -54,7 +53,7 @@ export class HouseholdSearchComponent {
   phone = new FormControl('');
   searchResults = signal<any[]>([]);
 
-  onSearch() {
+  onSearch () {
     const selectedCriteria: householdSearchCriteria = {
       householdName: this.searchForm.value.householdName ?? '',
       address: this.searchForm.value.address ?? '',
@@ -73,7 +72,7 @@ export class HouseholdSearchComponent {
   errorMessage = this.householdService.errorMessage;
   // selectedVehicle = this.#householdService.selectedHousehold;
 
-  constructor() {
+  constructor () {
     this.searchForm = this.fb.group({
       householdName: this.householdName,
       address: this.address,
@@ -96,7 +95,7 @@ export class HouseholdSearchComponent {
           phone: this.searchForm.value.phone ?? '',
           email: this.searchForm.value.email ?? '',
         };
-this.search1();
+        this.search1();
         this.search.emit(selectedCriteria);
 
       })
@@ -118,7 +117,7 @@ this.search1();
 
   }
 
-  search1() {
+  search1 () {
     console.log('Search submitted');
     console.log(this.searchForm.value);
     const selectedCriteria = {
@@ -127,7 +126,7 @@ this.search1();
       phone: this.searchForm.value.phone ?? '',
       email: this.searchForm.value.email ?? '',
     };
-        this.householdService.selectedCriteria.set(selectedCriteria);
+    this.householdService.selectedCriteria.set(selectedCriteria);
 
     // let test = this.householdService.constructQueryString(this.householdService.criteria);
     // console.log('Query String: ', test);
@@ -138,11 +137,11 @@ this.search1();
     // console.log(this.households());
   }
 
-  clearSearch() {
+  clearSearch () {
     this.searchForm.reset();
   }
 
-  newHousehold() {
+  newHousehold () {
     console.log('New Household');
     this.householdService.newHousehold();
   }
