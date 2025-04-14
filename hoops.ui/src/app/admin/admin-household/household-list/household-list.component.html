@@ -35,17 +35,38 @@
         </td>
       </ng-container>
       <ng-container matColumnDef="nodata">
-        <td mat-footer-row *matFooterCellDef [colSpan]="displayedColumns.length" class="no-data">No Data
-          Available</td>
+        <td
+          mat-footer-row
+          *matFooterCellDef
+          [colSpan]="displayedColumns.length"
+          class="no-data"
+        >
+          {{ noDataMessage }}
+        </td>
       </ng-container>
 
-      <tr mat-footer-row [hidden]="dataSource.data.length >0" *matFooterRowDef="['nodata']">
-      </tr>
-      <tr mat-header-row *matHeaderRowDef="displayedColumns" matHeaderRowDefSticky="true"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="getRecord(row)"></tr>
+      <tr
+        mat-footer-row
+        [hidden]="dataSource.data.length > 0"
+        *matFooterRowDef="['nodata']"
+      ></tr>
+      <tr
+        mat-header-row
+        *matHeaderRowDef="displayedColumns"
+        matHeaderRowDefSticky="true"
+      ></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        (click)="getRecord(row)"
+      ></tr>
     </table>
-    <mat-paginator #householdPaginator aria-label="Select page of users" [pageSizeOptions]="[5, 10, 25, 100]"
-      [pageSize]="pageSize">
+    <mat-paginator
+      #householdPaginator
+      aria-label="Select page of users"
+      [pageSizeOptions]="[5, 10, 25, 100]"
+      [pageSize]="pageSize"
+    >
     </mat-paginator>
   </div>
   <!-- </mat-card-content>
@@ -53,5 +74,4 @@
 
   </mat-card-actions>
 </mat-card> -->
-
 </div>

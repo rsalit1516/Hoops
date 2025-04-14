@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { Household } from '@app/domain/household';
+import { Router, RouterLink, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'csbc-household-detail',
@@ -20,11 +21,12 @@ import { Household } from '@app/domain/household';
     MatInputModule,
     MatButtonModule,
     MatIconModule,
-    MatCardModule
+    MatCardModule,
+    RouterModule
 
   ],
   templateUrl: './household-detail.component.html',
-  styleUrls: [ './household-detail.component.scss',
+  styleUrls: ['./household-detail.component.scss',
     '../../admin.component.scss',
     '../../../shared/scss/forms.scss',
     '../../../shared/scss/cards.scss',
@@ -33,6 +35,7 @@ import { Household } from '@app/domain/household';
 export class HouseholdDetailComponent implements OnInit, OnChanges {
   /* injected */
   #householdService = inject(HouseholdService);
+  #router = inject(Router);
   fb = inject(FormBuilder);
 
   // householdDetailForm: FormGroup;
@@ -44,17 +47,17 @@ export class HouseholdDetailComponent implements OnInit, OnChanges {
   household = signal<Household | null>(null);
 
   householdDetailForm = this.fb.group({
-    householdName: [ '', Validators.required ],
-    address1: [ '', Validators.required ],
-    address2: [ '' ],
-    city: [ '', Validators.required ],
-    state: [ '', Validators.required ],
-    zip: [ '', Validators.required ],
-    phone: [ '', Validators.required ],
-    email: [ '' ],
+    householdName: ['', Validators.required],
+    address1: ['', Validators.required],
+    address2: [''],
+    city: ['', Validators.required],
+    state: ['', Validators.required],
+    zip: ['', Validators.required],
+    phone: ['', Validators.required],
+    email: [''],
     // members: this.fb.array([])
   });
-  constructor() {
+  constructor () {
     effect(() => {
       const record = this.#householdService.selectedRecordSignal();
       console.log(record);
@@ -68,10 +71,10 @@ export class HouseholdDetailComponent implements OnInit, OnChanges {
 
   }
 
-  ngOnInit() {
+  ngOnInit () {
 
   }
-  ngOnChanges() {
+  ngOnChanges () {
     if (this.household() !== null) {
       const household = this.household();
       if (household) {
@@ -88,7 +91,7 @@ export class HouseholdDetailComponent implements OnInit, OnChanges {
       }
     }
   }
-  updateForm() {
+  updateForm () {
     // this.household.set(this.#householdService.selectedHousehold);
     // const household = this.#householdService.selectedHousehold;
     // console.log('Household', household);
@@ -113,12 +116,12 @@ export class HouseholdDetailComponent implements OnInit, OnChanges {
     // }
   }
 
-  removeMember(index: number) {
+  removeMember (index: number) {
     // TODO: Implement removeMember
     // this.members.removeAt(index);
   }
 
-  onSave() {
+  onSave () {
     if (this.householdDetailForm.valid) {
       let household = this.household();
       if (household) {
@@ -158,6 +161,7 @@ export class HouseholdDetailComponent implements OnInit, OnChanges {
         this.#householdService.saveHousehold(household);
         this.householdDetailForm.reset();
         this.#householdService.householdSaved.set(true);
+        this.#router.navigate(['/admin/households/list']);
       }
     };
   }

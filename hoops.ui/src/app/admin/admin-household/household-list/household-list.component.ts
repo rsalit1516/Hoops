@@ -24,14 +24,14 @@ import { HouseholdSearchComponent } from "../household-search/household-search.c
     MatPaginatorModule,
     SectionTitleComponent,
     HouseholdSearchComponent
-],
+  ],
   templateUrl: './household-list.component.html',
-  styleUrls: [ './household-list.component.scss',
+  styleUrls: ['./household-list.component.scss',
     '../../admin.component.scss',
     '../../../shared/scss/tables.scss',
     '../../../shared/scss/cards.scss',
   ],
-  providers: [ MatSort, MatPaginator ]
+  providers: [MatSort, MatPaginator]
 })
 export class HouseholdListComponent implements OnInit, OnChanges, AfterViewInit {
   readonly #router = inject(Router);
@@ -49,6 +49,7 @@ export class HouseholdListComponent implements OnInit, OnChanges, AfterViewInit 
   pageSize = 10;
 
   errorMessage = this.#householdService.errorMessage;
+  noDataMessage = 'Enter search criteria';
   // households = this.householdService.households;
   // Subscribe to the households signal and update the dataSource
   displayedColumns = [
@@ -61,19 +62,19 @@ export class HouseholdListComponent implements OnInit, OnChanges, AfterViewInit 
 
   dataSource = new MatTableDataSource<Household>([]);
 
-  constructor() {
+  constructor () {
     effect(() => {
       this.dataSource = new MatTableDataSource<Household>(this.#householdService.householdSearchResults());
     });
   }
 
-  ngOnInit() {
+  ngOnInit () {
     // this.refreshData();
     this.dataSource = new MatTableDataSource(this.results());
     // this.dataSource.data = this.results() || [];
     this.refreshData();
   }
-  ngAfterViewInit() {
+  ngAfterViewInit () {
     this.dataSource.data = this.results() || [];
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -81,24 +82,24 @@ export class HouseholdListComponent implements OnInit, OnChanges, AfterViewInit 
     this.paginator.page.subscribe(() => this.refreshData());
   }
 
-  ngOnChanges() {
+  ngOnChanges () {
     this.dataSource.data = this.results() || [];;
     this.paginator.page.subscribe(() => this.refreshData());
   }
-  getRecord(row: Household) {
+  getRecord (row: Household) {
     this.#householdService.updateSelectedRecord(row);
-      console.log(this.#householdService.selectedHousehold);
-      //this.divisionService.getDvision(division);
-      //console.log(this.divisionService.currentDivision());
-      // this.store.dispatch(new adminActions.SetSelectedDivision(division));
-      this.#router.navigate([ './admin/households/detail' ]);
-    }
-refreshData () {
+    console.log(this.#householdService.selectedHousehold);
+    //this.divisionService.getDvision(division);
+    //console.log(this.divisionService.currentDivision());
+    // this.store.dispatch(new adminActions.SetSelectedDivision(division));
+    this.#router.navigate(['./admin/households/detail']);
+  }
+  refreshData () {
     // this.store.select(fromContent.getContentList).subscribe((data) => {
     //   this.data = data;
-      this.dataSource._updateChangeSubscription();
-      this.dataSource.disconnect()
-      this.dataSource.connect();
+    this.dataSource._updateChangeSubscription();
+    this.dataSource.disconnect()
+    this.dataSource.connect();
     // });
   }
 }
