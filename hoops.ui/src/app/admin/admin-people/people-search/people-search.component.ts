@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { peopleSearchCriteria, PeopleService } from '@app/services/people.service';
@@ -16,6 +17,7 @@ import { debounceTime, map } from 'rxjs';
     MatFormFieldModule,
     MatToolbarModule,
     MatButtonModule,
+    MatCheckboxModule
   ],
   templateUrl: './people-search.component.html',
   styleUrls: ['./people-search.component.scss',

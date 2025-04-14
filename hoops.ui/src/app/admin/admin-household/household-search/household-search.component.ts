@@ -1,8 +1,7 @@
-import { CommonModule, NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, inject, Output, output, signal } from '@angular/core';
 import { FormBuilder, FormsModule, FormGroup, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -10,7 +9,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { Household } from '@app/domain/household';
 import { householdSearchCriteria, HouseholdService } from '@app/services/household.service';
 import { SectionTitleComponent } from '@app/shared/section-title/section-title.component';
-import { combineLatest, debounceTime, map, switchMap } from 'rxjs';
+import { debounceTime, map } from 'rxjs';
 
 @Component({
   selector: 'csbc-household-search',
@@ -23,7 +22,6 @@ import { combineLatest, debounceTime, map, switchMap } from 'rxjs';
     MatButtonModule,
     MatIconModule,
     MatToolbarModule,
-    NgIf,
     SectionTitleComponent
   ],
   templateUrl: './household-search.component.html',

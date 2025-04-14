@@ -81,6 +81,7 @@ export class PeopleService {
     // https://localhost:5001/api/Household/search?name=salit&email=richard.salit%40gmail.com
   }
   executeSearch () {
+    console.log(this.selectedCriteria());
     this.searchUrl = this.constructQueryString(this.selectedCriteria());
     this.searchPeople$().subscribe(response => {
       this.updateResults(response!);
