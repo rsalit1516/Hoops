@@ -5,7 +5,9 @@ import { HouseholdSummaryComponent } from "../household-summary/household-summar
 
 @Component({
   selector: 'csbc-admin-people-detail',
-  imports: [PersonalInfoComponent, HouseholdMembersComponent, HouseholdSummaryComponent],
+  imports: [ PersonalInfoComponent,
+    HouseholdMembersComponent,
+    HouseholdSummaryComponent ],
   templateUrl: './admin-people-detail.component.html',
   styleUrl: './admin-people-detail.component.scss'
 })
