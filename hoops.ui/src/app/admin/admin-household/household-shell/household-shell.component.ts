@@ -14,7 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-household-shell',
+  selector: 'csbc-household-shell',
   imports: [ CommonModule,
 RouterModule,
     MatSidenavModule,

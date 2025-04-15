@@ -95,11 +95,8 @@ export class HouseholdListComponent implements OnInit, OnChanges, AfterViewInit 
     this.#router.navigate(['./admin/households/detail']);
   }
   refreshData () {
-    // this.store.select(fromContent.getContentList).subscribe((data) => {
-    //   this.data = data;
     this.dataSource._updateChangeSubscription();
     this.dataSource.disconnect()
     this.dataSource.connect();
-    // });
   }
 }

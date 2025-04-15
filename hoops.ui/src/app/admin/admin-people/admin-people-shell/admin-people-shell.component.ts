@@ -8,7 +8,7 @@ import { ShellTitleComponent } from '@app/shared/shell-title/shell-title.compone
 import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-admin-people-shell',
+  selector: 'csbc-admin-people-shell',
   imports: [PersonalInfoComponent,
     PeopleSearchComponent,
     PeopleSearchResultsComponent,
@@ -22,7 +22,7 @@ import { RouterModule } from '@angular/router';
 </section>`,
   styleUrls: ['./admin-people-shell.component.scss',
     '../../admin.component.scss',
-
+    '../../../shared/scss/cards.scss',
   ]
 })
 export class AdminPeopleShellComponent {

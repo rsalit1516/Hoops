@@ -15,7 +15,7 @@ import { debounceTime, map } from 'rxjs';
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule,  
     MatFormFieldModule,
     MatInputModule,
     MatToolbarModule,
@@ -26,7 +26,6 @@ import { debounceTime, map } from 'rxjs';
   styleUrls: ['./people-search.component.scss',
     '../../admin.component.scss',
     '../../../shared/scss/forms.scss',
-    '../../../shared/scss/cards.scss',
   ],
 })
 export class PeopleSearchComponent {
