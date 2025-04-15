@@ -21,19 +21,19 @@ import { PeopleSearchComponent } from '../people-search/people-search.component'
     PeopleSearchComponent
   ],
   templateUrl: './people-search-results.component.html',
-  styleUrls: ['./people-search-results.component.scss',
+  styleUrls: [ './people-search-results.component.scss',
     '../../admin.component.scss',
     '../../../shared/scss/tables.scss',
     '../../../shared/scss/cards.scss',
   ],
-  providers: [MatSort, MatPaginator, DatePipe]
+  providers: [ MatSort, MatPaginator, DatePipe ]
 })
-export class PeopleSearchResultsComponent  implements OnInit, OnChanges, AfterViewInit  {
+export class PeopleSearchResultsComponent implements OnInit, OnChanges, AfterViewInit {
   pageTitle = 'People Search Results';
   #peopleService = inject(PeopleService);
   results = input<Person[]>();
 
-    @ViewChild('peoplePaginator') paginator: MatPaginator = inject(MatPaginator);
+  @ViewChild('peoplePaginator') paginator: MatPaginator = inject(MatPaginator);
   @ViewChild(MatSort) sort: MatSort = inject(MatSort);
 
   showFirstLastButtons = true;
@@ -49,36 +49,34 @@ export class PeopleSearchResultsComponent  implements OnInit, OnChanges, AfterVi
   ]
   dataSource = new MatTableDataSource<Person>([]);;
 
-  constructor () {
+  constructor() {
     effect(() => {
       console.log(this.#peopleService.results());
       this.dataSource = new MatTableDataSource<Person>(this.#peopleService.results());
     });
   }
-  ngOnInit () {
-    // this.refreshData();
+  ngOnInit() {
     this.dataSource = new MatTableDataSource(this.results());
-    // this.dataSource.data = this.results() || [];
     this.refreshData();
   }
-  ngAfterViewInit () {
-    this.dataSource.data = this.results() || [];
+  ngAfterViewInit() {
+    this.dataSource = new MatTableDataSource<Person>(this.#peopleService.results());
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.paginator.pageSize = this.pageSize;
     this.paginator.page.subscribe(() => this.refreshData());
   }
 
-  ngOnChanges () {
-    this.dataSource.data = this.results() || [];;
+  ngOnChanges() {
+    this.dataSource = new MatTableDataSource<Person>(this.#peopleService.results());
     this.paginator.page.subscribe(() => this.refreshData());
   }
 
-  getRecord (row: any) {
+  getRecord(row: any) {
     console.log(row);
     //  this.#householdService.selectedRecordSignal.set(row);
   }
-  refreshData () {
+  refreshData() {
     this.dataSource._updateChangeSubscription();
     this.dataSource.disconnect()
     this.dataSource.connect();

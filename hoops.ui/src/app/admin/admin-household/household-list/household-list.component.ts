@@ -38,20 +38,14 @@ export class HouseholdListComponent implements OnInit, OnChanges, AfterViewInit 
   households = input<Household[]>(); // Signal
   pageTitle = 'Household List';
   results = input<Household[]>();
-
-  /* injects */
   readonly #householdService = inject(HouseholdService);
-  // #router = inject(Router);
 
   @ViewChild('householdPaginator') paginator: MatPaginator = inject(MatPaginator);
   @ViewChild(MatSort) sort: MatSort = inject(MatSort);
   showFirstLastButtons = true;
   pageSize = 10;
-
   errorMessage = this.#householdService.errorMessage;
   noDataMessage = 'Enter search criteria';
-  // households = this.householdService.households;
-  // Subscribe to the households signal and update the dataSource
   displayedColumns = [
     'houseId',
     'name',
@@ -69,9 +63,7 @@ export class HouseholdListComponent implements OnInit, OnChanges, AfterViewInit 
   }
 
   ngOnInit () {
-    // this.refreshData();
     this.dataSource = new MatTableDataSource(this.results());
-    // this.dataSource.data = this.results() || [];
     this.refreshData();
   }
   ngAfterViewInit () {
