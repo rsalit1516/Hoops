@@ -124,7 +124,7 @@ export class GameService {
     });
 
     effect(() => {
-      const selectedDivision = this.selectedDivision();
+      // const selectedDivision = this.selectedDivision();
       console.log(this.#divisionService.selectedDivision);
       if (this.#divisionService.selectedDivision!) {
         const filteredGames = this.filterGamesByDivision();
@@ -156,7 +156,7 @@ export class GameService {
         (games) => {
           // this.seasonGames$ = of(games);
           this.updateSeasonGames(games);
-          console.log(games);
+          // console.log(games);
         }
       );
   }

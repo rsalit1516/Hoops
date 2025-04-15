@@ -31,7 +31,7 @@ export class ColorService {
   fetchColors () {
     this.getColors().subscribe((colors) => {
       this.updateColors(colors);
-      console.log(this.colors());
+      // console.log(this.colors());
     });
   }
 }

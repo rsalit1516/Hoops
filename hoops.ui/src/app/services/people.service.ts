@@ -40,7 +40,8 @@ export class PeopleService {
   getADPeople (): Observable<any> {
     return this.#http.get<Person[]>(Constants.GET_ADS_URL);
   }
-  private searchPeople$ (): Observable<Person[] | undefined> {
+  private searchPeople$(): Observable<Person[] | undefined> {
+    console.log('Search URL: ', this.searchUrl);
     return this.#http.get<Person[]>(this.searchUrl, { responseType: 'json' });
   }
   getHouseholdMembers (id: number): void {
@@ -71,11 +72,18 @@ export class PeopleService {
       if (url.indexOf('?') === -1) {
         url += '?firstName=' + criteria.firstName;
       } else {
-        url += '&firstNAme=' + criteria.firstName;
+        url += '&firstName=' + criteria.firstName;
+      }
+    }
+    if (criteria.playerOnly) {
+      if (url.indexOf('?') === -1) {
+        url += '?playerOnly=true';
+      } else {
+        url += '&playerOnly=true';
       }
     }
     this.searchUrl = url;
-    // console.log('Search URL: ', url);
+    console.log('Search URL: ', url);
     return url;
     // add additional criteria as needed
     // https://localhost:5001/api/Household/search?name=salit&email=richard.salit%40gmail.com

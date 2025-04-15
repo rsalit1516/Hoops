@@ -1,5 +1,5 @@
 
-<form action="">
+<form action="" [formGroup]="personalInfoForm" (ngSubmit)="onSubmit()">
   <mat-card>
     <mat-card-header>
       <mat-card-title></mat-card-title>
@@ -7,29 +7,33 @@
     <mat-card-content>
     <mat-form-field appearance="fill">
       <mat-label>Last Name</mat-label>
-      <input matInput placeholder="Last Name" required>
+      <input matInput placeholder="Last Name" formControlName="lastName"
+      required>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>First Name</mat-label>
-      <input matInput placeholder="First Name" required>
+      <input matInput
+      formControlName="firstName"
+      placeholder="First Name" required>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Birth Date</mat-label>
-      <input matInput [matDatepicker]="picker" placeholder="Birth Date" required>
+      <input matInput [matDatepicker]="picker" formControlName="birthDate"
+      placeholder="Birth Date" required>
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Birth Certificate</mat-label>
-      <mat-checkbox>Has Birth Certificate</mat-checkbox>
+      <mat-checkbox formControlName="birthCertificate">Has Birth Certificate</mat-checkbox>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Gender</mat-label>
-      <mat-radio-group>
+      <mat-radio-group formControlName="gender">
         <mat-radio-button value="male">Male</mat-radio-button>
         <mat-radio-button value="female">Female</mat-radio-button>
         <mat-radio-button value="other">Other</mat-radio-button>
@@ -38,26 +42,56 @@
 
     <mat-form-field appearance="fill">
       <mat-label>Cell Phone</mat-label>
-      <input matInput placeholder="Cell Phone" required>
+      <input matInput
+      formControlName="cellPhone"
+      placeholder="Cell Phone" required>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Work Phone</mat-label>
-      <input matInput placeholder="Work Phone">
+      <input matInput
+      formControlName="workPhone"
+      placeholder="Work Phone">
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Grade</mat-label>
-      <input matInput placeholder="Grade" required>
+      <input matInput
+      formControlName="grade"
+      placeholder="Grade" required>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>School Name</mat-label>
-      <input matInput placeholder="School Name" required>
+      <input matInput
+      formControlName="schoolName"
+      placeholder="School Name" required>
     </mat-form-field>
+    <div *ngFor="let itemControl of volunteerControls.controls; let i = index">
+      <mat-checkbox formControlName="itemControl">
+        {{ volunteers[i].name }}
+      </mat-checkbox>
+    </div>
+
     </mat-card-content>
     <mat-card-actions>
-
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="!personalInfoForm.valid || !personalInfoForm.dirty"
+      >
+        Save
+      </button>
+      <button type="button" mat-raised-button color="primary">Delete</button>
+      <button
+        type="button"
+        mat-raised-button
+        [routerLink]="['/admin/people']"
+        color="primary"
+      >
+        Cancel
+      </button>
     </mat-card-actions>
   </mat-card>
 </form>

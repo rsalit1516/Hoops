@@ -91,4 +91,7 @@ export const FEATURE_FLAGS = {
   adminGames: true,
 
 };
+export class FormSettings {
+  public static inputStyle: 'fill' | 'outline' = 'fill';
+}
 

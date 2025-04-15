@@ -4,8 +4,10 @@ import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule }
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { peopleSearchCriteria, PeopleService } from '@app/services/people.service';
+import { FormSettings } from '@app/shared/constants';
 import { debounceTime, map } from 'rxjs';
 
 @Component({
@@ -15,6 +17,7 @@ import { debounceTime, map } from 'rxjs';
     FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
+    MatInputModule,
     MatToolbarModule,
     MatButtonModule,
     MatCheckboxModule
@@ -30,23 +33,21 @@ export class PeopleSearchComponent {
   #peopleService = inject(PeopleService);
   pageTitle = 'Search People';
   fb = inject(FormBuilder);
-  inputStyle: 'fill' | 'outline' = 'outline';
-  searchForm: FormGroup;
+  // inputStyle: 'fill' | 'outline' = 'outline';
+  searchForm = this.fb.group({
+    lastName: [ '' ],
+    firstName: [ ''],
+    playerOnly: [ false ],
+  });
 
-  lastName = new FormControl('');
-  firstName = new FormControl('');
-  playerOnly = new FormControl('');
   selectedCriteria: peopleSearchCriteria = {
     lastName: '',
     firstName: '',
     playerOnly: false,
   };
+  inputStyle = FormSettings.inputStyle;
   constructor () {
-    this.searchForm = this.fb.group({
-      lastName: this.lastName,
-      firstName: this.firstName,
-      playerOnly: this.playerOnly,
-    });
+
     // https://localhost:5001/api/Person/search?lastName=sali&firstName=j&playerOnly=true
     this.searchForm.valueChanges.pipe(
       debounceTime(300),
@@ -71,13 +72,9 @@ export class PeopleSearchComponent {
   newPerson () {
     console.log('New person');
   }
-  search () {
+  search() {
+    console.log('Search submitted');
     this.#peopleService.updateSelectedCriteria(this.selectedCriteria);
-
-    // let test = this.householdService.constructQueryString(this.householdService.criteria);
-    // console.log('Query String: ', test);
     this.#peopleService.executeSearch();
-
-    // let results = this.householdService.householdSearchResults();
   }
 }

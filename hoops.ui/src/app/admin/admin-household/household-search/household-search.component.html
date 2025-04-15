@@ -12,12 +12,12 @@
     <!-- <mat-hint>Search by address </mat-hint> -->
   </mat-form-field>
 
-  <mat-form-field appearance="outline">
+  <mat-form-field [appearance]="inputStyle">
     <mat-label class="field-label">Email</mat-label>
     <input matInput [formControl]="email">
   </mat-form-field>
 
-  <mat-form-field appearance="outline">
+  <mat-form-field [appearance]="inputStyle">
     <mat-label class="field-label">Phone</mat-label>
     <input matInput [formControl]="phone">
   </mat-form-field>
