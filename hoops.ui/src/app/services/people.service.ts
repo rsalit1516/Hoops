@@ -89,19 +89,14 @@ export class PeopleService {
       }
     }
     this.searchUrl = url;
-    console.log('Search URL: ', url);
     return url;
     // add additional criteria as needed
     // https://localhost:5001/api/Household/search?name=salit&email=richard.salit%40gmail.com
   }
   executeSearch () {
-    console.log(this.selectedCriteria());
     this.searchUrl = this.constructQueryString(this.selectedCriteria());
     this.searchPeople$().subscribe(response => {
-      console.log('Search Results: ', response);
       this.updateResults(response!);
-      console.log(this.results());
-      //       console.log('Household data: ', this.householdsResult());
     });
   }
 }

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
-import { FormArray, FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, inject, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -36,7 +36,7 @@ interface Item {
     RouterModule
   ],
   templateUrl: './personal-info.component.html',
-  styleUrls: [ './personal-info.component.scss',
+  styleUrls: ['./personal-info.component.scss',
     '../../admin.component.scss',
     '../../../shared/scss/forms.scss',
     '../../../shared/scss/cards.scss',
@@ -45,14 +45,14 @@ interface Item {
     provideNativeDateAdapter(),
   ],
 })
-export class PersonalInfoComponent {
+export class PersonalInfoComponent implements OnInit {
   fb = inject(FormBuilder);
   readonly router = inject(Router);
-  readonly #PeopleService = inject(PeopleService);
+  readonly #peopleService = inject(PeopleService);
 
   pageTitle = 'Personal Information';
   inputStyle: 'fill' | 'outline' = 'outline';
-  volunteers: Item[] = [
+  volunteers = [
     { id: 1, name: 'Board Officer' },
     { id: 2, name: 'Board Member' },
     { id: 3, name: 'Athletic Director' },
@@ -64,40 +64,58 @@ export class PersonalInfoComponent {
     { id: 9, name: 'Equipment' },
     { id: 10, name: 'Electrician' },
     { id: 11, name: 'Asst Coach' },
-  ]
+  ];
 
-  personalInfoForm = this.fb.group({
-    firstName: [ '' ],
-    lastName: [ '' ],
-    birthDate: [ '' ],
-    birthCertificate: [ false ],
-    cellPhone: [ '' ],
-    workPhone: [ '' ],
-    gender: [ '' ],
-    grade: [ '' ],
-    schoolName: [ '' ],
-    parent: [ false ],
-    coach: [ false ],
-    player: [ false ],
-    volunteerControls: this.fb.array([]),
-    Comments: [ '' ],
-  });
+  personalInfoForm!: FormGroup;
 
-  constructor() {
-  }
-  get volunteerControls(): FormArray {
+  get volunteerControls (): FormArray {
     return this.personalInfoForm.get('volunteerControls') as FormArray;
   }
-  private addVolunteerCheckboxes() {
-    this.volunteers.forEach(volunteer => {
-      const control = this.fb.control(false);
-      this.volunteerControls.push(control);
-    });
+
+  constructor () {
   }
-  onSubmit() {
+
+  ngOnInit (): void {
+    this.personalInfoForm = this.fb.group({
+      firstName: [''],
+      lastName: [''],
+      birthDate: [''],
+      birthCertificate: [false],
+      cellPhone: [''],
+      workPhone: [''],
+      gender: [''],
+      grade: [''],
+      schoolName: [''],
+      parent: [false],
+      coach: [false],
+      player: [false],
+      volunteerCheckboxes: this.fb.array([]),
+      Comments: [''],
+    });
+
+    this.addVolunteerCheckboxes(); // Initialize volunteer checkboxes
+
+  }
+
+
+  addVolunteerCheckboxes () {
+    const checkboxesArray = this.personalInfoForm.get('volunteerCheckboxes') as FormArray;
+    this.volunteers.forEach(() => checkboxesArray.push(this.fb.control(false)));
+  }
+
+  //   // Clear the FormArray to avoid duplicates if this method is called multiple times
+  //   this.volunteerControls.clear();
+
+  //   // Add a FormControl for each volunteer
+  //   this.volunteers.forEach(() => {
+  //     const control = new FormControl(false);  //(this.fb.control(false); // Initialize each checkbox as unchecked
+  //     this.volunteerControls.push(control); // Add the control to the FormArray
+  //   });
+  // }
+  onSubmit () {
     console.log(this.personalInfoForm.value);
   }
-  onReset() {
+  onReset () {
     this.personalInfoForm.reset();
   }
 

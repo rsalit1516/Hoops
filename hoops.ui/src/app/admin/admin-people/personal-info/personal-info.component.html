@@ -1,78 +1,76 @@
-
 <form action="" [formGroup]="personalInfoForm" (ngSubmit)="onSubmit()">
   <mat-card>
     <mat-card-header>
       <mat-card-title></mat-card-title>
     </mat-card-header>
     <mat-card-content>
-    <mat-form-field appearance="fill">
-      <mat-label>Last Name</mat-label>
-      <input matInput placeholder="Last Name" formControlName="lastName"
-      required>
-    </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Last Name</mat-label>
+        <input matInput required />
+      </mat-form-field>
 
-    <mat-form-field appearance="fill">
-      <mat-label>First Name</mat-label>
-      <input matInput
-      formControlName="firstName"
-      placeholder="First Name" required>
-    </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>First Name</mat-label>
+        <input matInput formControlName="firstName" required />
+      </mat-form-field>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Birth Date</mat-label>
-      <input matInput [matDatepicker]="picker" formControlName="birthDate"
-      placeholder="Birth Date" required>
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Birth Date</mat-label>
+        <input
+          matInput
+          [matDatepicker]="picker"
+          formControlName="birthDate"
+          required
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
 
-    <mat-form-field appearance="fill">
+      <!-- <mat-form-field appearance="fill"> -->
       <mat-label>Birth Certificate</mat-label>
-      <mat-checkbox formControlName="birthCertificate">Has Birth Certificate</mat-checkbox>
-    </mat-form-field>
+      <mat-checkbox formControlName="birthCertificate"
+        >Has Birth Certificate</mat-checkbox
+      >
+      <!-- </mat-form-field> -->
 
-    <mat-form-field appearance="fill">
+      <!-- <mat-form-field appearance="fill"> -->
       <mat-label>Gender</mat-label>
       <mat-radio-group formControlName="gender">
         <mat-radio-button value="male">Male</mat-radio-button>
         <mat-radio-button value="female">Female</mat-radio-button>
         <mat-radio-button value="other">Other</mat-radio-button>
       </mat-radio-group>
-    </mat-form-field>
+      <!-- </mat-form-field> -->
 
-    <mat-form-field appearance="fill">
-      <mat-label>Cell Phone</mat-label>
-      <input matInput
-      formControlName="cellPhone"
-      placeholder="Cell Phone" required>
-    </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Cell Phone</mat-label>
+        <input matInput formControlName="cellPhone" required />
+      </mat-form-field>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Work Phone</mat-label>
-      <input matInput
-      formControlName="workPhone"
-      placeholder="Work Phone">
-    </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Work Phone</mat-label>
+        <input matInput formControlName="workPhone" />
+      </mat-form-field>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Grade</mat-label>
-      <input matInput
-      formControlName="grade"
-      placeholder="Grade" required>
-    </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Grade</mat-label>
+        <input matInput formControlName="grade" required />
+      </mat-form-field>
 
-    <mat-form-field appearance="fill">
-      <mat-label>School Name</mat-label>
-      <input matInput
-      formControlName="schoolName"
-      placeholder="School Name" required>
-    </mat-form-field>
-    <div *ngFor="let itemControl of volunteerControls.controls; let i = index">
-      <mat-checkbox formControlName="itemControl">
-        {{ volunteers[i].name }}
-      </mat-checkbox>
-    </div>
-
+      <mat-form-field appearance="fill">
+        <mat-label>School Name</mat-label>
+        <input matInput formControlName="schoolName" required />
+      </mat-form-field>
+      <div class="grid grid-cols-2 gap-4" formArrayName="volunteerCheckboxes">
+        <div
+          *ngFor="let volunteer of volunteers; let i = index"
+          class="flex items-center"
+        >
+          <mat-checkbox [formControlName]="i">
+            {{ volunteer.name }}
+          </mat-checkbox>
+        </div>
+      </div>
     </mat-card-content>
     <mat-card-actions>
       <button
