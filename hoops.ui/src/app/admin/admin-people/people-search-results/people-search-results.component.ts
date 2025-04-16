@@ -21,12 +21,12 @@ import { PeopleSearchComponent } from '../people-search/people-search.component'
     PeopleSearchComponent
   ],
   templateUrl: './people-search-results.component.html',
-  styleUrls: [ './people-search-results.component.scss',
+  styleUrls: ['./people-search-results.component.scss',
     '../../admin.component.scss',
     '../../../shared/scss/tables.scss',
     '../../../shared/scss/cards.scss',
   ],
-  providers: [ MatSort, MatPaginator, DatePipe ]
+  providers: [MatSort, MatPaginator, DatePipe]
 })
 export class PeopleSearchResultsComponent implements OnInit, OnChanges, AfterViewInit {
   pageTitle = 'People Search Results';
@@ -49,34 +49,37 @@ export class PeopleSearchResultsComponent implements OnInit, OnChanges, AfterVie
   ]
   dataSource = new MatTableDataSource<Person>([]);;
 
-  constructor() {
+  constructor () {
     effect(() => {
       console.log(this.#peopleService.results());
       this.dataSource = new MatTableDataSource<Person>(this.#peopleService.results());
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+      this.paginator.pageSize = this.pageSize;
+      this.paginator.page.subscribe(() => this.refreshData());
+
     });
   }
-  ngOnInit() {
-    this.dataSource = new MatTableDataSource(this.results());
-    this.refreshData();
+  ngOnInit () {
+    // this.dataSource = new MatTableDataSource(this.results());
+    // this.refreshData();
   }
-  ngAfterViewInit() {
-    this.dataSource = new MatTableDataSource<Person>(this.#peopleService.results());
+  ngAfterViewInit () {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    this.paginator.pageSize = this.pageSize;
-    this.paginator.page.subscribe(() => this.refreshData());
   }
 
-  ngOnChanges() {
-    this.dataSource = new MatTableDataSource<Person>(this.#peopleService.results());
+  ngOnChanges () {
     this.paginator.page.subscribe(() => this.refreshData());
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
-  getRecord(row: any) {
+  getRecord (row: any) {
     console.log(row);
     //  this.#householdService.selectedRecordSignal.set(row);
   }
-  refreshData() {
+  refreshData () {
     this.dataSource._updateChangeSubscription();
     this.dataSource.disconnect()
     this.dataSource.connect();

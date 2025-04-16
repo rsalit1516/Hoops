@@ -59,12 +59,17 @@ export class HouseholdListComponent implements OnInit, OnChanges, AfterViewInit 
   constructor () {
     effect(() => {
       this.dataSource = new MatTableDataSource<Household>(this.#householdService.householdSearchResults());
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+      this.paginator.pageSize = this.pageSize;
+      this.paginator.page.subscribe(() => this.refreshData());
+
     });
   }
 
   ngOnInit () {
-    this.dataSource = new MatTableDataSource(this.results());
-    this.refreshData();
+    // this.dataSource = new MatTableDataSource(this.results());
+    // this.refreshData();
   }
   ngAfterViewInit () {
     this.dataSource.data = this.results() || [];

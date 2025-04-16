@@ -37,7 +37,6 @@ export class AdminGamesListComponent implements OnInit, OnChanges, AfterViewInit
   gameService = inject(GameService);
   readonly #router = inject(Router);
   readonly #logger = inject(LoggerService);
-  private store = inject(Store<fromAdmin.State>);
   readonly showScores = input<boolean>(false);
   pageTitle = 'Admin Game List';
   dialog = inject(MatDialog);
@@ -101,14 +100,11 @@ export class AdminGamesListComponent implements OnInit, OnChanges, AfterViewInit
     // });
   }
   ngAfterViewInit () {
-    // this.dataSource.data = this.filteredGames();
-    // this.paginator.pageSize = this.pageSize;
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 
   ngOnChanges () {
-    // this.dataSource.data = this.filteredGames();
     this.paginator.page.subscribe(() => this.refreshData());
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
