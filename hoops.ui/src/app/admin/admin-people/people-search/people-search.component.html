@@ -1,23 +1,16 @@
 <form [formGroup]="searchForm" class="flex-1">
-
-<mat-toolbar color="primary">
-  <button mat-raised-button type="button" (click)="newPerson()">New</button>
+  <mat-toolbar color="primary">
+    <button mat-raised-button type="button" (click)="newPerson()">New</button>
     <mat-form-field [appearance]="inputStyle" class="full-width">
       <mat-label>Last Name</mat-label>
       <input matInput type="text" formControlName="lastName" />
     </mat-form-field>
 
-    <mat-form-field [appearance]="inputStyle"class="full-width">
-      <mat-label>First Name</mat-label>
-      <input
-        matInput
-        formControlName="firstName"
-      />
-    </mat-form-field>
     <mat-form-field [appearance]="inputStyle" class="full-width">
-      <!-- <mat-label>Player Only Label</mat-label> -->
-      <mat-checkbox formControlName="playerOnly">Player Only</mat-checkbox>
+      <mat-label>First Name</mat-label>
+      <input matInput formControlName="firstName" />
     </mat-form-field>
-
-</mat-toolbar>
+    <!-- Remove mat-form-field wrapper for the checkbox -->
+    <mat-checkbox formControlName="playerOnly">Player Only</mat-checkbox>
+  </mat-toolbar>
 </form>
