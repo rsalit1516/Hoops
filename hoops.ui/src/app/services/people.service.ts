@@ -25,11 +25,18 @@ export class PeopleService {
     this.selectedCriteria.set(criteria);
   }
   private _results = signal<Person[]>([]);
-  get results() {
+  get results () {
     return this._results.asReadonly();
   }
   updateResults (value: Person[]) {
     this._results.set(value);
+  }
+  private _selectedPerson = signal<Person | null>(null);
+  get selectedPerson () {
+    return this._selectedPerson.asReadonly();
+  }
+  updateSelectedPerson (person: Person) {
+    this._selectedPerson.set(person);
   }
 
   constructor () { }
@@ -40,7 +47,7 @@ export class PeopleService {
   getADPeople (): Observable<any> {
     return this.#http.get<Person[]>(Constants.GET_ADS_URL);
   }
-  private searchPeople$(): Observable<Person[] | undefined> {
+  private searchPeople$ (): Observable<Person[] | undefined> {
     return this.#http.get<Person[]>(this.searchUrl, { responseType: 'json' });
   }
   getHouseholdMembers (id: number): void {

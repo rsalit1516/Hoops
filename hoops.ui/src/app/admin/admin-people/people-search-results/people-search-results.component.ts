@@ -8,6 +8,7 @@ import { Person } from '@app/domain/person';
 import { PeopleService } from '@app/services/people.service';
 import { SectionTitleComponent } from '@app/shared/section-title/section-title.component';
 import { PeopleSearchComponent } from '../people-search/people-search.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'csbc-people-search-results',
@@ -31,6 +32,7 @@ import { PeopleSearchComponent } from '../people-search/people-search.component'
 export class PeopleSearchResultsComponent implements OnInit, OnChanges, AfterViewInit {
   pageTitle = 'People Search Results';
   #peopleService = inject(PeopleService);
+  readonly #router = inject(Router);
   results = input<Person[]>();
 
   @ViewChild('peoplePaginator') paginator: MatPaginator = inject(MatPaginator);
@@ -77,7 +79,8 @@ export class PeopleSearchResultsComponent implements OnInit, OnChanges, AfterVie
 
   getRecord (row: any) {
     console.log(row);
-    //  this.#householdService.selectedRecordSignal.set(row);
+    this.#peopleService.updateSelectedPerson(row);
+    this.#router.navigate(['/admin/people/detail']);
   }
   refreshData () {
     this.dataSource._updateChangeSubscription();
