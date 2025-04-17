@@ -7,7 +7,7 @@
   font-weight: 700 !important;
   border-bottom: 1px solid v.$brand-color !important;
   background-color: v.$admin-background-color;
-  padding-left: 24px;;
+  padding-left: 24px;
 }
 h3 {
   color: v.$font-color-text;
@@ -30,7 +30,12 @@ h3 {
 
 a.mat-list-item {
   color: v.$font-color-text;
-  font-size: 1.1rem;
+  font-size: 0.6rem !important;
+}
+::ng-deep .mdc-list-item__primary-text {
+  color: v.$font-color-text;
+  font-size: 0.9rem !important;
+  font-weight: 500;
 }
 
 .mat-list-text {

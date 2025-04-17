@@ -1,5 +1,5 @@
-@use 'sass:color';
-@use '../../../../Content/variables' as v;
+@use "sass:color";
+@use "../../../../Content/variables" as v;
 
 body {
   background-color: v.$admin-background-color;
@@ -29,14 +29,21 @@ body {
   font-size: 1.4rem;
 }
 
-a.mat-list-item {
+a.mat-list-item,
+.mdc-list-item__primary-text {
   color: v.$font-color-text;
-  font-size: 1.1rem;
+  font-size: 0.5rem !important;
+  font-weight: 600;
+}
+.mdc-list-item__primary-text {
+  color: v.$font-color-text;
+  font-size: 0.8rem !important;
+  font-weight: 600;
 }
 
 .mat-list-text {
   color: v.$font-color-text;
-  font-size: 1.2rem;
+  font-size: 1.8rem !important;
 }
 
 // .container {
@@ -54,7 +61,7 @@ a.mat-list-item {
 }
 
 .nav-wrapper {
-  margin-bottom: 12px
+  margin-bottom: 12px;
 }
 
 .active {
@@ -63,7 +70,7 @@ a.mat-list-item {
   transition: border-bottom 0.3s ease color 0.3s ease, transform 0.3s ease;
   padding-left: 24px;
   font-weight: 700;
-  background-color:v.$sidebar-color;
+  background-color: v.$sidebar-color;
   color: v.$sidebar-menu;
 }
 .mat-drawer-content {
@@ -75,6 +82,5 @@ a.mat-list-item {
 }
 
 .mat-mdc-icon-button:disabled {
-  color: color.adjust(v.$color , $lightness: -20%);
+  color: color.adjust(v.$color, $lightness: -20%);
 }
-

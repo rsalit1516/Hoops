@@ -65,14 +65,14 @@ export class PersonalInfoComponent implements OnInit {
     { id: 10, name: 'Electrician' },
     { id: 11, name: 'Asst Coach' },
   ];
-person = this.#peopleService.selectedPerson;
+  person = this.#peopleService.selectedPerson;
   personalInfoForm!: FormGroup;
 
   get volunteerControls (): FormArray {
     return this.personalInfoForm.get('volunteerControls') as FormArray;
   }
 
-  constructor() {
+  constructor () {
     effect(() => {
       this.person = this.#peopleService.selectedPerson;
       this.patchValue();
@@ -101,14 +101,19 @@ person = this.#peopleService.selectedPerson;
     this.addVolunteerCheckboxes(); // Initialize volunteer checkboxes
 
   }
-  patchValue() {
+  patchValue () {
     this.personalInfoForm.patchValue({
       firstName: this.person()?.firstName ?? '',
       lastName: this.person()?.lastName ?? '',
       birthDate: this.person()?.birthDate ?? '',
-      // birthCertificate: this.person()?.birthCertificate,
-      // cellPhone: this.person()?.cellPhone ?? '',
-      // workPhone: this.person()?.workPhone ?? '',
+      birthCertificate: this.person()?.bc ?? false,
+      gender: this.person()?.gender ?? 'male',
+      cellPhone: this.person()?.cellphone ?? '',
+      workPhone: this.person()?.workphone ?? '',
+      grade: this.person()?.grade ?? 0,
+      schoolName: this.person()?.schoolName ?? '',
+
+      comments: this.person()?.comments ?? '',
     });
   }
 
@@ -128,9 +133,55 @@ person = this.#peopleService.selectedPerson;
   // }
   onSubmit () {
     console.log(this.personalInfoForm.value);
+    const selectedValues = this.personalInfoForm.value.checkboxes
+      .map((checked: boolean, index: number) =>
+        checked ? this.volunteers[index].name : null
+      )
+      .filter((value: string | null) => value !== null);
+
+    console.log('Selected Values:', selectedValues);
   }
+
   onReset () {
     this.personalInfoForm.reset();
   }
 
 }
+
+// ad:false
+// asstCoach:false
+// bc:false
+// birthDate:"1988-12-15T00:00:00"
+// boardMember:false
+// boardOfficer:false
+// cellphone:null
+// coach:false
+// companyId:1
+// createdDate:null
+// createdUser:null
+// electrician:false
+// email:"miduma@bellsouth.net"
+// equipment:false
+// feeWaived:false
+// firstName:"DUSTY"
+// gender:"M"
+// giftedLevelsUp:0
+// grade:13
+// houseId:7817
+// household:null
+// lastName:"SAATHOFF"
+// latestRating:null
+// latestSeason:null
+// latestShirtSize:"N/A"
+// parent:false
+// personId:7817
+// player:true
+// printing:false
+// schoolName:null
+// signUps:false
+// sponsor:false
+// suspended:false
+// teeShirts:false
+// tempId:7817
+// tryOuts:false
+// workphone:"954-752-4796;592-583"

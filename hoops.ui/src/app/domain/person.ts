@@ -7,6 +7,8 @@ export class Person {
   public lastName: string = '';
   public houseId: number = 0;
   public email: string = '';
+  public cellphone: string = '';
+  public workphone: string = '';
   public birthDate: Date = new Date();
   public gender: string = '';
   public suspended: boolean = false;
@@ -32,6 +34,7 @@ export class Person {
   public printing: boolean = false;
   public equipment: boolean = false;
   public electrician: boolean = false;
+  public comments: string = '';
   public createdDate: Date = new Date();
   public createdUser: string = '';
   public tempId: number = 0;
