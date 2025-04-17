@@ -60,6 +60,7 @@ export class Constants {
   public static GET_STANDINGS_URL = Constants.DEFAULTURL + '/api/ScheduleGame/getStandings';
   public static SEARCH_HOUSEHOLD_URL = Constants.DEFAULTURL + '/api/Household/search';
   public static GET_HOUSEHOLD_MEMBERS_URL = Constants.DEFAULTURL + '/api/Person/GetHouseholdMembers';
+  public static GET_HOUSEHOLD_BY_ID_URL = Constants.DEFAULTURL + '/api/Household';
   public static SEARCH_PEOPLE_URL = Constants.DEFAULTURL + '/api/Person/search';
   public static SAVE_HOUSEHOLD_URL = Constants.DEFAULTURL + '/api/Household/';
 

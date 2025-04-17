@@ -84,7 +84,7 @@ export class HouseholdListComponent implements OnInit, OnChanges, AfterViewInit 
     this.paginator.page.subscribe(() => this.refreshData());
   }
   getRecord (row: Household) {
-    this.#householdService.updateSelectedRecord(row);
+    this.#householdService.updateSelectedHousehold(row);
     console.log(this.#householdService.selectedHousehold);
     //this.divisionService.getDvision(division);
     //console.log(this.divisionService.currentDivision());

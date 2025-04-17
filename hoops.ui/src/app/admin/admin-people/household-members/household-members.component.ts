@@ -49,7 +49,7 @@ export class HouseholdMembersComponent implements OnInit {
     'firstName',
     'birthDate',
     'gender',
-    'register'
+    // 'register'
   ]
 
   dataSource!: MatTableDataSource<Person>;

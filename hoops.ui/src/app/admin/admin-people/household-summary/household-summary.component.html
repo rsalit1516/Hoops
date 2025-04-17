@@ -1,1 +1,17 @@
-<p>household-summary works!</p>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Household Summary</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="household-summary">
+      <p>Name: <a (click)="gotoHouseHold()">{{ household?.name ?? '' }}</a>
+      </p>
+      <div class="household-details">
+        <p>Address: {{ household?.address1 ?? ''}}</p>
+        <p>Phone: {{ household?.phone ?? ''}}</p>
+        <p>Email: {{ household?.email ?? ''}}</p>
+
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

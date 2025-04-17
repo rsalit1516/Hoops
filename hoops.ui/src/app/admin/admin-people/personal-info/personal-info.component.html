@@ -4,17 +4,18 @@
       <mat-card-title></mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <mat-form-field appearance="fill">
+      <mat-form-field [appearance]="inputStyle">
         <mat-label>Last Name</mat-label>
-        <input matInput required />
+        <input matInput formControlName="lastName"
+        required />
       </mat-form-field>
 
-      <mat-form-field appearance="fill">
+      <mat-form-field [appearance]="inputStyle">
         <mat-label>First Name</mat-label>
         <input matInput formControlName="firstName" required />
       </mat-form-field>
 
-      <mat-form-field appearance="fill">
+      <mat-form-field [appearance]="inputStyle">
         <mat-label>Birth Date</mat-label>
         <input
           matInput
@@ -26,38 +27,34 @@
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
 
-      <!-- <mat-form-field appearance="fill"> -->
       <mat-label>Birth Certificate</mat-label>
       <mat-checkbox formControlName="birthCertificate"
         >Has Birth Certificate</mat-checkbox
       >
-      <!-- </mat-form-field> -->
 
-      <!-- <mat-form-field appearance="fill"> -->
       <mat-label>Gender</mat-label>
       <mat-radio-group formControlName="gender">
         <mat-radio-button value="male">Male</mat-radio-button>
         <mat-radio-button value="female">Female</mat-radio-button>
-        <mat-radio-button value="other">Other</mat-radio-button>
+        <!-- <mat-radio-button value="other">Other</mat-radio-button> -->
       </mat-radio-group>
-      <!-- </mat-form-field> -->
 
-      <mat-form-field appearance="fill">
+      <mat-form-field [appearance]="inputStyle">
         <mat-label>Cell Phone</mat-label>
         <input matInput formControlName="cellPhone" required />
       </mat-form-field>
 
-      <mat-form-field appearance="fill">
+      <mat-form-field [appearance]="inputStyle">
         <mat-label>Work Phone</mat-label>
         <input matInput formControlName="workPhone" />
       </mat-form-field>
 
-      <mat-form-field appearance="fill">
+      <mat-form-field [appearance]="inputStyle">
         <mat-label>Grade</mat-label>
         <input matInput formControlName="grade" required />
       </mat-form-field>
 
-      <mat-form-field appearance="fill">
+      <mat-form-field [appearance]="inputStyle">
         <mat-label>School Name</mat-label>
         <input matInput formControlName="schoolName" required />
       </mat-form-field>

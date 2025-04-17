@@ -12,7 +12,6 @@ import { PeopleService } from './people.service';
   providedIn: 'root'
 })
 export class HouseholdService {
-
   // Injected services
   private http = inject(HttpClient);
   #peopleService = inject(PeopleService);
@@ -34,16 +33,16 @@ export class HouseholdService {
   // isLoading = this.householdResource.isLoading;
   selectedHouseholdSignal = signal<Household | null>(null);
 
-  private selectedRecord = signal<Household | null>(null);
+  private _selectedHousehold = signal<Household | null>(null);
 
   // Expose the selected record signal
-  selectedRecordSignal = this.selectedRecord.asReadonly();
+  selectedRecordSignal = this._selectedHousehold.asReadonly();
   householdSaved = signal<boolean>(false);
 
   constructor () {
     // Optional: Effect for side effects when the signal changes
     effect(() => {
-      const record = this.selectedRecord();
+      const record = this._selectedHousehold();
       console.log('Selected record changed:', record);
       if (record !== null) {
         console.log(`Record updated: ${ record.name }`);
@@ -56,13 +55,13 @@ export class HouseholdService {
   }
 
   // Method to update the selected record ID
-  updateSelectedRecord (record: Household) {
-    this.selectedRecord.set(record);
+  updateSelectedHousehold (record: Household) {
+    this._selectedHousehold.set(record);
     this.getHouseholdMembers();
   }
 
   get selectedHousehold () {
-    return this.selectedHouseholdSignal();
+    return this._selectedHousehold();
   }
 
   executeSearch () {
@@ -154,7 +153,12 @@ export class HouseholdService {
   }
   newHousehold () {
     const household = new Household();
-    this.selectedRecord.set(household);
+    this._selectedHousehold.set(household);
+  }
+  selectedHouseholdByHouseId(houseId: number) {
+    this.http.get<Household>(Constants.GET_HOUSEHOLD_BY_ID_URL + '/' + houseId.toString(), { responseType: 'json' }).subscribe(response => {
+      this.updateSelectedHousehold(response);
+    });
   }
 }
 export interface householdSearchCriteria {

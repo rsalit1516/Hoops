@@ -9,6 +9,7 @@ import { PeopleService } from '@app/services/people.service';
 import { SectionTitleComponent } from '@app/shared/section-title/section-title.component';
 import { PeopleSearchComponent } from '../people-search/people-search.component';
 import { Router } from '@angular/router';
+import { HouseholdService } from '@app/services/household.service';
 
 @Component({
   selector: 'csbc-people-search-results',
@@ -32,6 +33,7 @@ import { Router } from '@angular/router';
 export class PeopleSearchResultsComponent implements OnInit, OnChanges, AfterViewInit {
   pageTitle = 'People Search Results';
   #peopleService = inject(PeopleService);
+  #householdService = inject(HouseholdService);
   readonly #router = inject(Router);
   results = input<Person[]>();
 
@@ -53,7 +55,6 @@ export class PeopleSearchResultsComponent implements OnInit, OnChanges, AfterVie
 
   constructor () {
     effect(() => {
-      console.log(this.#peopleService.results());
       this.dataSource = new MatTableDataSource<Person>(this.#peopleService.results());
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -62,10 +63,7 @@ export class PeopleSearchResultsComponent implements OnInit, OnChanges, AfterVie
 
     });
   }
-  ngOnInit () {
-    // this.dataSource = new MatTableDataSource(this.results());
-    // this.refreshData();
-  }
+  ngOnInit () {}
   ngAfterViewInit () {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -80,7 +78,8 @@ export class PeopleSearchResultsComponent implements OnInit, OnChanges, AfterVie
   getRecord (row: any) {
     console.log(row);
     this.#peopleService.updateSelectedPerson(row);
-    this.#router.navigate(['/admin/people/detail']);
+   this.#householdService.selectedHouseholdByHouseId(row.houseId);
+    this.#router.navigate([ '/admin/people/detail' ]);
   }
   refreshData () {
     this.dataSource._updateChangeSubscription();

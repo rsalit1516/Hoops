@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, effect, inject, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -12,6 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { Router, RouterLink, RouterModule } from '@angular/router';
 import { PeopleService } from '@app/services/people.service';
+import { FormSettings } from '@app/shared/constants';
 
 interface Item {
   id: number;
@@ -49,9 +50,8 @@ export class PersonalInfoComponent implements OnInit {
   fb = inject(FormBuilder);
   readonly router = inject(Router);
   readonly #peopleService = inject(PeopleService);
-
   pageTitle = 'Personal Information';
-  inputStyle: 'fill' | 'outline' = 'outline';
+  inputStyle = FormSettings.inputStyle;
   volunteers = [
     { id: 1, name: 'Board Officer' },
     { id: 2, name: 'Board Member' },
@@ -65,14 +65,19 @@ export class PersonalInfoComponent implements OnInit {
     { id: 10, name: 'Electrician' },
     { id: 11, name: 'Asst Coach' },
   ];
-
+person = this.#peopleService.selectedPerson;
   personalInfoForm!: FormGroup;
 
   get volunteerControls (): FormArray {
     return this.personalInfoForm.get('volunteerControls') as FormArray;
   }
 
-  constructor () {
+  constructor() {
+    effect(() => {
+      this.person = this.#peopleService.selectedPerson;
+      this.patchValue();
+
+    });
   }
 
   ngOnInit (): void {
@@ -96,7 +101,16 @@ export class PersonalInfoComponent implements OnInit {
     this.addVolunteerCheckboxes(); // Initialize volunteer checkboxes
 
   }
-
+  patchValue() {
+    this.personalInfoForm.patchValue({
+      firstName: this.person()?.firstName ?? '',
+      lastName: this.person()?.lastName ?? '',
+      birthDate: this.person()?.birthDate ?? '',
+      // birthCertificate: this.person()?.birthCertificate,
+      // cellPhone: this.person()?.cellPhone ?? '',
+      // workPhone: this.person()?.workPhone ?? '',
+    });
+  }
 
   addVolunteerCheckboxes () {
     const checkboxesArray = this.personalInfoForm.get('volunteerCheckboxes') as FormArray;
