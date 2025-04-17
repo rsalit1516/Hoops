@@ -200,9 +200,9 @@ namespace Hoops.Infrastructure.Repository
 
         }
 
-        public IQueryable<Person> GetByHousehold(int householdId)
+        public IQueryable<PersonVM> GetByHousehold(int householdId)
         {
-            return context.Set<Person>().Where(p => p.HouseId == householdId);
+            return context.Set<PersonVM>().Where(p => p.HouseId == householdId);
         }
 
         public List<string> GetParents(int personId)
