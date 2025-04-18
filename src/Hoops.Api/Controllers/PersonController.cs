@@ -44,7 +44,7 @@ namespace Hoops.Controllers
         }
         // GET: api/User
         [HttpGet("GetHouseholdMembers/{id}")]
-        public ActionResult<IEnumerable<Person>> GetHouseholdMembers(int id)
+        public ActionResult<IEnumerable<PersonVM>> GetHouseholdMembers(int id)
         {
             _logger.LogInformation("Retrieving household members");
             var people = repository.GetByHousehold(id);
@@ -52,7 +52,7 @@ namespace Hoops.Controllers
         }
         // GET: api/person/search
         [HttpGet("search")]
-        public ActionResult<IEnumerable<Person>> Search(
+        public ActionResult<IEnumerable<PersonVM>> Search(
             [FromQuery] string lastName,
             [FromQuery] string firstName,
             [FromQuery] bool playerOnly)
