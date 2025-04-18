@@ -89,12 +89,13 @@ namespace Hoops.Infrastructure.Repository
             var person = context.Set<Person>().FirstOrDefault(n => n.LastName == lastName && n.FirstName == firstName);
             return person ?? new Person();
         }
-        public IQueryable<Person> FindPeopleByLastAndFirstName(string lastName, string firstName, bool playerOnly)
+        public IQueryable<PersonVM> FindPeopleByLastAndFirstName(string lastName, string firstName, bool playerOnly)
         {
             IQueryable<Person> person = context.Set<Person>().Where(p => false);
             if (!String.IsNullOrEmpty(lastName) && (!String.IsNullOrEmpty(firstName)))
             {
-                person = context.Set<Person>().Where(n => n.LastName.StartsWith(lastName) && n.FirstName.StartsWith(firstName));
+                person = context.Set<Person>().Where(n => n.LastName.StartsWith(lastName) && n.FirstName.StartsWith(firstName))
+                ;
             }
             else if (!String.IsNullOrEmpty(lastName) && String.IsNullOrEmpty(firstName))
             {
@@ -108,17 +109,56 @@ namespace Hoops.Infrastructure.Repository
             {
                 if (playerOnly)
                 {
-                    return person.Where(p => p.Player == true).OrderBy(p => p.LastName).ThenBy(e => e.FirstName);
+                    person = person.Where(p => p.Player == true);
                 }
-                else
-                {
-                    return person.OrderBy(p => p.LastName).ThenBy(e => e.FirstName);
-                }
+                return from p in person
+                       join c in context.Commments on p.PersonId equals c.LinkID
+                       orderby p.LastName, p.FirstName
+                       select new PersonVM
+                       {
 
+                           PersonId = p.PersonId,
+                           CompanyId = p.CompanyId,
+                           HouseId = p.HouseId,
+                           FirstName = p.FirstName,
+                           LastName = p.LastName,
+                           Workphone = p.Workphone,
+                           Cellphone = p.Cellphone,
+                           Email = p.Email,
+                           Suspended = p.Suspended,
+                           LatestSeason = p.LatestSeason,
+                           LatestShirtSize = p.LatestShirtSize,
+                           LatestRating = p.LatestRating,
+                           BirthDate = p.BirthDate,
+                           Bc = p.Bc,
+                           Gender = p.Gender,
+                           SchoolName = p.SchoolName,
+                           Grade = p.Grade,
+                           GiftedLevelsUp = p.GiftedLevelsUp,
+                           FeeWaived = p.FeeWaived,
+                           Player = p.Player,
+                           Parent = p.Parent,
+                           Coach = p.Coach,
+                           AsstCoach = p.AsstCoach,
+                           BoardOfficer = p.BoardOfficer,
+                           BoardMember = p.BoardMember,
+                           Ad = p.Ad,
+                           Sponsor = p.Sponsor,
+                           SignUps = p.SignUps,
+                           TryOuts = p.TryOuts,
+                           TeeShirts = p.TeeShirts,
+                           Printing = p.Printing,
+                           Equipment = p.Equipment,
+                           Electrician = p.Electrician,
+                           CreatedDate = p.CreatedDate,
+                           CreatedUser = p.CreatedUser,
+                           TempId = p.TempId,
+                           Comments = c.Comment1
+                       };
             }
             else
             {
-                return person ?? new List<Person>().AsQueryable();
+                return new List<PersonVM>().AsQueryable();
             }
         }
 
