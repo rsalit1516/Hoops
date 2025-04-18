@@ -9,33 +9,6 @@ public partial class hoopsContext : DbContext
     public hoopsContext()
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
     {
-        // Coaches = null!;
-        // Colors = null!;
-        // Companies = null!;
-        // Content = null!;
-        // Directors = null!;
-        // Divisions = null!;
-        // Households = null!;
-        // Location = null!;
-        // People = null!;
-        // Players = null!;
-        // Roles = null!;
-        // ScheduleDivTeams = null!;
-        // ScheduleGames = null!;
-        // ScheduleLocations = null!;
-        // SchedulePlayoffs = null!;
-        // Seasons = null!;
-        // SponsorFees = null!;
-        // SponsorPayments = null!;
-        // SponsorProfiles = null!;
-        // Sponsors = null!;
-        // Teams = null!;
-        // Users = null!;
-        // Version = null!;
-        // WebContents = null!;
-        // WebContentTypes = null!;
-        // VwCoaches = null!;
-        // VwDirectors = null!;
     }
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
@@ -43,38 +16,11 @@ public partial class hoopsContext : DbContext
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
         : base(options)
     {
-        // Coaches = null!;
-        // Colors = null!;
-        // Companies = null!;
-        // Content = null!;
-        // Directors = null!;
-        // Divisions = null!;
-        // Households = null!;
-        // Location = null!;
-        // People = null!;
-        // Players = null!;
-        // Roles = null!;
-        // ScheduleDivTeams = null!;
-        // ScheduleGames = null!;
-        // ScheduleLocations = null!;
-        // SchedulePlayoffs = null!;
-        // Seasons = null!;
-        // SponsorFees = null!;
-        // SponsorPayments = null!;
-        // SponsorProfiles = null!;
-        // Sponsors = null!;
-        // Teams = null!;
-        // Users = null!;
-        // Version = null!;
-        // WebContents = null!;
-        // WebContentTypes = null!;
-        // VwCoaches = null!;
-        // VwDirectors = null!;
     }
-
 
     public virtual DbSet<Coach> Coaches { get; set; }
     public virtual DbSet<Color> Colors { get; set; }
+    public virtual DbSet<Comment> Commments { get; set; }
     public virtual DbSet<Company> Companies { get; set; }
     public virtual DbSet<Content> Content { get; set; }
     public virtual DbSet<Director> Directors { get; set; }
