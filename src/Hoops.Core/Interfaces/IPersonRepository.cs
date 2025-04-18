@@ -16,7 +16,7 @@ namespace Hoops.Core.Interface
         int GetBccList(string lastName, string firstName);
         IQueryable<Person> GetADs(int companyId);
         void RemoveFromHousehold(int p);
-        List<string> GetParents(int personId); 
-        IQueryable<Person> GetByHousehold(int householdId);
+        List<string> GetParents(int personId);
+        IQueryable<PersonVM> GetByHousehold(int householdId);
     }
 }

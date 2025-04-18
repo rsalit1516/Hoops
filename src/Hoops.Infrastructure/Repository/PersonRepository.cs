@@ -12,7 +12,7 @@ namespace Hoops.Infrastructure.Repository
     public class PersonRepository : EFRepository<Person>, IPersonRepository
     {
 
-        public PersonRepository(hoopsContext context) : base(context) {}
+        public PersonRepository(hoopsContext context) : base(context) { }
 
         #region IRepository<T> Members
 
@@ -147,16 +147,16 @@ namespace Hoops.Infrastructure.Repository
                     people = people
                         .Join(context.Set<Player>(), p => p.PersonId, l => l.PersonId, (p, l) => new { p, l })
                         .Where(x => x.l.SeasonId == seasonId)
-                        .Select(x => x.p) ;
+                        .Select(x => x.p);
                     break;
-                default :
+                default:
                     break;
             }
             return people;
         }
 
-        
-        public int GetBccList( string lastName, string firstName)
+
+        public int GetBccList(string lastName, string firstName)
         {
             int id = 0;
             //Get test community
@@ -202,7 +202,48 @@ namespace Hoops.Infrastructure.Repository
 
         public IQueryable<PersonVM> GetByHousehold(int householdId)
         {
-            return context.Set<PersonVM>().Where(p => p.HouseId == householdId);
+            return from p in context.Set<PersonVM>().Where(p => p.HouseId == householdId)
+                   join c in context.Commments on p.PersonId equals c.LinkID
+                   select new PersonVM
+                   {
+                       PersonId = p.PersonId,
+                       CompanyId = p.CompanyId,
+                       HouseId = p.HouseId,
+                       FirstName = p.FirstName,
+                       LastName = p.LastName,
+                       Workphone = p.Workphone,
+                       Cellphone = p.Cellphone,
+                       Email = p.Email,
+                       Suspended = p.Suspended,
+                       LatestSeason = p.LatestSeason,
+                       LatestShirtSize = p.LatestShirtSize,
+                       LatestRating = p.LatestRating,
+                       BirthDate = p.BirthDate,
+                       Bc = p.Bc,
+                       Gender = p.Gender,
+                       SchoolName = p.SchoolName,
+                       Grade = p.Grade,
+                       GiftedLevelsUp = p.GiftedLevelsUp,
+                       FeeWaived = p.FeeWaived,
+                       Player = p.Player,
+                       Parent = p.Parent,
+                       Coach = p.Coach,
+                       AsstCoach = p.AsstCoach,
+                       BoardOfficer = p.BoardOfficer,
+                       BoardMember = p.BoardMember,
+                       Ad = p.Ad,
+                       Sponsor = p.Sponsor,
+                       SignUps = p.SignUps,
+                       TryOuts = p.TryOuts,
+                       TeeShirts = p.TeeShirts,
+                       Printing = p.Printing,
+                       Equipment = p.Equipment,
+                       Electrician = p.Electrician,
+                       CreatedDate = p.CreatedDate,
+                       CreatedUser = p.CreatedUser,
+                       TempId = p.TempId,
+                       Comments = p.Comments
+                   };
         }
 
         public List<string> GetParents(int personId)
@@ -216,7 +257,7 @@ namespace Hoops.Infrastructure.Repository
                                         .Select(person => person.LastName + ", " + person.FirstName).ToList();
             }
             return parents;
-            
+
         }
     }
 }
