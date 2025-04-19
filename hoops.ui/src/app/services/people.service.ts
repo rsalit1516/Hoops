@@ -96,6 +96,7 @@ export class PeopleService {
   executeSearch () {
     this.searchUrl = this.constructQueryString(this.selectedCriteria());
     this.searchPeople$().subscribe(response => {
+      console.log('Search People: ', response);
       this.updateResults(response!);
     });
   }

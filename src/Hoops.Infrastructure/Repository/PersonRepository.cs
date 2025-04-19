@@ -1,10 +1,10 @@
 ﻿using System.Linq.Expressions;
 using Hoops.Core.Models;
+using Hoops.Core.ViewModels;
 using Hoops.Core.Interface;
 using Hoops.Core.Enum;
 using Hoops.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 
 
 namespace Hoops.Infrastructure.Repository
@@ -240,50 +240,52 @@ namespace Hoops.Infrastructure.Repository
 
         }
 
-        public IQueryable<PersonVM> GetByHousehold(int householdId)
+        public async Task<List<PersonVM>> GetByHouseholdAsync(int householdId)
         {
-            return from p in context.Set<PersonVM>().Where(p => p.HouseId == householdId)
-                   join c in context.Commments on p.PersonId equals c.LinkID
-                   select new PersonVM
-                   {
-                       PersonId = p.PersonId,
-                       CompanyId = p.CompanyId,
-                       HouseId = p.HouseId,
-                       FirstName = p.FirstName,
-                       LastName = p.LastName,
-                       Workphone = p.Workphone,
-                       Cellphone = p.Cellphone,
-                       Email = p.Email,
-                       Suspended = p.Suspended,
-                       LatestSeason = p.LatestSeason,
-                       LatestShirtSize = p.LatestShirtSize,
-                       LatestRating = p.LatestRating,
-                       BirthDate = p.BirthDate,
-                       Bc = p.Bc,
-                       Gender = p.Gender,
-                       SchoolName = p.SchoolName,
-                       Grade = p.Grade,
-                       GiftedLevelsUp = p.GiftedLevelsUp,
-                       FeeWaived = p.FeeWaived,
-                       Player = p.Player,
-                       Parent = p.Parent,
-                       Coach = p.Coach,
-                       AsstCoach = p.AsstCoach,
-                       BoardOfficer = p.BoardOfficer,
-                       BoardMember = p.BoardMember,
-                       Ad = p.Ad,
-                       Sponsor = p.Sponsor,
-                       SignUps = p.SignUps,
-                       TryOuts = p.TryOuts,
-                       TeeShirts = p.TeeShirts,
-                       Printing = p.Printing,
-                       Equipment = p.Equipment,
-                       Electrician = p.Electrician,
-                       CreatedDate = p.CreatedDate,
-                       CreatedUser = p.CreatedUser,
-                       TempId = p.TempId,
-                       Comments = p.Comments
-                   };
+            var query = from p in context.People.Where(p => p.HouseId == householdId)
+                        join c in context.Commments on p.PersonId equals c.LinkID
+                        select new PersonVM
+                        {
+                            PersonId = p.PersonId,
+                            CompanyId = p.CompanyId,
+                            HouseId = p.HouseId,
+                            FirstName = p.FirstName,
+                            LastName = p.LastName,
+                            Workphone = p.Workphone,
+                            Cellphone = p.Cellphone,
+                            Email = p.Email,
+                            Suspended = p.Suspended,
+                            LatestSeason = p.LatestSeason,
+                            LatestShirtSize = p.LatestShirtSize,
+                            LatestRating = p.LatestRating,
+                            BirthDate = p.BirthDate,
+                            Bc = p.Bc,
+                            Gender = p.Gender,
+                            SchoolName = p.SchoolName,
+                            Grade = p.Grade,
+                            GiftedLevelsUp = p.GiftedLevelsUp,
+                            FeeWaived = p.FeeWaived,
+                            Player = p.Player,
+                            Parent = p.Parent,
+                            Coach = p.Coach,
+                            AsstCoach = p.AsstCoach,
+                            BoardOfficer = p.BoardOfficer,
+                            BoardMember = p.BoardMember,
+                            Ad = p.Ad,
+                            Sponsor = p.Sponsor,
+                            SignUps = p.SignUps,
+                            TryOuts = p.TryOuts,
+                            TeeShirts = p.TeeShirts,
+                            Printing = p.Printing,
+                            Equipment = p.Equipment,
+                            Electrician = p.Electrician,
+                            CreatedDate = p.CreatedDate,
+                            CreatedUser = p.CreatedUser,
+                            TempId = p.TempId,
+                            Comments = c.Comment1
+                        };
+
+            return await query.ToListAsync();
         }
 
         public List<string> GetParents(int personId)
