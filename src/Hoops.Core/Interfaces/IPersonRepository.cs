@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Hoops.Core.Models;
+using Hoops.Core.ViewModels;
 using Hoops.Core.Enum;
 using System.Threading.Tasks;
 
@@ -17,6 +18,6 @@ namespace Hoops.Core.Interface
         IQueryable<Person> GetADs(int companyId);
         void RemoveFromHousehold(int p);
         List<string> GetParents(int personId);
-        IQueryable<PersonVM> GetByHousehold(int householdId);
+        Task<List<PersonVM>> GetByHouseholdAsync(int householdId);
     }
 }

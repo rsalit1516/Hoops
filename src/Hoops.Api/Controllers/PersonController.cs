@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Hoops.Infrastructure.Data;
 using Hoops.Core.Models;
+using Hoops.Core.ViewModels;
 using Hoops.Core.Interface;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
@@ -47,7 +48,7 @@ namespace Hoops.Controllers
         public ActionResult<IEnumerable<PersonVM>> GetHouseholdMembers(int id)
         {
             _logger.LogInformation("Retrieving household members");
-            var people = repository.GetByHousehold(id);
+            var people = repository.GetByHouseholdAsync(id);
             return Ok(people);
         }
         // GET: api/person/search
