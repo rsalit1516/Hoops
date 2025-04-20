@@ -65,6 +65,7 @@ namespace Hoops.Core.Models
         public int? TempId { get; set; }
 
         [ForeignKey("HouseId")]
-        public virtual Household Household { get; set; } //this should be part of data model - but its not
+        public virtual Household Household { get; set; }
+
     }
 }
