@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Moq;
 using Xunit;
 
-namespace Hoops.Infrastructure.Repository.Tests
+namespace Hoops.Infrastructure.Tests
 {
     public class CoachRepositoryTest
     {

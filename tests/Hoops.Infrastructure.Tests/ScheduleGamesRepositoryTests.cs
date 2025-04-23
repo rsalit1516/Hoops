@@ -6,7 +6,7 @@ using Xunit;
 using System.Threading.Tasks;
 using Hoops.Infrastructure.Data;
 
-namespace Hoops.Test
+namespace Hoops.Infrastructure.Tests
 {
     public class ScheduleGamesRepositoryTests
     {
@@ -47,7 +47,7 @@ namespace Hoops.Test
             // var repo = new ScheduleGameRepository(new hoopsContext());
             // var actual = repo.GetStandings(4119);
             // Assert.True(actual != null);
-            
+
         }
         [Fact]
         public void ScheduleGamesRepositoryTestTest()

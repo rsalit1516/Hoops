@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
 
-namespace Hoops.Infrastructure.Tests.Repository
+namespace Hoops.Infrastructure.Tests
 {
     public class PersonRepositoryTest
     {
