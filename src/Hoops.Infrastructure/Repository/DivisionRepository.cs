@@ -9,7 +9,7 @@ namespace Hoops.Infrastructure.Repository
 {
     public class DivisionRepository(hoopsContext context) : EFRepository<Division>(context), IDivisionRepository
     {
-        private readonly ILogger<DivisionRepository> _logger;
+        private readonly ILogger<DivisionRepository>? _logger;
 
         public IQueryable<VwDivision> LoadDivisions(int seasonId)
         {
