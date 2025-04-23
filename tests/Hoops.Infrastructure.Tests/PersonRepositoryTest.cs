@@ -5,6 +5,7 @@ using Hoops.Core.Models;
 using Hoops.Infrastructure.Data;
 using Hoops.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
 
@@ -15,13 +16,15 @@ namespace Hoops.Infrastructure.Tests.Repository
         private readonly Mock<hoopsContext> _mockContext;
         private readonly Mock<DbSet<Person>> _mockDbSet;
         private readonly PersonRepository _repository;
+        private ILogger<PersonRepository> _logger;
+
 
         public PersonRepositoryTest()
         {
             _mockContext = new Mock<hoopsContext>();
             _mockDbSet = new Mock<DbSet<Person>>();
             _mockContext.Setup(m => m.Set<Person>()).Returns(_mockDbSet.Object);
-            _repository = new PersonRepository(_mockContext.Object);
+            _repository = new PersonRepository(_mockContext.Object, _logger);
         }
 
         [Fact]
@@ -83,6 +86,29 @@ namespace Hoops.Infrastructure.Tests.Repository
             // Assert
             Assert.NotNull(result);
             Assert.Empty(result);
+        }
+
+        [Fact]
+        public async Task GetByHouseholdAsync_ReturnsHouseholdMembers_WhenHouseIdExists()
+        {
+            // Arrange
+            var houseId = 1;
+            var householdMembers = new List<Person>
+            {
+                new Person { HouseId = houseId, LastName = "Doe", FirstName = "John" },
+                new Person { HouseId = houseId, LastName = "Doe", FirstName = "Jane" }
+            }.AsQueryable();
+
+            _mockDbSet.Setup(m => m.Where(It.IsAny<Expression<Func<Person, bool>>>())).Returns(householdMembers);
+
+            // Act
+            var result = _repository.GetByHouseholdAsync(houseId);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(2, result.Count);
+            Assert.Contains("Doe, John", result.Select(p => $"{p.LastName}, {p.FirstName}"));
+            Assert.Contains("Doe, Jane", result.Select(p => $"{p.LastName}, {p.FirstName}"));
         }
     }
 }

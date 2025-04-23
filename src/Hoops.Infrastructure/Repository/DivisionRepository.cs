@@ -9,6 +9,8 @@ namespace Hoops.Infrastructure.Repository
 {
     public class DivisionRepository(hoopsContext context) : EFRepository<Division>(context), IDivisionRepository
     {
+        private readonly ILogger<DivisionRepository> _logger;
+
         public IQueryable<VwDivision> LoadDivisions(int seasonId)
         {
             try
@@ -115,7 +117,8 @@ namespace Hoops.Infrastructure.Repository
         //}
         public int GetPlayerDivision(int companyId, int seasonId, int peopleId)
         {
-            var personRepo = new PersonRepository(context);
+            ILogger<PersonRepository> _logger = LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<PersonRepository>();
+            var personRepo = new PersonRepository(context, _logger);
             var person = personRepo.GetById(peopleId);
             var seasonDivisions = GetDivisions(seasonId);
             var division = seasonDivisions
@@ -130,7 +133,7 @@ namespace Hoops.Infrastructure.Repository
                 if (divisionDown == division)
                 {
                     divisionDown = seasonDivisions
-                                .FirstOrDefault(GetPlayerDivisionPredicate(person, (DateTime)(person.BirthDate?.AddYears(2)?? DateTime.MinValue)));
+                                .FirstOrDefault(GetPlayerDivisionPredicate(person, (DateTime)(person.BirthDate?.AddYears(2) ?? DateTime.MinValue)));
                 }
                 if (divisionDown != null)
                     division = divisionDown;

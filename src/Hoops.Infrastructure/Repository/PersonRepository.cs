@@ -11,8 +11,12 @@ namespace Hoops.Infrastructure.Repository
 {
     public class PersonRepository : EFRepository<Person>, IPersonRepository
     {
+        private readonly ILogger<PersonRepository> _logger;
 
-        public PersonRepository(hoopsContext context) : base(context) { }
+        public PersonRepository(hoopsContext context, ILogger<PersonRepository> logger) : base(context)
+        {
+            _logger = logger;
+        }
 
         #region IRepository<T> Members
 
@@ -240,52 +244,59 @@ namespace Hoops.Infrastructure.Repository
 
         }
 
-        public async Task<List<PersonVM>> GetByHouseholdAsync(int householdId)
+        public List<PersonVM> GetByHouseholdAsync(int householdId)
         {
             var query = from p in context.People.Where(p => p.HouseId == householdId)
-                        join c in context.Commments on p.PersonId equals c.LinkID
-                        select new PersonVM
-                        {
-                            PersonId = p.PersonId,
-                            CompanyId = p.CompanyId,
-                            HouseId = p.HouseId,
-                            FirstName = p.FirstName,
-                            LastName = p.LastName,
-                            Workphone = p.Workphone,
-                            Cellphone = p.Cellphone,
-                            Email = p.Email,
-                            Suspended = p.Suspended,
-                            LatestSeason = p.LatestSeason,
-                            LatestShirtSize = p.LatestShirtSize,
-                            LatestRating = p.LatestRating,
-                            BirthDate = p.BirthDate,
-                            Bc = p.Bc,
-                            Gender = p.Gender,
-                            SchoolName = p.SchoolName,
-                            Grade = p.Grade,
-                            GiftedLevelsUp = p.GiftedLevelsUp,
-                            FeeWaived = p.FeeWaived,
-                            Player = p.Player,
-                            Parent = p.Parent,
-                            Coach = p.Coach,
-                            AsstCoach = p.AsstCoach,
-                            BoardOfficer = p.BoardOfficer,
-                            BoardMember = p.BoardMember,
-                            Ad = p.Ad,
-                            Sponsor = p.Sponsor,
-                            SignUps = p.SignUps,
-                            TryOuts = p.TryOuts,
-                            TeeShirts = p.TeeShirts,
-                            Printing = p.Printing,
-                            Equipment = p.Equipment,
-                            Electrician = p.Electrician,
-                            CreatedDate = p.CreatedDate,
-                            CreatedUser = p.CreatedUser,
-                            TempId = p.TempId,
-                            Comments = c.Comment1
-                        };
+                        join c in context.Commments on p.PersonId equals c.LinkID into commentGroup
+                        from c in commentGroup.DefaultIfEmpty() // Outer join: includes all Person records
+                        select new { p, c };
+            this._logger.LogInformation($"GetByHouseholdAsync: {householdId}");
+            this._logger.LogInformation($"GetByHouseholdAsync: {query.ToString()}");
+            this._logger.LogInformation($"GetByHouseholdAsync: {query.ToQueryString()}");
 
-            return await query.ToListAsync();
+            var x = query.Select(s => new PersonVM
+            {
+
+                PersonId = s.p.PersonId,
+                CompanyId = s.p.CompanyId,
+                HouseId = s.p.HouseId,
+                FirstName = s.p.FirstName,
+                LastName = s.p.LastName,
+                Workphone = s.p.Workphone,
+                Cellphone = s.p.Cellphone,
+                Email = s.p.Email,
+                Suspended = s.p.Suspended,
+                LatestSeason = s.p.LatestSeason,
+                LatestShirtSize = s.p.LatestShirtSize,
+                LatestRating = s.p.LatestRating,
+                BirthDate = s.p.BirthDate,
+                Bc = s.p.Bc,
+                Gender = s.p.Gender,
+                SchoolName = s.p.SchoolName,
+                Grade = s.p.Grade,
+                GiftedLevelsUp = s.p.GiftedLevelsUp,
+                FeeWaived = s.p.FeeWaived,
+                Player = s.p.Player,
+                Parent = s.p.Parent,
+                Coach = s.p.Coach,
+                AsstCoach = s.p.AsstCoach,
+                BoardOfficer = s.p.BoardOfficer,
+                BoardMember = s.p.BoardMember,
+                Ad = s.p.Ad,
+                Sponsor = s.p.Sponsor,
+                SignUps = s.p.SignUps,
+                TryOuts = s.p.TryOuts,
+                TeeShirts = s.p.TeeShirts,
+                Printing = s.p.Printing,
+                Equipment = s.p.Equipment,
+                Electrician = s.p.Electrician,
+                CreatedDate = s.p.CreatedDate,
+                CreatedUser = s.p.CreatedUser,
+                // TempId = s.p.TempId,
+                Comments = s.c.Comment1
+            });
+
+            return [.. x];
         }
 
         public List<string> GetParents(int personId)

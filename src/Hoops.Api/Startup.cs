@@ -7,11 +7,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Hoops.Core.Interface;
 using Hoops.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Hoops.Infrastructure.Data;
+using Newtonsoft.Json;
 
 namespace Hoops.Api
 {
@@ -92,7 +94,7 @@ namespace Hoops.Api
                                          });
                    });
             _ = services.AddLogging();
-            _ = services.AddControllers();
+            _ = services.AddControllers().AddNewtonsoftJson();
             _ = services
                 .AddSwaggerGen(c =>
                 {
