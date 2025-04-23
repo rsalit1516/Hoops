@@ -4,7 +4,7 @@ using Hoops.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 
-namespace Hoops.Core.Repository.Test
+namespace Hoops.Infrastructure.Tests
 {
     public class WebContentRepositoryTest
     {
@@ -62,7 +62,7 @@ namespace Hoops.Core.Repository.Test
             var companyId = 1;
             var webContents = new List<WebContent>
             {
-                new WebContent { WebContentId = 1, CompanyId = companyId, Title = "Title1", 
+                new WebContent { WebContentId = 1, CompanyId = companyId, Title = "Title1",
                 ExpirationDate = DateTime.Now.AddDays(1) },
                 new WebContent { WebContentId = 2, CompanyId = companyId, Title = "Title2", ExpirationDate = DateTime.Now.AddDays(-1) }
             };
