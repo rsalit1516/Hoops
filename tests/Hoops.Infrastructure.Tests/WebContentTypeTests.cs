@@ -22,7 +22,7 @@ namespace Hoops.Infrastructure.Tests
 .Options;
             _context = new hoopsContext(options);
             repo = new WebContentTypeRepository(_context);
-
+            repoWebContent = new WebContentRepository(_context); // Initialize repoWebContent
         }
 
         [Fact]

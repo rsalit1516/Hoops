@@ -16,14 +16,16 @@ namespace Hoops.Infrastructure.Tests
         private readonly Mock<hoopsContext> _mockContext;
         private readonly Mock<DbSet<Person>> _mockDbSet;
         private readonly PersonRepository _repository;
-        private ILogger<PersonRepository> _logger;
+        private readonly Mock<ILogger<PersonRepository>> _mockLogger;
+        private readonly ILogger<PersonRepository> _logger;
 
 
         public PersonRepositoryTest()
         {
             _mockContext = new Mock<hoopsContext>();
             _mockDbSet = new Mock<DbSet<Person>>();
-            _mockContext.Setup(m => m.Set<Person>()).Returns(_mockDbSet.Object);
+            _mockLogger = new Mock<ILogger<PersonRepository>>();
+            _logger = _mockLogger.Object;
             _repository = new PersonRepository(_mockContext.Object, _logger);
         }
 
@@ -89,7 +91,7 @@ namespace Hoops.Infrastructure.Tests
         }
 
         [Fact]
-        public async Task GetByHouseholdAsync_ReturnsHouseholdMembers_WhenHouseIdExists()
+        public Task GetByHouseholdAsync_ReturnsHouseholdMembers_WhenHouseIdExists()
         {
             // Arrange
             var houseId = 1;
@@ -109,6 +111,7 @@ namespace Hoops.Infrastructure.Tests
             Assert.Equal(2, result.Count);
             Assert.Contains("Doe, John", result.Select(p => $"{p.LastName}, {p.FirstName}"));
             Assert.Contains("Doe, Jane", result.Select(p => $"{p.LastName}, {p.FirstName}"));
+            return Task.CompletedTask;
         }
     }
 }

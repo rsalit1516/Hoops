@@ -12,7 +12,7 @@ namespace Hoops.Infrastructure.Tests
     {
         private readonly hoopsContext _context;
         public ScheduleGameRepository repo;
-        private ILogger<ScheduleGameRepository> _logger;
+        private readonly ILogger<ScheduleGameRepository> _logger = new LoggerFactory().CreateLogger<ScheduleGameRepository>();
 
         // public ScheduleGamesRepositoryTests(ILogger<ScheduleGameRepository> logger)
         // {
@@ -29,7 +29,7 @@ namespace Hoops.Infrastructure.Tests
                 .UseInMemoryDatabase(databaseName: "hoops")
                 .Options;
             _context = new hoopsContext(options);
-            repo = new ScheduleGameRepository(_context, _logger);
+            repo = new ScheduleGameRepository(_context, _logger); // _logger is now properly initialized
         }
         /// <summary>
         /// Test method for the ScheduleGamesRepository.
