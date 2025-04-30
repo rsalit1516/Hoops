@@ -17,8 +17,10 @@ namespace Hoops.Infrastructure.Tests
         private readonly Mock<DbSet<Person>> _mockDbSet;
         private readonly PersonRepository _repository;
         private readonly Mock<ILogger<PersonRepository>> _mockLogger;
-        private readonly ILogger<PersonRepository> _logger;
 
+        private readonly hoopsContext context;
+        public PersonRepository repo;
+        private readonly ILogger<PersonRepository> _logger = new LoggerFactory().CreateLogger<PersonRepository>();
 
         public PersonRepositoryTest()
         {
@@ -27,14 +29,19 @@ namespace Hoops.Infrastructure.Tests
             _mockLogger = new Mock<ILogger<PersonRepository>>();
             _logger = _mockLogger.Object;
             _repository = new PersonRepository(_mockContext.Object, _logger);
+            var options = new DbContextOptionsBuilder<hoopsContext>()
+                .UseInMemoryDatabase(databaseName: "hoops")
+                .Options;
+            context = new hoopsContext(options);
+            repo = new PersonRepository(context, _logger);
         }
 
         [Fact]
         public void GetParents_ReturnsParents_WhenChildExists()
         {
             // Arrange
-            var personId = 1;
-            var houseId = 1;
+            var personId = 32560;
+            var houseId = 8945;
             var child = new Person { PersonId = personId, HouseId = houseId };
             var parents = new List<Person>
             {
@@ -42,11 +49,11 @@ namespace Hoops.Infrastructure.Tests
                 new Person { HouseId = houseId, Parent = true, LastName = "Doe", FirstName = "Jane" }
             }.AsQueryable();
 
-            _mockDbSet.Setup(m => m.Find(personId)).Returns(child);
-            _mockDbSet.Setup(m => m.Where(It.IsAny<Expression<Func<Person, bool>>>())).Returns(parents);
+            // _mockDbSet.Setup(m => m.Find(personId)).Returns(child);
+            // _mockDbSet.Setup(m => m.Where(It.IsAny<Expression<Func<Person, bool>>>())).Returns(parents);
 
             // Act
-            var result = _repository.GetParents(personId);
+            var result = repo.GetParents(personId);
 
             // Assert
             Assert.NotNull(result);
@@ -94,17 +101,17 @@ namespace Hoops.Infrastructure.Tests
         public Task GetByHouseholdAsync_ReturnsHouseholdMembers_WhenHouseIdExists()
         {
             // Arrange
-            var houseId = 1;
+            var houseId = 8945;
             var householdMembers = new List<Person>
             {
                 new Person { HouseId = houseId, LastName = "Doe", FirstName = "John" },
                 new Person { HouseId = houseId, LastName = "Doe", FirstName = "Jane" }
             }.AsQueryable();
 
-            _mockDbSet.Setup(m => m.Where(It.IsAny<Expression<Func<Person, bool>>>())).Returns(householdMembers);
+            // _mockDbSet.Setup(m => m.Where(It.IsAny<Expression<Func<Person, bool>>>())).Returns(householdMembers);
 
             // Act
-            var result = _repository.GetByHouseholdAsync(houseId);
+            var result = repo.GetByHouseholdAsync(houseId);
 
             // Assert
             Assert.NotNull(result);
@@ -112,6 +119,22 @@ namespace Hoops.Infrastructure.Tests
             Assert.Contains("Doe, John", result.Select(p => $"{p.LastName}, {p.FirstName}"));
             Assert.Contains("Doe, Jane", result.Select(p => $"{p.LastName}, {p.FirstName}"));
             return Task.CompletedTask;
+        }
+        [Fact]
+        public async Task InsertAsyncTest()
+        {
+            // Arrange
+            var person = new Person { FirstName = "John", LastName = "Doe" };
+
+            // _mockDbSet.Setup(m => m.AddAsync(person, default)).ReturnsAsync((EntityEntry<Person>)person);
+
+            // Act
+            var result = await repo.InsertAsync(person);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal("John", result.FirstName);
+            Assert.Equal("Doe", result.LastName);
         }
     }
 }

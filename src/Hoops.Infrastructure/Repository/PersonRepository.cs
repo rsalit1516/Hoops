@@ -301,7 +301,8 @@ namespace Hoops.Infrastructure.Repository
 
         public List<string> GetParents(int personId)
         {
-            var child = context.Set<Person>().Find(personId);
+            var child = context.Set<Person>()
+            .FirstOrDefault(p => p.HouseId == personId);
             var parents = new List<string>();
             if (child != null)
             {
