@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Hoops.Infrastructure.Data;
 using Hoops.Core.Models;
+using Hoops.Core.ViewModels;
 using Hoops.Core.Interface;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
@@ -44,15 +45,15 @@ namespace Hoops.Controllers
         }
         // GET: api/User
         [HttpGet("GetHouseholdMembers/{id}")]
-        public ActionResult<IEnumerable<Person>> GetHouseholdMembers(int id)
+        public ActionResult<IEnumerable<PersonVM>> GetHouseholdMembers(int id)
         {
             _logger.LogInformation("Retrieving household members");
-            var people = repository.GetByHousehold(id);
+            var people = repository.GetByHouseholdAsync(id);
             return Ok(people);
         }
         // GET: api/person/search
         [HttpGet("search")]
-        public ActionResult<IEnumerable<Person>> Search(
+        public ActionResult<IEnumerable<PersonVM>> Search(
             [FromQuery] string lastName,
             [FromQuery] string firstName,
             [FromQuery] bool playerOnly)

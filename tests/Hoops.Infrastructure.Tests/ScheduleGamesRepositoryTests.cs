@@ -6,13 +6,13 @@ using Xunit;
 using System.Threading.Tasks;
 using Hoops.Infrastructure.Data;
 
-namespace Hoops.Test
+namespace Hoops.Infrastructure.Tests
 {
     public class ScheduleGamesRepositoryTests
     {
         private readonly hoopsContext _context;
         public ScheduleGameRepository repo;
-        private ILogger<ScheduleGameRepository> _logger;
+        private readonly ILogger<ScheduleGameRepository> _logger = new LoggerFactory().CreateLogger<ScheduleGameRepository>();
 
         // public ScheduleGamesRepositoryTests(ILogger<ScheduleGameRepository> logger)
         // {
@@ -29,7 +29,7 @@ namespace Hoops.Test
                 .UseInMemoryDatabase(databaseName: "hoops")
                 .Options;
             _context = new hoopsContext(options);
-            repo = new ScheduleGameRepository(_context, _logger);
+            repo = new ScheduleGameRepository(_context, _logger); // _logger is now properly initialized
         }
         /// <summary>
         /// Test method for the ScheduleGamesRepository.
@@ -47,7 +47,7 @@ namespace Hoops.Test
             // var repo = new ScheduleGameRepository(new hoopsContext());
             // var actual = repo.GetStandings(4119);
             // Assert.True(actual != null);
-            
+
         }
         [Fact]
         public void ScheduleGamesRepositoryTestTest()

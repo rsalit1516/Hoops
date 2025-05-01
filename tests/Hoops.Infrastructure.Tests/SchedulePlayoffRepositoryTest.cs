@@ -3,7 +3,7 @@ using Hoops.Core.ViewModels;
 using Hoops.Infrastructure.Repository;
 using Xunit;
 
-namespace Hoops.Core.Tests.Repository
+namespace Hoops.Infrastructure.Tests
 {
     public class SchedulePlayoffRepositoryTests
     {

@@ -6,6 +6,7 @@ using Hoops.Core;
 using Hoops.Core.Models;
 using Hoops.Infrastructure.Repository;
 using Hoops.Infrastructure.Data;
+using Microsoft.Extensions.Logging;
 
 namespace Hoops.Data
 {
@@ -24,13 +25,14 @@ namespace Hoops.Data
         public WebContentRepository WebContentRepo { get; private set; }
         public Seed()
         {
+            ILogger<PersonRepository> _logger = LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<PersonRepository>();
             Context = new hoopsContext();
             SeasonRepo = new SeasonRepository(Context);
             DivisionRepo = new DivisionRepository(Context);
             TeamRepo = new TeamRepository(Context);
             ColorRepo = new ColorRepository(Context);
             HouseholdRepo = new HouseholdRepository(Context);
-            PersonRepo = new PersonRepository(Context);
+            PersonRepo = new PersonRepository(Context, _logger);
             LocationRepo = new ScheduleLocationRepository(Context);
             WebContentTypeRepo = new WebContentTypeRepository(Context);
             WebContentRepo = new WebContentRepository(Context);

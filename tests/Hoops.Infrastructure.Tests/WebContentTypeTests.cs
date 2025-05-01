@@ -6,7 +6,7 @@ using Hoops.Infrastructure.Repository;
 using Hoops.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace Hoops.Test
+namespace Hoops.Infrastructure.Tests
 {
     public class WebContentTypeTest
     {
@@ -22,7 +22,7 @@ namespace Hoops.Test
 .Options;
             _context = new hoopsContext(options);
             repo = new WebContentTypeRepository(_context);
-
+            repoWebContent = new WebContentRepository(_context); // Initialize repoWebContent
         }
 
         [Fact]
@@ -58,20 +58,20 @@ namespace Hoops.Test
         [Fact]
         public async Task AddAllAsyncWebContentTypeTest1()
         {
-                // var repo = new WebContentTypeRepository(_context);
-                await DeleteAllAsync(repo);
-                var records = _context.WebContentTypes;
-                foreach (var record in records)
-                {
-                    repo.Delete(record.WebContentTypeId);
-                }
-                await _context.SaveChangesAsync();
+            // var repo = new WebContentTypeRepository(_context);
+            await DeleteAllAsync(repo);
+            var records = _context.WebContentTypes;
+            foreach (var record in records)
+            {
+                repo.Delete(record.WebContentTypeId);
+            }
+            await _context.SaveChangesAsync();
 
-                var actual = repo.Insert(new WebContentType { WebContentTypeDescription = "Meeting" });
-                actual = repo.Insert(new WebContentType { WebContentTypeDescription = "Event" });
-                repo.Insert(new WebContentType { WebContentTypeDescription = "Season Info" });
-                _context.SaveChanges();
-                Assert.True(records.Count() == 3);
+            var actual = repo.Insert(new WebContentType { WebContentTypeDescription = "Meeting" });
+            actual = repo.Insert(new WebContentType { WebContentTypeDescription = "Event" });
+            repo.Insert(new WebContentType { WebContentTypeDescription = "Season Info" });
+            _context.SaveChanges();
+            Assert.True(records.Count() == 3);
 
         }
 
