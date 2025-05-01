@@ -48,7 +48,7 @@ namespace Hoops.Controllers
         public ActionResult<IEnumerable<PersonVM>> GetHouseholdMembers(int id)
         {
             _logger.LogInformation("Retrieving household members");
-            var people = repository.GetByHouseholdAsync(id);
+            var people = repository.GetByHousehold(id);
             return Ok(people);
         }
         // GET: api/person/search

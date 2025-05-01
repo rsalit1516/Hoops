@@ -18,6 +18,6 @@ namespace Hoops.Core.Interface
                 IQueryable<Person> GetADs(int companyId);
                 void RemoveFromHousehold(int p);
                 List<string> GetParents(int personId);
-                IQueryable<PersonVM> GetByHousehold(int householdId);
+                List<Person> GetByHousehold(int householdId);
         }
 }
