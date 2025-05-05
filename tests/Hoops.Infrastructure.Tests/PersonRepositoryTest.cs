@@ -111,7 +111,7 @@ namespace Hoops.Infrastructure.Tests
             // _mockDbSet.Setup(m => m.Where(It.IsAny<Expression<Func<Person, bool>>>())).Returns(householdMembers);
 
             // Act
-            var result = repo.GetByHouseholdAsync(houseId);
+            var result = repo.GetByHousehold(houseId);
 
             // Assert
             Assert.NotNull(result);
