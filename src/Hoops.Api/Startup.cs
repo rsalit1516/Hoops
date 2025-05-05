@@ -80,6 +80,7 @@ namespace Hoops.Api
             _ = services.AddScoped<ILocationRepository, LocationRepository>();
             _ = services.AddScoped<IHouseholdRepository, HouseholdRepository>();
             _ = services.AddScoped<IUserRepository, UserRepository>();
+            _ = services.AddScoped<ICommentRepository, CommentRepository>();
 
             _ = services.AddCors(options =>
                    {

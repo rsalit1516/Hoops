@@ -20,7 +20,7 @@ public partial class hoopsContext : DbContext
 
     public virtual DbSet<Coach> Coaches { get; set; }
     public virtual DbSet<Color> Colors { get; set; }
-    public virtual DbSet<Comment> Commments { get; set; }
+    public virtual DbSet<Comment> Comments { get; set; }
     public virtual DbSet<Company> Companies { get; set; }
     public virtual DbSet<Content> Content { get; set; }
     public virtual DbSet<Director> Directors { get; set; }
