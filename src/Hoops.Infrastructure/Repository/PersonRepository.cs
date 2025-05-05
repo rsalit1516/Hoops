@@ -93,7 +93,7 @@ namespace Hoops.Infrastructure.Repository
             var person = context.Set<Person>().FirstOrDefault(n => n.LastName == lastName && n.FirstName == firstName);
             return person ?? new Person();
         }
-        public IQueryable<PersonVM> FindPeopleByLastAndFirstName(string lastName, string firstName, bool playerOnly)
+        public IQueryable<Person> FindPeopleByLastAndFirstName(string lastName, string firstName, bool playerOnly)
         {
             IQueryable<Person> person = context.Set<Person>().Where(p => false);
             if (!String.IsNullOrEmpty(lastName) && (!String.IsNullOrEmpty(firstName)))
@@ -116,9 +116,8 @@ namespace Hoops.Infrastructure.Repository
                     person = person.Where(p => p.Player == true);
                 }
                 return from p in person
-                       join c in context.Commments on p.PersonId equals c.LinkID
                        orderby p.LastName, p.FirstName
-                       select new PersonVM
+                       select new Person
                        {
 
                            PersonId = p.PersonId,
@@ -157,12 +156,11 @@ namespace Hoops.Infrastructure.Repository
                            CreatedDate = p.CreatedDate,
                            CreatedUser = p.CreatedUser,
                            TempId = p.TempId,
-                           Comments = c.Comment1
                        };
             }
             else
             {
-                return new List<PersonVM>().AsQueryable();
+                return new List<Person>().AsQueryable();
             }
         }
 

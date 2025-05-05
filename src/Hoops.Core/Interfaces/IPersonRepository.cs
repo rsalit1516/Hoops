@@ -11,7 +11,7 @@ namespace Hoops.Core.Interface
     {
         int FindPersonByLastName(string name);
         Person FindPersonByLastAndFirstName(string lastName, string firstName);
-        IQueryable<PersonVM> FindPeopleByLastAndFirstName(string lastName, string firstName, bool playerOnly);
+        IQueryable<Person> FindPeopleByLastAndFirstName(string lastName, string firstName, bool playerOnly);
         int FindByEmail(string email);
         IQueryable<Person> GetByGroup(int companyId, int seasonId, GroupTypes.GroupType group);
         int GetBccList(string lastName, string firstName);
