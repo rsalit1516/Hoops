@@ -9,23 +9,23 @@ using Xunit;
 
 namespace Hoops.Infrastructure.Tests
 {
-    public class CommentRepositoryTest
+    public class CommentRepositoryTest : IClassFixture<TestDatabaseFixture>
     {
         private readonly hoopsContext _context;
         private readonly CommentRepository _repository;
 
-        public CommentRepositoryTest()
+        public CommentRepositoryTest(TestDatabaseFixture fixture)
         {
             // Set up an in-memory database
-            var options = new DbContextOptionsBuilder<hoopsContext>()
-                .UseInMemoryDatabase(databaseName: "HoopsTestDb")
-                .Options;
+            // var options = new DbContextOptionsBuilder<hoopsContext>()
+            //     .UseInMemoryDatabase(databaseName: "HoopsTestDb")
+            //     .Options;
 
-            _context = new hoopsContext(options);
+            _context = fixture.Context ?? throw new ArgumentNullException(nameof(fixture.Context), "Context cannot be null");
             _repository = new CommentRepository(_context);
 
             // Seed the database with test data
-            SeedDatabase();
+            // SeedDatabase();
         }
 
         private void SeedDatabase()

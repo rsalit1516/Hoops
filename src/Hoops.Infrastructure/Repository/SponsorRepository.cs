@@ -39,7 +39,7 @@ namespace Hoops.Infrastructure.Repository
 
         public IQueryable<SponsorWithProfile> GetSeasonSponsors(int seasonId)
         {
-            var sponsorRepository = new SponsorRepository(new hoopsContext());
+            // var sponsorRepository = new SponsorRepository(new hoopsContext());
             var sponsors = context.Set<Sponsor>()
             .Join(context.Set<SponsorProfile>(),
             s => s.SponsorProfileId,
@@ -65,7 +65,7 @@ namespace Hoops.Infrastructure.Repository
             .Where(z => z.s.SeasonId == seasonId)
             .Select(z => new SponsorWithProfile
             {
-                SponsorId = z.s.SponsorId, 
+                SponsorId = z.s.SponsorId,
                 Name = z.p.SpoName,
                 Website = z.p.Url,
                 Phone = z.p.Phone
