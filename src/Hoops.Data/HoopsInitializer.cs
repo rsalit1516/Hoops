@@ -53,7 +53,7 @@ namespace Hoops.Data
             }
         }
 
-        protected async Task Seed(hoopsContext context)
+        public async Task Seed(hoopsContext context)
         {
             await CustomSeed(context);
         }
@@ -72,6 +72,7 @@ namespace Hoops.Data
             InitSeasons(context);
             InitHouseholds(context);
             InitPersonTest(context);
+            InitComments(context);
             await InitDivision(context);
             await InitTeams(context);
             InitDirectorTest();
@@ -183,7 +184,25 @@ namespace Hoops.Data
             context.SaveChanges();
             return (true);  //may want to change this
         }
+        public bool InitComments(hoopsContext context)
+        {
+            // Clear existing data
+            context.Comments.RemoveRange(context.Comments);
 
+            // Add test data
+            context.Comments.AddRange(new List<Comment>
+        {
+            new Comment { CommentID = 1, LinkID = 101, CommentType = "General", Comment1 = "Test Comment 1", CompanyID = 1 },
+            new Comment { CommentID = 2, LinkID = 102, CommentType = "Feedback", Comment1 = "Test Comment 2", CompanyID = 1 },
+            new Comment { CommentID = 3, LinkID = 101, CommentType = "General", Comment1 = "Test Comment 3", CompanyID = 1 }
+        });
+
+            // Add more entities as needed for other tests
+            // e.g., context.Users.AddRange(...);
+
+            context.SaveChanges();
+            return true;
+        }
         public bool InitDirectorTest()
         {
             ILogger<PersonRepository> _logger = LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<PersonRepository>();

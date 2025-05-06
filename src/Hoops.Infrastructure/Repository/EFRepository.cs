@@ -17,11 +17,11 @@ namespace Hoops.Infrastructure.Repository
             this.context = context;
             DbSet = context.Set<T>();
         }
-        public EFRepository()
-        {
-            this.context = new hoopsContext();
-            DbSet = context.Set<T>();
-        }
+        // public EFRepository()
+        // {
+        //     this.context = new hoopsContext();
+        //     DbSet = context.Set<T>();
+        // }
 
         public virtual IEnumerable<T> GetAll()
         {

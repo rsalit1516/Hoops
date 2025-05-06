@@ -31,12 +31,12 @@ namespace Hoops.Infrastructure.Tests
         {
             var actual = await repo.GetActiveWebContentAsync(1);
             _ = await _context.SaveChangesAsync();
-            
+
             {
                 // throw new Exception("Expected 4 active web contents, but actual count is " + actual.Count());
             }
             // _ = await _context.SaveChangesAsync();
-           
+
             Assert.True(true);
         }
 
@@ -84,7 +84,7 @@ namespace Hoops.Infrastructure.Tests
                     // WebContentId
                     CompanyId = 1,
                     Page = "1",
-                    WebContentTypeId = meeting.WebContentTypeId,
+                    WebContentTypeId = meeting?.WebContentTypeId ?? throw new InvalidOperationException("Meeting is null"),
                     Title = "Meeting",
                     ContentSequence = 1,
                     SubTitle = "Meet by the school",
@@ -127,7 +127,7 @@ namespace Hoops.Infrastructure.Tests
                     // WebContentId
                     CompanyId = 1,
                     Page = "1",
-                    WebContentTypeId = seasonInfo.WebContentTypeId,
+                    WebContentTypeId = seasonInfo?.WebContentTypeId ?? throw new InvalidOperationException("seasonInfo is null"),
                     Title = "Second Test",
                     ContentSequence = 2,
                     SubTitle = "Second Subtitle",
@@ -156,7 +156,7 @@ namespace Hoops.Infrastructure.Tests
                     // WebContentId
                     CompanyId = 1,
                     Page = "1",
-                    WebContentTypeId = meeting.WebContentTypeId,
+                    WebContentTypeId = meeting?.WebContentTypeId ?? throw new InvalidOperationException("Meeting is null"),
                     Title = "Meeting",
                     ContentSequence = 1,
                     SubTitle = "Meet by the school",
