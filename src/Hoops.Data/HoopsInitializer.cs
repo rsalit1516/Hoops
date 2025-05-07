@@ -59,7 +59,7 @@ namespace Hoops.Data
         }
         public async Task CustomSeed(hoopsContext context)
         {
-            DeleteTestSponsors();
+            DeleteTestSponsors(context);
             DeleteTestCoaches(context);
             DeleteTestColors(context);
             //DeleteTestPlayers(context);
@@ -677,17 +677,16 @@ namespace Hoops.Data
                 rep.Delete(coach);
             }
         }
-        public void DeleteTestSponsors()
+        public void DeleteTestSponsors(hoopsContext context)
         {
-            using (var db = new hoopsContext())
+
+            var rep = new SponsorRepository(context);
+            var sponsors = rep.GetAll(CompanyId).ToList<Sponsor>();
+            foreach (Sponsor sponsor in sponsors)
             {
-                var rep = new SponsorRepository(db);
-                var sponsors = rep.GetAll(CompanyId).ToList<Sponsor>();
-                foreach (Sponsor sponsor in sponsors)
-                {
-                    rep.Delete(sponsor);
-                }
+                rep.Delete(sponsor);
             }
+
         }
         public void DeleteTestTeams()
         {
