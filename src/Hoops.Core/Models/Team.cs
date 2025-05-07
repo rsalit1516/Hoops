@@ -1,12 +1,11 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Hoops.Core.Models
 {
     [Table("Teams")]
-        public partial class Team
+    public partial class Team
     {
         [Key]
         [Column("TeamID")]
@@ -29,7 +28,7 @@ namespace Hoops.Core.Models
         public string TeamColor { get; set; }
         [Column("TeamColorID")]
         public int TeamColorId { get; set; }
-         [MaxLength(4)]
+        [MaxLength(4)]
         public string TeamNumber { get; set; }
         public int? Round1 { get; set; }
         public int? Round2 { get; set; }
@@ -50,7 +49,7 @@ namespace Hoops.Core.Models
         // public virtual Coach Coach { get; set; }
         // [ForeignKey("AssCoachID")]
         // public virtual Coach AsstCoach { get; set; }
-       
+
         // [ForeignKey("TeamColorID")]
         // public virtual Color Color { get; set; }
 

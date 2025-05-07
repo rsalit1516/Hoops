@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -7,7 +6,7 @@ namespace Hoops.Core.Models
 {
     public partial class Role
     {
-        
+
         [Key]
         [Column("RollsID")]
         public int RoleId { get; set; }

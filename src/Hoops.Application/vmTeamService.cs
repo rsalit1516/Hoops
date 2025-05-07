@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using Hoops.Infrastructure.Repository;
 using Hoops.Infrastructure.Data;
 using Hoops.Core.Models;
@@ -8,7 +7,7 @@ namespace Hoops.Application.DTOs
 {
     public class vmTeamService
     {
-        
+
         public static vmTeam ConvertRecordForTeamNumber(Team team)
         {
             var colorRepo = new ColorRepository(new Hoops.Infrastructure.Data.hoopsContext());

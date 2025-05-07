@@ -1,8 +1,6 @@
-using System.Collections.Generic;
 using Hoops.Core.ViewModels;
 using Hoops.Infrastructure.Data;
 using Hoops.Infrastructure.Repository;
-using Xunit;
 
 namespace Hoops.Infrastructure.Tests
 {

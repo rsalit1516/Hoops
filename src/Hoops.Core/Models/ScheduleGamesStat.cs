@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 namespace Hoops.Core.Models
 {
     public partial class ScheduleGamesStat

@@ -1,13 +1,8 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
 using Hoops.Core.Models;
 using Hoops.Infrastructure.Data;
 using Hoops.Infrastructure.Repository;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Moq;
-using Xunit;
 
 namespace Hoops.Infrastructure.Tests
 {

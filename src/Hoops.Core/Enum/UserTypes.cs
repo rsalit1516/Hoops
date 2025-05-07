@@ -1,5 +1,3 @@
-using System;
-
 namespace Hoops.Core.Enum
 {
     public static class UserTypes

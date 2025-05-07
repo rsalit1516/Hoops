@@ -1,7 +1,5 @@
 using Hoops.Core.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Hoops.Core.Interface;
 
 namespace Csbc.Infrastructure.Interface
