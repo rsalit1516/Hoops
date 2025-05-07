@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using static Hoops.Core.Enum.GroupTypes;
 
 namespace Hoops.Core.ViewModels

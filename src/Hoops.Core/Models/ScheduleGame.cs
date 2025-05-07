@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Hoops.Core.Models
 {
@@ -22,6 +20,6 @@ namespace Hoops.Core.Models
         public bool? HomeForfeited { get; set; }
         public int? SeasonId { get; set; }
         public int? DivisionId { get; set; }
-        
+
     }
 }

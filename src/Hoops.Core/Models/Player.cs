@@ -1,6 +1,5 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Hoops.Core.Models
@@ -98,8 +97,8 @@ namespace Hoops.Core.Models
     //     public decimal Balance { get; set; }
     //     public string DraftNotes { get; set; }
     // }
-    
-        //public virtual Division Division { get; set; }
-  
-    
+
+    //public virtual Division Division { get; set; }
+
+
 }

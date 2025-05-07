@@ -1,6 +1,3 @@
-using Xunit;
-using System.Linq;
-using System.Threading.Tasks;
 using Hoops.Core.Models;
 using Hoops.Infrastructure.Repository;
 using Hoops.Infrastructure.Data;

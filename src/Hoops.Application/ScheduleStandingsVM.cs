@@ -1,184 +1,179 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Hoops.Core;
 using Hoops.Core.Models;
 using Hoops.Core.ViewModels;
 using Hoops.Infrastructure.Data;
-using Hoops.Infrastructure.Repository;
 
 namespace Hoops.Application;
-    public class ScheduleStandingsVMService
+public class ScheduleStandingsVMService
+{
+
+
+    public List<ScheduleStandingsVM> CalculateStandings(List<ScheduleGame> games,
+    List<Color> colors,
+    List<Team> _teams,
+    List<ScheduleDivTeam> divTeams,
+    int divisionNo)
     {
-       
+        //var sql = "Exec GetStanding @ScheduleNumber = " + divisionNo.ToString();
+        //DataTable whatIsThis = db.ExecuteGetSQL(sql);
 
-        public List<ScheduleStandingsVM> CalculateStandings(List<ScheduleGame> games,
-        List<Color> colors,
-        List<Team> _teams,
-        List<ScheduleDivTeam> divTeams,
-        int divisionNo)
+        // var rep = new ScheduleGameRepository(db); //make this a method here....
+        // var games = rep.GetSeasonGames(divisionNo).ToList<ScheduleGame>();
+        var teams = GetDivisionTeams(colors, _teams, divisionNo);
+        var teamRecords = GetTeamRecords(teams, games, divTeams);
+        var standings = teamRecords.OrderByDescending(t => t.Pct)
+        .ThenByDescending(t => t.Won)
+        .ThenBy(t => t.Lost)
+        .ThenByDescending(t => (t.PF - t.PA));
+        return standings.ToList();
+    }
+
+    private List<ScheduleStandingsVM> GetTeamRecords(List<Team> teams, List<ScheduleGame> games, List<ScheduleDivTeam> divTeams)
+    {
+
+        var teamRecords = new List<ScheduleStandingsVM>();
+        // var rep = new ScheduleGameRepository(db);
+        foreach (var team in teams)
         {
-            //var sql = "Exec GetStanding @ScheduleNumber = " + divisionNo.ToString();
-            //DataTable whatIsThis = db.ExecuteGetSQL(sql);
-
-            // var rep = new ScheduleGameRepository(db); //make this a method here....
-            // var games = rep.GetSeasonGames(divisionNo).ToList<ScheduleGame>();
-            var teams = GetDivisionTeams(colors, _teams, divisionNo);
-            var teamRecords = GetTeamRecords(teams, games, divTeams);
-            var standings = teamRecords.OrderByDescending(t => t.Pct)
-            .ThenByDescending(t => t.Won)
-            .ThenBy(t => t.Lost)
-            .ThenByDescending(t => (t.PF - t.PA));
-            return standings.ToList();
-        }
-
-        private List<ScheduleStandingsVM> GetTeamRecords(List<Team> teams, List<ScheduleGame> games, List<ScheduleDivTeam> divTeams)
-        {
-
-            var teamRecords = new List<ScheduleStandingsVM>();
-            // var rep = new ScheduleGameRepository(db);
-            foreach (var team in teams)
+            var t = divTeams.FirstOrDefault(t => t.TeamNumber.ToString() == team.TeamNumber);
+            if (t != null)
             {
-                var t = divTeams.FirstOrDefault(t => t.TeamNumber.ToString() == team.TeamNumber);
-                if (t != null)
-                {
-                    var teamRecord = GetTeamRecord(team, t, games);
-                    teamRecords.Add(teamRecord);
-                }
-                // teamRecords.Add(teamRecord);
+                var teamRecord = GetTeamRecord(team, t, games);
+                teamRecords.Add(teamRecord);
             }
-            return teamRecords;
+            // teamRecords.Add(teamRecord);
         }
+        return teamRecords;
+    }
 
-        private ScheduleStandingsVM GetTeamRecord(Team team, ScheduleDivTeam divTeam, List<ScheduleGame> games)
+    private ScheduleStandingsVM GetTeamRecord(Team team, ScheduleDivTeam divTeam, List<ScheduleGame> games)
+    {
+        int teamNo;
+        if (team.TeamNumber != null)
         {
-            int teamNo;
-            if (team.TeamNumber != null)
+            // getting team no!
+            if (Int32.TryParse(team.TeamNumber, out teamNo))
             {
-                // getting team no!
-                if (Int32.TryParse(team.TeamNumber, out teamNo))
+                var scheduleNumber = games.First().ScheduleNumber;
+                // var teamNumber = GetTeamNo(scheduleNumber, teamNo, team.SeasonID);
+                var seasonRecord = new ScheduleStandingsVM
                 {
-                    var scheduleNumber = games.First().ScheduleNumber;
-                    // var teamNumber = GetTeamNo(scheduleNumber, teamNo, team.SeasonID);
-                    var seasonRecord = new ScheduleStandingsVM
-                    {
-                        TeamNo = Convert.ToInt32(divTeam.TeamNumber),
-                        TeamName = "", // team.TeamName,
-                        DivNo = team.DivisionId.ToString(),
-                        Won = 0,
-                        Lost = 0,
-                        PF = 0,
-                        PA = 0
-                    };
+                    TeamNo = Convert.ToInt32(divTeam.TeamNumber),
+                    TeamName = "", // team.TeamName,
+                    DivNo = team.DivisionId.ToString(),
+                    Won = 0,
+                    Lost = 0,
+                    PF = 0,
+                    PA = 0
+                };
 
-                    var records = games.Where(g => g.HomeTeamNumber.ToString() == team.TeamNumber || g.VisitingTeamNumber.ToString() == team.TeamNumber);
-                    foreach (var record in records)
+                var records = games.Where(g => g.HomeTeamNumber.ToString() == team.TeamNumber || g.VisitingTeamNumber.ToString() == team.TeamNumber);
+                foreach (var record in records)
+                {
+                    if (record.HomeTeamScore > 0 || record.VisitingTeamScore > 0)
                     {
-                        if (record.HomeTeamScore > 0 || record.VisitingTeamScore > 0)
+                        if (team.TeamNumber == record.HomeTeamNumber.ToString())
                         {
-                            if (team.TeamNumber == record.HomeTeamNumber.ToString())
-                            {
-                                seasonRecord.PA += record.VisitingTeamScore.HasValue ? (int)record.VisitingTeamScore.Value : 0;
-                                seasonRecord.PF += record.HomeTeamScore ?? 0;
+                            seasonRecord.PA += record.VisitingTeamScore.HasValue ? (int)record.VisitingTeamScore.Value : 0;
+                            seasonRecord.PF += record.HomeTeamScore ?? 0;
 
-                                if (record.HomeTeamScore > record.VisitingTeamScore)
+                            if (record.HomeTeamScore > record.VisitingTeamScore)
+                                seasonRecord.Won++;
+                            else
+                                seasonRecord.Lost++;
+                        }
+                        else
+                        {
+                            if (team.TeamNumber == record.VisitingTeamNumber.ToString())
+                            {
+                                seasonRecord.PF += record.VisitingTeamScore ?? 0;
+                                seasonRecord.PA += record.HomeTeamScore ?? 0;
+                                if (record.VisitingTeamScore > record.HomeTeamScore)
                                     seasonRecord.Won++;
                                 else
                                     seasonRecord.Lost++;
                             }
-                            else
-                            {
-                                if (team.TeamNumber == record.VisitingTeamNumber.ToString())
-                                {
-                                    seasonRecord.PF += record.VisitingTeamScore ?? 0;
-                                    seasonRecord.PA += record.HomeTeamScore ?? 0;
-                                    if (record.VisitingTeamScore > record.HomeTeamScore)
-                                        seasonRecord.Won++;
-                                    else
-                                        seasonRecord.Lost++;
-                                }
-                            }
                         }
                     }
-                    if ((seasonRecord.Won + seasonRecord.Lost) > 0)
-                    {
-                        Decimal Pct = ((decimal)seasonRecord.Won / (decimal)(seasonRecord.Won + seasonRecord.Lost)) * 100;
-                        seasonRecord.Pct = Pct;
-                    }
-                    else
-                        seasonRecord.Pct = 0;
-                    return seasonRecord;
+                }
+                if ((seasonRecord.Won + seasonRecord.Lost) > 0)
+                {
+                    Decimal Pct = ((decimal)seasonRecord.Won / (decimal)(seasonRecord.Won + seasonRecord.Lost)) * 100;
+                    seasonRecord.Pct = Pct;
                 }
                 else
-                    return new ScheduleStandingsVM();
+                    seasonRecord.Pct = 0;
+                return seasonRecord;
             }
-
-            return new ScheduleStandingsVM();
-
+            else
+                return new ScheduleStandingsVM();
         }
 
-        private int GetTeamNo(int divisionNo, int teamNo, int seasonId)
+        return new ScheduleStandingsVM();
+
+    }
+
+    private int GetTeamNo(int divisionNo, int teamNo, int seasonId)
+    {
+        using (var db = new hoopsContext())
         {
-            using (var db = new hoopsContext())
-            {
-                var schedTeam = db.Set<ScheduleDivTeam>()
-                    .FirstOrDefault(t => t.ScheduleNumber == divisionNo
-                    && t.ScheduleTeamNumber == teamNo
-                    && t.SeasonId == seasonId);
-                return schedTeam?.TeamNumber ?? 0;
-            }
-        }
-
-        private List<Team> GetDivisionTeams(IEnumerable<Color> colors, IEnumerable<Team> teams, int divisionNo)
-        {
-
-            // var repoColor = new ColorRepository(db);
-            // var colors = repoColor.GetAll(1);
-            // var rep = new TeamRepository(db);
-            // var teams = rep.GetDivisionTeams(divisionNo);
-            var teamsWithColors = new List<Team>();
-            foreach (Team team in teams)
-            {
-                if (String.IsNullOrEmpty(team.TeamName))
-                {
-                    if (team == null)
-                    {
-                        if (team != null && team.TeamColorId != 0)
-                        {
-                            var color = colors.FirstOrDefault(c => c.ColorId == team.TeamColorId);
-                            team.TeamName = color == null ? "(" + team.TeamNumber + ")" : color.ColorName + "(" + team.TeamNumber + ")";
-                        }
-                        else
-                        {
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-                            team.TeamName = "(" + (team.TeamNumber != null ? team.TeamNumber : "Unknown") + ")";
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
-                        }
-                    }
-                    else
-                    {
-                        team.TeamName = team.TeamColor + "(" + team.TeamNumber + ")";
-                    }
-
-                }
-                else
-                {
-
-                }
-            }
-            return teams.ToList();
-
-        }
-
-
-        private List<Team> GetTeamNames(List<Team> teams, IQueryable<Color> colors)
-        {
-
-            foreach (var team in teams)
-            {
-                //team.Color = colors.FirstOrDefault(c => c.ID == ;
-                team.TeamName = team.TeamColor + "(" + team.TeamNumber + ")";
-            }
-            return teams;
+            var schedTeam = db.Set<ScheduleDivTeam>()
+                .FirstOrDefault(t => t.ScheduleNumber == divisionNo
+                && t.ScheduleTeamNumber == teamNo
+                && t.SeasonId == seasonId);
+            return schedTeam?.TeamNumber ?? 0;
         }
     }
+
+    private List<Team> GetDivisionTeams(IEnumerable<Color> colors, IEnumerable<Team> teams, int divisionNo)
+    {
+
+        // var repoColor = new ColorRepository(db);
+        // var colors = repoColor.GetAll(1);
+        // var rep = new TeamRepository(db);
+        // var teams = rep.GetDivisionTeams(divisionNo);
+        var teamsWithColors = new List<Team>();
+        foreach (Team team in teams)
+        {
+            if (String.IsNullOrEmpty(team.TeamName))
+            {
+                if (team == null)
+                {
+                    if (team != null && team.TeamColorId != 0)
+                    {
+                        var color = colors.FirstOrDefault(c => c.ColorId == team.TeamColorId);
+                        team.TeamName = color == null ? "(" + team.TeamNumber + ")" : color.ColorName + "(" + team.TeamNumber + ")";
+                    }
+                    else
+                    {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+                        team.TeamName = "(" + (team.TeamNumber != null ? team.TeamNumber : "Unknown") + ")";
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+                    }
+                }
+                else
+                {
+                    team.TeamName = team.TeamColor + "(" + team.TeamNumber + ")";
+                }
+
+            }
+            else
+            {
+
+            }
+        }
+        return teams.ToList();
+
+    }
+
+
+    private List<Team> GetTeamNames(List<Team> teams, IQueryable<Color> colors)
+    {
+
+        foreach (var team in teams)
+        {
+            //team.Color = colors.FirstOrDefault(c => c.ID == ;
+            team.TeamName = team.TeamColor + "(" + team.TeamNumber + ")";
+        }
+        return teams;
+    }
+}

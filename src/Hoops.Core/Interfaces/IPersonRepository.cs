@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Hoops.Core.Models;
-using Hoops.Core.ViewModels;
 using Hoops.Core.Enum;
-using System.Threading.Tasks;
 
 namespace Hoops.Core.Interface
 {
@@ -17,7 +15,7 @@ namespace Hoops.Core.Interface
         int GetBccList(string lastName, string firstName);
         IQueryable<Person> GetADs(int companyId);
         void RemoveFromHousehold(int p);
-        List<string> GetParents(int personId); 
+        List<string> GetParents(int personId);
         List<Person> GetByHousehold(int householdId);
     }
 }

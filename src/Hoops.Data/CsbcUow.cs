@@ -1,8 +1,6 @@
-﻿using Hoops.Core;
-using Hoops.Core.Interface;
+﻿using Hoops.Core.Interface;
 using System;
 using Hoops.Infrastructure.Data;
-using Hoops.Data; // Add this line to include the correct namespace for hoopsContext
 
 namespace Hoops.Data
 {

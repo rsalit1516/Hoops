@@ -1,5 +1,4 @@
 using System;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
 namespace Hoops.Core.Models
@@ -29,5 +28,5 @@ namespace Hoops.Core.Models
         // [ForeignKey("DirectorID")]
         // public virtual Person Director { get; set; }
     }
-    
+
 }
