@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Hoops.Infrastructure.Repository
 {
-    public class CommentRepository : ICommentRepository
+    public class CommentRepository : EFRepository<Comment>, ICommentRepository 
     {
         private readonly DbContext _context;
 

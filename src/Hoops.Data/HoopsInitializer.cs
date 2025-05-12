@@ -18,7 +18,6 @@ namespace Hoops.Data
         public List<string> HouseholdLastNames = new List<string>(new string[] { "Fallon", "Leno", "Obrien", "Letterman", "Morgan", "Johnson", "Smith", "Clapton", "Bruce", "Tweedy", "Franks", "Garcia", "Lesh", "Hart", "Weir", "Kreutzman" });
         public List<string> FirstNames = new List<string>(new string[] { "Mike", "Rich", "Conan", "David", "Fred", "Brenda", "Ann", "Wilbur", "Harry", "Jack", "Jill", "Robert", "William", "Carol", "James", "Harold", "Skye", "Beatrice", "Thomas" });
 
-
         public const string Household1 = "Schwartz";
         public const string Household2 = "Smith";
         public const string Household3 = "Jones";
@@ -30,6 +29,7 @@ namespace Hoops.Data
         public const string PersonFirstName3 = "Edward";
         public const string PersonFirstName4 = "Richard";
         public const string PersonFirstName5 = "Phil";
+
 
         public List<string> ColorNames = new List<string>(new string[] { "Red", "Blue", "Green", "Yellow", "Black", "White", "Orange", "Heather", "Tan" });
 
@@ -72,6 +72,7 @@ namespace Hoops.Data
             InitSeasons(context);
             InitHouseholds(context);
             InitPersonTest(context);
+            InitComments(context);
             await InitDivision(context);
             await InitTeams(context);
             InitDirectorTest();
@@ -183,7 +184,18 @@ namespace Hoops.Data
             context.SaveChanges();
             return (true);  //may want to change this
         }
+public void InitComments(hoopsContext context)
+        {
+            // Add test data to the in-memory database
+            context.Comments.AddRange(new List<Comment>
+            {
+                new Comment { CommentID = 1, LinkID = 101, CommentType = "General", Comment1 = "Test Comment 1", CompanyID = 1 },
+                new Comment { CommentID = 2, LinkID = 102, CommentType = "Feedback", Comment1 = "Test Comment 2", CompanyID = 1 },
+                new Comment { CommentID = 3, LinkID = 101, CommentType = "General", Comment1 = "Test Comment 3", CompanyID = 1 }
+            });
 
+            context.SaveChanges();
+        }
         public bool InitDirectorTest()
         {
             ILogger<PersonRepository> _logger = LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<PersonRepository>();
@@ -628,6 +640,15 @@ namespace Hoops.Data
             foreach (Person person in people)
             {
                 rep.Delete(person);
+            }
+        }
+        public void DeleteTestComments(hoopsContext context)
+        {
+            var rep = new CommentRepository(context);
+            var comments = rep.GetAll().ToList<Comment>();
+            foreach (Comment comment in comments)
+            {
+                rep.Delete(comment);
             }
         }
         public void DeleteTestPlayers(hoopsContext context)
