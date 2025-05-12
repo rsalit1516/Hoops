@@ -94,6 +94,8 @@ export class PersonalInfoComponent implements OnInit {
       parent: [false],
       coach: [false],
       player: [false],
+      currentBM: [false],
+      playsUp: [false],
       volunteerCheckboxes: this.fb.array([]),
       Comments: [''],
     });

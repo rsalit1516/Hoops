@@ -1,12 +1,11 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Hoops.Core.Models
 {
     public partial class ShoppingCart
     {
-     [Key]
+        [Key]
         public int CartID { get; set; }
         public int? CompanyID { get; set; }
         public int? SeasonID { get; set; }

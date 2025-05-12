@@ -1,17 +1,15 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Hoops.Core.Models;
 using Hoops.Core.Interface;
 using Microsoft.EntityFrameworkCore;
+using Hoops.Infrastructure.Data;
 
 namespace Hoops.Infrastructure.Repository
 {
     public class CommentRepository : EFRepository<Comment>, ICommentRepository 
     {
-        private readonly DbContext _context;
+        private readonly hoopsContext _context;
 
-        public CommentRepository(DbContext context)
+        public CommentRepository(hoopsContext context)
         {
             _context = context;
         }

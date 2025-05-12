@@ -1,11 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Data;
 using Hoops.Core.Models;
-using static Hoops.Core.Enum.GroupTypes;
 using Hoops.Infrastructure.Data;
-using Hoops.Core.ViewModels;
 
 namespace Hoops.Core.ViewModels
 {
@@ -18,7 +13,7 @@ namespace Hoops.Core.ViewModels
                 var result = (from d in db.Divisions
                               from g in db.ScheduleGames
                               from l in db.ScheduleLocations
-                              
+
                               where g.SeasonId == seasonId
                               where g.DivisionId == d.DivisionId
                               where g.LocationNumber == l.LocationNumber
@@ -173,11 +168,11 @@ namespace Hoops.Core.ViewModels
 
         // }
 
-        private static ScheduleDivTeam  GetTeam(List<ScheduleDivTeam> schedDiv, int gameNo, int teamNo, int? seasonId )
+        private static ScheduleDivTeam GetTeam(List<ScheduleDivTeam> schedDiv, int gameNo, int teamNo, int? seasonId)
         {
             var team = schedDiv.FirstOrDefault(s => s.ScheduleNumber == gameNo &&
                 s.TeamNumber == teamNo &&
-                s.SeasonId == seasonId );
+                s.SeasonId == seasonId);
             if (team == null)
             {
                 throw new InvalidOperationException("Team not found.");

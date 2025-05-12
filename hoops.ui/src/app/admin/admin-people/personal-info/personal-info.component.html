@@ -57,7 +57,35 @@
         <mat-label>School Name</mat-label>
         <input matInput formControlName="schoolName" />
       </mat-form-field>
-      <div class="grid grid-cols-2 gap-4" formArrayName="volunteerCheckboxes">
+      <div class="grid gap-4 mt-4">
+        <div id="playerInfo" class="grid-cols-2 border p-4">
+          <div class="flex items-center">
+            <mat-checkbox formControlName="currentBM">
+              Current BM
+            </mat-checkbox>
+          </div>
+          <div class="flex items-center">
+            <mat-checkbox formControlName="playsUp"> Plays Up </mat-checkbox>
+          </div>
+        </div>
+
+        <div id="personType" class="grid-cols-2 border p-4">
+          <div class="flex items-center">
+            <mat-checkbox formControlName="player"> Player </mat-checkbox>
+          </div>
+          <div class="flex items-center">
+            <mat-checkbox formControlName="coach"> Coach </mat-checkbox>
+          </div>
+          <div class="flex items-center">
+            <mat-checkbox formControlName="parent"> Parent </mat-checkbox>
+          </div>
+        </div>
+      </div>
+      <div
+        id="volunteerInfo"
+        class="grid grid-cols-3 gap-4 border p-4 mt-4"
+        formArrayName="volunteerCheckboxes"
+      >
         <div
           *ngFor="let volunteer of volunteers; let i = index"
           class="flex items-center"

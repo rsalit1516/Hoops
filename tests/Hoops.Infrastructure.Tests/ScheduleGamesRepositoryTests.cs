@@ -1,9 +1,6 @@
-using Hoops.Core;
 using Hoops.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Xunit;
-using System.Threading.Tasks;
 using Hoops.Infrastructure.Data;
 
 namespace Hoops.Infrastructure.Tests

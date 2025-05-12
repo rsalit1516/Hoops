@@ -15,11 +15,7 @@ namespace Hoops.Infrastructure.Repository
             _logger = new Logger<SchedulePlayoffRepository>(new LoggerFactory());
         }
 
-        public SchedulePlayoffRepository()
-        {
-            context = new hoopsContext();
-            _logger = new Logger<SchedulePlayoffRepository>(new LoggerFactory());
-        }
+
 
         #region IRepository<T> Members
         public IQueryable<SchedulePlayoff> GetByDate(DateTime date)
@@ -134,7 +130,8 @@ namespace Hoops.Infrastructure.Repository
             else
             {
                 return "no location";
-            };
+            }
+            ;
             // return "";
         }
 
