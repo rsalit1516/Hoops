@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -65,6 +66,7 @@ namespace Hoops.Core.Models
 
         [ForeignKey("HouseId")]
         public virtual Household Household { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
     }
 }

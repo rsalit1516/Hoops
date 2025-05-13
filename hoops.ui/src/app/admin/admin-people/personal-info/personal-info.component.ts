@@ -114,8 +114,13 @@ export class PersonalInfoComponent implements OnInit {
       workPhone: this.person()?.workphone ?? '',
       grade: this.person()?.grade ?? 0,
       schoolName: this.person()?.schoolName ?? '',
+      parent: this.person()?.parent ?? false,
+      coach: this.person()?.coach ?? false,
+      player: this.person()?.player ?? false,
+      currentBM: this.person()?.boardMember ?? false,
+      playsUp: this.person()?.giftedLevelsUp ?? 0,
 
-      comments: this.person()?.comments ?? '',
+      // comments: this.person()?.comments ?? '',
     });
   }
 
