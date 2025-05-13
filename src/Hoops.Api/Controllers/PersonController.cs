@@ -51,7 +51,7 @@ namespace Hoops.Controllers
         }
         // GET: api/person/search
         [HttpGet("search")]
-        public ActionResult<IEnumerable<PersonVM>> Search(
+        public ActionResult<IEnumerable<Person>> Search(
             [FromQuery] string lastName,
             [FromQuery] string firstName,
             [FromQuery] bool playerOnly)
