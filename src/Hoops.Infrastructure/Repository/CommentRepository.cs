@@ -9,7 +9,7 @@ namespace Hoops.Infrastructure.Repository
     {
         private readonly hoopsContext _context;
 
-        public CommentRepository(hoopsContext context)
+        public CommentRepository(hoopsContext context): base(context)
         {
             _context = context;
         }
