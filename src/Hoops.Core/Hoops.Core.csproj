@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Azure.Core" Version="1.25" />
+    <PackageReference Include="Azure.Core" Version="1.25.0" />
     <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="9.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0">
       <PrivateAssets>all</PrivateAssets>
