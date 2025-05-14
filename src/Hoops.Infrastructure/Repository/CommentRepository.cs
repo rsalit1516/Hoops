@@ -5,11 +5,11 @@ using Hoops.Infrastructure.Data;
 
 namespace Hoops.Infrastructure.Repository
 {
-    public class CommentRepository : EFRepository<Comment>, ICommentRepository 
+    public class CommentRepository : EFRepository<Comment>, ICommentRepository
     {
         private readonly hoopsContext _context;
 
-        public CommentRepository(hoopsContext context)
+        public CommentRepository(hoopsContext context) : base(context)
         {
             _context = context;
         }
