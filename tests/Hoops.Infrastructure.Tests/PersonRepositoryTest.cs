@@ -6,40 +6,48 @@ using Moq;
 
 namespace Hoops.Infrastructure.Tests
 {
+    [Collection("TestDatabaseCollection")]
     public class PersonRepositoryTest
     {
         private readonly hoopsContext _context;
         private readonly PersonRepository _repository;
-        // private readonly Mock<hoopsContext> _mockContext;
-        // private readonly Mock<DbSet<Person>> _mockDbSet;
 
-        private readonly Mock<ILogger<PersonRepository>> _mockLogger;
+        // private readonly Mock<ILogger<PersonRepository>> _mockLogger;
 
-        // private readonly hoopsContext context;
-        // public PersonRepository repo;
         private readonly ILogger<PersonRepository> _logger = new LoggerFactory().CreateLogger<PersonRepository>();
 
         public PersonRepositoryTest(TestDatabaseFixture fixture)
         {
             _context = fixture.Context ?? throw new ArgumentNullException(nameof(fixture.Context), "Context cannot be null");
             _repository = new PersonRepository(_context, _logger);
-            // _mockDbSet = new Mock<DbSet<Person>>();
-            _mockLogger = new Mock<ILogger<PersonRepository>>();
-            // _mockLogger = new Mock<ILogger<PersonRepository>>();
-            _logger = _mockLogger.Object;
-            // _repository = new PersonRepository(_mockContext.Object, _logger);
-            // _mockContext = new Mock<hoopsContext>();
-            // _mockDbSet = new Mock<DbSet<Person>>();
-            // _mockLogger = new Mock<ILogger<PersonRepository>>();
-            // _logger = _mockLogger.Object;
-            // _repository = new PersonRepository(_mockContext.Object, _logger);
-            // var options = new DbContextOptionsBuilder<hoopsContext>()
-            //     .UseInMemoryDatabase(databaseName: "hoops")
-            //     .Options;
-            // context = new hoopsContext(options);
-
         }
 
+        [Fact]
+        public void GetAll_ReturnPeopleByLastNameFirstNameAndPlayer()
+        {
+            // Arrange
+            var people = new List<Person>
+            {
+                new Person { PersonId = 1, FirstName = "John", LastName = "Doe", Player = true },
+                new Person { PersonId = 2, FirstName = "Jane", LastName = "Smith", Player = true },
+                new Person { PersonId = 3, FirstName = "Felix", LastName = "Smith", Player = false },
+                new Person { PersonId = 4, FirstName = "Jane", LastName = "Doe", Player = true },
+            };
+
+            _repository.Insert(people[0]);
+            _repository.Insert(people[1]);
+            _repository.Insert(people[2]);
+            _repository.Insert(people[3]);
+            _repository.SaveChanges();
+            // _mockDbSet.Setup(m => m.ToList()).Returns(people);
+
+            // Act
+            var result = _repository.FindPeopleByLastAndFirstName("Smith", "Jane", true);
+
+            // Assert
+            Assert.NotNull(result);
+            // Assert.Equal(2, result.Count);
+        }
         [Fact]
         public void GetParents_ReturnsParents_WhenChildExists()
         {

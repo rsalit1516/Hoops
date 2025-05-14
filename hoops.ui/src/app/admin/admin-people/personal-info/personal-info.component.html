@@ -33,8 +33,8 @@
 
       <mat-label>Gender</mat-label>
       <mat-radio-group formControlName="gender">
-        <mat-radio-button value="male">Male</mat-radio-button>
-        <mat-radio-button value="female">Female</mat-radio-button>
+        <mat-radio-button value="M">Male</mat-radio-button>
+        <mat-radio-button value="F">Female</mat-radio-button>
         <!-- <mat-radio-button value="other">Other</mat-radio-button> -->
       </mat-radio-group>
 
@@ -65,7 +65,9 @@
             </mat-checkbox>
           </div>
           <div class="flex items-center">
-            <mat-checkbox formControlName="playsUp"> Plays Up </mat-checkbox>
+            <mat-checkbox formControlName="playsUp" class="items-center mr-2">
+              Plays Up
+            </mat-checkbox>
           </div>
         </div>
 
@@ -90,7 +92,7 @@
           *ngFor="let volunteer of volunteers; let i = index"
           class="flex items-center"
         >
-          <mat-checkbox [formControlName]="i">
+          <mat-checkbox [formControlName]="i" class="mr-2">
             {{ volunteer.name }}
           </mat-checkbox>
         </div>

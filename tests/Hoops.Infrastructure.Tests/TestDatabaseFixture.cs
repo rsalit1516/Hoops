@@ -2,7 +2,7 @@ using Hoops.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Hoops.Data;
 
-public class TestDatabaseFixture : IAsyncLifetime
+public class TestDatabaseFixture : IAsyncLifetime, IDisposable
 {
     public hoopsContext? Context { get; private set; }
 
@@ -26,5 +26,9 @@ public class TestDatabaseFixture : IAsyncLifetime
         {
             await Task.Run(() => Context.Dispose());
         }
+    }
+    public void Dispose()
+    {
+        Context?.Dispose();
     }
 }

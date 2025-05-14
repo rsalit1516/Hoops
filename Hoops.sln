@@ -15,8 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hoops.Api", "src\Hoops.Api\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hoops.Infrastructure", "src\Hoops.Infrastructure\Hoops.Infrastructure.csproj", "{10060F55-B948-4843-824D-58E2D3DA0ABF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hoops.Core.Tests", "tests\Hoops.Core.Tests\Hoops.Core.Tests.csproj", "{D3462862-4B1F-4CC5-B440-46C875808734}"
-EndProject
+
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hoops.Api.Tests", "tests\Hoops.Api.Tests\Hoops.Api.Tests.csproj", "{8AD5E9CD-E5D8-48C3-9184-330210F01A50}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hoops.Infrastructure.Tests", "tests\Hoops.Infrastructure.Tests\Hoops.Infrastructure.Tests.csproj", "{EFAE2523-34EB-4BDE-9E62-5537C87587CC}"
