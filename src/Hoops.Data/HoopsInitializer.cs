@@ -74,7 +74,7 @@ namespace Hoops.Data
             InitPersonTest(context);
             InitComments(context);
             await InitDivision(context);
-            await InitTeams(context);
+            InitTeams(context);
             InitDirectorTest();
             InitPlayers(context);
             InitCoaches(context);
@@ -566,36 +566,37 @@ namespace Hoops.Data
             return seasons;
         }
 
-        public async Task InitTeams(hoopsContext context)
+        public void InitTeams(hoopsContext context)
         {
-            using (context)
-            {
-                var rep = new TeamRepository(context);
-                var repSeason = new SeasonRepository(context);
-                var season = await repSeason.GetCurrentSeason(CompanyId);
-                var repDivisions = new DivisionRepository(context);
-                var divisions = repDivisions.GetDivisions(season.SeasonId).ToList<Division>();
-                var repcolors = new ColorRepository(context);
-                foreach (Division division in divisions)
-                {
-                    for (int i = 1; i < 8; i++)
-                    {
-                        var color = repcolors.GetByName(CompanyId, ColorNames[i]);
-                        var team = new Team
-                        {
-                            DivisionId = division.DivisionId,
-                            SeasonId = season.SeasonId,
-                            TeamName = "T-" + i.ToString() + "-" + division.DivisionDescription.Trim(),
-                            // CompanyId = CompanyId,
-                            TeamNumber = i.ToString(),
-                            TeamColor = ColorNames[i],
-                            TeamColorId = color.ColorId
-                        };
-                        rep.Insert(team);
-                    }
-                }
+            // using (context)
+            // {
+            //     var rep = new TeamRepository(context);
+            //     var repSeason = new SeasonRepository(context);
+            //     var season = await repSeason.GetCurrentSeason(CompanyId);
+            //     var repDivisions = new DivisionRepository(context);
+            //     var divisions = repDivisions.GetDivisions(season.SeasonId).ToList<Division>();
+            //     var repcolors = new ColorRepository(context);
+            //     foreach (Division division in divisions)
+            //     {
+            //         for (int i = 1; i < 8; i++)
+            //         {
+            //             var color = repcolors.GetByName(CompanyId, ColorNames[i]);
+            //             var team = new Team
+            //             {
+            //                 DivisionId = division.DivisionId,
+            //                 SeasonId = season.SeasonId,
+            //                 TeamName = "T-" + i.ToString() + "-" + division.DivisionDescription.Trim(),
+            //                 // CompanyId = CompanyId,
+            //                 TeamNumber = i.ToString(),
+            //                 TeamColor = ColorNames[i],
+            //                 TeamColorId = color.ColorId
+            //             };
+            //             rep.Insert(team);
+            //         }
+            //     }
 
-            }
+            // }
+            return;
         }
         public void InitColors(hoopsContext context)
         {
