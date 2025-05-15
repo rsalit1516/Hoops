@@ -17,6 +17,7 @@ namespace Hoops.Infrastructure.Repository
 
         public TeamRepository(hoopsContext context)
             : base(context) { }
+
         #region IRepository<T> Members
 
         // public IEnumerable<Team> GetAll(int companyId)
@@ -26,7 +27,6 @@ namespace Hoops.Infrastructure.Repository
 
 
         #endregion
-
 
         public IQueryable<Team> GetTeams(int divisionId)
         {

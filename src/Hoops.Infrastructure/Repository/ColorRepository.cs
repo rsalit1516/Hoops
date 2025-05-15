@@ -6,11 +6,16 @@ namespace Hoops.Infrastructure.Repository
 {
     public class ColorRepository : EFRepository<Color>, IColorRepository
     {
-        public ColorRepository(hoopsContext context) : base(context) {}
- 
-        public Color GetByName(int companyId, string colorName)
+        public ColorRepository(hoopsContext context) : base(context) { }
+
+        public Color? GetByName(int companyId, string colorName)
         {
-            var color = context.Set<Color>().FirstOrDefault(c => c.ColorName == colorName && c.CompanyId == companyId) ?? throw new InvalidOperationException($"Color with name '{colorName}' and company ID '{companyId}' not found.");
+            var color = context.Set<Color>().FirstOrDefault(c => c.ColorName == colorName && c.CompanyId == companyId);
+            if (color == null)
+            {
+                // Optionally log a message or handle the case where the color is not found
+                Console.WriteLine($"Color with name '{colorName}' and company ID '{companyId}' not found.");
+            }
             return color;
         }
 
