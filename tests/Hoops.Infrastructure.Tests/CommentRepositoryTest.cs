@@ -1,6 +1,7 @@
 using Hoops.Core.Models;
 using Hoops.Infrastructure.Data;
 using Hoops.Infrastructure.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hoops.Infrastructure.Tests
 {
@@ -12,15 +13,16 @@ namespace Hoops.Infrastructure.Tests
         public CommentRepositoryTest(TestDatabaseFixture fixture)
         {
             // Set up an in-memory database
-            // var options = new DbContextOptionsBuilder<hoopsContext>()
-            //     .UseInMemoryDatabase(databaseName: "HoopsTestDb")
-            //     .Options;
+            var options = new DbContextOptionsBuilder<hoopsContext>()
+                .UseInMemoryDatabase(databaseName: "HoopsTestDb")
+                .Options;
+            _context = new hoopsContext(options);
 
-            _context = fixture.Context ?? throw new ArgumentNullException(nameof(fixture.Context), "Context cannot be null");
+            // _context = fixture.Context ?? throw new ArgumentNullException(nameof(fixture.Context), "Context cannot be null");
             _repository = new CommentRepository(_context);
 
             // Seed the database with test data
-            // SeedDatabase();
+            SeedDatabase();
         }
 
         private void SeedDatabase()

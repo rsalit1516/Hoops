@@ -16,8 +16,8 @@ public class TestDatabaseFixture : IAsyncLifetime, IDisposable
         Context = new hoopsContext(options);
 
         // Seed the database
-        var seeder = new HoopsInitializer();
-        await seeder.Seed(Context);
+        // var seeder = new HoopsInitializer();
+        // await seeder.Seed(Context);
     }
 
     public async Task DisposeAsync()

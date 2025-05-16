@@ -114,10 +114,9 @@ namespace Hoops.Infrastructure.Repository
                 {
                     person = person.Where(p => p.Player == true);
                 }
-                person = (IQueryable<Person>)person
+                person = person
                 .Include(p => p.Comments)
-                .AsNoTracking()
-                .ToList();
+                .AsNoTracking();
                 return person;
 
                 // return from p in person
@@ -300,7 +299,7 @@ namespace Hoops.Infrastructure.Repository
         public List<string> GetParents(int personId)
         {
             var child = context.Set<Person>()
-            .FirstOrDefault(p => p.HouseId == personId);
+            .FirstOrDefault(p => p.PersonId == personId);
             var parents = new List<string>();
             if (child != null)
             {
