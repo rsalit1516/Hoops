@@ -19,9 +19,12 @@ namespace Hoops.Infrastructure.Tests
 
         public PersonRepositoryTest(TestDatabaseFixture fixture)
         {
-            var options = new DbContextOptionsBuilder<hoopsContext>()
-               .UseInMemoryDatabase(databaseName: "HoopsTestDb")
-               .Options;
+            // var options = new DbContextOptionsBuilder<hoopsContext>()
+            //    .UseInMemoryDatabase(databaseName: "HoopsTestDb")
+            //    .Options;
+               var options = new DbContextOptionsBuilder<hoopsContext>()
+    .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+    .Options;
             _context = new hoopsContext(options);
             // _context = fixture.Context ?? throw new ArgumentNullException(nameof(fixture.Context), "Context cannot be null");
             _repository = new PersonRepository(_context, _logger);
@@ -50,17 +53,9 @@ namespace Hoops.Infrastructure.Tests
         public void GetAll_ReturnPeopleByLastNameFirstNameAndPlayer()
         {
             // Arrange
-            // var maxPersonId = _context.People.Max(p => p.PersonId) + 1;
-            // _context.People.AddRange(new List<Person>
-            // {
-            //     new Person { PersonId = maxPersonId + 1, FirstName = "John", LastName = "Doe", Player = true },
-            //     new Person { PersonId = maxPersonId + 2, FirstName = "Jane", LastName = "Smith", Player = false },
-            //     new Person { PersonId = maxPersonId + 3, FirstName = "Felix", LastName = "Smith", Player = true },
-            //     new Person { PersonId = maxPersonId + 4, FirstName = "Jane", LastName = "Doe", Player = false },
-            // });
 
             // Act
-            var result = _repository.FindPeopleByLastAndFirstName("Smith", "Jane", true);
+            var result = _repository.FindPeopleByLastAndFirstName("Smith", "Jane", false);
 
             // Assert
             Assert.NotNull(result);
@@ -141,9 +136,10 @@ namespace Hoops.Infrastructure.Tests
         public async Task InsertAsyncTest()
         {
             // Arrange
-            var person = new Person { PersonId = maxPersonId + 6,HouseId = maxHouseId, Parent = true, LastName = "Johnson", FirstName = "Jane"};
+            var maxHouseId = 0;
+            var maxPersonId = 0;
 
-            // _mockDbSet.Setup(m => m.AddAsync(person, default)).ReturnsAsync((EntityEntry<Person>)person);
+            var person = new Person { PersonId = maxPersonId + 6,HouseId = maxHouseId, Parent = true, LastName = "Johnson", FirstName = "Jane"};
 
             // Act
             var result = await _repository.InsertAsync(person);
