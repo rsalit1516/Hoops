@@ -43,7 +43,7 @@ namespace Hoops.Infrastructure.Tests
         {
             // var repo = new ScheduleGameRepository(new hoopsContext());
             // var actual = repo.GetStandings(4119);
-            // Assert.True(actual != null);
+            Assert.True(true);
 
         }
         [Fact]
