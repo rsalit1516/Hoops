@@ -93,58 +93,58 @@ namespace Hoops.Infrastructure.Tests
                 });
                 _context.SaveChanges();
 
-            }
-            ;
+            };
 
             var firstDivision = _context.Divisions.FirstOrDefault();
             var divisionid = firstDivision != null ? firstDivision.DivisionId : 0;
 
 
             // Add test data to the in-memory database
+            int scheduleNumber = 1;
             _context.SchedulePlayoffs.AddRange(new List<SchedulePlayoff>
             {
-  new SchedulePlayoff
-        {
-            ScheduleNumber = 1,
-            GameNumber = 1,
-            LocationNumber = 101,
-            GameDate = new DateTime(2025, 6, 1),
-            GameTime = "7:00 PM",
-            VisitingTeam = "Tigers",
-            HomeTeam = "Lions",
-            Descr = "Quarterfinal",
-            VisitingTeamScore = 55,
-            HomeTeamScore = 60,
-            DivisionId = divisionid
-        },
-        new SchedulePlayoff
-        {
-            ScheduleNumber = 1,
-            GameNumber = 2,
-            LocationNumber = 102,
-            GameDate = new DateTime(2025, 6, 2),
-            GameTime = "8:00 PM",
-            VisitingTeam = "Bears",
-            HomeTeam = "Wolves",
-            Descr = "Quarterfinal",
-            VisitingTeamScore = 48,
-            HomeTeamScore = 52,
-            DivisionId = divisionid
-        },
-        new SchedulePlayoff
-        {
-            ScheduleNumber = 2,
-            GameNumber = 1,
-            LocationNumber = 103,
-            GameDate = new DateTime(2025, 6, 3),
-            GameTime = "6:00 PM",
-            VisitingTeam = "Eagles",
-            HomeTeam = "Sharks",
-            Descr = "Semifinal",
-            VisitingTeamScore = 62,
-            HomeTeamScore = 58,
-            DivisionId = divisionid
-        }
+                new SchedulePlayoff
+                {
+                    ScheduleNumber = scheduleNumber,
+                    GameNumber = 1,
+                    LocationNumber = 101,
+                    GameDate = new DateTime(2025, 6, 1),
+                    GameTime = "7:00 PM",
+                    VisitingTeam = "Tigers",
+                    HomeTeam = "Lions",
+                    Descr = "Quarterfinal",
+                    VisitingTeamScore = 55,
+                    HomeTeamScore = 60,
+                    DivisionId = divisionid
+                },
+                new SchedulePlayoff
+                {
+                    ScheduleNumber = scheduleNumber++,
+                    GameNumber = 2,
+                    LocationNumber = 102,
+                    GameDate = new DateTime(2025, 6, 2),
+                    GameTime = "8:00 PM",
+                    VisitingTeam = "Bears",
+                    HomeTeam = "Wolves",
+                    Descr = "Quarterfinal",
+                    VisitingTeamScore = 48,
+                    HomeTeamScore = 52,
+                    DivisionId = divisionid
+                },
+                new SchedulePlayoff
+                {
+                    ScheduleNumber = scheduleNumber++,
+                    GameNumber = 1,
+                    LocationNumber = 103,
+                    GameDate = new DateTime(2025, 6, 3),
+                    GameTime = "6:00 PM",
+                    VisitingTeam = "Eagles",
+                    HomeTeam = "Sharks",
+                    Descr = "Semifinal",
+                    VisitingTeamScore = 62,
+                    HomeTeamScore = 58,
+                    DivisionId = divisionid
+                }
             });
 
             _context.SaveChanges();
