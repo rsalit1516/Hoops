@@ -19,9 +19,6 @@ namespace Hoops.Infrastructure.Tests
 
         public PersonRepositoryTest(TestDatabaseFixture fixture)
         {
-            // var options = new DbContextOptionsBuilder<hoopsContext>()
-            //    .UseInMemoryDatabase(databaseName: "HoopsTestDb")
-            //    .Options;
             var options = new DbContextOptionsBuilder<hoopsContext>()
  .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
  .Options;

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Hoops.Infrastructure.Tests
 {
-    public class SchedulePlayoffRepositoryTests
+    public class SchedulePlayoffRepositoryTests : IClassFixture<TestDatabaseFixture>, IDisposable
     {
         private readonly hoopsContext _context;
         private readonly SchedulePlayoffRepository _repository;
@@ -15,13 +15,18 @@ namespace Hoops.Infrastructure.Tests
         {
             // Set up an in-memory database
             var options = new DbContextOptionsBuilder<hoopsContext>()
-                .UseInMemoryDatabase(databaseName: "HoopsTestDb")
+                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                 .Options;
+
             _context = new hoopsContext(options);
             _repository = new SchedulePlayoffRepository(_context);
             // Seed the database with test data
             SeedDatabase();
+        }
 
+        public void Dispose()
+        {
+            _context.Dispose();
         }
         private void SeedDatabase()
         {
