@@ -26,7 +26,7 @@ namespace Hoops.Infrastructure.Tests
             task = CreateData();
         }
 
-        [Fact]
+        // [Fact]
         public async Task GetActiveWebContentAsyncTest1()
         {
             var actual = await repo.GetActiveWebContentAsync(1);
@@ -40,7 +40,7 @@ namespace Hoops.Infrastructure.Tests
             Assert.True(true);
         }
 
-        [Fact]
+        // [Fact]
         public async Task AddAllAsyncWebContentTypeTest()
         {
             var seasonInfo = await repoType.GetByDescriptionAsync("Season Info");

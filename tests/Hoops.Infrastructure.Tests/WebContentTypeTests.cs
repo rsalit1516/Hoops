@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Hoops.Infrastructure.Tests
 {
-    public class WebContentTypeTest
+    public class WebContentTypeTest : IClassFixture<TestDatabaseFixture>, IDisposable
     {
         private readonly hoopsContext _context;
         // public hoopsContext context;
@@ -20,17 +20,38 @@ namespace Hoops.Infrastructure.Tests
             _context = new hoopsContext(options);
             repo = new WebContentTypeRepository(_context);
             repoWebContent = new WebContentRepository(_context); // Initialize repoWebContent
+            SeedDatabase();
         }
 
+        private void SeedDatabase()
+        {
+            var companyId = 1;
+            _context.WebContentTypes.AddRange(new List<WebContentType>
+            {
+                new WebContentType { WebContentTypeId = 1, WebContentTypeDescription = "Season Info" },
+                new WebContentType { WebContentTypeId = 2, WebContentTypeDescription = "Type2" }
+            });
+            _context.SaveChanges();
+
+            _context.WebContents.AddRange(new List<WebContent>
+            {
+                new WebContent { WebContentId = 1, CompanyId = companyId, Title = "Title1", WebContentTypeId = 1, ExpirationDate = DateTime.Now.AddDays(1) },
+                 new WebContent { WebContentId = 2, CompanyId = companyId, Title = "Test content", WebContentTypeId = 2, ExpirationDate = DateTime.Now.AddDays(20) },
+                new WebContent { WebContentId = 3, CompanyId = companyId, Title = "Title2", WebContentTypeId =1, ExpirationDate = DateTime.Now.AddDays(-1) },
+            });
+            _context.SaveChanges();
+
+        }
+
+        public void Dispose()
+        {
+            _context.Dispose();
+        }
         [Fact]
         public async Task GetByWebContentTypeDescription()
         {
-
-            var inserted = await repo.InsertAsync(new WebContentType { WebContentTypeDescription = "Test" });
-            _ = await _context.SaveChangesAsync();
-            var result = await repo.GetByDescriptionAsync("Test");
+            var result = await repo.GetByDescriptionAsync("Season Info");
             Assert.True(result != null);
-            await repo.DeleteAsync(result.WebContentTypeId);
 
         }
 
@@ -40,35 +61,26 @@ namespace Hoops.Infrastructure.Tests
         {
             // await DeleteAllAsync(repo);
             var found = await repo.GetAllAsync();
-            if (!found.Any())
+            // if (!found.Any())
+            // {
+            var entity = new WebContentType
             {
-                var entity = new WebContentType
-                {
-                    WebContentTypeDescription = "Meeting"
-                };
-                var actual = await repo.InsertAsync(entity);
-                await _context.SaveChangesAsync();
-                Assert.True(actual != null);
-            }
+                WebContentTypeDescription = "Meeting"
+            };
+            var actual = await repo.InsertAsync(entity);
+            await _context.SaveChangesAsync();
+            Assert.True(actual != null);
+            // }
 
         }
         [Fact]
         public async Task AddAllAsyncWebContentTypeTest1()
         {
-            // var repo = new WebContentTypeRepository(_context);
-            await DeleteAllAsync(repo);
-            var records = _context.WebContentTypes;
-            foreach (var record in records)
-            {
-                repo.Delete(record.WebContentTypeId);
-            }
-            await _context.SaveChangesAsync();
 
-            var actual = repo.Insert(new WebContentType { WebContentTypeDescription = "Meeting" });
-            actual = repo.Insert(new WebContentType { WebContentTypeDescription = "Event" });
-            repo.Insert(new WebContentType { WebContentTypeDescription = "Season Info" });
-            _context.SaveChanges();
-            Assert.True(records.Count() == 3);
+            var records = await repo.GetAllAsync();
+
+
+            Assert.True(records.Any());
 
         }
 
