@@ -93,7 +93,10 @@ namespace Hoops.Api
                                          });
                    });
             _ = services.AddLogging();
-            _ = services.AddControllers().AddNewtonsoftJson();
+            _ = services.AddControllers().AddNewtonsoftJson(options =>
+    {
+        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+    });
             _ = services
                 .AddSwaggerGen(c =>
                 {
