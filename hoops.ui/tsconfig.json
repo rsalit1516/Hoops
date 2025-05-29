@@ -12,7 +12,7 @@
     "sourceMap": true,
     "declaration": true,
     "experimentalDecorators": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "importHelpers": true,
     "target": "ES2022",
     "module": "ES2022",
@@ -21,10 +21,18 @@
       "dom"
     ],
     "paths": {
-      "@app/*": ["app/*"],
-      "@domain/*": ["app/domain/*"],
-      "@shared/*": ["app/shared/*"],
-      "@content/*": ["app/services/*"]
+      "@app/*": [
+        "app/*"
+      ],
+      "@domain/*": [
+        "app/domain/*"
+      ],
+      "@shared/*": [
+        "app/shared/*"
+      ],
+      "@content/*": [
+        "app/services/*"
+      ]
     },
     "useDefineForClassFields": false
   },
