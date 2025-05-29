@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, httpResource } from '@angular/common/http';
 import { computed, effect, inject, Injectable, linkedSignal, Signal, signal, WritableSignal } from '@angular/core';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { Household } from '@app/domain/household';
@@ -78,13 +78,8 @@ export class HouseholdService {
   }
 
   // To generate an error, add characters to the URL
-  private householdResource = rxResource({
-    loader: () => this.http.get<HouseholdResponse>(this.searchUrl, { responseType: 'json' })
-      .pipe(
-        map(vr => vr.results),
-        tap(vr => console.log(vr))
-      )
-  });
+  private householdResource = httpResource<HouseholdResponse>(
+    () => this.searchUrl);
 
   private searchHouseholds$ (): Observable<Household[] | undefined> {
     return this.http.get<Household[]>(this.searchUrl, { responseType: 'json' });
@@ -155,7 +150,7 @@ export class HouseholdService {
     const household = new Household();
     this._selectedHousehold.set(household);
   }
-  selectedHouseholdByHouseId(houseId: number) {
+  selectedHouseholdByHouseId (houseId: number) {
     this.http.get<Household>(Constants.GET_HOUSEHOLD_BY_ID_URL + '/' + houseId.toString(), { responseType: 'json' }).subscribe(response => {
       this.updateSelectedHousehold(response);
     });

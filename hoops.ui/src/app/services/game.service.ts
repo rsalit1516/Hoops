@@ -1,8 +1,8 @@
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
-import { delay, map, tap } from 'rxjs/operators';
+import { delay, map } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { forkJoin, Observable, of } from 'rxjs';
+import { HttpClient, HttpErrorResponse, HttpHeaders, httpResource } from '@angular/common/http';
+import { Observable, of } from 'rxjs';
 import { DateTime } from 'luxon';
 
 import { DataService } from './data.service';
@@ -12,11 +12,6 @@ import { rxResource } from '@angular/core/rxjs-interop';
 import { Constants } from '@app/shared/constants';
 import { setErrorMessage } from '@app/shared/error-message';
 import { Division } from '@app/domain/division';
-import * as fromGames from '../games/state';
-import * as gameActions from '../games/state/games.actions';
-import * as fromUser from '@app/user/state';
-import { select, Store } from '@ngrx/store';
-import { Team } from '@app/domain/team';
 import { User } from '@app/domain/user';
 import { SeasonService } from './season.service';
 import { DivisionService } from './division.service';
@@ -96,13 +91,14 @@ export class GameService {
     ),
     delay(2000)
   );
-  private gamesResource = rxResource({
-    loader: () => this.games$
-  });
+  private gamesResource = httpResource<RegularGame>(
+    () => this.#scheduleGamesUrl);
+  error = this.gamesResource.error;
 
-  scheduleGames = computed(() => this.gamesResource.value() ?? [] as RegularGame[]);
-  error = computed(() => this.gamesResource.error() as HttpErrorResponse);
-  errorMessage = computed(() => setErrorMessage(this.error(), 'Game'));
+
+  // scheduleGames = computed(() => this.gamesResource.value() ?? [] as RegularGame[]);
+  // error = computed(() => this.gamesResource.error() as HttpErrorResponse);
+  // errorMessage = computed(() => setErrorMessage(this.error(), 'Game'));
   isLoading = this.gamesResource.isLoading;
   dailySchedule = signal<RegularGame[][]>([]);
   selectedTeam = computed(() => this.#teamService.selectedTeam);
