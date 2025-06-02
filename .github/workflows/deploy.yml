@@ -3,7 +3,7 @@ name: Deploy to Azure App Service
 on:
   push:
     branches:
-      - dev  # Change this if you want it to trigger on a different branch
+      - develop  # Change this if you want it to trigger on a different branch
       
 jobs:
   build-and-deploy:
