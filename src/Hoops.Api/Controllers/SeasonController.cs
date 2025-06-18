@@ -2,6 +2,7 @@ using Hoops.Core.Models;
 using Hoops.Core.Interface;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Hoops.Application.Services;
 
 namespace Hoops.Controllers
 {
@@ -11,9 +12,11 @@ namespace Hoops.Controllers
     {
         private readonly ISeasonRepository repository;
         public ISeasonRepository Seasons { get; set; }
-        public SeasonController(ISeasonRepository repository)
+        private readonly SeasonService _seasonService;
+        public SeasonController(ISeasonRepository repository, SeasonService seasonService)
         {
             this.repository = repository;
+            this._seasonService = seasonService;
         }
 
         /// <summary>
@@ -23,7 +26,9 @@ namespace Hoops.Controllers
         [HttpGet]
         public async Task<IActionResult> GetSeason()
         {
-            return Ok(await repository.GetAllAsync(1));
+            // return Ok(await repository.GetAllAsync(1));
+            var seasons = await _seasonService.GetAllSeasonsAsync();
+            return Ok(seasons);
         }
 
         /// <summary>
@@ -52,7 +57,7 @@ namespace Hoops.Controllers
         [HttpGet("{id}")]
         public ActionResult<Season> GetSeason(int id)
         {
-            var season =repository.GetById(id);
+            var season = repository.GetById(id);
 
             if (season == null)
             {

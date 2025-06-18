@@ -12,6 +12,7 @@ using Hoops.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Hoops.Infrastructure.Data;
+using Hoops.Application.Services;
 
 namespace Hoops.Api
 {
@@ -79,6 +80,8 @@ namespace Hoops.Api
             _ = services.AddScoped<IHouseholdRepository, HouseholdRepository>();
             _ = services.AddScoped<IUserRepository, UserRepository>();
             _ = services.AddScoped<ICommentRepository, CommentRepository>();
+services.AddScoped<ISeasonRepository, SeasonRepository>();
+            services.AddScoped<SeasonService>();
 
             _ = services.AddCors(options =>
                    {
