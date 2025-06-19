@@ -39,16 +39,17 @@ jobs:
           app-name: 'hoops-api-dev'
           package: './publish'
 
-      - name: Install Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '22.16.0'  # Adjust based on your Angular version
-
       - name: Use Node.js 20
         uses: actions/setup-node@v3
         with:
           node-version: '20.19.0'
-  
+          cache: 'npm'
+
+  # Verify Node version (debugging step)
+      - name: Verify Node.js version
+        run: |
+          node --version
+          npm --version
       - name: Install Angular dependencies
         run: npm install --legacy-peer-deps
         working-directory: ./hoops.ui
