@@ -46,11 +46,11 @@ jobs:
 
       - name: Install Angular dependencies
         run: npm install
-        working-directory: ./Hoops.ui  # Adjust based on your directory structure
+        working-directory: Hoops.ui  # Adjust based on your directory structure
 
       - name: Build Angular app
         run: npm run build -- --prod
-        working-directory: ./Hoops.ui
+        working-directory: Hoops.ui
 
       - name: Deploy Angular to Azure Static Web App
         uses: Azure/static-web-apps-deploy@v1
