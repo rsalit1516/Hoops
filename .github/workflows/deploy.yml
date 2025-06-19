@@ -50,6 +50,7 @@ jobs:
         run: |
           node --version
           npm --version
+          
       - name: Install Angular dependencies
         run: npm install --legacy-peer-deps
         working-directory: ./hoops.ui
