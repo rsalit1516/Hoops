@@ -53,10 +53,9 @@ jobs:
       - name: Install Angular dependencies
         run: npm install --legacy-peer-deps
         working-directory: ./hoops.ui
-  # Adjust based on your directory structure
-
+  
       - name: Build Angular app
-        run: npm run build -- --prod
+        run: npm run build -- --configuration production
         working-directory: ./hoops.ui
 
 
