@@ -44,6 +44,12 @@ jobs:
         with:
           node-version: '22.16.0'  # Adjust based on your Angular version
 
+      - name: List repo contents
+        run: ls -la
+
+      - name: List frontend folder
+        run: ls -la ./Hoops.ui
+
       - name: Install Angular dependencies
         run: npm install
         working-directory: ./Hoops/Hoops.ui
