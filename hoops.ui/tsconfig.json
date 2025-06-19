@@ -32,7 +32,10 @@
       ],
       "@content/*": [
         "app/services/*"
-      ]
+      ],
+      "@styles/*": [
+        "content/*"
+      ],
     },
     "useDefineForClassFields": false
   },
@@ -48,7 +51,6 @@
         "unusedStandaloneImports": "suppress"
       }
     },
-
   },
   "exclude": [
     "./node_modules",

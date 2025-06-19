@@ -1,5 +1,5 @@
 @use "sass:color";
-@use "../../../Content/variables" as v;
+@use "variables" as v;
 
 .mat-sidenav-container {
   background-color: v.$background-color;

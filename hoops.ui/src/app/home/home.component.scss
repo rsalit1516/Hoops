@@ -1,5 +1,5 @@
 @use "sass:color";
-@use "../../content/_variables" as *;
+@use "variables" as *;
 
 h4 {
   color: $brand-color;

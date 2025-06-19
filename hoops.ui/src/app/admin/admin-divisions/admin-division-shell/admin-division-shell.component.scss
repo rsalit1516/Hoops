@@ -1,7 +1,7 @@
-@use '../../../../Content/variables' as *;
+@use "_variables" as v;
 
 .wrapper {
-  background-color: $black;
+  background-color: v.$black;
   padding-top: 20px;
   border-radius: 2%;
 }
