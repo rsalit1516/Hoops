@@ -16,7 +16,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Hoops.data": {
+    "Hoops.Data": {
       "commandName": "Project",
       "launchBrowser": true,
       "applicationUrl": "https://localhost:43088;http://localhost:64431",
