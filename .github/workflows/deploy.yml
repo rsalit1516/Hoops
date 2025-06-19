@@ -48,16 +48,16 @@ jobs:
         run: ls -la
 
       - name: List frontend folder
-        run: ls -la ./Hoops.ui
+        run: ls -la ./hoops.ui
 
       - name: Install Angular dependencies
         run: npm install
-        working-directory: ./Hoops/Hoops.ui
+        working-directory: ./hoops.ui
   # Adjust based on your directory structure
 
       - name: Build Angular app
         run: npm run build -- --prod
-        working-directory: ./Hoops/Hoops.ui
+        working-directory: ./hoops.ui
 
 
       - name: Deploy Angular to Azure Static Web App
