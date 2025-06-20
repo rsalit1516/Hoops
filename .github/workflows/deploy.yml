@@ -31,7 +31,7 @@ jobs:
         run: dotnet build --configuration Release
   
       - name: Publish .NET API
-        run: dotnet publish Hoops.Api/Hoops.Api.csproj -c Release -o ./publish
+        run: dotnet publish src/Hoops.Api/Hoops.Api.csproj -c Release -o ./publish
   
       - name: Deploy to Azure App Service
         uses: azure/webapps-deploy@v2
