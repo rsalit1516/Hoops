@@ -3,11 +3,10 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "nx serve",
-    "build": "ng build",
-    "app_build_command": "npm run docs:build",
-    "watch": "nx build --watch --configuration development",
-    "test": "nx test"
+    "build:prod": "ng build csbc --configuration production",
+    "start": "ng serve",
+    "test": "ng test",
+    "app_build_command": "npm run docs:build"
   },
   "engines": {
     "node": ">=20.19.0"
