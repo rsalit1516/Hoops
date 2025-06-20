@@ -1,2 +1,3 @@
+# yaml-language-server: $schema=none
 platforms:
   nodejs_version: 20.19.0

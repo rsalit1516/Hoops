@@ -9,6 +9,9 @@
     "watch": "nx build --watch --configuration development",
     "test": "nx test"
   },
+  "engines": {
+    "node": ">=20.19.0"
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "^20.0.0",
