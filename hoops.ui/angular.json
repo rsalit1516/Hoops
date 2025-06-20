@@ -27,9 +27,7 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "outputPath": {
-              "base": "dist/hoops"
-            },
+            "outputPath": "dist/hoops",
             "index": "src/index.html",
             "polyfills": ["zone.js"],
             "allowedCommonJsDependencies": ["lodash"],
