@@ -39,9 +39,6 @@ jobs:
           app-name: 'hoops-api-dev'
           package: './publish'
 
-      - name: List deployed files
-        run: ls -R /home/site/wwwroot
-
 
 
 
