@@ -15,27 +15,27 @@ export class DataService {
   baseUrl = Constants.DEFAULTURL;
   dotNetCoreUrl: string;
   getActiveWebContentUrl: string;
-  // loginUrl = this.baseUrl + '/api/User/login';
-  directorUrl = this.baseUrl + '/api/Director';
-  seasonGamesUrl = this.baseUrl + '/api/Schedulegame/getSeasonGames';
-  seasonDivisionsUrl = this.baseUrl + '/api/division/GetSeasonDivisions/';
-  playoffGameUrl = this.baseUrl + '/api/SchedulePlayoff/GetSeasonGames';
-  getCurrentSeasonUrl = this.baseUrl + '/api/season/getCurrentSeason';
-  getSeasonTeamsUrl = this.baseUrl + '/api/Team/GetSeasonTeams/';
-  getColorUrl = this.baseUrl + '/api/Color';
-  getLocationUrl = this.baseUrl + '/api/Location';
-  teamPostUrl = this.baseUrl + '/api/Team';
-  teamPutUrl = this.baseUrl + '/api/Team/';
-  getContentUrl = this.baseUrl + '/api/webcontent';
-  getActiveContentUrl = this.baseUrl + '/api/webcontent/getActiveWebContent';
-  postContentUrl = this.baseUrl + '/api/WebContent';
-  getCurrentSponsors = this.baseUrl + '/api/Sponsor/GetSeasonSponsors/';
-  getLocations = this.baseUrl + '/api/Locations/';
-  // seasonUrl = this.baseUrl + '/api/Season/';
-  currentSeasonUrl = this.baseUrl + '/api/Season/GetCurrentSeason';
-  peopleUrl = this.baseUrl + '/api/People';
+  // loginUrl = '${this.baseUrl}/api/User/login';
+  directorUrl = '${this.baseUrl}/api/Director';
+  seasonGamesUrl = '${this.baseUrl}/api/Schedulegame/getSeasonGames';
+  seasonDivisionsUrl = '${this.baseUrl}/api/division/GetSeasonDivisions/';
+  playoffGameUrl = '${this.baseUrl}/api/SchedulePlayoff/GetSeasonGames';
+  getCurrentSeasonUrl = '${this.baseUrl}/api/season/getCurrentSeason';
+  getSeasonTeamsUrl = '${this.baseUrl}/api/Team/GetSeasonTeams/';
+  getColorUrl = '${this.baseUrl}/api/Color';
+  getLocationUrl = '${this.baseUrl}/api/Location';
+  teamPostUrl = '${this.baseUrl}/api/Team';
+  teamPutUrl = '${this.baseUrl}/api/Team/';
+  getContentUrl = '${this.baseUrl}/api/webcontent';
+  getActiveContentUrl = '${this.baseUrl}/api/webcontent/getActiveWebContent';
+  postContentUrl = '${this.baseUrl}/api/WebContent';
+  getCurrentSponsors = '${this.baseUrl}/api/Sponsor/GetSeasonSponsors/';
+  getLocations = '${this.baseUrl}/api/Locations/';
+  // seasonUrl = '${this.baseUrl}/api/Season/';
+  currentSeasonUrl = '${this.baseUrl}/api/Season/GetCurrentSeason';
+  peopleUrl = '${this.baseUrl}/api/People';
 
-  standingsUrl = this.baseUrl + '/api/ScheduleGame/getStandings';
+  standingsUrl = '${this.baseUrl}/api/ScheduleGame/getStandings';
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -64,7 +64,7 @@ export class DataService {
     console.log(data);
     console.log(url);
     return this.#http
-      .post<T>(url, data, this.httpOptions )
+      .post<T>(url, data, this.httpOptions)
       .pipe(
         tap((data) => console.log('PostContent: ' + JSON.stringify(data))),
         catchError(this.handleError('Error', data)));
@@ -75,21 +75,21 @@ export class DataService {
     // let url = this.data.putContentUrl + content.webContentId;
     return this.#http
       .put<T>(url, data, this.httpOptions);
-      //.put<T>(url, data)
-      // .pipe(
-      //   tap((data) => console.log('updateContent: ' + JSON.stringify(data))),
-        //   catchError((error) => {
-        //     this.handleError('updateContent', data)(error);
-        //     throw error;
-        // };
-      // );
+    //.put<T>(url, data)
+    // .pipe(
+    //   tap((data) => console.log('updateContent: ' + JSON.stringify(data))),
+    //   catchError((error) => {
+    //     this.handleError('updateContent', data)(error);
+    //     throw error;
+    // };
+    // );
   }
 
   //TODO:  Fix delete method
   delete (url: string) {
     console.log(url);
     return this.#http
-      .delete(url, this.httpOptions )
+      .delete(url, this.httpOptions)
       .pipe(
         tap(data => console.log('deleteContent: ' + JSON.stringify(data))),
         // catchError(this.handleError('deleteContent', []))
