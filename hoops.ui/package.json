@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "build": "ng build csbc --configuration production",
+    "build": "ng build csbc",
     "build:prod": "ng build csbc --configuration production",
     "start": "ng serve",
     "test": "ng test",

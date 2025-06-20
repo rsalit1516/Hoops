@@ -32,7 +32,7 @@ jobs:
         working-directory: ./hoops.ui
 
       - name: Build Angular app
-        run: npm run build -- --configuration production
+        run: npm run build
         working-directory: ./hoops.ui
 
       - name: Deploy to Azure Static Web Apps
