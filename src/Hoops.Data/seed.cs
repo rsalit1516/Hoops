@@ -20,14 +20,14 @@ namespace Hoops.Data
         public IColorRepository colorRepo { get; private set; }
         public IHouseholdRepository householdRepo { get; private set; }
         public IPersonRepository personRepo { get; private set; }
-        public IScheduleLocationRepository locationRepo { get; private set; }
+        public ILocationRepository locationRepo { get; private set; }
         public IWebContentTypeRepository webContentTypeRepo { get; private set; }
         public IWebContentRepository webContentRepo { get; private set; }
         public Seed(ISeasonRepository seasonRepo,
         ITeamRepository teamRepo,
         IColorRepository colorRepo,
         IPersonRepository personRepo,
-        IScheduleLocationRepository locationRepo,
+        ILocationRepository locationRepo,
         IWebContentTypeRepository webContentTypeRepo,
         IWebContentRepository webContentRepo,
         hoopsContext context)
