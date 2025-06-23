@@ -6,35 +6,40 @@ using Hoops.Core.Models;
 using Hoops.Infrastructure.Repository;
 using Hoops.Infrastructure.Data;
 using Microsoft.Extensions.Logging;
+using Hoops.Core.Interface;
 
 namespace Hoops.Data
 {
     public class Seed
     {
 
-        public hoopsContext Context { get; private set; }
-        public SeasonRepository SeasonRepo { get; private set; }
-        public DivisionRepository DivisionRepo { get; private set; }
-        public TeamRepository TeamRepo { get; private set; }
-        public ColorRepository ColorRepo { get; private set; }
-        public HouseholdRepository HouseholdRepo { get; private set; }
-        public PersonRepository PersonRepo { get; private set; }
-        public ScheduleLocationRepository LocationRepo { get; private set; }
-        public WebContentTypeRepository WebContentTypeRepo { get; private set; }
-        public WebContentRepository WebContentRepo { get; private set; }
-        public Seed()
+        public hoopsContext context { get; private set; }
+        public ISeasonRepository seasonRepo { get; private set; }
+        public IDivisionRepository divisionRepo { get; private set; }
+        public ITeamRepository teamRepo { get; private set; }
+        public IColorRepository colorRepo { get; private set; }
+        public IHouseholdRepository householdRepo { get; private set; }
+        public IPersonRepository personRepo { get; private set; }
+        public IScheduleLocationRepository locationRepo { get; private set; }
+        public IWebContentTypeRepository webContentTypeRepo { get; private set; }
+        public IWebContentRepository webContentRepo { get; private set; }
+        public Seed(ISeasonRepository seasonRepo,
+        ITeamRepository teamRepo,
+        IColorRepository colorRepo,
+        IPersonRepository personRepo,
+        IScheduleLocationRepository locationRepo,
+        IWebContentTypeRepository webContentTypeRepo,
+        IWebContentRepository webContentRepo,
+        hoopsContext context)
         {
-            ILogger<PersonRepository> _logger = LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<PersonRepository>();
-            Context = new hoopsContext();
-            SeasonRepo = new SeasonRepository(Context);
-            DivisionRepo = new DivisionRepository(Context);
-            TeamRepo = new TeamRepository(Context);
-            ColorRepo = new ColorRepository(Context);
-            HouseholdRepo = new HouseholdRepository(Context);
-            PersonRepo = new PersonRepository(Context, _logger);
-            LocationRepo = new ScheduleLocationRepository(Context);
-            WebContentTypeRepo = new WebContentTypeRepository(Context);
-            WebContentRepo = new WebContentRepository(Context);
+            this.seasonRepo = seasonRepo;
+            this.teamRepo = teamRepo;
+            this.colorRepo = colorRepo;
+            this.personRepo = personRepo;
+            this.locationRepo = locationRepo;
+            this.webContentTypeRepo = webContentTypeRepo;
+            this.webContentRepo = webContentRepo;
+            this.context = context;
         }
         public async Task InitializeDataAsync()
         {
@@ -56,72 +61,72 @@ namespace Hoops.Data
         private async Task CreateSeasonsAsync()
         {
             await InitializeSeasonsAsync();
-            await Context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
         private async Task CreateDivisionsAsync()
         {
             await InitializeDivisionsAsync();
-            await Context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
         private async Task CreateColorsAsync()
         {
             await InitializeColorsAsync();
-            await Context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
         private async Task CreateTeamsAsync()
         {
             await InitializeTeamsAsync();
-            await Context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
 
         private async Task CreateWebContentTypeAsync()
         {
             await InitializeWebContentTypeAsync();
-            await Context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
         private async Task CreateWebContentAsync()
         {
             await InitializeWebContentAsync();
-            await Context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
 
         private async Task DeleteSeasonDataAsync()
         {
-            var records = await SeasonRepo.GetAllAsync();
+            var records = await seasonRepo.GetAllAsync();
             foreach (var record in records)
             {
-                await SeasonRepo.DeleteAsync(record.SeasonId);
+                await seasonRepo.DeleteAsync(record.SeasonId);
             }
         }
         private async Task DeleteDivisionsAsync()
         {
-            var records = await DivisionRepo.GetAllAsync();
+            var records = await divisionRepo.GetAllAsync();
             foreach (var record in records)
             {
-                await DivisionRepo.DeleteAsync(record.DivisionId);
+                await divisionRepo.DeleteAsync(record.DivisionId);
             }
         }
         private async Task DeleteTeamsAsync()
         {
-            var records = await TeamRepo.GetAllAsync();
+            var records = await teamRepo.GetAllAsync();
             foreach (var record in records)
             {
-                await TeamRepo.DeleteAsync(record.TeamId);
+                await teamRepo.DeleteAsync(record.TeamId);
             }
         }
         private async Task DeleteColorsAsync()
         {
-            var records = await ColorRepo.GetAllAsync();
+            var records = await colorRepo.GetAllAsync();
             foreach (var record in records)
             {
-                await ColorRepo.DeleteAsync(record.ColorId);
+                await colorRepo.DeleteAsync(record.ColorId);
             }
         }
 
         private async Task InitializeSeasonsAsync()
         {
 
-            await SeasonRepo.InsertAsync(new Season
+            await seasonRepo.InsertAsync(new Season
             {
                 Description = "Summer 2020",
                 CurrentSchedule = true,
@@ -133,7 +138,7 @@ namespace Hoops.Data
                 ParticipationFee = 110
 
             });
-            await SeasonRepo.InsertAsync(new Season
+            await seasonRepo.InsertAsync(new Season
             {
                 Description = "Spring 2020",
                 CurrentSchedule = false,
@@ -144,7 +149,7 @@ namespace Hoops.Data
                 ToDate = new DateTime(2020, 5, 16),
                 ParticipationFee = 110
             });
-            await SeasonRepo.InsertAsync(new Season
+            await seasonRepo.InsertAsync(new Season
             {
                 Description = "Winter 2020",
                 CurrentSchedule = false,
@@ -159,10 +164,10 @@ namespace Hoops.Data
         }
         private async Task InitializeDivisionsAsync()
         {
-            var seasons = await SeasonRepo.GetAllAsync();
+            var seasons = await seasonRepo.GetAllAsync();
             foreach (var season in seasons)
             {
-                await DivisionRepo.InsertAsync(new Division
+                await divisionRepo.InsertAsync(new Division
                 {
                     CompanyId = 1,
                     SeasonId = season.SeasonId,
@@ -172,7 +177,7 @@ namespace Hoops.Data
                     MaxDate = new DateTime(2020, 09, 1).AddYears(-16)
 
                 });
-                await DivisionRepo.InsertAsync(new Division
+                await divisionRepo.InsertAsync(new Division
                 {
                     CompanyId = 1,
                     SeasonId = season.SeasonId,
@@ -186,20 +191,20 @@ namespace Hoops.Data
         }
         private async Task InitializeTeamsAsync()
         {
-            var seasons = await SeasonRepo.GetAllAsync();
-            var colors = await ColorRepo.GetAllAsync();
+            var seasons = await seasonRepo.GetAllAsync();
+            var colors = await colorRepo.GetAllAsync();
             var ranColor = new Random();
             var ranTeams = new Random();
             foreach (var season in seasons)
             {
-                var divisions = await DivisionRepo.GetSeasonDivisionsAsync(season.SeasonId);
+                var divisions = await divisionRepo.GetSeasonDivisionsAsync(season.SeasonId);
                 var counter = 0;
                 foreach (var division in divisions)
                 {
                     for (var i = 1; i <= ranTeams.Next(4, 12); i++)
                     {
                         counter++;
-                        await TeamRepo.InsertAsync(new Team
+                        await teamRepo.InsertAsync(new Team
                         {
                             // CompanyId = 1,
                             SeasonId = season.SeasonId,
@@ -213,27 +218,27 @@ namespace Hoops.Data
         }
         private async Task InitializeColorsAsync()
         {
-            await ColorRepo.InsertAsync(new Color
+            await colorRepo.InsertAsync(new Color
             {
                 CompanyId = 1,
                 ColorName = "Red"
             });
-            await ColorRepo.InsertAsync(new Color
+            await colorRepo.InsertAsync(new Color
             {
                 CompanyId = 1,
                 ColorName = "Blue"
             });
-            await ColorRepo.InsertAsync(new Color
+            await colorRepo.InsertAsync(new Color
             {
                 CompanyId = 1,
                 ColorName = "Black"
             });
-            await ColorRepo.InsertAsync(new Color
+            await colorRepo.InsertAsync(new Color
             {
                 CompanyId = 1,
                 ColorName = "Yellow"
             });
-            await ColorRepo.InsertAsync(new Color
+            await colorRepo.InsertAsync(new Color
             {
                 CompanyId = 1,
                 ColorName = "Orange"
@@ -243,7 +248,7 @@ namespace Hoops.Data
         {
             var randomPhone = new Random();
 
-            await HouseholdRepo.InsertAsync(new Household
+            await householdRepo.InsertAsync(new Household
             {
                 CompanyId = 1,
                 Name = "Blarney",
@@ -259,9 +264,9 @@ namespace Hoops.Data
             {
                 WebContentTypeDescription = "Meeting"
             };
-            var actual = await WebContentTypeRepo.InsertAsync(entity);
+            var actual = await webContentTypeRepo.InsertAsync(entity);
 
-            await WebContentTypeRepo.InsertAsync(new WebContentType
+            await webContentTypeRepo.InsertAsync(new WebContentType
             {
                 WebContentTypeDescription = "Season Info"
             });
@@ -269,15 +274,15 @@ namespace Hoops.Data
         }
         private async Task DeleteAllAsync()
         {
-            var records = await WebContentTypeRepo.GetAllAsync();
+            var records = await webContentTypeRepo.GetAllAsync();
             foreach (var record in records)
             {
-                await WebContentTypeRepo.DeleteAsync(record.WebContentTypeId);
+                await webContentTypeRepo.DeleteAsync(record.WebContentTypeId);
             }
         }
         private async Task DeleteWebContentAsync()
         {
-            var repo = WebContentRepo;
+            var repo = webContentRepo;
             var records = await repo.GetAllAsync();
             foreach (var record in records)
             {
@@ -286,10 +291,10 @@ namespace Hoops.Data
         }
         private async Task InitializeWebContentAsync()
         {
-            var repoType = WebContentTypeRepo;
+            var repoType = webContentTypeRepo;
             var seasonInfo = await repoType.GetByDescriptionAsync("Season Info");
             var meeting = await repoType.GetByDescriptionAsync("Meeting");
-            var repo = WebContentRepo;
+            var repo = webContentRepo;
             await repo.InsertAsync(new WebContent
             {
                 // WebContentId
