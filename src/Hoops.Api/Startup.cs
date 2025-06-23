@@ -12,6 +12,8 @@ using Hoops.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Hoops.Infrastructure.Data;
+using Microsoft.Extensions.Logging;
+using Hoops.Data;
 
 namespace Hoops.Api
 {
@@ -80,6 +82,8 @@ namespace Hoops.Api
             _ = services.AddScoped<IUserRepository, UserRepository>();
             _ = services.AddScoped<ICommentRepository, CommentRepository>();
 
+            services.AddScoped<Seed>();
+
             _ = services.AddCors(options =>
                    {
                        options.AddPolicy(name: MyAllowSpecificOrigins,
@@ -135,6 +139,21 @@ namespace Hoops.Api
                 });
             _ = services.AddControllers();
 
+
+            // {
+            //     _ = services.AddSwaggerGen(c =>
+            //     {
+            //         c.SwaggerDoc("v1", new OpenApiInfo { Title = "Hoops API", Version = "v1" });
+            //         c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "Hoops.Api.xml"));
+            //     });
+            // }
+            // else
+            // {
+            //     _ = services.AddSwaggerGen(c =>
+            //     {
+            //         c.SwaggerDoc("v1", new OpenApiInfo { Title = "Hoops API", Version = "v1" });
+            //     });
+            // }
             // call data initializer
             //var seed = new Seed();
             //await seed.InitializeDataAsync();
