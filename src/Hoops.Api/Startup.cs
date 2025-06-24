@@ -34,35 +34,10 @@ namespace Hoops.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services
-            //    .AddDbContext<hoopsContext>(options =>
-            //        options
-            //            .UseSqlServer(Configuration
-            //                .GetConnectionString("hoopsContext")));
-            if (Environment.IsDevelopment())
-            {
-                _ = services
-                    .AddDbContext<hoopsContext>(options =>
-                        options
-                            .UseSqlServer(Configuration
-                                .GetConnectionString("hoopsContext"),
-                            builder =>
-                            {
-                                _ = builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
-                            }));
-            }
-            else
-            {
-                _ = services
-                    .AddDbContext<hoopsContext>(options =>
-                        options
-                           .UseSqlServer(Configuration
-                                .GetConnectionString("hoopsContext"),
-                            builder =>
-                            {
-                                _ = builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
-                            }));
-            }
+            services.AddDbContext<hoopsContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("hoopsContext"),
+                    builder => builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null)));
 
             _ = services.AddDbContext<hoopsContext>();
             _ = services.AddScoped<ISeasonRepository, SeasonRepository>();
