@@ -11,7 +11,7 @@
                 "Local"
             ],
             "options": {
-                "cwd": "${workspaceFolder}/Hoops.Api"
+                "cwd": "${workspaceFolder}/src/Hoops.Api"
             },
             "isBackground": true
         },
@@ -23,7 +23,7 @@
                 "start"
             ],
             "options": {
-                "cwd": "${workspaceFolder}/client-app",
+                "cwd": "${workspaceFolder}/hoops.ui/src",
                 "env": {
                     "API_BASE_URL": "http://localhost:5000"
                 }
