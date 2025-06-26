@@ -1,56 +1,56 @@
-@use 'sass:color';
-@use '../../../../content/_variables' as v;
+@use "sass:color";
+@use "variables" as v;
 
 .panel-title {
-    font-size: 1.2em;
-    text-align: center;
-    background-color: #424242;
-  }
+  font-size: 1.2em;
+  text-align: center;
+  background-color: #424242;
+}
 
-  .mat-card {
-    border-radius: 10px;
-    background-color: v.$card-background-color;
-    margin-bottom: 10px;
-    margin-left: 1.5em;
-    margin-right:4px;
-    padding-left:4px;
-    padding-right:4px;
-    font-family: Roboto, Arial, Helvetica, sans-serif;
-  }
-  .mat-card-title {
-    font-size: 1.2em;
-    font-weight: 720;
-    font-variant: small-caps;
-    color: v.$navbar-color;
-    text-align: center;
-    padding-left: auto;
-    padding-right: auto;
-    margin: auto;
-  }
-  .mat-card-header {
-    text-align: center;
-    margin: auto;
-  }
-  .mat-card-header-text {
-    margin: auto !important;
-  }
+.mat-card {
+  border-radius: 10px;
+  background-color: v.$card-background-color;
+  margin-bottom: 10px;
+  margin-left: 1.5em;
+  margin-right: 4px;
+  padding-left: 4px;
+  padding-right: 4px;
+  font-family: Roboto, Arial, Helvetica, sans-serif;
+}
+.mat-card-title {
+  font-size: 1.2em;
+  font-weight: 720;
+  font-variant: small-caps;
+  color: v.$navbar-color;
+  text-align: center;
+  padding-left: auto;
+  padding-right: auto;
+  margin: auto;
+}
+.mat-card-header {
+  text-align: center;
+  margin: auto;
+}
+.mat-card-header-text {
+  margin: auto !important;
+}
 
-  .mat-card-content {
-    font-size: .8em;
-    color: v.$font-color-text;
-    font-weight: 400;
-  }
-  .top-padding {
-    margin-top: 12px;
-    padding-left: auto;
-    padding-right: auto;
-  }
-  .sub-title {
-    text-align: center;
-    color: color.adjust(v.$card-sub-title-color, $lightness: 10%);
-    margin-left: auto;
-    margin-right: auto;
-    font-style: italic;
-    font-weight: 700;
-    font-size: 1.1em;
-  }
+.mat-card-content {
+  font-size: 0.8em;
+  color: v.$font-color-text;
+  font-weight: 400;
+}
+.top-padding {
+  margin-top: 12px;
+  padding-left: auto;
+  padding-right: auto;
+}
+.sub-title {
+  text-align: center;
+  color: color.adjust(v.$card-sub-title-color, $lightness: 10%);
+  margin-left: auto;
+  margin-right: auto;
+  font-style: italic;
+  font-weight: 700;
+  font-size: 1.1em;
+}

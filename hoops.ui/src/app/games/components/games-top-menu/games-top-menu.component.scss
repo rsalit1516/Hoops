@@ -1,5 +1,5 @@
-@use 'sass:color';
-@use '../../../../Content/variables' as v;
+@use "sass:color";
+@use "variables" as v;
 
 :host {
   font-size: 1rem;
@@ -26,7 +26,6 @@
 
 .mat-mdc-tab.mdc-tab--active .mdc-tab__text-label {
   color: v.$brand-color;
-
 }
 
 .mat-mdc-tab .mdc-tab__text-label {
@@ -57,7 +56,7 @@ button:active {
   background-color: v.$brand-color;
   color: black;
 }
-.mat-button-toggle-appearance-standard  {
+.mat-button-toggle-appearance-standard {
   line-height: 30px !important;
 }
 .mat-button-toggle-group {
@@ -65,7 +64,7 @@ button:active {
   line-height: 30px;
 }
 
-.games-button button:active{
+.games-button button:active {
   font-weight: 800;
 }
 
@@ -95,10 +94,10 @@ h2 {
   font-size: v.$wrapper-font-size;
 }
 .mat-form-field-wrapper {
-  height:40px;
+  height: 40px;
 }
 
-.mat-tab-label.label .mat-tab-label-content.label{
+.mat-tab-label.label .mat-tab-label-content.label {
   color: v.$brand-color !important;
   font-size: 1.1rem;
 }
@@ -131,7 +130,7 @@ h2 {
   color: v.$navbar-color !important;
 }
 
-.mdc-tab__text-label{
+.mdc-tab__text-label {
   color: v.$brand-color !important;
 }
 label {
@@ -144,11 +143,10 @@ a {
   font-size: 1.4rem;
   font-weight: 400;
   color: color.adjust(v.$navbar-color, $lightness: 20%) !important;
-  padding-right:12px;
+  padding-right: 12px;
   font-variant: small-caps;
   font-style: normal;
   text-decoration: none;
-
 }
 a:hover {
   font-weight: 800;

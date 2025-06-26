@@ -1,11 +1,10 @@
-@use "../../../../content/_variables.scss" as v;
+@use "variables.scss" as v;
 
 .filter-wrapper {
   padding-left: 12px;
   padding-right: 10px;
   background-color: transparent;
   color: white;
-
 }
 .filter-divisions {
   background-color: transparent;
@@ -24,10 +23,10 @@
   background-color: v.$background-color;
   color: white;
   width: 240px;
-  font-size:v.$button-font-size;
+  font-size: v.$button-font-size;
 }
 .mat-form-field-infix {
-  width:100px;
+  width: 100px;
 }
 
 .mat-form-field-type-mat-select .mat-form-field-label {

@@ -1,7 +1,7 @@
-@use "_variables" as v;
+@use "variables" as v;
 @use "_material.scss";
 
-@use './_mixins';
+@use "./_mixins";
 @use "./../app//shared/scss/menu";
 @use "./../app//shared/scss/tables";
 @use "./../app//shared/scss/forms";
@@ -19,7 +19,7 @@
 
 /*#region Override background color theme */
 
-body{
+body {
   padding: 0 0px 0px 0px;
   margin: 0px;
   font: Roboto, Arial, Helvetica, sans-serif;
@@ -43,7 +43,6 @@ h1 {
   color: v.$brand-color;
   text-align: center;
   font-size: 1.5rem;
-
 }
 .card-title {
   border-bottom-color: white;
@@ -116,7 +115,7 @@ select > option {
 }
 
 small {
-  font-size: .6rem;
+  font-size: 0.6rem;
 }
 
 .text-subtle {
@@ -124,7 +123,7 @@ small {
 }
 
 /* material definitions */
-.form-container{
+.form-container {
   margin: 4px;
 }
 
@@ -460,11 +459,12 @@ a {
 
 @media (max-width: 979px) {
   body {
-    font-size:14px;
+    font-size: 14px;
   }
 
-  .mat-body, .mat-typography {
-    font-size:12px;
+  .mat-body,
+  .mat-typography {
+    font-size: 12px;
   }
 
   .sidebar-filler {
@@ -505,10 +505,11 @@ a {
   }
 
   body {
-    font-size:12px;
+    font-size: 12px;
   }
-  .mat-body, .mat-typography {
-    font-size:12px;
+  .mat-body,
+  .mat-typography {
+    font-size: 12px;
   }
 
   .nav-collapse {
@@ -550,7 +551,7 @@ a {
   }
 
   body {
-    font-size:8px;
+    font-size: 8px;
   }
 
   .today-datas li i {
@@ -603,15 +604,13 @@ a {
   font-size: 1em !important;
 }
 /*#endregion */
-.mat-tab-label .mat-tab-label-content{
-  color:v.$color !important;
+.mat-tab-label .mat-tab-label-content {
+  color: v.$color !important;
   font-size: 1.1rem;
 }
 ::ng-deep .mat-paginator .mat-icon-button {
-
   fill: white !important; /* Force the color change */
 }
 ::ng-deep .mat-paginator .mat-icon {
   fill: white !important; /* Force the color change */
 }
-

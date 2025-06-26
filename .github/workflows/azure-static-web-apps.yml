@@ -1,0 +1,60 @@
+# File: .github/workflows/azure-static-web-apps.yml
+
+name: Azure Static Web Apps CI/CD
+
+on:
+  push:
+    branches:
+      - develop  # or your preferred branch
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    name: Build and Deploy Angular App
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.19.0'
+          cache: 'npm'
+
+      - name: Show Node version
+        run: |
+          which node
+          node -v
+          npm -v
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+        working-directory: ./hoops.ui
+
+      - name: Build Angular app
+        run: npm run build
+        working-directory: ./hoops.ui
+
+      - name: List build output
+        run: ls -R ./dist
+        working-directory: ./hoops.ui        
+
+      - name: Confirm build output exists
+        run: |
+          echo "Listing dist contents:"
+          ls -R ./dist
+        working-directory: ./hoops.ui
+
+      - name: Show final build output
+        run: ls -R ./dist/hoops/browser
+        working-directory: ./hoops.ui
+
+
+      - name: Deploy to Azure Static Web Apps
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          app_location: './hoops.ui/dist/hoops/browser'
+          output_location: ''
+          skip_app_build: true
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_TOKEN }}
+          action: 'upload'

@@ -1,6 +1,7 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://localhost:5001',
+  apiUrl: 'https://hoops-api-dev-dnggf0ewe3c2b9ae.eastus-01.azurewebsites.net',
   environment: 'development',
-  showGameAdmin: true
+  showGameAdmin: true,
+  securityEnabled: false
 };

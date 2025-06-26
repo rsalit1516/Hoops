@@ -1,5 +1,5 @@
-@use  '../../../../../content/_variables' as v;
+@use "variables" as v;
 
 p {
-    color: v.$brand-color
+  color: v.$brand-color;
 }

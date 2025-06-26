@@ -12,6 +12,8 @@ using Hoops.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Hoops.Infrastructure.Data;
+using Microsoft.Extensions.Logging;
+using Hoops.Data;
 
 namespace Hoops.Api
 {
@@ -32,35 +34,13 @@ namespace Hoops.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services
-            //    .AddDbContext<hoopsContext>(options =>
-            //        options
-            //            .UseSqlServer(Configuration
-            //                .GetConnectionString("hoopsContext")));
-            if (Environment.IsDevelopment())
-            {
-                _ = services
-                    .AddDbContext<hoopsContext>(options =>
-                        options
-                            .UseSqlServer(Configuration
-                                .GetConnectionString("hoopsContext"),
-                            builder =>
-                            {
-                                _ = builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
-                            }));
-            }
-            else
-            {
-                _ = services
-                    .AddDbContext<hoopsContext>(options =>
-                        options
-                           .UseSqlServer(Configuration
-                                .GetConnectionString("hoopsContext"),
-                            builder =>
-                            {
-                                _ = builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
-                            }));
-            }
+            var conn = Configuration.GetConnectionString("hoopsContext");
+            Console.WriteLine($"[DEBUG] Connection string loaded: {(string.IsNullOrEmpty(conn) ? "NULL" : "FOUND")}");
+
+            services.AddDbContext<hoopsContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("hoopsContext"),
+                    builder => builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null)));
 
             _ = services.AddDbContext<hoopsContext>();
             _ = services.AddScoped<ISeasonRepository, SeasonRepository>();
@@ -80,6 +60,8 @@ namespace Hoops.Api
             _ = services.AddScoped<IUserRepository, UserRepository>();
             _ = services.AddScoped<ICommentRepository, CommentRepository>();
 
+            services.AddScoped<Seed>();
+
             _ = services.AddCors(options =>
                    {
                        options.AddPolicy(name: MyAllowSpecificOrigins,
@@ -87,7 +69,8 @@ namespace Hoops.Api
                                          {
                                              _ = builder.WithOrigins("http://localhost:4200",
                                                                  "http://localhost50364",
-                                                                 "https://csbchoops.com")
+                                                                 "https://csbchoops.com",
+                                                                 "https://thankful-pond-090ec730f.4.azurestaticapps.net")
                                               .AllowAnyHeader()
                                         .AllowAnyMethod();
                                          });
@@ -134,6 +117,21 @@ namespace Hoops.Api
                 });
             _ = services.AddControllers();
 
+
+            // {
+            //     _ = services.AddSwaggerGen(c =>
+            //     {
+            //         c.SwaggerDoc("v1", new OpenApiInfo { Title = "Hoops API", Version = "v1" });
+            //         c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "Hoops.Api.xml"));
+            //     });
+            // }
+            // else
+            // {
+            //     _ = services.AddSwaggerGen(c =>
+            //     {
+            //         c.SwaggerDoc("v1", new OpenApiInfo { Title = "Hoops API", Version = "v1" });
+            //     });
+            // }
             // call data initializer
             //var seed = new Seed();
             //await seed.InitializeDataAsync();

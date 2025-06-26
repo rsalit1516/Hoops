@@ -1,4 +1,4 @@
-@use '_variables' as v;
+@use "variables" as v;
 
 .mat-toolbar {
   background: v.$background-color;
@@ -14,7 +14,7 @@
   padding-right: 12px;
   padding-top: 12px;
   color: v.$admin-font-color;
-  font-size: .8rem;
+  font-size: 0.8rem;
 }
 
 .mat-select {
@@ -29,12 +29,12 @@
 
 .mat-form-field-empty.mat-form-field-label,
 .mat-form-field-label {
-  font-size: 1.0rem !important;
-  color: v.$field-label  !important;
+  font-size: 1rem !important;
+  color: v.$field-label !important;
 }
 
 .mat-datepicker-toggle {
-  color: v.$admin-input-hint-color  !important;
+  color: v.$admin-input-hint-color !important;
 }
 
 .mat-datepicker-toggle-default-icon {
@@ -42,7 +42,7 @@
 }
 
 .mat-checkbox-background {
-  background-color: v.$brand-color  !important;
+  background-color: v.$brand-color !important;
 }
 
 .mat-list-item.active {

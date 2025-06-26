@@ -1,5 +1,5 @@
 @use 'sass:color';
-@use '../../../content/_variables' as v;
+@use 'variables' as v;
 
 .dashboard-card {
   min-height: 100px;

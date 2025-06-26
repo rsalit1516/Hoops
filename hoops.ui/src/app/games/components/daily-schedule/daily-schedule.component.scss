@@ -1,9 +1,8 @@
-@use '../../../../content/variables' as v;
+@use "variables" as v;
 
 :root {
   --color-primary: blue;
   --background-color: blue;
-
 }
 
 .gamedate {

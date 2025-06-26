@@ -10,11 +10,11 @@ namespace Hoops.Infrastructure.Repository
 {
     public class PersonRepository : EFRepository<Person>, IPersonRepository
     {
-        private readonly ILogger<PersonRepository> _logger;
+        private readonly ILogger<PersonRepository> logger;
 
-        public PersonRepository(hoopsContext context, ILogger<PersonRepository> logger) : base(context)
+        public PersonRepository(hoopsContext context, ILogger<PersonRepository> _logger) : base(context)
         {
-            _logger = logger;
+            logger = _logger;
         }
 
         #region IRepository<T> Members

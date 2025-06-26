@@ -1,6 +1,6 @@
 @use "./shared/scss/menu";
 
-@use "../content/variables" as v;
+@use "variables" as v;
 
 :root {
   --color-primary: blue;
@@ -196,8 +196,6 @@ th {
   clear: both;
   padding-bottom: 24px;
 }
-
-
 
 .colHeader {
   color: #fff;

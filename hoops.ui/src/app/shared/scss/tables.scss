@@ -1,5 +1,5 @@
 @use 'sass:color';
-@use '../../../Content/variables.scss' as v;
+@use 'variables.scss' as v;
 
 .mat-mdc-table, .mat-table {
   background-color: v.$table-background-color;
