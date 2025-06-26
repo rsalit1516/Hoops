@@ -26,6 +26,7 @@ namespace Hoops.Api
                 {
                     var services = scope.ServiceProvider;
                     var env = services.GetRequiredService<IHostEnvironment>();
+                    Console.WriteLine($"[DEBUG] Environment: {env.EnvironmentName}");
 
                     if (env.IsEnvironment("Local"))
                     {

@@ -13,7 +13,22 @@
             "options": {
                 "cwd": "${workspaceFolder}/src/Hoops.Api"
             },
-            "isBackground": true
+            "isBackground": true,
+            "problemMatcher": {
+                "pattern": [
+                    {
+                        "regexp": ".",
+                        "file": 1,
+                        "location": 2,
+                        "message": 3
+                    }
+                ],
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": "Now listening on:",
+                    "endsPattern": "Application started. Press Ctrl\\+C to shut down."
+                }
+            }
         },
         {
             "label": "Start Frontend (Local API)",

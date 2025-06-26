@@ -1,11 +1,11 @@
 {
   "name": "csbc",
-  "version": "0.0.0",
+  "version": "2.0.1",
   "scripts": {
     "ng": "ng",
     "build": "ng build csbc --configuration production",
     "build:prod": "ng build csbc --configuration production",
-    "start": "ng serve",
+    "start": "ng serve --configuration local",
     "test": "ng test",
     "app_build_command": "npm run docs:build"
   },
