@@ -8,12 +8,7 @@ namespace Hoops.Infrastructure.Repository
     public class CommentRepository : EFRepository<Comment>, ICommentRepository
     {
         private readonly hoopsContext _context;
-
-<<<<<<< HEAD
-        public CommentRepository(hoopsContext context): base(context)
-=======
         public CommentRepository(hoopsContext context) : base(context)
->>>>>>> develop
         {
             _context = context;
         }
