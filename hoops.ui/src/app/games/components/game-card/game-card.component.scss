@@ -1,5 +1,5 @@
 @use 'sass:color';
-@use "../../../../content/_variables" as v;
+@use "variables" as v;
 
 .panel-primary .panel-body {
   background-color: gray;

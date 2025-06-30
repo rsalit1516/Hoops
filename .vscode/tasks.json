@@ -2,41 +2,78 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build",
+            "label": "Start Backend (Local)",
+            "type": "shell",
             "command": "dotnet",
-            "type": "process",
             "args": [
-                "build",
-                "${workspaceFolder}/Hoops.Api/hoops.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
-            ],
-            "problemMatcher": "$msCompile"
-        },
-        {
-            "label": "publish",
-            "command": "dotnet",
-            "type": "process",
-            "args": [
-                "publish",
-                "${workspaceFolder}/Hoops.Api/hoops.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
-            ],
-            "problemMatcher": "$msCompile"
-        },
-        {
-            "label": "watch",
-            "command": "dotnet",
-            "type": "process",
-            "args": [
-                "watch",
                 "run",
-                "${workspaceFolder}/Hoops.Api/hoops.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
+                "--launch-profile",
+                "Local"
             ],
-            "problemMatcher": "$msCompile"
+            "options": {
+                "cwd": "${workspaceFolder}/src/Hoops.Api"
+            },
+            "isBackground": true,
+            "problemMatcher": {
+                "pattern": [
+                    {
+                        "regexp": ".",
+                        "file": 1,
+                        "location": 2,
+                        "message": 3
+                    }
+                ],
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": "Now listening on:",
+                    "endsPattern": "Application started. Press Ctrl\\+C to shut down."
+                }
+            }
+        },
+        {
+            "label": "Start Frontend (Local API)",
+            "type": "shell",
+            "command": "npm",
+            "args": [
+                "start"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/hoops.ui/src",
+                "env": {
+                    "API_BASE_URL": "http://localhost:5000"
+                }
+            },
+            "dependsOn": [
+                "Start Backend (Local)"
+            ]
+        },
+        {
+            "label": "Start Frontend (Cloud Test API)",
+            "type": "shell",
+            "command": "npm",
+            "args": [
+                "start"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/hoops.ui/src",
+                "env": {
+                    "API_BASE_URL": "https://hoops-api-dev-dnggf0ewe3c2b9ae.eastus-01.azurewebsites.net"
+                }
+            }
+        },
+        {
+            "label": "Start Frontend (Production API)",
+            "type": "shell",
+            "command": "npm",
+            "args": [
+                "start"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/hoops.ui/src",
+                "env": {
+                    "API_BASE_URL": "https://csbc-api-prod.azurewebsites.net"
+                }
+            }
         }
     ]
 }

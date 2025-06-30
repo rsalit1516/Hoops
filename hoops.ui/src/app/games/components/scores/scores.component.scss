@@ -1,4 +1,4 @@
-@use '../../../../content/_variables' as v;
+@use "variables" as v;
 
 .table-striped > tbody > tr {
   background-color: v.$card-background-color;
@@ -42,45 +42,40 @@
   margin-left: 20px;
   margin-right: 20px;
   background-color: v.$card-background-color;
-  font: .9rem
+  font: 0.9rem;
 }
 @media screen and (max-width: 600px) {
   .table-wrapper {
     padding-left: 2px;
     padding-right: 2px;
     margin-left: 2px;
-    margin-right: 2px;  }
+    margin-right: 2px;
+  }
 
-    .location {
-      font-size:.7em;
-      font-weight: 500;
-      // width: 180px;
+  .location {
+    font-size: 0.7em;
+    font-weight: 500;
+    // width: 180px;
   }
 }
 .date {
-
   font-weight: 600;
   // width: 100px;
   padding-left: 10px;
 }
 
 .team {
-
   font-weight: 700;
   // width: 260px;
-
 }
 .homeTeam {
   font-weight: 700;
   // width: 260px;
-
-
 }
 
 .location {
   font-weight: 500;
   // width: 180px;
-
 }
 .edit {
   display: inline-block;
@@ -88,8 +83,7 @@
   padding-left: 10px;
 }
 .row {
-  border-top: 1px solid whitesmoke ;
+  border-top: 1px solid whitesmoke;
   padding-top: 8px;
   padding-bottom: 8px;
-
 }

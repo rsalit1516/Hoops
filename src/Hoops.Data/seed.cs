@@ -6,44 +6,54 @@ using Hoops.Core.Models;
 using Hoops.Infrastructure.Repository;
 using Hoops.Infrastructure.Data;
 using Microsoft.Extensions.Logging;
+using Hoops.Core.Interface;
 
 namespace Hoops.Data
 {
     public class Seed
     {
 
-        public hoopsContext Context { get; private set; }
-        public SeasonRepository SeasonRepo { get; private set; }
-        public DivisionRepository DivisionRepo { get; private set; }
-        public TeamRepository TeamRepo { get; private set; }
-        public ColorRepository ColorRepo { get; private set; }
-        public HouseholdRepository HouseholdRepo { get; private set; }
-        public PersonRepository PersonRepo { get; private set; }
-        public ScheduleLocationRepository LocationRepo { get; private set; }
-        public WebContentTypeRepository WebContentTypeRepo { get; private set; }
-        public WebContentRepository WebContentRepo { get; private set; }
-        public Seed()
+        public hoopsContext context { get; private set; }
+        public ISeasonRepository seasonRepo { get; private set; }
+        public IDivisionRepository divisionRepo { get; private set; }
+        public ITeamRepository teamRepo { get; private set; }
+        public IColorRepository colorRepo { get; private set; }
+        public IHouseholdRepository householdRepo { get; private set; }
+        public IPersonRepository personRepo { get; private set; }
+        public ILocationRepository locationRepo { get; private set; }
+        public IWebContentTypeRepository webContentTypeRepo { get; private set; }
+        public IWebContentRepository webContentRepo { get; private set; }
+        public Seed(ISeasonRepository seasonRepo,
+        IDivisionRepository divisionRepo,
+        ITeamRepository teamRepo,
+        IColorRepository colorRepo,
+        IPersonRepository personRepo,
+        ILocationRepository locationRepo,
+        IWebContentTypeRepository webContentTypeRepo,
+        IWebContentRepository webContentRepo,
+        hoopsContext context)
         {
-            ILogger<PersonRepository> _logger = LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<PersonRepository>();
-            Context = new hoopsContext();
-            SeasonRepo = new SeasonRepository(Context);
-            DivisionRepo = new DivisionRepository(Context);
-            TeamRepo = new TeamRepository(Context);
-            ColorRepo = new ColorRepository(Context);
-            HouseholdRepo = new HouseholdRepository(Context);
-            PersonRepo = new PersonRepository(Context, _logger);
-            LocationRepo = new ScheduleLocationRepository(Context);
-            WebContentTypeRepo = new WebContentTypeRepository(Context);
-            WebContentRepo = new WebContentRepository(Context);
+            this.seasonRepo = seasonRepo;
+            this.divisionRepo = divisionRepo;
+            this.teamRepo = teamRepo;
+            this.colorRepo = colorRepo;
+            this.personRepo = personRepo;
+            this.locationRepo = locationRepo;
+            this.webContentTypeRepo = webContentTypeRepo;
+            this.webContentRepo = webContentRepo;
+            this.context = context;
         }
         public async Task InitializeDataAsync()
         {
+            //first delete all records    
             await DeleteTeamsAsync();
             await DeleteColorsAsync();
-            await DeleteDivisionsAsync();
+            // await DeleteDivisionsAsync();
             await DeleteSeasonDataAsync();
-            await DeleteAllAsync();
             await DeleteWebContentAsync();
+            await DeleteWebContentTypeAsync();
+
+            //then create new records
             await CreateColorsAsync();
             await CreateSeasonsAsync();
             await CreateDivisionsAsync();
@@ -56,156 +66,181 @@ namespace Hoops.Data
         private async Task CreateSeasonsAsync()
         {
             await InitializeSeasonsAsync();
-            await Context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
         private async Task CreateDivisionsAsync()
         {
             await InitializeDivisionsAsync();
-            await Context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
         private async Task CreateColorsAsync()
         {
             await InitializeColorsAsync();
-            await Context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
         private async Task CreateTeamsAsync()
         {
             await InitializeTeamsAsync();
-            await Context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
 
         private async Task CreateWebContentTypeAsync()
         {
             await InitializeWebContentTypeAsync();
-            await Context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
         private async Task CreateWebContentAsync()
         {
             await InitializeWebContentAsync();
-            await Context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
 
         private async Task DeleteSeasonDataAsync()
         {
-            var records = await SeasonRepo.GetAllAsync();
+            var records = await seasonRepo.GetAllAsync();
             foreach (var record in records)
             {
-                await SeasonRepo.DeleteAsync(record.SeasonId);
+                await seasonRepo.DeleteAsync(record.SeasonId);
             }
         }
         private async Task DeleteDivisionsAsync()
         {
-            var records = await DivisionRepo.GetAllAsync();
+            var records = await divisionRepo.GetAllAsync();
+            Console.WriteLine($"[DEBUG] Deleting {records.Count()} divisions");
             foreach (var record in records)
             {
-                await DivisionRepo.DeleteAsync(record.DivisionId);
+                await divisionRepo.DeleteAsync(record.DivisionId);
             }
         }
         private async Task DeleteTeamsAsync()
         {
-            var records = await TeamRepo.GetAllAsync();
+            var records = await teamRepo.GetAllAsync();
             foreach (var record in records)
             {
-                await TeamRepo.DeleteAsync(record.TeamId);
+                await teamRepo.DeleteAsync(record.TeamId);
             }
         }
         private async Task DeleteColorsAsync()
         {
-            var records = await ColorRepo.GetAllAsync();
+            var records = await colorRepo.GetAllAsync();
             foreach (var record in records)
             {
-                await ColorRepo.DeleteAsync(record.ColorId);
+                await colorRepo.DeleteAsync(record.ColorId);
             }
         }
 
         private async Task InitializeSeasonsAsync()
         {
-
-            await SeasonRepo.InsertAsync(new Season
+            var startyear = 2024;
+            await seasonRepo.InsertAsync(new Season
             {
-                Description = "Summer 2020",
+                Description = "Summer " + startyear.ToString(),
                 CurrentSchedule = true,
                 CurrentSignUps = true,
                 CurrentSeason = true,
                 CompanyId = 1,
-                FromDate = new DateTime(2020, 6, 15),
-                ToDate = new DateTime(2020, 8, 31),
+                FromDate = new DateTime(startyear, 6, 15),
+                ToDate = new DateTime(startyear, 8, 31),
                 ParticipationFee = 110
 
             });
-            await SeasonRepo.InsertAsync(new Season
+            await seasonRepo.InsertAsync(new Season
             {
-                Description = "Spring 2020",
+                Description = "Spring " + startyear.ToString(),
                 CurrentSchedule = false,
                 CurrentSignUps = false,
                 CurrentSeason = false,
                 CompanyId = 1,
-                FromDate = new DateTime(2020, 3, 15),
-                ToDate = new DateTime(2020, 5, 16),
+                FromDate = new DateTime(startyear, 3, 15),
+                ToDate = new DateTime(startyear, 5, 16),
                 ParticipationFee = 110
             });
-            await SeasonRepo.InsertAsync(new Season
+            await seasonRepo.InsertAsync(new Season
             {
-                Description = "Winter 2020",
+                Description = "Winter " + startyear++.ToString(),
                 CurrentSchedule = false,
                 CurrentSignUps = false,
                 CurrentSeason = false,
                 CompanyId = 1,
-                FromDate = new DateTime(2019, 11, 15),
-                ToDate = new DateTime(2020, 3, 6),
+                FromDate = new DateTime(startyear, 11, 15),
+                ToDate = new DateTime(startyear++, 3, 6),
                 ParticipationFee = 110
             });
 
         }
         private async Task InitializeDivisionsAsync()
         {
-            var seasons = await SeasonRepo.GetAllAsync();
+            var seasons = await seasonRepo.GetAllAsync();
+            Console.WriteLine($"[DEBUG] Found {seasons.Count()} seasons to initialize divisions for.");
+            if (seasons.Count() == 0)
+            {
+                Console.WriteLine("[DEBUG] No seasons found, skipping division initialization.");
+                return;
+            }
+            Console.WriteLine($"[DEBUG] divisionRepo is null: {divisionRepo == null}");
+            Console.WriteLine($"[DEBUG] seasonRepo is null: {seasonRepo == null}");
+            Console.WriteLine($"[DEBUG] seasons is null: {seasons == null}");
             foreach (var season in seasons)
             {
-                await DivisionRepo.InsertAsync(new Division
+                Console.WriteLine($"[DEBUG] Initializing divisions for season: {season.SeasonId}");
+                await divisionRepo.InsertAsync(new Division
                 {
                     CompanyId = 1,
                     SeasonId = season.SeasonId,
                     DivisionDescription = "HS Boys",
                     Gender = "M",
+                    Gender2 = "F",
                     MinDate = new DateTime(2020, 08, 31).AddYears(-18),
-                    MaxDate = new DateTime(2020, 09, 1).AddYears(-16)
+                    MaxDate = new DateTime(2020, 09, 1).AddYears(-16),
+                    Stats = true,
+                    DraftVenue = "Mullins Hall",
+                    DraftTime = "7:00 PM",
+                    CreatedDate = DateTime.Now,
+                    CreatedUser = "Seed"
 
                 });
-                await DivisionRepo.InsertAsync(new Division
+                await divisionRepo.InsertAsync(new Division
                 {
                     CompanyId = 1,
                     SeasonId = season.SeasonId,
                     DivisionDescription = "JV Boys",
                     Gender = "M",
                     MinDate = new DateTime(2020, 08, 31).AddYears(-16),
-                    MaxDate = new DateTime(2020, 09, 1).AddYears(-14)
-
+                    MaxDate = new DateTime(2020, 09, 1).AddYears(-14),
+                    Gender2 = "F",
+                    Stats = true,
+                    DraftVenue = "Mullins Hall",
+                    DraftTime = "7:00 PM",
+                    CreatedDate = DateTime.Now,
+                    CreatedUser = "Seed"
                 });
             }
         }
         private async Task InitializeTeamsAsync()
         {
-            var seasons = await SeasonRepo.GetAllAsync();
-            var colors = await ColorRepo.GetAllAsync();
+            var seasons = await seasonRepo.GetAllAsync();
+            var colors = await colorRepo.GetAllAsync();
             var ranColor = new Random();
             var ranTeams = new Random();
             foreach (var season in seasons)
             {
-                var divisions = await DivisionRepo.GetSeasonDivisionsAsync(season.SeasonId);
+                var divisions = await divisionRepo.GetSeasonDivisionsAsync(season.SeasonId);
                 var counter = 0;
                 foreach (var division in divisions)
                 {
                     for (var i = 1; i <= ranTeams.Next(4, 12); i++)
                     {
                         counter++;
-                        await TeamRepo.InsertAsync(new Team
+                        await teamRepo.InsertAsync(new Team
                         {
                             // CompanyId = 1,
                             SeasonId = season.SeasonId,
                             DivisionId = division.DivisionId,
                             TeamNumber = i.ToString(),
-                            TeamColorId = colors.ElementAt(ranColor.Next(1, colors.Count())).ColorId
+                            TeamColorId = colors.ElementAt(ranColor.Next(1, colors.Count())).ColorId,
+                            CreatedDate = DateTime.Now,
+                            CreatedUser = "Seed",
+
                         });
                     }
                 }
@@ -213,37 +248,67 @@ namespace Hoops.Data
         }
         private async Task InitializeColorsAsync()
         {
-            await ColorRepo.InsertAsync(new Color
+            int maxColorId = context.Colors.Any() ? context.Colors.Max(c => c.ColorId) : 0;
+            maxColorId++;
+            await colorRepo.InsertAsync(new Color
             {
                 CompanyId = 1,
-                ColorName = "Red"
+                ColorId = maxColorId,
+                ColorName = "Red",
+                Discontinued = false,
+                CreatedDate = DateTime.Now,
+                CreatedUser = "Seed",
             });
-            await ColorRepo.InsertAsync(new Color
+            maxColorId++;
+            await colorRepo.InsertAsync(new Color
             {
                 CompanyId = 1,
-                ColorName = "Blue"
+                ColorId = maxColorId,
+                ColorName = "Blue",
+                Discontinued = false,
+                CreatedDate = DateTime.Now,
+                CreatedUser = "Seed",
+
             });
-            await ColorRepo.InsertAsync(new Color
+            maxColorId++;
+            await colorRepo.InsertAsync(new Color
             {
                 CompanyId = 1,
-                ColorName = "Black"
+                ColorId = maxColorId,
+                ColorName = "Black",
+                Discontinued = false,
+                CreatedDate = DateTime.Now,
+                CreatedUser = "Seed",
+
             });
-            await ColorRepo.InsertAsync(new Color
+            maxColorId++;
+            await colorRepo.InsertAsync(new Color
             {
                 CompanyId = 1,
-                ColorName = "Yellow"
+                ColorId = maxColorId,
+                ColorName = "Yellow",
+                Discontinued = false,
+                CreatedDate = DateTime.Now,
+                CreatedUser = "Seed",
+
             });
-            await ColorRepo.InsertAsync(new Color
+            maxColorId++;
+            await colorRepo.InsertAsync(new Color
             {
                 CompanyId = 1,
-                ColorName = "Orange"
+                ColorId = maxColorId,
+                ColorName = "Orange",
+                Discontinued = false,
+                CreatedDate = DateTime.Now,
+                CreatedUser = "Seed",
+
             });
         }
         private async Task InitializeHouseholds()
         {
             var randomPhone = new Random();
 
-            await HouseholdRepo.InsertAsync(new Household
+            await householdRepo.InsertAsync(new Household
             {
                 CompanyId = 1,
                 Name = "Blarney",
@@ -259,25 +324,25 @@ namespace Hoops.Data
             {
                 WebContentTypeDescription = "Meeting"
             };
-            var actual = await WebContentTypeRepo.InsertAsync(entity);
+            var actual = await webContentTypeRepo.InsertAsync(entity);
 
-            await WebContentTypeRepo.InsertAsync(new WebContentType
+            await webContentTypeRepo.InsertAsync(new WebContentType
             {
                 WebContentTypeDescription = "Season Info"
             });
 
         }
-        private async Task DeleteAllAsync()
+        private async Task DeleteWebContentTypeAsync()
         {
-            var records = await WebContentTypeRepo.GetAllAsync();
+            var records = await webContentTypeRepo.GetAllAsync();
             foreach (var record in records)
             {
-                await WebContentTypeRepo.DeleteAsync(record.WebContentTypeId);
+                await webContentTypeRepo.DeleteAsync(record.WebContentTypeId);
             }
         }
         private async Task DeleteWebContentAsync()
         {
-            var repo = WebContentRepo;
+            var repo = webContentRepo;
             var records = await repo.GetAllAsync();
             foreach (var record in records)
             {
@@ -286,10 +351,10 @@ namespace Hoops.Data
         }
         private async Task InitializeWebContentAsync()
         {
-            var repoType = WebContentTypeRepo;
+            var repoType = webContentTypeRepo;
             var seasonInfo = await repoType.GetByDescriptionAsync("Season Info");
             var meeting = await repoType.GetByDescriptionAsync("Meeting");
-            var repo = WebContentRepo;
+            var repo = webContentRepo;
             await repo.InsertAsync(new WebContent
             {
                 // WebContentId
