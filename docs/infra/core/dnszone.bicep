@@ -1,14 +1,15 @@
 param dnsZoneName string = 'csbchoops.com'
 param location string = 'global'
 
-resource dnsZone 'Microsoft.Network/dnsZones@2020-06-01' = {
+resource dnsZone 'Microsoft.Network/dnsZones@2018-05-01' = {
   name: dnsZoneName
   location: location
 }
 
 // A Record
 resource aRecord 'Microsoft.Network/dnsZones/A@2018-05-01' = {
-  name: '${dnsZone.name}/@'
+  parent: dnsZone
+  name: '@'
   properties: {
     TTL: 60
     ARecords: [
@@ -21,20 +22,22 @@ resource aRecord 'Microsoft.Network/dnsZones/A@2018-05-01' = {
 
 // CNAME Records
 resource wildcardCname 'Microsoft.Network/dnsZones/CNAME@2018-05-01' = {
-  name: '${dnsZone.name}/*'
+  parent: dnsZone
+  name: '*'
   properties: {
     TTL: 3600
-    cnameRecord: {
+    CNAMERecord: {
       cname: 'csbchoops-ui.azurewebsites.net'
     }
   }
 }
 
 resource wwwCname 'Microsoft.Network/dnsZones/CNAME@2018-05-01' = {
-  name: '${dnsZone.name}/www'
+  parent: dnsZone
+  name: 'www'
   properties: {
     TTL: 60
-    cnameRecord: {
+    CNAMERecord: {
       cname: 'csbchoops-ui.azurewebsites.net'
     }
   }
@@ -42,7 +45,8 @@ resource wwwCname 'Microsoft.Network/dnsZones/CNAME@2018-05-01' = {
 
 // TXT Records
 resource rootTxt 'Microsoft.Network/dnsZones/TXT@2018-05-01' = {
-  name: '${dnsZone.name}/@'
+  parent: dnsZone
+  name: '@'
   properties: {
     TTL: 3600
     TXTRecords: [
@@ -56,7 +60,8 @@ resource rootTxt 'Microsoft.Network/dnsZones/TXT@2018-05-01' = {
 }
 
 resource asuidTxt 'Microsoft.Network/dnsZones/TXT@2018-05-01' = {
-  name: '${dnsZone.name}/asuid'
+  parent: dnsZone
+  name: 'asuid'
   properties: {
     TTL: 3600
     TXTRecords: [
@@ -70,7 +75,8 @@ resource asuidTxt 'Microsoft.Network/dnsZones/TXT@2018-05-01' = {
 }
 
 resource asuidApiTxt 'Microsoft.Network/dnsZones/TXT@2018-05-01' = {
-  name: '${dnsZone.name}/asuid.api'
+  parent: dnsZone
+  name: 'asuid.api'
   properties: {
     TTL: 3600
     TXTRecords: [
@@ -84,7 +90,8 @@ resource asuidApiTxt 'Microsoft.Network/dnsZones/TXT@2018-05-01' = {
 }
 
 resource asuidWwwTxt 'Microsoft.Network/dnsZones/TXT@2018-05-01' = {
-  name: '${dnsZone.name}/asuid.www'
+  parent: dnsZone
+  name: 'asuid.www'
   properties: {
     TTL: 3600
     TXTRecords: [
