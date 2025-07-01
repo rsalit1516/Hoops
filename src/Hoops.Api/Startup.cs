@@ -60,7 +60,7 @@ namespace Hoops.Api
             _ = services.AddScoped<IUserRepository, UserRepository>();
             _ = services.AddScoped<ICommentRepository, CommentRepository>();
 
-            services.AddScoped<Seed>();
+            services.AddScoped<SeedCoordinator>();
 
             _ = services.AddCors(options =>
                    {

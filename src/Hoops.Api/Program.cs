@@ -32,7 +32,7 @@ namespace Hoops.Api
                     {
                         var context = services.GetRequiredService<hoopsContext>();
                         // var personLogger = services.GetRequiredService<ILogger<PersonRepository>>();
-                        var seeder = services.GetRequiredService<Seed>();
+                        var seeder = services.GetRequiredService<SeedCoordinator>();
                         seeder.InitializeDataAsync().Wait(); // or GetAwaiter().GetResult()
 
                     }

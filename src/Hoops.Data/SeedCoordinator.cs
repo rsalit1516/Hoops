@@ -7,10 +7,12 @@ using Hoops.Infrastructure.Repository;
 using Hoops.Infrastructure.Data;
 using Microsoft.Extensions.Logging;
 using Hoops.Core.Interface;
+using Hoops.Data.Seeders;
+using Microsoft.Net.Http.Headers;
 
 namespace Hoops.Data
 {
-    public class Seed
+    public class SeedCoordinator
     {
 
         public hoopsContext context { get; private set; }
@@ -23,25 +25,30 @@ namespace Hoops.Data
         public ILocationRepository locationRepo { get; private set; }
         public IWebContentTypeRepository webContentTypeRepo { get; private set; }
         public IWebContentRepository webContentRepo { get; private set; }
-        public Seed(ISeasonRepository seasonRepo,
+        private WebContentSeeder _webContentSeeder { get; set; }
+        public SeedCoordinator(ISeasonRepository seasonRepo,
         IDivisionRepository divisionRepo,
         ITeamRepository teamRepo,
         IColorRepository colorRepo,
+        IHouseholdRepository householdRepo,
         IPersonRepository personRepo,
         ILocationRepository locationRepo,
         IWebContentTypeRepository webContentTypeRepo,
         IWebContentRepository webContentRepo,
-        hoopsContext context)
+        hoopsContext context,
+        WebContentSeeder webContentSeeder)
         {
             this.seasonRepo = seasonRepo;
             this.divisionRepo = divisionRepo;
             this.teamRepo = teamRepo;
             this.colorRepo = colorRepo;
+            this.householdRepo = householdRepo;
             this.personRepo = personRepo;
             this.locationRepo = locationRepo;
             this.webContentTypeRepo = webContentTypeRepo;
             this.webContentRepo = webContentRepo;
             this.context = context;
+            _webContentSeeder = webContentSeeder;
         }
         public async Task InitializeDataAsync()
         {
@@ -52,15 +59,17 @@ namespace Hoops.Data
             await DeleteSeasonDataAsync();
             await DeleteWebContentAsync();
             await DeleteWebContentTypeAsync();
-
+            await DeletePersonsAsync();
+            await DeleteHouseholdsAsync();
             //then create new records
             await CreateColorsAsync();
             await CreateSeasonsAsync();
             await CreateDivisionsAsync();
             await CreateTeamsAsync();
             await CreateWebContentTypeAsync();
+            await _webContentSeeder.SeedAsync();
             await CreateWebContentAsync();
-
+            await CreateHouseholdsAndPersonsAsync();
         }
 
         private async Task CreateSeasonsAsync()
@@ -92,6 +101,12 @@ namespace Hoops.Data
         private async Task CreateWebContentAsync()
         {
             await InitializeWebContentAsync();
+            await context.SaveChangesAsync();
+        }
+
+        private async Task CreateHouseholdsAndPersonsAsync()
+        {
+            await InitializeHouseholdsAndPersonsAsync();
             await context.SaveChangesAsync();
         }
 
@@ -413,6 +428,64 @@ namespace Hoops.Data
                 ExpirationDate = DateTime.Now.AddDays(-3)
             });
         }
-        //private Array
+        // ...existing code...
+
+        private async Task DeleteHouseholdsAsync()
+        {
+            var records = await householdRepo.GetAllAsync();
+            foreach (var record in records)
+            {
+                await householdRepo.DeleteAsync(record.HouseId);
+            }
+        }
+
+        private async Task DeletePersonsAsync()
+        {
+            var records = await personRepo.GetAllAsync();
+            foreach (var record in records)
+            {
+                await personRepo.DeleteAsync(record.PersonId);
+            }
+        }
+
+        private async Task InitializeHouseholdsAndPersonsAsync()
+        {
+            var random = new Random();
+            var householdNames = new[] { "Smith", "Johnson", "Williams", "Brown", "Jones" };
+            var firstNames = new[] { "John", "Jane", "Alex", "Chris", "Pat", "Taylor", "Jordan", "Morgan", "Casey", "Sam" };
+
+            // Insert 5 households
+            for (int i = 0; i < householdNames.Length; i++)
+            {
+                var household = new Household
+                {
+                    CompanyId = 1,
+                    HouseId = i + 1, // Assuming HouseId is sequential starting from 1
+                    Name = householdNames[i],
+                    Phone = "954" + random.Next(1000000, 9999999).ToString(),
+                    City = "Coral Springs",
+                    State = "FL",
+                    Email = $"{householdNames[i].ToLower()}@example.com"
+                };
+                await householdRepo.InsertAsync(household);
+
+                // Insert 2-5 people for each household
+                int peopleCount = random.Next(2, 6);
+                for (int j = 0; j < peopleCount; j++)
+                {
+                    var person = new Person
+                    {
+                        FirstName = firstNames[random.Next(firstNames.Length)],
+                        LastName = householdNames[i],
+                        HouseId = household.HouseId,
+                        CompanyId = 1,
+                        BirthDate = DateTime.Now.AddYears(-random.Next(5, 50)).AddDays(random.Next(1, 365)),
+                        CreatedDate = DateTime.Now,
+                        CreatedUser = "Seed"
+                    };
+                    await personRepo.InsertAsync(person);
+                }
+            }
+        }
     }
 }
