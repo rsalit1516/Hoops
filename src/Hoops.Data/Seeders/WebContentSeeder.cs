@@ -73,7 +73,7 @@ namespace Hoops.Data.Seeders
                 },
                 new WebContent
                 {
-                         CompanyId = 1,
+                CompanyId = 1,
                 Page = "1",
                 WebContentTypeId = seasonInfo.WebContentTypeId,
                 Title = "Second Test",
@@ -83,6 +83,19 @@ namespace Hoops.Data.Seeders
                 DateAndTime = "7AM",
                 Body = "I ain't go no body",
                 ExpirationDate = DateTime.Now.AddDays(-3)
+                },
+                new WebContent
+                {
+                CompanyId = 1,
+                Page = "2",
+                WebContentTypeId = seasonInfo.WebContentTypeId,
+                Title = "Expired Test",
+                ContentSequence = 1,
+                SubTitle = "Expired Subtitle",
+                Location = "Mullins",
+                DateAndTime = "7AM",
+                Body = "I ain't go no body",
+                ExpirationDate = DateTime.Now.AddDays(-60)
                 }
             };
 
@@ -90,6 +103,7 @@ namespace Hoops.Data.Seeders
             {
                 await _webContentRepository.InsertAsync(content);
             }
+            context.SaveChanges();
         }
     }
 }

@@ -14,6 +14,7 @@ using Microsoft.OpenApi.Models;
 using Hoops.Infrastructure.Data;
 using Microsoft.Extensions.Logging;
 using Hoops.Data;
+using Hoops.Infrastructure;
 
 namespace Hoops.Api
 {
@@ -43,24 +44,8 @@ namespace Hoops.Api
                     builder => builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null)));
 
             _ = services.AddDbContext<hoopsContext>();
-            _ = services.AddScoped<ISeasonRepository, SeasonRepository>();
-            _ = services.AddScoped<IDivisionRepository, DivisionRepository>();
-            _ = services.AddScoped<IRepository<User>, UserRepository>();
-            _ = services.AddScoped<IDirectorRepository, DirectorRepository>();
-            _ = services.AddScoped<ITeamRepository, TeamRepository>();
-            _ = services.AddScoped<IColorRepository, ColorRepository>();
-            _ = services.AddScoped<IScheduleGameRepository, ScheduleGameRepository>();
-            _ = services.AddScoped<ISchedulePlayoffRepository, SchedulePlayoffRepository>();
-            _ = services.AddScoped<IWebContentRepository, WebContentRepository>();
-            _ = services.AddScoped<IWebContentTypeRepository, WebContentTypeRepository>();
-            _ = services.AddScoped<ISponsorRepository, SponsorRepository>();
-            _ = services.AddScoped<IPersonRepository, PersonRepository>();
-            _ = services.AddScoped<ILocationRepository, LocationRepository>();
-            _ = services.AddScoped<IHouseholdRepository, HouseholdRepository>();
-            _ = services.AddScoped<IUserRepository, UserRepository>();
-            _ = services.AddScoped<ICommentRepository, CommentRepository>();
-
-            services.AddScoped<SeedCoordinator>();
+            _ = services.AddHoopsRepositories();
+            _ = services.AddHoopsSeeders();
 
             _ = services.AddCors(options =>
                    {
