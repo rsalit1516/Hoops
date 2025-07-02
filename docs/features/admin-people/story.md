@@ -15,7 +15,7 @@ Provide administrative users with tools to manage the people in the league datab
 
 - A `Person` belongs to one `Household`
 - A `Household` can contain multiple `People`
-- A `Person` can be associated with multiple `Leagues` over time (active and historical)
+- A `Person` can be associated with multiple `Seasons` over time (active and historical)
 
 ## Notes
 

@@ -16,7 +16,7 @@ This document provides a high-level view of the application architecture, coveri
 
 ### 🖥️ Frontend (Angular)
 
-- Feature Modules (e.g., `admin-people`, `public-view`, `team-management`)
+- Feature Modules (e.g., `admin-people`, `admin-games`, `team-management`)
 - Route Guards for admin access control
 - Environment-based API config injection
 - Reusable UI components (e.g., person-card, household-summary)
@@ -34,12 +34,29 @@ This document provides a high-level view of the application architecture, coveri
 
 ### 🧠 Domain & Data
 
-- Core entities: `Person`, `Household`, `League`, `Team`, `Match`
+- Core entities: `Person`, `Household`, `Season`, `Division`, `Team`, `Game`, `Playoff Game`
 - Relationships:
   - `Person` ↔ `Household`: many-to-one
-  - `Person` ↔ `LeagueHistory`: one-to-many
+  - `Person` ↔ `Season`: one-to-many
+  - `Person` - 
 - SQL Server with EF Core ORM
 - Audit fields: createdBy, updatedBy, timestamps
+
+## Diagram
+
+```mermaid
+---
+title: Hoops ER diagram
+---
+erDiagram
+    Company ||--o{ Season : has
+    Season ||--o{ Division : has
+    Division ||--o{ Teams : has
+    Teams ||--o{ Player : has
+    Player ||--o{ Person : has
+    Household ||--o{ Person : has
+
+```
 
 ### 🔐 Security Considerations
 
