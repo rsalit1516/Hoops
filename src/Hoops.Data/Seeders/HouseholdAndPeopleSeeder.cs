@@ -57,20 +57,36 @@ namespace Hoops.Data.Seeders
                 int peopleCount = random.Next(2, 6);
                 for (int j = 0; j < peopleCount; j++)
                 {
+                    var birthDate = j == 0 ? DateTime.Now.AddYears(-random.Next(28, 50)).AddDays(random.Next(1, 365)) : DateTime.Now.AddYears(-random.Next(5, 18)).AddDays(random.Next(1, 365));
                     var person = new Person
                     {
                         FirstName = firstNames[random.Next(firstNames.Length)],
                         LastName = householdNames[i],
                         HouseId = household.HouseId,
                         CompanyId = 1,
-                        BirthDate = DateTime.Now.AddYears(-random.Next(5, 50)).AddDays(random.Next(1, 365)),
+                        BirthDate = birthDate,
+                        Gender = random.Next(2) == 0 ? "M" : "F",
                         CreatedDate = DateTime.Now,
-                        CreatedUser = "Seed"
+                        CreatedUser = "Seed",
+                        Parent = j == 0 ? true : false, // First person is the parent
+                        Player = j > 0 ? true : false, // First person is a player
+                        Grade = j > 0 ? CalculateGrade(birthDate, DateTime.Today) : null, // Only players have grades
+                        SchoolName = "Coral Springs HS", // Assuming all players go to the same school
+                        Bc = j == 0 ? false : true, // First person is a parent, others are players
                     };
                     await _personRepo.InsertAsync(person);
                 }
                 context.SaveChanges();
             }
+        }
+        public static int? CalculateGrade(DateTime birthDate, DateTime? asOf = null)
+        {
+            var today = asOf ?? DateTime.Today;
+            int age = today.Year - birthDate.Year;
+            if (birthDate > today.AddYears(-age)) age--;
+
+            int grade = age - 5; // Kindergarten at age 5
+            return grade >= 0 && grade <= 12 ? grade : (int?)null;
         }
     }
 }
