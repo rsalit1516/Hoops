@@ -21,6 +21,12 @@ namespace Hoops.Data.Seeders
             webContentTypeRepo = new WebContentTypeRepository(context);
         }
 
+        public async Task DeleteAllAsync()
+        {
+            var records = await _webContentRepository.GetAllAsync();
+            foreach (var record in records)
+                await _webContentRepository.DeleteAsync(record.WebContentId);
+        }
         public async Task SeedAsync()
         {
             var _webContentRepositoryType = webContentTypeRepo;
@@ -42,7 +48,7 @@ namespace Hoops.Data.Seeders
                 Location = "Mullins",
                 DateAndTime = "7AM",
                 Body = "I ain't go no body",
-                ExpirationDate = DateTime.Now.AddDays(30)
+                ExpirationDate = DateTime.Now.AddDays(0)
                 },
                 new WebContent
                 {
@@ -55,7 +61,7 @@ namespace Hoops.Data.Seeders
                 Location = "Mullins",
                 DateAndTime = "6AM",
                 Body = "I ain't go no body",
-                ExpirationDate = DateTime.Now.AddDays(30)
+                ExpirationDate = DateTime.Now.AddDays(15)
                 },
                 new WebContent
                 {
@@ -68,7 +74,7 @@ namespace Hoops.Data.Seeders
                 Location = "Mullins Hall",
                 DateAndTime = "7PM",
                 Body = "Meeting info",
-                ExpirationDate = DateTime.Now.AddDays(30)
+                ExpirationDate = DateTime.Now.AddDays(20)
 
                 },
                 new WebContent

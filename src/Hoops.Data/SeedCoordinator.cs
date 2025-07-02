@@ -25,7 +25,9 @@ namespace Hoops.Data
         public ILocationRepository locationRepo { get; private set; }
         public IWebContentTypeRepository webContentTypeRepo { get; private set; }
         public IWebContentRepository webContentRepo { get; private set; }
+        private WebContentTypeSeeder _webContentTypeSeeder { get; set; }
         private WebContentSeeder _webContentSeeder { get; set; }
+        private HouseholdAndPeopleSeeder _householdAndPeopleSeeder { get; set; }
         public SeedCoordinator(ISeasonRepository seasonRepo,
         IDivisionRepository divisionRepo,
         ITeamRepository teamRepo,
@@ -33,10 +35,12 @@ namespace Hoops.Data
         IHouseholdRepository householdRepo,
         IPersonRepository personRepo,
         ILocationRepository locationRepo,
-        IWebContentTypeRepository webContentTypeRepo,
-        IWebContentRepository webContentRepo,
+        // IWebContentTypeRepository webContentTypeRepo,
+        // IWebContentRepository webContentRepo,
         hoopsContext context,
-        WebContentSeeder webContentSeeder)
+                WebContentTypeSeeder webContentTypeSeeder,
+        WebContentSeeder webContentSeeder,
+        HouseholdAndPeopleSeeder householdAndPeopleSeeder)
         {
             this.seasonRepo = seasonRepo;
             this.divisionRepo = divisionRepo;
@@ -45,10 +49,12 @@ namespace Hoops.Data
             this.householdRepo = householdRepo;
             this.personRepo = personRepo;
             this.locationRepo = locationRepo;
-            this.webContentTypeRepo = webContentTypeRepo;
-            this.webContentRepo = webContentRepo;
+            // this.webContentTypeRepo = webContentTypeRepo;
+            // this.webContentRepo = webContentRepo;
             this.context = context;
+            _webContentTypeSeeder = webContentTypeSeeder;
             _webContentSeeder = webContentSeeder;
+            _householdAndPeopleSeeder = householdAndPeopleSeeder;
         }
         public async Task InitializeDataAsync()
         {
@@ -57,19 +63,22 @@ namespace Hoops.Data
             await DeleteColorsAsync();
             // await DeleteDivisionsAsync();
             await DeleteSeasonDataAsync();
-            await DeleteWebContentAsync();
-            await DeleteWebContentTypeAsync();
-            await DeletePersonsAsync();
-            await DeleteHouseholdsAsync();
+            await _webContentSeeder.DeleteAllAsync();
+            await _webContentTypeSeeder.DeleteAllAsync();
+            await _householdAndPeopleSeeder.DeleteAllAsync();
+            // await DeletePersonsAsync();
+            // await DeleteHouseholdsAsync();
             //then create new records
             await CreateColorsAsync();
             await CreateSeasonsAsync();
             await CreateDivisionsAsync();
             await CreateTeamsAsync();
-            await CreateWebContentTypeAsync();
+            // await CreateWebContentTypeAsync();
+            await _webContentTypeSeeder.SeedAsync();
             await _webContentSeeder.SeedAsync();
-            await CreateWebContentAsync();
-            await CreateHouseholdsAndPersonsAsync();
+            await _householdAndPeopleSeeder.SeedAsync();
+            // await CreateWebContentAsync();
+            // await CreateHouseholdsAndPersonsAsync();
         }
 
         private async Task CreateSeasonsAsync()
@@ -93,22 +102,22 @@ namespace Hoops.Data
             await context.SaveChangesAsync();
         }
 
-        private async Task CreateWebContentTypeAsync()
-        {
-            await InitializeWebContentTypeAsync();
-            await context.SaveChangesAsync();
-        }
-        private async Task CreateWebContentAsync()
-        {
-            await InitializeWebContentAsync();
-            await context.SaveChangesAsync();
-        }
+        // private async Task CreateWebContentTypeAsync()
+        // {
+        //     await InitializeWebContentTypeAsync();
+        //     await context.SaveChangesAsync();
+        // }
+        // private async Task CreateWebContentAsync()
+        // {
+        //     await InitializeWebContentAsync();
+        //     await context.SaveChangesAsync();
+        // }
 
-        private async Task CreateHouseholdsAndPersonsAsync()
-        {
-            await InitializeHouseholdsAndPersonsAsync();
-            await context.SaveChangesAsync();
-        }
+        // private async Task CreateHouseholdsAndPersonsAsync()
+        // {
+        //     await InitializeHouseholdsAndPersonsAsync();
+        //     await context.SaveChangesAsync();
+        // }
 
         private async Task DeleteSeasonDataAsync()
         {
@@ -355,79 +364,79 @@ namespace Hoops.Data
                 await webContentTypeRepo.DeleteAsync(record.WebContentTypeId);
             }
         }
-        private async Task DeleteWebContentAsync()
-        {
-            var repo = webContentRepo;
-            var records = await repo.GetAllAsync();
-            foreach (var record in records)
-            {
-                await repo.DeleteAsync(record.WebContentId);
-            }
-        }
-        private async Task InitializeWebContentAsync()
-        {
-            var repoType = webContentTypeRepo;
-            var seasonInfo = await repoType.GetByDescriptionAsync("Season Info");
-            var meeting = await repoType.GetByDescriptionAsync("Meeting");
-            var repo = webContentRepo;
-            await repo.InsertAsync(new WebContent
-            {
-                // WebContentId
-                CompanyId = 1,
-                Page = "1",
-                WebContentTypeId = seasonInfo.WebContentTypeId,
-                Title = "Second Test",
-                ContentSequence = 2,
-                SubTitle = "Second Subtitle",
-                Location = "Mullins",
-                DateAndTime = "7AM",
-                Body = "I ain't go no body",
-                ExpirationDate = DateTime.Now.AddDays(30)
-            });
+        // private async Task DeleteWebContentAsync()
+        // {
+        //     var repo = webContentRepo;
+        //     var records = await repo.GetAllAsync();
+        //     foreach (var record in records)
+        //     {
+        //         await repo.DeleteAsync(record.WebContentId);
+        //     }
+        // }
+        // private async Task InitializeWebContentAsync()
+        // {
+        //     var repoType = webContentTypeRepo;
+        //     var seasonInfo = await repoType.GetByDescriptionAsync("Season Info");
+        //     var meeting = await repoType.GetByDescriptionAsync("Meeting");
+        //     var repo = webContentRepo;
+        //     await repo.InsertAsync(new WebContent
+        //     {
+        //         // WebContentId
+        //         CompanyId = 1,
+        //         Page = "1",
+        //         WebContentTypeId = seasonInfo.WebContentTypeId,
+        //         Title = "Second Test",
+        //         ContentSequence = 2,
+        //         SubTitle = "Second Subtitle",
+        //         Location = "Mullins",
+        //         DateAndTime = "7AM",
+        //         Body = "I ain't go no body",
+        //         ExpirationDate = DateTime.Now.AddDays(30)
+        //     });
 
-            await repo.InsertAsync(new WebContent
-            {
-                // WebContentId
-                CompanyId = 1,
-                Page = "1",
-                WebContentTypeId = seasonInfo.WebContentTypeId,
-                Title = "First Test",
-                ContentSequence = 1,
-                SubTitle = "First Subtitle",
-                Location = "Mullins",
-                DateAndTime = "6AM",
-                Body = "I ain't go no body",
-                ExpirationDate = DateTime.Now.AddDays(30)
-            });
-            await repo.InsertAsync(new WebContent
-            {
-                // WebContentId
-                CompanyId = 1,
-                Page = "1",
-                WebContentTypeId = meeting.WebContentTypeId,
-                Title = "Meeting",
-                ContentSequence = 1,
-                SubTitle = "Meet by the school",
-                Location = "Mullins Hall",
-                DateAndTime = "7PM",
-                Body = "Meeting info",
-                ExpirationDate = DateTime.Now.AddDays(30)
-            });
-            await repo.InsertAsync(new WebContent
-            {
-                // WebContentId
-                CompanyId = 1,
-                Page = "1",
-                WebContentTypeId = seasonInfo.WebContentTypeId,
-                Title = "Second Test",
-                ContentSequence = 1,
-                SubTitle = "Second Subtitle",
-                Location = "Mullins",
-                DateAndTime = "7AM",
-                Body = "I ain't go no body",
-                ExpirationDate = DateTime.Now.AddDays(-3)
-            });
-        }
+        //     await repo.InsertAsync(new WebContent
+        //     {
+        //         // WebContentId
+        //         CompanyId = 1,
+        //         Page = "1",
+        //         WebContentTypeId = seasonInfo.WebContentTypeId,
+        //         Title = "First Test",
+        //         ContentSequence = 1,
+        //         SubTitle = "First Subtitle",
+        //         Location = "Mullins",
+        //         DateAndTime = "6AM",
+        //         Body = "I ain't go no body",
+        //         ExpirationDate = DateTime.Now.AddDays(30)
+        //     });
+        //     await repo.InsertAsync(new WebContent
+        //     {
+        //         // WebContentId
+        //         CompanyId = 1,
+        //         Page = "1",
+        //         WebContentTypeId = meeting.WebContentTypeId,
+        //         Title = "Meeting",
+        //         ContentSequence = 1,
+        //         SubTitle = "Meet by the school",
+        //         Location = "Mullins Hall",
+        //         DateAndTime = "7PM",
+        //         Body = "Meeting info",
+        //         ExpirationDate = DateTime.Now.AddDays(30)
+        //     });
+        //     await repo.InsertAsync(new WebContent
+        //     {
+        //         // WebContentId
+        //         CompanyId = 1,
+        //         Page = "1",
+        //         WebContentTypeId = seasonInfo.WebContentTypeId,
+        //         Title = "Second Test",
+        //         ContentSequence = 1,
+        //         SubTitle = "Second Subtitle",
+        //         Location = "Mullins",
+        //         DateAndTime = "7AM",
+        //         Body = "I ain't go no body",
+        //         ExpirationDate = DateTime.Now.AddDays(-3)
+        //     });
+        // }
         // ...existing code...
 
         private async Task DeleteHouseholdsAsync()

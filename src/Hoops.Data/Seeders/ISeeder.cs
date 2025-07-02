@@ -8,7 +8,7 @@ namespace Hoops.Data.Seeders
 {
     public interface ISeeder<T>
     {
-
+        Task DeleteAllAsync();
         Task SeedAsync();
     }
 }
