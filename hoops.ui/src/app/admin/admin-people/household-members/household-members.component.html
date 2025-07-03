@@ -1,14 +1,12 @@
-
 <mat-card>
   <mat-card-header>
     <mat-card-title>
-      <csbc-section-title [title]="pageTitle">
-    </csbc-section-title>
+      <csbc-section-title [title]="pageTitle"> </csbc-section-title>
     </mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <mat-table id="grd" matsort [dataSource]="dataSource">
-      <ng-container matColumnDef="houseId" >
+      <ng-container matColumnDef="houseId">
         <th mat-header-cell *matHeaderCellDef>HouseId</th>
         <td mat-cell *matCellDef="let col" class="teamName">
           {{ col.houseId }}
@@ -29,7 +27,7 @@
       <ng-container matColumnDef="birthDate">
         <th mat-header-cell *matHeaderCellDef>DOB</th>
         <td mat-cell *matCellDef="let col" class="teamName">
-          {{ col.birthDate | date:'yyyy-MM-dd' }}
+          {{ col.birthDate | date : "yyyy-MM-dd" }}
         </td>
       </ng-container>
       <ng-container matColumnDef="gender">
@@ -46,29 +44,49 @@
       </ng-container> -->
 
       <ng-container matColumnDef="nodata">
-        <td mat-footer-row *matFooterCellDef [colSpan]="displayedColumns.length"
-        style="text-align: center;">No Data Available</td>
+        <td
+          mat-footer-row
+          *matFooterCellDef
+          [colSpan]="displayedColumns.length"
+          style="text-align: center"
+        >
+          No Data Available
+        </td>
       </ng-container>
 
-     <tr mat-footer-row
-       [hidden]="dataSource.data.length >0"
-      *matFooterRowDef="['nodata']">
-     </tr>
-      <tr mat-header-row *matHeaderRowDef="displayedColumns" matHeaderRowDefSticky="true"></tr>
-            <tr
-              mat-row
-              *matRowDef="let row; columns: displayedColumns"
-              (click)="getRecord(row)"
-            ></tr>
-</mat-table>
-<mat-paginator #householdPaginator aria-label="Select page of users"
-[pageSizeOptions]="[5, 10, 25, 100]"
-[pageSize]="pageSize"
-[showFirstLastButtons]="showFirstLastButtons"
->
-</mat-paginator>
-    </mat-card-content>
-    <mat-card-actions>
-
-    </mat-card-actions>
+      <tr
+        mat-footer-row
+        [hidden]="dataSource.data.length > 0"
+        *matFooterRowDef="['nodata']"
+      ></tr>
+      <tr
+        mat-header-row
+        *matHeaderRowDef="displayedColumns"
+        matHeaderRowDefSticky="true"
+      ></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        (click)="getRecord(row)"
+      ></tr>
+    </mat-table>
+    <mat-paginator
+      #householdPaginator
+      aria-label="Select page of users"
+      [pageSizeOptions]="[5, 10, 25, 100]"
+      [pageSize]="pageSize"
+      [showFirstLastButtons]="showFirstLastButtons"
+    >
+    </mat-paginator>
+  </mat-card-content>
+  <mat-card-actions>
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      (click)="addHouseHoldMember()"
+    >
+      Add Household Member
+    </button>
+  </mat-card-actions>
 </mat-card>

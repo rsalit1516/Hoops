@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { Router } from '@angular/router';
 import { Household } from '@app/domain/household';
 import { householdSearchCriteria, HouseholdService } from '@app/services/household.service';
 import { SectionTitleComponent } from '@app/shared/section-title/section-title.component';
@@ -35,6 +36,7 @@ import { debounceTime, map } from 'rxjs';
 export class HouseholdSearchComponent {
   private householdService = inject(HouseholdService);
   fb = inject(FormBuilder);
+  #router = inject(Router);
 
   @Output() search = new EventEmitter<householdSearchCriteria>();
 
@@ -142,6 +144,8 @@ export class HouseholdSearchComponent {
   newHousehold () {
     console.log('New Household');
     this.householdService.newHousehold();
+    this.#router.navigate(['/admin/people/list']);
+
   }
 
   public hasError = (controlName: string, errorName: string) => {

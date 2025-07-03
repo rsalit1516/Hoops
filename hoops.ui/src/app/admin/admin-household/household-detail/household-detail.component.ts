@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { Household } from '@app/domain/household';
 import { Router, RouterLink, RouterModule } from '@angular/router';
+import { HouseholdMembersComponent } from '@app/admin/admin-people/household-members/household-members.component';
 
 @Component({
   selector: 'csbc-household-detail',
@@ -22,7 +23,8 @@ import { Router, RouterLink, RouterModule } from '@angular/router';
     MatButtonModule,
     MatIconModule,
     MatCardModule,
-    RouterModule
+    RouterModule,
+    HouseholdMembersComponent
 
   ],
   templateUrl: './household-detail.component.html',
