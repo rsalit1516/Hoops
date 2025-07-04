@@ -10,7 +10,7 @@ import { SectionTitleComponent } from '@app/shared/section-title/section-title.c
 import { PeopleSearchComponent } from '../people-search/people-search.component';
 import { Router } from '@angular/router';
 import { HouseholdService } from '@app/services/household.service';
-import { PeopleAlphabetComponent } from '../people-alphabet/people-alphabet.component';
+import { PeopleAlphabetComponent } from '../people-alphabet/people-alphabet';
 
 
 @Component({
