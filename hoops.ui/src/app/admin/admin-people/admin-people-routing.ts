@@ -5,6 +5,7 @@ import { AuthGuard } from '@app/auth/auth.guard';
 import { AdminPeopleShellComponent } from './admin-people-shell/admin-people-shell.component';
 import { PeopleSearchResultsComponent } from './people-search-results/people-search-results.component';
 import { AdminPeopleDetailComponent } from './admin-people-detail/admin-people-detail.component';
+import { PeopleListComponent } from './people-list/people-list';
 
 export const ADMIN_PEOPLE_ROUTES: Routes = [
   {
@@ -13,7 +14,7 @@ export const ADMIN_PEOPLE_ROUTES: Routes = [
     canActivate: [AuthGuard],
 
     children: [
-      { path: 'list', component: PeopleSearchResultsComponent },
+      { path: 'list', component: PeopleListComponent },
       { path: 'detail', component: AdminPeopleDetailComponent },
       { path: '', redirectTo: 'list', pathMatch: 'full' },
       { path: '**', component: PageNotFoundComponent }
