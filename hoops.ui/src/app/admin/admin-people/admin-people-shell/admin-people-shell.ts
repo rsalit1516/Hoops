@@ -20,7 +20,7 @@ import { RouterModule } from '@angular/router';
   <csbc-shell-title [title]="title"/>
   <router-outlet></router-outlet>
 </section>`,
-  styleUrls: ['./admin-people-shell.component.scss',
+  styleUrls: ['./admin-people-shell.scss',
     '../../admin.component.scss',
     '../../../shared/scss/cards.scss',
   ]

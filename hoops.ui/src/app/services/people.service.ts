@@ -95,6 +95,8 @@ export class PeopleService {
   }
   executeSearch () {
     this.searchUrl = this.constructQueryString(this.selectedCriteria());
+    localStorage.setItem('peopleSearchCriteria', JSON.stringify(this.selectedCriteria()));
+
     this.searchPeople$().subscribe(response => {
       console.log('Search People: ', response);
       this.updateResults(response!);

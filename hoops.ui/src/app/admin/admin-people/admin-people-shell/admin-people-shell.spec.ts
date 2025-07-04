@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AdminPeopleShellComponent } from './admin-people-shell.component';
+import { AdminPeopleShellComponent } from './admin-people-shell';
 
 describe('AdminPeopleShellComponent', () => {
   let component: AdminPeopleShellComponent;
@@ -10,7 +10,7 @@ describe('AdminPeopleShellComponent', () => {
     await TestBed.configureTestingModule({
       imports: [AdminPeopleShellComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(AdminPeopleShellComponent);
     component = fixture.componentInstance;
