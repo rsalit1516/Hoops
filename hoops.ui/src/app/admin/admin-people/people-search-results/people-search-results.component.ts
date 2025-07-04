@@ -10,6 +10,8 @@ import { SectionTitleComponent } from '@app/shared/section-title/section-title.c
 import { PeopleSearchComponent } from '../people-search/people-search.component';
 import { Router } from '@angular/router';
 import { HouseholdService } from '@app/services/household.service';
+import { PeopleAlphabetComponent } from '../people-alphabet/people-alphabet.component';
+
 
 @Component({
   selector: 'csbc-people-search-results',
@@ -20,7 +22,8 @@ import { HouseholdService } from '@app/services/household.service';
     MatPaginatorModule,
     DatePipe,
     SectionTitleComponent,
-    PeopleSearchComponent
+    PeopleSearchComponent,
+    PeopleAlphabetComponent
   ],
   templateUrl: './people-search-results.component.html',
   styleUrls: ['./people-search-results.component.scss',
@@ -63,7 +66,7 @@ export class PeopleSearchResultsComponent implements OnInit, OnChanges, AfterVie
 
     });
   }
-  ngOnInit () {}
+  ngOnInit () { }
   ngAfterViewInit () {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -78,8 +81,8 @@ export class PeopleSearchResultsComponent implements OnInit, OnChanges, AfterVie
   getRecord (row: any) {
     console.log(row);
     this.#peopleService.updateSelectedPerson(row);
-   this.#householdService.selectedHouseholdByHouseId(row.houseId);
-    this.#router.navigate([ '/admin/people/detail' ]);
+    this.#householdService.selectedHouseholdByHouseId(row.houseId);
+    this.#router.navigate(['/admin/people/detail']);
   }
   refreshData () {
     this.dataSource._updateChangeSubscription();

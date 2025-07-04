@@ -1,0 +1,23 @@
+<div class="p-4">
+  <div class="flex flex-wrap justify-center mb-0 space-x-2">
+    <button
+      *ngFor="let letter of alphabet"
+      (click)="selectLetter(letter)"
+      class="px-1.0 py-1 min-w-0 rounded border border-gray-300 hover:bg-gray-200 transition"
+      [ngClass]="{
+        'bg-blue-500 text-white font-bold': letter === selectedLetter,
+        'text-gray-700': letter !== selectedLetter
+      }"
+    >
+      {{ letter }}
+    </button>
+  </div>
+
+  <!-- <div *ngIf="isLoading" class="text-center text-gray-600">Loading...</div>
+
+  <ul class="divide-y divide-gray-200 mt-4">
+    <li *ngFor="let person of people" class="py-2 px-4 hover:bg-gray-50">
+      {{ person.name }}
+    </li>
+  </ul> -->
+</div>
