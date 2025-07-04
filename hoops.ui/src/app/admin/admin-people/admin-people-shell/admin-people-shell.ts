@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { PersonalInfoComponent } from "../personal-info/personal-info.component";
-import { PeopleSearchComponent } from "../people-search/people-search.component";
+import { PeopleSearchComponent } from "../people-search/people-search";
 import { PeopleSearchResultsComponent } from "../people-search-results/people-search-results.component";
 import { PlayerBalanceComponent } from '@app/admin/components/player-balance/player-balance.component';
 import { PlayerHistoryComponent } from '@app/admin/components/player-history/player-history.component';

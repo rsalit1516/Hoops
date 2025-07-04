@@ -7,7 +7,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Person } from '@app/domain/person';
 import { PeopleService } from '@app/services/people.service';
 import { SectionTitleComponent } from '@app/shared/section-title/section-title.component';
-import { PeopleSearchComponent } from '../people-search/people-search.component';
+import { PeopleSearch } from '../people-search/people-search';
 import { Router } from '@angular/router';
 import { HouseholdService } from '@app/services/household.service';
 import { PeopleAlphabetComponent } from '../people-alphabet/people-alphabet';
@@ -22,7 +22,7 @@ import { PeopleAlphabetComponent } from '../people-alphabet/people-alphabet';
     MatPaginatorModule,
     DatePipe,
     SectionTitleComponent,
-    PeopleSearchComponent,
+    PeopleSearch,
     PeopleAlphabetComponent
   ],
   templateUrl: './people-search-results.component.html',

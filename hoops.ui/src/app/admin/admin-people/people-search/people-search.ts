@@ -15,28 +15,28 @@ import { debounceTime, map } from 'rxjs';
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule,  
+    ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatToolbarModule,
     MatButtonModule,
     MatCheckboxModule
   ],
-  templateUrl: './people-search.component.html',
-  styleUrls: ['./people-search.component.scss',
+  templateUrl: './people-search.html',
+  styleUrls: ['./people-search.scss',
     '../../admin.component.scss',
     '../../../shared/scss/forms.scss',
   ],
 })
-export class PeopleSearchComponent {
+export class PeopleSearch {
   #peopleService = inject(PeopleService);
   pageTitle = 'Search People';
   fb = inject(FormBuilder);
   // inputStyle: 'fill' | 'outline' = 'outline';
   searchForm = this.fb.group({
-    lastName: [ '' ],
-    firstName: [ ''],
-    playerOnly: [ false ],
+    lastName: [''],
+    firstName: [''],
+    playerOnly: [false],
   });
 
   selectedCriteria: peopleSearchCriteria = {
@@ -71,7 +71,7 @@ export class PeopleSearchComponent {
   newPerson () {
     console.log('New person');
   }
-  search() {
+  search () {
     console.log('Search submitted');
     this.#peopleService.updateSelectedCriteria(this.selectedCriteria);
     this.#peopleService.executeSearch();
