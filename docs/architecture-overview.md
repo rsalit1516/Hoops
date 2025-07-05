@@ -38,7 +38,7 @@ This document provides a high-level view of the application architecture, coveri
 - Relationships:
   - `Person` ↔ `Household`: many-to-one
   - `Person` ↔ `Season`: one-to-many
-  - `Person` - 
+  - `Person` ↔ `Player`: one-to-many
 - SQL Server with EF Core ORM
 - Audit fields: createdBy, updatedBy, timestamps
 
@@ -57,6 +57,12 @@ erDiagram
     Household ||--o{ Person : has
 
 ```
+
+### Testing UI-Driven Filtering Components
+
+- Prefer testing state changes and DOM updates over internal methods.
+- Use `fixture.detectChanges()` after interactions that affect the DOM.
+- Where interaction triggers service updates, spy and assert on service methods.
 
 ### 🔐 Security Considerations
 
