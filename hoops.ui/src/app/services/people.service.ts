@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
+import { effect, inject, Injectable, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DataService } from './data.service';
 import { Constants } from '../shared/constants';
@@ -39,7 +39,12 @@ export class PeopleService {
     this._selectedPerson.set(person);
   }
 
-  constructor () { }
+  constructor () {
+    effect(() => {
+      console.log(this.selectedCriteria);
+      this.executeSearch()
+    });
+  }
 
   getData (): Observable<any> {
     return this.#http.get<any>(Constants.peopleUrl);

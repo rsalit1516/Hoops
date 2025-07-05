@@ -13,7 +13,7 @@ import { peopleSearchCriteria, PeopleService } from '@app/services/people.servic
     MatButtonModule
   ]
 })
-export class PeopleAlphabetComponent implements OnInit {
+export class PeopleAlphabet implements OnInit {
   #peopleService = inject(PeopleService);
   alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
   selectedLetter = 'A';
@@ -41,16 +41,19 @@ export class PeopleAlphabetComponent implements OnInit {
       firstName: '',
       playerOnly: false,
     };
-    // Replace with actual service call
-    setTimeout(() => {
-      // Simulated API response
-      this.people = Array.from({ length: 25 }, (_, i) => ({
-        id: i + 1,
-        name: `${ letter } Person ${ i + 1 }`
-      }));
-      this.isLoading = false;
-    }, 500);
     this.#peopleService.updateSelectedCriteria(this.selectedCriteria);
-    this.#peopleService.executeSearch();
+    // this.#peopleService.executeSearch();
+  }
+  clearSelection () {
+    this.selectedLetter = 'A';
+    this.people = [];
+    this.isLoading = false;
+    this.selectedCriteria = {
+      lastName: 'A',
+      firstName: '',
+      playerOnly: false,
+    };
+    this.#peopleService.updateSelectedCriteria(this.selectedCriteria);
+    // this.#peopleService.executeSearch();
   }
 }

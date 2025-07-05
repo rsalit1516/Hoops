@@ -10,7 +10,7 @@ import { SectionTitleComponent } from '@app/shared/section-title/section-title.c
 import { PeopleSearch } from '../people-search/people-search';
 import { Router } from '@angular/router';
 import { HouseholdService } from '@app/services/household.service';
-import { PeopleAlphabetComponent } from '../people-alphabet/people-alphabet';
+import { PeopleAlphabet } from '../people-alphabet/people-alphabet';
 
 
 @Component({
@@ -23,7 +23,7 @@ import { PeopleAlphabetComponent } from '../people-alphabet/people-alphabet';
     DatePipe,
     SectionTitleComponent,
     PeopleSearch,
-    PeopleAlphabetComponent
+    PeopleAlphabet
   ],
   templateUrl: './people-search-results.component.html',
   styleUrls: ['./people-search-results.component.scss',
@@ -39,7 +39,7 @@ export class PeopleSearchResultsComponent implements OnInit, OnChanges, AfterVie
   #householdService = inject(HouseholdService);
   readonly #router = inject(Router);
   results = input<Person[]>();
-
+  register = 'Register';
   @ViewChild('peoplePaginator') paginator: MatPaginator = inject(MatPaginator);
   @ViewChild(MatSort) sort: MatSort = inject(MatSort);
 
