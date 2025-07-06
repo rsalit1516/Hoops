@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { PersonalInfoComponent } from "../personal-info/personal-info.component";
-import { PeopleSearchComponent } from "../people-search/people-search.component";
-import { PeopleSearchResultsComponent } from "../people-search-results/people-search-results.component";
+import { PeopleSearch } from "../people-search/people-search";
+import { PeopleSearchResults } from "../people-search-results/people-search-results";
 import { PlayerBalanceComponent } from '@app/admin/components/player-balance/player-balance.component';
 import { PlayerHistoryComponent } from '@app/admin/components/player-history/player-history.component';
 import { ShellTitleComponent } from '@app/shared/shell-title/shell-title.component';
@@ -10,8 +10,8 @@ import { RouterModule } from '@angular/router';
 @Component({
   selector: 'csbc-admin-people-shell',
   imports: [PersonalInfoComponent,
-    PeopleSearchComponent,
-    PeopleSearchResultsComponent,
+    PeopleSearch,
+    PeopleSearchResults,
     PlayerBalanceComponent,
     PlayerHistoryComponent,
     ShellTitleComponent,
@@ -20,7 +20,7 @@ import { RouterModule } from '@angular/router';
   <csbc-shell-title [title]="title"/>
   <router-outlet></router-outlet>
 </section>`,
-  styleUrls: ['./admin-people-shell.component.scss',
+  styleUrls: ['./admin-people-shell.scss',
     '../../admin.component.scss',
     '../../../shared/scss/cards.scss',
   ]

@@ -1,12 +1,13 @@
-@use 'sass:color';
-@use 'variables.scss' as v;
+@use "sass:color";
+@use "./../../../Content/variables" as v;
 
-.mat-mdc-table, .mat-table {
+.mat-mdc-table,
+.mat-table {
   background-color: v.$table-background-color;
   color: v.$table-font-color;
   padding: 8px !important;
   width: 100%;
-  margin:1px;
+  margin: 1px;
   border-collapse: collapse;
 }
 .mat-table-header {
@@ -16,7 +17,6 @@
 // .mat-table tbody {
 //   color: v.$table-font-color;
 // }
-
 
 table {
   border-collapse: collapse;
@@ -29,18 +29,21 @@ thead {
 }
 
 th {
-  background-color: color.adjust(v.$table-header-background-color, $lightness: 5%) !important;
+  background-color: color.adjust(
+    v.$table-header-background-color,
+    $lightness: 5%
+  ) !important;
   color: v.$table-font-color !important;
   font-weight: 300;
   font-size: v.$table-font-size;
-  border-bottom: .5px solid v.$table-border-color;
-  border-top: .5px solid v.$table-border-color;
+  border-bottom: 0.5px solid v.$table-border-color;
+  border-top: 0.5px solid v.$table-border-color;
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
 // tr
-tr  {
+tr {
   font-weight: 600;
   font-size: v.$table-font-size;
   padding-bottom: 2px;
@@ -49,16 +52,17 @@ tr  {
   transition: box-shadow 0.3s ease-in-out;
 }
 
-tr:nth-child(even)
-{
+tr:nth-child(even) {
   background-color: v.$table-alternate-background-color !important;
 }
 
 tr:hover {
   box-shadow: 4px 4px 8px rgb(170, 169, 169);
   // transform: scale(1.02);
-  background-color: color.adjust(v.$admin-table-background-color, $lightness: 20%) !important;
-
+  background-color: color.adjust(
+    v.$admin-table-background-color,
+    $lightness: 20%
+  ) !important;
 }
 
 // td
@@ -105,7 +109,7 @@ td {
 
 .mat-mdc-paginator {
   background-color: v.$card-background-color;
-  color: v.$table-font-color;;
+  color: v.$table-font-color;
 }
 .mat-mdc-icon-button {
   color: v.$table-font-color;
@@ -119,13 +123,14 @@ td {
 }
 
 .mat-mdc-paginator .mat-mdc-select-value {
-  color: v.$table-font-color;;
+  color: v.$table-font-color;
 }
 .mat-mdc-header-row {
   height: 24px;
 }
 
-.mat-mdc-icon-button img, .mat-mdc-icon-button svg {
+.mat-mdc-icon-button img,
+.mat-mdc-icon-button svg {
   fill: v.$table-font-color;
 }
 

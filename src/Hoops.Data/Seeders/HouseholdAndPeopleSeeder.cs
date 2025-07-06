@@ -35,8 +35,8 @@ namespace Hoops.Data.Seeders
         public async Task SeedAsync()
         {
             var random = new Random();
-            var householdNames = new[] { "Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Rodriguez", "Martinez" };
-            var firstNames = new[] { "John", "Jane", "Alex", "Chris", "Pat", "Taylor", "Jordan", "Morgan", "Casey", "Sam", "Jamie", "Riley", "Cameron", "Avery", "Skyler" };
+            var householdNames = new[] { "Adams", "Boomers", "Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Rodriguez", "Martinez" };
+            var firstNames = new[] { "John", "Jane", "Alex", "Chris", "Pat", "Taylor", "Jordan", "Morgan", "Casey", "Sam", "Jamie", "Riley", "Cameron", "Avery", "Skyler", "Drew", "Bailey", "Peyton", "Reese", "Quinn", "Charlie", "Dakota", "Finley", "Harper", "Rowan", "Sage", "Tatum", "Emerson", "Kendall", "Parker", "Sydney", "Aidan", "Blake", "Carter", "Dylan", "Evan", "Gavin", "Hunter", "Isaac", "Jaxon", "Liam", "Mason", "Noah", "Owen", "Ryan" };
 
             // Insert 5 households
             for (int i = 0; i < householdNames.Length; i++)

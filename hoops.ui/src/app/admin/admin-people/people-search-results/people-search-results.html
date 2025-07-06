@@ -1,7 +1,4 @@
 <div class="container mx-auto w-full">
-  <div class="row">
-    <csbc-people-search />
-  </div>
   <div class="table-wrapper">
     <table mat-table id="grd" matsort [dataSource]="dataSource">
       <ng-container matColumnDef="houseId">
@@ -36,7 +33,7 @@
       </ng-container>
       <ng-container matColumnDef="register">
         <th mat-header-cell *matHeaderCellDef>Register</th>
-        <td mat-cell *matCellDef="let col" class="teamName">button</td>
+        <td mat-cell *matCellDef="let col" class="teamName">{{ register }}</td>
       </ng-container>
 
       <ng-container matColumnDef="nodata">

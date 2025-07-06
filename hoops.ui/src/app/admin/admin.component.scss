@@ -1,5 +1,5 @@
 @use "sass:color";
-@use "_variables" as v;
+@use "./../../Content/variables" as v;
 
 :host {
   font-size: 1rem;

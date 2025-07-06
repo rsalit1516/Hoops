@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
+import { effect, inject, Injectable, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DataService } from './data.service';
 import { Constants } from '../shared/constants';
@@ -39,7 +39,12 @@ export class PeopleService {
     this._selectedPerson.set(person);
   }
 
-  constructor () { }
+  constructor () {
+    effect(() => {
+      console.log(this.selectedCriteria);
+      this.executeSearch()
+    });
+  }
 
   getData (): Observable<any> {
     return this.#http.get<any>(Constants.peopleUrl);
@@ -95,6 +100,8 @@ export class PeopleService {
   }
   executeSearch () {
     this.searchUrl = this.constructQueryString(this.selectedCriteria());
+    localStorage.setItem('peopleSearchCriteria', JSON.stringify(this.selectedCriteria()));
+
     this.searchPeople$().subscribe(response => {
       console.log('Search People: ', response);
       this.updateResults(response!);

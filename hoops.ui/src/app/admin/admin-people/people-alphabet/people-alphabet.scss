@@ -1,0 +1,10 @@
+@use "./../../../../Content/variables" as v;
+
+button {
+  background-color: transparent;
+  border: none;
+  color: v.$brand-color;
+  font-size: 1.2rem;
+
+  cursor: pointer;
+}

@@ -20,7 +20,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'csbc-admin-shell',
-  template: ` <div class="container mx-auto px-4 admin-container">
+  template: ` <div class="w-full mx-2 px-4 admin-container">
     <div class="flex flex-wrap -mx-2">
       <div class="w-2/12 px-2 nav-wrapper">
         <app-admin-shell-sidebar class=""></app-admin-shell-sidebar>
