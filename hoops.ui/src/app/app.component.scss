@@ -1,6 +1,5 @@
 @use "./shared/scss/menu";
-
-@use "variables" as v;
+@use "./../Content/variables" as v;
 
 :root {
   --color-primary: blue;

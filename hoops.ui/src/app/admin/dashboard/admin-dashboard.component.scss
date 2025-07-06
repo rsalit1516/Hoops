@@ -1,5 +1,5 @@
-@use 'sass:color';
-@use 'variables' as v;
+@use "sass:color";
+@use "./../../../Content/variables" as v;
 
 .dashboard-card {
   min-height: 100px;
@@ -50,12 +50,15 @@
 }
 
 .mat-list-item:hover {
-  box-shadow: 4px 4px 6px -2px color.adjust(v.$admin-background-color, $lightness: -10%);
+  box-shadow: 4px 4px 6px -2px color.adjust(v.$admin-background-color, $lightness:
+        -10%);
   font-weight: 800;
 }
 
-.mat-list-iten:active, .mat-list-iten:focus {
-  box-shadow: 4px 4px 6px -2px color.adjust(v.$admin-background-color, $lightness: -10%);
+.mat-list-iten:active,
+.mat-list-iten:focus {
+  box-shadow: 4px 4px 6px -2px color.adjust(v.$admin-background-color, $lightness:
+        -10%);
 }
 .mat-list-text:active {
   font-weight: 800;

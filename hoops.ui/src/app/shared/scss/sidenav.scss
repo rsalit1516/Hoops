@@ -1,10 +1,10 @@
-@use 'variables' as v;
-
+@use "./../../../Content/variables" as v;
 
 .mat-drawer-content {
   background-color: v.$card-background-color;
 }
-h2, h3 {
+h2,
+h3 {
   background-color: v.$card-background-color;
   color: v.$brand-color;
 }
@@ -29,7 +29,7 @@ h3 {
   display: flex;
   flex-direction: column;
   background-color: v.$card-background-color;
-  color: v.$brand-color
+  color: v.$brand-color;
 }
 
 .mat-expansion-panel {
@@ -39,7 +39,7 @@ h3 {
 .mat-expansion-panel-content {
   background-color: v.$card-background-color !important;
 }
-.mat-expansion-panel.mat-expanded>.mat-expansion-panel-content-wrapper {
+.mat-expansion-panel.mat-expanded > .mat-expansion-panel-content-wrapper {
   background-color: v.$card-background-color !important;
 }
 .mat-expansion-panel-header-title {

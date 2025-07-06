@@ -1,14 +1,14 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { PeopleSearch } from '../people-search/people-search';
 import { PeopleAlphabet } from '../people-alphabet/people-alphabet';
-import { PeopleSearchResultsComponent } from '../people-search-results/people-search-results.component';
+import { PeopleSearchResults } from '../people-search-results/people-search-results';
 import { PeopleService } from '@app/services/people.service';
 
 @Component({
   selector: 'csbc-people-list',
   imports: [PeopleSearch,
     PeopleAlphabet,
-    PeopleSearchResultsComponent
+    PeopleSearchResults
   ],
   template: `
   <div class="row">

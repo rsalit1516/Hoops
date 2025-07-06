@@ -1,4 +1,4 @@
-@use "variables" as *;
+@use "./../../../../Content/variables" as *;
 
 .table-striped > tbody > tr {
   background-color: $card-background-color;

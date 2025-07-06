@@ -25,15 +25,15 @@ import { PeopleAlphabet } from '../people-alphabet/people-alphabet';
     PeopleSearch,
     PeopleAlphabet
   ],
-  templateUrl: './people-search-results.component.html',
-  styleUrls: ['./people-search-results.component.scss',
+  templateUrl: './people-search-results.html',
+  styleUrls: ['./people-search-results.scss',
     '../../admin.component.scss',
     '../../../shared/scss/tables.scss',
     '../../../shared/scss/cards.scss',
   ],
   providers: [MatSort, MatPaginator, DatePipe]
 })
-export class PeopleSearchResultsComponent implements OnInit, OnChanges, AfterViewInit {
+export class PeopleSearchResults implements OnInit, OnChanges, AfterViewInit {
   pageTitle = 'People Search Results';
   #peopleService = inject(PeopleService);
   #householdService = inject(HouseholdService);

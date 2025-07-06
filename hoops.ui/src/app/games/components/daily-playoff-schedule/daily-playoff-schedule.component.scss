@@ -1,9 +1,8 @@
-@use 'variables' as v;
+@use "./../../../../Content/variables" as v;
 
 :root {
   --color-primary: blue;
   --background-color: blue;
-
 }
 
 .table-wrapper {
@@ -31,7 +30,7 @@
   color: v.$color;
   font-weight: 400;
   font-size: v.$table-font-size;
-  width: 100%
+  width: 100%;
 }
 
 .mat-table tr th {
@@ -51,7 +50,7 @@
 
 .mat-row {
   height: 40px;
-  width: 100%
+  width: 100%;
 }
 
 .mat-column-gameTime,

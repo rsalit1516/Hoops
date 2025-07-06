@@ -1,19 +1,21 @@
-@use 'variables' as *;
+@use "./../../../Content/variables" as *;
 
 .mat-dialog-container {
-    background-color: $card-background-color;
+  background-color: $card-background-color;
 }
 .mat-form-field {
   background-color: whitesmoke;
   color: black;
 }
 
-h1 {font-size:1.2rem;}
+h1 {
+  font-size: 1.2rem;
+}
 input {
-    color: blue;
+  color: blue;
 }
 .error {
-    color: red;
+  color: red;
 }
 .login-form {
   width: 100%;
