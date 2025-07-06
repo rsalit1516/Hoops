@@ -45,16 +45,42 @@ This document provides a high-level view of the application architecture, coveri
 ## Diagram
 
 ```mermaid
+
 ---
+config:
+  theme: base
 title: Hoops ER diagram
 ---
 erDiagram
-    Company ||--o{ Season : has
-    Season ||--o{ Division : has
-    Division ||--o{ Teams : has
-    Teams ||--o{ Player : has
-    Player ||--o{ Person : has
-    Household ||--o{ Person : has
+
+c[Company] {
+  int CompanyId PK
+}
+s[Season] {
+    int SeasonId PK
+}
+d[Division]
+g[Game] {
+  int ScheduleGame PK
+  int DivisionId FK
+}
+h[Household] {
+    int HouseId PK
+}
+p[Person] {
+    int PersonId PK
+}
+pl[Player]
+t[Team] {
+    int TeamId PK
+}
+    c ||--o{ s : has
+    s ||--o{ d : has
+    d ||--o{ t : has
+    t ||--o{ pl : has
+    pl ||--o{ p : has
+    h ||--o{ p : has        
+    d ||--o{ g : has
 
 ```
 
