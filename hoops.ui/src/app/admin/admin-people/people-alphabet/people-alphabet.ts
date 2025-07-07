@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, input, OnInit, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { peopleSearchCriteria, PeopleService } from '@app/services/people.service';
 
@@ -15,22 +15,28 @@ import { peopleSearchCriteria, PeopleService } from '@app/services/people.servic
 })
 export class PeopleAlphabet implements OnInit {
   #peopleService = inject(PeopleService);
+  selectedLetter = input<string>('A');
+  selectedLetterChange = output<string>();
+
   alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-  selectedLetter = 'A';
+
   people: any[] = [];
   isLoading = false;
   selectedCriteria: peopleSearchCriteria = {
-    lastName: '',
+    lastName: 'A',
     firstName: '',
     playerOnly: false,
   };
 
   ngOnInit () {
-    // this.loadPeople(this.selectedLetter);
+    const saved = localStorage.getItem('peopleSearchCriteria');
+    if (saved) {
+      // if
+    }// this.loadPeople(this.selectedLetter);
   }
 
   selectLetter (letter: string) {
-    this.selectedLetter = letter;
+    this.selectedLetterChange.emit(letter);
     this.loadPeople(letter);
   }
 
@@ -45,7 +51,7 @@ export class PeopleAlphabet implements OnInit {
     // this.#peopleService.executeSearch();
   }
   clearSelection () {
-    this.selectedLetter = 'A';
+    this.selectLetter('A');
     this.people = [];
     this.isLoading = false;
     this.selectedCriteria = {
