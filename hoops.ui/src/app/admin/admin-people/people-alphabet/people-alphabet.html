@@ -5,8 +5,8 @@
       (click)="selectLetter(letter)"
       class="px-1.0 py-1 min-w-0 rounded border border-gray-300 hover:bg-gray-200 transition"
       [ngClass]="{
-        'bg-blue-500 text-white font-bold': letter === selectedLetter,
-        'text-gray-700': letter !== selectedLetter
+        'bg-blue-500 text-white font-bold': letter === selectedLetter(),
+        'text-gray-700': letter !== selectedLetter()
       }"
     >
       {{ letter }}

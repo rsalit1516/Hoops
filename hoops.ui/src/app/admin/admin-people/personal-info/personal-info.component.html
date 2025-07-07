@@ -4,17 +4,26 @@
       <mat-card-title></mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <mat-form-field [appearance]="inputStyle">
+      <mat-form-field
+        [appearance]="inputStyle"
+        class="mat-form-field-density-compact"
+      >
         <mat-label>Last Name</mat-label>
         <input matInput formControlName="lastName" required />
       </mat-form-field>
 
-      <mat-form-field [appearance]="inputStyle">
+      <mat-form-field
+        [appearance]="inputStyle"
+        class="mat-form-field-density-compact"
+      >
         <mat-label>First Name</mat-label>
         <input matInput formControlName="firstName" required />
       </mat-form-field>
 
-      <mat-form-field [appearance]="inputStyle">
+      <mat-form-field
+        [appearance]="inputStyle"
+        class="mat-form-field-density-compact"
+      >
         <mat-label>Birth Date</mat-label>
         <input
           matInput
@@ -58,7 +67,7 @@
         <input matInput formControlName="schoolName" />
       </mat-form-field>
       <div class="grid gap-4 mt-4">
-        <div id="playerInfo" class="grid-cols-2 border p-4">
+        <div id="playerInfo" class="flex flex-row border p-4 gap-x-4">
           <div class="flex items-center">
             <mat-checkbox formControlName="currentBM">
               Current BM
@@ -71,7 +80,7 @@
           </div>
         </div>
 
-        <div id="personType" class="grid-cols-2 border p-4">
+        <div id="personType" class="flex flex-row border p-4 gap-x-4">
           <div class="flex items-center">
             <mat-checkbox formControlName="player"> Player </mat-checkbox>
           </div>
@@ -119,6 +128,22 @@
         color="primary"
       >
         Cancel
+      </button>
+      <button
+        type="button"
+        mat-raised-button
+        [routerLink]="['/admin/people']"
+        color="primary"
+      >
+        Add Household Member
+      </button>
+      <button
+        type="button"
+        mat-raised-button
+        [routerLink]="['/admin/people']"
+        color="primary"
+      >
+        Register
       </button>
     </mat-card-actions>
   </mat-card>

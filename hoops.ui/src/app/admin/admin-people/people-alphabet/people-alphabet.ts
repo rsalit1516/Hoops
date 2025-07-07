@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, input, OnInit, output } from '@angular/core';
+import { Component, inject, input, model, OnInit, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { peopleSearchCriteria, PeopleService } from '@app/services/people.service';
 
@@ -36,8 +36,9 @@ export class PeopleAlphabet implements OnInit {
   }
 
   selectLetter (letter: string) {
+    console.log('Selected letter:', letter);
     this.selectedLetterChange.emit(letter);
-    this.loadPeople(letter);
+    // this.loadPeople(letter);
   }
 
   loadPeople (letter: string) {
@@ -47,7 +48,7 @@ export class PeopleAlphabet implements OnInit {
       firstName: '',
       playerOnly: false,
     };
-    this.#peopleService.updateSelectedCriteria(this.selectedCriteria);
+    // this.#peopleService.updateSelectedCriteria(this.selectedCriteria);
     // this.#peopleService.executeSearch();
   }
   clearSelection () {
