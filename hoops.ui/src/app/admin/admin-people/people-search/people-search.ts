@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, input, OnInit, output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -30,6 +30,9 @@ import { debounceTime, map } from 'rxjs';
 })
 export class PeopleSearch implements OnInit {
   #peopleService = inject(PeopleService);
+  selectedFilter = input<peopleSearchCriteria>();
+  selectedFilterChange = output<peopleSearchCriteria>();
+
   pageTitle = 'Search People';
   fb = inject(FormBuilder);
   // inputStyle: 'fill' | 'outline' = 'outline';
@@ -91,7 +94,8 @@ export class PeopleSearch implements OnInit {
   }
   search () {
     console.log('Search submitted');
-    this.#peopleService.updateSelectedCriteria(this.selectedCriteria);
-    this.#peopleService.executeSearch();
+    this.selectedFilterChange.emit(this.selectedCriteria);
+    // this.#peopleService.updateSelectedCriteria(this.selectedCriteria);
+    // this.#peopleService.executeSearch();
   }
 }

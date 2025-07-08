@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, input, model, OnInit, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { peopleSearchCriteria, PeopleService } from '@app/services/people.service';
 
@@ -15,23 +15,30 @@ import { peopleSearchCriteria, PeopleService } from '@app/services/people.servic
 })
 export class PeopleAlphabet implements OnInit {
   #peopleService = inject(PeopleService);
+  selectedLetter = input<string>('A');
+  selectedLetterChange = output<string>();
+
   alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-  selectedLetter = 'A';
+
   people: any[] = [];
   isLoading = false;
   selectedCriteria: peopleSearchCriteria = {
-    lastName: '',
+    lastName: 'A',
     firstName: '',
     playerOnly: false,
   };
 
   ngOnInit () {
-    // this.loadPeople(this.selectedLetter);
+    const saved = localStorage.getItem('peopleSearchCriteria');
+    if (saved) {
+      // if
+    }// this.loadPeople(this.selectedLetter);
   }
 
   selectLetter (letter: string) {
-    this.selectedLetter = letter;
-    this.loadPeople(letter);
+    console.log('Selected letter:', letter);
+    this.selectedLetterChange.emit(letter);
+    // this.loadPeople(letter);
   }
 
   loadPeople (letter: string) {
@@ -41,11 +48,11 @@ export class PeopleAlphabet implements OnInit {
       firstName: '',
       playerOnly: false,
     };
-    this.#peopleService.updateSelectedCriteria(this.selectedCriteria);
+    // this.#peopleService.updateSelectedCriteria(this.selectedCriteria);
     // this.#peopleService.executeSearch();
   }
   clearSelection () {
-    this.selectedLetter = 'A';
+    this.selectLetter('A');
     this.people = [];
     this.isLoading = false;
     this.selectedCriteria = {

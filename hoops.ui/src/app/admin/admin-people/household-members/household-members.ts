@@ -25,15 +25,15 @@ import { SectionTitleComponent } from '@app/shared/section-title/section-title.c
     DatePipe,
     SectionTitleComponent
   ],
-  templateUrl: './household-members.component.html',
-  styleUrls: ['./household-members.component.scss',
+  templateUrl: './household-members.html',
+  styleUrls: ['./household-members.scss',
     '../../admin.component.scss',
     '../../../shared/scss/tables.scss',
     '../../../shared/scss/cards.scss',
   ],
   providers: [MatSort, MatPaginator, DatePipe]
 })
-export class HouseholdMembersComponent implements OnInit {
+export class HouseholdMembers implements OnInit {
   pageTitle = 'Household members';
   /* injected */
   #peopleService = inject(PeopleService);
@@ -51,7 +51,7 @@ export class HouseholdMembersComponent implements OnInit {
     'lastName',
     'firstName',
     'birthDate',
-    'gender',
+    // 'gender',
     // 'register'
   ]
 

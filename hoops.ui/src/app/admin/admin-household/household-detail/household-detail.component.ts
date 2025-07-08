@@ -10,7 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { Household } from '@app/domain/household';
 import { Router, RouterLink, RouterModule } from '@angular/router';
-import { HouseholdMembersComponent } from '@app/admin/admin-people/household-members/household-members.component';
+import { HouseholdMembers } from '@app/admin/admin-people/household-members/household-members';
 
 @Component({
   selector: 'csbc-household-detail',
@@ -24,7 +24,7 @@ import { HouseholdMembersComponent } from '@app/admin/admin-people/household-mem
     MatIconModule,
     MatCardModule,
     RouterModule,
-    HouseholdMembersComponent
+    HouseholdMembers
 
   ],
   templateUrl: './household-detail.component.html',
@@ -57,6 +57,7 @@ export class HouseholdDetailComponent implements OnInit, OnChanges {
     zip: ['', Validators.required],
     phone: ['', Validators.required],
     email: [''],
+    comments: [''],
     // members: this.fb.array([])
   });
   constructor () {
@@ -89,6 +90,7 @@ export class HouseholdDetailComponent implements OnInit, OnChanges {
           zip: household.zip,
           phone: household.phone,
           email: household.email,
+          // comments: household.comments || '', // Ensure comments is set if it exists
         });
       }
     }

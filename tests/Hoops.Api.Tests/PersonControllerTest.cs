@@ -1,11 +1,9 @@
-using Xunit;
 using Moq;
 using Microsoft.Extensions.Logging;
 using Hoops.Controllers;
 using Hoops.Core.Interface;
 using Hoops.Core.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 
 public class PersonControllerTest
 {

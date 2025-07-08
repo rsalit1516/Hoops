@@ -48,7 +48,7 @@ h2 {
 
 label {
   display: block;
-  margin-bottom: 0.9rem;
+  // margin-bottom: 0.9rem;
   // padding-bottom: 12px;
   color: pink;
 }
@@ -184,7 +184,23 @@ button {
 .mat-form-field {
   display: inline-flex;
   background-color: #333333 !important;
+  margin-bottom: 4px !important; /* Reduce space between fields */
 }
+::ng-deep .mat-form-field {
+  --mat-form-field-container-height: 32px; /* or your preferred height */
+}
+
+.mat-form-field-wrapper {
+  padding-bottom: 0 !important;
+  padding-top: 0 !important;
+}
+
+.mat-input-element {
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+  font-size: 0.95rem; /* Optional: slightly smaller font */
+}
+
 .mat-mdc-text-field-wrapper {
   background-color: transparent !important;
 }
@@ -248,6 +264,10 @@ mat-form-field input::placeholder {
 }
 
 /* checkbox */
+::ng-deep .mat-checkbox-layout {
+  align-items: center !important;
+}
+
 ::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background {
   background-color: orange !important;
 }
