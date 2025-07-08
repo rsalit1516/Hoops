@@ -1,7 +1,7 @@
 Feature: Alphabet Navigation Filtering
 
   Scenario: Click on a letter to filter people
-    Given I am on the Admin People page
+    Given I am on the Admin People List page
     When I click on the letter "B"
     Then the list should update to show only people whose last name starts with "B"
 
