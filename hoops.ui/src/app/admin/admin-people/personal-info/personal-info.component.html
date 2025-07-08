@@ -67,7 +67,7 @@
         <input matInput formControlName="schoolName" />
       </mat-form-field>
       <div class="grid gap-4 mt-4">
-        <div id="playerInfo" class="flex flex-row border p-4 gap-x-4">
+        <div id="playerInfo" class="grid grid-cols-3 border p-1 gap-x-4">
           <div class="flex items-center">
             <mat-checkbox formControlName="currentBM">
               Current BM
@@ -80,7 +80,7 @@
           </div>
         </div>
 
-        <div id="personType" class="flex flex-row border p-4 gap-x-4">
+        <div id="personType" class="grid grid-cols-3 border p-1 gap-x-4">
           <div class="flex items-center">
             <mat-checkbox formControlName="player"> Player </mat-checkbox>
           </div>
@@ -94,14 +94,14 @@
       </div>
       <div
         id="volunteerInfo"
-        class="grid grid-cols-3 gap-4 border p-4 mt-4"
+        class="grid grid-cols-3 gap-2 border p-1 mt-4"
         formArrayName="volunteerCheckboxes"
       >
         <div
           *ngFor="let volunteer of volunteers; let i = index"
           class="flex items-center"
         >
-          <mat-checkbox [formControlName]="i" class="mr-2">
+          <mat-checkbox [formControlName]="i" class="flex items-center">
             {{ volunteer.name }}
           </mat-checkbox>
         </div>
