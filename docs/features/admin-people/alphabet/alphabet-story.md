@@ -18,7 +18,7 @@ Enable intuitive navigation through a large set of people records by providing c
 ## Assumptions
 
 - People have last names stored and indexed.
-- Alphabet filter is client-side and does not fetch new data unless paired with a search.
+- Alphabet filter is server-side and fetches new data and removes existing filters.
 - State persistence (e.g., active letter) is stored via localStorage.
 
 ## Constraints
@@ -28,4 +28,4 @@ Enable intuitive navigation through a large set of people records by providing c
 
 ## Acceptance Criteria
 
-Covered in companion BDD file: `alpha-bdd.spec`
+Covered in companion BDD file: `alphabet-navigation.feature`
