@@ -1,0 +1,31 @@
+name: 🧩 Feature Story
+description: Log a new feature or module based on a story.md file
+labels: [feature, planning, story]
+body:
+  - type: input
+    id: feature_name
+    attributes:
+      label: Feature Name
+      placeholder: e.g., Alphabet Navigation
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: Short description of the feature
+  - type: textarea
+    id: link_story
+    attributes:
+      label: Related Story File
+      description: Path to story.md file
+      placeholder: docs/Features/admin-people/alphabet/alphabet-story.md
+  - type: textarea
+    id: link_feature
+    attributes:
+      label: Feature Spec File
+      placeholder: alphabet-navigation.feature
+  - type: textarea
+    id: test_file
+    attributes:
+      label: Associated Unit Test File
+      placeholder: tests/admin-people/alphabet-filter.spec.ts
+      
