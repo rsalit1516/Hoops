@@ -12,8 +12,8 @@ Display a list of people based on filters set in other components where users ca
 ## User Stories
 
 - As an Admin, I want to click on a row to be able to view the person's detail info (see people-detail story).
-- As an Admin user, I want to be able click on a "Register" button for that row which will bring me to a page to allow the registration for that person. That should only be available for those people designated as players (see "admin-register-payments"). 
-- As an Admin, I want the list of people to be paginated, showing 10 people by default but selectable for 25 or 50 people. 
+- As an Admin user, I want to be able click on a "Register" button for that row which will bring me to a page to allow the registration for that person. That should only be available for those people designated as players (see "admin-register-payments").
+- As an Admin, I want the list of people to be paginated, showing 10 people by default but selectable for 25 or 50 people.
 
 ## Assumptions
 
