@@ -1,48 +1,68 @@
-# 🏀 Sprint Plan: Admin People Module (Alphabet + List + State)
+# 🏀 Sprint Plan: Admin People Module (Alphabet, List, State)
 
-## Sprint Goals
+## 🎯 Sprint Goals
 
-- Finalize and implement alphabet navigation UI.
-- Draft and refine modular story + BDD files for `list` and `state`.
-- Begin setup for unit testing coverage of `alphabet` logic.
-- Integrate story-driven development workflow with agent tooling.
-
----
-
-## 🏗️ Work Items
-
-| Story File             | BDD File               | Status   | Notes                                                |
-|------------------------|------------------------|----------|------------------------------------------------------|
-| alpha-story.md         | alpha-bdd.spec         | ✅ Done  | Clear behavior defaults to "A"; ready for unit tests |
-| list-story.md (proposed) | list-bdd.spec (proposed) | 🟡 Drafting | Define list rendering and UX states                  |
-| state-story.md (planned) | state-bdd.spec (planned) | ❌ Not started | Will handle localStorage persistence                |
+- Finalize and implement Alphabet Navigation UI
+- Draft and refine modular story and `.feature` files for List and State
+- Begin setup for unit testing coverage and CI/CD test integration
 
 ---
 
-## 🧪 Unit Test Plan
+## 📁 Feature Modules
 
-| Module     | Spec File                  | Status   | Coverage Notes                         |
-|------------|----------------------------|----------|----------------------------------------|
-| alphabet-nav | alphabet-filter.spec.ts   | 🚧 Planned | Focus on DOM behavior + state changes |
-| list-render | list-filter.spec.ts       | ❌ Not started | Pending BDD finalization              |
-| state-persistence | state-storage.spec.ts | ❌ Not started | Will validate key/value logic         |
-
----
-
-## 🔗 Integration with CI/CD
-
-| Phase         | Task                                | Status     |
-|---------------|-------------------------------------|------------|
-| Documentation | Link story.md & bdd.spec to commit refs | 🟢 In progress |
-| Testing       | Add spec files to Jest config & CI jobs | 🚧 Planned     |
-| Agent Support | Map story files for automation inputs  | 🟡 Drafted     |
+| Folder          | Story File                 | Feature File                      | Status   | Notes                                             |
+|-----------------|----------------------------|-----------------------------------|----------|---------------------------------------------------|
+| `alphabet/`     | `alphabet-story.md`        | `alphabet-navigation.feature`     | ✅ Done  | Clear defaults to "A"; unit tests in progress     |
+| `list/`         | `list-story.md` (planned)  | `list-rendering.feature` (planned)| 🟡 Drafting | Covers list display and UX edge cases            |
+| `state/`        | `state-story.md` (planned) | `state-persistence.feature` (planned) | ❌ Not started | Will address localStorage signal usage        |
 
 ---
 
-## 📝 Backlog & Future Considerations
+## 🧪 Unit Testing Status
 
-- Pagination strategy for People list
-- Role-based filters and search enhancements
-- Multi-module test coverage
-- Refactor legacy styling for responsiveness
+| Module          | Spec File                     | Status     | Coverage Notes                           |
+|-----------------|-------------------------------|------------|------------------------------------------|
+| Alphabet Nav    | `alphabet-filter.spec.ts`     | ✅ Working | Covers selection, clear, styling logic   |
+| List Renderer   | `list-filter.spec.ts`         | ❌ Broken  | Needs service mock and DOM query fix     |
+| State Manager   | `state-storage.spec.ts`       | 🚫 Missing | To be written after story finalization   |
+
+---
+
+## 🔗 CI/CD Integration Tasks
+
+| Phase           | Task                                      | Status     |
+|-----------------|--------------------------------------------|------------|
+| Docs + Planning | Update story + feature file references     | 🟢 In progress |
+| Testing         | Add unit tests to Jest config and CI jobs  | 🚧 Planned     |
+| Automation      | Map story files for future agent input     | 🟡 Drafted     |
+
+---
+
+## 📝 Backlog
+
+- 📦 Pagination strategy for People list
+- 🧮 Role-based filtering and full search capabilities
+- 📱 Responsive UI adjustments for mobile
+- 🧼 Refactor legacy styles with Tailwind standards
+- 📖 Draft `dev-style-guide.md` for coding/test conventions
   
+# 🗃️ Kanban Board – Admin People Module
+
+## ✅ Done
+- Alphabet Navigation: story, feature spec, unit tests completed
+- `alphabet-filter.spec.ts`: passing and CI/CD-ready
+
+## 🚧 In Progress
+- `list-story.md`: drafting scenarios and persona flows
+- `list-rendering.feature`: sketching out test criteria
+- Audit broken unit tests (`list.spec.ts`, `avatar.spec.ts`)
+
+## ⏳ Planned
+- `state-story.md` + `state-persistence.feature`
+- Unit test coverage for localStorage signal logic
+- Dev Style Guide: coding and testing conventions
+
+## 📝 Backlog
+- Pagination framework for People list
+- Role-based filtering with compound search logic
+- Tailwind refactor for responsiveness
