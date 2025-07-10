@@ -27,6 +27,7 @@ Feature: display a list of people
   Scenario: Sorting by DOB
     When I click on the "DOB" column header
     Then the list should be sorted by Date of Birth in ascending order
+    
   Scenario: Registration button functionality
     Given I am on the Admin People List page
     When I click on the "Register" button for a person
