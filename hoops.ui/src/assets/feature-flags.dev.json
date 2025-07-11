@@ -1,4 +1,4 @@
-// src/assets/feature-flags.json
+
 {
   "adminModule": false,
   "notificationModule": true,

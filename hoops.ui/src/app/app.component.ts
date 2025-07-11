@@ -1,6 +1,6 @@
 import { Component, computed, inject, OnInit, output } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
-import { TopNavComponent } from './shared/top-nav/top-nav.component';
+import { TopNavComponent } from './shared/components/top-nav/top-nav.component';
 import { SidenavListComponent } from './shared/sidenav-list/sidenav-list.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatNativeDateModule } from '@angular/material/core';

@@ -85,7 +85,7 @@ namespace Hoops.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<Household>> PostHousehold(Household household)
+        public ActionResult<Household> PostHousehold(Household household)
         {
             var house = new Household();
             try

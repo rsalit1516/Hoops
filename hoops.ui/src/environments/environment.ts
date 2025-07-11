@@ -9,9 +9,6 @@ export const environment = {
   environment: 'local',
   securityEnabled: false,
   featureFlagPath: '/assets/feature-flags.dev.json'
-
-  }
-
 };
 // export const environment = {
 //   production: false,
