@@ -13,6 +13,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '@app/services/auth.service';
+import { FeatureFlagService } from '../feature-flags';
+
 @Component({
   selector: 'csbc-top-nav',
   templateUrl: './top-nav.component.html',
@@ -24,9 +26,10 @@ export class TopNavComponent implements OnInit {
   public dialog = inject(MatDialog);
   public readonly sidenavToggle = output();
   readonly #authService = inject(AuthService);
+  readonly #featureFlags = inject(FeatureFlagService);
+
   currentUser$: Observable<User> | undefined;
   userName: string | undefined;
-  showAdminMenu: boolean | undefined;
   user = computed(() => this.#authService.currentUser());
   drawer!: {
     opened: false;
@@ -34,7 +37,11 @@ export class TopNavComponent implements OnInit {
   env: any;
   constants: typeof Constants;
   securityEnabled: boolean = true;
-  constructor ( ) {
+  showAdminMenu = false;
+  get showAdmin (): boolean {
+    return this.#featureFlags.isEnabled('adminModule');
+  }
+  constructor () {
     // this.route.events.subscribe(route => console.log(route));
     this.constants = Constants;
   }
@@ -43,18 +50,18 @@ export class TopNavComponent implements OnInit {
     this.env = environment.environment;
     this.securityEnabled = environment.securityEnabled;
 
-      if (this.securityEnabled) {
-          if (this.user()) {
-            this.userName = this.user()!.firstName;
-            // if (this.securityEnabled) {
-            this.showAdminMenu =
-              this.user()!.screens == undefined ? false : this.user()!.screens!.length > 0;
-            // }
-          }
-
-      } else {
-        this.showAdminMenu = true;
+    if (this.securityEnabled) {
+      if (this.user()) {
+        this.userName = this.user()!.firstName;
+        // if (this.securityEnabled) {
+        this.showAdminMenu =
+          this.showAdmin && (this.user()!.screens == undefined ? false : this.user()!.screens!.length > 0);
+        // }
       }
+
+    } else {
+      this.showAdminMenu = true;
+    }
   }
 
   openDialog () {
