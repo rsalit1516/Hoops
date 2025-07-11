@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { SectionTitleComponent } from "../../../shared/section-title/section-title.component";
+import { SectionTitleComponent } from "../../../shared/components/section-title/section-title.component";
 import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'csbc-player-balance',
-  imports: [ MatCardModule,
-    SectionTitleComponent ],
+  imports: [MatCardModule,
+    SectionTitleComponent],
   template:
     `
     <mat-card>
@@ -19,7 +19,7 @@ import { MatCardModule } from '@angular/material/card';
     </mat-card-content>
     </mat-card>`
   ,
-  styleUrls: [ './player-balance.component.scss',
+  styleUrls: ['./player-balance.component.scss',
     '../../../shared/scss/cards.scss',
   ]
 })

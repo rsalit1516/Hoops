@@ -1,8 +1,8 @@
 import { Component, computed, inject, OnInit } from '@angular/core';
 import { AuthService } from '@app/services/auth.service';
 import { FormsModule, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import * as userActions from '../../user/state/user.actions';
-import * as fromUser from '../../user/state';
+import * as userActions from '../../../user/state/user.actions';
+import * as fromUser from '../../../user/state';
 import { Store } from '@ngrx/store';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -14,18 +14,18 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: [ './login.component.scss',
-    '../scss/cards.scss',
-    '../scss/forms.scss',
+  styleUrls: ['./login.component.scss',
+    '../../scss/cards.scss',
+    '../../scss/forms.scss',
   ],
   standalone: true,
-  imports: [ CommonModule,
+  imports: [CommonModule,
     FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatCardModule ],
+    MatCardModule],
 })
 export class LoginComponent implements OnInit {
   /* injected */
@@ -34,26 +34,26 @@ export class LoginComponent implements OnInit {
   fb = inject(FormBuilder);
   store = inject(Store<fromUser.State>);
   loginForm = this.fb.group({
-    userName: [ '', Validators.required ],
-    password: [ '', Validators.required ]
+    userName: ['', Validators.required],
+    password: ['', Validators.required]
   });
   isFormValid: boolean = false;
-  get userName() {
+  get userName () {
     return this.loginForm.get('userName');
   }
-  get password() {
+  get password () {
     return this.loginForm.get('password');
   }
   currentUser = computed(() => this.#authService.currentUser());
-  constructor() { }
+  constructor () { }
 
-  ngOnInit() {
+  ngOnInit () {
     this.isFormValid = false;
   }
-  onCancelClick() {
-    this.#router.navigate([ 'home' ]);
+  onCancelClick () {
+    this.#router.navigate(['home']);
   }
-  onSubmitClick() {
+  onSubmitClick () {
     // this.loginForm.markAllAsTouched();
     console.log(this.loginForm);
     if (!this.loginForm.invalid) {
@@ -64,7 +64,7 @@ export class LoginComponent implements OnInit {
       // this.store.select(fromUser.getCurrentUser).subscribe(user => {
       console.log(this.currentUser());
       if (this.currentUser() !== null && this.currentUser()!.userId !== 0) {
-        this.#router.navigate([ 'home' ]);
+        this.#router.navigate(['home']);
       } else {
         this.isFormValid = false;
       }
@@ -72,7 +72,7 @@ export class LoginComponent implements OnInit {
       // });
     }
   }
-  validateUser(userName: string, password: string) {
+  validateUser (userName: string, password: string) {
     return this.#authService.login(userName, password).subscribe(response => {
       console.log(response);
       if (response !== null) {

@@ -4,8 +4,8 @@ import {
   UntypedFormBuilder,
   Validators
 } from '@angular/forms';
-import * as userActions from '../../user/state/user.actions';
-import * as fromUser from '../../user/state';
+import * as userActions from '../../../user/state/user.actions';
+import * as fromUser from '../../../user/state';
 import { Store } from '@ngrx/store';
 import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
@@ -14,16 +14,16 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-    selector: 'csbc-login-dialog',
-    templateUrl: './login-dialog.component.html',
+  selector: 'csbc-login-dialog',
+  templateUrl: './login-dialog.component.html',
   styleUrls: ['./login-dialog.component.scss',
-    '../scss/forms.scss',
-    ],
-    imports: [CommonModule, MatDialogModule, MatFormFieldModule,
-        MatInputModule, MatButtonModule],
-    providers: [
-        { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } }
-    ]
+    '../../scss/forms.scss',
+  ],
+  imports: [CommonModule, MatDialogModule, MatFormFieldModule,
+    MatInputModule, MatButtonModule],
+  providers: [
+    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } }
+  ]
 })
 export class LoginDialogComponent implements OnInit {
   /* injected */
@@ -34,26 +34,26 @@ export class LoginDialogComponent implements OnInit {
     password: ['', Validators.required]
   });
   isFormValid: boolean = false;
-  get userName() {
+  get userName () {
     return this.loginForm.get('userName');
   }
-  get password() {
+  get password () {
     return this.loginForm.get('password');
   }
 
-  constructor(
+  constructor (
     public dialogRef: MatDialogRef<LoginDialogComponent>,
     private fb: UntypedFormBuilder,
     private store: Store<fromUser.State>
-  ) {}
+  ) { }
 
-  ngOnInit() {
+  ngOnInit () {
     this.isFormValid = false;
   }
-  onCancelClick() {
+  onCancelClick () {
     this.dialogRef.close();
   }
-  onSubmitClick() {
+  onSubmitClick () {
     // this.loginForm.markAllAsTouched();
     console.log(this.loginForm);
     if (!this.loginForm.invalid) {
@@ -72,7 +72,7 @@ export class LoginDialogComponent implements OnInit {
       });
     }
   }
-  validateUser(userName: string, password: string) {
+  validateUser (userName: string, password: string) {
     return this.#authService.login(userName, password).subscribe(response => {
       console.log(response);
       if (response !== null) {

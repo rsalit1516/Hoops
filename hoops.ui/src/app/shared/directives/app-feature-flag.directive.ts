@@ -1,5 +1,5 @@
 import { Directive, inject, Input, TemplateRef, ViewContainerRef } from '@angular/core';
-import { FeatureFlagService } from '../feature-flags';
+import { FeatureFlagService } from '../services/feature-flags';
 
 @Directive({
   selector: '[appFeatureFlag]'

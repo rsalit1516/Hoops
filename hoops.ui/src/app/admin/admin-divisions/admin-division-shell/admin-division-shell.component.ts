@@ -16,7 +16,7 @@ import { CommonModule } from '@angular/common';
 import { Division } from '@app/domain/division';
 import { DivisionService } from '@app/services/division.service';
 import { NewDivisionSelectorComponent } from '../../admin-shared/new-division-selector/new-division-selector.component';
-import { ShellTitleComponent } from "../../../shared/shell-title/shell-title.component";
+import { ShellTitleComponent } from "../../../shared/components/shell-title/shell-title.component";
 
 @Component({
   selector: 'csbc-admin-division-shell',
@@ -43,7 +43,7 @@ import { ShellTitleComponent } from "../../../shared/shell-title/shell-title.com
     RouterOutlet,
     RouterLinkWithHref,
     ShellTitleComponent
-],
+  ],
 })
 export class AdminDivisionShellComponent implements OnInit {
   season = input(new Season());

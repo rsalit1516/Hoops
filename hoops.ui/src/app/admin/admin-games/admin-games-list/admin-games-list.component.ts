@@ -13,7 +13,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { AdminGameService } from '../adminGame.service';
 import { GameService } from '@app/services/game.service';
-import { ShellTitleComponent } from '@app/shared/shell-title/shell-title.component';
+import { ShellTitleComponent } from '@app/shared/components/shell-title/shell-title.component';
 import { AdminGamesFilterComponent } from '../admin-games-filter/admin-games-filter.component';
 import { LoggerService } from '@app/services/logging.service';
 import { Router } from '@angular/router';

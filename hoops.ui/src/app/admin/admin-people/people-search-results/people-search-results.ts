@@ -6,7 +6,7 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Person } from '@app/domain/person';
 import { PeopleService } from '@app/services/people.service';
-import { SectionTitleComponent } from '@app/shared/section-title/section-title.component';
+import { SectionTitleComponent } from '@app/shared/components/section-title/section-title.component';
 import { PeopleSearch } from '../people-search/people-search';
 import { Router } from '@angular/router';
 import { HouseholdService } from '@app/services/household.service';

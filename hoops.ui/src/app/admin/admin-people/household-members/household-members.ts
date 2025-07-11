@@ -11,7 +11,7 @@ import { Household } from '@app/domain/household';
 import { Person } from '@app/domain/person';
 import { HouseholdService } from '@app/services/household.service';
 import { PeopleService } from '@app/services/people.service';
-import { SectionTitleComponent } from '@app/shared/section-title/section-title.component';
+import { SectionTitleComponent } from '@app/shared/components/section-title/section-title.component';
 
 @Component({
   selector: 'csbc-household-members',

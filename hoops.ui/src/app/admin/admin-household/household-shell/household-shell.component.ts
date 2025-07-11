@@ -5,7 +5,7 @@ import { HouseholdSearchComponent } from '@app/admin/admin-household/household-s
 import { HouseholdListComponent } from '@app/admin/admin-household/household-list/household-list.component';
 import { householdSearchCriteria, HouseholdService } from '@app/services/household.service';
 import { Household } from '@app/domain/household';
-import { ShellTitleComponent } from '@app/shared/shell-title/shell-title.component';
+import { ShellTitleComponent } from '@app/shared/components/shell-title/shell-title.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
