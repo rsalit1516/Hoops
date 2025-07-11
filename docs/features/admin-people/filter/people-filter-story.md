@@ -1,7 +1,8 @@
 # Feature: Filter for listing people in the admin module
 
 ## Goal
-  - enable users to easily filter the people list by last name, first name and whether they are a player.
+
+- enable users to easily filter the people list by last name, first name and whether they are a player.
 
 ## Personas
 
@@ -13,7 +14,6 @@
 - As an Admin user, I want to be able to filter the list of people based on inputting parts or full last names and first names.
 - As an Admin user, I want to be able to filter any filtered list by only those people who were players in the league.
 - As an admin, I want to be able to clear the filters and the system will default to the list of people whose last name starts with the letter 'A'. (see Alphabet-story).
-
 
 ## Assumptions
 
