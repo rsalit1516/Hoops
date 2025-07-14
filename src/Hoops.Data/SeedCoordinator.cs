@@ -27,37 +27,40 @@ namespace Hoops.Data
         public IWebContentRepository webContentRepo { get; private set; }
         private ColorSeeder _colorSeeder { get; set; }
         private SeasonSeeder _seasonSeeder { get; set; }
+        private DivisionSeeder _divisionSeeder { get; set; }
         private WebContentTypeSeeder _webContentTypeSeeder { get; set; }
         private WebContentSeeder _webContentSeeder { get; set; }
         private HouseholdAndPeopleSeeder _householdAndPeopleSeeder { get; set; }
         public SeedCoordinator(ISeasonRepository seasonRepo,
-        IDivisionRepository divisionRepo,
+        // IDivisionRepository divisionRepo,
         ITeamRepository teamRepo,
-        IColorRepository colorRepo,
-        IHouseholdRepository householdRepo,
-        IPersonRepository personRepo,
+        // IColorRepository colorRepo,
+        // IHouseholdRepository householdRepo,
+        // IPersonRepository personRepo,
         ILocationRepository locationRepo,
         // IWebContentTypeRepository webContentTypeRepo,
         // IWebContentRepository webContentRepo,
         hoopsContext context,
         SeasonSeeder seasonSeeder,
-        ColorSeeder colorSeeder,
+                DivisionSeeder divisionSeeder,
+                ColorSeeder colorSeeder,
                 WebContentTypeSeeder webContentTypeSeeder,
         WebContentSeeder webContentSeeder,
         HouseholdAndPeopleSeeder householdAndPeopleSeeder)
         {
-            this.seasonRepo = seasonRepo;
-            this.divisionRepo = divisionRepo;
+            // this.seasonRepo = seasonRepo;
+            // this.divisionRepo = divisionRepo;
             this.teamRepo = teamRepo;
-            this.colorRepo = colorRepo;
-            this.householdRepo = householdRepo;
-            this.personRepo = personRepo;
+            // this.colorRepo = colorRepo;
+            // this.householdRepo = householdRepo;
+            // this.personRepo = personRepo;
             this.locationRepo = locationRepo;
             // this.webContentTypeRepo = webContentTypeRepo;
             // this.webContentRepo = webContentRepo;
             this.context = context;
             _colorSeeder = colorSeeder;
             _seasonSeeder = seasonSeeder;
+            _divisionSeeder = divisionSeeder;
             _webContentTypeSeeder = webContentTypeSeeder;
             _webContentSeeder = webContentSeeder;
             _householdAndPeopleSeeder = householdAndPeopleSeeder;
@@ -68,8 +71,7 @@ namespace Hoops.Data
             // await DeleteTeamsAsync();
             await _colorSeeder.DeleteAllAsync();
             await _seasonSeeder.DeleteAllAsync();
-            // await DeleteDivisionsAsync();
-            // await // await DeleteSeasonDataAsync();
+            await _divisionSeeder.DeleteAllAsync();// await DeleteDivisionsAsync();
             await _webContentSeeder.DeleteAllAsync();
             await _webContentTypeSeeder.DeleteAllAsync();
             //await _householdAndPeopleSeeder.DeleteAllAsync();
@@ -77,19 +79,13 @@ namespace Hoops.Data
             //then create new records
             await _colorSeeder.SeedAsync();
             await _seasonSeeder.SeedAsync();
-            //await CreateSeasonsAsync();
-            //await CreateDivisionsAsync();
+            await _divisionSeeder.SeedAsync();
             //await CreateTeamsAsync();
             await _webContentTypeSeeder.SeedAsync();
             await _webContentSeeder.SeedAsync();
             //await _householdAndPeopleSeeder.SeedAsync();
         }
 
-        private async Task CreateSeasonsAsync()
-        {
-            await InitializeSeasonsAsync();
-            await context.SaveChangesAsync();
-        }
         private async Task CreateDivisionsAsync()
         {
             await InitializeDivisionsAsync();
@@ -106,14 +102,7 @@ namespace Hoops.Data
             await context.SaveChangesAsync();
         }
 
-        private async Task DeleteSeasonDataAsync()
-        {
-            var records = await seasonRepo.GetAllAsync();
-            foreach (var record in records)
-            {
-                await seasonRepo.DeleteAsync(record.SeasonId);
-            }
-        }
+
         private async Task DeleteDivisionsAsync()
         {
             var records = await divisionRepo.GetAllAsync();
@@ -131,54 +120,7 @@ namespace Hoops.Data
                 await teamRepo.DeleteAsync(record.TeamId);
             }
         }
-        // private async Task DeleteColorsAsync()
-        // {
-        //     var records = await colorRepo.GetAllAsync();
-        //     foreach (var record in records)
-        //     {
-        //         await colorRepo.DeleteAsync(record.ColorId);
-        //     }
-        // }
 
-        private async Task InitializeSeasonsAsync()
-        {
-            var startyear = 2024;
-            await seasonRepo.InsertAsync(new Season
-            {
-                Description = "Summer " + startyear.ToString(),
-                CurrentSchedule = true,
-                CurrentSignUps = true,
-                CurrentSeason = true,
-                CompanyId = 1,
-                FromDate = new DateTime(startyear, 6, 15),
-                ToDate = new DateTime(startyear, 8, 31),
-                ParticipationFee = 110
-
-            });
-            await seasonRepo.InsertAsync(new Season
-            {
-                Description = "Spring " + startyear.ToString(),
-                CurrentSchedule = false,
-                CurrentSignUps = false,
-                CurrentSeason = false,
-                CompanyId = 1,
-                FromDate = new DateTime(startyear, 3, 15),
-                ToDate = new DateTime(startyear, 5, 16),
-                ParticipationFee = 110
-            });
-            await seasonRepo.InsertAsync(new Season
-            {
-                Description = "Winter " + startyear++.ToString(),
-                CurrentSchedule = false,
-                CurrentSignUps = false,
-                CurrentSeason = false,
-                CompanyId = 1,
-                FromDate = new DateTime(startyear, 11, 15),
-                ToDate = new DateTime(startyear++, 3, 6),
-                ParticipationFee = 110
-            });
-
-        }
         private async Task InitializeDivisionsAsync()
         {
             var seasons = await seasonRepo.GetAllAsync();

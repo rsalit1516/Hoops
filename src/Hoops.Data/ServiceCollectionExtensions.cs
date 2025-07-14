@@ -10,6 +10,7 @@ namespace Hoops.Data
             services.AddScoped<SeedCoordinator>();
             services.AddScoped<ColorSeeder>();
             services.AddScoped<SeasonSeeder>();
+            services.AddScoped<DivisionSeeder>();
             services.AddScoped<HouseholdAndPeopleSeeder>();
             services.AddScoped<WebContentSeeder>();
             services.AddScoped<WebContentTypeSeeder>();
