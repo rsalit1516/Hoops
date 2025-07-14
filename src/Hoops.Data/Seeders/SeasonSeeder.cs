@@ -61,24 +61,35 @@ namespace Hoops.Data.Seeders
             },
            new Season
             {
-                Description = "Winter " + startyear++.ToString(),
+                Description = "Winter " + startyear.ToString(),
                 CurrentSchedule = false,
                 CurrentSignUps = false,
                 CurrentSeason = false,
                 CompanyId = 1,
                 FromDate = new DateTime(startyear, 11, 15),
-                ToDate = new DateTime(startyear++, 3, 6),
+                ToDate = new DateTime(++startyear, 3, 6),
                 ParticipationFee = 110
             },
            new Season
             {
-                Description = "Spring " + startyear+1.ToString(),
+                Description = "Spring " + startyear.ToString(),
                 CurrentSchedule = false,
                 CurrentSignUps = false,
                 CurrentSeason = false,
                 CompanyId = 1,
-                FromDate = new DateTime(startyear+1, 04, 15),
-                ToDate = new DateTime(startyear+1, 6, 6),
+                FromDate = new DateTime(startyear, 04, 15),
+                ToDate = new DateTime(startyear, 6, 6),
+                ParticipationFee = 110
+            },
+           new Season
+            {
+                Description = "Summer " + startyear.ToString(),
+                CurrentSchedule = true,
+                CurrentSignUps = true,
+                CurrentSeason = true,
+                CompanyId = 1,
+                FromDate = new DateTime(startyear, 06, 15),
+                ToDate = new DateTime(startyear, 8, 31),
                 ParticipationFee = 110
             }
 };
