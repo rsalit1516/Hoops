@@ -1,5 +1,12 @@
 {
   "adminModule": true,
   "notificationModule": true,
-  "scheduleModule": true
+  "scheduleModule": true,
+  "adminDirectors": true,
+  "adminHouseholds": true,
+  "adminPeople": true,
+  "adminTeams": true,
+  "adminColors": true,
+  "adminUsers": true,
+  "adminNotices": true
 }

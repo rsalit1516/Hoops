@@ -25,6 +25,8 @@ namespace Hoops.Data
         public ILocationRepository locationRepo { get; private set; }
         public IWebContentTypeRepository webContentTypeRepo { get; private set; }
         public IWebContentRepository webContentRepo { get; private set; }
+        private ColorSeeder _colorSeeder { get; set; }
+        private SeasonSeeder _seasonSeeder { get; set; }
         private WebContentTypeSeeder _webContentTypeSeeder { get; set; }
         private WebContentSeeder _webContentSeeder { get; set; }
         private HouseholdAndPeopleSeeder _householdAndPeopleSeeder { get; set; }
@@ -38,6 +40,8 @@ namespace Hoops.Data
         // IWebContentTypeRepository webContentTypeRepo,
         // IWebContentRepository webContentRepo,
         hoopsContext context,
+        SeasonSeeder seasonSeeder,
+        ColorSeeder colorSeeder,
                 WebContentTypeSeeder webContentTypeSeeder,
         WebContentSeeder webContentSeeder,
         HouseholdAndPeopleSeeder householdAndPeopleSeeder)
@@ -52,6 +56,8 @@ namespace Hoops.Data
             // this.webContentTypeRepo = webContentTypeRepo;
             // this.webContentRepo = webContentRepo;
             this.context = context;
+            _colorSeeder = colorSeeder;
+            _seasonSeeder = seasonSeeder;
             _webContentTypeSeeder = webContentTypeSeeder;
             _webContentSeeder = webContentSeeder;
             _householdAndPeopleSeeder = householdAndPeopleSeeder;
@@ -59,22 +65,24 @@ namespace Hoops.Data
         public async Task InitializeDataAsync()
         {
             //first delete all records    
-            await DeleteTeamsAsync();
-            await DeleteColorsAsync();
+            // await DeleteTeamsAsync();
+            await _colorSeeder.DeleteAllAsync();
+            await _seasonSeeder.DeleteAllAsync();
             // await DeleteDivisionsAsync();
-            await DeleteSeasonDataAsync();
+            // await // await DeleteSeasonDataAsync();
             await _webContentSeeder.DeleteAllAsync();
             await _webContentTypeSeeder.DeleteAllAsync();
-            await _householdAndPeopleSeeder.DeleteAllAsync();
+            //await _householdAndPeopleSeeder.DeleteAllAsync();
 
             //then create new records
-            await CreateColorsAsync();
-            await CreateSeasonsAsync();
-            await CreateDivisionsAsync();
-            await CreateTeamsAsync();
+            await _colorSeeder.SeedAsync();
+            await _seasonSeeder.SeedAsync();
+            //await CreateSeasonsAsync();
+            //await CreateDivisionsAsync();
+            //await CreateTeamsAsync();
             await _webContentTypeSeeder.SeedAsync();
             await _webContentSeeder.SeedAsync();
-            await _householdAndPeopleSeeder.SeedAsync();
+            //await _householdAndPeopleSeeder.SeedAsync();
         }
 
         private async Task CreateSeasonsAsync()
@@ -123,14 +131,14 @@ namespace Hoops.Data
                 await teamRepo.DeleteAsync(record.TeamId);
             }
         }
-        private async Task DeleteColorsAsync()
-        {
-            var records = await colorRepo.GetAllAsync();
-            foreach (var record in records)
-            {
-                await colorRepo.DeleteAsync(record.ColorId);
-            }
-        }
+        // private async Task DeleteColorsAsync()
+        // {
+        //     var records = await colorRepo.GetAllAsync();
+        //     foreach (var record in records)
+        //     {
+        //         await colorRepo.DeleteAsync(record.ColorId);
+        //     }
+        // }
 
         private async Task InitializeSeasonsAsync()
         {

@@ -4,7 +4,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { FeatureFlagService } from '@app/services/featureFlag.service';
+import { FeatureFlagService } from '@app/shared/services/feature-flags';
 
 @Component({
   selector: 'app-admin-shell-sidebar',
@@ -24,12 +24,12 @@ import { FeatureFlagService } from '@app/services/featureFlag.service';
 export class AdminShellSidebarComponent {
   readonly #featureFlagService = inject(FeatureFlagService);
   readonly #router = inject(Router);
-  showDirectors = this.#featureFlagService.isFeatureEnabled('adminDirectors');
-  showHouseholds = this.#featureFlagService.isFeatureEnabled('adminHouseholds');
-  showPeople = this.#featureFlagService.isFeatureEnabled('adminPeople');
-  showColors = this.#featureFlagService.isFeatureEnabled('adminColors');
-  showUsers = this.#featureFlagService.isFeatureEnabled('adminUsers');
-  showNotices = this.#featureFlagService.isFeatureEnabled('adminNotices');
+  showDirectors = this.#featureFlagService.isEnabled('adminDirectors');
+  showHouseholds = this.#featureFlagService.isEnabled('adminHouseholds');
+  showPeople = this.#featureFlagService.isEnabled('adminPeople');
+  showColors = this.#featureFlagService.isEnabled('adminColors');
+  showUsers = this.#featureFlagService.isEnabled('adminUsers');
+  showNotices = this.#featureFlagService.isEnabled('adminNotices');
   shouldRun = false;
 
   SeasonSetupSection = 'Season Setup';
