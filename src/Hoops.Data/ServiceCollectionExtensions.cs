@@ -12,6 +12,8 @@ namespace Hoops.Data
             services.AddScoped<SeasonSeeder>();
             services.AddScoped<DivisionSeeder>();
             services.AddScoped<TeamSeeder>();
+            services.AddScoped<LocationSeeder>();
+            services.AddScoped<ScheduleGameSeeder>();
             services.AddScoped<HouseholdAndPeopleSeeder>();
             services.AddScoped<WebContentSeeder>();
             services.AddScoped<WebContentTypeSeeder>();
