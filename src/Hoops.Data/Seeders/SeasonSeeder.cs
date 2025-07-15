@@ -39,9 +39,9 @@ namespace Hoops.Data.Seeders
                 {
 
                 Description = "Summer " + startyear.ToString(),
-                CurrentSchedule = true,
-                CurrentSignUps = true,
-                CurrentSeason = true,
+                CurrentSchedule = false,
+                CurrentSignUps = false,
+                CurrentSeason = false,
                 CompanyId = 1,
                 FromDate = new DateTime(startyear, 6, 15),
                 ToDate = new DateTime(startyear, 8, 31),

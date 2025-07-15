@@ -16,7 +16,7 @@ namespace Hoops.Application.Services
 
         public async Task<IEnumerable<Season>> GetAllSeasonsAsync()
         {
-            return await _seasonRepository.GetAllAsync();
+            return await _seasonRepository.GetAllAsync(1);
         }
 
         // public async Task<Season?> GetSeasonByIdAsync(int seasonId)
