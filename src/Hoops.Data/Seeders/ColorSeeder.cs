@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Hoops.Core.Models;
 using Hoops.Core.Interface;
-using Hoops.Infrastructure.Repository;
 using Hoops.Infrastructure.Data;
 using System.Linq;
 

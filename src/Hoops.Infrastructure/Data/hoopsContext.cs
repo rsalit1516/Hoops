@@ -390,20 +390,20 @@ public partial class hoopsContext : DbContext
                 .HasColumnName("UserID");
         });
 
-        modelBuilder.Entity<Location>(entity =>
-        {
-            entity.ToTable("Location")
-            .HasNoKey();
-            // TO DO: Add the following to the Location table:
-            // entity.HasKey(e => e.Id);
+        // modelBuilder.Entity<Location>(entity =>
+        // {
+        //     entity.ToTable("Location")
+        //     .HasNoKey();
+        //     // TO DO: Add the following to the Location table:
+        //     // entity.HasKey(e => e.Id);
 
-            entity.Property(e => e.LocationNumber);
+        //     entity.Property(e => e.LocationNumber);
 
-            entity.Property(e => e.LocationName)
-            .HasMaxLength(50);
+        //     entity.Property(e => e.LocationName)
+        //     .HasMaxLength(50);
 
-            // entity.Property(e => e.Notes).IsRequired();
-        });
+        //     // entity.Property(e => e.Notes).IsRequired();
+        // });
 
         // modelBuilder.Entity<SchDivisions>(entity =>
         // {

@@ -14,6 +14,7 @@ namespace Hoops.Data
 
         public hoopsContext context { get; private set; }
         private ColorSeeder _colorSeeder { get; set; }
+        private LocationSeeder _locationSeeder { get; set; }
         private SeasonSeeder _seasonSeeder { get; set; }
         private DivisionSeeder _divisionSeeder { get; set; }
         private TeamSeeder _teamSeeder { get; set; }
@@ -54,12 +55,15 @@ namespace Hoops.Data
             await _seasonSeeder.DeleteAllAsync();
             await _colorSeeder.DeleteAllAsync();
             await _locationSeeder.DeleteAllAsync();
+            await _colorSeeder.DeleteAllAsync();
+            await _locationSeeder.DeleteAllAsync();
             await _webContentSeeder.DeleteAllAsync();
             await _webContentTypeSeeder.DeleteAllAsync();
             await _householdAndPeopleSeeder.DeleteAllAsync();
 
             //then create new records
             await _colorSeeder.SeedAsync();
+            await _locationSeeder.SeedAsync();
             await _locationSeeder.SeedAsync();
             await _seasonSeeder.SeedAsync();
             await _divisionSeeder.SeedAsync();
