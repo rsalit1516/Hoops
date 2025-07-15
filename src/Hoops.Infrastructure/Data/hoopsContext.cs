@@ -32,7 +32,7 @@ public partial class hoopsContext : DbContext
     public virtual DbSet<Role> Roles { get; set; }
     public virtual DbSet<ScheduleDivTeam> ScheduleDivTeams { get; set; }
     public virtual DbSet<ScheduleGame> ScheduleGames { get; set; }
-    public virtual DbSet<ScheduleLocation> ScheduleLocations { get; set; }
+    // public virtual DbSet<ScheduleLocation> ScheduleLocations { get; set; 
     public virtual DbSet<SchedulePlayoff> SchedulePlayoffs { get; set; }
     public virtual DbSet<Season> Seasons { get; set; }
     public virtual DbSet<SponsorFee> SponsorFees { get; set; }
@@ -478,7 +478,7 @@ public partial class hoopsContext : DbContext
         modelBuilder.Entity<ScheduleGame>(entity =>
         {
             entity.ToTable("ScheduleGames");
-            entity.HasKey(e => e.ScheduleGamesId);
+            // entity.HasKey(e => e.ScheduleGamesId);
             // entity.Property(e => e.ScheduleGamesId)
             // .UseIdentityColumn(seed: 0, increment: 1); 
 
@@ -509,12 +509,12 @@ public partial class hoopsContext : DbContext
         //     entity.Property(e => e.SeasonId).HasColumnName("SeasonID");
         // });
 
-        modelBuilder.Entity<ScheduleLocation>(entity =>
-        {
-            entity.HasKey(e => e.LocationNumber);
-            entity.Property(e => e.LocationName).HasMaxLength(50);
-            entity.Property(e => e.Notes).HasMaxLength(100);
-        });
+        // modelBuilder.Entity<ScheduleLocation>(entity =>
+        // {
+        //     entity.HasKey(e => e.LocationNumber);
+        //     entity.Property(e => e.LocationName).HasMaxLength(50);
+        //     entity.Property(e => e.Notes).HasMaxLength(100);
+        // });
 
 
         // modelBuilder.Entity<SchedulePlayoff>(entity =>

@@ -18,7 +18,6 @@ namespace Hoops.Data
         private SeasonSeeder _seasonSeeder { get; set; }
         private DivisionSeeder _divisionSeeder { get; set; }
         private TeamSeeder _teamSeeder { get; set; }
-        private LocationSeeder _locationSeeder { get; set; }
         private ScheduleGameSeeder _scheduleGameSeeder { get; set; }
         private WebContentTypeSeeder _webContentTypeSeeder { get; set; }
         private WebContentSeeder _webContentSeeder { get; set; }

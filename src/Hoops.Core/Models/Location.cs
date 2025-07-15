@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Hoops.Core.Models
 {
-    [Table("ScheduleLocation")]
+    [Table("ScheduleLocations")]
 
     public partial class Location
     {

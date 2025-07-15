@@ -439,7 +439,7 @@ namespace Hoops.Infrastructure.Repository
             var result =
                 from d in db.Divisions
                 from g in db.ScheduleGames
-                from l in db.ScheduleLocations
+                from l in db.Location
 
                 where g.SeasonId == seasonId
                 where g.DivisionId == d.DivisionId
@@ -558,7 +558,7 @@ namespace Hoops.Infrastructure.Repository
             {
                 var games = (
                     from g in db.SchedulePlayoffs
-                    from l in db.ScheduleLocations
+                    from l in db.Location
                     from d in db.Divisions
                     where g.DivisionId == divisionId
                     where g.LocationNumber == l.LocationNumber
@@ -617,7 +617,7 @@ namespace Hoops.Infrastructure.Repository
             using var db = context;
             var games =
                 from g in db.SchedulePlayoffs
-                from l in db.ScheduleLocations
+                from l in db.Location
                 from d in db.Divisions
                 where g.DivisionId == d.DivisionId
                 where g.LocationNumber == l.LocationNumber
