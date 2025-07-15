@@ -7,7 +7,8 @@ export const environment = {
   production: false,
   apiUrl: 'https://localhost:5001',
   environment: 'local',
-  securityEnabled: false
+  securityEnabled: false,
+  featureFlagPath: '/assets/feature-flags.dev.json'
 };
 // export const environment = {
 //   production: false,

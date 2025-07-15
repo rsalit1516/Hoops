@@ -3,5 +3,6 @@ export const environment = {
   apiUrl: 'https:/localhost:5001',
   environment: 'local',
   showGameAdmin: true,
-  securityEnabled: false
+  securityEnabled: false,
+  featureFlagPath: '/assets/feature-flags.local.json'
 };

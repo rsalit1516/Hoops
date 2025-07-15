@@ -1,7 +1,7 @@
 import { Component, OnInit, inject, input, output } from '@angular/core';
 
-import { SeasonService } from '../../services/season.service';
-import { Season } from '../../domain/season';
+import { SeasonService } from '../../../services/season.service';
+import { Season } from '../../../domain/season';
 import { Observable } from 'rxjs';
 import { MatOptionModule } from '@angular/material/core';
 import { NgFor, AsyncPipe } from '@angular/common';

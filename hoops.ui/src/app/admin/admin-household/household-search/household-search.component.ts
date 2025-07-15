@@ -9,7 +9,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router } from '@angular/router';
 import { Household } from '@app/domain/household';
 import { householdSearchCriteria, HouseholdService } from '@app/services/household.service';
-import { SectionTitleComponent } from '@app/shared/section-title/section-title.component';
+import { SectionTitleComponent } from '@app/shared/components/section-title/section-title.component';
 import { debounceTime, map } from 'rxjs';
 
 @Component({

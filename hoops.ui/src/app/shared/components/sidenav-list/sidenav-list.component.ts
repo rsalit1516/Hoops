@@ -1,5 +1,5 @@
 import { Component, computed, inject, OnInit, output } from '@angular/core';
-import * as fromUser from '../../user/state';
+import * as fromUser from '../../../user/state';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { User } from '@app/domain/user';
@@ -12,8 +12,8 @@ import { AuthService } from '@app/services/auth.service';
 @Component({
   selector: 'csbc-sidenav-list',
   templateUrl: './sidenav-list.component.html',
-  styleUrls: [ './sidenav-list.component.css' ],
-  imports: [ MatListModule, MatIconModule, RouterLink, NgIf ]
+  styleUrls: ['./sidenav-list.component.css'],
+  imports: [MatListModule, MatIconModule, RouterLink, NgIf]
 })
 export class SidenavListComponent implements OnInit {
   readonly #authService = inject(AuthService);
@@ -23,9 +23,9 @@ export class SidenavListComponent implements OnInit {
   // currentUser: User | undefined;
   userName: string | undefined;
   currentUser = computed(() => this.#authService.currentUser());
-  constructor() { }
+  constructor () { }
 
-  ngOnInit() {
+  ngOnInit () {
     // this.store.pipe(select(fromUser.getCurrentUser)).subscribe(user => {
     // console.log(user);
     // if (user !== null && user.userId !== 0) {

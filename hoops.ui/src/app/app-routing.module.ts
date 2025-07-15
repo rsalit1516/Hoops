@@ -8,7 +8,8 @@ import { HomeComponent } from './home/home.component';
 import { PageNotFoundComponent } from './app.not-found.component';
 import { GamesResolver } from './games/games.resolver';
 import { ADMINROUTES } from './admin/admin-routing';
-import { LoginComponent } from './shared/login/login.component';
+import { LoginComponent } from './shared/components/login/login.component';
+import { adminGuard } from './shared/guards/admin-guard.guard';
 
 const appRoutes: Routes = [
   {
@@ -37,6 +38,7 @@ const appRoutes: Routes = [
   {
     path: 'admin',
     children: ADMINROUTES,
+    canActivate: [adminGuard]
   },
   {
     path: 'login',

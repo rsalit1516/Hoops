@@ -14,7 +14,7 @@ import { NgIf } from '@angular/common';
 import { DivisionSelectComponent } from '../../admin-shared/division-select/division-select.component';
 import { GameTypeSelectComponent } from '../../admin-shared/game-type-select/game-type-select.component';
 import { SeasonSelectComponent } from '../../admin-shared/season-select/season-select.component';
-import { ShellTitleComponent } from '@app/shared/shell-title/shell-title.component';
+import { ShellTitleComponent } from '@app/shared/components/shell-title/shell-title.component';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatExpansionModule, MatExpansionPanel } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';

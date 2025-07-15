@@ -1,0 +1,60 @@
+<!-- <div style="height: 100vh;" class="wrapper"> -->
+
+<mat-toolbar class="top-nav-toolbar" color="default">
+  <mat-toolbar-row class="top-nav-row csbc">
+    <a routerLink="/home" class="brand">Coral Springs Basketball Club</a>
+  </mat-toolbar-row>
+  <mat-toolbar-row class="top-nav-row">
+    <!-- <div class="menu-spacer"></div> -->
+    <div class="d-block d-sm-none">
+      <button mat-button (click)="onToggleSidenav()" class="menu-button">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </div>
+    <div class="flex justify-items-start">
+      <a routerLink="/home" routerLinkActive="activelink" mat-button>Home</a>
+      <a
+        routerLink="/games"
+        routerLinkActive="activelink"
+        mat-button
+        routerLinkActive="activelink"
+        >{{ constants.GAMESMENU }}</a
+      >
+      <a routerLink="/photos" routerLinkActive="activelink" mat-button>{{
+        constants.PHOTOMENU
+      }}</a>
+      <a routerLink="/contacts" routerLinkActive="activelink" mat-button>{{
+        constants.CONTACTSMENU
+      }}</a>
+      <a routerLink="/clubDocs" routerLinkActive="activelink" mat-button>{{
+        constants.CLUBDOCSMENU
+      }}</a>
+
+      <!-- *appFeatureFlag = "'adminModule'" -->
+
+      <a
+        *ngIf="showAdminMenu"
+        routerLink="/admin"
+        mat-button
+        routerLinkActive="activelink"
+      >
+        {{ constants.ADMINMENU }}
+      </a>
+      <!-- <a *ngIf="showAdminMenu" routerLink="/dashboard" mat-button>Dashboard</a> -->
+      <span class="fill-space"></span>
+    </div>
+    <div class="flex justify-end ml-auto">
+      <button
+        mat-raised-button
+        *ngIf="!user()"
+        routerLink="/login"
+        matTooltip="Login for division directors"
+        matTooltipClass="tooltip"
+        class="ml-auto"
+      >
+        Login
+      </button>
+      <p readonly *ngIf="user()">Hello {{ userName }}</p>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>

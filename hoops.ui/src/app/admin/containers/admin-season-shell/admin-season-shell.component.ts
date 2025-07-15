@@ -14,7 +14,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { AdminSeasonDetailComponent } from '@app/admin/components/admin-season-detail/admin-season-detail.component';
 import { AdminSeasonFilterComponent } from '@app/admin/components/admin-season-filter/admin-season-filter.component';
-import { ShellTitleComponent } from '@app/shared/shell-title/shell-title.component';
+import { ShellTitleComponent } from '@app/shared/components/shell-title/shell-title.component';
 import { SeasonsToolbarComponent } from '@app/admin/components/seasons-toolbar/seasons-toolbar.component';
 import { SeasonAddEditComponent } from '@app/admin/components/season-add-edit/season-add-edit.component';
 

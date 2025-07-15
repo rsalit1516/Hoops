@@ -2,13 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Hoops.Core.Models;
-using Hoops.Infrastructure.Repository;
 using Hoops.Infrastructure.Data;
-using Microsoft.Extensions.Logging;
 using Hoops.Core.Interface;
 using Hoops.Data.Seeders;
-using Microsoft.Net.Http.Headers;
 
 namespace Hoops.Data
 {
@@ -40,6 +36,10 @@ namespace Hoops.Data
         // IWebContentTypeRepository webContentTypeRepo,
         // IWebContentRepository webContentRepo,
         hoopsContext context,
+        SeasonSeeder seasonSeeder,
+                DivisionSeeder divisionSeeder,
+                ColorSeeder colorSeeder,
+                TeamSeeder teamSeeder,
                 WebContentTypeSeeder webContentTypeSeeder,
         WebContentSeeder webContentSeeder,
         HouseholdAndPeopleSeeder householdAndPeopleSeeder)
@@ -55,6 +55,10 @@ namespace Hoops.Data
             // this.webContentTypeRepo = webContentTypeRepo;
             // this.webContentRepo = webContentRepo;
             this.context = context;
+            _colorSeeder = colorSeeder;
+            _seasonSeeder = seasonSeeder;
+            _divisionSeeder = divisionSeeder;
+            _teamSeeder = teamSeeder;
             _webContentTypeSeeder = webContentTypeSeeder;
             _webContentSeeder = webContentSeeder;
             _householdAndPeopleSeeder = householdAndPeopleSeeder;
