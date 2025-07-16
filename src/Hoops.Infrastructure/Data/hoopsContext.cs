@@ -205,6 +205,25 @@ public partial class hoopsContext : DbContext
             entity.Property(e => e.MinDate2).HasColumnType("smalldatetime");
 
             entity.Property(e => e.SeasonId).HasColumnName("SeasonID");
+
+            // Relationships
+            entity.HasOne(d => d.Season)
+                .WithMany(p => p.Divisions)
+                .HasForeignKey(d => d.SeasonId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Divisions_Seasons");
+
+            entity.HasOne(d => d.Director)
+                .WithMany()
+                .HasForeignKey(d => d.DirectorId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Divisions_Directors");
+
+            entity.HasOne(d => d.CoDirector)
+                .WithMany()
+                .HasForeignKey(d => d.CoDirectorId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Divisions_CoDirectors");
         });
 
         // modelBuilder.Entity<Dtproperties>(entity =>
