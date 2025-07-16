@@ -561,6 +561,8 @@ public partial class hoopsContext : DbContext
         {
             entity.ToTable("Seasons");
             entity.HasKey(e => e.SeasonId);
+            
+            // Column configurations
             entity.Property(e => e.SeasonId).HasColumnName("SeasonID");
             entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
             entity.Property(e => e.ConvenienceFee).HasColumnType("money");
@@ -570,15 +572,27 @@ public partial class hoopsContext : DbContext
             entity.Property(e => e.ParticipationFee).HasColumnType("money");
             entity.Property(e => e.Description)
                 .HasColumnName("Sea_Desc")
-                .HasMaxLength(50);
+                .HasMaxLength(50)
+                .IsRequired();
             entity.Property(e => e.SignUpsDate).HasColumnType("smalldatetime");
             entity.Property(e => e.SignUpsEnd)
                 .HasColumnName("SignUpsEND")
                 .HasColumnType("smalldatetime");
-
             entity.Property(e => e.SponsorFee).HasColumnType("money");
-
             entity.Property(e => e.ToDate).HasColumnType("smalldatetime");
+            
+            // Indexes for performance
+            entity.HasIndex(e => e.CompanyId)
+                .HasDatabaseName("IX_Seasons_CompanyId");
+                
+            entity.HasIndex(e => e.CurrentSeason)
+                .HasDatabaseName("IX_Seasons_CurrentSeason");
+                
+            entity.HasIndex(e => new { e.FromDate, e.ToDate })
+                .HasDatabaseName("IX_Seasons_DateRange");
+                
+            entity.HasIndex(e => new { e.SignUpsDate, e.SignUpsEnd })
+                .HasDatabaseName("IX_Seasons_SignUpDates");
         });
 
         modelBuilder.Entity<SponsorFee>(entity =>
