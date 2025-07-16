@@ -279,6 +279,28 @@ public partial class hoopsContext : DbContext
             entity.ToTable("People");
             entity.HasKey(e => e.PersonId);
 
+            // Column configurations
+            entity.Property(e => e.PersonId).HasColumnName("PeopleID");
+            entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
+            entity.Property(e => e.HouseId).HasColumnName("MainHouseID");
+            entity.Property(e => e.FirstName).HasMaxLength(50);
+            entity.Property(e => e.LastName).HasMaxLength(50);
+            entity.Property(e => e.Workphone).HasMaxLength(25);
+            entity.Property(e => e.Cellphone).HasMaxLength(15);
+            entity.Property(e => e.Email).HasMaxLength(50);
+            entity.Property(e => e.LatestSeason).HasMaxLength(15);
+            entity.Property(e => e.LatestShirtSize).HasMaxLength(20);
+            entity.Property(e => e.BirthDate).HasColumnType("datetime");
+            entity.Property(e => e.Bc).HasColumnName("BC");
+            entity.Property(e => e.Gender).HasMaxLength(1);
+            entity.Property(e => e.SchoolName).HasMaxLength(50);
+            entity.Property(e => e.GiftedLevelsUp).HasColumnName("GiftedLevelsUP");
+            entity.Property(e => e.Ad).HasColumnName("AD");
+            entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime").HasDefaultValue(DateTime.Now);
+            entity.Property(e => e.CreatedUser).HasMaxLength(20);
+            entity.Property(e => e.TempId).HasColumnName("TEMPID");
+
+            // Indexes
             entity.HasIndex(e => e.Coach)
                 .HasDatabaseName("idx_DCh_12521_12520_People");
 
@@ -288,6 +310,12 @@ public partial class hoopsContext : DbContext
             entity.HasIndex(e => new { e.FirstName, e.LastName })
                 .HasDatabaseName("idx_DCh_14287_14286_People");
 
+            // Relationships
+            entity.HasOne(d => d.Household)
+                .WithMany(p => p.People)
+                .HasForeignKey(d => d.HouseId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_People_Households");
         });
 
         modelBuilder.Entity<Player>(entity =>
