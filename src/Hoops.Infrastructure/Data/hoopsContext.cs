@@ -525,9 +525,11 @@ public partial class hoopsContext : DbContext
         modelBuilder.Entity<ScheduleGame>(entity =>
         {
             entity.ToTable("ScheduleGames");
-            // entity.HasKey(e => e.ScheduleGamesId);
-            // entity.Property(e => e.ScheduleGamesId)
-            // .UseIdentityColumn(seed: 0, increment: 1); 
+            entity.HasKey(e => e.ScheduleGamesId);
+
+            entity.Property(e => e.ScheduleGamesId)
+                .HasColumnName("ScheduleGamesID")
+                .ValueGeneratedOnAdd();
 
             entity.HasIndex(e => new { e.SeasonId, e.DivisionId, e.GameNumber })
                 .HasDatabaseName("IX_ScheduleGames");
@@ -539,8 +541,42 @@ public partial class hoopsContext : DbContext
                 .HasDatabaseName("idx_DCh_1924_1923_ScheduleGames");
 
             entity.Property(e => e.GameDate).HasColumnType("datetime");
-
             entity.Property(e => e.GameTime).HasMaxLength(20);
+            entity.Property(e => e.SeasonId).HasColumnName("SeasonID");
+            entity.Property(e => e.DivisionId).HasColumnName("DivisionID");
+
+            // Configure the visiting team relationship
+            entity.HasOne(d => d.VisitingTeam)
+                .WithMany(p => p.VisitingGames)
+                .HasForeignKey(d => d.VisitingTeamNumber)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ScheduleGames_VisitingTeam");
+
+            // Configure the home team relationship
+            entity.HasOne(d => d.HomeTeam)
+                .WithMany(p => p.HomeGames)
+                .HasForeignKey(d => d.HomeTeamNumber)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ScheduleGames_HomeTeam");
+
+            // Configure other relationships
+            entity.HasOne(d => d.Season)
+                .WithMany(p => p.ScheduleGames)
+                .HasForeignKey(d => d.SeasonId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ScheduleGames_Season");
+
+            entity.HasOne(d => d.Division)
+                .WithMany(p => p.ScheduleGames)
+                .HasForeignKey(d => d.DivisionId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ScheduleGames_Division");
+
+            entity.HasOne(d => d.Location)
+                .WithMany()
+                .HasForeignKey(d => d.LocationNumber)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ScheduleGames_Location");
         });
 
         // modelBuilder.Entity<ScheduleGamesStats>(entity =>
@@ -580,7 +616,7 @@ public partial class hoopsContext : DbContext
         {
             entity.ToTable("Seasons");
             entity.HasKey(e => e.SeasonId);
-            
+
             // Column configurations
             entity.Property(e => e.SeasonId).HasColumnName("SeasonID");
             entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
@@ -599,17 +635,17 @@ public partial class hoopsContext : DbContext
                 .HasColumnType("smalldatetime");
             entity.Property(e => e.SponsorFee).HasColumnType("money");
             entity.Property(e => e.ToDate).HasColumnType("smalldatetime");
-            
+
             // Indexes for performance
             entity.HasIndex(e => e.CompanyId)
                 .HasDatabaseName("IX_Seasons_CompanyId");
-                
+
             entity.HasIndex(e => e.CurrentSeason)
                 .HasDatabaseName("IX_Seasons_CurrentSeason");
-                
+
             entity.HasIndex(e => new { e.FromDate, e.ToDate })
                 .HasDatabaseName("IX_Seasons_DateRange");
-                
+
             entity.HasIndex(e => new { e.SignUpsDate, e.SignUpsEnd })
                 .HasDatabaseName("IX_Seasons_SignUpDates");
         });
@@ -875,7 +911,44 @@ public partial class hoopsContext : DbContext
 
             entity.Property(e => e.TeamName).HasMaxLength(50);
 
-            entity.Property(e => e.TeamNumber).HasMaxLength(2);
+            entity.Property(e => e.TeamNumber).HasMaxLength(4);
+
+            // Relationships
+            entity.HasOne(d => d.Season)
+                .WithMany(p => p.Teams)
+                .HasForeignKey(d => d.SeasonId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Teams_Seasons");
+
+            entity.HasOne(d => d.Division)
+                .WithMany(p => p.Teams)
+                .HasForeignKey(d => d.DivisionId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Teams_Divisions");
+
+            entity.HasOne(d => d.Coach)
+                .WithMany()
+                .HasForeignKey(d => d.CoachId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Teams_Coaches");
+
+            entity.HasOne(d => d.AssistantCoach)
+                .WithMany()
+                .HasForeignKey(d => d.AssCoachId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Teams_AssistantCoaches");
+
+            entity.HasOne(d => d.Sponsor)
+                .WithMany()
+                .HasForeignKey(d => d.SponsorId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Teams_Sponsors");
+
+            entity.HasOne(d => d.Color)
+                .WithMany()
+                .HasForeignKey(d => d.TeamColorId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Teams_Colors");
         });
 
         modelBuilder.Entity<WebContent>(entity =>

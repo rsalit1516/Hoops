@@ -28,19 +28,19 @@ namespace Hoops.Core.Models
         [Key]
         [Column("DivisionID")]
         public int DivisionId { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the company identifier associated with the division
         /// </summary>
         [Column("CompanyID")]
         public int? CompanyId { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the season identifier this division belongs to
         /// </summary>
         [Column("SeasonID")]
         public int? SeasonId { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the division description/name
         /// </summary>
@@ -49,96 +49,96 @@ namespace Hoops.Core.Models
         [Column("Div_Desc")]
         [Display(Name = "Division Description")]
         public string DivisionDescription { get; set; } = string.Empty;
-        
+
         /// <summary>
         /// Gets or sets the director identifier for this division
         /// </summary>
         [Column("DirectorID")]
         [Display(Name = "Director")]
         public int? DirectorId { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the co-director identifier for this division
         /// </summary>
         [Column("CoDirectorID")]
         [Display(Name = "Co-Director")]
         public int? CoDirectorId { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the primary gender for this division (M/F)
         /// </summary>
         [StringLength(1)]
         [Display(Name = "Gender")]
         public string Gender { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the minimum birth date for primary gender eligibility
         /// </summary>
         [Display(Name = "Minimum Birth Date")]
         [DataType(DataType.Date)]
         public DateTime? MinDate { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the maximum birth date for primary gender eligibility
         /// </summary>
         [Display(Name = "Maximum Birth Date")]
         [DataType(DataType.Date)]
         public DateTime? MaxDate { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the secondary gender for this division (M/F) - for co-ed divisions
         /// </summary>
         [StringLength(1)]
         [Display(Name = "Secondary Gender")]
         public string Gender2 { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the minimum birth date for secondary gender eligibility
         /// </summary>
         [Display(Name = "Secondary Minimum Birth Date")]
         [DataType(DataType.Date)]
         public DateTime? MinDate2 { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the maximum birth date for secondary gender eligibility
         /// </summary>
         [Display(Name = "Secondary Maximum Birth Date")]
         [DataType(DataType.Date)]
         public DateTime? MaxDate2 { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the draft venue location
         /// </summary>
         [StringLength(50)]
         [Display(Name = "Draft Venue")]
         public string DraftVenue { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the draft date for this division
         /// </summary>
         [Display(Name = "Draft Date")]
         [DataType(DataType.Date)]
         public DateTime? DraftDate { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the draft time for this division
         /// </summary>
         [StringLength(10)]
         [Display(Name = "Draft Time")]
         public string DraftTime { get; set; }
-        
+
         /// <summary>
         /// Gets or sets a value indicating whether statistics are tracked for this division
         /// </summary>
         [Display(Name = "Track Statistics")]
         public bool Stats { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the date and time when the division was created
         /// </summary>
         [Display(Name = "Created Date")]
         public DateTime? CreatedDate { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the user who created the division record
         /// </summary>
@@ -151,32 +151,32 @@ namespace Hoops.Core.Models
         /// Gets or sets the season this division belongs to
         /// </summary>
         public virtual Season Season { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the director of this division
         /// </summary>
         public virtual Person Director { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the co-director of this division
         /// </summary>
         public virtual Person CoDirector { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the collection of teams in this division
         /// </summary>
         public virtual ICollection<Team> Teams { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the collection of players in this division
         /// </summary>
         public virtual ICollection<Player> Players { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the collection of schedule games for this division
         /// </summary>
         public virtual ICollection<ScheduleGame> ScheduleGames { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the collection of schedule division teams for this division
         /// </summary>
@@ -196,16 +196,16 @@ namespace Hoops.Core.Models
             {
                 return IsDateInRange(birthDate, MinDate, MaxDate);
             }
-            
+
             // Check secondary gender eligibility (for co-ed divisions)
             if (!string.IsNullOrEmpty(Gender2) && string.Equals(Gender2, gender, StringComparison.OrdinalIgnoreCase))
             {
                 return IsDateInRange(birthDate, MinDate2, MaxDate2);
             }
-            
+
             return false;
         }
-        
+
         /// <summary>
         /// Gets a formatted string describing the age range for this division
         /// </summary>
@@ -213,7 +213,7 @@ namespace Hoops.Core.Models
         public string GetAgeRangeDescription()
         {
             var descriptions = new List<string>();
-            
+
             if (MinDate.HasValue || MaxDate.HasValue)
             {
                 var genderText = GetGenderDescription(Gender);
@@ -223,7 +223,7 @@ namespace Hoops.Core.Models
                     descriptions.Add($"{genderText}: {ageRange}");
                 }
             }
-            
+
             if (!string.IsNullOrEmpty(Gender2) && (MinDate2.HasValue || MaxDate2.HasValue))
             {
                 var genderText = GetGenderDescription(Gender2);
@@ -233,10 +233,10 @@ namespace Hoops.Core.Models
                     descriptions.Add($"{genderText}: {ageRange}");
                 }
             }
-            
+
             return string.Join(" / ", descriptions);
         }
-        
+
         /// <summary>
         /// Gets the display name for the division combining description and age range
         /// </summary>
@@ -260,7 +260,7 @@ namespace Hoops.Core.Models
                 return false;
             return true;
         }
-        
+
         private string GetGenderDescription(string gender)
         {
             return gender?.ToUpper() switch
@@ -270,14 +270,14 @@ namespace Hoops.Core.Models
                 _ => "Mixed"
             };
         }
-        
+
         private string GetAgeRange(DateTime? minDate, DateTime? maxDate)
         {
             if (!minDate.HasValue && !maxDate.HasValue)
                 return string.Empty;
-                
+
             var currentDate = DateTime.Now;
-            
+
             if (minDate.HasValue && maxDate.HasValue)
             {
                 var minAge = CalculateAge(maxDate.Value, currentDate);
@@ -294,10 +294,10 @@ namespace Hoops.Core.Models
                 var minAge = CalculateAge(maxDate.Value, currentDate);
                 return $"Age {minAge} and over";
             }
-            
+
             return string.Empty;
         }
-        
+
         private int CalculateAge(DateTime birthDate, DateTime currentDate)
         {
             var age = currentDate.Year - birthDate.Year;
