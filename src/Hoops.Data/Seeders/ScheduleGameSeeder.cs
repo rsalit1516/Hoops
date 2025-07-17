@@ -15,14 +15,14 @@ namespace Hoops.Data.Seeders
         private readonly IScheduleGameRepository _scheduleGameRepo;
         private readonly ISeasonRepository _seasonRepo;
         private readonly IDivisionRepository _divisionRepo;
-        private readonly ITeamRepository _teamRepo;
+        private readonly IScheduleDivTeamsRepository _scheduleDivTeamsRepo;
         private readonly ILocationRepository _locationRepo;
 
         public ScheduleGameSeeder(
             IScheduleGameRepository scheduleGameRepo,
             ISeasonRepository seasonRepo,
             IDivisionRepository divisionRepo,
-            ITeamRepository teamRepo,
+            IScheduleDivTeamsRepository scheduleDivTeamsRepo,
             ILocationRepository locationRepo,
             hoopsContext context)
         {
@@ -30,7 +30,7 @@ namespace Hoops.Data.Seeders
             _scheduleGameRepo = scheduleGameRepo;
             _seasonRepo = seasonRepo;
             _divisionRepo = divisionRepo;
-            _teamRepo = teamRepo;
+            _scheduleDivTeamsRepo = scheduleDivTeamsRepo;
             _locationRepo = locationRepo;
         }
 
@@ -68,31 +68,33 @@ namespace Hoops.Data.Seeders
                 
                 foreach (var division in divisions)
                 {
-                    var teams = _teamRepo.GetDivisionTeams(division.DivisionId);
-                    var teamsList = teams.ToList();
+                    // Get ScheduleDivTeams for this division and season
+                    var scheduleDivTeams = await context.ScheduleDivTeams
+                        .Where(sdt => sdt.SeasonId == season.SeasonId && sdt.DivisionNumber == division.DivisionId)
+                        .ToListAsync();
                     
-                    if (teamsList.Count >= 2)
+                    if (scheduleDivTeams.Count >= 2)
                     {
-                        Console.WriteLine($"[DEBUG] Generating schedule for Division: {division.DivisionDescription} with {teamsList.Count} teams");
-                        await GenerateScheduleForDivision(season, division, teamsList, locationsList);
+                        Console.WriteLine($"[DEBUG] Generating schedule for Division: {division.DivisionDescription} with {scheduleDivTeams.Count} teams");
+                        await GenerateScheduleForDivision(season, division, scheduleDivTeams, locationsList);
                     }
                     else
                     {
-                        Console.WriteLine($"[DEBUG] Skipping Division: {division.DivisionDescription} - not enough teams ({teamsList.Count})");
+                        Console.WriteLine($"[DEBUG] Skipping Division: {division.DivisionDescription} - not enough teams ({scheduleDivTeams.Count})");
                     }
                 }
             }
         }
 
-        private async Task GenerateScheduleForDivision(Season season, Division division, List<Team> teams, List<Location> locations)
+        private async Task GenerateScheduleForDivision(Season season, Division division, List<ScheduleDivTeam> scheduleDivTeams, List<Location> locations)
         {
             var gameSchedule = new List<ScheduleGame>();
             var gameId = 1;
             var scheduleNumber = division.DivisionId % 100; // Simple schedule number based on division
             
             // Create a round-robin schedule
-            var totalRounds = teams.Count - 1;
-            var gamesPerRound = teams.Count / 2;
+            var totalRounds = scheduleDivTeams.Count - 1;
+            var gamesPerRound = scheduleDivTeams.Count / 2;
             
             // Track when each team last played for rest day enforcement
             var teamLastGameDate = new Dictionary<int, DateTime>();
@@ -108,7 +110,7 @@ namespace Hoops.Data.Seeders
             
             for (int round = 0; round < totalRounds; round++)
             {
-                var roundGames = GenerateRoundRobinRound(teams, round);
+                var roundGames = GenerateRoundRobinRound(scheduleDivTeams, round);
                 
                 foreach (var (homeTeam, visitingTeam) in roundGames)
                 {
@@ -130,8 +132,8 @@ namespace Hoops.Data.Seeders
                         LocationNumber = location.LocationNumber,
                         GameDate = gameDate,
                         GameTime = timeSlot,
-                        HomeTeamNumber = int.Parse(homeTeam.TeamNumber),
-                        VisitingTeamNumber = int.Parse(visitingTeam.TeamNumber),
+                        HomeTeamNumber = homeTeam.TeamNumber,
+                        VisitingTeamNumber = visitingTeam.TeamNumber,
                         SeasonId = season.SeasonId,
                         DivisionId = division.DivisionId,
                         HomeTeamScore = null,
@@ -144,8 +146,8 @@ namespace Hoops.Data.Seeders
                     gameId++; // Increment for next game number
                     
                     // Update last game dates for both teams
-                    teamLastGameDate[homeTeam.TeamId] = gameDate;
-                    teamLastGameDate[visitingTeam.TeamId] = gameDate;
+                    teamLastGameDate[homeTeam.TeamNumber] = gameDate;
+                    teamLastGameDate[visitingTeam.TeamNumber] = gameDate;
                     
                     locationRotation++;
                     
@@ -155,17 +157,17 @@ namespace Hoops.Data.Seeders
             }
         }
 
-        private DateTime FindNextAvailableDate(DateTime startDate, Team team1, Team team2, Dictionary<int, DateTime> teamLastGameDate)
+        private DateTime FindNextAvailableDate(DateTime startDate, ScheduleDivTeam team1, ScheduleDivTeam team2, Dictionary<int, DateTime> teamLastGameDate)
         {
             var candidateDate = startDate;
             
             while (true)
             {
                 // Check if both teams have at least one day rest
-                bool team1HasRest = !teamLastGameDate.ContainsKey(team1.TeamId) || 
-                                   (candidateDate - teamLastGameDate[team1.TeamId]).Days >= 1;
-                bool team2HasRest = !teamLastGameDate.ContainsKey(team2.TeamId) || 
-                                   (candidateDate - teamLastGameDate[team2.TeamId]).Days >= 1;
+                bool team1HasRest = !teamLastGameDate.ContainsKey(team1.TeamNumber) ||
+                                   (candidateDate - teamLastGameDate[team1.TeamNumber]).Days >= 1;
+                bool team2HasRest = !teamLastGameDate.ContainsKey(team2.TeamNumber) ||
+                                   (candidateDate - teamLastGameDate[team2.TeamNumber]).Days >= 1;
                 
                 if (team1HasRest && team2HasRest)
                 {
@@ -206,15 +208,15 @@ namespace Hoops.Data.Seeders
             return date;
         }
 
-        private List<(Team home, Team visiting)> GenerateRoundRobinRound(List<Team> teams, int round)
+        private List<(ScheduleDivTeam home, ScheduleDivTeam visiting)> GenerateRoundRobinRound(List<ScheduleDivTeam> scheduleDivTeams, int round)
         {
-            var games = new List<(Team home, Team visiting)>();
-            var teamCount = teams.Count;
+            var games = new List<(ScheduleDivTeam home, ScheduleDivTeam visiting)>();
+            var teamCount = scheduleDivTeams.Count;
             
             // For odd number of teams, add a "bye" team
             if (teamCount % 2 == 1)
             {
-                teams = new List<Team>(teams) { null }; // null represents bye
+                scheduleDivTeams = new List<ScheduleDivTeam>(scheduleDivTeams) { null }; // null represents bye
                 teamCount++;
             }
             
@@ -237,8 +239,8 @@ namespace Hoops.Data.Seeders
                     }
                 }
                 
-                var homeTeam = teams[homeIndex];
-                var visitingTeam = teams[visitingIndex];
+                var homeTeam = scheduleDivTeams[homeIndex];
+                var visitingTeam = scheduleDivTeams[visitingIndex];
                 
                 // Skip games involving the bye team
                 if (homeTeam != null && visitingTeam != null)
@@ -251,7 +253,7 @@ namespace Hoops.Data.Seeders
         }
 
         // Helper class to manage game time slots
-        private class GameTimeSlotManager
+        internal class GameTimeSlotManager
         {
             private readonly Dictionary<(DateTime date, int location), List<string>> _scheduledTimes = new();
             

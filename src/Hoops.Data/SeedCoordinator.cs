@@ -18,6 +18,7 @@ namespace Hoops.Data
         private SeasonSeeder _seasonSeeder { get; set; }
         private DivisionSeeder _divisionSeeder { get; set; }
         private TeamSeeder _teamSeeder { get; set; }
+        private ScheduleDivTeamsSeeder _scheduleDivTeamsSeeder { get; set; }
         private ScheduleGameSeeder _scheduleGameSeeder { get; set; }
         private WebContentTypeSeeder _webContentTypeSeeder { get; set; }
         private WebContentSeeder _webContentSeeder { get; set; }
@@ -29,6 +30,7 @@ namespace Hoops.Data
         LocationSeeder locationSeeder,
         ColorSeeder colorSeeder,
         TeamSeeder teamSeeder,
+        ScheduleDivTeamsSeeder scheduleDivTeamsSeeder,
         ScheduleGameSeeder scheduleGameSeeder,
         WebContentTypeSeeder webContentTypeSeeder,
         WebContentSeeder webContentSeeder,
@@ -40,6 +42,7 @@ namespace Hoops.Data
             _seasonSeeder = seasonSeeder;
             _divisionSeeder = divisionSeeder;
             _teamSeeder = teamSeeder;
+            _scheduleDivTeamsSeeder = scheduleDivTeamsSeeder;
             _scheduleGameSeeder = scheduleGameSeeder;
             _webContentTypeSeeder = webContentTypeSeeder;
             _webContentSeeder = webContentSeeder;
@@ -49,6 +52,7 @@ namespace Hoops.Data
         {
             //first delete all records    
             await _scheduleGameSeeder.DeleteAllAsync();
+            await _scheduleDivTeamsSeeder.DeleteAllAsync(); // Delete after ScheduleGames
             await _teamSeeder.DeleteAllAsync();
             await _divisionSeeder.DeleteAllAsync();
             await _seasonSeeder.DeleteAllAsync();
@@ -65,6 +69,7 @@ namespace Hoops.Data
             await _seasonSeeder.SeedAsync();
             await _divisionSeeder.SeedAsync();
             await _teamSeeder.SeedAsync();
+            await _scheduleDivTeamsSeeder.SeedAsync(); // Create before ScheduleGames
             await _scheduleGameSeeder.SeedAsync();
             await _webContentTypeSeeder.SeedAsync();
             await _webContentSeeder.SeedAsync();
