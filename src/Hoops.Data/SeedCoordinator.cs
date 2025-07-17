@@ -54,8 +54,6 @@ namespace Hoops.Data
             await _seasonSeeder.DeleteAllAsync();
             await _colorSeeder.DeleteAllAsync();
             await _locationSeeder.DeleteAllAsync();
-            await _colorSeeder.DeleteAllAsync();
-            await _locationSeeder.DeleteAllAsync();
             await _webContentSeeder.DeleteAllAsync();
             await _webContentTypeSeeder.DeleteAllAsync();
             await _householdAndPeopleSeeder.DeleteAllAsync();

@@ -23,65 +23,74 @@ namespace Hoops.Data.Seeders
 
         public async Task DeleteAllAsync()
         {
-            var records = await _teamRepo.GetAllAsync();
-            Console.WriteLine($"[DEBUG] Found {records.Count()} teams to delete");
-            foreach (var record in records)
+            try
             {
-                Console.WriteLine($"[DEBUG] Attempting to delete Person ID: {record.TeamId}, Name: {record.TeamName}");
-                await _teamRepo.DeleteAsync(record.TeamId);
+                // Use raw SQL to avoid Entity Framework null value issues
+                Console.WriteLine("[DEBUG] Attempting to delete all teams using raw SQL");
+                
+                var deletedCount = await context.Database.ExecuteSqlRawAsync("DELETE FROM Teams");
+                Console.WriteLine($"[DEBUG] Successfully deleted {deletedCount} teams using raw SQL");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ERROR] Error deleting teams: {ex.Message}");
+                Console.WriteLine($"[ERROR] Stack trace: {ex.StackTrace}");
+                throw;
             }
         }
         public async Task SeedAsync()
         {
-            int maxTeamId = context.Teams.Any() ? context.Teams.Max(c => c.TeamId) : 0;
-            var currentSeason = await context.Seasons
-                        .FirstOrDefaultAsync(s => s.CurrentSeason == true);
-            // var divisions = await context.Divisions
-            // .Where(d => d.SeasonId == currentSeason.SeasonId).ToListAsync();
-            // Console.WriteLine($"[DEBUG] Found {divisions.Count()} seasons to initialize teams for.");
-
-            var seasons = await context.Seasons.ToListAsync();
-            var colors = await context.Colors.ToListAsync();
-            var ranColor = new Random();
-            var ranTeams = new Random();
-            foreach (var season in seasons)
+            try
             {
-                var divisions = await context.Divisions
-                .Where(d => d.SeasonId == season.SeasonId).ToListAsync();
-                var counter = 0;
-
-                foreach (var division in divisions)
+                int maxTeamId = context.Teams.Any() ? context.Teams.Max(c => c.TeamId) : 0;
+                var seasons = await context.Seasons.ToListAsync();
+                var colors = await context.Colors.ToListAsync();
+                
+                if (!colors.Any())
                 {
-                    var teams = new List<Team>();
-
-                    for (var i = 1; i <= ranTeams.Next(4, 15); i++)
+                    Console.WriteLine("[WARNING] No colors found. Teams will be created without color assignments.");
+                }
+                
+                var ranColor = new Random();
+                var ranTeams = new Random();
+                
+                foreach (var season in seasons)
+                {
+                    var divisions = await context.Divisions
+                        .Where(d => d.SeasonId == season.SeasonId).ToListAsync();
+                    
+                    foreach (var division in divisions)
                     {
-                        counter++;
+                        var teamCount = ranTeams.Next(4, 15);
+                        Console.WriteLine($"[DEBUG] Creating {teamCount} teams for Division {division.DivisionDescription} in Season {season.Description}");
+                        
+                        for (var i = 1; i <= teamCount; i++)
                         {
-                            teams.Add(
-                            new Team
+                            var team = new Team
                             {
                                 SeasonId = season.SeasonId,
                                 DivisionId = division.DivisionId,
                                 TeamNumber = i.ToString(),
-                                TeamColorId = colors.ElementAt(ranColor.Next(1, colors.Count())).ColorId,
+                                TeamName = $"Team {i} - {division.DivisionDescription}",
+                                TeamColor = colors.Any() ? colors.ElementAt(ranColor.Next(0, colors.Count)).ColorName : "Unknown",
+                                TeamColorId = colors.Any() ? colors.ElementAt(ranColor.Next(0, colors.Count)).ColorId : 1,
                                 CreatedDate = DateTime.Now,
-                                CreatedUser = "Seed",
-
-                            }
-                            );
+                                CreatedUser = "Seed"
+                            };
+                            
+                            context.Teams.Add(team);
                         }
                     }
-
-                    foreach (var team in teams)
-                    {
-                        await _teamRepo.InsertAsync(team);
-                    }
-                    context.SaveChanges();
                 }
+                
+                await context.SaveChangesAsync();
+                Console.WriteLine($"[DEBUG] Successfully seeded all teams");
             }
-
-
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ERROR] Error seeding teams: {ex.Message}");
+                throw;
+            }
         }
     }
 

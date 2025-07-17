@@ -36,12 +36,17 @@ namespace Hoops.Data.Seeders
 
         public async Task DeleteAllAsync()
         {
-            var records = await _scheduleGameRepo.GetAllAsync();
-            Console.WriteLine($"[DEBUG] Found {records.Count()} schedule games to delete");
-            foreach (var record in records)
+            try
             {
-                Console.WriteLine($"[DEBUG] Attempting to delete Schedule Game ID: {record.ScheduleGamesId}");
-                await _scheduleGameRepo.DeleteAsync(record.ScheduleGamesId);
+                Console.WriteLine("[DEBUG] Attempting to delete all schedule games using raw SQL");
+                var deletedCount = await context.Database.ExecuteSqlRawAsync("DELETE FROM ScheduleGames");
+                Console.WriteLine($"[DEBUG] Successfully deleted schedule games using raw SQL");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ERROR] Error deleting schedule games: {ex.Message}");
+                Console.WriteLine($"[ERROR] Stack trace: {ex.StackTrace}");
+                throw;
             }
         }
 
@@ -119,7 +124,7 @@ namespace Hoops.Data.Seeders
                     
                     var game = new ScheduleGame
                     {
-                        ScheduleGamesId = gameId++,
+                        // Don't set ScheduleGamesId - let Entity Framework auto-generate it
                         ScheduleNumber = scheduleNumber,
                         GameNumber = gameId,
                         LocationNumber = location.LocationNumber,
@@ -136,6 +141,7 @@ namespace Hoops.Data.Seeders
                     };
                     
                     await _scheduleGameRepo.InsertAsync(game);
+                    gameId++; // Increment for next game number
                     
                     // Update last game dates for both teams
                     teamLastGameDate[homeTeam.TeamId] = gameDate;

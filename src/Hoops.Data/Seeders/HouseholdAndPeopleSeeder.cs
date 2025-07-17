@@ -6,6 +6,7 @@ using Hoops.Core.Models;
 using Hoops.Core.Interface;
 using Hoops.Infrastructure.Repository;
 using Hoops.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hoops.Data.Seeders
 {
@@ -23,43 +24,28 @@ namespace Hoops.Data.Seeders
         }
         public async Task DeleteAllAsync()
         {
-            Console.WriteLine("[DEBUG] Starting DeleteAllAsync()");
-
-            // Delete People first (they have foreign key to Households)
-            var records = await _personRepo.GetAllAsync();
-            Console.WriteLine($"[DEBUG] Found {records.Count()} people to delete");
-
-            foreach (var record in records)
+            try
             {
-                Console.WriteLine($"[DEBUG] Attempting to delete Person ID: {record.PersonId}, Name: {record.FirstName} {record.LastName}");
-                await _personRepo.DeleteAsync(record.PersonId);
-                Console.WriteLine($"[DEBUG] Successfully deleted Person ID: {record.PersonId}");
+                Console.WriteLine("[DEBUG] Starting DeleteAllAsync() with raw SQL");
+                
+                // Delete People first (they have foreign key to Households)
+                Console.WriteLine("[DEBUG] Attempting to delete all people using raw SQL");
+                var deletedPeopleCount = await context.Database.ExecuteSqlRawAsync("DELETE FROM People");
+                Console.WriteLine($"[DEBUG] Successfully deleted people using raw SQL");
+
+                // Then delete Households
+                Console.WriteLine("[DEBUG] Attempting to delete all households using raw SQL");
+                var deletedHouseholdsCount = await context.Database.ExecuteSqlRawAsync("DELETE FROM Households");
+                Console.WriteLine($"[DEBUG] Successfully deleted households using raw SQL");
+
+                Console.WriteLine("[DEBUG] Successfully completed DeleteAllAsync()");
             }
-
-            // Save changes after deleting people
-            Console.WriteLine("[DEBUG] Saving changes after deleting people");
-            context.SaveChanges();
-            Console.WriteLine("[DEBUG] Successfully saved changes after deleting people");
-
-            // Verify people are deleted
-            var remainingPeople = await _personRepo.GetAllAsync();
-            Console.WriteLine($"[DEBUG] Remaining people count after deletion: {remainingPeople.Count()}");
-
-            // Then delete Households
-            var hrecords = await _householdRepo.GetAllAsync();
-            Console.WriteLine($"[DEBUG] Found {hrecords.Count()} households to delete");
-
-            foreach (var record in hrecords)
+            catch (Exception ex)
             {
-                Console.WriteLine($"[DEBUG] Attempting to delete Household ID: {record.HouseId}, Name: {record.Name}");
-                await _householdRepo.DeleteAsync(record.HouseId);
-                Console.WriteLine($"[DEBUG] Successfully deleted Household ID: {record.HouseId}");
+                Console.WriteLine($"[ERROR] Error deleting households and people: {ex.Message}");
+                Console.WriteLine($"[ERROR] Stack trace: {ex.StackTrace}");
+                throw;
             }
-
-            // Save changes after deleting households
-            Console.WriteLine("[DEBUG] Saving changes after deleting households");
-            context.SaveChanges();
-            Console.WriteLine("[DEBUG] Successfully completed DeleteAllAsync()");
         }
 
         public async Task SeedAsync()

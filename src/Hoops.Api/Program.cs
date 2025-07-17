@@ -15,7 +15,8 @@ namespace Hoops.Api
     {
         public static void Main(string[] args)
         {
-            var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
+            NLog.LogManager.Setup().LoadConfigurationFromAppSettings();
+            var logger = NLog.LogManager.GetCurrentClassLogger();
             try
             {
                 logger.Debug("init main");
