@@ -19,7 +19,7 @@ namespace Hoops.Core.Models
             Players = new HashSet<Player>();
             HomeGames = new HashSet<ScheduleGame>();
             VisitingGames = new HashSet<ScheduleGame>();
-            ScheduleDivTeams = new HashSet<ScheduleDivTeam>();
+            // ScheduleDivTeams = new HashSet<ScheduleDivTeam>();
         }
 
         /// <summary>
@@ -204,7 +204,8 @@ namespace Hoops.Core.Models
         /// <summary>
         /// Gets or sets the collection of schedule division teams for this team
         /// </summary>
-        public virtual ICollection<ScheduleDivTeam> ScheduleDivTeams { get; set; }
+        // Temporarily disabled to prevent EF auto-configuration issues
+        // public virtual ICollection<ScheduleDivTeam> ScheduleDivTeams { get; set; }
 
         // Helper methods
         /// <summary>

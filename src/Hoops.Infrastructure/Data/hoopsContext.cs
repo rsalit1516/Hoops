@@ -517,7 +517,15 @@ public partial class hoopsContext : DbContext
         modelBuilder.Entity<ScheduleDivTeam>(entity =>
         {
             entity.ToTable("ScheduleDivTeams");
+            
+            // Primary key is ScheduleDivTeamsId
             entity.HasKey(e => e.ScheduleDivTeamsId);
+            
+            // Configure ScheduleDivTeamsId as identity column
+            entity.Property(e => e.ScheduleDivTeamsId)
+                .ValueGeneratedOnAdd();
+            
+            // Configure the index
             entity.HasIndex(e => new { e.ScheduleNumber, e.TeamNumber })
                 .HasDatabaseName("IX_ScheduleDivTeams");
         });
