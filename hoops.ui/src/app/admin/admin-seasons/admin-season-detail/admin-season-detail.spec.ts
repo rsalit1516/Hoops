@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AdminSeasonDetailComponent } from './admin-season-detail.component';
+import { AdminSeasonDetail } from './admin-season-detail';
 
 describe('AdminSeasonDetailComponent', () => {
-  let component: AdminSeasonDetailComponent;
-  let fixture: ComponentFixture<AdminSeasonDetailComponent>;
+  let component: AdminSeasonDetail;
+  let fixture: ComponentFixture<AdminSeasonDetail>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AdminSeasonDetailComponent]
+      imports: [AdminSeasonDetail]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AdminSeasonDetailComponent);
+    fixture = TestBed.createComponent(AdminSeasonDetail);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

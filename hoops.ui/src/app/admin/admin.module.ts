@@ -7,9 +7,7 @@ import { reducer } from './state/admin.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { AdminEffects } from './state/admin.effects';
 
-
 import { AdminGamesModule } from './admin-games/admin-games.module';
-
 
 @NgModule({
   imports: [

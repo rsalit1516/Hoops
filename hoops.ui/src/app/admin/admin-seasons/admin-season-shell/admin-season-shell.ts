@@ -4,7 +4,7 @@ import { Season } from '@app/domain/season';
 import { Store } from '@ngrx/store';
 
 import * as fromAdmin from '../../state';
-import { AdminSeasonListComponent } from '../admin-season-list/admin-season-list.component';
+import { AdminSeasonList } from '../admin-season-list/admin-season-list';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { SeasonService } from '@app/services/season.service';
@@ -12,8 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { AdminSeasonDetailComponent } from '@app/admin/admin-seasons/admin-season-detail/admin-season-detail.component';
-import { AdminSeasonFilterComponent } from '@app/admin/components/admin-season-filter/admin-season-filter.component';
+import { AdminSeasonDetail } from '@app/admin/admin-seasons/admin-season-detail/admin-season-detail';
 import { ShellTitleComponent } from '@app/shared/components/shell-title/shell-title.component';
 import { SeasonsToolbarComponent } from '@app/admin/components/seasons-toolbar/seasons-toolbar.component';
 import { SeasonAddEditComponent } from '@app/admin/components/season-add-edit/season-add-edit.component';
@@ -25,7 +24,7 @@ import { SeasonAddEditComponent } from '@app/admin/components/season-add-edit/se
     <h2>{{title}}</h2>
     <router-outlet></router-outlet>
   </section>`,
-  styleUrls: ['./admin-season-shell.component.scss',
+  styleUrls: ['./admin-season-shell.scss',
     '../../admin.component.scss',
     '../../containers/admin-shell/admin-shell.component.scss',
     '../../../shared/scss/cards.scss',
@@ -33,20 +32,19 @@ import { SeasonAddEditComponent } from '@app/admin/components/season-add-edit/se
   ],
   imports: [CommonModule,
     RouterOutlet,
-    AdminSeasonListComponent,
+    AdminSeasonList,
     MatSidenavModule,
     MatExpansionModule,
     MatIconModule,
     MatButtonModule,
-    AdminSeasonDetailComponent,
-    AdminSeasonFilterComponent,
+    AdminSeasonDetail,
     ShellTitleComponent,
     SeasonsToolbarComponent,
-    AdminSeasonDetailComponent,
+    AdminSeasonDetail,
     SeasonAddEditComponent
   ]
 })
-export class AdminSeasonShellComponent implements OnInit, AfterViewInit {
+export class AdminSeasonShell implements OnInit, AfterViewInit {
   readonly #seasonService = inject(SeasonService);
   pageTitle = 'Season Management';
   currentSeason$!: Observable<Season>;

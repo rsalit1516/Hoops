@@ -13,10 +13,10 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 
 @Component({
   selector: 'csbc-admin-season-list',
-  templateUrl: './admin-season-list.component.html',
+  templateUrl: './admin-season-list.html',
   styleUrls: [
     './../../../shared/scss/tables.scss',
-    './admin-season-list.component.scss',
+    './admin-season-list.scss',
     '../../admin.component.scss'
   ],
   imports: [MatTableModule, DatePipe,
@@ -27,7 +27,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
   providers: [MatSort, MatPaginator],
 
 })
-export class AdminSeasonListComponent implements OnInit, AfterViewInit {
+export class AdminSeasonList implements OnInit, AfterViewInit {
   readonly #seasonService = inject(SeasonService);
   readonly #router = inject(Router);
   readonly paginator = viewChild<MatPaginator>('seasonPaginator');
