@@ -64,7 +64,8 @@ export class AdminShellSidebarComponent {
     return item.isSelected;
   }
 
-  navigate (item: nav) {
+  navigate(item: nav) {
+    console.log('Navigating to:', item.route);
     this.seasonSetupItems.forEach(i => {
       if (i.name === item.name) {
         i.isSelected = true;

@@ -3,7 +3,7 @@ import { AdminDashboardComponent } from './dashboard/admin-dashboard.component';
 
 import { AdminShellComponent } from './containers/admin-shell/admin-shell.component';
 import { TeamListComponent } from './team/teamList.component';
-import { AdminSeasonShellComponent } from './containers/admin-season-shell/admin-season-shell.component';
+import { AdminSeasonShellComponent } from './admin-seasons/admin-season-shell/admin-season-shell.component';
 import { PageNotFoundComponent } from '@app/app.not-found.component';
 import { AuthGuard } from '../auth/auth.guard';
 import { SeasonSetupComponent } from './containers/season-setup/season-setup.component';
@@ -39,14 +39,14 @@ export const ADMINROUTES: Routes = [
           {
             path: 'list',
             loadComponent: () =>
-              import('./components/admin-season-list/admin-season-list.component').then(
+              import('./admin-seasons/admin-season-list/admin-season-list.component').then(
                 (mod) => mod.AdminSeasonListComponent
               ),
           },
           {
             path: '',
             loadComponent: () =>
-              import('./components/admin-season-list/admin-season-list.component').then(
+              import('./admin-seasons/admin-season-list/admin-season-list.component').then(
                 (mod) => mod.AdminSeasonListComponent
               ),
             pathMatch: 'full',

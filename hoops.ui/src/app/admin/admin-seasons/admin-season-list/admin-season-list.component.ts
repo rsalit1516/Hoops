@@ -1,11 +1,11 @@
-import { AfterViewInit, Component, OnInit, ViewChild, computed, effect, inject } from '@angular/core';
+import { AfterViewInit, Component, OnInit, computed, effect, inject, viewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import * as fromAdmin from '../../state';
 import { Season } from '@app/domain/season';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { DatePipe } from '@angular/common';
-import { SeasonsToolbarComponent } from '../seasons-toolbar/seasons-toolbar.component';
+import { SeasonsToolbarComponent } from '../../components/seasons-toolbar/seasons-toolbar.component';
 import { Router } from '@angular/router';
 import { SeasonService } from '@app/services/season.service';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -30,8 +30,8 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 export class AdminSeasonListComponent implements OnInit, AfterViewInit {
   readonly #seasonService = inject(SeasonService);
   readonly #router = inject(Router);
-  @ViewChild('seasonPaginator') paginator: MatPaginator = inject(MatPaginator);
-  @ViewChild(MatSort) sort: MatSort = inject(MatSort);
+  readonly paginator = viewChild<MatPaginator>('seasonPaginator');
+  readonly sort = viewChild(MatSort);
   showFirstLastButtons = true;
   pageSize = 10;
   seasons = computed(() => this.#seasonService.seasons);
@@ -55,8 +55,8 @@ export class AdminSeasonListComponent implements OnInit, AfterViewInit {
     this.dataSource = new MatTableDataSource<Season>(this.seasons());
   }
   ngAfterViewInit () {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator() ?? null;
+    this.dataSource.sort = this.sort() ?? null;
   }
   edit (row: Season) {
     this.#seasonService.updateSelectedSeason(row);

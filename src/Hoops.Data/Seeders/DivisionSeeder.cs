@@ -50,6 +50,24 @@ namespace Hoops.Data.Seeders
                 var seasonYear = season.FromDate.HasValue ? season.FromDate.Value.Year : 2024;
                 var divisions = new List<Division>
                 {
+new Division
+                    {
+                        CompanyId = 1,
+                        SeasonId = season.SeasonId,
+                        DivisionDescription = "T2 - Coed",
+                        Gender = "M",
+                        Gender2 = "F",
+                        MinDate = new DateTime(seasonYear, 08, 31).AddYears(-8),
+                        MaxDate = new DateTime(seasonYear, 09, 1).AddYears(-7),
+                        MinDate2 = new DateTime(seasonYear, 08, 31).AddYears(-8),
+                        MaxDate2 = new DateTime(seasonYear, 09, 1).AddYears(-7),
+    Stats = true,
+                        DraftVenue = "Mullins Hall",
+                        DraftTime = "7:00 PM",
+                        CreatedDate = DateTime.Now,
+                        CreatedUser = "Seed"
+
+                    },
                     new Division
                     {
                         CompanyId = 1,

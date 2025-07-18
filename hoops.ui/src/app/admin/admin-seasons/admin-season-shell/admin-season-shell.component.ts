@@ -4,7 +4,7 @@ import { Season } from '@app/domain/season';
 import { Store } from '@ngrx/store';
 
 import * as fromAdmin from '../../state';
-import { AdminSeasonListComponent } from '../../components/admin-season-list/admin-season-list.component';
+import { AdminSeasonListComponent } from '../admin-season-list/admin-season-list.component';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { SeasonService } from '@app/services/season.service';
@@ -12,7 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { AdminSeasonDetailComponent } from '@app/admin/components/admin-season-detail/admin-season-detail.component';
+import { AdminSeasonDetailComponent } from '@app/admin/admin-seasons/admin-season-detail/admin-season-detail.component';
 import { AdminSeasonFilterComponent } from '@app/admin/components/admin-season-filter/admin-season-filter.component';
 import { ShellTitleComponent } from '@app/shared/components/shell-title/shell-title.component';
 import { SeasonsToolbarComponent } from '@app/admin/components/seasons-toolbar/seasons-toolbar.component';
