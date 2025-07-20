@@ -53,7 +53,7 @@ namespace Hoops.Api
                                          builder =>
                                          {
                                              _ = builder.WithOrigins("http://localhost:4200",
-                                                                 "http://localhost50364",
+                                                                 "http://localhost:50364",
                                                                  "https://csbchoops.com",
                                                                  "https://thankful-pond-090ec730f.4.azurestaticapps.net")
                                               .AllowAnyHeader()
