@@ -104,12 +104,52 @@ t[Team] {
 
 ### 🔄 CI/CD Pipelines
 
-- GitHub Actions trigger on PRs and merges
-- Test and linting gates
-- Infrastructure linting and preview planning for IaC
 
+## Testing Strategy
+
+### Backend (.NET)
+
+- **Test Framework:** xUnit is used for all backend unit and integration tests.
+- **Test Project Structure:**
+  - All backend test projects are located under the `tests/` folder (e.g., `tests/Hoops.Api.Tests`, `tests/Hoops.Infrastructure.Tests`).
+  - Each repository in `src/Hoops.Infrastructure/Repository` has a corresponding test class named `{RepositoryName}Test.cs` in `tests/Hoops.Infrastructure.Tests`.
+- **Patterns:**
+  - Use EF Core's in-memory database for most repository tests to simulate data access.
+  - Use a shared `TestDatabaseFixture` for setup/teardown and to avoid code duplication.
+  - Follow Arrange-Act-Assert in all test methods.
+  - Use `[Fact]` for single-case tests and `[Theory]` for parameterized tests.
+  - Mock dependencies only when necessary (e.g., for logging or external services).
+- **Coverage:**
+  - All CRUD operations and custom repository methods should have unit tests.
+  - Integration tests should cover real data scenarios where possible.
+
+### Frontend (Angular)
+
+- **Test Framework:** Jasmine (with Karma runner) is used for all Angular unit tests.
+- **Test File Location:**
+  - Frontend tests are colocated with their components/services as `.spec.ts` files in `hoops.ui/src/app`.
+- **Patterns:**
+  - Use Angular TestBed for component and service tests.
+  - Prefer testing observable state changes and DOM updates over internal implementation details.
+  - Use spies to assert service interactions.
+  - Use `fixture.detectChanges()` after actions that affect the DOM.
+- **Coverage:**
+  - All components, services, and pipes should have unit tests.
+  - Integration tests should cover key user flows and state management logic.
+
+### General Conventions
+
+- Test class and file names should match the class/component under test.
+- Use clear, descriptive test method names.
+- Keep tests isolated and repeatable.
+- All tests must pass before merging to main branches (enforced by CI).
+
+### CI/CD Integration
+
+- All tests are run automatically in CI pipelines (GitHub Actions).
+- Test failures block merges to protected branches.
+
+---
 ## Next Steps
 
 - Document `team-scheduler` and `game-results` modules
-- Define event-driven interactions (e.g., when a person is deleted, cascade update)
-- Expand test coverage and architecture validation tooling
