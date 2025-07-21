@@ -84,6 +84,30 @@ t[Team] {
 
 ```
 
+```mermaid
+
+block-beta
+  columns 3
+  Season[("Season Aggregate")]
+  Division["Division"]
+  Schedule["Schedule"]
+  Team["Team"]
+  space
+  Household[("Household Aggregate")]
+  Person["Person"]
+  space
+  Registration[("Registration Aggregate")]
+  Player["Player"]
+
+  Season --> Division
+  Season --> Schedule
+  Season --> Team
+  Household --> Person
+  Registration --> Player
+  Player --> Team
+
+```
+  
 ### Testing UI-Driven Filtering Components
 
 - Prefer testing state changes and DOM updates over internal methods.

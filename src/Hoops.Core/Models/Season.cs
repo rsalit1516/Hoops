@@ -22,7 +22,13 @@ namespace Hoops.Core.Models
             Coaches = new HashSet<Coach>();
             Sponsors = new HashSet<Sponsor>();
             ScheduleGames = new HashSet<ScheduleGame>();
+            ScheduleDivTeams = new HashSet<ScheduleDivTeam>();
         }
+
+        /// <summary>
+        /// Gets or sets the collection of ScheduleDivTeams for this season
+        /// </summary>
+        public ICollection<ScheduleDivTeam> ScheduleDivTeams { get; set; }
 
         /// <summary>
         /// Gets or sets the unique identifier for the season

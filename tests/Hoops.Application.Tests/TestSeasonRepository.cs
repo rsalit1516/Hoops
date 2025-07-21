@@ -25,10 +25,17 @@ namespace Hoops.Application.Tests
         public IEnumerable<Season> GetAll() => _seasons;
         public Task<IEnumerable<Season>> GetAllAsync() => Task.FromResult(_seasons.AsEnumerable());
         public Season GetById(int id) => _seasons.First(s => s.SeasonId == id);
-        public Task<Season> GetByIdAsync(int id) => Task.FromResult(_seasons.First(s => s.SeasonId == id));
-        public Task<Season> FindByAsync(int id) => Task.FromResult(_seasons.First(s => s.SeasonId == id));
-        public Season Update(Season entity) { var idx = _seasons.FindIndex(s => s.SeasonId == entity.SeasonId); if (idx >= 0) _seasons[idx] = entity; return entity; }
-        public Task<bool> UpdateAsync(Season entity) { Update(entity); return Task.FromResult(true); }
+        public Task<Season> GetByIdAsync(int id) => Task.FromResult(_seasons.FirstOrDefault(s => s.SeasonId == id));
+        public Task<Season> FindByAsync(int id) => Task.FromResult(_seasons.FirstOrDefault(s => s.SeasonId == id));
+        public Season Update(Season entity) {
+            var idx = _seasons.FindIndex(s => s.SeasonId == entity.SeasonId);
+            if (idx >= 0) _seasons[idx] = entity;
+            return entity;
+        }
+        public Task<bool> UpdateAsync(Season entity) {
+            Update(entity);
+            return Task.FromResult(true);
+        }
         public void SaveChanges() { /* No-op for in-memory */ }
         public Task SaveChangesAsync() => Task.CompletedTask;
     }
