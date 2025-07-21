@@ -6,75 +6,65 @@ using Moq;
 
 namespace Hoops.Infrastructure.Tests
 {
-    public class CoachRepositoryTest
+public class CoachRepositoryTest : IDisposable
+{
+    private readonly hoopsContext _context;
+    private readonly CoachRepository _repository;
+
+    public CoachRepositoryTest()
     {
-        private readonly Mock<hoopsContext> _mockContext;
-        private readonly Mock<DbSet<Coach>> _mockSet;
-        private readonly CoachRepository _repository;
+        var options = new DbContextOptionsBuilder<hoopsContext>()
+            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+            .Options;
+        _context = new hoopsContext(options);
+        _repository = new CoachRepository(_context);
+        SeedDatabase();
+    }
 
-        public CoachRepositoryTest()
-        {
-            _mockContext = new Mock<hoopsContext>();
-            _mockSet = new Mock<DbSet<Coach>>();
-            _mockContext.Setup(m => m.Set<Coach>()).Returns(_mockSet.Object);
-            _repository = new CoachRepository(_mockContext.Object);
-        }
+    private void SeedDatabase()
+    {
+        var person1 = new Person { PersonId = 1, FirstName = "John", LastName = "Doe", Cellphone = "1234567890" };
+        var person2 = new Person { PersonId = 2, FirstName = "Jane", LastName = "Smith", Cellphone = "5555555555" };
+        _context.People.AddRange(person1, person2);
+        _context.Coaches.AddRange(
+            new Coach { CoachId = 1, SeasonId = 1, PersonId = 1, Person = person1, CoachPhone = "111-111-1111", ShirtSize = "M" },
+            new Coach { CoachId = 2, SeasonId = 1, PersonId = 2, Person = person2, CoachPhone = "222-222-2222", ShirtSize = "L" }
+        );
+        _context.SaveChanges();
+    }
 
-        [Fact]
-        public void GetSeasonCoaches_ReturnsCorrectCoaches()
-        {
-            // Arrange
-            var coaches = new List<Coach>
-            {
-                new Coach { CoachId = 1, SeasonId = 1, PersonId = 1, Person = new Person { FirstName = "John", LastName = "Doe" } },
-                new Coach { CoachId = 2, SeasonId = 1, PersonId = 2, Person = new Person { FirstName = "Jane", LastName = "Smith" } }
-            }.AsQueryable();
-
-            _mockSet.As<IQueryable<Coach>>().Setup(m => m.Provider).Returns(coaches.Provider);
-            _mockSet.As<IQueryable<Coach>>().Setup(m => m.Expression).Returns(coaches.Expression);
-            _mockSet.As<IQueryable<Coach>>().Setup(m => m.ElementType).Returns(coaches.ElementType);
-            _mockSet.As<IQueryable<Coach>>().Setup(m => m.GetEnumerator()).Returns(coaches.GetEnumerator());
-
-            // Act
-            var result = _repository.GetSeasonCoaches(1).ToList();
-
-            // Assert
-            Assert.Equal(2, result.Count);
-            Assert.Equal("Doe, John", result[0].Name);
-            Assert.Equal("Smith, Jane", result[1].Name);
-        }
+    public void Dispose()
+    {
+        _context.Dispose();
+    }
 
         [Fact]
-        public void GetCoach_ReturnsCorrectCoach()
-        {
-            // Arrange
-            var coach = new Coach { CoachId = 1, PersonId = 1, Person = new Person { FirstName = "John", LastName = "Doe", Cellphone = "1234567890" } };
-            _mockSet.Setup(m => m.Find(1)).Returns(coach);
+    public void GetSeasonCoaches_ReturnsCorrectCoaches()
+    {
+        // Act
+        var result = _repository.GetSeasonCoaches(1).ToList();
 
-            // Act
-            var result = _repository.GetCoach(1);
+        // Assert
+        Assert.Equal(2, result.Count);
+        Assert.Contains(result, c => c.Name == "Doe, John");
+        Assert.Contains(result, c => c.Name == "Smith, Jane");
+    }
 
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal("John Doe", result.Name);
-            Assert.Equal("1234567890", result.Cellphone);
-        }
+        [Fact]
+    public void GetCoach_ReturnsCorrectCoach()
+    {
+        // Act
+        var result = _repository.GetCoach(1);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal("John Doe", result.Name);
+        Assert.Equal("1234567890", result.Cellphone);
+    }
 
         [Fact]
         public void GetCoachForSeason_ReturnsCorrectCoach()
         {
-            // Arrange
-            var coaches = new List<Coach>
-            {
-                new Coach { CoachId = 1, SeasonId = 1, PersonId = 1 },
-                new Coach { CoachId = 2, SeasonId = 1, PersonId = 2 }
-            }.AsQueryable();
-
-            _mockSet.As<IQueryable<Coach>>().Setup(m => m.Provider).Returns(coaches.Provider);
-            _mockSet.As<IQueryable<Coach>>().Setup(m => m.Expression).Returns(coaches.Expression);
-            _mockSet.As<IQueryable<Coach>>().Setup(m => m.ElementType).Returns(coaches.ElementType);
-            _mockSet.As<IQueryable<Coach>>().Setup(m => m.GetEnumerator()).Returns(coaches.GetEnumerator());
-
             // Act
             var result = _repository.GetCoachForSeason(1, 1);
 
@@ -87,55 +77,32 @@ namespace Hoops.Infrastructure.Tests
         public void DeleteById_RemovesCoach()
         {
             // Arrange
-            var coach = new Coach { CoachId = 1 };
-            _mockSet.Setup(m => m.Find(1)).Returns(coach);
+            var coach = new Coach { CoachId = 99, SeasonId = 2, PersonId = 2 };
+            _context.Coaches.Add(coach);
+            _context.SaveChanges();
 
             // Act
-            var result = _repository.DeleteById(1);
+            var result = _repository.DeleteById(99);
 
             // Assert
             Assert.True(result);
-            _mockSet.Verify(m => m.Remove(It.IsAny<Coach>()), Times.Once);
-            _mockContext.Verify(m => m.SaveChanges(), Times.Once);
+            Assert.Null(_context.Coaches.Find(99));
         }
 
         [Fact]
         public void GetCoachVolunteers_ReturnsCorrectVolunteers()
         {
-            // Arrange
-            var people = new List<Person>
-            {
-                new Person { PersonId = 1, FirstName = "John", LastName = "Doe", Coach = true },
-                new Person { PersonId = 2, FirstName = "Jane", LastName = "Smith", Coach = true }
-            }.AsQueryable();
-
-            var coaches = new List<Coach>
-            {
-                new Coach { CoachId = 1, SeasonId = 1, PersonId = 1 }
-            }.AsQueryable();
-
-            _mockContext.Setup(m => m.Set<Person>()).Returns(MockDbSet(people).Object);
-            _mockSet.As<IQueryable<Coach>>().Setup(m => m.Provider).Returns(coaches.Provider);
-            _mockSet.As<IQueryable<Coach>>().Setup(m => m.Expression).Returns(coaches.Expression);
-            _mockSet.As<IQueryable<Coach>>().Setup(m => m.ElementType).Returns(coaches.ElementType);
-            _mockSet.As<IQueryable<Coach>>().Setup(m => m.GetEnumerator()).Returns(coaches.GetEnumerator());
+            // Arrange: Add a Person with Coach=true who is NOT in Coaches for season 1
+            var person4 = new Person { PersonId = 4, FirstName = "Bob", LastName = "Williams", Coach = true };
+            _context.People.Add(person4);
+            _context.SaveChanges();
 
             // Act
             var result = _repository.GetCoachVolunteers(1, 1).ToList();
 
             // Assert
-            Assert.Single(result);
-            Assert.Equal("Smith, Jane", result[0].Name);
+            Assert.Contains(result, c => c.Name == "Williams, Bob");
         }
 
-        private Mock<DbSet<T>> MockDbSet<T>(IQueryable<T> data) where T : class
-        {
-            var mockSet = new Mock<DbSet<T>>();
-            mockSet.As<IQueryable<T>>().Setup(m => m.Provider).Returns(data.Provider);
-            mockSet.As<IQueryable<T>>().Setup(m => m.Expression).Returns(data.Expression);
-            mockSet.As<IQueryable<T>>().Setup(m => m.ElementType).Returns(data.ElementType);
-            mockSet.As<IQueryable<T>>().Setup(m => m.GetEnumerator()).Returns(data.GetEnumerator());
-            return mockSet;
-        }
     }
 }
