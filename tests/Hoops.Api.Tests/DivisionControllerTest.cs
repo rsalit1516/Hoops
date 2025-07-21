@@ -17,7 +17,8 @@ namespace Hoops.Api.Tests
             var mockRepo = new Mock<IDivisionRepository>();
             var expectedDivisions = new List<Division> { new Division { DivisionId = 1, DivisionDescription = "Test Division" } };
             mockRepo.Setup(r => r.GetAllAsync()).ReturnsAsync(expectedDivisions);
-            var controller = new DivisionController(mockRepo.Object);
+            var mockSeasonService = new Mock<Hoops.Application.Services.SeasonService>(null!);
+            var controller = new DivisionController(mockRepo.Object, mockSeasonService.Object);
             var result = await controller.GetDivision();
             var okResult = Assert.IsType<OkObjectResult>(result);
             var divisions = Assert.IsAssignableFrom<IEnumerable<Division>>(okResult.Value);
@@ -29,7 +30,8 @@ namespace Hoops.Api.Tests
         {
             var mockRepo = new Mock<IDivisionRepository>();
             mockRepo.Setup(r => r.GetAllAsync()).ReturnsAsync(new List<Division>());
-            var controller = new DivisionController(mockRepo.Object);
+            var mockSeasonService = new Mock<Hoops.Application.Services.SeasonService>(null!);
+            var controller = new DivisionController(mockRepo.Object, mockSeasonService.Object);
             var result = await controller.GetDivision();
             var okResult = Assert.IsType<OkObjectResult>(result);
             var divisions = Assert.IsAssignableFrom<IEnumerable<Division>>(okResult.Value);
@@ -42,7 +44,8 @@ namespace Hoops.Api.Tests
             var mockRepo = new Mock<IDivisionRepository>();
             var division = new Division { DivisionId = 2, DivisionDescription = "Division 2" };
             mockRepo.Setup(r => r.FindByAsync(2)).ReturnsAsync(division);
-            var controller = new DivisionController(mockRepo.Object);
+            var mockSeasonService = new Mock<Hoops.Application.Services.SeasonService>(null!);
+            var controller = new DivisionController(mockRepo.Object, mockSeasonService.Object);
             var result = await controller.GetDivision(2);
             var okResult = Assert.IsType<ActionResult<Division>>(result);
             Assert.NotNull(okResult.Value);
@@ -54,7 +57,8 @@ namespace Hoops.Api.Tests
         {
             var mockRepo = new Mock<IDivisionRepository>();
             mockRepo.Setup(r => r.FindByAsync(99)).ReturnsAsync((Division?)null);
-            var controller = new DivisionController(mockRepo.Object);
+            var mockSeasonService = new Mock<Hoops.Application.Services.SeasonService>(null!);
+            var controller = new DivisionController(mockRepo.Object, mockSeasonService.Object);
             var result = await controller.GetDivision(99);
             Assert.IsType<NotFoundResult>(result.Result);
         }

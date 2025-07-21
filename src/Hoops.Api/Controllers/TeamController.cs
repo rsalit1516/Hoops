@@ -8,6 +8,7 @@ using Hoops.Core.Models;
 using Hoops.Core.ViewModels;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc;
+using Hoops.Application.Services;
 
 namespace Hoops.Controllers
 {
@@ -18,11 +19,13 @@ namespace Hoops.Controllers
     {
         private readonly ITeamRepository repository;
         private readonly ILogger<TeamController> _logger;
+        private readonly SeasonService _seasonService;
 
-        public TeamController(ITeamRepository repository, ILogger<TeamController> logger)
+        public TeamController(ITeamRepository repository, ILogger<TeamController> logger, SeasonService seasonService)
         {
             this.repository = repository;
             _logger = logger;
+            _seasonService = seasonService;
             _logger.LogDebug(1, "NLog injected into TeamController");
         }
 
@@ -116,17 +119,15 @@ namespace Hoops.Controllers
         [Route("GetSeasonTeams/{seasonId}")]
         public IEnumerable<Team> GetSeasonTeams(int seasonId)
         {
-            var test = new Team();
-            var teams = new List<vmTeam>();
-
-            var entityTeams = repository.GetSeasonTeams(seasonId);
-            // foreach (var team in entityTeams)
-            // {
-            //     var t = ConvertRecordForTeamNumber(team);
-            //     teams.Add(t);
-            // }
-
-            return entityTeams;
+            // Use SeasonService to get teams for a season (aggregate root pattern)
+            var seasonTask = _seasonService.GetAllSeasonsAsync(); // This could be optimized with a direct method
+            seasonTask.Wait();
+            var season = seasonTask.Result.FirstOrDefault(s => s.SeasonId == seasonId);
+            if (season == null || season.Teams == null)
+            {
+                return new List<Team>();
+            }
+            return season.Teams;
         }
 
     }

@@ -19,7 +19,8 @@ namespace Hoops.Api.Tests
             var mockLogger = new Mock<ILogger<ScheduleGameController>>();
             var expectedGames = new List<ScheduleGame> { new ScheduleGame { ScheduleGamesId = 1 } };
             mockRepo.Setup(r => r.GetAllAsync()).ReturnsAsync(expectedGames);
-            var controller = new ScheduleGameController(null, mockRepo.Object, mockLogger.Object);
+            var mockSeasonService = new Mock<Hoops.Application.Services.SeasonService>(null!);
+            var controller = new ScheduleGameController(mockRepo.Object, mockLogger.Object, mockSeasonService.Object);
             var result = await controller.GetScheduleGame();
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
             var games = Assert.IsAssignableFrom<IEnumerable<ScheduleGame>>(okResult.Value);
@@ -29,26 +30,26 @@ namespace Hoops.Api.Tests
         [Fact]
         public async Task GetScheduleGameById_ReturnsOkResult_WhenGameExists()
         {
-            var mockContext = new Mock<Hoops.Infrastructure.Data.hoopsContext>();
             var mockRepo = new Mock<IScheduleGameRepository>();
             var mockLogger = new Mock<ILogger<ScheduleGameController>>();
             var game = new ScheduleGame { ScheduleGamesId = 2 };
-            mockContext.Setup(c => c.ScheduleGames.FindAsync(2)).ReturnsAsync(game);
-            var controller = new ScheduleGameController(mockContext.Object, mockRepo.Object, mockLogger.Object);
+            mockRepo.Setup(r => r.GetByIdAsync(2)).ReturnsAsync(game);
+            var mockSeasonService = new Mock<Hoops.Application.Services.SeasonService>(null!);
+            var controller = new ScheduleGameController(mockRepo.Object, mockLogger.Object, mockSeasonService.Object);
             var result = await controller.GetScheduleGame(2);
-            var okResult = Assert.IsType<ActionResult<ScheduleGame>>(result);
-            Assert.NotNull(okResult.Value);
-            Assert.Equal(2, okResult.Value!.ScheduleGamesId);
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var gameResult = Assert.IsType<ScheduleGame>(okResult.Value);
+            Assert.Equal(2, gameResult.ScheduleGamesId);
         }
 
         [Fact]
         public async Task GetScheduleGameById_ReturnsNotFound_WhenNoGame()
         {
-            var mockContext = new Mock<Hoops.Infrastructure.Data.hoopsContext>();
             var mockRepo = new Mock<IScheduleGameRepository>();
             var mockLogger = new Mock<ILogger<ScheduleGameController>>();
-            mockContext.Setup(c => c.ScheduleGames.FindAsync(99)).ReturnsAsync((ScheduleGame?)null);
-            var controller = new ScheduleGameController(mockContext.Object, mockRepo.Object, mockLogger.Object);
+            mockRepo.Setup(r => r.GetByIdAsync(99)).ReturnsAsync((ScheduleGame?)null);
+            var mockSeasonService = new Mock<Hoops.Application.Services.SeasonService>(null!);
+            var controller = new ScheduleGameController(mockRepo.Object, mockLogger.Object, mockSeasonService.Object);
             var result = await controller.GetScheduleGame(99);
             Assert.IsType<NotFoundResult>(result.Result);
         }

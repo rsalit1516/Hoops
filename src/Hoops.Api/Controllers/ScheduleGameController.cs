@@ -6,6 +6,7 @@ using Hoops.Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Linq;
 
 namespace Hoops.Controllers
 {
@@ -13,19 +14,19 @@ namespace Hoops.Controllers
     [ApiController]
     public class ScheduleGameController : ControllerBase
     {
-        private readonly hoopsContext _context;
         private readonly IScheduleGameRepository repository;
         private readonly ILogger<ScheduleGameController> _logger;
+        private readonly Hoops.Application.Services.SeasonService _seasonService;
 
         public ScheduleGameController(
-            hoopsContext context,
             IScheduleGameRepository repository,
-            ILogger<ScheduleGameController> logger
+            ILogger<ScheduleGameController> logger,
+            Hoops.Application.Services.SeasonService seasonService
         )
         {
-            _context = context;
             this.repository = repository;
             _logger = logger;
+            _seasonService = seasonService;
             _logger.LogDebug(1, "NLog injected into ScheduleGameController");
         }
 
@@ -40,14 +41,12 @@ namespace Hoops.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ScheduleGame>> GetScheduleGame(int id)
         {
-            var scheduleGame = await _context.ScheduleGames.FindAsync(id);
-
+            var scheduleGame = await repository.GetByIdAsync(id);
             if (scheduleGame == null)
             {
                 return NotFound();
             }
-
-            return scheduleGame;
+            return Ok(scheduleGame);
         }
 
         // GET: api/GetSeasonGames/seasonId
@@ -61,8 +60,14 @@ namespace Hoops.Controllers
         public IActionResult GetSeasonGames(int seasonId)
         {
             _logger.LogInformation("Retrieving season games");
-            var games = repository.GetGames(seasonId);
-            return Ok(games);
+            // Use SeasonService to get games for a season (aggregate root pattern)
+            var allSeasons = _seasonService.GetAllSeasonsAsync().Result;
+            var season = allSeasons.FirstOrDefault(s => s.SeasonId == seasonId);
+            if (season == null || season.ScheduleGames == null)
+            {
+                return Ok(new List<ScheduleGame>());
+            }
+            return Ok(season.ScheduleGames);
         }
 
         ///
@@ -128,16 +133,14 @@ namespace Hoops.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<ScheduleGame>> DeleteScheduleGame(int id)
         {
-            var scheduleGame = await _context.ScheduleGames.FindAsync(id);
+            var scheduleGame = await repository.GetByIdAsync(id);
             if (scheduleGame == null)
             {
                 return NotFound();
             }
-
             repository.Delete(scheduleGame);
             await repository.SaveChangesAsync();
-
-            return scheduleGame;
+            return Ok(scheduleGame);
         }
 
         private bool ScheduleGameExists(int id)

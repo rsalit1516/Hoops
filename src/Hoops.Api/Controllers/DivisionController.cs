@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Hoops.Core.Interface;
 using Hoops.Core.Models;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace csbc_server.Controllers
 {
@@ -12,7 +14,12 @@ namespace csbc_server.Controllers
     {
         // private readonly hoopsContext _context;
         private readonly IDivisionRepository repository;
-        public DivisionController(IDivisionRepository repository) => this.repository = repository;
+        private readonly Hoops.Application.Services.SeasonService _seasonService;
+        public DivisionController(IDivisionRepository repository, Hoops.Application.Services.SeasonService seasonService)
+        {
+            this.repository = repository;
+            this._seasonService = seasonService;
+        }
 
         // GET: api/Division
         [HttpGet]
@@ -99,7 +106,16 @@ namespace csbc_server.Controllers
 
         [Route("GetSeasonDivisions/{seasonId}")]
         [HttpGet]
-        public async Task<IActionResult> GetSeasonDivisions(int seasonId) => 
-        Ok(await repository.GetSeasonDivisionsAsync(seasonId));
+        public async Task<IActionResult> GetSeasonDivisions(int seasonId)
+        {
+            // Use SeasonService to get divisions for a season (aggregate root pattern)
+            var allSeasons = await _seasonService.GetAllSeasonsAsync();
+            var season = allSeasons.FirstOrDefault(s => s.SeasonId == seasonId);
+            if (season == null || season.Divisions == null)
+            {
+                return Ok(new List<Division>());
+            }
+            return Ok(season.Divisions);
+        }
     }
 }
