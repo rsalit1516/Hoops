@@ -51,9 +51,9 @@ export class AdminShellComponent implements OnInit {
   showColors = false;
   showUsers = false;
   shouldRun = true;
-  readonly #seasonService = inject(SeasonService);
-  #colorService = inject(ColorService);
-  #locationService = inject(LocationService);
+  private seasonService = inject(SeasonService);
+  private colorService = inject(ColorService);
+  locationService = inject(LocationService);
   store = inject(Store<fromAdmin.State>);
   divisionService = inject(DivisionService);
   // seasons$: Observable<Season[]>;
@@ -65,15 +65,16 @@ export class AdminShellComponent implements OnInit {
     //    this.store.dispatch(new adminActions.LoadSeasons());
   }
 
-  ngOnInit () {
-    this.#seasonService.fetchSeasons();
+  ngOnInit() {
+    console.log('AdminShellComponent ngOnInit');
+    this.seasonService.fetchSeasons();
 
-    this.#seasonService.getCurrentSeason().subscribe((season) => {
-      this.#seasonService.updateSelectedSeason(season!);
-      console.log(this.#seasonService.selectedSeason);
+    this.seasonService.getCurrentSeason().subscribe((season) => {
+      this.seasonService.updateSelectedSeason(season!);
+      console.log(this.seasonService.selectedSeason);
     });
-    this.#colorService.fetchColors();
-    this.#locationService.fetchLocations();
+    this.colorService.fetchColors();
+    this.locationService.fetchLocations();
   }
 
 }
