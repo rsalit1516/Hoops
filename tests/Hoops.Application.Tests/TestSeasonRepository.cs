@@ -16,11 +16,20 @@ namespace Hoops.Application.Tests
         public Task<Season> GetCurrentSeason(int companyId) => Task.FromResult(_seasons.FirstOrDefault(s => s.CompanyId == companyId && s.CurrentSeason == true));
         public int GetSeason(int companyId, string seasonDescription) => _seasons.First(s => s.CompanyId == companyId && s.Description == seasonDescription).SeasonId;
         public IQueryable<Season> GetSeasons(int companyId) => _seasons.Where(s => s.CompanyId == companyId).AsQueryable();
-        // IRepository<Season> members (not used in service tests)
-        public Task<Season> GetByIdAsync(int id) => Task.FromResult(_seasons.First(s => s.SeasonId == id));
-        public Task<IEnumerable<Season>> GetAllAsync() => Task.FromResult(_seasons.AsEnumerable());
+
+        // IRepository<Season> members
+        public Season Insert(Season entity) { _seasons.Add(entity); return entity; }
         public Task<Season> InsertAsync(Season entity) { _seasons.Add(entity); return Task.FromResult(entity); }
-        public Task<bool> UpdateAsync(Season entity) => Task.FromResult(true);
-        public Task<bool> DeleteAsync(int id) { _seasons.RemoveAll(s => s.SeasonId == id); return Task.FromResult(true); }
+        public void Delete(Season entity) { _seasons.Remove(entity); }
+        public Task DeleteAsync(int id) { _seasons.RemoveAll(s => s.SeasonId == id); return Task.CompletedTask; }
+        public IEnumerable<Season> GetAll() => _seasons;
+        public Task<IEnumerable<Season>> GetAllAsync() => Task.FromResult(_seasons.AsEnumerable());
+        public Season GetById(int id) => _seasons.First(s => s.SeasonId == id);
+        public Task<Season> GetByIdAsync(int id) => Task.FromResult(_seasons.First(s => s.SeasonId == id));
+        public Task<Season> FindByAsync(int id) => Task.FromResult(_seasons.First(s => s.SeasonId == id));
+        public Season Update(Season entity) { var idx = _seasons.FindIndex(s => s.SeasonId == entity.SeasonId); if (idx >= 0) _seasons[idx] = entity; return entity; }
+        public Task<bool> UpdateAsync(Season entity) { Update(entity); return Task.FromResult(true); }
+        public void SaveChanges() { /* No-op for in-memory */ }
+        public Task SaveChangesAsync() => Task.CompletedTask;
     }
 }
