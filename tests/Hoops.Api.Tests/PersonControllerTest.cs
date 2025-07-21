@@ -22,7 +22,7 @@ namespace Hoops.Api.Tests
         };
 
             mockRepo.Setup(r => r.FindPeopleByLastAndFirstName("Smith", "Jane", true))
-                    .Returns((IQueryable<Person>)expectedPeople);
+                    .Returns(expectedPeople.AsQueryable());
 
             var controller = new PersonController(mockRepo.Object, mockLogger.Object);
 
