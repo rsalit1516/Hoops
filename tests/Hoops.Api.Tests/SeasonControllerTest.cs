@@ -12,27 +12,29 @@ namespace Hoops.Api.Tests
 {
     public class SeasonControllerTest
     {
+
         [Fact]
         public async Task GetSeason_ReturnsOkResult_WithSeasons()
         {
             var mockRepo = new Mock<ISeasonRepository>();
-            var mockService = new Mock<SeasonService>(mockRepo.Object);
             var expectedSeasons = new List<Season> { new Season { SeasonId = 1, Description = "Test Season" } };
-            mockService.Setup(s => s.GetAllSeasonsAsync()).ReturnsAsync(expectedSeasons);
-            var controller = new SeasonController(mockRepo.Object, mockService.Object);
+            mockRepo.Setup(r => r.GetAllAsync(It.IsAny<int>())).ReturnsAsync(expectedSeasons);
+            var realService = new SeasonService(mockRepo.Object);
+            var controller = new SeasonController(mockRepo.Object, realService);
             var result = await controller.GetSeason();
             var okResult = Assert.IsType<OkObjectResult>(result);
             var seasons = Assert.IsAssignableFrom<IEnumerable<Season>>(okResult.Value);
             Assert.Single(seasons);
         }
 
+
         [Fact]
         public async Task GetSeason_ReturnsNotFound_WhenNoSeasons()
         {
             var mockRepo = new Mock<ISeasonRepository>();
-            var mockService = new Mock<SeasonService>(mockRepo.Object);
-            mockService.Setup(s => s.GetAllSeasonsAsync()).ReturnsAsync(new List<Season>());
-            var controller = new SeasonController(mockRepo.Object, mockService.Object);
+            mockRepo.Setup(r => r.GetAllAsync(It.IsAny<int>())).ReturnsAsync(new List<Season>());
+            var realService = new SeasonService(mockRepo.Object);
+            var controller = new SeasonController(mockRepo.Object, realService);
             var result = await controller.GetSeason();
             Assert.IsType<NotFoundResult>(result);
         }
@@ -56,7 +58,7 @@ namespace Hoops.Api.Tests
         {
             var mockRepo = new Mock<ISeasonRepository>();
             var mockService = new Mock<SeasonService>(mockRepo.Object);
-            mockRepo.Setup(r => r.GetCurrentSeason(It.IsAny<int>())).ReturnsAsync((Season)null);
+            mockRepo.Setup(r => r.GetCurrentSeason(It.IsAny<int>())).ReturnsAsync((Season?)null);
             var controller = new SeasonController(mockRepo.Object, mockService.Object);
             var result = await controller.GetCurrentSeason(1);
             Assert.IsType<NotFoundResult>(result);
@@ -81,7 +83,9 @@ namespace Hoops.Api.Tests
         {
             var mockRepo = new Mock<ISeasonRepository>();
             var mockService = new Mock<SeasonService>(mockRepo.Object);
-            mockRepo.Setup(r => r.GetById(99)).Returns((Season)null);
+            #pragma warning disable CS8603 // Possible null reference return
+            mockRepo.Setup(r => r.GetById(99)).Returns(() => null);
+            #pragma warning restore CS8603 // Possible null reference return
             var controller = new SeasonController(mockRepo.Object, mockService.Object);
             var result = controller.GetSeason(99);
             Assert.IsType<NotFoundResult>(result.Result);
@@ -145,7 +149,9 @@ namespace Hoops.Api.Tests
         {
             var mockRepo = new Mock<ISeasonRepository>();
             var mockService = new Mock<SeasonService>(mockRepo.Object);
-            mockRepo.Setup(r => r.GetById(99)).Returns((Season)null);
+            #pragma warning disable CS8603 // Possible null reference return
+            mockRepo.Setup(r => r.GetById(99)).Returns(() => null);
+            #pragma warning restore CS8603 // Possible null reference return
             var controller = new SeasonController(mockRepo.Object, mockService.Object);
             var result = controller.DeleteSeason(99);
             Assert.IsType<NotFoundResult>(result.Result);
