@@ -6,7 +6,7 @@ public class TestDatabaseFixture : IAsyncLifetime, IDisposable
 {
     public hoopsContext? Context { get; private set; }
 
-    public async Task InitializeAsync()
+    public Task InitializeAsync()
     {
         // Set up an in-memory database
         var options = new DbContextOptionsBuilder<hoopsContext>()
@@ -18,6 +18,7 @@ public class TestDatabaseFixture : IAsyncLifetime, IDisposable
         // Seed the database
         // var seeder = new HoopsInitializer();
         // await seeder.Seed(Context);
+        return Task.CompletedTask;
     }
 
     public async Task DisposeAsync()
