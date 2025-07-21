@@ -3,6 +3,7 @@ using Hoops.Core.Interface;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Hoops.Application.Services;
+using System.Linq;
 
 namespace Hoops.Controllers
 {
@@ -26,8 +27,11 @@ namespace Hoops.Controllers
         [HttpGet]
         public async Task<IActionResult> GetSeason()
         {
-            // return Ok(await repository.GetAllAsync(1));
             var seasons = await _seasonService.GetAllSeasonsAsync();
+            if (seasons == null || !seasons.Any())
+            {
+                return NotFound();
+            }
             return Ok(seasons);
         }
 
@@ -40,13 +44,12 @@ namespace Hoops.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCurrentSeason(int id)
         {
-            var season = repository.GetCurrentSeason(1);
+            var season = await repository.GetCurrentSeason(id);
             if (season == null)
             {
                 return NotFound();
             }
-
-            return Ok(await season);
+            return Ok(season);
         }
 
         /// <summary>

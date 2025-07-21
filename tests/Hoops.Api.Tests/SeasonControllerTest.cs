@@ -27,6 +27,17 @@ namespace Hoops.Api.Tests
         }
 
         [Fact]
+        public async Task GetSeason_ReturnsNotFound_WhenNoSeasons()
+        {
+            var mockRepo = new Mock<ISeasonRepository>();
+            var mockService = new Mock<SeasonService>(mockRepo.Object);
+            mockService.Setup(s => s.GetAllSeasonsAsync()).ReturnsAsync(new List<Season>());
+            var controller = new SeasonController(mockRepo.Object, mockService.Object);
+            var result = await controller.GetSeason();
+            Assert.IsType<NotFoundResult>(result);
+        }
+
+        [Fact]
         public async Task GetCurrentSeason_ReturnsOkResult_WhenSeasonExists()
         {
             var mockRepo = new Mock<ISeasonRepository>();
