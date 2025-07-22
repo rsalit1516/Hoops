@@ -16,10 +16,10 @@ import { getLocaleDateFormat } from '@angular/common';
 })
 export class SeasonService {
   /* private injections */
-  #http = inject(HttpClient);
-  #dataService = inject(DataService);
-  #seasonUrl = Constants.SEASON_URL + 'getCurrentSeason';
-  #seasonsUrl = Constants.SEASON_URL + 'GetAll';
+  private http = inject(HttpClient);
+  private dataService = inject(DataService);
+  private seasonUrl = Constants.SEASON_URL + 'getCurrentSeason';
+  private seasonsUrl = Constants.SEASON_URL + 'GetAll';
 
   // selectedSeason?: Season | null;
   season = signal(new Season());
@@ -32,7 +32,7 @@ export class SeasonService {
     this._seasons.set(seasons);
   }
 
-  seasons$ = this.#http.get<Season[]>(this.#seasonsUrl).pipe(
+  seasons$ = this.http.get<Season[]>(this.seasonsUrl).pipe(
     // tap(data => console.log('All seasons: ' + JSON.stringify(data))),
     shareReplay(1),
     // catchError(this.dataService.handleError)
@@ -46,15 +46,16 @@ export class SeasonService {
   }
 
   currentSeason$ =
-    this.#http.get<Season>(Constants.currentSeasonUrl).pipe(
+    this.http.get<Season>(Constants.currentSeasonUrl).pipe(
       map(season => season as Season),
       tap(data => this._currentSeason.set(data)),
       tap(data => this.updateSelectedSeason(data)),
       // tap(data => console.log('All: ' + JSON.stringify(data))),
-      catchError(this.#dataService.handleError('getCurrentSeason', null))
+      catchError(this.dataService.handleError('getCurrentSeason', null))
     );
+    
   public getCurrentSeason (): Observable<Season | undefined> {
-    return this.#http.get<Season>(Constants.currentSeasonUrl);
+    return this.http.get<Season>(Constants.currentSeasonUrl);
   }
   fetchCurrentSeason (): void {
     this.getCurrentSeason().subscribe((season) => {
@@ -89,12 +90,12 @@ export class SeasonService {
     });
   }
   private getSeasons (): Observable<Season[]> {
-    return this.#http.get<Season[]>(this.#seasonsUrl);
+    return this.http.get<Season[]>(this.seasonsUrl);
   }
 
   postSeason (season: Season): Observable<Season | null> {
     console.log('posting season');
-    return this.#dataService.post<Season>(Constants.SEASON_URL, season);
+    return this.dataService.post<Season>(Constants.SEASON_URL, season);
   }
 
   putSeason (season: Season): void {
@@ -102,7 +103,7 @@ export class SeasonService {
     const _season = this.convertToSeasonApiFormat(season);
     console.log(_season);
 
-    console.log(this.#dataService.httpOptions);
+    console.log(this.dataService.httpOptions);
     const url = `${ Constants.SEASON_URL }${ season.seasonId }`;
     console.log(url);
     const httpOptions = {
@@ -110,7 +111,7 @@ export class SeasonService {
         'Content-Type': 'application/json'
       })
     };
-    this.#dataService.put<Season>(url, season).subscribe({
+    this.dataService.put<Season>(url, season).subscribe({
       next: () => {
         console.log('Season updated', season);
       }

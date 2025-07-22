@@ -19,21 +19,21 @@ import { FeatureFlagService } from './shared/services/feature-flags';
     MatSidenavModule, MatNativeDateModule]
 })
 export class AppComponent implements OnInit {
-  readonly #router = inject(Router);
-  readonly #contentService = inject(ContentService);
-  readonly #seasonService = inject(SeasonService);
-  readonly #featureFlags = inject(FeatureFlagService)
+  private router = inject(Router);
+  private contentService = inject(ContentService);
+  private seasonService = inject(SeasonService);
+  private featureFlags = inject(FeatureFlagService)
   public readonly sidenavToggle = output();
   title = 'CSBC Hoops';
-  season = computed(() => this.#seasonService.selectedSeason);
+  season = computed(() => this.seasonService.selectedSeason);
 
   constructor () {
-    this.#featureFlags.isEnabled('adminModule');
+    this.featureFlags.isEnabled('adminModule');
   }
   ngOnInit () {
-    this.#seasonService.fetchCurrentSeason();
-    this.#contentService.fetchActiveContents();
-    this.#router.navigate([''])
+    this.seasonService.fetchCurrentSeason();
+    this.contentService.fetchActiveContents();
+    this.router.navigate([''])
   }
   public onToggleSidenav = () => {
     this.sidenavToggle.emit();

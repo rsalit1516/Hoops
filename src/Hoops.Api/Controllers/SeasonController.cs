@@ -44,7 +44,7 @@ namespace Hoops.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCurrentSeason(int id)
         {
-            var season = await repository.GetCurrentSeason(id);
+            var season = await _seasonService.GetCurrentSeasonAsync(1);
             if (season == null)
             {
                 return NotFound();
