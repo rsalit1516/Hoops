@@ -11,13 +11,18 @@ public partial class hoopsContext : DbContext
     {
     }
 
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
     public hoopsContext(DbContextOptions<hoopsContext> options)
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
         : base(options)
     {
     }
-
+protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+{
+    if (!optionsBuilder.IsConfigured)
+    {
+        // Use your actual connection string here
+        optionsBuilder.UseSqlServer("Server=localhost,1433;Database=csbchoops;Persist Security Info=False;User ID=sa;Password=@nKbr0407; Encrypt=True;TrustServerCertificate=true;MultipleActiveResultSets=False;Encrypt=True;Connection Timeout=30;");
+    }
+}
     public virtual DbSet<Coach> Coaches { get; set; }
     public virtual DbSet<Color> Colors { get; set; }
     public virtual DbSet<Comment> Comments { get; set; }
