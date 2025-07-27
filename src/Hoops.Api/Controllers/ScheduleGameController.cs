@@ -16,12 +16,12 @@ namespace Hoops.Controllers
     {
         private readonly IScheduleGameRepository repository;
         private readonly ILogger<ScheduleGameController> _logger;
-        private readonly Hoops.Application.Services.SeasonService _seasonService;
+        private readonly ISeasonService _seasonService;
 
         public ScheduleGameController(
             IScheduleGameRepository repository,
             ILogger<ScheduleGameController> logger,
-            Hoops.Application.Services.SeasonService seasonService
+            ISeasonService seasonService
         )
         {
             this.repository = repository;
@@ -57,11 +57,11 @@ namespace Hoops.Controllers
         /// <returns></returns>
         [Route("GetSeasonGames")]
         [HttpGet]
-        public IActionResult GetSeasonGames(int seasonId)
+        public async Task<IActionResult> GetSeasonGames(int seasonId)
         {
             _logger.LogInformation("Retrieving season games");
             // Use SeasonService to get games for a season (aggregate root pattern)
-            var allSeasons = _seasonService.GetAllSeasonsAsync().Result;
+            var allSeasons = await _seasonService.GetAllSeasonsAsync();
             var season = allSeasons.FirstOrDefault(s => s.SeasonId == seasonId);
             if (season == null || season.ScheduleGames == null)
             {
@@ -76,7 +76,7 @@ namespace Hoops.Controllers
         [HttpGet]
         public IActionResult GetStandings(int divisionId)
         {
-            _logger.LogInformation("Updating schedule game");
+            _logger.LogInformation("Retrieving division standings");
             return Ok(repository.GetStandings(divisionId));
         }
 
@@ -86,7 +86,7 @@ namespace Hoops.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutScheduleGame(int id, ScheduleGame scheduleGame)
         {
-            _logger.LogInformation("Retrieving division standings");
+            _logger.LogInformation("Updating schedule game");
             if (id != scheduleGame.ScheduleGamesId)
             {
                 return BadRequest();

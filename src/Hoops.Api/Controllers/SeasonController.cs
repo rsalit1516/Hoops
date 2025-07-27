@@ -13,8 +13,8 @@ namespace Hoops.Controllers
     {
         private readonly ISeasonRepository repository;
         public ISeasonRepository Seasons { get; set; }
-        private readonly SeasonService _seasonService;
-        public SeasonController(ISeasonRepository repository, SeasonService seasonService)
+        private readonly ISeasonService _seasonService;
+        public SeasonController(ISeasonRepository repository, ISeasonService seasonService)
         {
             this.repository = repository;
             this._seasonService = seasonService;

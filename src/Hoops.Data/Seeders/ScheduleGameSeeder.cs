@@ -141,6 +141,10 @@ namespace Hoops.Data.Seeders
                     var location = locations[locationRotation % locations.Count];
                     var timeSlot = timeSlotManager.GetNextAvailableTimeSlot(gameDate, location.LocationNumber, isWeekend);
                     
+                    // Determine if this game is in the past and should have scores
+                    var isPastGame = gameDate.Date < DateTime.Now.Date;
+                    var random = new Random();
+                    
                     var game = new ScheduleGame
                     {
                         // Don't set ScheduleGamesId - let Entity Framework auto-generate it
@@ -153,8 +157,8 @@ namespace Hoops.Data.Seeders
                         VisitingTeamNumber = visitingTeamEntity.TeamId, // Use actual Team.TeamId
                         SeasonId = season.SeasonId,
                         DivisionId = division.DivisionId,
-                        HomeTeamScore = null,
-                        VisitingTeamScore = null,
+                        HomeTeamScore = isPastGame ? random.Next(0, 81) : null, // Random score 0-80 for past games
+                        VisitingTeamScore = isPastGame ? random.Next(0, 81) : null, // Random score 0-80 for past games
                         HomeForfeited = false,
                         VisitingForfeited = false
                     };
