@@ -6,7 +6,7 @@ using Hoops.Core.Interface; // Update this to the correct namespace where ISeaso
 namespace Hoops.Application.Services
 {
 
-    public class SeasonService
+    public class SeasonService : ISeasonService
     {
         private readonly ISeasonRepository _seasonRepository;
 

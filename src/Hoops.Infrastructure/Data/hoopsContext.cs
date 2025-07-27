@@ -20,14 +20,15 @@ protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     if (!optionsBuilder.IsConfigured)
     {
         // Use your actual connection string here
-        optionsBuilder.UseSqlServer("Server=localhost,1433;Database=csbchoops;Persist Security Info=False;User ID=sa;Password=@nKbr0407; Encrypt=True;TrustServerCertificate=true;MultipleActiveResultSets=False;Encrypt=True;Connection Timeout=30;");
+        optionsBuilder.UseSqlServer("Server=localhost,1433;Database=csbchoops;Persist Security Info=False;User ID=sa;Password=@nKbr0407; Encrypt=True;TrustServerCertificate=true;MultipleActiveResultSets=False;Encrypt=True;Connection Timeout=30;")
+            .ConfigureWarnings(warnings => warnings.Ignore(Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.PendingModelChangesWarning));
     }
 }
     public virtual DbSet<Coach> Coaches { get; set; }
     public virtual DbSet<Color> Colors { get; set; }
     public virtual DbSet<Comment> Comments { get; set; }
     public virtual DbSet<Company> Companies { get; set; }
-    public virtual DbSet<Content> Content { get; set; }
+    // public virtual DbSet<Content> Content { get; set; }
     public virtual DbSet<Director> Directors { get; set; }
     public virtual DbSet<Division> Divisions { get; set; }
     public virtual DbSet<Household> Households { get; set; }
@@ -46,7 +47,7 @@ protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     public virtual DbSet<Sponsor> Sponsors { get; set; }
     public virtual DbSet<Team> Teams { get; set; }
     public virtual DbSet<User> Users { get; set; }
-    public virtual DbSet<Version> Version { get; set; }
+    // public virtual DbSet<Version> Version { get; set; }
     public virtual DbSet<WebContent> WebContents { get; set; }
     public virtual DbSet<WebContentType> WebContentTypes { get; set; }
 
@@ -442,20 +443,22 @@ protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
                 .HasColumnName("UserID");
         });
 
-        // modelBuilder.Entity<Location>(entity =>
-        // {
-        //     entity.ToTable("Location")
-        //     .HasNoKey();
-        //     // TO DO: Add the following to the Location table:
-        //     // entity.HasKey(e => e.Id);
+        modelBuilder.Entity<Location>(entity =>
+        {
+            entity.ToTable("ScheduleLocations");
+            entity.HasKey(e => e.LocationNumber);
 
-        //     entity.Property(e => e.LocationNumber);
+            entity.Property(e => e.LocationNumber)
+                .HasColumnName("LocationNumber")
+                .ValueGeneratedOnAdd()
+                .UseIdentityColumn();
 
-        //     entity.Property(e => e.LocationName)
-        //     .HasMaxLength(50);
+            entity.Property(e => e.LocationName)
+                .HasMaxLength(50);
 
-        //     // entity.Property(e => e.Notes).IsRequired();
-        // });
+            entity.Property(e => e.Notes)
+                .HasMaxLength(100);
+        });
 
         // modelBuilder.Entity<SchDivisions>(entity =>
         // {
@@ -1026,14 +1029,14 @@ protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 
         });
 
-        modelBuilder.Entity<Version>(entity =>
-{
-    entity.HasNoKey();
+        // modelBuilder.Entity<Version>(entity =>
+        // {
+        //     entity.HasNoKey();
 
-    // entity.Property(e => e.CreateDate).HasColumnType("datetime");
+        //     // entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
-    // entity.Property(e => e.Version1).HasColumnName("Version");
-});
+        //     // entity.Property(e => e.Version1).HasColumnName("Version");
+        // });
 
         // modelBuilder.Entity<VwAllSponsors>(entity =>
         // {

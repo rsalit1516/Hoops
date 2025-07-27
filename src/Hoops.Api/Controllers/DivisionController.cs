@@ -14,8 +14,8 @@ namespace csbc_server.Controllers
     {
         // private readonly hoopsContext _context;
         private readonly IDivisionRepository repository;
-        private readonly Hoops.Application.Services.SeasonService _seasonService;
-        public DivisionController(IDivisionRepository repository, Hoops.Application.Services.SeasonService seasonService)
+        private readonly ISeasonService _seasonService;
+        public DivisionController(IDivisionRepository repository, ISeasonService seasonService)
         {
             this.repository = repository;
             this._seasonService = seasonService;

@@ -114,6 +114,23 @@ namespace Hoops.Data.Seeders
                 
                 foreach (var (homeTeam, visitingTeam) in roundGames)
                 {
+                    // Look up actual Team IDs from the Teams table
+                    var homeTeamEntity = await context.Teams
+                        .FirstOrDefaultAsync(t => t.SeasonId == season.SeasonId 
+                                               && t.DivisionId == division.DivisionId 
+                                               && t.TeamNumber == homeTeam.TeamNumber.ToString());
+                    
+                    var visitingTeamEntity = await context.Teams
+                        .FirstOrDefaultAsync(t => t.SeasonId == season.SeasonId 
+                                               && t.DivisionId == division.DivisionId 
+                                               && t.TeamNumber == visitingTeam.TeamNumber.ToString());
+                    
+                    if (homeTeamEntity == null || visitingTeamEntity == null)
+                    {
+                        Console.WriteLine($"[WARNING] Could not find team entities for game: Home={homeTeam.TeamNumber}, Visiting={visitingTeam.TeamNumber}");
+                        continue;
+                    }
+                    
                     // Find next available date considering rest days
                     var gameDate = FindNextAvailableDate(currentDate, homeTeam, visitingTeam, teamLastGameDate);
                     
@@ -132,8 +149,8 @@ namespace Hoops.Data.Seeders
                         LocationNumber = location.LocationNumber,
                         GameDate = gameDate,
                         GameTime = timeSlot,
-                        HomeTeamNumber = homeTeam.TeamNumber,
-                        VisitingTeamNumber = visitingTeam.TeamNumber,
+                        HomeTeamNumber = homeTeamEntity.TeamId, // Use actual Team.TeamId
+                        VisitingTeamNumber = visitingTeamEntity.TeamId, // Use actual Team.TeamId
                         SeasonId = season.SeasonId,
                         DivisionId = division.DivisionId,
                         HomeTeamScore = null,
