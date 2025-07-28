@@ -179,34 +179,57 @@ namespace Hoops.Infrastructure.Repository
                 ?? new ScheduleGame();
         }
 
-        public IEnumerable<ScheduleStandingsVM> GetStandings(int divisionId)
+        public IEnumerable<ScheduleStandingsVM> GetStandings(int seasonId, int divisionId)
         {
             var games = new List<ScheduleStandingsVM>();
 
             var colors = context.Colors.Where(c => c.CompanyId == 1).ToList();
             _logger.LogInformation("Retrieved colors: " + colors.Count().ToString());
 
-            var teams = context.Teams.Where(s => s.DivisionId == divisionId).ToList();
+            var teams = context.Teams.Where(s => s.DivisionId == divisionId && s.SeasonId == seasonId).ToList();
             _logger.LogInformation("Retrieved Teams: " + teams.Count().ToString());
 
             var division = context.Divisions.FirstOrDefault(d => d.DivisionId == divisionId);
             if (division != null)
             {
-                _logger.LogInformation("Retrieved divisions: " + division.DivisionId.ToString());
+                _logger.LogInformation("Retrieved division: {DivisionId} for season: {SeasonId}", division.DivisionId, seasonId);
 
                 var divTeams = context
-                    .ScheduleDivTeams.Where(div => div.SeasonId == division.SeasonId)
+                    .ScheduleDivTeams.Where(div => div.SeasonId == seasonId && div.DivisionNumber == divisionId)
                     .ToList();
-                _logger.LogInformation("Retrieved division teams: " + divTeams.Count().ToString());
+                _logger.LogInformation("Retrieved ScheduleDivTeams: {Count} for season {SeasonId}", divTeams.Count, seasonId);
 
-                var seasonGames = this.GetSeasonGames(divisionId).ToList();
-                _logger.LogInformation("Retrieved season Games: " + seasonGames.Count().ToString());
+                var seasonGames = context.ScheduleGames.Where(g => g.DivisionId == divisionId && g.SeasonId == seasonId).ToList();
+                _logger.LogInformation("Retrieved season Games: {Count} for division {DivisionId} and season {SeasonId}", seasonGames.Count, divisionId, seasonId);
 
-                // ScheduleStandingsVM g = new ScheduleStandingsVM();
-                if (seasonGames.Any() && colors.Any() && teams.Any()) // && divTeams.Any())
+                // Log some sample data for debugging
+                if (divTeams.Any())
+                {
+                    var sampleDivTeam = divTeams.First();
+                    _logger.LogInformation("Sample ScheduleDivTeam: TeamNumber={TeamNumber}, ScheduleTeamNumber={ScheduleTeamNumber}, ScheduleNumber={ScheduleNumber}", 
+                        sampleDivTeam.TeamNumber, sampleDivTeam.ScheduleTeamNumber, sampleDivTeam.ScheduleNumber);
+                }
+                
+                if (seasonGames.Any())
+                {
+                    var sampleGame = seasonGames.First();
+                    _logger.LogInformation("Sample ScheduleGame: HomeTeamNumber={HomeTeamNumber}, VisitingTeamNumber={VisitingTeamNumber}, ScheduleNumber={ScheduleNumber}", 
+                        sampleGame.HomeTeamNumber, sampleGame.VisitingTeamNumber, sampleGame.ScheduleNumber);
+                }
+
+                if (seasonGames.Any() && colors.Any() && teams.Any())
                 {
                     games = CalculateStandings(seasonGames, colors, teams, divTeams, divisionId);
                 }
+                else
+                {
+                    _logger.LogWarning("Missing data for standings calculation: Games={GameCount}, Colors={ColorCount}, Teams={TeamCount}", 
+                        seasonGames.Count, colors.Count, teams.Count);
+                }
+            }
+            else
+            {
+                _logger.LogWarning("Division {DivisionId} not found", divisionId);
             }
             return games;
         }
@@ -252,19 +275,18 @@ namespace Hoops.Infrastructure.Repository
             foreach (var team in teams)
             {
                 var no = team.DivisionId;
-                // _logger.LogInformation("GetTeamRecords: DivTeams: Team ID: " + team.TeamId + "- TeamNumber: " + no);
-                // _logger.LogInformation("GetTeamRecords: Team Name: " + team.TeamName);
                 var scheduleDivTeamNumber = GetScheduleDivTeamNumber(games, no);
-                // _logger.LogInformation("GetTeamRecords: Team No: " + scheduleDivTeamNumber);
+                
+                // Find the ScheduleDivTeam record that matches this team
                 var d = divTeams.FirstOrDefault(t =>
                     t.ScheduleNumber == scheduleDivTeamNumber
                     && t.ScheduleTeamNumber == Convert.ToInt32(team.TeamNumber)
                 );
-                var teamGames = GetTeamGames(scheduleDivTeamNumber, games);
-                // _logger.LogInformation("GetTeamRecords: DivTeam found: " + team.TeamNumber);
 
                 if (d != null)
                 {
+                    // Pass the correct TeamNumber from ScheduleDivTeams (this links to ScheduleGames)
+                    var teamGames = GetTeamGames(d.TeamNumber, games);
                     var teamRecord = GetTeamRecord(team, d, teamGames);
                     teamRecords.Add(teamRecord);
                 }
@@ -286,11 +308,6 @@ namespace Hoops.Infrastructure.Repository
         {
             if (team.TeamNumber != null)
             {
-                // getting team no!
-                // if (Int32.TryParse(team.TeamNumber, out teamNo))
-                // {
-                var scheduleNumber = games.First().ScheduleNumber;
-                // var teamNumber = GetTeamNo(scheduleNumber, teamNo, team.SeasonID);
                 var seasonRecord = new ScheduleStandingsVM
                 {
                     TeamNo = Convert.ToInt32(team.TeamNumber),
@@ -301,17 +318,13 @@ namespace Hoops.Infrastructure.Repository
                     PF = 0,
                     PA = 0,
                 };
-                // _logger.LogInformation("GetTeamRecord: DivTeam: " + divTeam);
 
                 foreach (var record in games)
                 {
-                    // _logger.LogInformation("GetTeamRecord: Game Team: Home = " + record.HomeTeamNumber + " Visitor = " + record.VisitingTeamNumber);
-
-                    // _logger.LogInformation("GetTeamRecords: Team scores: Home = " + record.HomeTeamScore + " Visitor = " + record.VisitingTeamScore);
+                    // CORRECTED: ScheduleGames.HomeTeamNumber/VisitingTeamNumber should match ScheduleDivTeams.TeamNumber
+                    // (not ScheduleDivTeams.ScheduleDivTeamsId)
                     if (record.HomeTeamScore > 0 || record.VisitingTeamScore > 0)
                     {
-                        // _logger.LogInformation("GetTeamRecords: Team scores: In IF");
-
                         if (divTeam.TeamNumber == record.HomeTeamNumber)
                         {
                             seasonRecord.PA += (int)(record.VisitingTeamScore ?? 0);
@@ -320,28 +333,24 @@ namespace Hoops.Infrastructure.Repository
                             if (record.HomeTeamScore > record.VisitingTeamScore)
                             {
                                 seasonRecord.Won++;
-                                // _logger.LogInformation("GetTeamRecords: Team scores: Won: " + seasonRecord.Won);
                             }
                             else
                             {
                                 seasonRecord.Lost++;
-                                // _logger.LogInformation("GetTeamRecords: Team scores: Lost: " + seasonRecord.Lost);
                             }
                         }
-                        else
+                        else if (divTeam.TeamNumber == record.VisitingTeamNumber)
                         {
-                            if (divTeam.TeamNumber == record.VisitingTeamNumber)
-                            {
-                                seasonRecord.PF += (int)(record.VisitingTeamScore ?? 0);
-                                seasonRecord.PA += (int)(record.HomeTeamScore ?? 0);
-                                if (record.VisitingTeamScore > record.HomeTeamScore)
-                                    seasonRecord.Won++;
-                                else
-                                    seasonRecord.Lost++;
-                            }
+                            seasonRecord.PF += (int)(record.VisitingTeamScore ?? 0);
+                            seasonRecord.PA += (int)(record.HomeTeamScore ?? 0);
+                            if (record.VisitingTeamScore > record.HomeTeamScore)
+                                seasonRecord.Won++;
+                            else
+                                seasonRecord.Lost++;
                         }
                     }
                 }
+                
                 if ((seasonRecord.Won + seasonRecord.Lost) > 0)
                 {
                     Decimal Pct =
@@ -353,6 +362,7 @@ namespace Hoops.Infrastructure.Repository
                 }
                 else
                     seasonRecord.Pct = 0;
+                    
                 return seasonRecord;
                 // }
                 // else
@@ -363,23 +373,14 @@ namespace Hoops.Infrastructure.Repository
 
         private List<ScheduleGame> GetTeamGames(int divTeamNumber, List<ScheduleGame> games)
         {
-            // _logger.LogInformation("GetTeamGames: Team Div Number: " + divTeamNumber);
             var sg = new List<ScheduleGame>();
             foreach (var g in games)
             {
-                if (g.HomeTeamNumber == divTeamNumber)
+                // ScheduleGames.HomeTeamNumber and VisitingTeamNumber should match ScheduleDivTeams.TeamNumber
+                if (g.HomeTeamNumber == divTeamNumber || g.VisitingTeamNumber == divTeamNumber)
                 {
-                    _logger.LogInformation("GetTeamGames: Found one");
-
+                    _logger.LogInformation("GetTeamGames: Found game for team {TeamNumber}: Game {GameNumber}", divTeamNumber, g.GameNumber);
                     sg.Add(g);
-                }
-                else
-                {
-                    if (g.VisitingTeamNumber == divTeamNumber)
-                        _logger.LogInformation("GetTeamGames: Found one");
-                    {
-                        sg.Add(g);
-                    }
                 }
             }
             return sg;

@@ -5,7 +5,8 @@ using Hoops.Core.Models;
 
 namespace Hoops.Application.Services
 {
-    public class SeasonService
+
+    public class SeasonService : ISeasonService
     {
         private readonly ISeasonRepository _seasonRepository;
 

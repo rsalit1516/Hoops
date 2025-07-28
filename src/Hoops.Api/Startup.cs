@@ -47,6 +47,9 @@ namespace Hoops.Api
             _ = services.AddHoopsRepositories();
             _ = services.AddHoopsSeeders();
 
+            // Register SeasonService for DI
+            services.AddScoped<ISeasonService, Hoops.Application.Services.SeasonService>();
+
             _ = services.AddCors(options =>
                    {
                        options.AddPolicy(name: MyAllowSpecificOrigins,

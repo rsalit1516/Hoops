@@ -14,6 +14,7 @@ namespace Hoops.Infrastructure.Repository
         #region IRepository<T> Members
         public async Task<List<Season>> GetAllAsync(int companyId) =>
             await context.Seasons
+            .Include(s => s.Divisions)
             .Where(s => s.CompanyId == companyId)
                 .OrderByDescending(c => c.FromDate)
                 .ToListAsync();
@@ -46,6 +47,7 @@ namespace Hoops.Infrastructure.Repository
                 var season =
                     context
                         .Set<Season>()
+                        .Include(s => s.Divisions)
                         .FirstOrDefaultAsync(n =>
                             (n.CurrentSeason == true) &&
                             (n.CompanyId == companyId));

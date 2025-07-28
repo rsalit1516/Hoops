@@ -32,36 +32,29 @@ namespace Hoops.Data.Seeders
         }
         public async Task SeedAsync()
         {
-            int maxLocationId = context.Location.Any() ? context.Location.Max(c => c.LocationNumber) : 0;
-            // maxLocationId++;
+            // Remove explicit LocationNumber assignment - let database auto-generate identity values
             var locations = new List<Location>
             {
                 new Location
                 {
-                    LocationNumber = ++maxLocationId,
                     LocationName = "Mini Back",
                 },
                 new Location
                 {
-                   LocationNumber = ++maxLocationId,
-                    LocationName = "Mini Front",                },
-                new Location
-                {
-                                     LocationNumber = ++maxLocationId,
-                    LocationName = "Gym West",
-
+                    LocationName = "Mini Front",
                 },
                 new Location
                 {
-                   LocationNumber = ++maxLocationId,
+                    LocationName = "Gym West",
+                },
+                new Location
+                {
                     LocationName = "Gym Middle",
                 },
-            new Location
-            {
-                   LocationNumber = ++maxLocationId,
+                new Location
+                {
                     LocationName = "Gym East",
-            }
-
+                }
             };
 
             foreach (var content in locations)
