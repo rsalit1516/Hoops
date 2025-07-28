@@ -1,11 +1,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Hoops.Core.Models;
 using Hoops.Core.Interface; // Update this to the correct namespace where ISeasonRepository is defined
+using Hoops.Core.Models;
 
 namespace Hoops.Application.Services
 {
-
     public class SeasonService
     {
         private readonly ISeasonRepository _seasonRepository;
@@ -22,7 +21,9 @@ namespace Hoops.Application.Services
         {
             var season = await _seasonRepository.GetCurrentSeason(companyId);
             if (season == null)
-                throw new InvalidOperationException($"No current season found for company {companyId}.");
+                throw new InvalidOperationException(
+                    $"No current season found for company {companyId}."
+                );
             return season;
         }
 
@@ -36,8 +37,10 @@ namespace Hoops.Application.Services
         public async Task<Division> AddDivisionToSeason(int seasonId, Division division)
         {
             var season = await _seasonRepository.GetByIdAsync(seasonId);
-            if (season == null) throw new InvalidOperationException($"Season {seasonId} not found.");
-            if (season.Divisions == null) season.Divisions = new List<Division>();
+            if (season == null)
+                throw new InvalidOperationException($"Season {seasonId} not found.");
+            if (season.Divisions == null)
+                season.Divisions = new List<Division>();
             season.Divisions.Add(division);
             await _seasonRepository.UpdateAsync(season);
             return division;
@@ -46,8 +49,10 @@ namespace Hoops.Application.Services
         public async Task<Team> AddTeamToSeason(int seasonId, Team team)
         {
             var season = await _seasonRepository.GetByIdAsync(seasonId);
-            if (season == null) throw new InvalidOperationException($"Season {seasonId} not found.");
-            if (season.Teams == null) season.Teams = new List<Team>();
+            if (season == null)
+                throw new InvalidOperationException($"Season {seasonId} not found.");
+            if (season.Teams == null)
+                season.Teams = new List<Team>();
             season.Teams.Add(team);
             await _seasonRepository.UpdateAsync(season);
             return team;
@@ -55,19 +60,25 @@ namespace Hoops.Application.Services
 
         public async Task<ScheduleGame> AddScheduleGameToSeason(int seasonId, ScheduleGame game)
         {
-            var season = await _seasonRepository.GetByIdAsync(seasonId);
-            if (season == null) throw new InvalidOperationException($"Season {seasonId} not found.");
-            if (season.ScheduleGames == null) season.ScheduleGames = new List<ScheduleGame>();
+            var season =
+                await _seasonRepository.GetByIdAsync(seasonId)
+                ?? throw new InvalidOperationException($"Season {seasonId} not found.");
+            season.ScheduleGames ??= new List<ScheduleGame>();
             season.ScheduleGames.Add(game);
             await _seasonRepository.UpdateAsync(season);
             return game;
         }
 
-        public async Task<ScheduleDivTeam> AddScheduleDivTeamToSeason(int seasonId, ScheduleDivTeam scheduleDivTeam)
+        public async Task<ScheduleDivTeam> AddScheduleDivTeamToSeason(
+            int seasonId,
+            ScheduleDivTeam scheduleDivTeam
+        )
         {
             var season = await _seasonRepository.GetByIdAsync(seasonId);
-            if (season == null) throw new InvalidOperationException($"Season {seasonId} not found.");
-            if (season.ScheduleDivTeams == null) season.ScheduleDivTeams = new List<ScheduleDivTeam>();
+            if (season == null)
+                throw new InvalidOperationException($"Season {seasonId} not found.");
+            if (season.ScheduleDivTeams == null)
+                season.ScheduleDivTeams = new List<ScheduleDivTeam>();
             season.ScheduleDivTeams.Add(scheduleDivTeam);
             await _seasonRepository.UpdateAsync(season);
             return scheduleDivTeam;
@@ -97,4 +108,3 @@ namespace Hoops.Application.Services
     //     return await _seasonRepository.DeleteAsync(seasonId);
     // }
 }
-
