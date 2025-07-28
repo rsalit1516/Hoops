@@ -179,28 +179,28 @@ namespace Hoops.Infrastructure.Repository
                 ?? new ScheduleGame();
         }
 
-        public IEnumerable<ScheduleStandingsVM> GetStandings(int divisionId)
+        public IEnumerable<ScheduleStandingsVM> GetStandings(int seasonId, int divisionId)
         {
             var games = new List<ScheduleStandingsVM>();
 
             var colors = context.Colors.Where(c => c.CompanyId == 1).ToList();
             _logger.LogInformation("Retrieved colors: " + colors.Count().ToString());
 
-            var teams = context.Teams.Where(s => s.DivisionId == divisionId).ToList();
+            var teams = context.Teams.Where(s => s.DivisionId == divisionId && s.SeasonId == seasonId).ToList();
             _logger.LogInformation("Retrieved Teams: " + teams.Count().ToString());
 
             var division = context.Divisions.FirstOrDefault(d => d.DivisionId == divisionId);
             if (division != null)
             {
-                _logger.LogInformation("Retrieved division: {DivisionId} for season: {SeasonId}", division.DivisionId, division.SeasonId);
+                _logger.LogInformation("Retrieved division: {DivisionId} for season: {SeasonId}", division.DivisionId, seasonId);
 
                 var divTeams = context
-                    .ScheduleDivTeams.Where(div => div.SeasonId == division.SeasonId)
+                    .ScheduleDivTeams.Where(div => div.SeasonId == seasonId && div.DivisionNumber == divisionId)
                     .ToList();
-                _logger.LogInformation("Retrieved ScheduleDivTeams: {Count} for season {SeasonId}", divTeams.Count, division.SeasonId);
+                _logger.LogInformation("Retrieved ScheduleDivTeams: {Count} for season {SeasonId}", divTeams.Count, seasonId);
 
-                var seasonGames = this.GetSeasonGames(divisionId).ToList();
-                _logger.LogInformation("Retrieved season Games: {Count} for division {DivisionId}", seasonGames.Count, divisionId);
+                var seasonGames = context.ScheduleGames.Where(g => g.DivisionId == divisionId && g.SeasonId == seasonId).ToList();
+                _logger.LogInformation("Retrieved season Games: {Count} for division {DivisionId} and season {SeasonId}", seasonGames.Count, divisionId, seasonId);
 
                 // Log some sample data for debugging
                 if (divTeams.Any())
@@ -321,8 +321,8 @@ namespace Hoops.Infrastructure.Repository
 
                 foreach (var record in games)
                 {
-                    // The key fix: ScheduleGames.HomeTeamNumber/VisitingTeamNumber should match ScheduleDivTeams.TeamNumber
-                    // (not ScheduleDivTeams.ScheduleTeamNumber)
+                    // CORRECTED: ScheduleGames.HomeTeamNumber/VisitingTeamNumber should match ScheduleDivTeams.TeamNumber
+                    // (not ScheduleDivTeams.ScheduleDivTeamsId)
                     if (record.HomeTeamScore > 0 || record.VisitingTeamScore > 0)
                     {
                         if (divTeam.TeamNumber == record.HomeTeamNumber)

@@ -81,24 +81,29 @@ namespace Hoops.Controllers
         }
 
         ///
-        /// GET: api/GetStandings/divisionId
+        /// GET: api/GetStandings?seasonId=123&divisionId=456
         [Route("GetStandings")]
         [HttpGet]
-        public IActionResult GetStandings(int divisionId)
+        public IActionResult GetStandings(int seasonId, int divisionId)
         {
-            _logger.LogInformation("Retrieving division standings for divisionId: {DivisionId}", divisionId);
+            _logger.LogInformation("Retrieving division standings for seasonId: {SeasonId} divisionId: {DivisionId}", seasonId, divisionId);
             
             if (divisionId <= 0)
             {
                 return BadRequest("Division ID must be greater than 0");
             }
+            
+            if (seasonId <= 0)
+            {
+                return BadRequest("Season ID must be greater than 0");
+            }
 
             try
             {
-                var standings = repository.GetStandings(divisionId);
+                var standings = repository.GetStandings(seasonId, divisionId);
                 if (standings == null || !standings.Any())
                 {
-                    _logger.LogInformation("No standings found for division {DivisionId}", divisionId);
+                    _logger.LogInformation("No standings found for season {SeasonId} division {DivisionId}", seasonId, divisionId);
                     return Ok(new List<ScheduleStandingsVM>());
                 }
                 
@@ -106,7 +111,7 @@ namespace Hoops.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error retrieving standings for divisionId: {DivisionId}", divisionId);
+                _logger.LogError(ex, "Error retrieving standings for seasonId: {SeasonId} divisionId: {DivisionId}", seasonId, divisionId);
                 return StatusCode(500, "An error occurred while retrieving standings");
             }
         }
