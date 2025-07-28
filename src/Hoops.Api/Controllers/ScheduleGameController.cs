@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Hoops.Core.Interface;
 using Hoops.Core.Models;
+using Hoops.Core.ViewModels;
 using Hoops.Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -59,15 +61,23 @@ namespace Hoops.Controllers
         [HttpGet]
         public async Task<IActionResult> GetSeasonGames(int seasonId)
         {
-            _logger.LogInformation("Retrieving season games");
-            // Use SeasonService to get games for a season (aggregate root pattern)
-            var allSeasons = await _seasonService.GetAllSeasonsAsync();
-            var season = allSeasons.FirstOrDefault(s => s.SeasonId == seasonId);
-            if (season == null || season.ScheduleGames == null)
+            _logger.LogInformation("Retrieving season games for seasonId: {SeasonId}", seasonId);
+            
+            if (seasonId <= 0)
             {
-                return Ok(new List<ScheduleGame>());
+                return BadRequest("Season ID must be greater than 0");
             }
-            return Ok(season.ScheduleGames);
+
+            try
+            {
+                var games = await repository.GetSeasonGamesAsync(seasonId);
+                return Ok(games);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving season games for seasonId: {SeasonId}", seasonId);
+                return StatusCode(500, "An error occurred while retrieving season games");
+            }
         }
 
         ///
@@ -76,8 +86,29 @@ namespace Hoops.Controllers
         [HttpGet]
         public IActionResult GetStandings(int divisionId)
         {
-            _logger.LogInformation("Retrieving division standings");
-            return Ok(repository.GetStandings(divisionId));
+            _logger.LogInformation("Retrieving division standings for divisionId: {DivisionId}", divisionId);
+            
+            if (divisionId <= 0)
+            {
+                return BadRequest("Division ID must be greater than 0");
+            }
+
+            try
+            {
+                var standings = repository.GetStandings(divisionId);
+                if (standings == null || !standings.Any())
+                {
+                    _logger.LogInformation("No standings found for division {DivisionId}", divisionId);
+                    return Ok(new List<ScheduleStandingsVM>());
+                }
+                
+                return Ok(standings);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving standings for divisionId: {DivisionId}", divisionId);
+                return StatusCode(500, "An error occurred while retrieving standings");
+            }
         }
 
         // PUT: api/ScheduleGame/5
