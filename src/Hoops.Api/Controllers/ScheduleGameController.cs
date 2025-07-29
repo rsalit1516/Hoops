@@ -82,8 +82,8 @@ namespace Hoops.Controllers
 
         ///
         /// GET: api/GetStandings?seasonId=123&divisionId=456
-        [Route("GetStandings")]
-        [HttpGet]
+        // [Route("GetStandings")]
+        [HttpGet("GetStandings/{seasonId:int}/{divisionId:int}")]
         public IActionResult GetStandings(int seasonId, int divisionId)
         {
             _logger.LogInformation("Retrieving division standings for seasonId: {SeasonId} divisionId: {DivisionId}", seasonId, divisionId);

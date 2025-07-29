@@ -148,17 +148,6 @@ namespace Hoops.Data.Seeders
                     var isPastGame = fullGameDateTime < DateTime.Now;
                     var random = new Random();
                     
-                    // Find the actual Teams.TeamID that matches the ScheduleTeamNumber
-                    var homeTeamId = await GetTeamIdByScheduleTeamNumber(homeTeam.ScheduleTeamNumber, season.SeasonId, division.DivisionId);
-                    var visitingTeamId = await GetTeamIdByScheduleTeamNumber(visitingTeam.ScheduleTeamNumber, season.SeasonId, division.DivisionId);
-                    
-                    // Skip games where teams don't exist in the Teams table
-                    if (homeTeamId == -1 || visitingTeamId == -1)
-                    {
-                        Console.WriteLine($"[WARNING] Skipping game - missing team(s): Home={homeTeam.ScheduleTeamNumber} (ID={homeTeamId}), Visiting={visitingTeam.ScheduleTeamNumber} (ID={visitingTeamId})");
-                        continue;
-                    }
-                    
                     var game = new ScheduleGame
                     {
                         // Don't set ScheduleGamesId - let Entity Framework auto-generate it
@@ -167,8 +156,8 @@ namespace Hoops.Data.Seeders
                         LocationNumber = location.LocationNumber,
                         GameDate = fullGameDateTime, // Now contains both date and time
                         GameTime = legacyGameTime, // Legacy format for transition period
-                        HomeTeamNumber = homeTeamId, // Use actual Teams.TeamID
-                        VisitingTeamNumber = visitingTeamId, // Use actual Teams.TeamID
+                        HomeTeamNumber = homeTeam.TeamNumber, // Use ScheduleDivTeams.TeamNumber
+                        VisitingTeamNumber = visitingTeam.TeamNumber, // Use ScheduleDivTeams.TeamNumber
                         SeasonId = season.SeasonId,
                         DivisionId = division.DivisionId,
                         HomeTeamScore = isPastGame ? random.Next(0, 81) : null, // Random score 0-80 for past games
@@ -357,24 +346,6 @@ namespace Hoops.Data.Seeders
             }
             
             return games;
-        }
-
-        private async Task<int> GetTeamIdByScheduleTeamNumber(int scheduleTeamNumber, int seasonId, int divisionId)
-        {
-            // Find the actual Teams.TeamID that matches the ScheduleTeamNumber
-            var team = await context.Teams
-                .Where(t => t.SeasonId == seasonId && 
-                           t.DivisionId == divisionId && 
-                           t.TeamNumber == scheduleTeamNumber.ToString())
-                .FirstOrDefaultAsync();
-            
-            if (team == null)
-            {
-                Console.WriteLine($"[WARNING] Could not find Teams.TeamID for ScheduleTeamNumber: {scheduleTeamNumber}, Season: {seasonId}, Division: {divisionId}");
-                return -1; // Return -1 to indicate missing team
-            }
-            
-            return team.TeamId;
         }
 
         // Helper class to manage game time slots

@@ -27,9 +27,9 @@ import { GameService } from '@app/services/game.service';
     '../../../../Content/styles.scss' ]
 })
 export class StandingsShellComponent {
-  readonly #gameService = inject(GameService);
+  private gameService = inject(GameService);
 
   title = 'Standings';
-  divisionStandings = this.#gameService.divisionStandings;
+  divisionStandings = this.gameService.divisionStandings;
 
 }

@@ -1,5 +1,5 @@
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
-import { delay, map } from 'rxjs/operators';
+import { delay, map, tap } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse, HttpHeaders, httpResource } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
@@ -192,17 +192,24 @@ export class GameService {
       );
   }
 
-  getStandingsByDivision (divisionId: number) {
+  getStandingsByDivision (divisionId: number, seasonId: number) {
     return this.#http
-      .get<any[]>(Constants.GET_STANDINGS_URL + '?divisionId=' + divisionId)
+      .get<any[]>(Constants.GET_STANDINGS_URL + '/' + seasonId + '/' + divisionId)
       .pipe(
-        map((response) => (this.standing = response))
-        // tap(data => console.log('All: ' + JSON.stringify(data))),
+        map((response) => (this.standing = response)),
+        tap(data => console.log('All: ' + JSON.stringify(data))),
         // catchError(this.handleError)
       );
   }
   fetchStandingsByDivision () {
-    this.getStandingsByDivision(this.selectedDivision()!.divisionId).subscribe((standings) => {
+    const seasonId = this.#seasonService.selectedSeason.seasonId;
+    if (!seasonId) {
+      console.error('No season selected');
+      this.divisionStandings.update(() => []);
+      return;
+    }
+    
+    this.getStandingsByDivision(this.selectedDivision()!.divisionId, seasonId).subscribe((standings) => {
       if (standings) {
         this.divisionStandings.update(() => standings);
       } else {
