@@ -58,38 +58,46 @@ namespace Hoops.Data.Seeders
                     
                     var divisions = await context.Divisions
                         .Where(d => d.SeasonId == season.SeasonId)
+                        .OrderBy(d => d.DivisionId)
                         .ToListAsync();
 
-                    var seasonTeamNumber = 1; // Team number unique per season
+                    var seasonTeamNumber = 1; // Team number unique per season (external program perspective)
                     var random = new Random();
+
+                    // Simulate external scheduling program: Create ScheduleNumber starting from 1
+                    // This represents how the external program groups divisions for scheduling
+                    var externalScheduleNumber = 1;
 
                     foreach (var division in divisions)
                     {
                         // Randomize number of teams per division (4-14 teams)
                         var numberOfTeams = random.Next(4, 15);
-                        Console.WriteLine($"[DEBUG] Creating {numberOfTeams} teams for Division: {division.DivisionDescription}");
+                        Console.WriteLine($"[DEBUG] Creating {numberOfTeams} teams for External Schedule #{externalScheduleNumber} (Division: {division.DivisionDescription})");
 
-                        // For seeding purposes, use incrementing numbers for DivisionNumber and ScheduleNumber
-                        // In real import, these come from 3rd party software
-                        var divisionNumber = division.DivisionId;
-                        var scheduleNumber = division.DivisionId; // Same as division number for seeding
+                        // Simulate external program logic:
+                        // - ScheduleNumber: External program's schedule grouping (1, 2, 3, ...)
+                        // - DivisionNumber: External program's division identifier (could be same as ScheduleNumber)
+                        var externalDivisionNumber = externalScheduleNumber; // External program's division ID
+                        var scheduleNumber = externalScheduleNumber; // External program's schedule ID
 
                         for (int teamIndex = 1; teamIndex <= numberOfTeams; teamIndex++)
                         {
                             var scheduleDivTeam = new ScheduleDivTeam
                             {
-                                DivisionNumber = divisionNumber,
-                                TeamNumber = seasonTeamNumber, // Unique per season
-                                ScheduleNumber = scheduleNumber,
-                                ScheduleTeamNumber = teamIndex, // Unique per division (1, 2, 3, etc.)
-                                HomeLocation = 1, // Default location - not used according to requirements
-                                SeasonId = season.SeasonId
+                                DivisionNumber = externalDivisionNumber, // External program's division number
+                                TeamNumber = seasonTeamNumber, // Unique team number across entire season
+                                ScheduleNumber = scheduleNumber, // External program's schedule group identifier
+                                ScheduleTeamNumber = teamIndex, // Team number within this division (1, 2, 3, etc.)
+                                HomeLocation = 1, // Default location
+                                SeasonId = season.SeasonId // Would be set manually in real process, but set here for seeding
                                 // ScheduleDivTeamsId will be auto-generated
                             };
 
                             await _scheduleDivTeamsRepo.InsertAsync(scheduleDivTeam);
                             seasonTeamNumber++; // Increment for next team in season
                         }
+                        
+                        externalScheduleNumber++; // Increment for next external schedule group
                     }
 
                     await context.SaveChangesAsync();

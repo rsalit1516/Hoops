@@ -65,32 +65,35 @@ namespace Hoops.Data.Seeders
             foreach (var season in seasons)
             {
                 var divisions = await _divisionRepo.GetSeasonDivisionsAsync(season.SeasonId);
+                var externalScheduleNumber = 1; // Simulate external scheduling program numbering
                 
                 foreach (var division in divisions)
                 {
-                    // Get ScheduleDivTeams for this division and season
+                    // Get ScheduleDivTeams for this external schedule number
+                    // In real world: this data would already exist from external program import
                     var scheduleDivTeams = await context.ScheduleDivTeams
-                        .Where(sdt => sdt.SeasonId == season.SeasonId && sdt.DivisionNumber == division.DivisionId)
+                        .Where(sdt => sdt.SeasonId == season.SeasonId && sdt.ScheduleNumber == externalScheduleNumber)
                         .ToListAsync();
                     
                     if (scheduleDivTeams.Count >= 2)
                     {
-                        Console.WriteLine($"[DEBUG] Generating schedule for Division: {division.DivisionDescription} with {scheduleDivTeams.Count} teams");
-                        await GenerateScheduleForDivision(season, division, scheduleDivTeams, locationsList);
+                        Console.WriteLine($"[DEBUG] Generating schedule for External Schedule #{externalScheduleNumber} (Division: {division.DivisionDescription}) with {scheduleDivTeams.Count} teams");
+                        await GenerateScheduleForDivision(season, division, scheduleDivTeams, locationsList, externalScheduleNumber);
                     }
                     else
                     {
-                        Console.WriteLine($"[DEBUG] Skipping Division: {division.DivisionDescription} - not enough teams ({scheduleDivTeams.Count})");
+                        Console.WriteLine($"[DEBUG] Skipping External Schedule #{externalScheduleNumber} (Division: {division.DivisionDescription}) - not enough teams ({scheduleDivTeams.Count})");
                     }
+                    
+                    externalScheduleNumber++; // Increment for next external schedule group
                 }
             }
         }
 
-        private async Task GenerateScheduleForDivision(Season season, Division division, List<ScheduleDivTeam> scheduleDivTeams, List<Location> locations)
+        private async Task GenerateScheduleForDivision(Season season, Division division, List<ScheduleDivTeam> scheduleDivTeams, List<Location> locations, int scheduleNumber)
         {
             var gameSchedule = new List<ScheduleGame>();
             var gameId = 1;
-            var scheduleNumber = division.DivisionId % 100; // Simple schedule number based on division
             
             if (scheduleDivTeams.Count < 2)
             {
@@ -100,9 +103,8 @@ namespace Hoops.Data.Seeders
             
             Console.WriteLine($"[DEBUG] Using {scheduleDivTeams.Count} ScheduleDivTeams for Division: {division.DivisionDescription}");
             
-            // Create a round-robin schedule using ScheduleDivTeams
-            var totalRounds = scheduleDivTeams.Count - 1;
-            var gamesPerRound = scheduleDivTeams.Count / 2;
+            // Generate multiple rounds for a full season (each team plays each other multiple times)
+            var totalRounds = (scheduleDivTeams.Count - 1) * 2; // Double round-robin for more games
             
             // Track when each team last played for rest day enforcement
             var teamLastGameDate = new Dictionary<int, DateTime>();
@@ -110,75 +112,165 @@ namespace Hoops.Data.Seeders
             // Current scheduling date - start from season start date
             var currentDate = season.FromDate ?? DateTime.Now;
             
-            // Skip to first Monday for weeknight games or first Saturday for weekend games
-            currentDate = GetNextSchedulingDate(currentDate, true); // Start with weeknight
+            // Skip to first Monday for weeknight games
+            currentDate = GetNextSchedulingDate(currentDate, true);
             
-            var locationRotation = 0;
             var timeSlotManager = new GameTimeSlotManager();
             
+            // Schedule games in batches per game date to create multiple games per day
+            var scheduledGamesByDate = new Dictionary<DateTime, List<(ScheduleDivTeam home, ScheduleDivTeam visiting)>>();
+            
+            // First, generate all round-robin pairings
+            var allRoundPairings = new List<(ScheduleDivTeam home, ScheduleDivTeam visiting)>();
             for (int round = 0; round < totalRounds; round++)
             {
                 var roundGames = GenerateRoundRobinRound(scheduleDivTeams, round);
-                
-                foreach (var (homeTeam, visitingTeam) in roundGames)
+                allRoundPairings.AddRange(roundGames);
+            }
+            
+            Console.WriteLine($"[DEBUG] Generated {allRoundPairings.Count} total game pairings for the season");
+            
+            // Now schedule games to achieve 2-3 games per team per week
+            var gameCounter = 0;
+            var weekStartDate = GetStartOfWeek(currentDate);
+            var gamesScheduledThisWeek = 0;
+            var maxGamesPerWeek = Math.Min(scheduleDivTeams.Count * 2, allRoundPairings.Count / 8); // Spread games over ~8 weeks
+            
+            foreach (var (homeTeam, visitingTeam) in allRoundPairings)
+            {
+                if (homeTeam == null || visitingTeam == null)
                 {
-                    if (homeTeam == null || visitingTeam == null)
+                    Console.WriteLine($"[WARNING] Null team in round robin pairing");
+                    continue;
+                }
+                
+                // Check if we need to move to next week
+                if (gamesScheduledThisWeek >= maxGamesPerWeek)
+                {
+                    weekStartDate = weekStartDate.AddDays(7);
+                    currentDate = weekStartDate;
+                    gamesScheduledThisWeek = 0;
+                    Console.WriteLine($"[DEBUG] Moving to new week starting {weekStartDate:MMM dd}");
+                }
+                
+                // Find best date this week considering team rest and available slots
+                var gameDate = FindBestDateThisWeek(weekStartDate, homeTeam, visitingTeam, teamLastGameDate, timeSlotManager, locations);
+                
+                // Determine if this should be a weeknight or weekend game
+                bool isWeekend = gameDate.DayOfWeek == DayOfWeek.Saturday || gameDate.DayOfWeek == DayOfWeek.Sunday;
+                
+                // Find location with available slot
+                Location selectedLocation = null;
+                (string timeString, TimeSpan timeSpan) timeSlotInfo = ("", TimeSpan.Zero);
+                
+                foreach (var location in locations)
+                {
+                    if (timeSlotManager.HasAvailableSlots(gameDate, location.LocationNumber, isWeekend))
                     {
-                        Console.WriteLine($"[WARNING] Null team in round robin pairing");
-                        continue;
+                        selectedLocation = location;
+                        timeSlotInfo = timeSlotManager.GetNextAvailableTimeSlot(gameDate, location.LocationNumber, isWeekend);
+                        break;
                     }
-                    
-                    // Find next available date considering rest days  
-                    var gameDate = FindNextAvailableDate(currentDate, homeTeam, visitingTeam, teamLastGameDate);
-                    
-                    // Determine if this should be a weeknight or weekend game
-                    bool isWeekend = gameDate.DayOfWeek == DayOfWeek.Saturday || gameDate.DayOfWeek == DayOfWeek.Sunday;
-                    
-                    // Get next available time slot for this date and location
-                    var location = locations[locationRotation % locations.Count];
-                    var timeSlotInfo = timeSlotManager.GetNextAvailableTimeSlot(gameDate, location.LocationNumber, isWeekend);
-                    
-                    // Create full DateTime with date and time combined
-                    var fullGameDateTime = gameDate.Date.Add(timeSlotInfo.timeSpan);
-                    
-                    // Create legacy GameTime format: '1899-12-30 HH:mm:ss' (ignore date, use time only)
-                    var legacyGameTime = new DateTime(1899, 12, 30).Add(timeSlotInfo.timeSpan).ToString("yyyy-MM-dd HH:mm:ss");
-                    
-                    // Determine if this game is in the past and should have scores
-                    var isPastGame = fullGameDateTime < DateTime.Now;
-                    var random = new Random();
-                    
-                    var game = new ScheduleGame
-                    {
-                        // Don't set ScheduleGamesId - let Entity Framework auto-generate it
-                        ScheduleNumber = scheduleNumber,
-                        GameNumber = gameId,
-                        LocationNumber = location.LocationNumber,
-                        GameDate = fullGameDateTime, // Now contains both date and time
-                        GameTime = legacyGameTime, // Legacy format for transition period
-                        HomeTeamNumber = homeTeam.TeamNumber, // Use ScheduleDivTeams.TeamNumber
-                        VisitingTeamNumber = visitingTeam.TeamNumber, // Use ScheduleDivTeams.TeamNumber
-                        SeasonId = season.SeasonId,
-                        DivisionId = division.DivisionId,
-                        HomeTeamScore = isPastGame ? random.Next(0, 81) : null, // Random score 0-80 for past games
-                        VisitingTeamScore = isPastGame ? random.Next(0, 81) : null, // Random score 0-80 for past games
-                        HomeForfeited = false,
-                        VisitingForfeited = false
-                    };
-                    
-                    await _scheduleGameRepo.InsertAsync(game);
-                    gameId++; // Increment for next game number
-                    
-                    // Update last game dates for both teams
-                    teamLastGameDate[homeTeam.TeamNumber] = gameDate;
-                    teamLastGameDate[visitingTeam.TeamNumber] = gameDate;
-                    
-                    locationRotation++;
-                    
-                    // Move to next potential game date
-                    currentDate = timeSlotManager.GetNextGameDate(gameDate, isWeekend);
+                }
+                
+                // If no location has slots, move to next available date
+                if (selectedLocation == null)
+                {
+                    gameDate = timeSlotManager.GetNextGameDate(gameDate, isWeekend);
+                    isWeekend = gameDate.DayOfWeek == DayOfWeek.Saturday || gameDate.DayOfWeek == DayOfWeek.Sunday;
+                    selectedLocation = locations[0]; // Use first location
+                    timeSlotInfo = timeSlotManager.GetNextAvailableTimeSlot(gameDate, selectedLocation.LocationNumber, isWeekend);
+                }
+                
+                // Create full DateTime with date and time combined
+                var fullGameDateTime = gameDate.Date.Add(timeSlotInfo.timeSpan);
+                
+                // Create legacy GameTime format: '1899-12-30 HH:mm:ss' (ignore date, use time only)
+                var legacyGameTime = new DateTime(1899, 12, 30).Add(timeSlotInfo.timeSpan).ToString("yyyy-MM-dd HH:mm:ss");
+                
+                // Determine if this game is in the past and should have scores
+                var isPastGame = fullGameDateTime < DateTime.Now;
+                var random = new Random();
+                
+                var game = new ScheduleGame
+                {
+                    ScheduleNumber = scheduleNumber, // External program's schedule group ID
+                    GameNumber = gameId,
+                    LocationNumber = selectedLocation.LocationNumber,
+                    GameDate = fullGameDateTime, // Now contains both date and time
+                    GameTime = legacyGameTime, // Legacy format for transition period
+                    HomeTeamNumber = homeTeam.TeamNumber, // From ScheduleDivTeams.TeamNumber
+                    VisitingTeamNumber = visitingTeam.TeamNumber, // From ScheduleDivTeams.TeamNumber
+                    SeasonId = season.SeasonId, // Would be set manually in real process
+                    DivisionId = division.DivisionId, // Would be set manually in real process (mapping external to internal)
+                    HomeTeamScore = isPastGame ? random.Next(0, 81) : null, // Random score 0-80 for past games
+                    VisitingTeamScore = isPastGame ? random.Next(0, 81) : null, // Random score 0-80 for past games
+                    HomeForfeited = false,
+                    VisitingForfeited = false
+                };
+                
+                await _scheduleGameRepo.InsertAsync(game);
+                gameId++; // Increment for next game number
+                gamesScheduledThisWeek++;
+                gameCounter++;
+                
+                // Update last game dates for both teams
+                teamLastGameDate[homeTeam.TeamNumber] = gameDate;
+                teamLastGameDate[visitingTeam.TeamNumber] = gameDate;
+                
+                // Log scheduling info for debugging
+                if (gameCounter <= 10 || gameCounter % 20 == 0) // Log first 10 and every 20th game
+                {
+                    Console.WriteLine($"[DEBUG] Game #{gameCounter}: Team {homeTeam.TeamNumber} vs {visitingTeam.TeamNumber} on {gameDate:MMM dd} at {timeSlotInfo.timeString} (Location {selectedLocation.LocationNumber})");
                 }
             }
+            
+            Console.WriteLine($"[DEBUG] Scheduled {gameCounter} games for Division {division.DivisionDescription}");
+        }
+        
+        private DateTime GetStartOfWeek(DateTime date)
+        {
+            // Get Monday of this week
+            var daysFromMonday = (int)date.DayOfWeek - (int)DayOfWeek.Monday;
+            if (daysFromMonday < 0) daysFromMonday += 7;
+            return date.AddDays(-daysFromMonday);
+        }
+        
+        private DateTime FindBestDateThisWeek(DateTime weekStart, ScheduleDivTeam team1, ScheduleDivTeam team2, 
+            Dictionary<int, DateTime> teamLastGameDate, GameTimeSlotManager timeSlotManager, List<Location> locations)
+        {
+            // Try to find a good date this week (Monday through Sunday)
+            for (int day = 0; day < 7; day++)
+            {
+                var candidateDate = weekStart.AddDays(day);
+                
+                // Skip Fridays (no games on Fridays)
+                if (candidateDate.DayOfWeek == DayOfWeek.Friday)
+                    continue;
+                
+                // Check if both teams have adequate rest
+                bool team1HasRest = !teamLastGameDate.ContainsKey(team1.TeamNumber) ||
+                                   (candidateDate - teamLastGameDate[team1.TeamNumber]).Days >= 1;
+                bool team2HasRest = !teamLastGameDate.ContainsKey(team2.TeamNumber) ||
+                                   (candidateDate - teamLastGameDate[team2.TeamNumber]).Days >= 1;
+                
+                if (team1HasRest && team2HasRest)
+                {
+                    // Check if any location has available slots
+                    bool isWeekend = candidateDate.DayOfWeek == DayOfWeek.Saturday || candidateDate.DayOfWeek == DayOfWeek.Sunday;
+                    
+                    foreach (var location in locations)
+                    {
+                        if (timeSlotManager.HasAvailableSlots(candidateDate, location.LocationNumber, isWeekend))
+                        {
+                            return candidateDate;
+                        }
+                    }
+                }
+            }
+            
+            // If no good date this week, return next Monday
+            return weekStart.AddDays(7);
         }
 
         private List<(Team home, Team visiting)> GenerateRoundRobinRoundFromTeams(List<Team> teams, int round)
@@ -351,76 +443,85 @@ namespace Hoops.Data.Seeders
         // Helper class to manage game time slots
         internal class GameTimeSlotManager
         {
-            private readonly Dictionary<(DateTime date, int location), List<string>> _scheduledTimes = new();
+            private readonly Dictionary<(DateTime date, int location), List<TimeSlot>> _scheduledSlots = new();
+            
+            // Define exact time slots as specified
+            private readonly TimeSlot[] _weeknightSlots = new[]
+            {
+                new TimeSlot("6:00 PM", new TimeSpan(18, 0, 0)),
+                new TimeSlot("6:50 PM", new TimeSpan(18, 50, 0)),
+                new TimeSlot("7:40 PM", new TimeSpan(19, 40, 0)),
+                new TimeSlot("8:30 PM", new TimeSpan(20, 30, 0))
+            };
+            
+            private readonly TimeSlot[] _weekendSlots = new[]
+            {
+                new TimeSlot("9:00 AM", new TimeSpan(9, 0, 0)),
+                new TimeSlot("9:50 AM", new TimeSpan(9, 50, 0)),
+                new TimeSlot("10:40 AM", new TimeSpan(10, 40, 0)),
+                new TimeSlot("11:30 AM", new TimeSpan(11, 30, 0))
+            };
             
             public (string timeString, TimeSpan timeSpan) GetNextAvailableTimeSlot(DateTime gameDate, int locationNumber, bool isWeekend)
             {
                 var key = (gameDate.Date, locationNumber);
-                if (!_scheduledTimes.ContainsKey(key))
+                if (!_scheduledSlots.ContainsKey(key))
                 {
-                    _scheduledTimes[key] = new List<string>();
+                    _scheduledSlots[key] = new List<TimeSlot>();
                 }
                 
-                var scheduledTimes = _scheduledTimes[key];
+                var scheduledSlots = _scheduledSlots[key];
+                var availableSlots = isWeekend ? _weekendSlots : _weeknightSlots;
                 
-                if (isWeekend)
+                foreach (var slot in availableSlots)
                 {
-                    // Weekend games: 9:00 AM to 12:00 PM
-                    var weekendTimes = new[] 
-                    { 
-                        ("9:00 AM", new TimeSpan(9, 0, 0)),
-                        ("10:00 AM", new TimeSpan(10, 0, 0)),
-                        ("11:00 AM", new TimeSpan(11, 0, 0)),
-                        ("12:00 PM", new TimeSpan(12, 0, 0))
-                    };
-                    
-                    foreach (var (timeString, timeSpan) in weekendTimes)
+                    if (!scheduledSlots.Any(s => s.TimeSpan == slot.TimeSpan))
                     {
-                        if (!scheduledTimes.Contains(timeString))
-                        {
-                            scheduledTimes.Add(timeString);
-                            return (timeString, timeSpan);
-                        }
+                        scheduledSlots.Add(slot);
+                        return (slot.TimeString, slot.TimeSpan);
                     }
-                    
-                    // If all slots are taken, return the first available time
-                    return ("9:00 AM", new TimeSpan(9, 0, 0));
                 }
-                else
+                
+                // If all slots are taken, start reusing slots (multiple courts scenario)
+                var firstSlot = availableSlots[0];
+                return (firstSlot.TimeString, firstSlot.TimeSpan);
+            }
+            
+            public bool HasAvailableSlots(DateTime gameDate, int locationNumber, bool isWeekend)
+            {
+                var key = (gameDate.Date, locationNumber);
+                if (!_scheduledSlots.ContainsKey(key))
                 {
-                    // Weeknight games: 6:00 PM to 9:00 PM
-                    var weeknightTimes = new[] 
-                    { 
-                        ("6:00 PM", new TimeSpan(18, 0, 0)),
-                        ("7:00 PM", new TimeSpan(19, 0, 0)),
-                        ("8:00 PM", new TimeSpan(20, 0, 0)),
-                        ("9:00 PM", new TimeSpan(21, 0, 0))
-                    };
-                    
-                    foreach (var (timeString, timeSpan) in weeknightTimes)
-                    {
-                        if (!scheduledTimes.Contains(timeString))
-                        {
-                            scheduledTimes.Add(timeString);
-                            return (timeString, timeSpan);
-                        }
-                    }
-                    
-                    // If all slots are taken, return the first available time
-                    return ("6:00 PM", new TimeSpan(18, 0, 0));
+                    return true;
                 }
+                
+                var scheduledSlots = _scheduledSlots[key];
+                var availableSlots = isWeekend ? _weekendSlots : _weeknightSlots;
+                
+                return scheduledSlots.Count < availableSlots.Length;
             }
             
             public DateTime GetNextGameDate(DateTime currentDate, bool wasWeekend)
             {
-                // Alternate between weeknight and weekend games
+                // For basketball leagues, games happen 2-3 times per week
+                // Alternate between weeknight and weekend games, but also schedule mid-week
                 if (wasWeekend)
                 {
+                    // After weekend, next games are Monday/Tuesday
                     return GetNextWeekday(currentDate.AddDays(1));
                 }
                 else
                 {
-                    return GetNextWeekend(currentDate.AddDays(1));
+                    // After weeknight, could be another weeknight or weekend
+                    var nextWeeknight = GetNextWeekday(currentDate.AddDays(2)); // Skip one day for rest
+                    var nextWeekend = GetNextWeekend(currentDate.AddDays(1));
+                    
+                    // Prefer weeknight if it's soon, otherwise weekend
+                    if ((nextWeeknight - currentDate).Days <= 3)
+                    {
+                        return nextWeeknight;
+                    }
+                    return nextWeekend;
                 }
             }
             
@@ -446,6 +547,18 @@ namespace Hoops.Data.Seeders
                     date = date.AddDays(1);
                 }
                 return date;
+            }
+        }
+        
+        internal class TimeSlot
+        {
+            public string TimeString { get; }
+            public TimeSpan TimeSpan { get; }
+            
+            public TimeSlot(string timeString, TimeSpan timeSpan)
+            {
+                TimeString = timeString;
+                TimeSpan = timeSpan;
             }
         }
     }

@@ -194,37 +194,38 @@ namespace Hoops.Infrastructure.Repository
             {
                 _logger.LogInformation("Retrieved division: {DivisionId} for season: {SeasonId}", division.DivisionId, seasonId);
 
-                var divTeams = context
-                    .ScheduleDivTeams.Where(div => div.SeasonId == seasonId && div.DivisionNumber == divisionId)
-                    .ToList();
-                _logger.LogInformation("Retrieved ScheduleDivTeams: {Count} for season {SeasonId}", divTeams.Count, seasonId);
-
                 var seasonGames = context.ScheduleGames.Where(g => g.DivisionId == divisionId && g.SeasonId == seasonId).ToList();
                 _logger.LogInformation("Retrieved season Games: {Count} for division {DivisionId} and season {SeasonId}", seasonGames.Count, divisionId, seasonId);
 
-                // Log some sample data for debugging
-                if (divTeams.Any())
-                {
-                    var sampleDivTeam = divTeams.First();
-                    _logger.LogInformation("Sample ScheduleDivTeam: TeamNumber={TeamNumber}, ScheduleTeamNumber={ScheduleTeamNumber}, ScheduleNumber={ScheduleNumber}", 
-                        sampleDivTeam.TeamNumber, sampleDivTeam.ScheduleTeamNumber, sampleDivTeam.ScheduleNumber);
-                }
-                
                 if (seasonGames.Any())
                 {
-                    var sampleGame = seasonGames.First();
-                    _logger.LogInformation("Sample ScheduleGame: HomeTeamNumber={HomeTeamNumber}, VisitingTeamNumber={VisitingTeamNumber}, ScheduleNumber={ScheduleNumber}", 
-                        sampleGame.HomeTeamNumber, sampleGame.VisitingTeamNumber, sampleGame.ScheduleNumber);
-                }
+                    var divTeamsScheduleNo = seasonGames[0].ScheduleNumber;
 
-                if (seasonGames.Any() && colors.Any() && teams.Any())
-                {
-                    games = CalculateStandings(seasonGames, colors, teams, divTeams, divisionId);
-                }
-                else
-                {
-                    _logger.LogWarning("Missing data for standings calculation: Games={GameCount}, Colors={ColorCount}, Teams={TeamCount}", 
-                        seasonGames.Count, colors.Count, teams.Count);
+                    var divTeams = context
+                        .ScheduleDivTeams.Where(div => div.SeasonId == seasonId && div.ScheduleNumber == divTeamsScheduleNo)
+                        .ToList();
+                    _logger.LogInformation("Retrieved ScheduleDivTeams: {Count} for season {SeasonId}", divTeams.Count, seasonId);
+                    // Log some sample data for debugging
+                    if (divTeams.Any())
+                    {
+                        var sampleDivTeam = divTeams.First();
+                        _logger.LogInformation("Sample ScheduleDivTeam: TeamNumber={TeamNumber}, ScheduleTeamNumber={ScheduleTeamNumber}, ScheduleNumber={ScheduleNumber}",
+                            sampleDivTeam.TeamNumber, sampleDivTeam.ScheduleTeamNumber, sampleDivTeam.ScheduleNumber);
+                    }
+
+                    var sampleGame = seasonGames.First();
+                    _logger.LogInformation("Sample ScheduleGame: HomeTeamNumber={HomeTeamNumber}, VisitingTeamNumber={VisitingTeamNumber}, ScheduleNumber={ScheduleNumber}",
+                        sampleGame.HomeTeamNumber, sampleGame.VisitingTeamNumber, sampleGame.ScheduleNumber);
+
+                    if (colors.Any() && teams.Any())
+                    {
+                        games = CalculateStandings(seasonGames, colors, teams, divTeams, divisionId);
+                    }
+                    else
+                    {
+                        _logger.LogWarning("Missing data for standings calculation: Games={GameCount}, Colors={ColorCount}, Teams={TeamCount}",
+                            seasonGames.Count, colors.Count, teams.Count);
+                    }
                 }
             }
             else
@@ -243,6 +244,15 @@ namespace Hoops.Infrastructure.Repository
         )
         {
             _logger.LogInformation(
+                "*** Count of games " + games.Count.ToString() + " ***"
+            );
+            _logger.LogInformation(
+                "*** Count of divTeams " + divTeams.Count.ToString() + " ***"
+            );
+            _logger.LogInformation(
+                "*** Count of teams " + _teams.Count.ToString() + " ***"
+            );
+            _logger.LogInformation(
                 "*** Start Calculating standings for division " + divisionNo + "***"
             );
 
@@ -253,6 +263,7 @@ namespace Hoops.Infrastructure.Repository
                     + " : "
                     + _teams[0].TeamNumber
             );
+
             var teamRecords = GetTeamRecords(teams, games, divTeams);
             var standings = teamRecords
                 .OrderByDescending(t => t.Pct)
