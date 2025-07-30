@@ -59,7 +59,7 @@ namespace Hoops.Controllers
         /// <returns></returns>
         [Route("GetSeasonGames")]
         [HttpGet]
-        public async Task<IActionResult> GetSeasonGames(int seasonId)
+        public IActionResult GetSeasonGames(int seasonId)
         {
             _logger.LogInformation("Retrieving season games for seasonId: {SeasonId}", seasonId);
             
@@ -70,7 +70,8 @@ namespace Hoops.Controllers
 
             try
             {
-                var games = await repository.GetSeasonGamesAsync(seasonId);
+                // Use GetGames() which returns vmGameSchedule with team names and location names populated
+                var games = repository.GetGames(seasonId);
                 return Ok(games);
             }
             catch (Exception ex)

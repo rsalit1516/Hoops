@@ -494,12 +494,24 @@ namespace Hoops.Infrastructure.Repository
         {
             var db = context;
             List<vmGameSchedule> games = new List<vmGameSchedule>();
-            _logger.LogInformation("Retrieved " + result.Count().ToString() + " season games");
-            var seasonId = result.First().SeasonId;
-            _logger.LogInformation("SeasonID=" + seasonId.ToString());
-            var teamRepo = new TeamRepository(db);
-            var teams = teamRepo.GetSeasonTeams((int)(seasonId ?? 0));
-            var schedDiv = db.Set<ScheduleDivTeam>().Where(s => s.SeasonId == seasonId).ToList();
+            
+            try
+            {
+                _logger.LogInformation("Retrieved " + result.Count().ToString() + " season games");
+                
+                if (!result.Any())
+                {
+                    _logger.LogWarning("No games found in result set");
+                    return games;
+                }
+                
+                var seasonId = result.First().SeasonId;
+                _logger.LogInformation("SeasonID=" + seasonId.ToString());
+                var teamRepo = new TeamRepository(db);
+                var teams = teamRepo.GetSeasonTeams((int)(seasonId ?? 0));
+                var schedDiv = db.Set<ScheduleDivTeam>().Where(s => s.SeasonId == seasonId).ToList();
+                
+                _logger.LogInformation("Found {TeamCount} teams and {ScheduleDivTeamCount} schedule division teams", teams.Count, schedDiv.Count);
 
             foreach (vmGameSchedule game in result)
             {
@@ -550,6 +562,12 @@ namespace Hoops.Infrastructure.Repository
                 games.Add(game);
             }
             return games;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error processing team names for scheduled games");
+                throw;
+            }
         }
 
         private ScheduleDivTeam GetTeam(
