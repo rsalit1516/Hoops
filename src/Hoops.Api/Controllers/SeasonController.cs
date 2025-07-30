@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Hoops.Application.Services;
 using System.Linq;
+using System;
 
 namespace Hoops.Controllers
 {
@@ -44,12 +45,15 @@ namespace Hoops.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCurrentSeason(int id)
         {
-            var season = await _seasonService.GetCurrentSeasonAsync(1);
-            if (season == null)
+            try
+            {
+                var season = await _seasonService.GetCurrentSeasonAsync(1);
+                return Ok(season);
+            }
+            catch (InvalidOperationException)
             {
                 return NotFound();
             }
-            return Ok(season);
         }
 
         /// <summary>

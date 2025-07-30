@@ -554,8 +554,7 @@ namespace Hoops.Infrastructure.Repository
                     if (team != null)
                     {
                         // var color = colors.FirstOrDefault(c => c.ColorId == team.TeamColorId);
-                        game.HomeTeamName = team.TeamName;
-                        ; //color.ColorName + "(" + team.TeamNumber + ")";
+                        game.HomeTeamName = team.TeamName; //color.ColorName + "(" + team.TeamNumber + ")";
                         game.HomeTeamId = team.TeamId;
                     }
                 }
