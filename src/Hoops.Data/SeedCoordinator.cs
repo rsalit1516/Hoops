@@ -20,6 +20,7 @@ namespace Hoops.Data
         private TeamSeeder _teamSeeder { get; set; }
         private ScheduleDivTeamsSeeder _scheduleDivTeamsSeeder { get; set; }
         private ScheduleGameSeeder _scheduleGameSeeder { get; set; }
+        private SchedulePlayoffSeeder _schedulePlayoffSeeder { get; set; }
         private WebContentTypeSeeder _webContentTypeSeeder { get; set; }
         private WebContentSeeder _webContentSeeder { get; set; }
         private HouseholdAndPeopleSeeder _householdAndPeopleSeeder { get; set; }
@@ -32,6 +33,7 @@ namespace Hoops.Data
         TeamSeeder teamSeeder,
         ScheduleDivTeamsSeeder scheduleDivTeamsSeeder,
         ScheduleGameSeeder scheduleGameSeeder,
+        SchedulePlayoffSeeder schedulePlayoffSeeder,
         WebContentTypeSeeder webContentTypeSeeder,
         WebContentSeeder webContentSeeder,
         HouseholdAndPeopleSeeder householdAndPeopleSeeder)
@@ -44,6 +46,7 @@ namespace Hoops.Data
             _teamSeeder = teamSeeder;
             _scheduleDivTeamsSeeder = scheduleDivTeamsSeeder;
             _scheduleGameSeeder = scheduleGameSeeder;
+            _schedulePlayoffSeeder = schedulePlayoffSeeder;
             _webContentTypeSeeder = webContentTypeSeeder;
             _webContentSeeder = webContentSeeder;
             _householdAndPeopleSeeder = householdAndPeopleSeeder;
@@ -51,6 +54,7 @@ namespace Hoops.Data
         public async Task InitializeDataAsync()
         {
             //first delete all records    
+            await _schedulePlayoffSeeder.DeleteAllAsync(); // Delete playoff games first
             await _scheduleGameSeeder.DeleteAllAsync();
             await _scheduleDivTeamsSeeder.DeleteAllAsync(); // Delete after ScheduleGames
             await _teamSeeder.DeleteAllAsync();
@@ -71,6 +75,7 @@ namespace Hoops.Data
             await _teamSeeder.SeedAsync();
             await _scheduleDivTeamsSeeder.SeedAsync(); // Create before ScheduleGames
             await _scheduleGameSeeder.SeedAsync();
+            await _schedulePlayoffSeeder.SeedAsync(); // Create playoff games after regular season games
             await _webContentTypeSeeder.SeedAsync();
             await _webContentSeeder.SeedAsync();
             await _householdAndPeopleSeeder.SeedAsync();
