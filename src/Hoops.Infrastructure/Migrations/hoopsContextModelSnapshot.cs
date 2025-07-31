@@ -148,7 +148,7 @@ namespace Hoops.Infrastructure.Migrations
 
                     b.HasIndex("LinkID");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("Hoops.Core.Models.Company", b =>
@@ -891,11 +891,12 @@ namespace Hoops.Infrastructure.Migrations
 
             modelBuilder.Entity("Hoops.Core.Models.SchedulePlayoff", b =>
                 {
-                    b.Property<int>("ScheduleNumber")
+                    b.Property<int>("SchedulePlayoffId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("SchedulePlayoffID");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ScheduleNumber"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SchedulePlayoffId"));
 
                     b.Property<string>("Descr")
                         .HasColumnType("nvarchar(max)");
@@ -921,15 +922,22 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<int?>("LocationNumber")
                         .HasColumnType("int");
 
+                    b.Property<int>("ScheduleNumber")
+                        .HasColumnType("int");
+
                     b.Property<string>("VisitingTeam")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("VisitingTeamScore")
                         .HasColumnType("int");
 
-                    b.HasKey("ScheduleNumber");
+                    b.HasKey("SchedulePlayoffId");
 
-                    b.ToTable("SchedulePlayoffs");
+                    b.HasIndex("ScheduleNumber", "GameNumber")
+                        .IsUnique()
+                        .HasDatabaseName("UQ_SchedulePlayoffs_Schedule_Game");
+
+                    b.ToTable("SchedulePlayoffs", (string)null);
                 });
 
             modelBuilder.Entity("Hoops.Core.Models.Season", b =>
@@ -1498,7 +1506,7 @@ namespace Hoops.Infrastructure.Migrations
 
                     b.HasKey("CoachId");
 
-                    b.ToTable("VwCoaches");
+                    b.ToTable("VwCoaches", (string)null);
                 });
 
             modelBuilder.Entity("Hoops.Core.Models.VwDirector", b =>
@@ -1565,7 +1573,7 @@ namespace Hoops.Infrastructure.Migrations
 
                     b.HasKey("DirectorId");
 
-                    b.ToTable("VwDirectors");
+                    b.ToTable("VwDirectors", (string)null);
                 });
 
             modelBuilder.Entity("Hoops.Core.Models.WebContent", b =>
@@ -1625,7 +1633,7 @@ namespace Hoops.Infrastructure.Migrations
 
                     b.HasKey("WebContentId");
 
-                    b.ToTable("WebContent");
+                    b.ToTable("WebContent", (string)null);
                 });
 
             modelBuilder.Entity("Hoops.Core.Models.WebContentType", b =>
@@ -1643,7 +1651,7 @@ namespace Hoops.Infrastructure.Migrations
 
                     b.HasKey("WebContentTypeId");
 
-                    b.ToTable("WebContentType");
+                    b.ToTable("WebContentType", (string)null);
                 });
 
             modelBuilder.Entity("Hoops.Core.Models.Coach", b =>

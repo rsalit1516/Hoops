@@ -65,6 +65,9 @@ namespace Hoops.Data.Seeders
 
         public async Task SeedAsync()
         {
+            // First, clear all existing playoff games
+            await DeleteAllAsync();
+            
             var seasons = await _seasonRepo.GetAllAsync();
             var locations = await _locationRepo.GetAllAsync();
             var locationsList = locations.ToList();
@@ -75,40 +78,65 @@ namespace Hoops.Data.Seeders
                 return;
             }
 
+            // Track used playoff schedule numbers to ensure global uniqueness
+            var usedPlayoffScheduleNumbers = new HashSet<int>();
+
             foreach (var season in seasons)
             {
-                var divisions = await _divisionRepo.GetSeasonDivisionsAsync(season.SeasonId);
-                var externalScheduleNumber = 1; // Start with schedule number 1 for playoffs
-                
-                foreach (var division in divisions)
+                // Get all schedule numbers and their corresponding division info for this season
+                var scheduleInfo = await context.ScheduleDivTeams
+                    .Where(sdt => sdt.SeasonId == season.SeasonId)
+                    .GroupBy(sdt => sdt.ScheduleNumber)
+                    .Select(g => new { 
+                        ScheduleNumber = g.Key, 
+                        DivisionNumber = g.First().DivisionNumber,
+                        TeamCount = g.Count() 
+                    })
+                    .ToListAsync();
+
+                Console.WriteLine($"[DEBUG] Found {scheduleInfo.Count} schedule numbers for season {season.Description}");
+
+                foreach (var schedule in scheduleInfo)
                 {
-                    // Get the number of teams in this division from ScheduleDivTeams
-                    var teamCount = await context.ScheduleDivTeams
-                        .Where(sdt => sdt.SeasonId == season.SeasonId && sdt.ScheduleNumber == externalScheduleNumber)
-                        .CountAsync();
+                    // Get the DivisionId from ScheduleGames using the ScheduleNumber
+                    var divisionId = await context.ScheduleGames
+                        .Where(sg => sg.ScheduleNumber == schedule.ScheduleNumber && sg.SeasonId == season.SeasonId)
+                        .Select(sg => sg.DivisionId)
+                        .FirstOrDefaultAsync();
+
+                    if (!divisionId.HasValue)
+                    {
+                        Console.WriteLine($"[DEBUG] No DivisionId found for ScheduleNumber {schedule.ScheduleNumber}, skipping");
+                        continue;
+                    }
+
+                    var teamCount = schedule.TeamCount;
+                    var originalScheduleNumber = schedule.ScheduleNumber;
+                    
+                    // Generate a unique playoff schedule number based on the original but ensure global uniqueness
+                    var playoffScheduleNumber = GenerateUniquePlayoffScheduleNumber(originalScheduleNumber, usedPlayoffScheduleNumbers);
+                    usedPlayoffScheduleNumbers.Add(playoffScheduleNumber);
                     
                     if (teamCount >= 4) // Need at least 4 teams for playoffs
                     {
-                        Console.WriteLine($"[DEBUG] Generating playoff schedule for Division: {division.DivisionDescription} with {teamCount} teams");
-                        await GeneratePlayoffScheduleForDivision(season, division, teamCount, locationsList, externalScheduleNumber);
+                        Console.WriteLine($"[DEBUG] Generating playoff schedule for ScheduleNumber {originalScheduleNumber} -> PlayoffScheduleNumber {playoffScheduleNumber} (Division {schedule.DivisionNumber}) with {teamCount} teams, DivisionId: {divisionId}");
+                        await GeneratePlayoffScheduleForScheduleNumber(season, playoffScheduleNumber, teamCount, locationsList, divisionId.Value);
                     }
                     else
                     {
-                        Console.WriteLine($"[DEBUG] Skipping playoffs for Division: {division.DivisionDescription} - not enough teams ({teamCount})");
+                        Console.WriteLine($"[DEBUG] Skipping playoffs for ScheduleNumber {originalScheduleNumber} - not enough teams ({teamCount})");
                     }
-                    
-                    externalScheduleNumber++; // Increment for next division
                 }
             }
         }
 
-        private async Task GeneratePlayoffScheduleForDivision(Season season, Division division, int teamCount, List<Location> locations, int scheduleNumber)
+        private async Task GeneratePlayoffScheduleForScheduleNumber(Season season, int scheduleNumber, int teamCount, List<Location> locations, int divisionId)
         {
             // Calculate playoff start date (after regular season ends - 2 weeks before season ToDate)
             var playoffStartDate = season.ToDate?.AddDays(-14) ?? DateTime.Now.AddDays(7);
             
-            // Generate playoff bracket games
-            var playoffGames = GeneratePlayoffBracket(teamCount, scheduleNumber, division.DivisionId);
+            // Generate playoff bracket games using the actual schedule number and division ID
+            var playoffGames = GeneratePlayoffBracket(teamCount, scheduleNumber, divisionId);
             
             var gameDate = GetNextWeekend(playoffStartDate); // Start playoffs on weekend
             var gameCounter = 0;
@@ -143,7 +171,9 @@ namespace Hoops.Data.Seeders
                     VisitingTeamScore = null
                 };
                 
+                // Insert and save each game individually to avoid tracking conflicts
                 await _schedulePlayoffRepo.InsertAsync(game);
+                await context.SaveChangesAsync();
                 
                 // Log playoff game creation
                 if (gameCounter <= 10 || gameCounter % 5 == 0)
@@ -158,8 +188,7 @@ namespace Hoops.Data.Seeders
                 }
             }
             
-            await context.SaveChangesAsync();
-            Console.WriteLine($"[DEBUG] Scheduled {gameCounter} playoff games for Division {division.DivisionDescription}");
+            Console.WriteLine($"[DEBUG] Scheduled {gameCounter} playoff games for ScheduleNumber {scheduleNumber} (DivisionId: {divisionId})");
         }
 
         private List<PlayoffGameInfo> GeneratePlayoffBracket(int teamCount, int scheduleNumber, int divisionId)
@@ -271,6 +300,20 @@ namespace Hoops.Data.Seeders
                 date = date.AddDays(1);
             }
             return date;
+        }
+
+        private int GenerateUniquePlayoffScheduleNumber(int originalScheduleNumber, HashSet<int> usedNumbers)
+        {
+            // Start with a playoff-specific range (e.g., 10000+) to avoid conflicts with regular schedule numbers
+            var playoffBaseNumber = 10000 + originalScheduleNumber;
+            
+            // If this number is already used, increment until we find a unique one
+            while (usedNumbers.Contains(playoffBaseNumber))
+            {
+                playoffBaseNumber++;
+            }
+            
+            return playoffBaseNumber;
         }
 
         // Helper class to structure playoff game information

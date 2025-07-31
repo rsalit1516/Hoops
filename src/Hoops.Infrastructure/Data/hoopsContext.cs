@@ -615,17 +615,19 @@ protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //     entity.Property(e => e.Notes).HasMaxLength(100);
         // });
 
-
-        // modelBuilder.Entity<SchedulePlayoff>(entity =>
-        // {
-        //     entity.HasKey(e => e.ScheduleNumber);
-        //     entity.HasKey(e => e.GameNumber);
-        //     entity.Property(e => e.Descr).HasMaxLength(50);
-        //     entity.Property(e => e.GameDate).HasColumnType("datetime");
-        //     entity.Property(e => e.GameTime).HasMaxLength(20);
-        //     entity.Property(e => e.HomeTeam).HasMaxLength(10);
-        //     entity.Property(e => e.VisitingTeam).HasMaxLength(10);
-        // });
+        modelBuilder.Entity<SchedulePlayoff>(entity =>
+        {
+            entity.ToTable("SchedulePlayoffs");
+            entity.HasKey(e => e.SchedulePlayoffId);
+            entity.Property(e => e.SchedulePlayoffId).HasColumnName("SchedulePlayoffID");
+            entity.Property(e => e.DivisionId).HasColumnName("DivisionId");
+            entity.Property(e => e.GameDate).HasColumnType("datetime2");
+            
+            // Add compound unique constraint on ScheduleNumber + GameNumber
+            entity.HasIndex(e => new { e.ScheduleNumber, e.GameNumber })
+                  .IsUnique()
+                  .HasDatabaseName("UQ_SchedulePlayoffs_Schedule_Game");
+        });
 
 
         modelBuilder.Entity<Season>(entity =>
