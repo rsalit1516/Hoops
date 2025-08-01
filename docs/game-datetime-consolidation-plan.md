@@ -70,7 +70,7 @@ This document outlines the strategy for consolidating the `GameDate` and `GameTi
 - Remove `GameTime` column from database schema
 - Remove `GameTime` property from `ScheduleGame` model
 - Update Entity Framework configuration
-- Clean up any remaining references in code
+- Clean up any remaining references idn code
 
 ## Implementation Details
 
