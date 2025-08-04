@@ -1,0 +1,4 @@
+- ScheduleGames: Contains regular season games with ScheduleNumber → DivisionId mapping
+- ScheduleDivTeams: Created by 3rd party application, links divisions & teams to regular and playoff schedule. 
+- ScheduleNumber + SeasonID 
+- LocationNumber is stored in the database linking to the ScheduleLocations LocationNumber field.

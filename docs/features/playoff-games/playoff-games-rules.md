@@ -1,0 +1,4 @@
+- ScheduleNumber in combination with the GameNumber must be unique within season (not globally)
+- Playoff schedule numbers should be derived from regular season but globally unique
+- DivisionId comes from ScheduleGames table via ScheduleNumber lookup
+- Team names are generic placeholders ("Team 1 vs Team 8")
