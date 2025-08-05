@@ -1,7 +1,7 @@
 import { Component, computed, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PlayoffGame } from '@domain/playoffGame';
-import { DailyPlayoffScheduleComponent } from '../daily-playoff-schedule/daily-playoff-schedule.component';
+import { DailyPlayoffSchedule } from '../daily-playoff-schedule/daily-playoff-schedule';
 import { PlayoffGameService } from '@app/services/playoff-game.service';
 
 @Component({
@@ -15,7 +15,7 @@ import { PlayoffGameService } from '@app/services/playoff-game.service';
 }
   `,
   styleUrls: ['./schedule-playoffs.component.scss'],
-  imports: [CommonModule, DailyPlayoffScheduleComponent],
+  imports: [CommonModule, DailyPlayoffSchedule],
 })
 export class SchedulePlayoffsComponent {
   readonly playoffGames = input.required<Array<PlayoffGame[]>>();
@@ -26,6 +26,5 @@ export class SchedulePlayoffsComponent {
 
 
   constructor () { }
-
 
 }

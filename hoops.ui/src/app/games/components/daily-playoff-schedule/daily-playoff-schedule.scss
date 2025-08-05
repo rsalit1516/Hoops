@@ -39,6 +39,9 @@
   font-size: v.$table-font-size;
   text-align: center;
 }
+.mat-header-cell {
+  text-align: center;
+}
 
 .mat-table .mat-header-row {
   height: 32px;
@@ -46,6 +49,10 @@
   border-spacing: 2px;
   background-color: v.$card-background-color;
   position: static;
+}
+
+table .mat-mdc-header-cell {
+  text-align: center;
 }
 
 .mat-row {
@@ -78,6 +85,6 @@
 
 .gameDescription {
   color: v.$brand-color;
-  width: 40%;
+  width: 20%;
   text-align: center;
 }

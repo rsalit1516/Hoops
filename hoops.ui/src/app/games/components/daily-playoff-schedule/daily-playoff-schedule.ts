@@ -8,14 +8,14 @@ import { PlayoffGameService } from '@app/services/playoff-game.service';
 @Component({
   selector: 'csbc-daily-playoff-schedule',
   imports: [CommonModule, MatTableModule],
-  templateUrl: './daily-playoff-schedule.component.html',
+  templateUrl: './daily-playoff-schedule.html',
   styleUrls: [
     // '../../../shared/scss/tables.scss',
-    './daily-playoff-schedule.component.scss',
+    './daily-playoff-schedule.scss',
     '../../../../Content/styles.scss'
   ]
 })
-export class DailyPlayoffScheduleComponent {
+export class DailyPlayoffSchedule {
   readonly playoffGames = input.required<PlayoffGame[]>();
   playoffGameService = inject(PlayoffGameService);
   // playoffGames = computed(() => this.playoffGameService.dailyPlayoffSchedule());
