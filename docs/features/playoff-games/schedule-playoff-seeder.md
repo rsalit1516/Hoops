@@ -20,9 +20,10 @@ The `SchedulePlayoffSeeder` is responsible for creating playoff games that occur
 - Winners advance using placeholders like "Winner QF1", "Winner SF2"
 
 ### Scheduling Logic
-- **Timing**: Playoffs scheduled 2 weeks before season end date
-- **Weekend Games**: All playoff games scheduled on Saturdays and Sundays
-- **Time Slots**: Rotates through 9:00 AM, 11:00 AM, 1:00 PM, 3:00 PM
+- **Timing**: Playoffs scheduled after the season end date. 
+- **Weekend Games**: Playoff games for Divisions with Division Descriptions with T2 or T4 are scheduled on Saturdays and Sundays scheduled at 9:00AM, 9:50AM, 10:40AM and 11:30AM
+- **Weekday Games**: Playoff games for Divisions with Division Descriptions other than T2 or T4 are scheduled on Weeknights using 6PM. 6:50PM, 7:40PM and 8:30 timeslots
+
 - **Location Assignment**: Rotates through available locations
 
 ### Database Integration
@@ -69,6 +70,8 @@ await seeder.SeedAsync();
 - Game 5: Winner QF1 vs Winner QF4 (Semifinal)
 - Game 6: Winner QF2 vs Winner QF3 (Semifinal)
 - Game 7: Winner SF1 vs Winner SF2 (Championship)
+
+- The round (e.g., Quarterfinal, Semifinal, Championship) can populate the Desc field
 
 ## Dependencies
 

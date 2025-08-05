@@ -26,7 +26,7 @@ The `SchedulePlayoffSeeder` automatically generates playoff tournament brackets 
 ## Implementation Details
 
 ### Database Integration
-The seeder works with both SQL Server (production) and in-memory databases (testing):
+The seeder should work with both SQL Server (local) and in-memory databases (testing):
 
 ```csharp
 // Handles different database providers
@@ -71,7 +71,7 @@ await _schedulePlayoffSeeder.SeedAsync();
 
 ### Composite Key
 Each playoff game uses a composite key:
-- `ScheduleNumber`: Identifies the game round (1001, 1002, 1003)
+- `ScheduleNumber`: Identifies the Divisiongame round (1001, 1002, 1003)
 - `GameNumber`: Sequential number within each round
 
 ### Game Naming Convention

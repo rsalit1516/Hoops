@@ -9,6 +9,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Hoops.Data.Seeders
 {
+    /// <summary>
+    /// Seeds playoff games following tournament bracket structure.
+    /// Generates playoff brackets for all divisions except T2 divisions.
+    /// </summary>
     public class SchedulePlayoffSeeder : ISeeder<SchedulePlayoff>
     {
         public hoopsContext context { get; private set; }
@@ -65,10 +69,13 @@ namespace Hoops.Data.Seeders
 
         public async Task SeedAsync()
         {
+            Console.WriteLine("[DEBUG] Starting playoff seeding process");
+            
             // First, clear all existing playoff games
             await DeleteAllAsync();
             
             var seasons = await _seasonRepo.GetAllAsync();
+            var divisions = await _divisionRepo.GetAllAsync();
             var locations = await _locationRepo.GetAllAsync();
             var locationsList = locations.ToList();
 
@@ -83,79 +90,282 @@ namespace Hoops.Data.Seeders
 
             foreach (var season in seasons)
             {
-                // Get all schedule numbers and their corresponding division info for this season
-                var scheduleInfo = await context.ScheduleDivTeams
-                    .Where(sdt => sdt.SeasonId == season.SeasonId)
-                    .GroupBy(sdt => sdt.ScheduleNumber)
-                    .Select(g => new { 
-                        ScheduleNumber = g.Key, 
-                        DivisionNumber = g.First().DivisionNumber,
-                        TeamCount = g.Count() 
-                    })
-                    .ToListAsync();
-
-                Console.WriteLine($"[DEBUG] Found {scheduleInfo.Count} schedule numbers for season {season.Description}");
-
-                foreach (var schedule in scheduleInfo)
+                Console.WriteLine($"[DEBUG] Processing season: {season.Description}");
+                
+                // Get divisions for this season
+                var seasonDivisions = divisions.Where(d => d.SeasonId == season.SeasonId).ToList();
+                
+                foreach (var division in seasonDivisions)
                 {
-                    // Get the DivisionId from ScheduleGames using the ScheduleNumber
-                    var divisionId = await context.ScheduleGames
-                        .Where(sg => sg.ScheduleNumber == schedule.ScheduleNumber && sg.SeasonId == season.SeasonId)
-                        .Select(sg => sg.DivisionId)
-                        .FirstOrDefaultAsync();
-
-                    if (!divisionId.HasValue)
+                    // Skip T2 divisions - they don't have playoffs
+                    if (division.DivisionDescription?.Contains("T2", StringComparison.OrdinalIgnoreCase) == true)
                     {
-                        Console.WriteLine($"[DEBUG] No DivisionId found for ScheduleNumber {schedule.ScheduleNumber}, skipping");
+                        Console.WriteLine($"[DEBUG] Skipping playoff generation for T2 division {division.DivisionId}: {division.DivisionDescription}");
+                        continue;
+                    }
+                    
+                    // Check if playoffs already exist for this division
+                    var existingPlayoffs = await GetPlayoffsByDivisionAsync(division.DivisionId);
+                    if (existingPlayoffs.Any())
+                    {
+                        Console.WriteLine($"[DEBUG] Playoffs already exist for division {division.DivisionId}. Skipping.");
                         continue;
                     }
 
-                    var teamCount = schedule.TeamCount;
-                    var originalScheduleNumber = schedule.ScheduleNumber;
+                    // Get team count and last game date for this division
+                    var divisionInfo = await GetDivisionPlayoffInfoAsync(division.DivisionId, season.SeasonId);
                     
-                    // Generate a unique playoff schedule number based on the original but ensure global uniqueness
-                    var playoffScheduleNumber = GenerateUniquePlayoffScheduleNumber(originalScheduleNumber, usedPlayoffScheduleNumbers);
+                    if (divisionInfo.TeamCount < 4)
+                    {
+                        Console.WriteLine($"[DEBUG] Division {division.DivisionId} has {divisionInfo.TeamCount} teams. Minimum 4 required for playoffs. Skipping.");
+                        continue;
+                    }
+                    
+                    if (!divisionInfo.LastGameDate.HasValue)
+                    {
+                        Console.WriteLine($"[DEBUG] No games found for division {division.DivisionId}. Skipping playoff generation.");
+                        continue;
+                    }
+
+                    // Generate unique playoff schedule number
+                    var playoffScheduleNumber = GenerateUniquePlayoffScheduleNumber(division.DivisionId, usedPlayoffScheduleNumbers);
                     usedPlayoffScheduleNumbers.Add(playoffScheduleNumber);
+
+                    Console.WriteLine($"[DEBUG] Generating playoffs for Division {division.DivisionId} ({division.DivisionDescription}) with {divisionInfo.TeamCount} teams");
                     
-                    if (teamCount >= 4) // Need at least 4 teams for playoffs
-                    {
-                        Console.WriteLine($"[DEBUG] Generating playoff schedule for ScheduleNumber {originalScheduleNumber} -> PlayoffScheduleNumber {playoffScheduleNumber} (Division {schedule.DivisionNumber}) with {teamCount} teams, DivisionId: {divisionId}");
-                        await GeneratePlayoffScheduleForScheduleNumber(season, playoffScheduleNumber, teamCount, locationsList, divisionId.Value);
-                    }
-                    else
-                    {
-                        Console.WriteLine($"[DEBUG] Skipping playoffs for ScheduleNumber {originalScheduleNumber} - not enough teams ({teamCount})");
-                    }
+                    await GeneratePlayoffsForDivisionAsync(division, divisionInfo, playoffScheduleNumber, locationsList);
                 }
+            }
+            
+            Console.WriteLine("[DEBUG] Playoff seeding completed");
+        }
+
+        private async Task<List<SchedulePlayoff>> GetPlayoffsByDivisionAsync(int divisionId)
+        {
+            return await context.SchedulePlayoffs
+                .Where(sp => sp.DivisionId == divisionId)
+                .ToListAsync();
+        }
+
+        private async Task<DivisionPlayoffInfo> GetDivisionPlayoffInfoAsync(int divisionId, int seasonId)
+        {
+            // Get all schedule games for this division
+            var divisionGames = await context.ScheduleGames
+                .Where(sg => sg.DivisionId == divisionId && sg.SeasonId == seasonId)
+                .ToListAsync();
+
+            if (!divisionGames.Any())
+            {
+                return new DivisionPlayoffInfo { TeamCount = 0, LastGameDate = null };
+            }
+
+            // Count unique teams
+            var allTeams = new HashSet<int>();
+            foreach (var game in divisionGames)
+            {
+                if (game.VisitingTeamNumber.HasValue)
+                    allTeams.Add(game.VisitingTeamNumber.Value);
+                if (game.HomeTeamNumber.HasValue)
+                    allTeams.Add(game.HomeTeamNumber.Value);
+            }
+
+            // Get latest game date
+            var lastGameDate = divisionGames.Max(g => g.GameDate);
+
+            return new DivisionPlayoffInfo
+            {
+                TeamCount = allTeams.Count,
+                LastGameDate = lastGameDate
+            };
+        }
+
+        private async Task GeneratePlayoffsForDivisionAsync(Division division, DivisionPlayoffInfo divisionInfo, int playoffScheduleNumber, List<Location> locations)
+        {
+            var startDate = divisionInfo.LastGameDate!.Value.AddDays(1); // Start at least one day after last regular season game
+            var gameNumber = 1;
+
+            // Determine if this is a weekend division (T4) or weeknight division
+            var isWeekendDivision = division.DivisionDescription?.Contains("T4", StringComparison.OrdinalIgnoreCase) == true;
+
+            var playoffGames = GeneratePlayoffBracket(division, divisionInfo.TeamCount, startDate, isWeekendDivision, playoffScheduleNumber, ref gameNumber);
+
+            // Schedule games with proper timing and locations
+            await SchedulePlayoffGamesAsync(playoffGames, locations, isWeekendDivision);
+
+            Console.WriteLine($"[DEBUG] Generated {playoffGames.Count} playoff games for division {division.DivisionId}");
+        }
+
+        private List<PlayoffGameInfo> GeneratePlayoffBracket(Division division, int teamCount, DateTime startDate, bool isWeekendDivision, int scheduleNumber, ref int gameNumber)
+        {
+            var playoffGames = new List<PlayoffGameInfo>();
+            var currentDate = GetNextGameDate(startDate, isWeekendDivision);
+
+            // Generate quarterfinals (if 8+ teams)
+            if (teamCount >= 8)
+            {
+                playoffGames.AddRange(GenerateQuarterfinals(division.DivisionId, scheduleNumber, currentDate, isWeekendDivision, ref gameNumber));
+                currentDate = GetNextGameDate(currentDate.AddDays(isWeekendDivision ? 7 : 1), isWeekendDivision);
+            }
+
+            // Generate semifinals (always needed for 4+ teams)
+            playoffGames.AddRange(GenerateSemifinals(division.DivisionId, scheduleNumber, currentDate, isWeekendDivision, teamCount, ref gameNumber));
+            currentDate = GetNextGameDate(currentDate.AddDays(isWeekendDivision ? 7 : 1), isWeekendDivision);
+
+            // Generate championship
+            playoffGames.AddRange(GenerateChampionship(division.DivisionId, scheduleNumber, currentDate, isWeekendDivision, ref gameNumber));
+
+            return playoffGames;
+        }
+
+        private DateTime GetNextGameDate(DateTime fromDate, bool isWeekendDivision)
+        {
+            if (isWeekendDivision)
+            {
+                // Weekend divisions play on Saturday or Sunday
+                var nextSaturday = fromDate.Date.AddDays((6 - (int)fromDate.DayOfWeek + 7) % 7);
+                if (nextSaturday == fromDate.Date && fromDate.TimeOfDay < TimeSpan.FromHours(9))
+                    return nextSaturday; // Same day if before 9 AM
+                return nextSaturday.Date == fromDate.Date ? nextSaturday.AddDays(7) : nextSaturday;
+            }
+            else
+            {
+                // Weeknight divisions - find next weekday (Monday-Friday)
+                var nextDay = fromDate.Date.AddDays(1);
+                while (nextDay.DayOfWeek == DayOfWeek.Saturday || nextDay.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    nextDay = nextDay.AddDays(1);
+                }
+                return nextDay;
             }
         }
 
-        private async Task GeneratePlayoffScheduleForScheduleNumber(Season season, int scheduleNumber, int teamCount, List<Location> locations, int divisionId)
+        private List<PlayoffGameInfo> GenerateQuarterfinals(int divisionId, int scheduleNumber, DateTime gameDate, bool isWeekendDivision, ref int gameNumber)
         {
-            // Calculate playoff start date (after regular season ends - 2 weeks before season ToDate)
-            var playoffStartDate = season.ToDate?.AddDays(-14) ?? DateTime.Now.AddDays(7);
-            
-            // Generate playoff bracket games using the actual schedule number and division ID
-            var playoffGames = GeneratePlayoffBracket(teamCount, scheduleNumber, divisionId);
-            
-            var gameDate = GetNextWeekend(playoffStartDate); // Start playoffs on weekend
+            var games = new List<PlayoffGameInfo>();
+            var gameTime = isWeekendDivision ? TimeSpan.FromHours(9) : TimeSpan.FromHours(18); // 9 AM weekends, 6 PM weeknights
+
+            // Generate 4 quarterfinal games: 1v8, 2v7, 3v6, 4v5
+            var matchups = new[] { (1, 8), (2, 7), (3, 6), (4, 5) };
+
+            for (int i = 0; i < matchups.Length; i++)
+            {
+                var currentGameTime = gameTime.Add(TimeSpan.FromMinutes(i * 90)); // 90 minutes apart
+
+                games.Add(new PlayoffGameInfo
+                {
+                    DivisionId = divisionId,
+                    GameNumber = gameNumber++,
+                    ScheduleNumber = scheduleNumber,
+                    GameDate = gameDate,
+                    GameTime = currentGameTime,
+                    VisitingTeam = $"Team {matchups[i].Item2}",
+                    HomeTeam = $"Team {matchups[i].Item1}",
+                    Description = "Quarterfinal"
+                });
+            }
+
+            return games;
+        }
+
+        private List<PlayoffGameInfo> GenerateSemifinals(int divisionId, int scheduleNumber, DateTime gameDate, bool isWeekendDivision, int teamCount, ref int gameNumber)
+        {
+            var games = new List<PlayoffGameInfo>();
+            var gameTime = isWeekendDivision ? TimeSpan.FromHours(9) : TimeSpan.FromHours(18);
+
+            if (teamCount >= 8)
+            {
+                // Semifinals after quarterfinals: winners advance
+                games.Add(new PlayoffGameInfo
+                {
+                    DivisionId = divisionId,
+                    GameNumber = gameNumber++,
+                    ScheduleNumber = scheduleNumber,
+                    GameDate = gameDate,
+                    GameTime = gameTime,
+                    VisitingTeam = "QF Winner 2",
+                    HomeTeam = "QF Winner 1",
+                    Description = "Semifinal"
+                });
+
+                games.Add(new PlayoffGameInfo
+                {
+                    DivisionId = divisionId,
+                    GameNumber = gameNumber++,
+                    ScheduleNumber = scheduleNumber,
+                    GameDate = gameDate,
+                    GameTime = gameTime.Add(TimeSpan.FromMinutes(90)),
+                    VisitingTeam = "QF Winner 4",
+                    HomeTeam = "QF Winner 3",
+                    Description = "Semifinal"
+                });
+            }
+            else
+            {
+                // Direct semifinals for 4-6 teams: 1v4, 2v3
+                games.Add(new PlayoffGameInfo
+                {
+                    DivisionId = divisionId,
+                    GameNumber = gameNumber++,
+                    ScheduleNumber = scheduleNumber,
+                    GameDate = gameDate,
+                    GameTime = gameTime,
+                    VisitingTeam = "Team 4",
+                    HomeTeam = "Team 1",
+                    Description = "Semifinal"
+                });
+
+                games.Add(new PlayoffGameInfo
+                {
+                    DivisionId = divisionId,
+                    GameNumber = gameNumber++,
+                    ScheduleNumber = scheduleNumber,
+                    GameDate = gameDate,
+                    GameTime = gameTime.Add(TimeSpan.FromMinutes(90)),
+                    VisitingTeam = "Team 3",
+                    HomeTeam = "Team 2",
+                    Description = "Semifinal"
+                });
+            }
+
+            return games;
+        }
+
+        private List<PlayoffGameInfo> GenerateChampionship(int divisionId, int scheduleNumber, DateTime gameDate, bool isWeekendDivision, ref int gameNumber)
+        {
+            var games = new List<PlayoffGameInfo>();
+            var gameTime = isWeekendDivision ? TimeSpan.FromHours(10, 30) : TimeSpan.FromHours(18); // 10:30 AM championship on weekends
+
+            games.Add(new PlayoffGameInfo
+            {
+                DivisionId = divisionId,
+                GameNumber = gameNumber++,
+                ScheduleNumber = scheduleNumber,
+                GameDate = gameDate,
+                GameTime = gameTime,
+                VisitingTeam = "SF Winner 2",
+                HomeTeam = "SF Winner 1",
+                Description = "Championship"
+            });
+
+            return games;
+        }
+
+        private async Task SchedulePlayoffGamesAsync(List<PlayoffGameInfo> playoffGames, List<Location> locations, bool isWeekendDivision)
+        {
             var gameCounter = 0;
             
             foreach (var playoffGame in playoffGames)
             {
                 gameCounter++;
-                
-                // Determine game time based on game number
-                var gameTime = GetPlayoffGameTime(gameCounter);
                 var selectedLocation = locations[gameCounter % locations.Count]; // Rotate through locations
                 
                 // Create full DateTime with date and time combined
-                var fullGameDateTime = gameDate.Date.Add(gameTime);
+                var fullGameDateTime = playoffGame.GameDate.Date.Add(playoffGame.GameTime);
                 
                 // Create legacy GameTime format
-                var legacyGameTime = new DateTime(1899, 12, 30).Add(gameTime).ToString("yyyy-MM-dd HH:mm:ss");
+                var legacyGameTime = new DateTime(1899, 12, 30).Add(playoffGame.GameTime).ToString("yyyy-MM-dd HH:mm:ss");
                 
-                // All playoff games are in the future initially (no scores)
+                // Create the SchedulePlayoff entity
                 var game = new SchedulePlayoff
                 {
                     ScheduleNumber = playoffGame.ScheduleNumber,
@@ -171,141 +381,18 @@ namespace Hoops.Data.Seeders
                     VisitingTeamScore = null
                 };
                 
-                // Insert and save each game individually to avoid tracking conflicts
+                // Insert and save each game individually
                 await _schedulePlayoffRepo.InsertAsync(game);
                 await context.SaveChangesAsync();
                 
-                // Log playoff game creation
-                if (gameCounter <= 10 || gameCounter % 5 == 0)
-                {
-                    Console.WriteLine($"[DEBUG] Playoff Game #{gameCounter}: {playoffGame.HomeTeam} vs {playoffGame.VisitingTeam} - {playoffGame.Description} on {gameDate:MMM dd} at {gameTime}");
-                }
-                
-                // Move to next weekend for next round (every 4 games)
-                if (gameCounter % 4 == 0)
-                {
-                    gameDate = gameDate.AddDays(7);
-                }
+                Console.WriteLine($"[DEBUG] Playoff Game #{gameCounter}: {playoffGame.HomeTeam} vs {playoffGame.VisitingTeam} - {playoffGame.Description} on {playoffGame.GameDate:MMM dd} at {playoffGame.GameTime}");
             }
-            
-            Console.WriteLine($"[DEBUG] Scheduled {gameCounter} playoff games for ScheduleNumber {scheduleNumber} (DivisionId: {divisionId})");
         }
 
-        private List<PlayoffGameInfo> GeneratePlayoffBracket(int teamCount, int scheduleNumber, int divisionId)
-        {
-            var playoffGames = new List<PlayoffGameInfo>();
-            var gameNumber = 1;
-            
-            // Generate playoff bracket based on team standings
-            // Last place vs First place, Second-to-last vs Second place, etc.
-            
-            // Quarterfinals (if 8+ teams) or Semifinals (if 4-6 teams)
-            if (teamCount >= 8)
-            {
-                // Quarterfinals - Last place vs First place pattern
-                for (int i = 0; i < 4; i++)
-                {
-                    var homeTeamRank = i + 1; // 1st, 2nd, 3rd, 4th place
-                    var visitingTeamRank = teamCount - i; // Last, 2nd-to-last, etc.
-                    
-                    playoffGames.Add(new PlayoffGameInfo
-                    {
-                        ScheduleNumber = scheduleNumber,
-                        GameNumber = gameNumber++,
-                        HomeTeam = $"Team {homeTeamRank}",
-                        VisitingTeam = $"Team {visitingTeamRank}",
-                        Description = "Quarterfinal",
-                        DivisionId = divisionId
-                    });
-                }
-                
-                // Semifinals
-                playoffGames.Add(new PlayoffGameInfo
-                {
-                    ScheduleNumber = scheduleNumber,
-                    GameNumber = gameNumber++,
-                    HomeTeam = "Winner QF1",
-                    VisitingTeam = "Winner QF4",
-                    Description = "Semifinal",
-                    DivisionId = divisionId
-                });
-                
-                playoffGames.Add(new PlayoffGameInfo
-                {
-                    ScheduleNumber = scheduleNumber,
-                    GameNumber = gameNumber++,
-                    HomeTeam = "Winner QF2",
-                    VisitingTeam = "Winner QF3",
-                    Description = "Semifinal",
-                    DivisionId = divisionId
-                });
-            }
-            else if (teamCount >= 4)
-            {
-                // Direct to Semifinals - Last place vs First place pattern
-                var pairs = teamCount / 2;
-                for (int i = 0; i < pairs; i++)
-                {
-                    var homeTeamRank = i + 1;
-                    var visitingTeamRank = teamCount - i;
-                    
-                    playoffGames.Add(new PlayoffGameInfo
-                    {
-                        ScheduleNumber = scheduleNumber,
-                        GameNumber = gameNumber++,
-                        HomeTeam = $"Team {homeTeamRank}",
-                        VisitingTeam = $"Team {visitingTeamRank}",
-                        Description = "Semifinal",
-                        DivisionId = divisionId
-                    });
-                }
-            }
-            
-            // Championship Game
-            playoffGames.Add(new PlayoffGameInfo
-            {
-                ScheduleNumber = scheduleNumber,
-                GameNumber = gameNumber++,
-                HomeTeam = "Winner SF1",
-                VisitingTeam = "Winner SF2",
-                Description = "Championship",
-                DivisionId = divisionId
-            });
-            
-            return playoffGames;
-        }
-
-        private TimeSpan GetPlayoffGameTime(int gameNumber)
-        {
-            // Playoff games typically on weekends
-            // Saturday: 9:00 AM, 11:00 AM, 1:00 PM, 3:00 PM
-            // Sunday: 9:00 AM, 11:00 AM, 1:00 PM, 3:00 PM
-            
-            var timeSlots = new[]
-            {
-                new TimeSpan(9, 0, 0),   // 9:00 AM
-                new TimeSpan(11, 0, 0),  // 11:00 AM
-                new TimeSpan(13, 0, 0),  // 1:00 PM
-                new TimeSpan(15, 0, 0)   // 3:00 PM
-            };
-            
-            return timeSlots[(gameNumber - 1) % timeSlots.Length];
-        }
-
-        private DateTime GetNextWeekend(DateTime fromDate)
-        {
-            var date = fromDate;
-            while (date.DayOfWeek != DayOfWeek.Saturday)
-            {
-                date = date.AddDays(1);
-            }
-            return date;
-        }
-
-        private int GenerateUniquePlayoffScheduleNumber(int originalScheduleNumber, HashSet<int> usedNumbers)
+        private int GenerateUniquePlayoffScheduleNumber(int divisionId, HashSet<int> usedNumbers)
         {
             // Start with a playoff-specific range (e.g., 10000+) to avoid conflicts with regular schedule numbers
-            var playoffBaseNumber = 10000 + originalScheduleNumber;
+            var playoffBaseNumber = 10000 + divisionId;
             
             // If this number is already used, increment until we find a unique one
             while (usedNumbers.Contains(playoffBaseNumber))
@@ -316,15 +403,23 @@ namespace Hoops.Data.Seeders
             return playoffBaseNumber;
         }
 
-        // Helper class to structure playoff game information
+        // Helper classes to structure playoff information
+        private class DivisionPlayoffInfo
+        {
+            public int TeamCount { get; set; }
+            public DateTime? LastGameDate { get; set; }
+        }
+
         private class PlayoffGameInfo
         {
+            public int DivisionId { get; set; }
             public int ScheduleNumber { get; set; }
             public int GameNumber { get; set; }
+            public DateTime GameDate { get; set; }
+            public TimeSpan GameTime { get; set; }
             public string HomeTeam { get; set; }
             public string VisitingTeam { get; set; }
             public string Description { get; set; }
-            public int DivisionId { get; set; }
         }
     }
 }

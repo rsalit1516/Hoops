@@ -26,10 +26,18 @@ ALTER TABLE SchedulePlayoffs
 ADD CONSTRAINT PK_SchedulePlayoffs_ID PRIMARY KEY (SchedulePlayoffID);
 
 -- 4. Add a compound unique constraint on ScheduleNumber + GameNumber
+-- ALTER TABLE SchedulePlayoffs
+-- DROP CONSTRAINT UQ_SchedulePlayoffs_Schedule_Game 
+
+-- 4. Add a compound unique constraint on ScheduleNumber + GameNumber
 ALTER TABLE SchedulePlayoffs
-ADD CONSTRAINT UQ_SchedulePlayoffs_Schedule_Game UNIQUE (ScheduleNumber, GameNumber);
+ADD CONSTRAINT UQ_SchedulePlayoffs_Schedule_Game UNIQUE (DivisionID, GameNumber);
+
 
 
 SELECT COLUMN_NAME
 FROM INFORMATION_SCHEMA.COLUMNS
 WHERE TABLE_NAME = 'SchedulePlayoffs' AND COLUMNPROPERTY(OBJECT_ID(TABLE_NAME), COLUMN_NAME, 'IsIdentity') = 1;
+
+
+

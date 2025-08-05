@@ -1,4 +1,6 @@
 - ScheduleNumber in combination with the GameNumber must be unique within season (not globally)
-- Playoff schedule numbers should be derived from regular season but globally unique
+- DivisionId in combination with the GameNumber must be unique 
 - DivisionId comes from ScheduleGames table via ScheduleNumber lookup
 - Team names are generic placeholders ("Team 1 vs Team 8")
+- T2 divisions do not have playoffs - skip playoff generation for divisions with "T2" in Division Description
+- Playoff games must be scheduled at least one day after the last regular season game for that specific division
