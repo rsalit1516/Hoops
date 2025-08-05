@@ -63,7 +63,7 @@ namespace Hoops.Api
                                         .AllowAnyMethod();
                                          });
                    });
-            _ = services.AddLogging();
+            // _ = services.AddLogging();
             _ = services.AddControllers().AddNewtonsoftJson(options =>
     {
         options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;

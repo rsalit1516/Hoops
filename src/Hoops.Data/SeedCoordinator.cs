@@ -69,7 +69,6 @@ namespace Hoops.Data
             //then create new records
             await _colorSeeder.SeedAsync();
             await _locationSeeder.SeedAsync();
-            await _locationSeeder.SeedAsync();
             await _seasonSeeder.SeedAsync();
             await _divisionSeeder.SeedAsync();
             await _teamSeeder.SeedAsync();

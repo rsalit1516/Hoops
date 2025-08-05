@@ -88,6 +88,10 @@ namespace Hoops.Data.Seeders
                     externalScheduleNumber++; // Increment for next external schedule group
                 }
             }
+            
+            // Save all changes to database before playoff seeder runs
+            await context.SaveChangesAsync();
+            Console.WriteLine("[DEBUG] All schedule games saved to database");
         }
 
         private async Task GenerateScheduleForDivision(Season season, Division division, List<ScheduleDivTeam> scheduleDivTeams, List<Location> locations, int scheduleNumber)

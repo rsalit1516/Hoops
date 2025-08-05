@@ -43,6 +43,7 @@ namespace Hoops.Infrastructure.Repository
 
         public virtual async Task<IEnumerable<T>> GetAllAsync()
         {
+            Console.WriteLine("GetAllAsync called" + typeof(T).Name);
             return await DbSet.AsQueryable().ToListAsync();
         }
 

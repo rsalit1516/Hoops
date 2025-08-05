@@ -79,7 +79,7 @@ namespace Hoops.Api
         .ConfigureLogging(logging =>
         {
             logging.ClearProviders();
-            logging.SetMinimumLevel(LogLevel.Trace);
+            logging.SetMinimumLevel(LogLevel.Warning);
         })
         .UseNLog();
     }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,6 +7,7 @@ using Hoops.Core.ViewModels;
 using Hoops.Infrastructure.Repository;
 using Hoops.Infrastructure.Data;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Hoops.Data
 {
@@ -125,7 +126,7 @@ namespace Hoops.Data
 
         public bool InitPersonTest(hoopsContext context)
         {
-            ILogger<PersonRepository> _logger = LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<PersonRepository>();
+            ILogger<PersonRepository> _logger = NullLogger<PersonRepository>.Instance;
             Household house;
             IQueryable<Household> houses;
             var rep = new PersonRepository(context, _logger);
@@ -205,7 +206,7 @@ namespace Hoops.Data
         }
         public bool InitDirectorTest()
         {
-            ILogger<PersonRepository> _logger = LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<PersonRepository>();
+            ILogger<PersonRepository> _logger = NullLogger<PersonRepository>.Instance;
             using (var db = new hoopsContext())
             {
                 var rep = new DirectorRepository(db);
@@ -224,7 +225,7 @@ namespace Hoops.Data
 
         public bool InitUser(hoopsContext context)
         {
-            ILogger<PersonRepository> _logger = LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<PersonRepository>();
+            ILogger<PersonRepository> _logger = NullLogger<PersonRepository>.Instance;
             using (var db = new hoopsContext())
             {
                 var personRep = new PersonRepository(db, _logger);
@@ -261,7 +262,7 @@ namespace Hoops.Data
 
         public void InitPlayers(hoopsContext context)
         {
-            ILogger<PersonRepository> _logger = LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<PersonRepository>();
+            ILogger<PersonRepository> _logger = NullLogger<PersonRepository>.Instance;
             context = new hoopsContext();
             var currentSeason = CurrentSeason.SeasonId;
             var repPeople = new PersonRepository(new hoopsContext(), _logger);
@@ -293,7 +294,7 @@ namespace Hoops.Data
 
         public void InitCoaches(hoopsContext context)
         {
-            ILogger<PersonRepository> _logger = LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<PersonRepository>();
+            ILogger<PersonRepository> _logger = NullLogger<PersonRepository>.Instance;
             context = new hoopsContext();
             var currentSeason = CurrentSeason.SeasonId;
             var repPeople = new PersonRepository(new hoopsContext(), _logger);
@@ -316,7 +317,7 @@ namespace Hoops.Data
         }
         public void InitSponsors()
         {
-            ILogger<PersonRepository> _logger = LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<PersonRepository>();
+            ILogger<PersonRepository> _logger = NullLogger<PersonRepository>.Instance;
             using (var db = new hoopsContext())
             {
                 var currentSeason = CurrentSeason.SeasonId;
@@ -361,7 +362,7 @@ namespace Hoops.Data
 
         public async Task<bool> InitDivision(hoopsContext context)
         {
-            ILogger<PersonRepository> _logger = LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<PersonRepository>();
+            ILogger<PersonRepository> _logger = NullLogger<PersonRepository>.Instance;
             var init = new HoopsInitializer();
             var divisionRep = new DivisionRepository(context);
 
@@ -642,7 +643,7 @@ namespace Hoops.Data
         }
         public void DeleteTestPeople(hoopsContext context)
         {
-            ILogger<PersonRepository> _logger = LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<PersonRepository>();
+            ILogger<PersonRepository> _logger = NullLogger<PersonRepository>.Instance;
             var rep = new PersonRepository(context, _logger);
             var people = rep.GetAll(CompanyId);
             foreach (Person person in people)
