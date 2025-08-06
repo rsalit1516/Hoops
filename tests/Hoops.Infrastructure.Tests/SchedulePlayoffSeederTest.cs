@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Hoops.Data.Seeders;
 using Hoops.Infrastructure.Tests;
 using Hoops.Infrastructure.Repository;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
 
 namespace Hoops.Infrastructure.Tests
@@ -27,12 +28,14 @@ namespace Hoops.Infrastructure.Tests
             var seasonRepo = new SeasonRepository(_fixture.Context!);
             var divisionRepo = new DivisionRepository(_fixture.Context!);
             var locationRepo = new LocationRepository(_fixture.Context!);
+            var scheduleGameRepo = new ScheduleGameRepository(_fixture.Context!, NullLogger<ScheduleGameRepository>.Instance);
             
             var seeder = new SchedulePlayoffSeeder(
                 schedulePlayoffRepo,
                 seasonRepo,
                 divisionRepo,
                 locationRepo,
+                scheduleGameRepo,
                 _fixture.Context!
             );
             
@@ -48,12 +51,14 @@ namespace Hoops.Infrastructure.Tests
             var seasonRepo = new SeasonRepository(_fixture.Context!);
             var divisionRepo = new DivisionRepository(_fixture.Context!);
             var locationRepo = new LocationRepository(_fixture.Context!);
+            var scheduleGameRepo = new ScheduleGameRepository(_fixture.Context!, NullLogger<ScheduleGameRepository>.Instance);
             
             var seeder = new SchedulePlayoffSeeder(
                 schedulePlayoffRepo,
                 seasonRepo,
                 divisionRepo,
                 locationRepo,
+                scheduleGameRepo,
                 _fixture.Context!
             );
             
@@ -69,12 +74,14 @@ namespace Hoops.Infrastructure.Tests
             var seasonRepo = new SeasonRepository(_fixture.Context!);
             var divisionRepo = new DivisionRepository(_fixture.Context!);
             var locationRepo = new LocationRepository(_fixture.Context!);
+            var scheduleGameRepo = new ScheduleGameRepository(_fixture.Context!, NullLogger<ScheduleGameRepository>.Instance);
             
             var seeder = new SchedulePlayoffSeeder(
                 schedulePlayoffRepo,
                 seasonRepo,
                 divisionRepo,
                 locationRepo,
+                scheduleGameRepo,
                 _fixture.Context!
             );
             
