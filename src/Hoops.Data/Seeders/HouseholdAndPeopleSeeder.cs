@@ -94,6 +94,63 @@ namespace Hoops.Data.Seeders
                 }
                 context.SaveChanges();
             }
+
+            // Add additional parent/AD records for user accounts
+            await SeedParentAdRecords();
+        }
+
+        private async Task SeedParentAdRecords()
+        {
+            var random = new Random();
+            var parentAdNames = new[]
+            {
+                new { FirstName = "Robert", LastName = "Salit", Email = "rsalit@example.com" },
+                new { FirstName = "Jennifer", LastName = "Williams", Email = "jwilliams@example.com" },
+                new { FirstName = "Michael", LastName = "Johnson", Email = "mjohnson@example.com" },
+                new { FirstName = "Sarah", LastName = "Davis", Email = "sdavis@example.com" },
+                new { FirstName = "David", LastName = "Miller", Email = "dmiller@example.com" },
+                new { FirstName = "Lisa", LastName = "Anderson", Email = "landerson@example.com" },
+                new { FirstName = "James", LastName = "Wilson", Email = "jwilson@example.com" },
+                new { FirstName = "Maria", LastName = "Garcia", Email = "mgarcia@example.com" }
+            };
+
+            // Get some existing households to assign these parents to
+            var existingHouseholds = await _householdRepo.GetAllAsync();
+            var householdsList = existingHouseholds.Take(8).ToList(); // Use first 8 households
+
+            for (int i = 0; i < parentAdNames.Length; i++)
+            {
+                var parentAd = parentAdNames[i];
+                var household = householdsList[i % householdsList.Count]; // Distribute across households
+
+                // Create parent/AD person (25+ years old or null birth date for admins)
+                var isAdmin = i < 3; // First 3 will be admin users
+                var birthDate = isAdmin ? (DateTime?)null : DateTime.Now.AddYears(-random.Next(25, 45)).AddDays(random.Next(1, 365));
+
+                var person = new Person
+                {
+                    FirstName = parentAd.FirstName,
+                    LastName = parentAd.LastName,
+                    HouseId = household.HouseId,
+                    CompanyId = 1,
+                    BirthDate = birthDate,
+                    Email = parentAd.Email,
+                    Gender = random.Next(2) == 0 ? "M" : "F",
+                    CreatedDate = DateTime.Now,
+                    CreatedUser = "Seed",
+                    Parent = true,          // All are parents
+                    Ad = true,              // All are ADs for user account creation
+                    Player = false,         // Parents are not players
+                    Bc = false,            // Parents are not BC (Birth Certificate required)
+                    Cellphone = "954" + random.Next(1000000, 9999999).ToString(),
+                    Suspended = false
+                };
+
+                await _personRepo.InsertAsync(person);
+            }
+
+            await context.SaveChangesAsync();
+            Console.WriteLine($"[DEBUG] Created {parentAdNames.Length} parent/AD records for user accounts");
         }
         public static int? CalculateGrade(DateTime birthDate, DateTime? asOf = null)
         {

@@ -167,6 +167,7 @@ block-beta
 - Use clear, descriptive test method names.
 - Keep tests isolated and repeatable.
 - All tests must pass before merging to main branches (enforced by CI).
+- At a minimum, unit tests will be created for all acceptance criteria
 
 ### CI/CD Integration
 
