@@ -1,0 +1,1 @@
+- user username should be unique

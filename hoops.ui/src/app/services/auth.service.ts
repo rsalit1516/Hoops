@@ -28,15 +28,20 @@ export class AuthService {
     ) {}
 
     isLoggedIn(): boolean {
-      return !!this.currentUser;
+      return !!this.currentUser();
     }
 
     login(userName: string, password: string): Observable<User> {
-      let tFlag = false;
       console.log(userName + ', ' + password);
       return this.http
-        .get<User>(Constants.loginUrl + '/' + userName + '/' + password);
-
+        .get<User>(Constants.loginUrl + '/' + userName + '/' + password)
+        .pipe(
+          tap(user => {
+            if (user) {
+              this.setUserState(user);
+            }
+          })
+        );
     }
     setUserState(user: User) {
       this.store.dispatch(new userActions.SetCurrentUser(user));
@@ -45,5 +50,6 @@ export class AuthService {
 
     logout(): void {
       this.currentUser.set(undefined);
+      this.store.dispatch(new userActions.SetCurrentUser(undefined as any));
     }
 }

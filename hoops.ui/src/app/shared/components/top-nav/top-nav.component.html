@@ -33,7 +33,7 @@
       <!-- *appFeatureFlag = "'adminModule'" -->
 
       <a
-        *ngIf="showAdminMenu"
+        *ngIf="showAdminMenu()"
         routerLink="/admin"
         mat-button
         routerLinkActive="activelink"
@@ -54,7 +54,10 @@
       >
         Login
       </button>
-      <p readonly *ngIf="user()">Hello {{ userName }}</p>
+      <div *ngIf="user()" class="flex items-center gap-2">
+        <span class="user-name">Hello {{ user()?.firstName }}</span>
+        <button mat-button (click)="logout()">Logout</button>
+      </div>
     </div>
   </mat-toolbar-row>
 </mat-toolbar>

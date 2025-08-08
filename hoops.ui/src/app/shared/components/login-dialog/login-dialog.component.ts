@@ -76,6 +76,8 @@ export class LoginDialogComponent implements OnInit {
     return this.#authService.login(userName, password).subscribe(response => {
       console.log(response);
       if (response !== null) {
+        // The login method now automatically calls setUserState via tap operator
+        // But we'll also dispatch to the store for compatibility
         this.store.dispatch(new userActions.SetCurrentUser(response));
       }
     });

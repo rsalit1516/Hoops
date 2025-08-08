@@ -27,7 +27,6 @@ export class TopNavComponent implements OnInit {
   private authService = inject(AuthService);
   private featureFlags = inject(FeatureFlagService);
 
-  currentUser$: Observable<User> | undefined;
   userName: string | undefined;
   user = computed(() => this.authService.currentUser());
   drawer!: {
@@ -36,7 +35,11 @@ export class TopNavComponent implements OnInit {
   env: any;
   constants: typeof Constants;
   securityEnabled: boolean = true;
-  showAdminMenu = false;
+  showAdminMenu = computed(() => {
+    if (!this.securityEnabled) return true;
+    const currentUser = this.user();
+    return this.showAdmin && currentUser && (currentUser.screens?.length ?? 0) > 0;
+  });
   get showAdmin (): boolean {
     return this.featureFlags.isEnabled('adminModule');
   }
@@ -49,22 +52,9 @@ export class TopNavComponent implements OnInit {
     this.env = environment.environment;
     this.securityEnabled = environment.securityEnabled;
 
-    if (this.securityEnabled) {
-      if (this.user()) {
-        this.userName = this.user()!.firstName;
-        // if (this.securityEnabled) {
-        this.showAdminMenu =
-          this.showAdmin && (this.user()!.screens == undefined ? false : this.user()!.screens!.length > 0);
-        // }
-      }
-
-    } else {
-      this.showAdminMenu = true;
-    }
     console.log('Environment = ' + this.env);
     console.log('Show Admin = ' + this.showAdmin);
-    console.log('Show Admin Menu = ' + this.showAdminMenu);
-
+    console.log('Show Admin Menu = ' + this.showAdminMenu());
   }
 
   openDialog () {
@@ -76,6 +66,11 @@ export class TopNavComponent implements OnInit {
       // console.log('The dialog was closed');
     });
   }
+
+  logout() {
+    this.authService.logout();
+  }
+
   public onToggleSidenav = () => {
     this.sidenavToggle.emit();
   };
