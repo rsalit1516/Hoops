@@ -12,44 +12,66 @@ import * as userActions from '@app/user/state/user.actions';
 import { Constants } from '../shared/constants';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   readonly http = inject(HttpClient);
   readonly dataService = inject(DataService);
   readonly store = inject(Store<fromUser.State>);
 
-  currentUser = signal< User | undefined>(undefined);
-    redirectUrl: string | undefined;
-    loginUrl: string | undefined;
-    user: User | undefined;
+  currentUser = signal<User | undefined>(undefined);
+  canEditGames = signal<boolean>(false);
+  redirectUrl: string | undefined;
+  loginUrl: string | undefined;
+  user: User | undefined;
 
-    constructor(
-    ) {}
+  constructor() {}
 
-    isLoggedIn(): boolean {
-      return !!this.currentUser();
-    }
+  isLoggedIn(): boolean {
+    return !!this.currentUser();
+  }
 
-    login(userName: string, password: string): Observable<User> {
-      console.log(userName + ', ' + password);
-      return this.http
-        .get<User>(Constants.loginUrl + '/' + userName + '/' + password)
-        .pipe(
-          tap(user => {
-            if (user) {
-              this.setUserState(user);
-            }
-          })
-        );
-    }
-    setUserState(user: User) {
-      this.store.dispatch(new userActions.SetCurrentUser(user));
-      this.currentUser.set(user);
-    }
+  login(userName: string, password: string): Observable<User> {
+    console.log(userName + ', ' + password);
+    return this.http
+      .get<User>(Constants.loginUrl + '/' + userName + '/' + password)
+      .pipe(
+        tap((user) => {
+          if (user) {
+            this.setUserState(user);
+          }
+        })
+      );
+  }
+  setUserState(user: User) {
+    this.store.dispatch(new userActions.SetCurrentUser(user));
+    this.currentUser.set(user);
+  }
 
-    logout(): void {
-      this.currentUser.set(undefined);
-      this.store.dispatch(new userActions.SetCurrentUser(undefined as any));
+  logout(): void {
+    this.currentUser.set(undefined);
+    this.store.dispatch(new userActions.SetCurrentUser(undefined as any));
+  }
+
+  canEdit(user: User | undefined, divisionId: number | undefined): boolean {
+    console.log(divisionId);
+    console.log(user);
+    let tFlag = false;
+    if (user && divisionId) {
+      if (user.userType === 2 || user.userType === 3) {
+        tFlag = true;
+        this.canEditGames.set(true);
+        return true;
+      } else {
+        if (user.divisions) {
+          let found = user.divisions.find(
+            (div) => div.divisionId === divisionId
+          );
+          this.canEditGames.set(found !== undefined);
+          return found !== undefined;
+        }
+      }
     }
+    return tFlag;
+  }
 }

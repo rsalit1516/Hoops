@@ -19,7 +19,7 @@ import { AuthService } from '@app/services/auth.service';
 export class AdminGameService {
   private http = inject(HttpClient);
   private dataService = inject(DataService);
-readonly #authService = inject(AuthService);
+  private authService = inject(AuthService);
   allGames: RegularGame[] | undefined;
   selectedDivision = signal<Division | null>(null);
   selectedTeam = signal<number | undefined>(0);
@@ -28,7 +28,7 @@ readonly #authService = inject(AuthService);
   // Expose the selected record signal
   selectedRecordSignal = this.selectedRecord.asReadonly();
   filteredGames = signal<RegularGame[] | null>(null);
-  curentUser = computed(() => this.#authService.currentUser());
+  currentUser = computed(() => this.authService.currentUser());
   constructor(
     private store: Store<fromGames.State>,
     private userStore: Store<fromUser.State>
@@ -110,7 +110,8 @@ readonly #authService = inject(AuthService);
   }
 
   setCanEdit (division: number) {
-    let canEdit = this.getCanEdit(this.curentUser(), division);
+    console.log(this.currentUser());
+    let canEdit = this.getCanEdit(this.currentUser(), division);
   }
   getCanEdit (user: User | undefined, divisionId: number): boolean {
     // console.log(divisionId);

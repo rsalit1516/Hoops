@@ -12,9 +12,8 @@ import { DivisionService } from './division.service';
 import { DataService } from './data.service';
 import { Season } from '@app/domain/season';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PlayoffGameService {
   readonly #divisionService = inject(DivisionService);
@@ -30,11 +29,10 @@ export class PlayoffGameService {
   allPlayoffGames: PlayoffGame[] | undefined;
   playoffGames$: Observable<PlayoffGame[]> | undefined;
   selectedSeason = computed(() => this.#seasonService.selectedSeason);
-  selectedDivision = computed(() => this.#divisionService.selectedDivision);
+  selectedDivision = computed(() => this.#divisionService.selectedDivision());
   dailyPlayoffSchedule = signal<PlayoffGame[][]>([]);
 
-
-  constructor () {
+  constructor() {
     effect(() => {
       if (this.selectedSeason() !== undefined) {
         this.fetchSeasonPlayoffGames();
@@ -43,17 +41,22 @@ export class PlayoffGameService {
     effect(() => {
       if (this.selectedDivision() !== undefined) {
         this.getDivisionPlayoffGames();
-        const dailyGames = this.groupPlayoffGamesByDate(this.divisionPlayoffGames()!);
+        const dailyGames = this.groupPlayoffGamesByDate(
+          this.divisionPlayoffGames()!
+        );
         this.dailyPlayoffSchedule.update(() => dailyGames);
       }
     });
   }
 
-  getSeasonPlayoffGames (): Observable<PlayoffGame[] | null> {
+  getSeasonPlayoffGames(): Observable<PlayoffGame[] | null> {
     if (this.#seasonService.selectedSeason === undefined) {
       return of(null);
     } else {
-      const url = Constants.PLAYOFF_GAMES_URL + '?seasonId=' + this.#seasonService.selectedSeason!.seasonId;
+      const url =
+        Constants.PLAYOFF_GAMES_URL +
+        '?seasonId=' +
+        this.#seasonService.selectedSeason!.seasonId;
       return this.http.get<PlayoffGame[]>(url).pipe(
         // map((response) => (this.seasonPlayoffGames = response)),
         tap((data) => console.log('All: ' + JSON.stringify(data.length))),
@@ -61,7 +64,7 @@ export class PlayoffGameService {
       );
     }
   }
-  fetchSeasonPlayoffGames () {
+  fetchSeasonPlayoffGames() {
     if (this.selectedSeason() === undefined) {
       return;
     }
@@ -72,8 +75,8 @@ export class PlayoffGameService {
     });
     // console.log(this.seasonPlayoffGames());
   }
-  getDivisionPlayoffGames (): void {
-    const allPlayoffGames = this.seasonPlayoffGames
+  getDivisionPlayoffGames(): void {
+    const allPlayoffGames = this.seasonPlayoffGames;
     const division = this.selectedDivision();
     let games: PlayoffGame[] = [];
     let sortedDate: PlayoffGame[] = [];
@@ -94,21 +97,22 @@ export class PlayoffGameService {
     // console.log(sortedDate);
     // console.log(this.divisionPlayoffGames());
   }
-  groupPlayoffGamesByDate (games: PlayoffGame[]): PlayoffGame[][] {
+  groupPlayoffGamesByDate(games: PlayoffGame[]): PlayoffGame[][] {
     const groupedGames: { [key: string]: PlayoffGame[] } = {};
     if (!games || games.length === 0) {
       return [];
     }
-    games.forEach(game => {
+    games.forEach((game) => {
       const gameDate = new Date(game.gameDate);
-      const dateKey = gameDate.toLocaleDateString("en-CA");
+      const dateKey = gameDate.toLocaleDateString('en-CA');
       if (!groupedGames[dateKey]) {
         groupedGames[dateKey] = [];
-      } groupedGames[dateKey].push(game);
+      }
+      groupedGames[dateKey].push(game);
     });
     return Object.values(groupedGames); // Convert the object to an array of arrays
   }
-  compare (a: Date | string, b: Date | string, isAsc: boolean) {
+  compare(a: Date | string, b: Date | string, isAsc: boolean) {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 }
@@ -116,5 +120,5 @@ export interface PlayoffGameResponse {
   count: number;
   next: string;
   previous: string;
-  results: PlayoffGame[]
+  results: PlayoffGame[];
 }

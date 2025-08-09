@@ -1,5 +1,16 @@
-import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
-import { UntypedFormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
+import {
+  UntypedFormBuilder,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { Color } from '@app/domain/color';
 import { Division } from '@app/domain/division';
 import { Team } from '@app/domain/team';
@@ -44,12 +55,12 @@ import { LocationService } from '../services/location.service';
     MatOptionModule,
     MatButtonModule,
     AsyncPipe,
-  ]
+  ],
 })
 export class AdminTeamDetailComponent implements OnInit {
   readonly #authService = inject(AuthService);
   readonly #teamService = inject(TeamService);
-  readonly #divisionService = inject(DivisionService);
+  private divisionService = inject(DivisionService);
   readonly #seasonService = inject(SeasonService);
   readonly colorService = inject(ColorService);
   readonly locationService = inject(LocationService);
@@ -66,28 +77,28 @@ export class AdminTeamDetailComponent implements OnInit {
   });
   // colors$: Observable<Color[]>;
   _team = signal<Team | undefined>(undefined);
-  get team () {
+  get team() {
     return this._team();
   }
-  updateTeam (val: Team) {
+  updateTeam(val: Team) {
     this._team.set(val);
   }
   // selectedDivision$ = this.store.select(fromAdmin.getSelectedDivision);
   // selectedSeason$ = this.store.select(fromAdmin.getSelectedSeason);
   selectedSeason = computed(() => this.#seasonService.selectedSeason);
-  selectedDivision = computed(() => this.#divisionService.selectedDivision);
+  selectedDivision = computed(() => this.divisionService.selectedDivision());
 
   title = 'Team';
 
-  constructor () {
+  constructor() {
     // this.colors$ = this.store.select(fromAdmin.getColors);
     effect(() => {
       // this.updateTeam(this.#teamService.selectedTeam!);
-      this.patchTeamForm(this.#teamService.selectedTeam!);//
+      this.patchTeamForm(this.#teamService.selectedTeam!); //
     });
   }
 
-  ngOnInit (): void {
+  ngOnInit(): void {
     // this.selectedDivision$.subscribe(
     //   (division) => (this.selectedDivision = division)
     // );
@@ -95,10 +106,9 @@ export class AdminTeamDetailComponent implements OnInit {
     // const team = this.#teamService.selectedTeam; // this.store.select(fromAdmin.getSelectedTeam);
     // console.log(team);
     // this.team = team as Team;
-
     // });
   }
-  patchTeamForm (team: Team) {
+  patchTeamForm(team: Team) {
     console.log(team);
     if (team) {
       this.editTeamForm.patchValue({
@@ -109,7 +119,7 @@ export class AdminTeamDetailComponent implements OnInit {
       });
     }
   }
-  newTeam () {
+  newTeam() {
     this.editTeamForm = this.fb.group({
       teamName: [''],
       teamNo: [''],
@@ -122,23 +132,25 @@ export class AdminTeamDetailComponent implements OnInit {
     // this.store.dispatch(new adminActions.SetSelectedTeam(newTeam));
     this.#teamService.updateSelectedTeam(newTeam);
   }
-  save () {
+  save() {
     let team: Team;
-    console.log(this.team)
-      ; team = {
-        teamId: this.#teamService.selectedTeam?.teamId as number,
-        name: '',
-        divisionId: this.selectedDivision()?.divisionId as number,
-        teamNumber: this.editTeamForm.value.teamNo,
-        teamColorId: this.editTeamForm.value.color,
-        teamName: this.editTeamForm.value.teamName,
-        // To Do: add these back
-        createdUser: 'rsalit', //this.user()!.userName,
-        createdDate: new Date()
-      };
+    console.log(this.team);
+    const div = this.selectedDivision()?.divisionId ?? 0;
+
+    team = {
+      teamId: this.#teamService.selectedTeam?.teamId as number,
+      name: '',
+      divisionId: div,
+      teamNumber: this.editTeamForm.value.teamNo,
+      teamColorId: this.editTeamForm.value.color,
+      teamName: this.editTeamForm.value.teamName,
+      // To Do: add these back
+      createdUser: 'rsalit', //this.user()!.userName,
+      createdDate: new Date(),
+    };
     this.#teamService.saveTeam(team);
     this.#teamService.getSeasonTeams();
     this.newTeam();
   }
-  cancel () { }
+  cancel() {}
 }

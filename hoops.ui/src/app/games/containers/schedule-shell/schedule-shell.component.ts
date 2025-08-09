@@ -1,4 +1,11 @@
-import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { Observable, EMPTY } from 'rxjs';
 import { Season } from '@domain/season';
 import { Division } from '@app/domain/division';
@@ -10,9 +17,7 @@ import * as gameActions from '../../state/games.actions';
 
 import { RegularGame } from '@app/domain/regularGame';
 import { PlayoffGame } from '@app/domain/playoffGame';
-import {
-  catchError,
-} from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import { User } from '@app/domain/user';
 import { DivisionService } from './../../../services/division.service';
 import { GameService } from '@app/services/game.service';
@@ -23,23 +28,19 @@ import { LoggerService } from '@app/services/logging.service';
 @Component({
   selector: 'csbc-schedule-shell',
   template: `
-  <section class="container mx-auto">
-    <h1>{{ title }}</h1>
-    <div class="row">
-    <csbc-schedule/>
-    </div>
-</section>
+    <section class="container mx-auto">
+      <h1>{{ title }}</h1>
+      <div class="row">
+        <csbc-schedule />
+      </div>
+    </section>
   `,
   styleUrls: ['./schedule-shell.component.scss'],
-  imports: [
-    CommonModule,
-    ScheduleComponent
-  ]
+  imports: [CommonModule, ScheduleComponent],
 })
 export class ScheduleShellComponent implements OnInit {
   readonly #gameService = inject(GameService);
   readonly #divisionService = inject(DivisionService);
-  readonly #store = inject(Store<fromGames.State>);
   readonly #loggerService = inject(LoggerService);
   games: RegularGame[] | undefined | null;
   playoffGames!: PlayoffGame[];
@@ -69,9 +70,9 @@ export class ScheduleShellComponent implements OnInit {
   dailySchedule = computed(() => this.#gameService.dailySchedule);
   seasonDivisions = signal<Division[]>([]);
   // selectedDivision = signal<Division | undefined>(undefined);
-  selectedDivision = computed(() => this.#divisionService.selectedDivision);
+  selectedDivision = computed(() => this.#divisionService.selectedDivision());
   filteredGames = computed(() => this.#gameService.divisionGames());
-  constructor () {
+  constructor() {
     effect(() => {
       const selectedDivision = this.selectedDivision();
       if (selectedDivision) {
@@ -85,7 +86,7 @@ export class ScheduleShellComponent implements OnInit {
     });
   }
 
-  ngOnInit () {
+  ngOnInit() {
     //this.selectedDivision.set(this.#divisionService.selectedDivision()); //this.store.select(fromGames.getCurrentDivision).subscribe((division) => {
     // this.#store.select(fromGames.getFilteredGames).subscribe((games) => {
     //   this.games = games;
@@ -96,7 +97,7 @@ export class ScheduleShellComponent implements OnInit {
     // });
   }
 
-  getCanEdit (user: User | undefined, divisionId: number): boolean {
+  getCanEdit(user: User | undefined, divisionId: number): boolean {
     console.log(divisionId);
     if (user !== undefined) {
       if (user.divisions !== undefined) {
@@ -117,5 +118,4 @@ export class ScheduleShellComponent implements OnInit {
   //   this.dailySchedule = this.#gameService.groupRegularGamesByDate(games);
 
   // }
-
 }
