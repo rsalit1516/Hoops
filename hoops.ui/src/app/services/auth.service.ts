@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { effect, inject, Injectable, signal } from '@angular/core';
 import { tap } from 'rxjs/operators';
 
 import { Observable, of } from 'rxjs';
@@ -10,6 +10,7 @@ import * as fromUser from '@app/user/state';
 import * as userActions from '@app/user/state/user.actions';
 
 import { Constants } from '../shared/constants';
+import { DivisionService } from './division.service';
 
 @Injectable({
   providedIn: 'root',
@@ -18,14 +19,18 @@ export class AuthService {
   readonly http = inject(HttpClient);
   readonly dataService = inject(DataService);
   readonly store = inject(Store<fromUser.State>);
-
+  private divisionService = inject(DivisionService);
   currentUser = signal<User | undefined>(undefined);
   canEditGames = signal<boolean>(false);
   redirectUrl: string | undefined;
   loginUrl: string | undefined;
   user: User | undefined;
 
-  constructor() {}
+  constructor() {
+    effect(() => {
+      this.setCanEdit(this.divisionService.selectedDivision()?.divisionId);
+    });
+  }
 
   isLoggedIn(): boolean {
     return !!this.currentUser();
@@ -76,6 +81,10 @@ export class AuthService {
   }
   setCanEdit(divisionId: number | undefined): boolean {
     let tFlag = false;
+    console.log(divisionId);
+    console.log(this.currentUser());
+
+    console.log('Setting canEditGames for divisionId:', divisionId);
     if (this.currentUser() && divisionId) {
       if (
         this.currentUser()!.userType === 2 ||

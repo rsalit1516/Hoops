@@ -15,13 +15,14 @@ import { GameScoreDialogComponent } from '../game-score-dialog/game-score-dialog
 
 import * as fromGames from '../../state';
 import * as fromUser from '../../../user/state';
-import * as gameActions from '../../state/games.actions';
+// import * as gameActions from '../../state/games.actions';
 import { MatDialog } from '@angular/material/dialog';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { AuthService } from '@app/services/auth.service';
+import { GameService } from '@app/services/game.service';
 
 @Component({
   selector: 'csbc-daily-schedule',
@@ -37,6 +38,7 @@ export class DailyScheduleComponent implements OnInit {
   // @Input() canEdit!: boolean;
   canEdit = signal<boolean>(false);
   private authService = inject(AuthService);
+  private gameService = inject(GameService);
   displayedColumns = [
     'gameTime',
     'locationName',
@@ -102,7 +104,9 @@ export class DailyScheduleComponent implements OnInit {
     // }
   }
   editGame(game: RegularGame) {
-    this.store.dispatch(new gameActions.SetCurrentGame(game));
+    // Migrate from NgRx to signals: store current game in GameService
+    console.log('Editing game:', game);
+    this.gameService.updateSelectedGame(game);
     const dialogRef = this.dialog.open(GameScoreDialogComponent, {
       width: '500px',
     });

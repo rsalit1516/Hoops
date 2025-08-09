@@ -75,6 +75,12 @@ export class GameService {
   updateSelectedGame(record: RegularGame) {
     this._selectedGame.set(record);
   }
+  clearSelectedGame() {
+    this._selectedGame.set(null);
+  }
+
+  // Readonly signal for template consumers
+  selectedGameSignal = this._selectedGame.asReadonly();
 
   selectedRecordSignal = this._selectedGame.asReadonly();
 

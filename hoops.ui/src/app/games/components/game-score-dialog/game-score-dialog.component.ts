@@ -1,11 +1,30 @@
-import { Component, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  computed,
+  effect,
+  inject,
+  EffectRef,
+} from '@angular/core';
+import {
+  UntypedFormControl,
+  UntypedFormBuilder,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { GameService } from '@app/services/game.service';
 
-import * as fromGames from '../../state';
-import { Store, select } from '@ngrx/store';
+// import * as fromGames from '../../state';
+// import { Store, select } from '@ngrx/store';
 import { RegularGame } from '@app/domain/regularGame';
-import { MatDialogRef, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
+import {
+  MatDialogRef,
+  MatDialogTitle,
+  MatDialogContent,
+  MatDialogActions,
+  MatDialogClose,
+} from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -14,46 +33,59 @@ import { MatFormFieldModule } from '@angular/material/form-field';
   selector: 'game-score-dialog',
   templateUrl: './game-score-dialog.component.html',
   styleUrls: ['./game-score-dialog.component.scss'],
-  imports: [MatDialogTitle, MatDialogContent, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatDialogActions, MatButtonModule, MatDialogClose]
+  imports: [
+    MatDialogTitle,
+    MatDialogContent,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDialogActions,
+    MatButtonModule,
+    MatDialogClose,
+  ],
 })
-export class GameScoreDialogComponent implements OnInit {
+export class GameScoreDialogComponent implements OnInit, OnDestroy {
   gameScoreForm = this.fb.group({
     homeTeamName: new UntypedFormControl(''),
     homeTeamScore: new UntypedFormControl(''),
     visitorTeamName: new UntypedFormControl(''),
-    visitorTeamScore: new UntypedFormControl('')
+    visitorTeamScore: new UntypedFormControl(''),
   });
-  game$: any;
-  game!: RegularGame;
+  private gameService = inject(GameService);
+  game = computed(() => this.gameService.selectedGameSignal());
+  private effectRefs: EffectRef[] = [];
 
-  constructor (
+  constructor(
     public dialogRef: MatDialogRef<GameScoreDialogComponent>,
-    private fb: UntypedFormBuilder,
-    private gameService: GameService,
-    private store: Store<fromGames.State>
-  ) { }
+    private fb: UntypedFormBuilder
+  ) {}
 
-  ngOnInit () {
-    this.game$ = this.store
-      .pipe(select(fromGames.getCurrentGame))
-      .subscribe(game => {
-        this.game = game;
-        console.log(game);
-        console.log(this.gameScoreForm.controls['homeTeamName']);
-        // this.gameScoreForm.controls['homeTeamName'].setValue(game.homeTeamName);
-        // this.gameScoreForm.controls['visitorTeamName'].setValue(game.visitingTeamName);
-        if (game.homeTeamScore !== null) {
-          this.gameScoreForm.controls['homeTeamScore'].setValue(game.homeTeamScore);
-        }
-        if (game.visitingTeamScore !== null) {
-          this.gameScoreForm.controls['visitorTeamScore'].setValue(game.visitingTeamScore);
-        }
-      });
+  ngOnInit() {
+    // Reactive effect to sync form when selected game changes
+    const ref = effect(() => {
+      const g = this.game();
+      if (!g) {
+        return;
+      }
+      if (g.homeTeamScore !== null && g.homeTeamScore !== undefined) {
+        this.gameScoreForm.controls['homeTeamScore'].setValue(g.homeTeamScore);
+      }
+      if (g.visitingTeamScore !== null && g.visitingTeamScore !== undefined) {
+        this.gameScoreForm.controls['visitorTeamScore'].setValue(
+          g.visitingTeamScore
+        );
+      }
+    });
+    this.effectRefs.push(ref);
   }
-  onCancelClick () {
+  ngOnDestroy() {
+    this.effectRefs.forEach((r) => r.destroy());
+  }
+  onCancelClick() {
     this.dialogRef.close();
   }
-  onSubmitClick () {
+  onSubmitClick() {
     console.log(this.gameScoreForm);
     if (
       this.validate(
@@ -62,11 +94,16 @@ export class GameScoreDialogComponent implements OnInit {
       )
     ) {
       console.log(this.gameScoreForm.controls['homeTeamScore'].value);
-      this.gameService.saveGame({ game: this.game, homeTeamScore: this.gameScoreForm.controls['homeTeamScore'].value, visitingTeamScore: this.gameScoreForm.controls['visitorTeamScore'].value });
+      this.gameService.saveGame({
+        game: this.game()!,
+        homeTeamScore: this.gameScoreForm.controls['homeTeamScore'].value,
+        visitingTeamScore:
+          this.gameScoreForm.controls['visitorTeamScore'].value,
+      });
       this.dialogRef.close();
     }
   }
-  validate (homeTeamScore: string, visitorTeamScore: string) {
+  validate(homeTeamScore: string, visitorTeamScore: string) {
     const valid = this.gameService.validateScores(
       homeTeamScore,
       visitorTeamScore
