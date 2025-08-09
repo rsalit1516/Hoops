@@ -1,4 +1,11 @@
-import { Component, OnInit, computed, effect, inject, input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  computed,
+  effect,
+  inject,
+  input,
+} from '@angular/core';
 import { SeasonService } from '@app/services/season.service';
 import { DivisionService } from '@app/services/division.service';
 import { TeamService } from '@app/services/team.service';
@@ -24,7 +31,7 @@ import { AuthService } from '@app/services/auth.service';
   selector: 'csbc-games-shell',
   templateUrl: './games-shell.component.html',
   styleUrls: ['./games-shell.component.scss'],
-  imports: [GamesTopMenuComponent, RouterOutlet]
+  imports: [GamesTopMenuComponent, RouterOutlet],
 })
 export class GamesShellComponent implements OnInit {
   readonly seasonService = inject(SeasonService);
@@ -82,7 +89,7 @@ export class GamesShellComponent implements OnInit {
 
   user = computed(() => this.#authService.currentUser());
   test = this.seasonService.season1();
-  constructor () {
+  constructor() {
     // Effect to handle side effects when the current division changes
     effect(() => {
       const division = this.currentDivision();
@@ -92,19 +99,16 @@ export class GamesShellComponent implements OnInit {
         this.store.dispatch(new gameActions.LoadDivisionPlayoffGames());
       }
     });
-
   }
 
-  ngOnInit () {
+  ngOnInit() {
     this.setStateSubscriptions();
   }
-  setStateSubscriptions () {
-    this.store
-      .select(fromGames.getDivisions)
-      .subscribe((divisions) => {
-        // Update the divisions signal with the new value
-        this.store.dispatch(new gameActions.SetDivisions(divisions));
-      });
+  setStateSubscriptions() {
+    this.store.select(fromGames.getDivisions).subscribe((divisions) => {
+      // Update the divisions signal with the new value
+      this.store.dispatch(new gameActions.SetDivisions(divisions));
+    });
     this.divisionId$ = this.store.pipe(
       select(fromGames.getCurrentDivisionId)
     ) as Observable<number>;
@@ -139,12 +143,12 @@ export class GamesShellComponent implements OnInit {
     //   console.log(this.filteredGames);
     // })
   }
-  public filterByDivision (divisionId: number): void {
+  public filterByDivision(divisionId: number): void {
     console.log(divisionId);
     this.teamList = [];
   }
 
-  divisionSelected (division: Division): void {
+  divisionSelected(division: Division): void {
     this.store.dispatch(new gameActions.SetCurrentDivision(division));
     // console.log(this.user$);
     if (division !== undefined) {
@@ -155,11 +159,13 @@ export class GamesShellComponent implements OnInit {
       // );
     }
   }
-  teamSelected (team: Team): void {
+  teamSelected(team: Team): void {
     this.store.dispatch(new gameActions.SetCurrentTeam(team));
   }
 
-  getCanEdit (user: User, divisionId: number): boolean {
+  getCanEdit(user: User, divisionId: number): boolean {
+    console.log(divisionId);
+    console.log(user);
     let canEdit = false;
     if (user && user.divisions) {
       user.divisions.forEach((element) => {
@@ -172,7 +178,7 @@ export class GamesShellComponent implements OnInit {
     return canEdit;
   }
 
-  setDivisionData (data: any[]): Division[] {
+  setDivisionData(data: any[]): Division[] {
     let divisions: Division[] = [];
     // console.log(data);
     for (let i = 0; i <= data.length; i++) {
@@ -189,14 +195,14 @@ export class GamesShellComponent implements OnInit {
           minDate2: data[i].minDate2,
           maxDate2: data[i].maxDate2,
           gender2: data[i].gender2,
-          directorId: data[i].directorId
+          directorId: data[i].directorId,
         };
         divisions.push(division);
       }
     }
     return divisions;
   }
-  setTeamData (data: any[]): Team[] {
+  setTeamData(data: any[]): Team[] {
     let teams: Team[] = [];
     for (let i = 0; i <= data.length; i++) {
       if (data[i] !== undefined) {
@@ -211,7 +217,7 @@ export class GamesShellComponent implements OnInit {
     }
     return teams;
   }
-  handlefilterUpdate ($event: any) {
+  handlefilterUpdate($event: any) {
     console.log($event);
   }
 }

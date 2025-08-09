@@ -1,4 +1,12 @@
-import { Component, OnInit, computed, effect, inject, input, output } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  computed,
+  effect,
+  inject,
+  input,
+  output,
+} from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import * as fromGames from '../../state';
@@ -20,7 +28,8 @@ import { DivisionSelectComponent } from '@app/admin/admin-shared/division-select
 @Component({
   selector: 'csbc-game-filter',
   templateUrl: './game-filter.component.html',
-  styleUrls: ['./game-filter.component.scss',
+  styleUrls: [
+    './game-filter.component.scss',
     '../../../shared/scss/forms.scss',
     '../../../shared/scss/select.scss',
   ],
@@ -31,8 +40,8 @@ import { DivisionSelectComponent } from '@app/admin/admin-shared/division-select
     MatSelectModule,
     NgFor,
     MatOptionModule,
-    DivisionSelectComponent
-  ]
+    DivisionSelectComponent,
+  ],
 })
 export class GameFilterComponent implements OnInit {
   readonly #logger = inject(LoggerService);
@@ -48,13 +57,13 @@ export class GameFilterComponent implements OnInit {
   currentTeam!: Team;
   showAllTeams!: boolean;
   // readonly selectedTeam = output<Team>();
-  selectedDivision = computed(() => this.divisionService.selectedDivision);
+  selectedDivision = computed(() => this.divisionService.selectedDivision());
   selectedTeam = computed(() => this.#teamService.selectedTeam);
 
   division = this.selectedDivision();
   team = this.selectedTeam();
   currentDivision: Division | undefined;
-  constructor () {
+  constructor() {
     effect(() => {
       this.division = this.selectedDivision();
     });
@@ -63,11 +72,11 @@ export class GameFilterComponent implements OnInit {
     });
   }
 
-  ngOnInit () {
+  ngOnInit() {
     this.showAllTeams = true;
   }
 
-  onDivisionChange (val: Division) {
+  onDivisionChange(val: Division) {
     // console.log(val);
     if (val !== undefined) {
       // this.currentDivision = val;
@@ -76,7 +85,7 @@ export class GameFilterComponent implements OnInit {
     }
   }
 
-  onTeamChange (val: Team) {
+  onTeamChange(val: Team) {
     if (val !== undefined) {
       this.currentTeam = val;
       this.#teamService.updateSelectedTeam(val);
