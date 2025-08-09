@@ -25,7 +25,7 @@ import { DivisionService } from '@app/services/division.service';
   selector: 'csbc-schedule',
   template: `
     <div *ngFor="let data of dailySchedule()">
-      <csbc-daily-schedule [games]="data" [canEdit]="canEdit" />
+      <csbc-daily-schedule [games]="data" />
     </div>
   `,
   styleUrls: ['./schedule.component.scss'],
@@ -70,8 +70,7 @@ export class ScheduleComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.canEdit = this.authService.canEdit(
-      this.authService.currentUser(),
+    this.authService.setCanEdit(
       this.divisionService.selectedDivision()?.divisionId
     );
   }

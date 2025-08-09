@@ -74,4 +74,29 @@ export class AuthService {
     }
     return tFlag;
   }
+  setCanEdit(divisionId: number | undefined): boolean {
+    let tFlag = false;
+    if (this.currentUser() && divisionId) {
+      if (
+        this.currentUser()!.userType === 2 ||
+        this.currentUser()!.userType === 3
+      ) {
+        tFlag = true;
+        console.log('can edit games = true');
+        this.canEditGames.set(true);
+        return true;
+      } else {
+        if (this.currentUser()!.divisions) {
+          let found = this.currentUser()!.divisions!.find(
+            (div) => div.divisionId === divisionId
+          );
+          this.canEditGames.set(found !== undefined);
+          console.log(this.canEditGames());
+
+          return found !== undefined;
+        }
+      }
+    }
+    return tFlag;
+  }
 }

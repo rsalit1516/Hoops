@@ -209,8 +209,8 @@ export class GameService {
         Constants.GET_STANDINGS_URL + '/' + seasonId + '/' + divisionId
       )
       .pipe(
-        map((response) => (this.standing = response)),
-        tap((data) => console.log('All: ' + JSON.stringify(data)))
+        map((response) => (this.standing = response))
+        // tap((data) => console.log('All: ' + JSON.stringify(data)))
         // catchError(this.handleError)
       );
   }

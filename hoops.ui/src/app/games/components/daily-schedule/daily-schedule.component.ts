@@ -5,6 +5,9 @@ import {
   Input,
   input,
   inject,
+  computed,
+  effect,
+  signal,
 } from '@angular/core';
 import { RegularGame } from '@app/domain/regularGame';
 import { Store, select } from '@ngrx/store';
@@ -31,7 +34,8 @@ import { AuthService } from '@app/services/auth.service';
 })
 export class DailyScheduleComponent implements OnInit {
   readonly games = input.required<RegularGame[]>();
-  @Input() canEdit!: boolean;
+  // @Input() canEdit!: boolean;
+  canEdit = signal<boolean>(false);
   private authService = inject(AuthService);
   displayedColumns = [
     'gameTime',
@@ -40,17 +44,25 @@ export class DailyScheduleComponent implements OnInit {
     'visitingTeam',
     'homeTeamScore',
     'visitingTeamScore',
-    'actions',
+    // 'actions',
   ];
   data: RegularGame[] = []; // = this.games;
   gameDate!: Date;
   flexMediaWatcher: any;
   currentScreenWidth: string | undefined;
+  // canEdit = this.authService.canEditGames();
+
   constructor(
     private store: Store<fromGames.State>,
-    public dialog: MatDialog
-  ) // private media: MediaObserver
-  {}
+    public dialog: MatDialog // private media: MediaObserver
+  ) {
+    effect(() => {
+      this.canEdit.set(this.authService.canEditGames());
+      if (this.canEdit() === true) {
+        this.displayedColumns.push('actions');
+      }
+    });
+  }
 
   ngOnInit() {
     this.data = this.games();
@@ -59,13 +71,10 @@ export class DailyScheduleComponent implements OnInit {
     // if (change.mqAlias !== this.currentScreenWidth) {
     //   this.currentScreenWidth = change.mqAlias;
     this.setupTable();
-    this.authService.canEditGames();
-    this.store.select(fromGames.getCanEdit).subscribe((canEdit) => {
-      this.canEdit = canEdit;
-      if (canEdit === true) {
-        this.displayedColumns.push('actions');
-      }
-    });
+    // this.canEdit.set(this.authService.canEditGames());
+    // if (this.canEdit()) {
+    //   this.displayedColumns.push('actions');
+    // }
     // }
     // });
     this.gameDate! = this.data[0].gameDate as Date;
@@ -80,16 +89,17 @@ export class DailyScheduleComponent implements OnInit {
         'homeTeam',
         'locationName',
       ];
-    } else {
-      this.displayedColumns = [
-        'gameTime',
-        'visitingTeam',
-        'homeTeam',
-        'locationName',
-        'visitingTeamScore',
-        'homeTeamScore',
-      ];
     }
+    // } else {
+    //   this.displayedColumns = [
+    //     'gameTime',
+    //     'visitingTeam',
+    //     'homeTeam',
+    //     'locationName',
+    //     'visitingTeamScore',
+    //     'homeTeamScore',
+    //   ];
+    // }
   }
   editGame(game: RegularGame) {
     this.store.dispatch(new gameActions.SetCurrentGame(game));
