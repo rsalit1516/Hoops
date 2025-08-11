@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { GamesShellComponent } from './containers/games-shell/games-shell.component';
-import { ScheduleComponent } from './components/schedule/schedule.component';
+import { Schedule } from './components/schedule/schedule';
 import { ScheduleCardViewComponent } from './components/schedule-card-view/schedule-card-view.component';
 import { ScheduleShellComponent } from './containers/schedule-shell/schedule-shell.component';
 import { ScoresComponent } from './components/scores/scores.component';
@@ -22,13 +22,13 @@ const gamesRoutes: Routes = [
       { path: 'list', component: ScheduleShellComponent },
       { path: 'scores', component: ScoresComponent },
       { path: 'playoffs', component: PlayoffsShellComponent },
-      { path: '**', component: PageNotFoundComponent }
-    ]
-  }
+      { path: '**', component: PageNotFoundComponent },
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(gamesRoutes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class GamesRoutingModule {}

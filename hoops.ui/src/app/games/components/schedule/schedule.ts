@@ -13,10 +13,10 @@ import * as fromGames from '../../state';
 import * as fromUser from '../../../user/state';
 import * as gameActions from '../../state/games.actions';
 
-import { GameScoreDialogComponent } from '../game-score-dialog/game-score-dialog.component';
+import { GameScoreDialog } from '../game-score-dialog/game-score-dialog';
 import { GameService } from '@app/services/game.service';
 import { MatDialog } from '@angular/material/dialog';
-import { DailyScheduleComponent } from '../daily-schedule/daily-schedule.component';
+import { DailySchedule } from '../daily-schedule/daily-schedule';
 import { CommonModule, NgFor } from '@angular/common';
 import { AuthService } from '@app/services/auth.service';
 import { DivisionService } from '@app/services/division.service';
@@ -28,10 +28,10 @@ import { DivisionService } from '@app/services/division.service';
       <csbc-daily-schedule [games]="data" />
     </div>
   `,
-  styleUrls: ['./schedule.component.scss'],
-  imports: [CommonModule, DailyScheduleComponent],
+  styleUrls: ['./schedule.scss'],
+  imports: [CommonModule, DailySchedule],
 })
-export class ScheduleComponent implements OnInit {
+export class Schedule implements OnInit {
   private gameService = inject(GameService);
   private divisionService = inject(DivisionService);
   private authService = inject(AuthService);
@@ -77,7 +77,7 @@ export class ScheduleComponent implements OnInit {
 
   editGame(game: RegularGame) {
     this.store.dispatch(new gameActions.SetCurrentGame(game));
-    const dialogRef = this.dialog.open(GameScoreDialogComponent, {
+    const dialogRef = this.dialog.open(GameScoreDialog, {
       width: '500px',
     });
 

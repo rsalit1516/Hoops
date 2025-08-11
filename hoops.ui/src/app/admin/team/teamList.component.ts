@@ -5,7 +5,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { SeasonSelectComponent } from '../admin-shared/season-select/season-select.component';
 import { DivisionSelectComponent } from '../admin-shared/division-select/division-select.component';
-import { DailyScheduleComponent } from "../../games/components/daily-schedule/daily-schedule.component";
+import { DailySchedule } from '../../games/components/daily-schedule/daily-schedule';
 import { Store } from '@ngrx/store';
 
 import * as fromAdmin from '@app/admin/state';
@@ -19,10 +19,13 @@ import * as adminActions from '@app/admin//state/admin.actions';
     MatTableModule,
     SeasonSelectComponent,
     DivisionSelectComponent,
-    DailyScheduleComponent],
-  styleUrls: ['../../shared/scss/tables.scss',
+    DailySchedule,
+  ],
+  styleUrls: [
+    '../../shared/scss/tables.scss',
     './team.component.scss',
-    '../admin.component.scss']
+    '../admin.component.scss',
+  ],
 })
 export class TeamListComponent implements OnInit {
   readonly teams = input<Team[]>([]);
@@ -30,16 +33,11 @@ export class TeamListComponent implements OnInit {
   errorMessage: string | undefined;
   selectedTeam: Team | undefined;
   #teamService = inject(TeamService);
-  displayedColumns = [
-    'teamId',
-    'name',
-    'teamColorId',
-    'teamNumber',
-  ];
+  displayedColumns = ['teamId', 'name', 'teamColorId', 'teamNumber'];
   dataSource!: MatTableDataSource<Team>;
-  constructor () { }
+  constructor() {}
 
-  ngOnInit () {
+  ngOnInit() {
     // this.#teamService.getTeams()
     //   .subscribe((divisions: any[]) => this.teams = this.setTeamData(divisions),
     //     (error: any) => this.errorMessage = <any> error);
@@ -49,10 +47,10 @@ export class TeamListComponent implements OnInit {
     });
   }
 
-  onSelect (team: Team): void {
+  onSelect(team: Team): void {
     this.selectedTeam = team;
   }
-  setTeamData (data: any[]): Team[] {
+  setTeamData(data: any[]): Team[] {
     let teams: Team[] = [];
     for (let i = 0; i <= data.length; i++) {
       if (data[i] !== undefined) {
@@ -66,7 +64,7 @@ export class TeamListComponent implements OnInit {
     console.log(teams);
     return teams;
   }
-  addTeam () {
+  addTeam() {
     // need to add team
   }
 }

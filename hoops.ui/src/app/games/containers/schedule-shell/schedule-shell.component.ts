@@ -21,7 +21,7 @@ import { catchError } from 'rxjs/operators';
 import { User } from '@app/domain/user';
 import { DivisionService } from './../../../services/division.service';
 import { GameService } from '@app/services/game.service';
-import { ScheduleComponent } from '../../components/schedule/schedule.component';
+import { Schedule } from '../../components/schedule/schedule';
 import { CommonModule } from '@angular/common';
 import { LoggerService } from '@app/services/logging.service';
 
@@ -36,7 +36,7 @@ import { LoggerService } from '@app/services/logging.service';
     </section>
   `,
   styleUrls: ['./schedule-shell.component.scss'],
-  imports: [CommonModule, ScheduleComponent],
+  imports: [CommonModule, Schedule],
 })
 export class ScheduleShellComponent implements OnInit {
   readonly #gameService = inject(GameService);

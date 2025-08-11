@@ -74,15 +74,17 @@ export class GameService {
   }
   updateSelectedGame(record: RegularGame) {
     this._selectedGame.set(record);
+    console.log(`Selected game updated: ${record}`);
+    console.log(this._selectedGame());
   }
   clearSelectedGame() {
     this._selectedGame.set(null);
   }
 
-  // Readonly signal for template consumers
+  // Readonly signal for consumers (do NOT call the signal here, or you freeze a snapshot)
   selectedGameSignal = this._selectedGame.asReadonly();
-
-  selectedRecordSignal = this._selectedGame.asReadonly();
+  // Backwards alias (can be removed later)
+  selectedRecordSignal = this.selectedGameSignal;
 
   private _seasonGames = signal<RegularGame[] | null>(null);
 
@@ -376,8 +378,8 @@ export class GameService {
     visitingTeamScore,
   }: {
     game: RegularGame;
-    homeTeamScore: any;
-    visitingTeamScore: any;
+    homeTeamScore: number;
+    visitingTeamScore: number;
   }) {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -397,9 +399,10 @@ export class GameService {
     //   catchError(this.dataService.handleError)
     // );
   }
-  validateScores(homeTeamScore: any, visitorTeamScore: any) {
-    //validate scores
-    return true;
+  validateScores(homeTeamScore: number, visitorTeamScore: number) {
+    const isValid = (v: number) =>
+      Number.isFinite(v) && Number.isInteger(v) && v >= 0 && v <= 150;
+    return isValid(homeTeamScore) && isValid(visitorTeamScore);
   }
 }
 export interface GameResponse {

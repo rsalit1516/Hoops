@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { ScheduleComponent } from './components/schedule/schedule.component';
+import { Schedule } from './components/schedule/schedule';
 import { ScheduleCardViewComponent } from './components/schedule-card-view/schedule-card-view.component';
 import { GameCardComponent } from './components/game-card/game-card.component';
 import { GamesRoutingModule } from './games-routing.module';
@@ -17,14 +17,14 @@ import { GameSortPipe } from './game-sort.pipe';
 import { GamesTopMenuComponent } from './components/games-top-menu/games-top-menu.component';
 import { ScheduleShellComponent } from './containers/schedule-shell/schedule-shell.component';
 import { ScoresComponent } from './components/scores/scores.component';
-import { GameScoreDialogComponent } from './components/game-score-dialog/game-score-dialog.component';
-import { DailyScheduleComponent } from './components/daily-schedule/daily-schedule.component';
+// import { GameScoreDialogComponent } from './components/game-score-dialog/game-score-dialog';
+// import { DailyScheduleComponent } from './components/daily-schedule/daily-schedule';
 import { SchedulePlayoffsComponent } from './components/schedule-playoffs/schedule-playoffs.component';
 import { DailyPlayoffSchedule } from './components/daily-playoff-schedule/daily-playoff-schedule';
 import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
-    imports: [
+  imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -34,7 +34,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     StoreModule.forFeature('games', reducer),
     EffectsModule.forFeature([GameEffects]),
     // GamesComponent,
-    ScheduleComponent,
+    // ScheduleComponent,
     ScheduleCardViewComponent,
     GameCardComponent,
     GameFilterComponent,
@@ -43,11 +43,11 @@ import { MatNativeDateModule } from '@angular/material/core';
     GamesTopMenuComponent,
     ScheduleShellComponent,
     ScoresComponent,
-    GameScoreDialogComponent,
-    DailyScheduleComponent,
-    MatNativeDateModule
-],
-    exports: [GamesRoutingModule],
-    providers: [GameService],
+    // GameScoreDialogComponent,
+    // DailyScheduleComponent,
+    MatNativeDateModule,
+  ],
+  exports: [GamesRoutingModule],
+  providers: [GameService],
 })
 export class GamesModule {}

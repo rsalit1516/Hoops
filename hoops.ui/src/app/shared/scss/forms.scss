@@ -307,3 +307,6 @@ mat-form-field input::placeholder {
 // .mdc-text-field__input {
 //   caret-color: white !important;
 // }
+.mat-mdc-dialog-surface {
+  background-color: v.$admin-background-color !important;
+}

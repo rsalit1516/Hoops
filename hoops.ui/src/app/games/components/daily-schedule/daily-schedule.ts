@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { RegularGame } from '@app/domain/regularGame';
 import { Store, select } from '@ngrx/store';
-import { GameScoreDialogComponent } from '../game-score-dialog/game-score-dialog.component';
+import { GameScoreDialog } from '../game-score-dialog/game-score-dialog';
 
 import * as fromGames from '../../state';
 import * as fromUser from '../../../user/state';
@@ -26,14 +26,11 @@ import { GameService } from '@app/services/game.service';
 
 @Component({
   selector: 'csbc-daily-schedule',
-  templateUrl: './daily-schedule.component.html',
-  styleUrls: [
-    './daily-schedule.component.scss',
-    './../../../shared/scss/tables.scss',
-  ],
+  templateUrl: './daily-schedule.html',
+  styleUrls: ['./daily-schedule.scss', './../../../shared/scss/tables.scss'],
   imports: [CommonModule, MatTableModule, MatButtonModule, MatIconModule],
 })
-export class DailyScheduleComponent implements OnInit {
+export class DailySchedule implements OnInit {
   readonly games = input.required<RegularGame[]>();
   // @Input() canEdit!: boolean;
   canEdit = signal<boolean>(false);
@@ -104,11 +101,10 @@ export class DailyScheduleComponent implements OnInit {
     // }
   }
   editGame(game: RegularGame) {
-    // Migrate from NgRx to signals: store current game in GameService
-    console.log('Editing game:', game);
     this.gameService.updateSelectedGame(game);
-    const dialogRef = this.dialog.open(GameScoreDialogComponent, {
+    const dialogRef = this.dialog.open(GameScoreDialog, {
       width: '500px',
+      data: { game },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
