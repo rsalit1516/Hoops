@@ -62,7 +62,7 @@ namespace Hoops.Controllers
         public IActionResult GetSeasonGames(int seasonId)
         {
             _logger.LogInformation("Retrieving season games for seasonId: {SeasonId}", seasonId);
-            
+
             if (seasonId <= 0)
             {
                 return BadRequest("Season ID must be greater than 0");
@@ -88,12 +88,12 @@ namespace Hoops.Controllers
         public IActionResult GetStandings(int seasonId, int divisionId)
         {
             _logger.LogInformation("Retrieving division standings for seasonId: {SeasonId} divisionId: {DivisionId}", seasonId, divisionId);
-            
+
             if (divisionId <= 0)
             {
                 return BadRequest("Division ID must be greater than 0");
             }
-            
+
             if (seasonId <= 0)
             {
                 return BadRequest("Season ID must be greater than 0");
@@ -107,7 +107,7 @@ namespace Hoops.Controllers
                     _logger.LogInformation("No standings found for season {SeasonId} division {DivisionId}", seasonId, divisionId);
                     return Ok(new List<ScheduleStandingsVM>());
                 }
-                
+
                 return Ok(standings);
             }
             catch (Exception ex)

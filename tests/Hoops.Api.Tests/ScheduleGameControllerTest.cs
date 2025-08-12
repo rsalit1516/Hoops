@@ -79,18 +79,18 @@ namespace Hoops.Api.Tests
             // Arrange
             var expectedGames = new List<vmGameSchedule>
             {
-                new vmGameSchedule 
-                { 
-                    ScheduleGamesId = 1, 
+                new vmGameSchedule
+                {
+                    ScheduleGamesId = 1,
                     SeasonId = 3055,
                     HomeTeamName = "Red Team",
                     VisitingTeamName = "Blue Team",
                     LocationName = "Gym A",
                     GameType = GameTypes.Regular
                 },
-                new vmGameSchedule 
-                { 
-                    ScheduleGamesId = 2, 
+                new vmGameSchedule
+                {
+                    ScheduleGamesId = 2,
                     SeasonId = 3055,
                     HomeTeamName = "Green Team",
                     VisitingTeamName = "Yellow Team",
@@ -107,7 +107,7 @@ namespace Hoops.Api.Tests
             var okResult = Assert.IsType<OkObjectResult>(result);
             var games = Assert.IsAssignableFrom<IEnumerable<vmGameSchedule>>(okResult.Value);
             Assert.Equal(2, games.Count());
-            
+
             var firstGame = games.First();
             Assert.Equal("Red Team", firstGame.HomeTeamName);
             Assert.Equal("Blue Team", firstGame.VisitingTeamName);
@@ -157,7 +157,7 @@ namespace Hoops.Api.Tests
             var okResult = Assert.IsType<OkObjectResult>(result);
             var standings = Assert.IsAssignableFrom<IEnumerable<ScheduleStandingsVM>>(okResult.Value);
             Assert.Equal(2, standings.Count());
-            
+
             var firstTeam = standings.First();
             Assert.Equal("Red Team", firstTeam.TeamName);
             Assert.Equal(5, firstTeam.Won);
@@ -205,17 +205,17 @@ namespace Hoops.Api.Tests
         public async Task PostScheduleGame_ReturnsCreatedAtAction_WithValidGame()
         {
             // Arrange
-            var newGame = new ScheduleGame 
-            { 
-                ScheduleGamesId = 0, 
-                SeasonId = 3055, 
+            var newGame = new ScheduleGame
+            {
+                ScheduleGamesId = 0,
+                SeasonId = 3055,
                 DivisionId = 3163,
                 GameDate = new System.DateTime(2024, 6, 15),
                 HomeTeamNumber = 1,
                 VisitingTeamNumber = 2
             };
             var savedGame = new ScheduleGame { ScheduleGamesId = 123, SeasonId = 3055 };
-            
+
             _mockRepo.Setup(r => r.Add(It.IsAny<ScheduleGame>()));
             _mockRepo.Setup(r => r.SaveChangesAsync()).Returns(Task.CompletedTask);
 
