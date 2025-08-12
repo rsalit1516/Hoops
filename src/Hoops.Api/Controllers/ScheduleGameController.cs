@@ -128,8 +128,30 @@ namespace Hoops.Controllers
             {
                 return BadRequest();
             }
+            // Basic score validation (0-150 inclusive) if scores provided
+            if (scheduleGame.HomeTeamScore.HasValue && (scheduleGame.HomeTeamScore < 0 || scheduleGame.HomeTeamScore > 150))
+            {
+                return BadRequest("HomeTeamScore must be between 0 and 150.");
+            }
+            if (scheduleGame.VisitingTeamScore.HasValue && (scheduleGame.VisitingTeamScore < 0 || scheduleGame.VisitingTeamScore > 150))
+            {
+                return BadRequest("VisitingTeamScore must be between 0 and 150.");
+            }
 
-            repository.Update(scheduleGame);
+            // Fetch existing entity to avoid overposting
+            var existing = await repository.GetByIdAsync(id);
+            if (existing == null)
+            {
+                return NotFound();
+            }
+
+            // Update only mutable fields we currently allow via this endpoint
+            existing.HomeTeamScore = scheduleGame.HomeTeamScore;
+            existing.VisitingTeamScore = scheduleGame.VisitingTeamScore;
+            existing.HomeForfeited = scheduleGame.HomeForfeited;
+            existing.VisitingForfeited = scheduleGame.VisitingForfeited;
+
+            repository.Update(existing);
 
             try
             {

@@ -389,11 +389,10 @@ export class GameService {
     game.homeTeamScore = homeTeamScore;
     game.visitingTeamScore = visitingTeamScore;
     console.log(game);
-    const gameUrl = this.dataService.webUrl + '/api/games/updateScores';
-    console.log(gameUrl);
-    let result = this.http
-      .put(gameUrl, game, httpOptions)
-      .subscribe((x) => console.log(x));
+  const gameUrl = Constants.PUT_SEASON_GAME_URL + game.scheduleGamesId; // api/ScheduleGame/{id}
+  console.log('Updating game via', gameUrl);
+  // Send only fields required by backend or full object (here full object for simplicity)
+  this.http.put(gameUrl, game, httpOptions).subscribe((x) => console.log(x));
     // .pipe(
     //   tap(data => console.log(data)),
     //   catchError(this.dataService.handleError)

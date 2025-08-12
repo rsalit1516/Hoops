@@ -113,6 +113,7 @@ export class GameScoreDialog implements OnDestroy {
     this.dialogRef.close();
   }
   onSubmitClick() {
+    console.log('Submitting game score:', this.gameScoreForm.value);
     const selectedGame = this.game();
     if (!selectedGame) return;
     if (this.gameScoreForm.invalid) return;

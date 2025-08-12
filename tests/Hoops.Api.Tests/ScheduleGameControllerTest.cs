@@ -232,16 +232,20 @@ namespace Hoops.Api.Tests
         public async Task PutScheduleGame_ReturnsNoContent_WhenUpdateSuccessful()
         {
             // Arrange
-            var gameToUpdate = new ScheduleGame { ScheduleGamesId = 1, SeasonId = 3055 };
+            var existing = new ScheduleGame { ScheduleGamesId = 1, SeasonId = 3055, HomeTeamScore = 10, VisitingTeamScore = 12 };
+            var incoming = new ScheduleGame { ScheduleGamesId = 1, SeasonId = 3055, HomeTeamScore = 20, VisitingTeamScore = 22 };
+            _mockRepo.Setup(r => r.GetByIdAsync(1)).ReturnsAsync(existing);
             _mockRepo.Setup(r => r.Update(It.IsAny<ScheduleGame>()));
             _mockRepo.Setup(r => r.SaveChangesAsync()).Returns(Task.CompletedTask);
 
             // Act
-            var result = await _controller.PutScheduleGame(1, gameToUpdate);
+            var result = await _controller.PutScheduleGame(1, incoming);
 
             // Assert
             Assert.IsType<NoContentResult>(result);
             _mockRepo.Verify(r => r.Update(It.IsAny<ScheduleGame>()), Times.Once);
+            Assert.Equal(20, existing.HomeTeamScore);
+            Assert.Equal(22, existing.VisitingTeamScore);
         }
 
         [Fact]
@@ -255,6 +259,52 @@ namespace Hoops.Api.Tests
 
             // Assert
             Assert.IsType<BadRequestResult>(result);
+        }
+
+        [Fact]
+        public async Task PutScheduleGame_ReturnsBadRequest_WhenHomeScoreOutOfRange()
+        {
+            // Arrange
+            var existing = new ScheduleGame { ScheduleGamesId = 5 };
+            var incoming = new ScheduleGame { ScheduleGamesId = 5, HomeTeamScore = 200, VisitingTeamScore = 10 };
+            _mockRepo.Setup(r => r.GetByIdAsync(5)).ReturnsAsync(existing);
+
+            // Act
+            var result = await _controller.PutScheduleGame(5, incoming);
+
+            // Assert
+            var badResult = Assert.IsType<BadRequestObjectResult>(result);
+            Assert.Contains("HomeTeamScore", badResult.Value!.ToString());
+        }
+
+        [Fact]
+        public async Task PutScheduleGame_ReturnsBadRequest_WhenVisitingScoreOutOfRange()
+        {
+            // Arrange
+            var existing = new ScheduleGame { ScheduleGamesId = 6 };
+            var incoming = new ScheduleGame { ScheduleGamesId = 6, HomeTeamScore = 10, VisitingTeamScore = -5 };
+            _mockRepo.Setup(r => r.GetByIdAsync(6)).ReturnsAsync(existing);
+
+            // Act
+            var result = await _controller.PutScheduleGame(6, incoming);
+
+            // Assert
+            var badResult = Assert.IsType<BadRequestObjectResult>(result);
+            Assert.Contains("VisitingTeamScore", badResult.Value!.ToString());
+        }
+
+        [Fact]
+        public async Task PutScheduleGame_ReturnsNotFound_WhenGameMissing()
+        {
+            // Arrange
+            var incoming = new ScheduleGame { ScheduleGamesId = 7, HomeTeamScore = 10, VisitingTeamScore = 12 };
+            _mockRepo.Setup(r => r.GetByIdAsync(7)).ReturnsAsync((ScheduleGame?)null);
+
+            // Act
+            var result = await _controller.PutScheduleGame(7, incoming);
+
+            // Assert
+            Assert.IsType<NotFoundResult>(result);
         }
 
         [Fact]
