@@ -13,9 +13,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { AdminSeasonDetail } from '@app/admin/admin-seasons/admin-season-detail/admin-season-detail';
-import { ShellTitleComponent } from '@app/shared/components/shell-title/shell-title.component';
-import { SeasonsToolbarComponent } from '@app/admin/components/seasons-toolbar/seasons-toolbar.component';
-import { SeasonAddEditComponent } from '@app/admin/components/season-add-edit/season-add-edit.component';
+import { ShellTitle } from '@app/shared/components/shell-title/shell-title';
+import { SeasonsToolbar } from '@app/admin/components/seasons-toolbar/seasons-toolbar';
+import { SeasonAddEdit } from '@app/admin/components/season-add-edit/season-add-edit';
 
 
 @Component({
@@ -25,8 +25,8 @@ import { SeasonAddEditComponent } from '@app/admin/components/season-add-edit/se
     <router-outlet></router-outlet>
   </section>`,
   styleUrls: ['./admin-season-shell.scss',
-    '../../admin.component.scss',
-    '../../containers/admin-shell/admin-shell.component.scss',
+    '../../admin.scss',
+    '../../containers/admin-shell/admin-shell.scss',
     '../../../shared/scss/cards.scss',
     '../../../shared/scss/sidenav.scss',
   ],
@@ -38,10 +38,10 @@ import { SeasonAddEditComponent } from '@app/admin/components/season-add-edit/se
     MatIconModule,
     MatButtonModule,
     AdminSeasonDetail,
-    ShellTitleComponent,
-    SeasonsToolbarComponent,
+    ShellTitle,
+    SeasonsToolbar,
     AdminSeasonDetail,
-    SeasonAddEditComponent
+    SeasonAddEdit
   ]
 })
 export class AdminSeasonShell implements OnInit, AfterViewInit {

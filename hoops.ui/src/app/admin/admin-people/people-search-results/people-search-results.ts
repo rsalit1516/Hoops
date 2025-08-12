@@ -6,7 +6,7 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Person } from '@app/domain/person';
 import { PeopleService } from '@app/services/people.service';
-import { SectionTitleComponent } from '@app/shared/components/section-title/section-title.component';
+import { SectionTitle } from '@app/shared/components/section-title/section-title';
 import { PeopleSearch } from '../people-search/people-search';
 import { Router } from '@angular/router';
 import { HouseholdService } from '@app/services/household.service';
@@ -21,13 +21,13 @@ import { PeopleAlphabet } from '../people-alphabet/people-alphabet';
     MatSortModule,
     MatPaginatorModule,
     DatePipe,
-    SectionTitleComponent,
+    SectionTitle,
     PeopleSearch,
     PeopleAlphabet
   ],
   templateUrl: './people-search-results.html',
   styleUrls: ['./people-search-results.scss',
-    '../../admin.component.scss',
+    '../../admin.scss',
     '../../../shared/scss/tables.scss',
     '../../../shared/scss/cards.scss',
   ],

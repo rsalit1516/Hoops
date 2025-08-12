@@ -4,7 +4,7 @@ import { enableProdMode, importProvidersFrom } from '@angular/core';
 
 
 import { environment } from './environments/environment';
-import { AppComponent } from './app/app.component';
+import { App } from './app/app';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { reducers, metaReducers } from './app/reducers';
@@ -25,7 +25,7 @@ if (environment.production) {
   console.error = () => { };
 }
 
-bootstrapApplication(AppComponent, {
+bootstrapApplication(App, {
   providers: [
     importProvidersFrom(BrowserModule,
       AppRoutingModule,

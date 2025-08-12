@@ -6,8 +6,8 @@ import { StoreModule } from '@ngrx/store';
 import { reducer } from './state/user.reducer';
 
 // import { AuthService } from './auth.service';
-import { LoginComponent } from './login.component';
-import { UserComponent } from './user.component';
+import { Login } from './login';
+import { User } from './user';
 import { AuthService } from '@app/services/auth.service';
 
 @NgModule({
@@ -15,8 +15,8 @@ import { AuthService } from '@app/services/auth.service';
     imports: [
         CommonModule,
         StoreModule.forFeature('user', reducer),
-        // LoginComponent,
-        // UserComponent
+        // Login,
+        // User
     ],
     providers: [AuthService]
 })

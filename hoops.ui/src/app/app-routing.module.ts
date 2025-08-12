@@ -1,20 +1,20 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { CsbcPhotosComponent } from './photos/csbc-photos.component';
-import { ContactsComponent } from './contacts/contacts.component';
-import { CsbcClubDocsComponent } from './club-docs/csbc-club-docs.component';
-import { HomeComponent } from './home/home.component';
-import { PageNotFoundComponent } from './app.not-found.component';
+import { CsbcPhotos } from './photos/csbc-photos';
+import { Contacts } from './contacts/contacts';
+import { CsbcClubDocs } from './club-docs/csbc-club-docs';
+import { Home } from './home/home';
+import { PageNotFound } from './app.not-found';
 import { GamesResolver } from './games/games.resolver';
 import { ADMINROUTES } from './admin/admin-routing';
-import { LoginComponent } from './shared/components/login/login.component';
+import { Login } from './shared/components/login/login';
 import { adminGuard } from './shared/guards/admin-guard.guard';
 
 const appRoutes: Routes = [
   {
     path: 'home',
-    component: HomeComponent
+    component: Home
   },
   {
     path: 'games',
@@ -24,15 +24,15 @@ const appRoutes: Routes = [
   },
   {
     path: 'photos',
-    component: CsbcPhotosComponent
+    component: CsbcPhotos
   },
   {
     path: 'contacts',
-    component: ContactsComponent
+    component: Contacts
   },
   {
     path: 'clubDocs',
-    component: CsbcClubDocsComponent
+    component: CsbcClubDocs
   },
 
   {
@@ -42,11 +42,11 @@ const appRoutes: Routes = [
   },
   {
     path: 'login',
-    component: LoginComponent
+    component: Login
   },
 
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: '**', component: PageNotFoundComponent }
+  { path: '**', component: PageNotFound }
 ];
 
 @NgModule({

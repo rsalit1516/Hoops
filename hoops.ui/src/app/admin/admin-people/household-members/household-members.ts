@@ -11,7 +11,7 @@ import { Household } from '@app/domain/household';
 import { Person } from '@app/domain/person';
 import { HouseholdService } from '@app/services/household.service';
 import { PeopleService } from '@app/services/people.service';
-import { SectionTitleComponent } from '@app/shared/components/section-title/section-title.component';
+import { SectionTitle } from '@app/shared/components/section-title/section-title';
 
 @Component({
   selector: 'csbc-household-members',
@@ -23,11 +23,11 @@ import { SectionTitleComponent } from '@app/shared/components/section-title/sect
     MatPaginatorModule,
     MatButtonModule,
     DatePipe,
-    SectionTitleComponent
+    SectionTitle
   ],
   templateUrl: './household-members.html',
   styleUrls: ['./household-members.scss',
-    '../../admin.component.scss',
+    '../../admin.scss',
     '../../../shared/scss/tables.scss',
     '../../../shared/scss/cards.scss',
   ],
