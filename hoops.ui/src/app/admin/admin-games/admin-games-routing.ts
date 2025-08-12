@@ -1,26 +1,26 @@
 import { RouterModule, Routes } from '@angular/router';
 
-import { PageNotFoundComponent } from '@app/app.not-found.component';
-import { AdminGamesShellComponent } from './admin-games-shell/admin-games-shell.component';
+import { PageNotFound } from '@app/app.not-found';
+import { AdminGamesShell } from './admin-games-shell/admin-games-shell';
 import { AuthGuard } from '@app/auth/auth.guard';
-import { AdminGamesListComponent } from './admin-games-list/admin-games-list.component';
-import { AdminGameDetailComponent } from './admin-game-detail/admin-game-detail.component';
-import { AdminGamesPlayoffsDetailComponent } from './admin-games-playoffs-detail/admin-games-playoffs-detail.component';
-import { AdminGamesPlayoffsListComponent } from './admin-games-playoffs-list/admin-games-playoffs-list.component';
+import { AdminGamesList } from './admin-games-list/admin-games-list';
+import { AdminGameDetail } from './admin-game-detail/admin-game-detail';
+import { AdminGamesPlayoffsDetail } from './admin-games-playoffs-detail/admin-games-playoffs-detail';
+import { AdminGamesPlayoffsList } from './admin-games-playoffs-list/admin-games-playoffs-list';
 
 export const ADMINGAMESROUTES: Routes = [
   {
     path: '',
-    component: AdminGamesShellComponent,
+    component: AdminGamesShell,
     canActivate: [AuthGuard],
 
     children: [
-      { path: 'list', component: AdminGamesListComponent },
-      { path: 'list-playoff', component: AdminGamesPlayoffsListComponent },
-      { path: 'detail-regular', component: AdminGameDetailComponent },
-      { path: 'detail-playoff', component: AdminGamesPlayoffsDetailComponent },
+      { path: 'list', component: AdminGamesList },
+      { path: 'list-playoff', component: AdminGamesPlayoffsList },
+      { path: 'detail-regular', component: AdminGameDetail },
+      { path: 'detail-playoff', component: AdminGamesPlayoffsDetail },
       { path: '', redirectTo: 'list', pathMatch: 'full' },
-      { path: '**', component: PageNotFoundComponent }
+      { path: '**', component: PageNotFound }
     ]
   }
 ];

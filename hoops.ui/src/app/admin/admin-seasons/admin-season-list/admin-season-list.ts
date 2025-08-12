@@ -5,7 +5,7 @@ import * as fromAdmin from '../../state';
 import { Season } from '@app/domain/season';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { DatePipe } from '@angular/common';
-import { SeasonsToolbarComponent } from '../../components/seasons-toolbar/seasons-toolbar.component';
+import { SeasonsToolbar } from '../../components/seasons-toolbar/seasons-toolbar';
 import { Router } from '@angular/router';
 import { SeasonService } from '@app/services/season.service';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -17,10 +17,10 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
   styleUrls: [
     './../../../shared/scss/tables.scss',
     './admin-season-list.scss',
-    '../../admin.component.scss'
+    '../../admin.scss'
   ],
   imports: [MatTableModule, DatePipe,
-    SeasonsToolbarComponent,
+    SeasonsToolbar,
     MatSortModule,
     MatPaginatorModule
   ],

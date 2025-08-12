@@ -1,23 +1,23 @@
 import { RouterModule, Routes } from '@angular/router';
 
-import { PageNotFoundComponent } from '@app/app.not-found.component';
+import { PageNotFound } from '@app/app.not-found';
 import { AuthGuard } from '@app/auth/auth.guard';
-import { AdminPeopleShellComponent } from './admin-people-shell/admin-people-shell';
+import { AdminPeopleShell } from './admin-people-shell/admin-people-shell';
 import { PeopleSearchResults } from './people-search-results/people-search-results';
-import { AdminPeopleDetailComponent } from './admin-people-detail/admin-people-detail.component';
+import { AdminPeopleDetail } from './admin-people-detail/admin-people-detail';
 import { PeopleList } from './people-list/people-list';
 
 export const ADMIN_PEOPLE_ROUTES: Routes = [
   {
     path: '',
-    component: AdminPeopleShellComponent,
+    component: AdminPeopleShell,
     canActivate: [AuthGuard],
 
     children: [
       { path: 'list', component: PeopleList },
-      { path: 'detail', component: AdminPeopleDetailComponent },
+      { path: 'detail', component: AdminPeopleDetail },
       { path: '', redirectTo: 'list', pathMatch: 'full' },
-      { path: '**', component: PageNotFoundComponent }
+      { path: '**', component: PageNotFound }
     ]
   }
 ];
