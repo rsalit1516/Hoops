@@ -10,6 +10,7 @@ using Hoops.Controllers;
 using Microsoft.Extensions.Logging;
 using System.Linq;
 using static Hoops.Core.Enum.GroupTypes;
+using Hoops.Api.Dtos;
 
 namespace Hoops.Api.Tests
 {
@@ -302,6 +303,54 @@ namespace Hoops.Api.Tests
 
             // Act
             var result = await _controller.PutScheduleGame(7, incoming);
+
+            // Assert
+            Assert.IsType<NotFoundResult>(result);
+        }
+
+        [Fact]
+        public async Task PutScheduleGameScores_ReturnsNoContent_WhenUpdateSuccessful()
+        {
+            // Arrange
+            var existing = new ScheduleGame { ScheduleGamesId = 101, HomeTeamScore = 5, VisitingTeamScore = 7 };
+            var dto = new UpdateGameScoresDto { ScheduleGamesId = 101, HomeTeamScore = 15, VisitingTeamScore = 17 };
+            _mockRepo.Setup(r => r.GetByIdAsync(101)).ReturnsAsync(existing);
+            _mockRepo.Setup(r => r.Update(It.IsAny<ScheduleGame>()));
+            _mockRepo.Setup(r => r.SaveChangesAsync()).Returns(Task.CompletedTask);
+
+            // Act
+            var result = await _controller.PutScheduleGameScores(101, dto);
+
+            // Assert
+            Assert.IsType<NoContentResult>(result);
+            Assert.Equal(15, existing.HomeTeamScore);
+            Assert.Equal(17, existing.VisitingTeamScore);
+        }
+
+        [Fact]
+        public async Task PutScheduleGameScores_ReturnsBadRequest_OnValidationError()
+        {
+            // Arrange
+            var existing = new ScheduleGame { ScheduleGamesId = 102 };
+            var dto = new UpdateGameScoresDto { ScheduleGamesId = 102, HomeTeamScore = 200 };
+            _mockRepo.Setup(r => r.GetByIdAsync(102)).ReturnsAsync(existing);
+
+            // Act
+            var result = await _controller.PutScheduleGameScores(102, dto);
+
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task PutScheduleGameScores_ReturnsNotFound_WhenMissing()
+        {
+            // Arrange
+            var dto = new UpdateGameScoresDto { ScheduleGamesId = 103, HomeTeamScore = 10 };
+            _mockRepo.Setup(r => r.GetByIdAsync(103)).ReturnsAsync((ScheduleGame?)null);
+
+            // Act
+            var result = await _controller.PutScheduleGameScores(103, dto);
 
             // Assert
             Assert.IsType<NotFoundResult>(result);

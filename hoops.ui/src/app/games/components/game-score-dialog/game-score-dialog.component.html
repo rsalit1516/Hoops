@@ -1,0 +1,79 @@
+<h1 mat-dialog-title>Scores</h1>
+<div mat-dialog-content>
+  <form
+    class="example-form"
+    [formGroup]="gameScoreForm"
+    (ngSubmit)="onSubmitClick()"
+  >
+    <div>
+      <div class="teamName">{{ game()?.homeTeamName }}:</div>
+      <mat-form-field appearance="fill">
+        <input
+          matInput
+          type="number"
+          formControlName="homeTeamScore"
+          min="0"
+          max="150"
+          step="1"
+          inputmode="numeric"
+          aria-label="Home team score"
+        />
+        <mat-error *ngIf="homeTeamScoreCtrl.hasError('required')"
+          >Required</mat-error
+        >
+        <mat-error *ngIf="homeTeamScoreCtrl.hasError('min')">Min 0</mat-error>
+        <mat-error *ngIf="homeTeamScoreCtrl.hasError('max')">Max 150</mat-error>
+        <mat-error *ngIf="homeTeamScoreCtrl.hasError('integer')"
+          >Whole number only</mat-error
+        >
+      </mat-form-field>
+    </div>
+
+    <div>
+      <div class="teamName">{{ game()?.visitingTeamName }}:</div>
+      <mat-form-field appearance="fill">
+        <input
+          matInput
+          type="number"
+          formControlName="visitorTeamScore"
+          min="0"
+          max="150"
+          step="1"
+          inputmode="numeric"
+          aria-label="Visiting team score"
+        />
+        <mat-error *ngIf="visitorTeamScoreCtrl.hasError('required')"
+          >Required</mat-error
+        >
+        <mat-error *ngIf="visitorTeamScoreCtrl.hasError('min')"
+          >Min 0</mat-error
+        >
+        <mat-error *ngIf="visitorTeamScoreCtrl.hasError('max')"
+          >Max 150</mat-error
+        >
+        <mat-error *ngIf="visitorTeamScoreCtrl.hasError('integer')"
+          >Whole number only</mat-error
+        >
+      </mat-form-field>
+    </div>
+  </form>
+</div>
+<!-- <div>{{game$ | async}}</div> -->
+<div mat-dialog-actions>
+  <button
+    mat-raised-button
+    mat-dialog-close
+    (click)="onSubmitClick()"
+    [disabled]="!canSubmit || saving"
+    cdkFocusInitial
+  >
+    <mat-spinner
+      diameter="18"
+      *ngIf="saving"
+      style="margin-right: 8px"
+    ></mat-spinner>
+    <span *ngIf="!saving">Ok</span>
+    <span *ngIf="saving">Saving…</span>
+  </button>
+  <button mat-raised-button (click)="onCancelClick()">Cancel</button>
+</div>

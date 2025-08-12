@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Linq;
+using Hoops.Api.Dtos;
 
 namespace Hoops.Controllers
 {
@@ -153,6 +154,55 @@ namespace Hoops.Controllers
 
             repository.Update(existing);
 
+            try
+            {
+                await repository.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ScheduleGameExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        // PUT: api/ScheduleGame/5/scores
+        [HttpPut("{id}/scores")]
+        public async Task<IActionResult> PutScheduleGameScores(int id, [FromBody] UpdateGameScoresDto dto)
+        {
+            if (id != dto.ScheduleGamesId)
+            {
+                return BadRequest();
+            }
+
+            if (dto.HomeTeamScore.HasValue && (dto.HomeTeamScore < 0 || dto.HomeTeamScore > 150))
+            {
+                return BadRequest("HomeTeamScore must be between 0 and 150.");
+            }
+            if (dto.VisitingTeamScore.HasValue && (dto.VisitingTeamScore < 0 || dto.VisitingTeamScore > 150))
+            {
+                return BadRequest("VisitingTeamScore must be between 0 and 150.");
+            }
+
+            var existing = await repository.GetByIdAsync(id);
+            if (existing == null)
+            {
+                return NotFound();
+            }
+
+            existing.HomeTeamScore = dto.HomeTeamScore;
+            existing.VisitingTeamScore = dto.VisitingTeamScore;
+            existing.HomeForfeited = dto.HomeForfeited;
+            existing.VisitingForfeited = dto.VisitingForfeited;
+
+            repository.Update(existing);
             try
             {
                 await repository.SaveChangesAsync();
