@@ -42,7 +42,10 @@ describe('AuthGuard', () => {
 
   it('should redirect to login with returnUrl when not logged in', () => {
     authService.setLoggedIn(false);
-    const result = guard.canActivate({} as any, { url: '/secure/page?x=1' } as any);
+    const result = guard.canActivate(
+      {} as any,
+      { url: '/secure/page?x=1' } as any
+    );
     expect(result).toBeFalse();
     expect(navigateSpy).toHaveBeenCalledWith(['/login'], {
       queryParams: { returnUrl: '/secure/page?x=1' },

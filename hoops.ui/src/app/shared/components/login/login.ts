@@ -28,7 +28,7 @@ import { ActivatedRoute, Router } from '@angular/router';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-  MatIconModule,
+    MatIconModule,
     MatButtonModule,
     MatCardModule,
   ],
