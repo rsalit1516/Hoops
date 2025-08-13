@@ -3,19 +3,19 @@ import { CommonModule } from '@angular/common';
 
 
 import { ContentService } from '../services/content.service';
-import { HomeComponent } from './home.component';
+import { Home } from './home';
 
-import { HomeCenterComponent } from './components/home-center/home-center.component';
-import { CsbcHomeSidebarComponent } from './components/home-sidebar/home-sidebar.component';
+import { HomeCenter } from './components/home-center/home-center';
+import { CsbcHomeSidebar } from './components/home-sidebar/home-sidebar';
 import { StoreModule } from '@ngrx/store';
 import { reducer } from './state/home.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { HomeEffects } from './state/home.effects';
-import { MeetingComponent } from './components/meeting/meeting.component';
-import { SponsorListingComponent } from './components/sponsor-listing/sponsor-listing.component';
-import { SponsorListComponent } from './components/sponsor-list/sponsor-list.component';
+import { Meeting } from './components/meeting/meeting';
+import { SponsorListing } from './components/sponsor-listing/sponsor-listing';
+import { SponsorList } from './components/sponsor-list/sponsor-list';
 // import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { CsbcAnnouncementsComponent } from './components/announcements/announcements.component';
+import { CsbcAnnouncements } from './components/announcements/announcements';
 
 @NgModule({
     imports: [

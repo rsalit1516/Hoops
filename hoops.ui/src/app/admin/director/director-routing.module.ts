@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { DirectorShellComponent } from './container/director-shell/director-shell.component';
+import { DirectorShell } from './container/director-shell/director-shell';
 
 const routes: Routes = [ {
   path: '',
-  component: DirectorShellComponent,
+  component: DirectorShell,
 }];
 
 @NgModule({

@@ -51,18 +51,24 @@ namespace Hoops.Api
             services.AddScoped<ISeasonService, Hoops.Application.Services.SeasonService>();
 
             _ = services.AddCors(options =>
-                   {
-                       options.AddPolicy(name: MyAllowSpecificOrigins,
-                                         builder =>
-                                         {
-                                             _ = builder.WithOrigins("http://localhost:4200",
-                                                                 "http://localhost:50364",
-                                                                 "https://csbchoops.com",
-                                                                 "https://thankful-pond-090ec730f.4.azurestaticapps.net")
-                                              .AllowAnyHeader()
-                                        .AllowAnyMethod();
-                                         });
-                   });
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                    builder =>
+                    {
+                        _ = builder.WithOrigins(
+                                "http://localhost:4200",
+                                "https://localhost:4200",
+                                "http://127.0.0.1:4200",
+                                "https://127.0.0.1:4200",
+                                "http://localhost:50364",
+                                "https://csbchoops.com",
+                                "https://thankful-pond-090ec730f.4.azurestaticapps.net"
+                            )
+                            .AllowAnyHeader()
+                            .AllowAnyMethod()
+                            .AllowCredentials();
+                    });
+            });
             // _ = services.AddLogging();
             _ = services.AddControllers().AddNewtonsoftJson(options =>
     {

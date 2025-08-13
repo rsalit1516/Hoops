@@ -10,6 +10,7 @@ using Hoops.Controllers;
 using Microsoft.Extensions.Logging;
 using System.Linq;
 using static Hoops.Core.Enum.GroupTypes;
+using Hoops.Api.Dtos;
 
 namespace Hoops.Api.Tests
 {
@@ -79,18 +80,18 @@ namespace Hoops.Api.Tests
             // Arrange
             var expectedGames = new List<vmGameSchedule>
             {
-                new vmGameSchedule 
-                { 
-                    ScheduleGamesId = 1, 
+                new vmGameSchedule
+                {
+                    ScheduleGamesId = 1,
                     SeasonId = 3055,
                     HomeTeamName = "Red Team",
                     VisitingTeamName = "Blue Team",
                     LocationName = "Gym A",
                     GameType = GameTypes.Regular
                 },
-                new vmGameSchedule 
-                { 
-                    ScheduleGamesId = 2, 
+                new vmGameSchedule
+                {
+                    ScheduleGamesId = 2,
                     SeasonId = 3055,
                     HomeTeamName = "Green Team",
                     VisitingTeamName = "Yellow Team",
@@ -107,7 +108,7 @@ namespace Hoops.Api.Tests
             var okResult = Assert.IsType<OkObjectResult>(result);
             var games = Assert.IsAssignableFrom<IEnumerable<vmGameSchedule>>(okResult.Value);
             Assert.Equal(2, games.Count());
-            
+
             var firstGame = games.First();
             Assert.Equal("Red Team", firstGame.HomeTeamName);
             Assert.Equal("Blue Team", firstGame.VisitingTeamName);
@@ -157,7 +158,7 @@ namespace Hoops.Api.Tests
             var okResult = Assert.IsType<OkObjectResult>(result);
             var standings = Assert.IsAssignableFrom<IEnumerable<ScheduleStandingsVM>>(okResult.Value);
             Assert.Equal(2, standings.Count());
-            
+
             var firstTeam = standings.First();
             Assert.Equal("Red Team", firstTeam.TeamName);
             Assert.Equal(5, firstTeam.Won);
@@ -205,17 +206,17 @@ namespace Hoops.Api.Tests
         public async Task PostScheduleGame_ReturnsCreatedAtAction_WithValidGame()
         {
             // Arrange
-            var newGame = new ScheduleGame 
-            { 
-                ScheduleGamesId = 0, 
-                SeasonId = 3055, 
+            var newGame = new ScheduleGame
+            {
+                ScheduleGamesId = 0,
+                SeasonId = 3055,
                 DivisionId = 3163,
                 GameDate = new System.DateTime(2024, 6, 15),
                 HomeTeamNumber = 1,
                 VisitingTeamNumber = 2
             };
             var savedGame = new ScheduleGame { ScheduleGamesId = 123, SeasonId = 3055 };
-            
+
             _mockRepo.Setup(r => r.Add(It.IsAny<ScheduleGame>()));
             _mockRepo.Setup(r => r.SaveChangesAsync()).Returns(Task.CompletedTask);
 
@@ -232,16 +233,20 @@ namespace Hoops.Api.Tests
         public async Task PutScheduleGame_ReturnsNoContent_WhenUpdateSuccessful()
         {
             // Arrange
-            var gameToUpdate = new ScheduleGame { ScheduleGamesId = 1, SeasonId = 3055 };
+            var existing = new ScheduleGame { ScheduleGamesId = 1, SeasonId = 3055, HomeTeamScore = 10, VisitingTeamScore = 12 };
+            var incoming = new ScheduleGame { ScheduleGamesId = 1, SeasonId = 3055, HomeTeamScore = 20, VisitingTeamScore = 22 };
+            _mockRepo.Setup(r => r.GetByIdAsync(1)).ReturnsAsync(existing);
             _mockRepo.Setup(r => r.Update(It.IsAny<ScheduleGame>()));
             _mockRepo.Setup(r => r.SaveChangesAsync()).Returns(Task.CompletedTask);
 
             // Act
-            var result = await _controller.PutScheduleGame(1, gameToUpdate);
+            var result = await _controller.PutScheduleGame(1, incoming);
 
             // Assert
             Assert.IsType<NoContentResult>(result);
             _mockRepo.Verify(r => r.Update(It.IsAny<ScheduleGame>()), Times.Once);
+            Assert.Equal(20, existing.HomeTeamScore);
+            Assert.Equal(22, existing.VisitingTeamScore);
         }
 
         [Fact]
@@ -255,6 +260,100 @@ namespace Hoops.Api.Tests
 
             // Assert
             Assert.IsType<BadRequestResult>(result);
+        }
+
+        [Fact]
+        public async Task PutScheduleGame_ReturnsBadRequest_WhenHomeScoreOutOfRange()
+        {
+            // Arrange
+            var existing = new ScheduleGame { ScheduleGamesId = 5 };
+            var incoming = new ScheduleGame { ScheduleGamesId = 5, HomeTeamScore = 200, VisitingTeamScore = 10 };
+            _mockRepo.Setup(r => r.GetByIdAsync(5)).ReturnsAsync(existing);
+
+            // Act
+            var result = await _controller.PutScheduleGame(5, incoming);
+
+            // Assert
+            var badResult = Assert.IsType<BadRequestObjectResult>(result);
+            Assert.Contains("HomeTeamScore", badResult.Value!.ToString());
+        }
+
+        [Fact]
+        public async Task PutScheduleGame_ReturnsBadRequest_WhenVisitingScoreOutOfRange()
+        {
+            // Arrange
+            var existing = new ScheduleGame { ScheduleGamesId = 6 };
+            var incoming = new ScheduleGame { ScheduleGamesId = 6, HomeTeamScore = 10, VisitingTeamScore = -5 };
+            _mockRepo.Setup(r => r.GetByIdAsync(6)).ReturnsAsync(existing);
+
+            // Act
+            var result = await _controller.PutScheduleGame(6, incoming);
+
+            // Assert
+            var badResult = Assert.IsType<BadRequestObjectResult>(result);
+            Assert.Contains("VisitingTeamScore", badResult.Value!.ToString());
+        }
+
+        [Fact]
+        public async Task PutScheduleGame_ReturnsNotFound_WhenGameMissing()
+        {
+            // Arrange
+            var incoming = new ScheduleGame { ScheduleGamesId = 7, HomeTeamScore = 10, VisitingTeamScore = 12 };
+            _mockRepo.Setup(r => r.GetByIdAsync(7)).ReturnsAsync((ScheduleGame?)null);
+
+            // Act
+            var result = await _controller.PutScheduleGame(7, incoming);
+
+            // Assert
+            Assert.IsType<NotFoundResult>(result);
+        }
+
+        [Fact]
+        public async Task PutScheduleGameScores_ReturnsNoContent_WhenUpdateSuccessful()
+        {
+            // Arrange
+            var existing = new ScheduleGame { ScheduleGamesId = 101, HomeTeamScore = 5, VisitingTeamScore = 7 };
+            var dto = new UpdateGameScoresDto { ScheduleGamesId = 101, HomeTeamScore = 15, VisitingTeamScore = 17 };
+            _mockRepo.Setup(r => r.GetByIdAsync(101)).ReturnsAsync(existing);
+            _mockRepo.Setup(r => r.Update(It.IsAny<ScheduleGame>()));
+            _mockRepo.Setup(r => r.SaveChangesAsync()).Returns(Task.CompletedTask);
+
+            // Act
+            var result = await _controller.PutScheduleGameScores(101, dto);
+
+            // Assert
+            Assert.IsType<NoContentResult>(result);
+            Assert.Equal(15, existing.HomeTeamScore);
+            Assert.Equal(17, existing.VisitingTeamScore);
+        }
+
+        [Fact]
+        public async Task PutScheduleGameScores_ReturnsBadRequest_OnValidationError()
+        {
+            // Arrange
+            var existing = new ScheduleGame { ScheduleGamesId = 102 };
+            var dto = new UpdateGameScoresDto { ScheduleGamesId = 102, HomeTeamScore = 200 };
+            _mockRepo.Setup(r => r.GetByIdAsync(102)).ReturnsAsync(existing);
+
+            // Act
+            var result = await _controller.PutScheduleGameScores(102, dto);
+
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task PutScheduleGameScores_ReturnsNotFound_WhenMissing()
+        {
+            // Arrange
+            var dto = new UpdateGameScoresDto { ScheduleGamesId = 103, HomeTeamScore = 10 };
+            _mockRepo.Setup(r => r.GetByIdAsync(103)).ReturnsAsync((ScheduleGame?)null);
+
+            // Act
+            var result = await _controller.PutScheduleGameScores(103, dto);
+
+            // Assert
+            Assert.IsType<NotFoundResult>(result);
         }
 
         [Fact]

@@ -74,9 +74,17 @@ export class GameService {
   }
   updateSelectedGame(record: RegularGame) {
     this._selectedGame.set(record);
+    console.log(`Selected game updated: ${record}`);
+    console.log(this._selectedGame());
+  }
+  clearSelectedGame() {
+    this._selectedGame.set(null);
   }
 
-  selectedRecordSignal = this._selectedGame.asReadonly();
+  // Readonly signal for consumers (do NOT call the signal here, or you freeze a snapshot)
+  selectedGameSignal = this._selectedGame.asReadonly();
+  // Backwards alias (can be removed later)
+  selectedRecordSignal = this.selectedGameSignal;
 
   private _seasonGames = signal<RegularGame[] | null>(null);
 
@@ -85,6 +93,7 @@ export class GameService {
   }
   updateSeasonGames(games: RegularGame[]) {
     this._seasonGames.set(games);
+    this.recomputeDivisionDerived();
   }
   seasonGamesCount = computed(() =>
     this.seasonGames ? this.seasonGames.length : 0
@@ -136,10 +145,7 @@ export class GameService {
       // const selectedDivision = this.selectedDivision();
       console.log(this.divisionService.selectedDivision());
       if (this.divisionService.selectedDivision()!) {
-        const filteredGames = this.filterGamesByDivision();
-        this.divisionGames.update(() => filteredGames);
-        const dailyGames = this.groupRegularGamesByDate(this.divisionGames());
-        this.dailySchedule.update(() => dailyGames);
+        this.recomputeDivisionDerived();
         this.fetchStandingsByDivision();
       }
     });
@@ -147,6 +153,13 @@ export class GameService {
       //      console.log(this.selectedTeam());
       this.filterGamesByTeam();
     });
+  }
+
+  private recomputeDivisionDerived() {
+    const filteredGames = this.filterGamesByDivision();
+    this.divisionGames.update(() => filteredGames);
+    const dailyGames = this.groupRegularGamesByDate(this.divisionGames());
+    this.dailySchedule.update(() => dailyGames);
   }
 
   getGames(): Observable<RegularGame[]> {
@@ -209,8 +222,8 @@ export class GameService {
         Constants.GET_STANDINGS_URL + '/' + seasonId + '/' + divisionId
       )
       .pipe(
-        map((response) => (this.standing = response)),
-        tap((data) => console.log('All: ' + JSON.stringify(data)))
+        map((response) => (this.standing = response))
+        // tap((data) => console.log('All: ' + JSON.stringify(data)))
         // catchError(this.handleError)
       );
   }
@@ -370,30 +383,58 @@ export class GameService {
     visitingTeamScore,
   }: {
     game: RegularGame;
-    homeTeamScore: any;
-    visitingTeamScore: any;
-  }) {
+    homeTeamScore: number;
+    visitingTeamScore: number;
+  }): Observable<RegularGame> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       }),
     };
-    game.homeTeamScore = homeTeamScore;
-    game.visitingTeamScore = visitingTeamScore;
-    console.log(game);
-    const gameUrl = this.dataService.webUrl + '/api/games/updateScores';
-    console.log(gameUrl);
-    let result = this.http
-      .put(gameUrl, game, httpOptions)
-      .subscribe((x) => console.log(x));
+    // Build minimal payload to avoid model validation on unrelated fields (e.g., GameTime)
+    const payload = {
+      scheduleGamesId: game.scheduleGamesId,
+      homeTeamScore,
+      visitingTeamScore,
+      homeForfeited: (game as any).homeForfeited ?? null,
+      visitingForfeited: (game as any).visitingForfeited ?? null,
+    };
+    console.log('Score update payload', payload);
+    const gameUrl = `${Constants.PUT_SEASON_GAME_SCORES_URL}${game.scheduleGamesId}/scores`; // api/ScheduleGame/{id}/scores
+    console.log('Updating game via', gameUrl);
+    return this.http.put<void>(gameUrl, payload, httpOptions).pipe(
+      // First, map the void response to a strongly-typed RegularGame result
+      map(() => ({ ...game, homeTeamScore, visitingTeamScore } as RegularGame)),
+      // Then, side-effect on the typed stream to update local state
+      tap((updated: RegularGame) => {
+        // Optimistically update local state so UI reflects new scores
+        this._selectedGame.set(updated);
+        // Update seasonGames list immutably
+        this._seasonGames.update((arr) => {
+          if (!arr) return arr;
+          const idx = arr.findIndex(
+            (g) => g.scheduleGamesId === updated.scheduleGamesId
+          );
+          if (idx === -1) return arr;
+          const copy = arr.slice();
+          copy[idx] = { ...arr[idx], homeTeamScore, visitingTeamScore };
+          return copy;
+        });
+        // Recompute filtered/daily groups for immediate UI update
+        this.recomputeDivisionDerived();
+        // Standings may change; trigger refresh
+        this.fetchStandingsByDivision();
+      })
+    );
     // .pipe(
     //   tap(data => console.log(data)),
     //   catchError(this.dataService.handleError)
     // );
   }
-  validateScores(homeTeamScore: any, visitorTeamScore: any) {
-    //validate scores
-    return true;
+  validateScores(homeTeamScore: number, visitorTeamScore: number) {
+    const isValid = (v: number) =>
+      Number.isFinite(v) && Number.isInteger(v) && v >= 0 && v <= 150;
+    return isValid(homeTeamScore) && isValid(visitorTeamScore);
   }
 }
 export interface GameResponse {

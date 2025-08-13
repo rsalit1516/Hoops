@@ -2,52 +2,53 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { ScheduleComponent } from './components/schedule/schedule.component';
-import { ScheduleCardViewComponent } from './components/schedule-card-view/schedule-card-view.component';
-import { GameCardComponent } from './components/game-card/game-card.component';
+import { Schedule } from './components/schedule/schedule';
+import { ScheduleCardView } from './components/schedule-card-view/schedule-card-view';
+import { GameCard } from './components/game-card/game-card';
 import { GamesRoutingModule } from './games-routing.module';
 import { StoreModule } from '@ngrx/store';
 import { reducer } from './state/games.reducer';
 import { GameEffects } from './state/game.effects';
-import { GameFilterComponent } from './components/game-filter/game-filter.component';
-import { GamesShellComponent } from './containers/games-shell/games-shell.component';
+import { GameFilter } from './components/game-filter/game-filter';
+import { GamesShell } from './containers/games-shell/games-shell';
 import { EffectsModule } from '@ngrx/effects';
 import { GameService } from '@app/services/game.service';
 import { GameSortPipe } from './game-sort.pipe';
-import { GamesTopMenuComponent } from './components/games-top-menu/games-top-menu.component';
-import { ScheduleShellComponent } from './containers/schedule-shell/schedule-shell.component';
-import { ScoresComponent } from './components/scores/scores.component';
-import { GameScoreDialogComponent } from './components/game-score-dialog/game-score-dialog.component';
-import { DailyScheduleComponent } from './components/daily-schedule/daily-schedule.component';
-import { SchedulePlayoffsComponent } from './components/schedule-playoffs/schedule-playoffs.component';
+import { GamesTopMenu } from './components/games-top-menu/games-top-menu';
+import { ScheduleShell } from './containers/schedule-shell/schedule-shell';
+import { Scores } from './components/scores/scores';
+// import { GameScoreDialog } from './components/game-score-dialog/game-score-dialog';
+// import { DailySchedule } from './components/daily-schedule/daily-schedule';
+import { SchedulePlayoffs } from './components/schedule-playoffs/schedule-playoffs';
 import { DailyPlayoffSchedule } from './components/daily-playoff-schedule/daily-playoff-schedule';
 import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
-    imports: [
+  imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     GamesRoutingModule,
-    SchedulePlayoffsComponent,
+    SchedulePlayoffs,
     DailyPlayoffSchedule,
     StoreModule.forFeature('games', reducer),
     EffectsModule.forFeature([GameEffects]),
     // GamesComponent,
-    ScheduleComponent,
-    ScheduleCardViewComponent,
-    GameCardComponent,
-    GameFilterComponent,
-    GamesShellComponent,
+    // Schedule,
+    ScheduleCardView,
+    GameCard,
+    GameFilter,
+    GamesShell,
     GameSortPipe,
-    GamesTopMenuComponent,
-    ScheduleShellComponent,
-    ScoresComponent,
-    GameScoreDialogComponent,
-    DailyScheduleComponent,
-    MatNativeDateModule
-],
-    exports: [GamesRoutingModule],
-    providers: [GameService],
+    GamesTopMenu,
+    ScheduleShell,
+    Scores,
+    // GameScoreDialog,
+    // DailySchedule,
+    MatNativeDateModule,
+  ],
+  exports: [GamesRoutingModule],
+  // GameService is providedIn: 'root' already; avoid shadowing with a feature-level provider
+  providers: [],
 })
 export class GamesModule {}

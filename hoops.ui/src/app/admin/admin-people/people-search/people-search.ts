@@ -24,7 +24,7 @@ import { debounceTime, map } from 'rxjs';
   ],
   templateUrl: './people-search.html',
   styleUrls: ['./people-search.scss',
-    '../../admin.component.scss',
+    '../../admin.scss',
     '../../../shared/scss/forms.scss',
   ],
 })

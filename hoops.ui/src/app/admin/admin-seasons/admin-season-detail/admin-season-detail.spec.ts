@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AdminSeasonDetail } from './admin-season-detail';
 
-describe('AdminSeasonDetailComponent', () => {
+describe('AdminSeasonDetail', () => {
   let component: AdminSeasonDetail;
   let fixture: ComponentFixture<AdminSeasonDetail>;
 
