@@ -2,6 +2,7 @@
 
 h1 {
   font-size: 1.2rem;
+  color: v.$brand-color;
 }
 .teamName {
   font-weight: 700;
@@ -10,7 +11,4 @@ h1 {
 input {
   width: 60px;
   color: black;
-}
-body {
-  background-color: darkblue;
 }

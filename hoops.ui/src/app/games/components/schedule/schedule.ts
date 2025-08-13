@@ -35,6 +35,7 @@ export class Schedule implements OnInit {
   private gameService = inject(GameService);
   private divisionService = inject(DivisionService);
   private authService = inject(AuthService);
+  // Depend on the signal's VALUE so changes propagate to the view
   readonly dailySchedule = computed(() => this.gameService.dailySchedule());
 
   groupedGames: RegularGame[] | undefined;
@@ -79,6 +80,7 @@ export class Schedule implements OnInit {
     this.store.dispatch(new gameActions.SetCurrentGame(game));
     const dialogRef = this.dialog.open(GameScoreDialog, {
       width: '500px',
+      data: { game },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
