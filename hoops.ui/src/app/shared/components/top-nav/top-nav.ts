@@ -39,14 +39,21 @@ export class TopNav implements OnInit {
   env: any;
   constants: typeof Constants;
   securityEnabled: boolean = true;
+  // Show Admin menu when the feature flag is on and the logged-in user is an admin (userType 2 or 3)
   showAdminMenu = computed(() => {
-    if (!this.securityEnabled) return true;
-    const currentUser = this.user();
-    return (
-      this.showAdmin && currentUser && (currentUser.screens?.length ?? 0) > 0
-    );
+    const flags = this.featureFlags.flags(); // signal read ensures reactivity to flag changes
+    const adminEnabled = !!flags['adminModule'];
+    const currentUser = this.authService.currentUser(); // signal read ensures reactivity to login/logout
+    return adminEnabled && this.#isAdminUser(currentUser ?? undefined);
   });
-  get showAdmin(): boolean {
+
+  // Admin helper aligned with AuthService logic
+  #isAdminUser(user: User | undefined): boolean {
+    if (!user) return false;
+    // userType: 2 = Admin, 3 = Director (based on existing checks in AuthService)
+    return user.userType === 2 || user.userType === 3;
+  }
+  get showAdminFeature(): boolean {
     return this.featureFlags.isEnabled('adminModule');
   }
   constructor() {
@@ -59,7 +66,7 @@ export class TopNav implements OnInit {
     this.securityEnabled = environment.securityEnabled;
 
     console.log('Environment = ' + this.env);
-    console.log('Show Admin = ' + this.showAdmin);
+    console.log('Show Admin = ' + this.showAdminFeature);
     console.log('Show Admin Menu = ' + this.showAdminMenu());
   }
 
