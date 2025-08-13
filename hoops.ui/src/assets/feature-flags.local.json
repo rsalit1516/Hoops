@@ -1,12 +1,14 @@
 {
-  "adminModule": true,
+  "adminModule": false,
+  "newLoginUX": true,
+  "experimentalFeatureX": false,
   "notificationModule": true,
   "scheduleModule": true,
   "adminDirectors": true,
   "adminHouseholds": true,
   "adminPeople": true,
   "adminTeams": true,
-  "adminColors": true,
+  "adminColors": false,
   "adminUsers": true,
   "adminNotices": true
 }
