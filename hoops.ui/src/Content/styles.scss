@@ -13,6 +13,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* Dialog panel tweaks for login */
+.csbc-login-dialog-panel .mat-mdc-dialog-container .mdc-dialog__surface {
+  margin: 0 auto;
+  border-radius: 8px;
+}
 
 // @import '~ngular/material/prebuilt-themes/indigo-pink.css';
 // @import "bootstrap/dist/css/bootstrap.css";

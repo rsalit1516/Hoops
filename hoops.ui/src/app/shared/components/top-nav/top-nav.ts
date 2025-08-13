@@ -1,11 +1,10 @@
 import { Component, computed, inject, OnInit, output } from '@angular/core';
-import { LoginDialog } from '../login-dialog/login-dialog';
 import { Observable } from 'rxjs';
 import { User } from '@app/domain/user';
 import { environment } from '../../../../environments/environment';
 import { RouterLinkActive, RouterModule } from '@angular/router';
 import { Constants } from '../../constants';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -15,14 +14,19 @@ import { FeatureFlagService } from '../../services/feature-flags';
 
 @Component({
   selector: 'csbc-top-nav',
-  templateUrl: "./top-nav.html",
-  styleUrls: ['./top-nav.scss',
-    './../../../shared/scss/menu.scss'],
-  imports: [CommonModule, MatDialogModule, MatToolbarModule,
-    MatButtonModule, MatIconModule, RouterModule, RouterLinkActive]
+  templateUrl: './top-nav.html',
+  styleUrls: ['./top-nav.scss', './../../../shared/scss/menu.scss'],
+  imports: [
+    CommonModule,
+    MatDialogModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+    RouterModule,
+    RouterLinkActive,
+  ],
 })
 export class TopNav implements OnInit {
-  public dialog = inject(MatDialog);
   public readonly sidenavToggle = output();
   private authService = inject(AuthService);
   private featureFlags = inject(FeatureFlagService);
@@ -38,17 +42,19 @@ export class TopNav implements OnInit {
   showAdminMenu = computed(() => {
     if (!this.securityEnabled) return true;
     const currentUser = this.user();
-    return this.showAdmin && currentUser && (currentUser.screens?.length ?? 0) > 0;
+    return (
+      this.showAdmin && currentUser && (currentUser.screens?.length ?? 0) > 0
+    );
   });
-  get showAdmin (): boolean {
+  get showAdmin(): boolean {
     return this.featureFlags.isEnabled('adminModule');
   }
-  constructor () {
+  constructor() {
     // this.route.events.subscribe(route => console.log(route));
     this.constants = Constants;
   }
 
-  ngOnInit () {
+  ngOnInit() {
     this.env = environment.environment;
     this.securityEnabled = environment.securityEnabled;
 
@@ -57,15 +63,7 @@ export class TopNav implements OnInit {
     console.log('Show Admin Menu = ' + this.showAdminMenu());
   }
 
-  openDialog () {
-    const dialogRef = this.dialog.open(LoginDialog, {
-      width: '480px',
-    });
-
-    dialogRef.afterClosed().subscribe(() => {
-      // console.log('The dialog was closed');
-    });
-  }
+  // Deprecated: login dialog replaced by routed /login for mobile friendliness
 
   logout() {
     this.authService.logout();

@@ -1,3 +1,27 @@
-.login {
-  height: 100vh;
+/* Center the login page and set a clean, responsive width */
+.login-page {
+  min-height: calc(100vh - 64px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 24px 16px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+}
+
+@media (min-width: 1200px) {
+  .login-card {
+    max-width: 480px;
+  }
+}
+
+.login-form {
+  display: block;
+}
+
+.full-width {
+  width: 100%;
 }

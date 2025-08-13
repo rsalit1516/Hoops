@@ -2,12 +2,13 @@ import { Component, inject, OnInit } from '@angular/core';
 import { AuthService } from '@app/services/auth.service';
 import {
   UntypedFormBuilder,
-  Validators
+  Validators,
+  ReactiveFormsModule,
 } from '@angular/forms';
 import * as userActions from '../../../user/state/user.actions';
 import * as fromUser from '../../../user/state';
 import { Store } from '@ngrx/store';
-import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -15,15 +16,17 @@ import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'csbc-login-dialog',
-  templateUrl: "./login-dialog.html",
-  styleUrls: ['./login-dialog.scss',
-    '../../scss/forms.scss',
+  templateUrl: './login-dialog.html',
+  styleUrls: ['./login-dialog.scss', '../../scss/forms.scss'],
+  imports: [
+    CommonModule,
+    MatDialogModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
   ],
-  imports: [CommonModule, MatDialogModule, MatFormFieldModule,
-    MatInputModule, MatButtonModule],
-  providers: [
-    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } }
-  ]
+  providers: [],
 })
 export class LoginDialog implements OnInit {
   /* injected */
@@ -31,55 +34,73 @@ export class LoginDialog implements OnInit {
 
   loginForm = this.fb.group({
     userName: ['', Validators.required],
-    password: ['', Validators.required]
+    password: ['', Validators.required],
   });
-  isFormValid: boolean = false;
-  get userName () {
+  // Show error only after a failed attempt
+  isFormValid: boolean = true;
+  attemptedSubmit = false;
+  loginError = false;
+  get userName() {
     return this.loginForm.get('userName');
   }
-  get password () {
+  get password() {
     return this.loginForm.get('password');
   }
 
-  constructor (
+  constructor(
     public dialogRef: MatDialogRef<LoginDialog>,
     private fb: UntypedFormBuilder,
     private store: Store<fromUser.State>
-  ) { }
+  ) {}
 
-  ngOnInit () {
-    this.isFormValid = false;
+  ngOnInit() {
+    this.isFormValid = true;
+    this.loginError = false;
+    this.attemptedSubmit = false;
   }
-  onCancelClick () {
+  onCancelClick() {
     this.dialogRef.close();
   }
-  onSubmitClick () {
-    // this.loginForm.markAllAsTouched();
-    console.log(this.loginForm);
-    if (!this.loginForm.invalid) {
-      this.validateUser(
-        this.loginForm.controls['userName'].value,
-        this.loginForm.controls['password'].value
-      );
-      this.store.select(fromUser.getCurrentUser).subscribe(user => {
-        console.log(user);
-        if (user !== null && user.userId !== 0) {
-          this.dialogRef.close();
+  onSubmitClick() {
+    this.attemptedSubmit = true;
+    if (this.loginForm.invalid) {
+      this.loginForm.markAllAsTouched();
+      this.isFormValid = false;
+      return;
+    }
+
+    const userName = this.loginForm.controls['userName'].value as string;
+    const password = this.loginForm.controls['password'].value as string;
+    this.validateUser(userName, password);
+
+    const sub = this.store.select(fromUser.getCurrentUser).subscribe((user) => {
+      if (user && user.userId !== 0) {
+        sub.unsubscribe();
+        this.dialogRef.close();
+      } else {
+        // Keep the dialog open and show error only if a prior attempt failed
+        this.isFormValid = false;
+      }
+    });
+  }
+  validateUser(userName: string, password: string) {
+    return this.#authService.login(userName, password).subscribe({
+      next: (response) => {
+        if (response !== null) {
+          this.loginError = false;
+          this.isFormValid = true;
+          // The login method now automatically calls setUserState via tap operator
+          // But we'll also dispatch to the store for compatibility
+          this.store.dispatch(new userActions.SetCurrentUser(response));
         } else {
+          this.loginError = true;
           this.isFormValid = false;
         }
-
-      });
-    }
-  }
-  validateUser (userName: string, password: string) {
-    return this.#authService.login(userName, password).subscribe(response => {
-      console.log(response);
-      if (response !== null) {
-        // The login method now automatically calls setUserState via tap operator
-        // But we'll also dispatch to the store for compatibility
-        this.store.dispatch(new userActions.SetCurrentUser(response));
-      }
+      },
+      error: () => {
+        this.loginError = true;
+        this.isFormValid = false;
+      },
     });
   }
 }

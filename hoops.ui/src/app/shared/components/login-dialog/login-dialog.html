@@ -1,37 +1,40 @@
 <h1 mat-dialog-title>Login</h1>
 <div mat-dialog-content>
-  <form
-    class="login-form"
-    formGroupName="loginForm"
-    (ngSubmit)="onSubmitClick()"
-  >
-    <mat-error *ngIf="!isFormValid" class="error"
-      >User Name or password is not valid
-    </mat-error>
-    <div>
-      <mat-form-field>
-        <mat-label for="userName">User Name</mat-label>
-        <input matInput type="text" required formControlName="userName" />
-        <!-- <mat-error *ngIf="userName.errors">login name is required</mat-error> -->
-      </mat-form-field>
-    </div>
-    <div>
-      <mat-form-field>
-        <mat-label for="password">Password</mat-label>
+  <div class="login-container">
+    <form
+      id="loginForm"
+      class="login-form"
+      [formGroup]="loginForm"
+      (ngSubmit)="onSubmitClick()"
+    >
+      <mat-error *ngIf="!isFormValid && attemptedSubmit" class="error">
+        User Name or password is not valid
+      </mat-error>
+      <div>
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label for="userName">User Name</mat-label>
+          <input matInput type="text" required formControlName="userName" />
+          <!-- <mat-error *ngIf="userName.errors">login name is required</mat-error> -->
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label for="password">Password</mat-label>
 
-        <input matInput type="password" required formControlName="password" />
-        <!-- <mat-error *ngIf="password.invalid" class="error"
+          <input matInput type="password" required formControlName="password" />
+          <!-- <mat-error *ngIf="password.invalid" class="error"
         >Password is required!</mat-error
       > -->
-      </mat-form-field>
-    </div>
-  </form>
+        </mat-form-field>
+      </div>
+    </form>
+  </div>
 </div>
 <div mat-dialog-actions>
   <button
     mat-raised-button
-    mat-dialog-close
-    (click)="onSubmitClick()"
+    type="submit"
+    form="loginForm"
     cdkFocusInitial
     color="primary"
   >
@@ -41,5 +44,5 @@
   <button mat-raised-button color="primary" (click)="onCancelClick()">
     Cancel
   </button>
-  <div>{{ loginForm.invalid }}</div>
+  <div class="dev-debug" *ngIf="false">{{ loginForm.invalid }}</div>
 </div>
