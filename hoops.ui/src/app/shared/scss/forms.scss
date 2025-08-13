@@ -310,3 +310,6 @@ mat-form-field input::placeholder {
 .mat-mdc-dialog-surface {
   background-color: v.$admin-background-color !important;
 }
+.mat-mdc-icon-button .mat-icon {
+  color: v.$admin-font-color !important;
+}
