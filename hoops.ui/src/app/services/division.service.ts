@@ -144,8 +144,11 @@ export class DivisionService {
   constructor() {
     effect(() => {
       const season = this.#seasonService.selectedSeason;
-      if (season !== null) {
-        this.getSeasonDivisions(season.seasonId ?? 0);
+      if (season) {
+        // Track the active season id for consumers that need it (e.g., editors on save)
+        this.seasonId = season.seasonId ?? 0;
+        this.season = season;
+        this.getSeasonDivisions(this.seasonId);
         this.#logger.log(season);
         //     console.log(this.seasonDivisions());
       }

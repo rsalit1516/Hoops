@@ -1,7 +1,7 @@
 <form
   class="form-horizontal"
   novalidate
-  (ngsubmit)="save()"
+  (ngSubmit)="save()"
   [formGroup]="divisionForm"
 >
   <mat-card class="container mx-auto">
@@ -14,10 +14,7 @@
           <fieldset>
             <mat-form-field>
               <mat-label>Division</mat-label>
-              <input matInput
-              required
-              type="text"
-              formControlName="name" />
+              <input matInput required type="text" formControlName="name" />
               <!--<mat-select
                 placeholder="Select Division"
                 formControlName="name"
@@ -103,18 +100,17 @@
       </div>
       <div class="flex flex-wrap -mx-2">
         <div class="w-6/12 px-2">
-          <!-- <fieldset>
-            <mat-form-field floatlabel="auto"  >
-              <mat-label>AD</mat-label>
-              <mat-select placeholder="Select AD" formcontrolname="director"  >
-                @for (ad of ads(); track ad) {
-                <mat-option [value]="ad.personId"  >
-                  {{ ad.lastName + ", " + ad.firstName }}
+          <fieldset>
+            <mat-form-field floatLabel="auto">
+              <mat-label>Director (optional)</mat-label>
+              <mat-select placeholder="Select AD" formControlName="director">
+                <mat-option [value]="null">None</mat-option>
+                <mat-option *ngFor="let ad of ads" [value]="ad.personId">
+                  {{ ad.lastName }}, {{ ad.firstName }}
                 </mat-option>
-                }
               </mat-select>
             </mat-form-field>
-          </fieldset> -->
+          </fieldset>
         </div>
       </div>
     </mat-card-content>

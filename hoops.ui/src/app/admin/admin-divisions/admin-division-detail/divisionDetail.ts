@@ -31,10 +31,14 @@ import { ConfirmDialog } from '@app/admin/shared/confirm-dialog/confirm-dialog';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { DateTime } from 'luxon';
+import { PeopleService } from '@app/services/people.service';
+import { Person } from '@app/domain/person';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { NotificationService } from '@app/shared/services/notification.service';
 
 @Component({
   selector: 'csbc-division-detail',
-  templateUrl: "./divisionDetail.html",
+  templateUrl: './divisionDetail.html',
   styleUrls: [
     '../../admin.scss',
     '../../../shared/scss/forms.scss',
@@ -53,6 +57,7 @@ import { DateTime } from 'luxon';
     MatOptionModule,
     MatDialogModule,
     MatButtonModule,
+    MatSnackBarModule,
     NewDivisionSelector,
     ConfirmDialog,
   ],
@@ -64,6 +69,8 @@ export class DivisionDetail implements OnInit {
   dialog = inject(MatDialog);
   private divisionService = inject(DivisionService);
   private router = inject(Router);
+  private peopleService = inject(PeopleService);
+  private notify = inject(NotificationService);
   fb = inject(FormBuilder);
 
   // selectedDivision = signal<Division>(new Division());
@@ -102,9 +109,11 @@ export class DivisionDetail implements OnInit {
     ],
     gender1: [''],
     gender2: [''],
+    director: this.fb.control<number | null>(null),
   });
 
   genders = ['M', 'F'];
+  ads: Person[] = [];
   minDateHint = 'Min date: mm//dd/yyyy';
   maxDateHint = 'Max date: mm//dd/yyyy';
 
@@ -130,6 +139,11 @@ export class DivisionDetail implements OnInit {
     });
   }
   ngOnInit(): void {
+    // Load ADs for Director dropdown
+    this.peopleService.getADPeople().subscribe({
+      next: (ads) => (this.ads = ads ?? []),
+      error: (e) => console.error('Failed to load ADs', e),
+    });
     let currentDivision = this.divisionService.currentDivision();
     const division = this.divisionService.selectedDivision(); // get the current selected division
 
@@ -159,6 +173,10 @@ export class DivisionDetail implements OnInit {
             ? new Date(division.minDate2).toISOString().split('T')[0]
             : '',
           gender2: division.gender2,
+          director:
+            division.directorId && division.directorId > 0
+              ? division.directorId
+              : null,
         }); // this.divisionForm.get('maxDate2')?.setValue(formatDate(division.maxDate2, this.dateFormat, this.languageFormat));
       }
     }
@@ -168,6 +186,7 @@ export class DivisionDetail implements OnInit {
     // console.log('Save');
     let division = new Division();
     division.companyId = 1; // get from constants
+    // Default to the currently selected season id; if editing, we'll override with the record's seasonId below
     division.seasonId = this.divisionService.seasonId;
     division.divisionDescription = this.divisionForm.get('name')?.value ?? '';
     division.maxDate = new Date(
@@ -177,18 +196,16 @@ export class DivisionDetail implements OnInit {
       this.divisionForm.get('minDate1')?.value ?? DateTime.now().toISO()
     );
     division.gender = this.divisionForm.get('gender1')?.value ?? '';
-    if (division.maxDate2 !== null) {
-      division.maxDate2 = new Date(
-        this.divisionForm.get('maxDate2')?.value ?? DateTime.now().toISO()
-      );
+    const maxDate2Val = this.divisionForm.get('maxDate2')?.value;
+    if (maxDate2Val) {
+      division.maxDate2 = new Date(maxDate2Val);
     }
     // this.divisionForm.get('maxDate2')?.setValue(formatDate(division.maxDate2, this.dateFormat, this.languageFormat));
-    if (division.minDate2 !== null) {
-      division.minDate2 = new Date(
-        this.divisionForm.get('minDate2')?.value ?? DateTime.now().toISO()
-      );
+    const minDate2Val = this.divisionForm.get('minDate2')?.value;
+    if (minDate2Val) {
+      division.minDate2 = new Date(minDate2Val);
     }
-    if (division.maxDate2 !== null || division.minDate2 !== null) {
+    if (division.maxDate2 || division.minDate2) {
       division.gender2 = this.divisionForm.get('gender2')?.value ?? '';
     }
     if (this.divisionService.currentDivision() == undefined) {
@@ -200,14 +217,34 @@ export class DivisionDetail implements OnInit {
       } else {
         division.divisionId = _division!.divisionId;
       }
-      if (this.divisionForm.get('director')?.value !== null) {
-        division.directorId =
-          Number(this.divisionForm.get('director')?.value) ?? 0;
+      // Preserve the original season for existing records; fallback to active season for new ones
+      if (_division && _division.seasonId && _division.seasonId > 0) {
+        division.seasonId = _division.seasonId;
+      }
+      const directorVal = this.divisionForm.get('director')?.value;
+      if (directorVal !== null && directorVal !== undefined) {
+        division.directorId = Number(directorVal);
+      } else {
+        division.directorId = 0; // explicit none
       }
       // console.log(division);
-      this.divisionService.save(division);
-
-      this.router.navigate(['/admin/division']);
+      this.divisionService.save(division).subscribe({
+        next: () => {
+          // mark as clean and navigate after successful save
+          this.divisionForm.markAsPristine();
+          // Refresh list so changes are visible when returning
+          const activeSeasonId = this.divisionService.seasonId;
+          if (activeSeasonId && activeSeasonId > 0) {
+            this.divisionService.getSeasonDivisions(activeSeasonId);
+          }
+          this.notify.success('Division saved');
+          this.router.navigate(['/admin/division']);
+        },
+        error: (err) => {
+          console.error('Failed to save division', err);
+          this.notify.error('Failed to save division');
+        },
+      });
     }
   }
 
