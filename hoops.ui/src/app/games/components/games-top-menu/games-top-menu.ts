@@ -1,6 +1,7 @@
 import {
   Component,
   OnInit,
+  OnDestroy,
   Output,
   computed,
   effect,
@@ -11,13 +12,19 @@ import {
 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as fromGames from '../../state';
-import { Subject, Observable } from 'rxjs';
+import { Subject, Observable, Subscription } from 'rxjs';
+import {
+  NavigationEnd,
+  Router,
+  RouterLinkActive,
+  RouterModule,
+} from '@angular/router';
 import { Division } from '@app/domain/division';
 import { SeasonService } from '@app/services/season.service';
 import { GameService } from '@app/services/game.service';
 import { Season } from '@app/domain/season';
 import { Team } from '@app/domain/team';
-import { Router, RouterLinkActive, RouterModule } from '@angular/router';
+// removed duplicate Router import
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { GameFilter } from '../game-filter/game-filter';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -37,7 +44,8 @@ import { PlayoffGameService } from '@app/services/playoff-game.service';
     GameFilter,
   ],
 })
-export class GamesTopMenu implements OnInit {
+export class GamesTopMenu implements OnInit, OnDestroy {
+  private routeSub?: Subscription;
   private router = inject(Router);
   private store = inject(Store<fromGames.State>);
 
@@ -94,9 +102,28 @@ export class GamesTopMenu implements OnInit {
     } else {
       this.display.set('schedule');
     }
+
+    // Keep display in sync when user navigates via router links
+    this.routeSub = this.router.events.subscribe((evt) => {
+      if (evt instanceof NavigationEnd) {
+        const next = evt.urlAfterRedirects.toLowerCase();
+        if (next.includes('/games/playoffs')) {
+          this.display.set('playoffs');
+        } else if (next.includes('/games/standings')) {
+          this.display.set('standings');
+        } else {
+          this.display.set('schedule');
+        }
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.routeSub?.unsubscribe();
   }
 
   onTabChanged(event: MatTabChangeEvent): void {
+    console.log(event.tab.textLabel);
     switch (event.tab.textLabel) {
       case 'Schedule': // index of the tab
         // this is our stub tab for link
