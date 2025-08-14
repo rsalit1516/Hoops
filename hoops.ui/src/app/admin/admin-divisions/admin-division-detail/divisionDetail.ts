@@ -139,46 +139,48 @@ export class DivisionDetail implements OnInit {
     });
   }
   ngOnInit(): void {
-    // Load ADs for Director dropdown
+    // Load ADs for Director dropdown, then patch director if present
     this.peopleService.getADPeople().subscribe({
-      next: (ads) => (this.ads = ads ?? []),
-      error: (e) => console.error('Failed to load ADs', e),
-    });
-    let currentDivision = this.divisionService.currentDivision();
-    const division = this.divisionService.selectedDivision(); // get the current selected division
-
-    /* Need to fix this!!!!! */
-    if (division !== null) {
-      if (division?.divisionDescription !== undefined) {
-        const matchingDivision = this.divisionService.getmatchingDivision(
-          division.divisionDescription
-        );
-        console.log(matchingDivision);
-
-        this.selectedDivisionDescription = matchingDivision;
-        console.log(division);
-        this.divisionForm.patchValue({
-          name: division.divisionDescription,
-          maxDate1: division.maxDate
-            ? new Date(division.maxDate).toISOString().split('T')[0]
-            : '',
-          minDate1: division.minDate
-            ? new Date(division.minDate).toISOString().split('T')[0]
-            : '',
-          gender1: division.gender,
-          maxDate2: division.maxDate2
-            ? new Date(division.maxDate2).toISOString().split('T')[0]
-            : '',
-          minDate2: division.minDate2
-            ? new Date(division.minDate2).toISOString().split('T')[0]
-            : '',
-          gender2: division.gender2,
-          director:
+      next: (ads) => {
+        this.ads = ads ?? [];
+        const division = this.divisionService.selectedDivision();
+        if (division && division.divisionDescription !== undefined) {
+          // Only patch director once ADs are ready so the control can resolve the value
+          const directorValue =
             division.directorId && division.directorId > 0
               ? division.directorId
-              : null,
-        }); // this.divisionForm.get('maxDate2')?.setValue(formatDate(division.maxDate2, this.dateFormat, this.languageFormat));
-      }
+              : null;
+          this.divisionForm.get('director')?.setValue(directorValue, {
+            emitEvent: false,
+          });
+        }
+      },
+      error: (e) => console.error('Failed to load ADs', e),
+    });
+
+    const division = this.divisionService.selectedDivision(); // get the current selected division
+    if (division) {
+      const matchingDivision = this.divisionService.getmatchingDivision(
+        division.divisionDescription ?? ''
+      );
+      this.selectedDivisionDescription = matchingDivision;
+      this.divisionForm.patchValue({
+        name: division.divisionDescription,
+        maxDate1: division.maxDate
+          ? new Date(division.maxDate).toISOString().split('T')[0]
+          : '',
+        minDate1: division.minDate
+          ? new Date(division.minDate).toISOString().split('T')[0]
+          : '',
+        gender1: division.gender,
+        maxDate2: division.maxDate2
+          ? new Date(division.maxDate2).toISOString().split('T')[0]
+          : '',
+        minDate2: division.minDate2
+          ? new Date(division.minDate2).toISOString().split('T')[0]
+          : '',
+        gender2: division.gender2,
+      });
     }
   }
 
