@@ -43,6 +43,18 @@ export class TeamService {
 
   updateSelectedTeam(value: Team | undefined): void {
     this._selectedTeam.set(value);
+    // Persist selection per (season, division) for user convenience
+    try {
+      const seasonId = this.selectedSeason()?.seasonId ?? 0;
+      const divisionId =
+        value?.divisionId ?? this.selectedDivision()?.divisionId ?? 0;
+      if (seasonId && divisionId) {
+        localStorage.setItem(
+          `games:lastTeam:${seasonId}:${divisionId}`,
+          String(value?.teamId ?? 0)
+        );
+      }
+    } catch {}
   }
   _addAllTeams = signal<boolean>(false);
   get addAllTeams(): boolean {
@@ -95,7 +107,18 @@ export class TeamService {
             t.teamId === current.teamId && t.divisionId === current.divisionId
         );
       if (!current || !isCurrentPresent) {
-        this._selectedTeam.set(first);
+        // Try restoring last selection for this (season, division)
+        let restored: Team | undefined = undefined;
+        try {
+          const seasonId = this.selectedSeason()?.seasonId ?? 0;
+          const key = `games:lastTeam:${seasonId}:${division.divisionId}`;
+          const raw = localStorage.getItem(key);
+          const storedId = raw ? Number(raw) : NaN;
+          if (Number.isFinite(storedId)) {
+            restored = divisionTeams.find((t) => t.teamId === storedId);
+          }
+        } catch {}
+        this._selectedTeam.set(restored ?? first);
       }
     });
   }

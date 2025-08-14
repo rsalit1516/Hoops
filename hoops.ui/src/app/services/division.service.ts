@@ -45,6 +45,16 @@ export class DivisionService {
   updateSelectedDivision(division: Division) {
     console.log(division);
     this._selectedDivision.set(division);
+    // Persist last selected division for this season (client-side only)
+    try {
+      const seasonId = division.seasonId || this.seasonId || 0;
+      if (seasonId) {
+        localStorage.setItem(
+          `games:lastDivision:${seasonId}`,
+          String(division.divisionId ?? 0)
+        );
+      }
+    } catch {}
   }
 
   _seasonDivisions: WritableSignal<Division[]> = signal([]);
@@ -203,7 +213,18 @@ export class DivisionService {
     this.#http.get<Division[]>(url).subscribe(
       (data) => {
         this.updateSeasonDivisions(data);
-        this.updateSelectedDivision(data[0]);
+        // Try restoring previously selected division for this season
+        let toSelect: Division | undefined = undefined;
+        try {
+          const stored = localStorage.getItem(`games:lastDivision:${id}`);
+          if (stored) {
+            const storedId = Number(stored);
+            if (Number.isFinite(storedId)) {
+              toSelect = data.find((d) => d.divisionId === storedId);
+            }
+          }
+        } catch {}
+        this.updateSelectedDivision(toSelect ?? data[0]);
         console.log(this.seasonDivisions());
       },
       (error) => {
