@@ -3,17 +3,6 @@
     <division-select />
   </div>
   <div class="flex-1">
-    <mat-form-field *ngIf="display() === 'schedule'">
-      <mat-label>Teams</mat-label>
-      <mat-select
-        #teamSelect
-        (selectionChange)="onTeamChange(teamSelect.value)"
-        [(value)]="team"
-      >
-        <mat-option *ngFor="let team of teams()" [value]="team">
-          {{ team.teamName }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+    <team-select *ngIf="display() === 'schedule'" />
   </div>
 </div>

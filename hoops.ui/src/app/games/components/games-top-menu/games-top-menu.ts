@@ -1,4 +1,14 @@
-import { Component, OnInit, Output, computed, effect, inject, input, output, signal } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Output,
+  computed,
+  effect,
+  inject,
+  input,
+  output,
+  signal,
+} from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as fromGames from '../../state';
 import { Subject, Observable } from 'rxjs';
@@ -16,19 +26,23 @@ import { PlayoffGameService } from '@app/services/playoff-game.service';
 
 @Component({
   selector: 'csbc-games-top-menu',
-  templateUrl: "./games-top-menu.html",
-  styleUrls: ['../../../shared/scss/select.scss',
-    './games-top-menu.scss'
+  templateUrl: './games-top-menu.html',
+  styleUrls: ['../../../shared/scss/select.scss', './games-top-menu.scss'],
+  imports: [
+    CommonModule,
+    RouterModule,
+    RouterLinkActive,
+    MatToolbarModule,
+    MatTabsModule,
+    GameFilter,
   ],
-  imports: [CommonModule, RouterModule, RouterLinkActive,
-    MatToolbarModule, MatTabsModule, GameFilter]
 })
 export class GamesTopMenu implements OnInit {
   private router = inject(Router);
   private store = inject(Store<fromGames.State>);
 
   divisions = input.required<Division[]>();
-  teams = input.required<Team[]>();
+  // Team list now comes from TeamService; no direct input needed here.
   @Output() currentDivision: Division | undefined;
   display = signal<string>('schedule');
   readonly selectedDivision = output<Division>();
@@ -39,14 +53,18 @@ export class GamesTopMenu implements OnInit {
   filteredTeams!: Team[];
   selectedDivisionId$: Observable<number> | undefined;
   season: Season | undefined;
-  divisionPlayoffGames = computed(() => this.#playoffGameService.divisionPlayoffGames());
+  divisionPlayoffGames = computed(() =>
+    this.#playoffGameService.divisionPlayoffGames()
+  );
   hasPlayoffs = signal(false);
   divisionStandings = computed(() => this.#gameService.divisionStandings());
   hasStandings = signal(false);
   currentSeason = computed(() => this.#seasonService.selectedSeason);
-  seasonDescription = computed(() => this.#seasonService.selectedSeason.description);
+  seasonDescription = computed(
+    () => this.#seasonService.selectedSeason.description
+  );
 
-  constructor () {
+  constructor() {
     effect(() => {
       // console.log(this.divisionPlayoffGames());
       if (this.divisionPlayoffGames() !== undefined) {
@@ -65,9 +83,20 @@ export class GamesTopMenu implements OnInit {
     });
   }
 
-  ngOnInit () { }
+  ngOnInit() {
+    // Initialize display from current URL so downstream checks like
+    // display() === 'schedule' behave correctly on first render.
+    const url = this.router.url.toLowerCase();
+    if (url.includes('/games/playoffs')) {
+      this.display.set('playoffs');
+    } else if (url.includes('/games/standings')) {
+      this.display.set('standings');
+    } else {
+      this.display.set('schedule');
+    }
+  }
 
-  onTabChanged (event: MatTabChangeEvent): void {
+  onTabChanged(event: MatTabChangeEvent): void {
     switch (event.tab.textLabel) {
       case 'Schedule': // index of the tab
         // this is our stub tab for link

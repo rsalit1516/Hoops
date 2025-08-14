@@ -367,6 +367,11 @@ export class DivisionService {
     }
   }
 
+  delete(id: number) {
+    const url = `${Constants.DIVISION_URL}/${id}`;
+    return this.#dataService.delete(url);
+  }
+
   getmatchingDivision(division: string): string {
     for (const item of this.standardDivisions()) {
       if (item.toLowerCase() === division.toLowerCase()) {

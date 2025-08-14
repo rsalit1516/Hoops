@@ -5,6 +5,7 @@ using Hoops.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
 
 namespace csbc_server.Controllers
 {
@@ -90,12 +91,37 @@ namespace csbc_server.Controllers
         {
             try
             {
+                // Verify existence first to return 404 when appropriate
+                try
+                {
+                    var _ = await repository.FindByAsync(id);
+                }
+                catch
+                {
+                    return NotFound();
+                }
+
                 await repository.DeleteAsync(id);
                 return Ok();
             }
-             catch
+            catch (Microsoft.EntityFrameworkCore.DbUpdateException)
             {
-                return NotFound();
+                // Likely FK constraint (e.g., teams/games depend on division)
+                return Conflict(new ProblemDetails
+                {
+                    Title = "Cannot delete division",
+                    Detail = "The division has related records (e.g., teams or games). Remove dependencies first.",
+                    Status = StatusCodes.Status409Conflict
+                });
+            }
+            catch (System.Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ProblemDetails
+                {
+                    Title = "Delete failed",
+                    Detail = ex.Message,
+                    Status = StatusCodes.Status500InternalServerError
+                });
             }
         }
 

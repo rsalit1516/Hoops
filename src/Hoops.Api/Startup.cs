@@ -61,6 +61,8 @@ namespace Hoops.Api
                                 "http://127.0.0.1:4200",
                                 "https://127.0.0.1:4200",
                                 "http://localhost:50364",
+                                "http://localhost:5001",
+                                "https://localhost:5001",
                                 "https://csbchoops.com",
                                 "https://thankful-pond-090ec730f.4.azurestaticapps.net"
                             )

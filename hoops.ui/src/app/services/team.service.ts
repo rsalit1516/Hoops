@@ -38,6 +38,8 @@ export class TeamService {
   get selectedTeam(): Team | undefined {
     return this._selectedTeam();
   }
+  // Readonly signal for components that prefer reactive binding
+  selectedTeamSignal = this._selectedTeam.asReadonly();
 
   updateSelectedTeam(value: Team | undefined): void {
     this._selectedTeam.set(value);
@@ -53,65 +55,83 @@ export class TeamService {
 
   constructor() {
     effect(() => {
-      // console.log(this.selectedSeason());
-      if (this.selectedSeason() !== undefined) {
+      const sel = this.selectedSeason();
+      if (sel && sel.seasonId) {
         this.getSeasonTeams();
-        //console.log(this.seasonTeams());
       }
     });
     effect(() => {
-      // console.log(this.selectedDivision());
-      if (this.selectedDivision() !== undefined) {
-        const divisionTeams = this.filterTeamsByDivision(
-          this.selectedDivision()!.divisionId
+      const division = this.selectedDivision();
+      const seasonTeams = this.seasonTeams();
+      if (!division || !seasonTeams) {
+        this.divisionTeams.set([]);
+        return;
+      }
+      let divisionTeams = this.filterTeamsByDivision(division.divisionId);
+      // Ensure an "All" option exists at the top for the selected division
+      const allTeamId = 0;
+      const hasAll =
+        divisionTeams.length > 0 && divisionTeams[0].teamId === allTeamId;
+      if (!hasAll) {
+        const all = new Team(
+          0,
+          division.divisionId,
+          Constants.ALLTEAMS,
+          Constants.ALLTEAMS,
+          '0'
         );
-        // console.log(divisionTeams);
-        this.divisionTeams.update(() => divisionTeams);
-        console.log('Division Teams: ', this.divisionTeams());
-        this.updateSelectedTeam(this.divisionTeams()[0]);
+        divisionTeams = [all, ...divisionTeams];
+      }
+      this.divisionTeams.set(divisionTeams);
+      // Only update selected team if none selected or no longer present.
+      // Use both teamId and divisionId so the sentinel "All Teams" (teamId=0)
+      // from a previous division doesn't appear as "present" in the new division.
+      const current = this._selectedTeam();
+      const first = divisionTeams[0];
+      const isCurrentPresent =
+        !!current &&
+        divisionTeams.some(
+          (t) =>
+            t.teamId === current.teamId && t.divisionId === current.divisionId
+        );
+      if (!current || !isCurrentPresent) {
+        this._selectedTeam.set(first);
       }
     });
   }
 
   getSeasonTeams(): void {
-    if (this.selectedSeason() === undefined) {
-      return;
-    }
-    const url = this.teamUrl + this.selectedSeason()!.seasonId;
-    // console.log('getting season teams');
-    this.#http.get<Team[]>(url).subscribe(
-      (teams) => {
-        this.seasonTeams.update(() => teams);
-        this.updateSelectedTeam(this.seasonTeams()![0]);
-      },
-      // tap(data => console.log('All: ' + JSON.stringify(data))),
-      catchError(this.#dataService.handleError('getTeams', []))
-    );
+    const sel = this.selectedSeason();
+    if (!sel || !sel.seasonId) return;
+    const url = this.teamUrl + sel.seasonId;
+    this.#http.get<Team[]>(url).subscribe((teams) => {
+      this.seasonTeams.set(teams ?? []);
+      // Do not set selectedTeam here to avoid race conditions; handled in effect above
+    }, catchError(this.#dataService.handleError('getTeams', [])));
   }
   // fetchSeasonTeams(): void {
   //   this.getSeasonTeams().subscribe((teams) => {
   //   })
   // }
   filterTeamsByDivision(div: number): Team[] {
-    let filteredTeams: Team[] = [];
+    const filtered: Team[] = [];
     if (this.addAllTeams) {
-      const teamId: number = 0;
-      const divisionId: number = this.selectedDivision()!.divisionId;
-      const name: string = Constants.ALLTEAMS;
-      const teamName: string = Constants.ALLTEAMS;
-      const teamNumber: string = '0';
-      const team = new Team(teamId, divisionId, name, teamName, teamNumber);
-      filteredTeams.push(team);
+      const team = new Team(
+        0,
+        this.selectedDivision()!.divisionId,
+        Constants.ALLTEAMS,
+        Constants.ALLTEAMS,
+        '0'
+      );
+      filtered.push(team);
     }
-    if (this.seasonTeams() !== undefined) {
-      this.seasonTeams()!.forEach((element) => {
-        // console.log(element);
-        if (element.divisionId === div) {
-          filteredTeams.push(element);
-        }
-      });
+    const seasonTeams = this.seasonTeams();
+    if (seasonTeams && seasonTeams.length) {
+      for (const t of seasonTeams) {
+        if (t.divisionId === div) filtered.push(t);
+      }
     }
-    return filteredTeams;
+    return filtered;
   }
 
   // getTeam(id: number): Observable<Team> {

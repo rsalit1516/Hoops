@@ -150,16 +150,29 @@ export class GameService {
       }
     });
     effect(() => {
+      // When the selected team changes, recompute derived lists
       //      console.log(this.selectedTeam());
-      this.filterGamesByTeam();
+      this.recomputeDivisionDerived();
     });
   }
 
   private recomputeDivisionDerived() {
-    const filteredGames = this.filterGamesByDivision();
-    this.divisionGames.update(() => filteredGames);
-    const dailyGames = this.groupRegularGamesByDate(this.divisionGames());
-    this.dailySchedule.update(() => dailyGames);
+    // First, filter by division
+    const base = this.filterGamesByDivision();
+    // Then, if a concrete team is selected (id != 0), filter by team
+    const st = this.selectedTeam();
+    const filtered =
+      st && st.teamId && st.teamId !== 0
+        ? base.filter(
+            (g) => g.visitingTeamId === st.teamId || g.homeTeamId === st.teamId
+          )
+        : base;
+    // IMPORTANT: Don't read divisionGames() here after writing it, or the effect
+    // that calls this will track divisionGames and retrigger on our own write.
+    // Compute derived data from the local variable instead to avoid a feedback loop.
+    const dailyGames = this.groupRegularGamesByDate(filtered);
+    this.divisionGames.set(filtered);
+    this.dailySchedule.set(dailyGames);
   }
 
   getGames(): Observable<RegularGame[]> {

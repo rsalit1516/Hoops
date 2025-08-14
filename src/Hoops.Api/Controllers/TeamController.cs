@@ -19,9 +19,9 @@ namespace Hoops.Controllers
     {
         private readonly ITeamRepository repository;
         private readonly ILogger<TeamController> _logger;
-        private readonly SeasonService _seasonService;
+        private readonly ISeasonService _seasonService;
 
-        public TeamController(ITeamRepository repository, ILogger<TeamController> logger, SeasonService seasonService)
+        public TeamController(ITeamRepository repository, ILogger<TeamController> logger, ISeasonService seasonService)
         {
             this.repository = repository;
             _logger = logger;
@@ -116,18 +116,17 @@ namespace Hoops.Controllers
         /// <param name="seasonId"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("GetSeasonTeams/{seasonId}")]
-        public IEnumerable<Team> GetSeasonTeams(int seasonId)
+        [Route("GetSeasonTeams/{seasonId:int}")]
+        public ActionResult<IEnumerable<Team>> GetSeasonTeams(int seasonId)
         {
-            // Use SeasonService to get teams for a season (aggregate root pattern)
-            var seasonTask = _seasonService.GetAllSeasonsAsync(); // This could be optimized with a direct method
-            seasonTask.Wait();
-            var season = seasonTask.Result.FirstOrDefault(s => s.SeasonId == seasonId);
-            if (season == null || season.Teams == null)
+            if (seasonId <= 0)
             {
-                return new List<Team>();
+                return BadRequest("seasonId must be a positive integer.");
             }
-            return season.Teams;
+
+            // Query teams directly via repository to ensure data is returned
+            var teams = repository.GetSeasonTeams(seasonId) ?? new List<Team>();
+            return Ok(teams);
         }
 
     }

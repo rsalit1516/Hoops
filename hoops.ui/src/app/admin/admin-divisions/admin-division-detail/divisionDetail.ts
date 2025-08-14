@@ -35,6 +35,7 @@ import { PeopleService } from '@app/services/people.service';
 import { Person } from '@app/domain/person';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NotificationService } from '@app/shared/services/notification.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'csbc-division-detail',
@@ -67,7 +68,7 @@ import { NotificationService } from '@app/shared/services/notification.service';
 export class DivisionDetail implements OnInit {
   // store = inject(Store<fromAdmin.State>);
   dialog = inject(MatDialog);
-  private divisionService = inject(DivisionService);
+  divisionService = inject(DivisionService);
   private router = inject(Router);
   private peopleService = inject(PeopleService);
   private notify = inject(NotificationService);
@@ -267,17 +268,51 @@ export class DivisionDetail implements OnInit {
     this.hideNameInput.set($event.value !== 'other');
   }
   deleteRecord() {
-    //TODO:  Fix delete method
+    const current = this.divisionService.currentDivision();
+    const id = current?.divisionId ?? 0;
+    if (!id) {
+      this.notify.error('No division to delete');
+      return;
+    }
+
+    this.divisionService.delete(id).subscribe({
+      next: () => {
+        // Refresh list and navigate back
+        const seasonId = this.divisionService.seasonId;
+        if (seasonId && seasonId > 0) {
+          this.divisionService.getSeasonDivisions(seasonId);
+        }
+        this.notify.success('Division deleted');
+        this.router.navigate(['/admin/division']);
+      },
+      error: (err: HttpErrorResponse) => {
+        console.error('Failed to delete division', err);
+        if (err.status === 409) {
+          const detail =
+            (err.error && (err.error.detail || err.error.title)) ||
+            'The division has related records (e.g., teams or games). Remove dependencies first.';
+          this.notify.warn(detail);
+        } else if (err.status === 404) {
+          this.notify.error('Division not found');
+        } else {
+          this.notify.error('Failed to delete division');
+        }
+      },
+    });
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(ConfirmDialog);
+    const dialogRef = this.dialog.open(ConfirmDialog, {
+      data: {
+        title: 'Delete Division?',
+        message: 'Are you sure you want to delete this division?',
+      },
+      panelClass: 'csbc-login-dialog-panel',
+    });
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log(result);
-      if (result) {
-        this.deleteRecord();
-      }
+      if (result) this.deleteRecord();
     });
   }
   isFormDirty(): boolean {
