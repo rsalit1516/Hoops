@@ -25,6 +25,7 @@ namespace Hoops.Data
         private WebContentSeeder _webContentSeeder { get; set; }
         private HouseholdAndPeopleSeeder _householdAndPeopleSeeder { get; set; }
         private UserSeeder _userSeeder { get; set; }
+        private DirectorSeeder _directorSeeder { get; set; }
         public SeedCoordinator(
         hoopsContext context,
         SeasonSeeder seasonSeeder,
@@ -38,7 +39,8 @@ namespace Hoops.Data
         WebContentTypeSeeder webContentTypeSeeder,
         WebContentSeeder webContentSeeder,
         HouseholdAndPeopleSeeder householdAndPeopleSeeder,
-        UserSeeder userSeeder)
+        UserSeeder userSeeder,
+        DirectorSeeder directorSeeder)
         {
             this.context = context;
             _colorSeeder = colorSeeder;
@@ -53,6 +55,7 @@ namespace Hoops.Data
             _webContentSeeder = webContentSeeder;
             _householdAndPeopleSeeder = householdAndPeopleSeeder;
             _userSeeder = userSeeder;
+            _directorSeeder = directorSeeder;
         }
         public async Task InitializeDataAsync()
         {
@@ -63,6 +66,7 @@ namespace Hoops.Data
             await _scheduleDivTeamsSeeder.DeleteAllAsync(); // Delete after ScheduleGames
             await _teamSeeder.DeleteAllAsync();
             await _divisionSeeder.DeleteAllAsync();
+            await _directorSeeder.DeleteAllAsync(); // Delete after divisions to avoid FK issues
             await _seasonSeeder.DeleteAllAsync();
             await _colorSeeder.DeleteAllAsync();
             await _locationSeeder.DeleteAllAsync();
@@ -83,6 +87,7 @@ namespace Hoops.Data
             await _webContentSeeder.SeedAsync();
             await _householdAndPeopleSeeder.SeedAsync();
             await _userSeeder.SeedAsync(); // Create users after people are created
+            await _directorSeeder.SeedAsync(); // Seed board of directors after people are created
         }
     }
 }
