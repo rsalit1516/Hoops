@@ -21,39 +21,37 @@ import { SeasonService } from '@app/services/season.service';
     MatToolbarModule,
     MatCheckboxModule,
   ],
-  template: `
-    <mat-toolbar>
-  <mat-toolbar-row>
-    <div class="flex">
-      <button mat-raised-button type="button" (click)="addSeason()">New</button>
-    </div>
-  </mat-toolbar-row>
-</mat-toolbar>`,
-  styleUrls: [
-    './../../../shared/scss/forms.scss',
-    './../../admin.scss',
-  ]
+  template: ` <mat-toolbar>
+    <mat-toolbar-row>
+      <div class="flex">
+        <button mat-raised-button type="button" (click)="addSeason()">
+          New
+        </button>
+      </div>
+    </mat-toolbar-row>
+  </mat-toolbar>`,
+  styleUrls: ['./../../../shared/scss/forms.scss', './../../admin.scss'],
 })
 export class SeasonsToolbar implements OnInit {
-  readonly #seasonService = inject(SeasonService)
+  readonly #seasonService = inject(SeasonService);
   checked = true;
   filterForm = this.fb.group({
     activeContent: true,
   });
   title = 'Seasons List';
 
-  constructor (
+  constructor(
     private router: Router,
     // private store: Store<fromContent.State>,
     private fb: UntypedFormBuilder,
     private store: Store<fromAdmin.State>
-  ) { }
+  ) {}
 
-  ngOnInit (): void {
+  ngOnInit(): void {
     // throw new Error('Method not implemented.');
   }
 
-  addSeason () {
+  addSeason() {
     const season = new Season();
     season.seasonId = 0;
     this.#seasonService.updateSelectedSeason(season);
@@ -61,6 +59,6 @@ export class SeasonsToolbar implements OnInit {
     console.log(season);
 
     //this.store.dispatch(new adminActions.SetSelectedSeason(season));
-    this.router.navigate(['./admin/seasons/edit']);
+    this.router.navigate(['/admin/seasons/detail']);
   }
 }

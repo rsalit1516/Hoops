@@ -15,52 +15,32 @@ import { CONTENT_ROUTES } from './web-content/content-routing';
 import { ADMIN_DIVISION_ROUTES } from './admin-divisions/admin-division-routing';
 import { ADMIN_HOUSEHOLD_ROUTES } from './admin-household/admin-household-routing';
 import { ADMIN_PEOPLE_ROUTES } from './admin-people/admin-people-routing';
+import { ADMIN_SEASONS_ROUTES } from './admin-seasons/admin-seasons-routing';
 
 export const ADMINROUTES: Routes = [
   {
     path: '',
     title: 'Admin Module',
-  component: AdminShell,
+    component: AdminShell,
     canActivate: [AuthGuard],
 
     children: [
-  { path: 'dashboard', title: 'Admin Dashboard', component: AdminDashboard },
       {
-        path: 'seasons', component: AdminSeasonShell,
-        title: 'Seasons Module',
-        children: [
-          {
-            path: 'edit',
-            loadComponent: () =>
-              import('./components/season-add-edit/season-add-edit')
-                .then(
-                  (mod) => mod.SeasonAddEdit),
-          },
-          {
-            path: 'list',
-            loadComponent: () =>
-              import('./admin-seasons/admin-season-list/admin-season-list').then(
-                (mod) => mod.AdminSeasonList
-              ),
-          },
-          {
-            path: '',
-            loadComponent: () =>
-              import('./admin-seasons/admin-season-list/admin-season-list').then(
-                (mod) => mod.AdminSeasonList
-              ),
-            pathMatch: 'full',
-          },
-
-          { path: '**', component: PageNotFound },
-        ],
+        path: 'dashboard',
+        title: 'Admin Dashboard',
+        component: AdminDashboard,
+      },
+      {
+        path: 'seasons',
+        title: 'Season Module',
+        children: ADMIN_SEASONS_ROUTES,
       },
       {
         path: 'division',
         title: 'Division Module',
         children: ADMIN_DIVISION_ROUTES,
       },
-  { path: 'season-setup', component: SeasonSetup },
+      { path: 'season-setup', component: SeasonSetup },
       {
         path: 'households',
         children: ADMIN_HOUSEHOLD_ROUTES,
@@ -69,7 +49,7 @@ export const ADMINROUTES: Routes = [
         path: 'people',
         children: ADMIN_PEOPLE_ROUTES,
       },
-  { path: 'teams', component: TeamList },
+      { path: 'teams', component: TeamList },
       {
         path: 'games',
         children: ADMINGAMESROUTES,
@@ -86,13 +66,13 @@ export const ADMINROUTES: Routes = [
 
       {
         path: 'content',
-  component: ContentShell,
+        component: ContentShell,
         resolve: { data: getWebContentDataResolver },
         children: CONTENT_ROUTES,
       },
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-  { path: '**', component: PageNotFound },
-    ]
-  }
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: '**', component: PageNotFound },
+    ],
+  },
 ];
 export const AdminRouting = RouterModule.forChild(ADMINROUTES);
