@@ -3,6 +3,7 @@ import {
   Component,
   OnInit,
   computed,
+  effect,
   inject,
   viewChild,
 } from '@angular/core';
@@ -44,11 +45,18 @@ export class AdminSeasonList implements OnInit, AfterViewInit {
 
   dataSource = new MatTableDataSource<Season>(this.seasons());
 
+  // React to seasons signal changes and update the table data (must run in injection context)
+  private seasonsEffect = effect(() => {
+    this.dataSource.data = this.seasons();
+  });
+
   displayColumns = ['seasonId', 'description', 'fromDate', 'toDate'];
 
   constructor() {}
 
   ngOnInit() {
+    // Ensure we have fresh seasons when the list loads
+    this.#seasonService.fetchSeasons();
     this.dataSource = new MatTableDataSource<Season>(this.seasons());
   }
   ngAfterViewInit() {

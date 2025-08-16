@@ -150,6 +150,8 @@ export class AdminSeasonDetail implements OnInit {
         next: (created) => {
           console.log('Season created', created);
           this.#seasonService.seasonSaved.set(true);
+          // Refresh seasons so the list reflects the new item
+          this.#seasonService.fetchSeasons();
           this.router.navigate(['/admin/seasons/list']);
         },
         error: (err) => console.error('Failed to create season', err),
@@ -160,6 +162,8 @@ export class AdminSeasonDetail implements OnInit {
         next: (updated) => {
           console.log('Season updated', updated);
           this.#seasonService.seasonSaved.set(true);
+          // Refresh seasons so the list reflects the update
+          this.#seasonService.fetchSeasons();
           this.router.navigate(['/admin/seasons/list']);
         },
         error: (err) => console.error('Failed to update season', err),
