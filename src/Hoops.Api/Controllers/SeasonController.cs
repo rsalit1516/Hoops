@@ -85,6 +85,7 @@ namespace Hoops.Controllers
                 return BadRequest();
             }
             var newSeason = repository.Update(season);
+            repository.SaveChanges();
 
             return Ok(newSeason);
         }
@@ -95,7 +96,9 @@ namespace Hoops.Controllers
         [HttpPost]
         public ActionResult<Season> PostSeason(Season season)
         {
-            return Ok(repository.Insert(season));
+            var created = repository.Insert(season);
+            repository.SaveChanges();
+            return Ok(created);
         }
 
         // DELETE: api/Season/5

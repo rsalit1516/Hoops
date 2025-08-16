@@ -146,14 +146,25 @@ export class AdminSeasonDetail implements OnInit {
     console.log(_season);
     if (_season.seasonId === 0) {
       console.log('postSeason');
-      this.#seasonService.postSeason(_season);
+      this.#seasonService.postSeason(_season).subscribe({
+        next: (created) => {
+          console.log('Season created', created);
+          this.#seasonService.seasonSaved.set(true);
+          this.router.navigate(['/admin/seasons/list']);
+        },
+        error: (err) => console.error('Failed to create season', err),
+      });
     } else {
       console.log('put Season');
-      this.#seasonService.putSeason(_season);
+      this.#seasonService.putSeason(_season).subscribe({
+        next: (updated) => {
+          console.log('Season updated', updated);
+          this.#seasonService.seasonSaved.set(true);
+          this.router.navigate(['/admin/seasons/list']);
+        },
+        error: (err) => console.error('Failed to update season', err),
+      });
     }
-    this.#seasonService.seasonSaved.set(true);
-
-    this.router.navigate(['/admin/seasons']);
   }
 
   cancel() {
