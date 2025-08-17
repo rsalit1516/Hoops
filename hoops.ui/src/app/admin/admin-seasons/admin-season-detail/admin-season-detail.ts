@@ -25,6 +25,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterModule, Router } from '@angular/router';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Season } from '@app/domain/season';
 import { SeasonService } from '@app/services/season.service';
 import { Store } from '@ngrx/store';
@@ -44,6 +45,7 @@ import * as fromAdmin from '../../state';
     MatButtonModule,
     MatSelectModule,
     MatCheckboxModule,
+    MatSnackBarModule,
   ],
   providers: [provideNativeDateAdapter()],
   templateUrl: './admin-season-detail.html',
@@ -57,6 +59,7 @@ export class AdminSeasonDetail implements OnInit {
   readonly #seasonService = inject(SeasonService);
   private fb = inject(UntypedFormBuilder);
   readonly router = inject(Router);
+  private snackBar = inject(MatSnackBar);
   store = inject(Store<fromAdmin.State>);
   startDatePicker!: MatDatepickerPanel<MatDatepickerControl<any>, any, any>;
 
@@ -68,6 +71,7 @@ export class AdminSeasonDetail implements OnInit {
     endDate: [''],
     playerFee: [''],
     sponsorFee: [''],
+    convenienceFee: [''],
     sponsorDiscount: [''],
     signUpStartDate: [''],
     signUpEndDate: [''],
@@ -102,6 +106,7 @@ export class AdminSeasonDetail implements OnInit {
       endDate: this.selectedSeason().toDate,
       playerFee: this.selectedSeason().participationFee,
       sponsorFee: this.selectedSeason().sponsorFee,
+      convenienceFee: this.selectedSeason().convenienceFee,
       sponsorDiscount: this.selectedSeason().sponsorDiscount,
       signUpStartDate: this.selectedSeason().onlineStarts,
       signUpEndDate: this.selectedSeason().onlineStops,
@@ -132,6 +137,8 @@ export class AdminSeasonDetail implements OnInit {
     _season.participationFee =
       value.playerFee != undefined ? value.playerFee : 0;
     _season.sponsorFee = value.sponsorFee != undefined ? value.sponsorFee : 0;
+    _season.convenienceFee =
+      value.convenienceFee != undefined ? value.convenienceFee : 0;
     _season.sponsorDiscount =
       value.sponsorDiscount != undefined ? value.sponsorDiscount : 0;
     _season.onlineStarts =
@@ -152,6 +159,8 @@ export class AdminSeasonDetail implements OnInit {
           this.#seasonService.seasonSaved.set(true);
           // Refresh seasons so the list reflects the new item
           this.#seasonService.fetchSeasons();
+          this.#seasonService.fetchCurrentSeason();
+          this.snackBar.open('Season created', 'OK', { duration: 2500 });
           this.router.navigate(['/admin/seasons/list']);
         },
         error: (err) => console.error('Failed to create season', err),
@@ -164,6 +173,8 @@ export class AdminSeasonDetail implements OnInit {
           this.#seasonService.seasonSaved.set(true);
           // Refresh seasons so the list reflects the update
           this.#seasonService.fetchSeasons();
+          this.#seasonService.fetchCurrentSeason();
+          this.snackBar.open('Season updated', 'OK', { duration: 2500 });
           this.router.navigate(['/admin/seasons/list']);
         },
         error: (err) => console.error('Failed to update season', err),

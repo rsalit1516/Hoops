@@ -135,7 +135,7 @@ export class SeasonService {
       toDate: season.toDate,
       participationFee: season.participationFee,
       sponsorFee: season.sponsorFee,
-      convenienceFee: season.sponsorDiscount,
+      convenienceFee: season.convenienceFee,
       currentSeason: season.currentSeason,
       currentSchedule: season.currentSchedule,
       currentSignUps: season.currentSignUps,

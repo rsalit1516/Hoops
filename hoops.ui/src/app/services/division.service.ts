@@ -45,6 +45,8 @@ export class DivisionService {
   updateSelectedDivision(division: Division) {
     console.log(division);
     this._selectedDivision.set(division);
+    // Keep currentDivision in sync with the selected one
+    this.setCurrent(division);
     // Persist last selected division for this season (client-side only)
     try {
       const seasonId = division.seasonId || this.seasonId || 0;
@@ -144,7 +146,7 @@ export class DivisionService {
     gender2: 'M',
     seasonId: 0,
     companyId: 1,
-    directorId: 0,
+    directorId: null,
   });
 
   // divisions: WritableSignal<Division[] | undefined> = signal<
@@ -213,18 +215,29 @@ export class DivisionService {
     this.#http.get<Division[]>(url).subscribe(
       (data) => {
         this.updateSeasonDivisions(data);
-        // Try restoring previously selected division for this season
+        // Preserve existing selection if it exists in the latest payload
+        const existing = this.selectedDivision();
         let toSelect: Division | undefined = undefined;
-        try {
-          const stored = localStorage.getItem(`games:lastDivision:${id}`);
-          if (stored) {
-            const storedId = Number(stored);
-            if (Number.isFinite(storedId)) {
-              toSelect = data.find((d) => d.divisionId === storedId);
+        if (existing) {
+          toSelect = data.find((d) => d.divisionId === existing.divisionId);
+        }
+        // Otherwise, try restoring previously selected division for this season
+        if (!toSelect) {
+          try {
+            const stored = localStorage.getItem(`games:lastDivision:${id}`);
+            if (stored) {
+              const storedId = Number(stored);
+              if (Number.isFinite(storedId)) {
+                toSelect = data.find((d) => d.divisionId === storedId);
+              }
             }
-          }
-        } catch {}
-        this.updateSelectedDivision(toSelect ?? data[0]);
+          } catch {}
+        }
+        // Fallback to first item only when we have nothing else
+        const finalSelection = toSelect ?? data[0];
+        if (finalSelection) {
+          this.updateSelectedDivision(finalSelection);
+        }
         console.log(this.seasonDivisions());
       },
       (error) => {

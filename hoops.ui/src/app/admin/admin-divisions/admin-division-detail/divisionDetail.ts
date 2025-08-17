@@ -159,7 +159,7 @@ export class DivisionDetail implements OnInit {
       error: (e) => console.error('Failed to load ADs', e),
     });
 
-    const division = this.divisionService.selectedDivision(); // get the current selected division
+    const division = this.divisionService.selectedDivision(); // read the selected division from the service
     if (division) {
       const matchingDivision = this.divisionService.getmatchingDivision(
         division.divisionDescription ?? ''
@@ -211,10 +211,11 @@ export class DivisionDetail implements OnInit {
     if (division.maxDate2 || division.minDate2) {
       division.gender2 = this.divisionForm.get('gender2')?.value ?? '';
     }
-    if (this.divisionService.currentDivision() == undefined) {
+    // Use selectedDivision as the single source of truth
+    if (this.divisionService.selectedDivision() == undefined) {
       throw new Error('Division is not defined');
     } else {
-      let _division = this.divisionService.currentDivision();
+      let _division = this.divisionService.selectedDivision();
       if (_division!.divisionId === undefined) {
         division.divisionId = 0;
       } else {
@@ -225,11 +226,14 @@ export class DivisionDetail implements OnInit {
         division.seasonId = _division.seasonId;
       }
       const directorVal = this.divisionForm.get('director')?.value;
-      if (directorVal !== null && directorVal !== undefined) {
-        division.directorId = Number(directorVal);
-      } else {
-        division.directorId = 0; // explicit none
-      }
+      // If a director is chosen, send its numeric ID; otherwise send null
+      division.directorId =
+        directorVal !== null &&
+        directorVal !== undefined &&
+        typeof directorVal === 'number' &&
+        directorVal > 0
+          ? directorVal
+          : null;
       // console.log(division);
       this.divisionService.save(division).subscribe({
         next: () => {
