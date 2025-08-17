@@ -79,21 +79,7 @@ export class TeamService {
         this.divisionTeams.set([]);
         return;
       }
-      let divisionTeams = this.filterTeamsByDivision(division.divisionId);
-      // Ensure an "All" option exists at the top for the selected division
-      const allTeamId = 0;
-      const hasAll =
-        divisionTeams.length > 0 && divisionTeams[0].teamId === allTeamId;
-      if (!hasAll) {
-        const all = new Team(
-          0,
-          division.divisionId,
-          Constants.ALLTEAMS,
-          Constants.ALLTEAMS,
-          '0'
-        );
-        divisionTeams = [all, ...divisionTeams];
-      }
+      const divisionTeams = this.filterTeamsByDivision(division.divisionId);
       this.divisionTeams.set(divisionTeams);
       // Only update selected team if none selected or no longer present.
       // Use both teamId and divisionId so the sentinel "All Teams" (teamId=0)
