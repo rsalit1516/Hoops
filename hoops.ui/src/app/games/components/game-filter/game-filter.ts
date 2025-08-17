@@ -74,6 +74,8 @@ export class GameFilter implements OnInit {
 
   ngOnInit() {
     this.showAllTeams = true;
+    // Explicitly enable the sentinel "All Teams" for games views
+    this.#teamService.updateAllTeams(true);
   }
 
   onDivisionChange(val: Division) {
