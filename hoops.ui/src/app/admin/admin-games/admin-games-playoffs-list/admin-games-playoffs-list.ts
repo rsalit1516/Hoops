@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { NgIf, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PlayoffGameService } from '@app/services/playoff-game.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'csbc-admin-games-playoffs-list',
@@ -30,6 +31,7 @@ import { PlayoffGameService } from '@app/services/playoff-game.service';
 })
 export class AdminGamesPlayoffsList implements OnInit {
   gameService = inject(PlayoffGameService);
+  readonly router = inject(Router);
   title = 'Playoff Games';
   dataSource!: MatTableDataSource<PlayoffGame>;
   clickedRows = new Set<PlayoffGame>();
@@ -75,10 +77,32 @@ export class AdminGamesPlayoffsList implements OnInit {
     this.dataSource = new MatTableDataSource(this.games);
   }
   editGame(game: PlayoffGame) {
-    // TODO: implement this method
+    this.gameService.updateSelectedRecord(game);
+    this.router.navigate(['./admin/games/detail-playoff']);
   }
   selectRow(row: any) {
     console.log(row);
-    this.store.dispatch(new adminActions.SetSelectedGame(row));
+    // Ensure record is normalized for keys and time parsing
+    const record: PlayoffGame = {
+      scheduleNumber: (row.scheduleNumber ?? row.ScheduleNumber) as number,
+      gameNumber: (row.gameNumber ?? row.GameNumber) as number,
+      descr: row.descr ?? row.Descr,
+      divisionId: (row.divisionId ?? row.DivisionId) as number,
+      gameId: (row.gameId ?? row.GameId) as number,
+      locationNumber: (row.locationNumber ?? row.LocationNumber) as number,
+      gameDate: new Date(row.gameDate ?? row.GameDate),
+      gameTime: row.gameTime
+        ? new Date(row.gameTime)
+        : row.GameTime
+        ? new Date(row.GameTime)
+        : undefined,
+      homeTeam: row.homeTeam ?? row.HomeTeam,
+      visitingTeam: row.visitingTeam ?? row.VisitingTeam,
+      homeTeamScore: row.homeTeamScore ?? row.HomeTeamScore,
+      visitingTeamScore: row.visitingTeamScore ?? row.VisitingTeamScore,
+      locationName: row.locationName ?? row.LocationName,
+    } as PlayoffGame;
+    this.gameService.updateSelectedRecord(record);
+    this.router.navigate(['./admin/games/detail-playoff']);
   }
 }

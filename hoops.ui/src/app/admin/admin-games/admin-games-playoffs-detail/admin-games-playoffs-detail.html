@@ -1,1 +1,71 @@
-<p>admin-games-playoffs-detail works!</p>
+<form [formGroup]="form" class="form-grid">
+  <!-- Division (hidden) -->
+  <input type="hidden" formControlName="divisionId" />
+
+  <!-- Location dropdown -->
+  <mat-form-field appearance="fill">
+    <mat-label>Location</mat-label>
+    <mat-select formControlName="locationNumber" required>
+      <mat-option
+        *ngFor="let loc of locationsSig()"
+        [value]="loc.locationNumber"
+      >
+        {{ loc.locationName }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Game Date -->
+  <mat-form-field appearance="fill">
+    <mat-label>Game Date</mat-label>
+    <input matInput type="date" formControlName="gameDate" required />
+  </mat-form-field>
+
+  <!-- Game Time -->
+  <mat-form-field appearance="fill">
+    <mat-label>Game Time</mat-label>
+    <input matInput type="time" formControlName="gameTime" required />
+  </mat-form-field>
+
+  <!-- Teams (free-form text) -->
+  <mat-form-field appearance="fill">
+    <mat-label>Home Team</mat-label>
+    <input matInput formControlName="homeTeam" required />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Visiting Team</mat-label>
+    <input matInput formControlName="visitingTeam" required />
+  </mat-form-field>
+
+  <!-- Scores (numbers) -->
+  <mat-form-field appearance="fill">
+    <mat-label>Home Team Score</mat-label>
+    <input matInput type="number" formControlName="homeTeamScore" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Visiting Team Score</mat-label>
+    <input matInput type="number" formControlName="visitingTeamScore" />
+  </mat-form-field>
+
+  <div class="button-row">
+    <button
+      type="button"
+      mat-raised-button
+      color="primary"
+      (click)="save()"
+      [disabled]="form.invalid || isSaving"
+    >
+      {{ isEditing ? 'Update' : 'Save' }}
+    </button>
+    <button
+      type="button"
+      mat-stroked-button
+      color="accent"
+      routerLink="/admin/games/list-playoff"
+    >
+      Cancel
+    </button>
+  </div>
+</form>

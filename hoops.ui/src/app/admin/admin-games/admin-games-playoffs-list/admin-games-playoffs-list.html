@@ -13,7 +13,7 @@
           <ng-container matColumnDef="gameTime">
             <th mat-header-cell *matHeaderCellDef>Time</th>
             <td mat-cell *matCellDef="let game" class="time">
-              {{ game.gameTime }}
+              {{ game.gameTime | date : "shortTime" }}
             </td>
           </ng-container>
           <ng-container matColumnDef="locationName">
