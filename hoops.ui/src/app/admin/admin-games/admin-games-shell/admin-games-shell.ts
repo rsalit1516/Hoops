@@ -1,4 +1,11 @@
-import { Component, effect, inject, OnInit, signal, ViewChild } from '@angular/core';
+import {
+  Component,
+  effect,
+  inject,
+  OnInit,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import * as adminActions from '../../state/admin.actions';
@@ -16,20 +23,27 @@ import { GameTypeSelect } from '../../admin-shared/game-type-select/game-type-se
 import { SeasonSelect } from '../../admin-shared/season-select/season-select';
 import { ShellTitle } from '@app/shared/components/shell-title/shell-title';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
-import { MatExpansionModule, MatExpansionPanel } from '@angular/material/expansion';
+import {
+  MatExpansionModule,
+  MatExpansionPanel,
+} from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
-import { AdminGamesPlayoffsDetail } from "../admin-games-playoffs-detail/admin-games-playoffs-detail";
+import { AdminGamesPlayoffsDetail } from '../admin-games-playoffs-detail/admin-games-playoffs-detail';
 import { MatButtonModule } from '@angular/material/button';
 import { AdminGamesFilter } from '../admin-games-filter/admin-games-filter';
 import { AdminGameService } from '../adminGame.service';
 import { LoggerService } from '@app/services/logging.service';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
+import { AdminGamesState } from '../adminGamesState.service';
 @Component({
   selector: 'csbc-admin-games-shell',
   template: `<section class="container">
-  <h2>{{title}}</h2>
-  <router-outlet></router-outlet>
-</section>`,
+    <h2>{{ title }}</h2>
+    <csbc-admin-games-filter
+      (gameFilterChanged)="handlefilterUpdate($event)"
+    ></csbc-admin-games-filter>
+    <router-outlet></router-outlet>
+  </section>`,
 
   styleUrls: [
     './admin-games-shell.scss',
@@ -54,20 +68,23 @@ import { RouterOutlet } from '@angular/router';
     AdminGameDetail,
     ShellTitle,
     AdminGamesPlayoffsDetail,
-    AdminGamesFilter
-  ]
+    AdminGamesFilter,
+  ],
 })
 export class AdminGamesShell implements OnInit {
-  readonly #logger = inject(LoggerService);
+  private logger = inject(LoggerService);
+  router = inject(Router);
   readonly gameService = inject(AdminGameService);
-  readonly #store = inject(Store<fromAdmin.State>);
+  private store = inject(Store<fromAdmin.State>);
+  state = inject(AdminGamesState);
+
   pageTitle = 'Game Management';
   title = 'Game Management';
   isSidenavOpen = false;
-  seasons$ = this.#store.select(fromAdmin.getSeasons);
-  divisions$ = this.#store.select(fromAdmin.getSeasonDivisions);
-  showRegularSeason = true;
-  showPlayoffs = false;
+  seasons$ = this.store.select(fromAdmin.getSeasons);
+  divisions$ = this.store.select(fromAdmin.getSeasonDivisions);
+  showRegularSeason = signal<boolean>(true);
+  showPlayoffs = signal<boolean>(false);
   games: RegularGame[] | undefined;
 
   selectedRecord = signal<RegularGame | null>(null);
@@ -76,15 +93,12 @@ export class AdminGamesShell implements OnInit {
   @ViewChild('sidenav') sidenav!: MatSidenav;
   @ViewChild('firstPanel') firstPanel!: MatExpansionPanel;
 
-  constructor (
-
-
-  ) {
+  constructor() {
     effect(() => {
       const record = this.gameService.selectedRecordSignal();
       console.log('Selected record changed:', record);
       if (record !== null) {
-        console.log(`Record updated: ${ record.scheduleGamesId }`);
+        console.log(`Record updated: ${record.scheduleGamesId}`);
         this.selectedRecord.set(record);
         this.isSidenavOpen = true;
         // Allow the sidenav to open first, then expand the first panel
@@ -95,10 +109,23 @@ export class AdminGamesShell implements OnInit {
         }, 300);
       }
     });
+    effect(() => {
+      if (this.state.gameType() === 'playoff') {
+        this.showPlayoffs.set(true);
+        this.showRegularSeason.set(false);
+        this.router.navigate(['admin/games/list-playoff']);
+        console.log('Playoff games are shown');
+      } else {
+        this.showPlayoffs.set(false);
+        this.showRegularSeason.set(true);
+        this.router.navigate(['admin/games/list']);
 
+        console.log('Regular season games are shown');
+      }
+    });
   }
 
-  ngOnInit (): void {
+  ngOnInit(): void {
     this.gameService.filteredGames();
     console.log(this.gameService.filteredGames());
     // console.log((gameType === 'Regular Season'));
@@ -110,33 +137,29 @@ export class AdminGamesShell implements OnInit {
     //   this.#store.dispatch(new adminActions.LoadDivisionTeams());
     //   this.#store.dispatch(new adminActions.LoadPlayoffGames());
     // }
-
   }
-  selectedSeason (season: Season) {
+  selectedSeason(season: Season) {
     // this.store.dispatch(new adminActions.SetCurrentSeason(season));
   }
-  clickedDivision (division: MouseEvent) {
+  clickedDivision(division: MouseEvent) {
     // TODO: need to change the parameter
     console.log(division);
   }
-  newGame () {
-
-  }
-  closeSidenav () {
+  newGame() {}
+  closeSidenav() {
     this.isSidenavOpen = false;
   }
-  handlefilterUpdate ($event: any) {
+  handlefilterUpdate($event: any) {
     // console.log($event);
     // console.log($event.division);
     // console.log($event.season);
-    this.#logger.log($event.gametType);
-    if ($event.gameType === 'Playoffs') {
-      this.showPlayoffs = true;
-      this.showRegularSeason = false;
-    } else {
-      this.showPlayoffs = false;
-      this.showRegularSeason = true;
-
-    }
+    // this.logger.log($event.gametType);
+    // if ($event.gameType === 'Playoffs') {
+    //   this.showPlayoffs = true;
+    //   this.showRegularSeason = false;
+    // } else {
+    //   this.showPlayoffs = false;
+    //   this.showRegularSeason = true;
+    // }
   }
 }

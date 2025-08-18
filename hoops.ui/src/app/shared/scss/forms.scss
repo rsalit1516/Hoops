@@ -325,3 +325,16 @@ mat-form-field input::placeholder {
 .mat-mdc-icon-button .mat-icon {
   color: v.$admin-font-color !important;
 }
+.mat-button-toggle-button {
+  color: v.$admin-font-color !important;
+  background-color: v.$admin-background-color !important;
+}
+.mat-button-toggle-checkbox-wrapper {
+  color: v.$admin-font-color !important;
+  background-color: v.$admin-background-color !important;
+}
+.mat-button-toggle-group-appearance-standard .mat-pseudo-checkbox {
+  background-color: v.$admin-background-color !important;
+  color: v.$admin-font-color !important;
+  --mat-pseudo-checkbox-minimal-selected-checkmark-color: v.$admin-font-color !important;
+}

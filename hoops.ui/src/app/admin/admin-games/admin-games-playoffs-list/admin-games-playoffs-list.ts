@@ -13,14 +13,20 @@ import { PlayoffGameService } from '@app/services/playoff-game.service';
 
 @Component({
   selector: 'csbc-admin-games-playoffs-list',
-  templateUrl: "./admin-games-playoffs-list.html",
-  styleUrls: ['./admin-games-playoffs-list.scss',
+  templateUrl: './admin-games-playoffs-list.html',
+  styleUrls: [
+    './admin-games-playoffs-list.scss',
     '../../admin.scss',
     '../../../shared/scss/tables.scss',
   ],
-  imports: [FormsModule, NgIf, MatTableModule, MatButtonModule,
-    MatIconModule, DatePipe,
-    AdminGamesPlayoffsList]
+  imports: [
+    FormsModule,
+    NgIf,
+    MatTableModule,
+    MatButtonModule,
+    MatIconModule,
+    DatePipe,
+  ],
 })
 export class AdminGamesPlayoffsList implements OnInit {
   gameService = inject(PlayoffGameService);
@@ -33,28 +39,19 @@ export class AdminGamesPlayoffsList implements OnInit {
 
   displayedColumns!: string[];
   flexMediaWatcher: any;
-  constructor (private store: Store<fromAdmin.State>,
-    public dialog: MatDialog) {
+  constructor(private store: Store<fromAdmin.State>, public dialog: MatDialog) {
     effect(() => {
       console.log(this.gameService.divisionPlayoffGames());
-      this.dataSource = new MatTableDataSource(this.gameService.divisionPlayoffGames()!);
+      this.dataSource = new MatTableDataSource(
+        this.gameService.divisionPlayoffGames()!
+      );
       console.log(this.dataSource);
     });
-    // private media: MediaObserver
-
-    // this.flexMediaWatcher = media.media$.subscribe((change) => {
-    //   if (change.mqAlias !== this.currentScreenWidth) {
-    // this.currentScreenWidth = change.mqAlias;
     this.setupTable();
-    //   }
-    // });
-
   }
 
-  ngOnInit (): void {
-
-  }
-  setupTable () {
+  ngOnInit(): void {}
+  setupTable() {
     this.displayedColumns = [
       'gameDate',
       'gameTime',
@@ -77,10 +74,10 @@ export class AdminGamesPlayoffsList implements OnInit {
     }
     this.dataSource = new MatTableDataSource(this.games);
   }
-  editGame (game: PlayoffGame) {
+  editGame(game: PlayoffGame) {
     // TODO: implement this method
   }
-  selectRow (row: any) {
+  selectRow(row: any) {
     console.log(row);
     this.store.dispatch(new adminActions.SetSelectedGame(row));
   }
