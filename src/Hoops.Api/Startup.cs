@@ -15,6 +15,9 @@ using Hoops.Infrastructure.Data;
 using Microsoft.Extensions.Logging;
 using Hoops.Data;
 using Hoops.Infrastructure;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
+using System.Threading.Tasks;
 
 namespace Hoops.Api
 {
@@ -113,6 +116,27 @@ namespace Hoops.Api
                 });
             _ = services.AddControllers();
 
+            // Cookie-based authentication (20-minute sliding window)
+            services
+                .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.Cookie.Name = "hoops.auth";
+                    options.Cookie.HttpOnly = true;
+                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // require HTTPS
+                    options.Cookie.SameSite = SameSiteMode.None; // to allow cross-site cookie in dev
+                    options.LoginPath = "/api/auth/login";
+                    options.LogoutPath = "/api/auth/logout";
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+                    options.SlidingExpiration = true;
+                    // Avoid HTML redirects for API clients
+                    options.Events = new CookieAuthenticationEvents
+                    {
+                        OnRedirectToLogin = ctx => { ctx.Response.StatusCode = StatusCodes.Status401Unauthorized; return Task.CompletedTask; },
+                        OnRedirectToAccessDenied = ctx => { ctx.Response.StatusCode = StatusCodes.Status403Forbidden; return Task.CompletedTask; }
+                    };
+                });
+
 
             // {
             //     _ = services.AddSwaggerGen(c =>
@@ -158,6 +182,7 @@ namespace Hoops.Api
             _ = app.UseHttpsRedirection();
             _ = app.UseRouting();
             _ = app.UseCors(MyAllowSpecificOrigins);
+            _ = app.UseAuthentication();
             _ = app.UseAuthorization();
 
             _ = app

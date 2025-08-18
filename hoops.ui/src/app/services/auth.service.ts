@@ -30,6 +30,17 @@ export class AuthService {
     effect(() => {
       this.setCanEdit(this.divisionService.selectedDivision()?.divisionId);
     });
+    // Hydrate from cookie on app load
+    this.http
+      .get<User>(`${Constants.BASE_URL}/api/auth/me`, { withCredentials: true })
+      .pipe(
+        tap((user) => {
+          if (user) {
+            this.setUserState(user);
+          }
+        })
+      )
+      .subscribe({ error: () => {} });
   }
 
   isLoggedIn(): boolean {
@@ -37,9 +48,12 @@ export class AuthService {
   }
 
   login(userName: string, password: string): Observable<User> {
-    console.log(userName + ', ' + password);
     return this.http
-      .get<User>(Constants.loginUrl + '/' + userName + '/' + password)
+      .post<User>(
+        `${Constants.BASE_URL}/api/auth/login`,
+        { userName, password },
+        { withCredentials: true }
+      )
       .pipe(
         tap((user) => {
           if (user) {
@@ -54,8 +68,22 @@ export class AuthService {
   }
 
   logout(): void {
-    this.currentUser.set(undefined);
-    this.store.dispatch(new userActions.SetCurrentUser(undefined as any));
+    this.http
+      .post(
+        `${Constants.BASE_URL}/api/auth/logout`,
+        {},
+        { withCredentials: true }
+      )
+      .subscribe({
+        complete: () => {
+          this.currentUser.set(undefined);
+          this.store.dispatch(new userActions.SetCurrentUser(undefined as any));
+        },
+        error: () => {
+          this.currentUser.set(undefined);
+          this.store.dispatch(new userActions.SetCurrentUser(undefined as any));
+        },
+      });
   }
 
   canEdit(user: User | undefined, divisionId: number | undefined): boolean {
