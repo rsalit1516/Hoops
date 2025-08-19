@@ -68,10 +68,12 @@ export class AdminGamesPlayoffsDetail implements OnInit {
       visitingTeamScore: [null, [Validators.min(0)]],
     });
 
-    // Pre-populate if a record is selected
+    // Pre-populate only for editing existing records
     const rec = this.selected();
-    if (rec) {
-      this.isEditing = true;
+    const hasPk = (rec as any)?.schedulePlayoffId;
+    const hasExistingGameNo = rec?.gameNumber && rec.gameNumber > 0;
+    this.isEditing = !!(rec && (hasPk || hasExistingGameNo));
+    if (this.isEditing && rec) {
       this.form.patchValue({
         divisionId: rec.divisionId ?? divisionId,
         locationNumber: rec.locationNumber ?? null,
@@ -163,6 +165,14 @@ export class AdminGamesPlayoffsDetail implements OnInit {
         },
       });
     } else {
+      // Create: require a valid schedule number; GameNumber 0 allows server to assign next
+      if (!payload.scheduleNumber || payload.scheduleNumber === 0) {
+        this.snack.open('Cannot create: missing schedule number.', 'Dismiss', {
+          duration: 3500,
+        });
+        this.isSaving = false;
+        return;
+      }
       this.playoffService.create(payload).subscribe({
         next: () => {
           this.playoffService.fetchSeasonPlayoffGames();

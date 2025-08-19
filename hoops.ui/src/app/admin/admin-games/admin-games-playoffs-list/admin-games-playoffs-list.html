@@ -1,4 +1,10 @@
-<h2>{{ title }}</h2>
+<div class="header-row">
+  <h2>{{ title }}</h2>
+  <span class="spacer"></span>
+  <button mat-raised-button color="primary" type="button" (click)="newGame()">
+    New
+  </button>
+</div>
 <form formName="gameForm">
   <div id="panelGames" flexLayout="row">
     <div>

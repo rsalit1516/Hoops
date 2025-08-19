@@ -63,6 +63,9 @@ export class AdminGamesPlayoffsList implements OnInit {
       'homeTeamScore',
       'visitingTeamScore',
     ];
+    if (this.canEdit) {
+      this.displayedColumns = [...this.displayedColumns, 'actions'];
+    }
     if (this.currentScreenWidth === 'xs') {
       // only display internalId on larger screens
       //this.displayedColumns.shift(); // remove 'internalId'
@@ -78,6 +81,31 @@ export class AdminGamesPlayoffsList implements OnInit {
   }
   editGame(game: PlayoffGame) {
     this.gameService.updateSelectedRecord(game);
+    this.router.navigate(['./admin/games/detail-playoff']);
+  }
+  newGame() {
+    // Seed a new, blank record with defaults
+    const divisionId = this.gameService.selectedDivision()?.divisionId;
+    const divGames = this.gameService.divisionPlayoffGames();
+    const scheduleNumber =
+      divGames && divGames.length > 0 ? divGames[0].scheduleNumber : 1;
+    const now = new Date();
+    const blank: PlayoffGame & { schedulePlayoffId?: number } = {
+      scheduleNumber,
+      gameNumber: 0,
+      divisionId: divisionId ?? 0,
+      descr: '',
+      gameId: 0,
+      locationNumber: undefined,
+      gameDate: new Date(now.toISOString().slice(0, 10)),
+      gameTime: undefined,
+      homeTeam: '',
+      visitingTeam: '',
+      homeTeamScore: 0,
+      visitingTeamScore: 0,
+      locationName: undefined,
+    };
+    this.gameService.updateSelectedRecord(blank);
     this.router.navigate(['./admin/games/detail-playoff']);
   }
   selectRow(row: any) {
