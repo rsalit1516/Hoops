@@ -132,11 +132,22 @@ export class PlayoffGameService {
     );
   }
 
-  // Update an existing playoff game using composite keys
+  // Update an existing playoff game: prefer PK, fallback to composite keys
   update(game: PlayoffGame): import('rxjs').Observable<void> {
-    if (!game || game.scheduleNumber == null || game.gameNumber == null) {
+    // Prefer primary-key updates via by-id endpoint
+    const id = (game as any).schedulePlayoffId as number | undefined;
+    if (id) {
+      const url = `${Constants.BASE_URL}/api/SchedulePlayoff/by-id/${id}`;
+      return this.http.put<void>(
+        url,
+        this.toApiModel(game),
+        this.#dataService.httpOptions
+      );
+    }
+    // Fallback: composite keys
+    if (game.scheduleNumber == null || game.gameNumber == null) {
       throw new Error(
-        'Cannot update playoff game: missing scheduleNumber or gameNumber'
+        'Cannot update playoff game: missing primary key and composite keys'
       );
     }
     const url = `${Constants.BASE_URL}/api/SchedulePlayoff/${game.scheduleNumber}/${game.gameNumber}`;
@@ -150,7 +161,8 @@ export class PlayoffGameService {
   // Map UI model to API contract (SchedulePlayoff)
   private toApiModel(game: PlayoffGame) {
     return {
-      schedulePlayoffId: 0,
+      // Include if present; backend uses route id for by-id updates
+      schedulePlayoffId: (game as any).schedulePlayoffId ?? 0,
       scheduleNumber: game.scheduleNumber,
       gameNumber: game.gameNumber,
       locationNumber: game.locationNumber ?? null,
@@ -173,6 +185,7 @@ export class PlayoffGameService {
 
   // Normalize API object keys (PascalCase) to our UI model (camelCase) and parse dates
   private normalizeApiPlayoffGame(raw: any): PlayoffGame {
+    const schedulePlayoffId = raw?.schedulePlayoffId ?? raw?.SchedulePlayoffId;
     const scheduleNumber = raw?.scheduleNumber ?? raw?.ScheduleNumber ?? 0;
     const gameNumber = raw?.gameNumber ?? raw?.GameNumber ?? 0;
     const divisionId = raw?.divisionId ?? raw?.DivisionId;
@@ -201,7 +214,8 @@ export class PlayoffGameService {
       }
     }
 
-    return {
+    const model: PlayoffGame & { schedulePlayoffId?: number } = {
+      // Not part of PlayoffGame class but we can tack it on for reference using type assertion
       scheduleNumber,
       gameNumber,
       descr,
@@ -215,7 +229,9 @@ export class PlayoffGameService {
       homeTeamScore,
       visitingTeamScore,
       locationName,
-    } as PlayoffGame;
+      schedulePlayoffId,
+    };
+    return model;
   }
 
   // Update the selected record for editing

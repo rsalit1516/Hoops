@@ -52,6 +52,8 @@ namespace Hoops.Infrastructure.Repository
                 .ThenBy(spdl => spdl.sp.GameTime)
                 .Select(spdl => new PlayoffGameVm
                 {
+                    SchedulePlayoffId = spdl.sp.SchedulePlayoffId,
+                    ScheduleNumber = spdl.sp.ScheduleNumber,
                     GameNumber = spdl.sp.GameNumber,
                     LocationNumber = spdl.sp.LocationNumber,
                     GameDate = spdl.sp.GameDate,

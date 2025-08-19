@@ -147,7 +147,7 @@ namespace Hoops.Controllers
             existing.HomeTeamScore = schedulePlayoff.HomeTeamScore;
             existing.DivisionId = schedulePlayoff.DivisionId;
 
-            repository.Update(existing);
+            // Save modifications on the tracked entity
             await repository.SaveChangesAsync();
             return NoContent();
         }
@@ -178,6 +178,39 @@ namespace Hoops.Controllers
             }
             repository.Delete(existing);
             repository.SaveChanges();
+            return NoContent();
+        }
+
+        // PUT: api/SchedulePlayoff/by-id/{schedulePlayoffId}
+        // Updates an existing playoff game using primary key
+        [HttpPut("by-id/{schedulePlayoffId:int}")]
+        public async Task<IActionResult> PutSchedulePlayoffById(int schedulePlayoffId, SchedulePlayoff schedulePlayoff)
+        {
+            if (schedulePlayoff == null)
+            {
+                return BadRequest();
+            }
+
+            var existing = await _context.SchedulePlayoffs.FirstOrDefaultAsync(x => x.SchedulePlayoffId == schedulePlayoffId);
+            if (existing == null)
+            {
+                return NotFound();
+            }
+
+            // Update fields
+            existing.ScheduleNumber = schedulePlayoff.ScheduleNumber;
+            existing.GameNumber = schedulePlayoff.GameNumber;
+            existing.LocationNumber = schedulePlayoff.LocationNumber;
+            existing.GameDate = schedulePlayoff.GameDate;
+            existing.GameTime = schedulePlayoff.GameTime;
+            existing.VisitingTeam = schedulePlayoff.VisitingTeam;
+            existing.HomeTeam = schedulePlayoff.HomeTeam;
+            existing.Descr = schedulePlayoff.Descr;
+            existing.VisitingTeamScore = schedulePlayoff.VisitingTeamScore;
+            existing.HomeTeamScore = schedulePlayoff.HomeTeamScore;
+            existing.DivisionId = schedulePlayoff.DivisionId;
+
+            await _context.SaveChangesAsync();
             return NoContent();
         }
 

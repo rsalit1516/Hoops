@@ -86,6 +86,13 @@ export class AdminGamesPlayoffsList implements OnInit {
     const record: PlayoffGame = {
       scheduleNumber: (row.scheduleNumber ?? row.ScheduleNumber) as number,
       gameNumber: (row.gameNumber ?? row.GameNumber) as number,
+      // carry PK for by-id updates
+      ...(row.schedulePlayoffId || row.SchedulePlayoffId
+        ? {
+            schedulePlayoffId: (row.schedulePlayoffId ??
+              row.SchedulePlayoffId) as number,
+          }
+        : {}),
       descr: row.descr ?? row.Descr,
       divisionId: (row.divisionId ?? row.DivisionId) as number,
       gameId: (row.gameId ?? row.GameId) as number,

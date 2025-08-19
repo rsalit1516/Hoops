@@ -61,6 +61,7 @@ export class AdminGamesPlayoffsDetail implements OnInit {
       locationNumber: [null, [Validators.required]],
       gameDate: [null, [Validators.required]],
       gameTime: [null, [Validators.required]],
+      descr: [''],
       homeTeam: ['', [Validators.required]],
       visitingTeam: ['', [Validators.required]],
       homeTeamScore: [null, [Validators.min(0)]],
@@ -80,6 +81,7 @@ export class AdminGamesPlayoffsDetail implements OnInit {
         gameTime: rec.gameTime
           ? new Date(rec.gameTime).toTimeString().slice(0, 5) /* HH:mm */
           : null,
+        descr: rec.descr ?? '',
         homeTeam: rec.homeTeam ?? '',
         visitingTeam: rec.visitingTeam ?? '',
         homeTeamScore: rec.homeTeamScore ?? null,
@@ -100,6 +102,7 @@ export class AdminGamesPlayoffsDetail implements OnInit {
       locationNumber: number;
       gameDate: string; // yyyy-MM-dd
       gameTime: string; // HH:mm
+      descr?: string | null;
       homeTeam: string;
       visitingTeam: string;
       homeTeamScore?: number | null;
@@ -112,10 +115,11 @@ export class AdminGamesPlayoffsDetail implements OnInit {
       ? new Date(`${value.gameDate}T${value.gameTime}`)
       : undefined;
     const selected = this.selected();
-    const payload: PlayoffGame = {
+    const payload: PlayoffGame & { schedulePlayoffId?: number } = {
       scheduleNumber: selected?.scheduleNumber ?? 0,
       gameNumber: selected?.gameNumber ?? 0,
-      descr: undefined,
+      schedulePlayoffId: (selected as any)?.schedulePlayoffId,
+      descr: value.descr ?? selected?.descr ?? '',
       divisionId: value.divisionId,
       gameId: 0,
       locationNumber: value.locationNumber,
@@ -130,16 +134,15 @@ export class AdminGamesPlayoffsDetail implements OnInit {
     };
     const isUpdate = this.isEditing;
     if (isUpdate) {
-      if (!payload.scheduleNumber || !payload.gameNumber) {
+      const id = (payload as any).schedulePlayoffId as number | undefined;
+      if (!id) {
         console.error(
-          'Update requested but scheduleNumber or gameNumber is missing.',
+          'Update requested but primary key (schedulePlayoffId) is missing.',
           payload
         );
-        this.snack.open(
-          'Cannot update: missing identifiers for the selected game.',
-          'Dismiss',
-          { duration: 4000 }
-        );
+        this.snack.open('Cannot update: missing primary key.', 'Dismiss', {
+          duration: 4000,
+        });
         this.isSaving = false;
         return;
       }
