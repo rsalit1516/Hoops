@@ -178,9 +178,30 @@ export class PlayoffGameService {
   }
 
   private formatTime(date: Date): string {
-    // Format as HH:mm:ss to match backend string time
+    // Format as HH:mm:ss AM/PM to match backend expected format
+    const options: Intl.DateTimeFormatOptions = {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true,
+    };
+    return date.toLocaleTimeString('en-US', options);
+  }
+
+  private convertAmPmTo24Hour(timeStr: string): string {
+    // Convert "06:00:00 PM" to "18:00:00"
+    const [time, period] = timeStr.trim().split(/\s+/);
+    const [hours, minutes, seconds] = time.split(':').map(Number);
+
+    let hour24 = hours;
+    if (period?.toUpperCase() === 'PM' && hours !== 12) {
+      hour24 = hours + 12;
+    } else if (period?.toUpperCase() === 'AM' && hours === 12) {
+      hour24 = 0;
+    }
+
     const pad = (n: number) => n.toString().padStart(2, '0');
-    return `${pad(date.getHours())}:${pad(date.getMinutes())}:00`;
+    return `${pad(hour24)}:${pad(minutes)}:${pad(seconds || 0)}`;
   }
 
   // Normalize API object keys (PascalCase) to our UI model (camelCase) and parse dates
@@ -209,8 +230,18 @@ export class PlayoffGameService {
         // Already a full ISO-like string
         gameTime = new Date(timeStr);
       } else if (dateStr) {
-        // Combine date and time into a Date
-        gameTime = new Date(`${dateStr}T${timeStr}`);
+        // Handle time format like "06:00:00 PM" or "HH:mm:ss"
+        let timeToProcess = timeStr;
+
+        // If it contains AM/PM, parse it directly
+        if (/[AP]M/i.test(timeStr)) {
+          // Create a date with today's date and the time string
+          const today = new Date().toISOString().split('T')[0];
+          gameTime = new Date(`${today}T${this.convertAmPmTo24Hour(timeStr)}`);
+        } else {
+          // Assume 24-hour format, combine with date
+          gameTime = new Date(`${dateStr}T${timeStr}`);
+        }
       }
     }
 

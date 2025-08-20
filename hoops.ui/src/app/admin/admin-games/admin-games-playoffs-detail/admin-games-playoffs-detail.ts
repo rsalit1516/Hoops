@@ -10,6 +10,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatTimepickerModule } from '@angular/material/timepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { PlayoffGame } from '@app/domain/playoffGame';
 import { DivisionService } from '@app/services/division.service';
 import { PlayoffGameService } from '@app/services/playoff-game.service';
@@ -33,6 +36,9 @@ import { Location as GymLocation } from '@app/domain/location';
     MatInputModule,
     MatSelectModule,
     MatButtonModule,
+    MatDatepickerModule,
+    MatTimepickerModule,
+    MatNativeDateModule,
     RouterModule,
     MatSnackBarModule,
   ],
@@ -59,8 +65,8 @@ export class AdminGamesPlayoffsDetail implements OnInit {
     this.form = this.fb.group({
       divisionId: [divisionId, [Validators.required]],
       locationNumber: [null, [Validators.required]],
-      gameDate: [null, [Validators.required]],
-      gameTime: [null, [Validators.required]],
+      gameDate: [null as Date | null, [Validators.required]],
+      gameTime: [null as Date | null, [Validators.required]],
       descr: [''],
       homeTeam: ['', [Validators.required]],
       visitingTeam: ['', [Validators.required]],
@@ -77,12 +83,8 @@ export class AdminGamesPlayoffsDetail implements OnInit {
       this.form.patchValue({
         divisionId: rec.divisionId ?? divisionId,
         locationNumber: rec.locationNumber ?? null,
-        gameDate: rec.gameDate
-          ? new Date(rec.gameDate).toISOString().slice(0, 10)
-          : null,
-        gameTime: rec.gameTime
-          ? new Date(rec.gameTime).toTimeString().slice(0, 5) /* HH:mm */
-          : null,
+        gameDate: rec.gameDate ? new Date(rec.gameDate) : null,
+        gameTime: rec.gameTime ? new Date(rec.gameTime) : null,
         descr: rec.descr ?? '',
         homeTeam: rec.homeTeam ?? '',
         visitingTeam: rec.visitingTeam ?? '',
@@ -102,8 +104,8 @@ export class AdminGamesPlayoffsDetail implements OnInit {
     const value = this.form.value as {
       divisionId: number;
       locationNumber: number;
-      gameDate: string; // yyyy-MM-dd
-      gameTime: string; // HH:mm
+      gameDate: Date | null;
+      gameTime: Date | null;
       descr?: string | null;
       homeTeam: string;
       visitingTeam: string;
@@ -111,11 +113,25 @@ export class AdminGamesPlayoffsDetail implements OnInit {
       visitingTeamScore?: number | null;
     };
 
-    // Normalize date/time
-    const gameDate = value.gameDate ? new Date(value.gameDate) : new Date();
-    const gameTime = value.gameTime
-      ? new Date(`${value.gameDate}T${value.gameTime}`)
-      : undefined;
+    // Combine date and time as required by acceptance criteria
+    // Both GameDate and GameTime fields should concatenate the date and time
+    let combinedDateTime: Date | undefined;
+    if (value.gameDate && value.gameTime) {
+      // Create a new date using the date from gameDate and time from gameTime
+      const dateOnly = new Date(value.gameDate);
+      const timeOnly = new Date(value.gameTime);
+      combinedDateTime = new Date(
+        dateOnly.getFullYear(),
+        dateOnly.getMonth(),
+        dateOnly.getDate(),
+        timeOnly.getHours(),
+        timeOnly.getMinutes(),
+        timeOnly.getSeconds()
+      );
+    } else if (value.gameDate) {
+      combinedDateTime = new Date(value.gameDate);
+    }
+
     const selected = this.selected();
     const payload: PlayoffGame & { schedulePlayoffId?: number } = {
       scheduleNumber: selected?.scheduleNumber ?? 0,
@@ -125,8 +141,8 @@ export class AdminGamesPlayoffsDetail implements OnInit {
       divisionId: value.divisionId,
       gameId: 0,
       locationNumber: value.locationNumber,
-      gameDate,
-      gameTime,
+      gameDate: combinedDateTime ?? new Date(),
+      gameTime: combinedDateTime,
       homeTeam: value.homeTeam,
       visitingTeam: value.visitingTeam,
       homeTeamScore: value.homeTeamScore ?? 0,
@@ -155,6 +171,9 @@ export class AdminGamesPlayoffsDetail implements OnInit {
             duration: 2500,
           });
           this.isSaving = false;
+          // Reset form to clear dirty state
+          this.form.markAsPristine();
+          this.router.navigate(['./admin/games/list-playoff']);
         },
         error: (err: unknown) => {
           console.error('Failed to update playoff game', err);
@@ -180,6 +199,9 @@ export class AdminGamesPlayoffsDetail implements OnInit {
             duration: 2500,
           });
           this.isSaving = false;
+          // Reset form to clear dirty state
+          this.form.markAsPristine();
+          this.router.navigate(['./admin/games/list-playoff']);
         },
         error: (err: unknown) => {
           console.error('Failed to create playoff game', err);
@@ -190,5 +212,10 @@ export class AdminGamesPlayoffsDetail implements OnInit {
         },
       });
     }
+  }
+
+  // For PendingChangesGuard
+  isFormDirty(): boolean {
+    return this.form?.dirty ?? false;
   }
 }

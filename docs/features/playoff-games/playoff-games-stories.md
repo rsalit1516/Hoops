@@ -60,3 +60,13 @@ As an admin user, I would like to be able to create new regular season or playof
   - if the user is on the Playoffs list or detail form, a playoff game detail form will be presented.
     if the user is on a detail form and the record is not saved, i.e., dirty, the user will be asked whether they wan to cancel or save before going to the new record.
 - Appropriate unit tests are created
+
+## Admin Playoff Games - Date time pickers
+
+As an admin user, I would like the date and time selection to use calendars and time pickers.
+
+### Acceptance criteria
+
+- use the Angular material datepicker for the date field
+- use angular material time picker for the time field (use 5 minute increments)
+- both the GameDate and Gametime fields in the database field should concatenate the date and time (At some point we'll remove one of those fields).

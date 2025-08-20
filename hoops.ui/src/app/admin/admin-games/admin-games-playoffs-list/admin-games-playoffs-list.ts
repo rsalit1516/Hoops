@@ -39,6 +39,9 @@ export class AdminGamesPlayoffsList implements OnInit {
   games!: PlayoffGame[];
   canEdit = false;
 
+  // Make isNaN available in template
+  isNaN = isNaN;
+
   displayedColumns!: string[];
   flexMediaWatcher: any;
   constructor(private store: Store<fromAdmin.State>, public dialog: MatDialog) {

@@ -18,13 +18,27 @@
   <!-- Game Date -->
   <mat-form-field appearance="fill">
     <mat-label>Game Date</mat-label>
-    <input matInput type="date" formControlName="gameDate" required />
+    <input
+      matInput
+      [matDatepicker]="datePicker"
+      formControlName="gameDate"
+      required
+    />
+    <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+    <mat-datepicker #datePicker></mat-datepicker>
   </mat-form-field>
 
   <!-- Game Time -->
   <mat-form-field appearance="fill">
     <mat-label>Game Time</mat-label>
-    <input matInput type="time" formControlName="gameTime" required />
+    <input
+      matInput
+      [matTimepicker]="timePicker"
+      formControlName="gameTime"
+      required
+    />
+    <mat-timepicker-toggle matIconSuffix [for]="timePicker" />
+    <mat-timepicker interval="5min" #timePicker />
   </mat-form-field>
 
   <!-- Teams (free-form text) -->
