@@ -42,7 +42,7 @@ namespace Hoops.Core.Models
         /// <summary>
         /// Gets or sets the time of the game
         /// </summary>
-        [StringLength(10)]
+        [StringLength(20)]
         [Display(Name = "Game Time")]
         public string GameTime { get; set; }
 

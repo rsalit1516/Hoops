@@ -79,6 +79,8 @@ export class AdminGameDetail implements OnInit {
     homeTeam: new FormControl<Team | undefined>(undefined, {
       nonNullable: true,
     }),
+    homeTeamScore: new FormControl<number>(0, { nonNullable: true }),
+    visitingTeamScore: new FormControl<number>(0, { nonNullable: true }),
     //    scheduleGamesId: new FormControl<number | undefined>(undefined, { nonNullable: true }),
   });
 
@@ -182,6 +184,8 @@ export class AdminGameDetail implements OnInit {
       location: this.location!,
       homeTeam: this.homeTeam,
       visitorTeam: this.visitingTeam,
+      homeTeamScore: this.selectedRecord()?.homeTeamScore ?? 0,
+      visitingTeamScore: this.selectedRecord()?.visitingTeamScore ?? 0,
     });
     // this.visitorComponent?.setValue(this.visitorTeam);
     // });
@@ -195,13 +199,25 @@ export class AdminGameDetail implements OnInit {
   }
 
   onSave() {
+    if (!this.gameEditForm.valid) {
+      console.error('Form is invalid');
+      return;
+    }
+
     console.log(this.gameEditForm.value);
     const saveObject = this.converttoSaveFormat(this.gameEditForm.value);
     if (this.scheduleGamesId === 0) {
-      console.log('gameId is undefined');
+      console.log('Creating new game');
       this.gameService.saveNewGame(saveObject);
+      // Reset form state and navigate back
+      this.gameEditForm.markAsPristine();
+      this.#router.navigate(['./admin/games/list']);
     } else {
+      console.log('Updating existing game');
       this.gameService.saveExistingGame(saveObject);
+      // Reset form state and navigate back
+      this.gameEditForm.markAsPristine();
+      this.#router.navigate(['./admin/games/list']);
     }
 
     /*
@@ -263,16 +279,61 @@ visitingTeamSeasonNumber:17
     game.scheduleNumber = this.selectedRecord()?.scheduleNumber ?? 0;
     game.gameNumber = this.selectedRecord()?.gameNumber ?? 0;
     game.locationNumber = gameEditForm.location?.locationNumber ?? 0;
-    game.gameDate = gameEditForm.gameDate
-      ? new Date(gameEditForm.gameDate).toISOString()
-      : '';
-    game.gameTime = gameEditForm.gameTime
-      ? new Date(gameEditForm.gameTime)?.toISOString()
-      : '';
-    game.visitingTeamNumber = gameEditForm.visitorTeam?.teamId ?? 0;
-    game.homeTeamNumber = gameEditForm.homeTeam?.teamId ?? 0;
-    game.visitingTeamScore = 0;
-    game.homeTeamScore = 0;
+
+    // Combine date and time into gameDate for future consolidation
+    if (gameEditForm.gameDate && gameEditForm.gameTime) {
+      const gameDate =
+        gameEditForm.gameDate instanceof Date
+          ? gameEditForm.gameDate
+          : new Date(gameEditForm.gameDate);
+      const gameTime =
+        gameEditForm.gameTime instanceof Date
+          ? gameEditForm.gameTime
+          : new Date(gameEditForm.gameTime);
+
+      // Combine date from gameDate with time from gameTime
+      const combinedDateTime = new Date(
+        gameDate.getFullYear(),
+        gameDate.getMonth(),
+        gameDate.getDate(),
+        gameTime.getHours(),
+        gameTime.getMinutes(),
+        gameTime.getSeconds()
+      );
+
+      game.gameDate = combinedDateTime.toISOString();
+    } else {
+      game.gameDate = gameEditForm.gameDate
+        ? new Date(gameEditForm.gameDate).toISOString()
+        : '';
+    }
+
+    // Use full datetime format for gameTime to include both date and time
+    // Format: '1899-12-30 HH:mm:ss' - backend expects this format
+    if (gameEditForm.gameTime) {
+      const gameTime =
+        gameEditForm.gameTime instanceof Date
+          ? gameEditForm.gameTime
+          : new Date(gameEditForm.gameTime);
+
+      game.gameTime = `1899-12-30 ${gameTime
+        .getHours()
+        .toString()
+        .padStart(2, '0')}:${gameTime
+        .getMinutes()
+        .toString()
+        .padStart(2, '0')}:${gameTime
+        .getSeconds()
+        .toString()
+        .padStart(2, '0')}`;
+    } else {
+      game.gameTime = '';
+    }
+
+    game.visitingTeamNumber = Number(gameEditForm.visitorTeam?.teamNumber) ?? 0;
+    game.homeTeamNumber = Number(gameEditForm.homeTeam?.teamNumber) ?? 0;
+    game.visitingTeamScore = gameEditForm.visitingTeamScore ?? 0;
+    game.homeTeamScore = gameEditForm.homeTeamScore ?? 0;
     game.visitingForfeited = false;
     game.homeForfeited = false;
     game.seasonId = this.selectedRecord()?.seasonId ?? 0;

@@ -152,6 +152,13 @@ namespace Hoops.Controllers
             existing.HomeForfeited = scheduleGame.HomeForfeited;
             existing.VisitingForfeited = scheduleGame.VisitingForfeited;
 
+            // Update game details for admin editing
+            existing.GameDate = scheduleGame.GameDate;
+            existing.GameTime = scheduleGame.GameTime;
+            existing.LocationNumber = scheduleGame.LocationNumber;
+            existing.HomeTeamNumber = scheduleGame.HomeTeamNumber;
+            existing.VisitingTeamNumber = scheduleGame.VisitingTeamNumber;
+
             repository.Update(existing);
 
             try
