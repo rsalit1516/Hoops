@@ -128,6 +128,28 @@
 			"args": [
 				"scripts/rename-components.mjs"
 			]
+		},
+		{
+			"label": "Start Backend API",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"run",
+				"--launch-profile",
+				"Local"
+			],
+			"isBackground": true
+		},
+		{
+			"label": "Start Backend API",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"run",
+				"--launch-profile",
+				"Local"
+			],
+			"isBackground": true
 		}
 	]
 }

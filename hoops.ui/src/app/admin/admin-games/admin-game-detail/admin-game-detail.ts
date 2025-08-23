@@ -1,4 +1,11 @@
-import { Component, OnInit, computed, inject, effect } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  computed,
+  inject,
+  effect,
+  signal,
+} from '@angular/core';
 import {
   UntypedFormControl,
   ReactiveFormsModule,
@@ -30,6 +37,14 @@ import { Router } from '@angular/router';
 import { GameService } from '@app/services/game.service';
 import { Location as GymLocation } from '@app/domain/location';
 import { RegularGameSaveObject } from '@app/domain/RegularGameSaveObject';
+import { forkJoin, of } from 'rxjs';
+
+// Type for schedule-specific teams from the API
+export interface ScheduleTeam {
+  scheduleTeamNumber: number;
+  teamNumber: number;
+  displayName: string;
+}
 
 @Component({
   selector: 'admin-game-detail',
@@ -73,10 +88,10 @@ export class AdminGameDetail implements OnInit {
     location: new FormControl<GymLocation | undefined>(undefined, {
       nonNullable: false,
     }),
-    visitorTeam: new FormControl<Team | undefined>(undefined, {
+    visitorTeam: new FormControl<ScheduleTeam | undefined>(undefined, {
       nonNullable: true,
     }),
-    homeTeam: new FormControl<Team | undefined>(undefined, {
+    homeTeam: new FormControl<ScheduleTeam | undefined>(undefined, {
       nonNullable: true,
     }),
     homeTeamScore: new FormControl<number>(0, { nonNullable: true }),
@@ -121,6 +136,7 @@ export class AdminGameDetail implements OnInit {
   // this.gameTime = time;
 
   divisionTeams = this.#teamService.divisionTeams;
+  scheduleTeams = signal<ScheduleTeam[]>([]);
   locations = this.locationService.locations();
   constructor() {
     effect(() => {
@@ -135,61 +151,112 @@ export class AdminGameDetail implements OnInit {
       //this.locations.set(this.locationService.locations());
       this.locations = this.locationService.locations();
     });
+    // Load schedule-specific teams when selected record changes
+    effect(() => {
+      const selectedRecord = this.selectedRecord();
+      if (selectedRecord?.scheduleNumber && selectedRecord?.seasonId) {
+        this.loadScheduleTeams(
+          selectedRecord.scheduleNumber,
+          selectedRecord.seasonId
+        );
+      }
+    });
+
+    // Once scheduleTeams are loaded, patch the selected visitor/home values
+    effect(() => {
+      const teams = this.scheduleTeams();
+      if (!teams || teams.length === 0) return;
+      const visiting = this.getCurrentVisitingScheduleTeam();
+      const home = this.getCurrentHomeScheduleTeam();
+      // Only set if the control isn't already set to a matching value
+      const currentVisitor = this.gameEditForm.controls.visitorTeam.value;
+      const currentHome = this.gameEditForm.controls.homeTeam.value;
+      const needVisitor =
+        !currentVisitor ||
+        !teams.some((t) => this.scheduleTeamCompare(t, currentVisitor));
+      const needHome =
+        !currentHome ||
+        !teams.some((t) => this.scheduleTeamCompare(t, currentHome));
+      if (needVisitor || needHome) {
+        this.gameEditForm.patchValue({
+          visitorTeam: visiting,
+          homeTeam: home,
+        });
+        // Mark pristine so Save button reflects actual user edits only
+        this.gameEditForm.markAsPristine();
+      }
+    });
+  }
+
+  private loadScheduleTeams(scheduleNumber: number, seasonId: number): void {
+    this.#teamService.getValidScheduleTeams(scheduleNumber, seasonId).subscribe(
+      (teams) => {
+        this.scheduleTeams.set(teams);
+        console.log('Loaded schedule teams:', teams);
+      },
+      (error) => {
+        console.error('Error loading schedule teams:', error);
+        this.scheduleTeams.set([]);
+      }
+    );
+  }
+
+  private findScheduleTeamByTeamNumber(
+    teamNumber: number
+  ): ScheduleTeam | undefined {
+    return this.scheduleTeams().find((st) => st.teamNumber === teamNumber);
+  }
+
+  private getCurrentVisitingScheduleTeam(): ScheduleTeam | undefined {
+    const currentGame = this.selectedRecord();
+    if (!currentGame?.visitingTeamNumber) return undefined;
+    // Schema: ScheduleGames.VisitingTeamNumber stores ScheduleDivTeams.TeamNumber
+    // Match by teamNumber, not scheduleTeamNumber
+    return this.scheduleTeams().find(
+      (st) => st.teamNumber === currentGame.visitingTeamNumber
+    );
+  }
+
+  private getCurrentHomeScheduleTeam(): ScheduleTeam | undefined {
+    const currentGame = this.selectedRecord();
+    if (!currentGame?.homeTeamNumber) return undefined;
+    // Schema: ScheduleGames.HomeTeamNumber stores ScheduleDivTeams.TeamNumber
+    // Match by teamNumber, not scheduleTeamNumber
+    return this.scheduleTeams().find(
+      (st) => st.teamNumber === currentGame.homeTeamNumber
+    );
   }
 
   ngOnInit(): void {
     this.visitorComponent = this.gameEditForm.get('visitorTeam') as FormControl;
-    //   const gameTime = new Date(game?.gameTime ?? '');
-    //   console.log(gameTime);
-    //   const time =
-    //     gameTime.toLocaleTimeString([], {
-    //       hour: '2-digit',
-    //       minute: '2-digit',
-    //     }) ?? '';
-    // console.log(time);
-    // this.gameTime = time;
-
-    // this.gameTime2 = this.gameTime;
-
-    // this.gameTimeFormatted = game?.gameTime?.getHours + ':' + game?.gameTime?.getMinutes;
-    // console.log(this.gameTimeFormatted);
-
-    // this.getTeam(game?.homeTeamId as number).subscribe((team) => {
-    // console.log(team);
-    // this.homeTeam = team;
-    // });
-    console.log(this.homeTeam);
-    console.log(this.selectedRecord());
-    // this.getTeam(game?.visitingTeamId as number).subscribe((team) => {
-    //   // console.log(team);
-    //   this.visitorTeam = team;
-    // });
-    // console.log(this.visitorTeam);
 
     this.location = this.locationService.getLocationByName(
       (this.selectedRecord()?.locationName as string) ?? ''
     ) as GymLocation;
-    this.visitingTeam = this.#teamService.getTeamByTeamId(
-      this.selectedRecord()?.visitingTeamId! ?? 0
-    );
-    console.log(this.location);
-    console.log(this.visitingTeam);
-    this.homeTeam = this.#teamService.getTeamByTeamId(
-      this.selectedRecord()?.homeTeamId! ?? 0
-    );
-    console.log(this.homeTeam);
+
+    // Initialize non-team fields immediately
     this.gameEditForm.patchValue({
       gameDate: this.selectedRecord()?.gameDate as Date,
       gameTime: this.selectedRecord()!.gameTime,
       location: this.location!,
-      homeTeam: this.homeTeam,
-      visitorTeam: this.visitingTeam,
       homeTeamScore: this.selectedRecord()?.homeTeamScore ?? 0,
       visitingTeamScore: this.selectedRecord()?.visitingTeamScore ?? 0,
     });
-    // this.visitorComponent?.setValue(this.visitorTeam);
-    // });
   }
+
+  // Compare function to make mat-select selection resilient across object instances
+  scheduleTeamCompare = (
+    a: ScheduleTeam | null | undefined,
+    b: ScheduleTeam | null | undefined
+  ) => {
+    if (!a || !b) return a === b;
+    // Prefer comparison by teamNumber (the stored key in ScheduleGames)
+    return a.teamNumber === b.teamNumber;
+  };
+
+  // trackBy for schedule teams to reduce churn
+  trackScheduleTeamBy = (index: number, st: ScheduleTeam) =>
+    st.scheduleTeamNumber;
 
   getTeam(teamId: number) {
     console.log(teamId);
@@ -205,22 +272,49 @@ export class AdminGameDetail implements OnInit {
     }
 
     console.log(this.gameEditForm.value);
-    const saveObject = this.converttoSaveFormat(this.gameEditForm.value);
+
+    // Get team selections from form - now using ScheduleTeam
+    const selectedVisitingTeam = this.gameEditForm.value
+      .visitorTeam as ScheduleTeam;
+    const selectedHomeTeam = this.gameEditForm.value.homeTeam as ScheduleTeam;
+    const scheduleNumber = this.selectedRecord()?.scheduleNumber ?? 0;
+    const seasonId = this.selectedRecord()?.seasonId ?? 0;
+
+    // Per schema, ScheduleGames stores ScheduleDivTeams.TeamNumber
+    // Use the selected ScheduleTeam.teamNumber when saving
+    const visitingTeamNumber =
+      selectedVisitingTeam?.teamNumber ??
+      this.selectedRecord()?.visitingTeamNumber ??
+      0;
+    const homeTeamNumber =
+      selectedHomeTeam?.teamNumber ??
+      this.selectedRecord()?.homeTeamNumber ??
+      0;
+
+    console.log('Saving TeamNumber values (ScheduleDivTeams.TeamNumber):');
+    console.log('Visiting team number:', visitingTeamNumber);
+    console.log('Home team number:', homeTeamNumber);
+
+    // Create save object with schedule team numbers
+    const saveObject = this.converttoSaveFormat(this.gameEditForm.value, {
+      visitingTeamNumber,
+      homeTeamNumber,
+    });
+
     if (this.scheduleGamesId === 0) {
       console.log('Creating new game');
       this.gameService.saveNewGame(saveObject);
-      // Reset form state and navigate back
-      this.gameEditForm.markAsPristine();
-      this.#router.navigate(['./admin/games/list']);
     } else {
       console.log('Updating existing game');
       this.gameService.saveExistingGame(saveObject);
-      // Reset form state and navigate back
-      this.gameEditForm.markAsPristine();
-      this.#router.navigate(['./admin/games/list']);
     }
 
-    /*
+    // Reset form state and navigate back
+    this.gameEditForm.markAsPristine();
+    this.#router.navigate(['./admin/games/list']);
+  }
+
+  /*
 
     gameDate = gameDate
     gameTime = gameTime
@@ -270,9 +364,9 @@ visitingTeamScore:0
 visitingTeamSeasonNumber:17
 
     */
-  }
   converttoSaveFormat(
-    gameEditForm: typeof this.gameEditForm.value
+    gameEditForm: typeof this.gameEditForm.value,
+    teamNumbers?: { visitingTeamNumber: number; homeTeamNumber: number }
   ): RegularGameSaveObject {
     let game = new RegularGameSaveObject();
     game.scheduleGamesId = this.scheduleGamesId;
@@ -330,8 +424,22 @@ visitingTeamSeasonNumber:17
       game.gameTime = '';
     }
 
-    game.visitingTeamNumber = Number(gameEditForm.visitorTeam?.teamNumber) ?? 0;
-    game.homeTeamNumber = Number(gameEditForm.homeTeam?.teamNumber) ?? 0;
+    // Use properly mapped team numbers from ScheduleDivTeams lookup
+    if (teamNumbers) {
+      console.log('Using mapped team numbers from ScheduleDivTeams');
+      console.log(
+        'Mapped visiting team number:',
+        teamNumbers.visitingTeamNumber
+      );
+      console.log('Mapped home team number:', teamNumbers.homeTeamNumber);
+      game.visitingTeamNumber = teamNumbers.visitingTeamNumber;
+      game.homeTeamNumber = teamNumbers.homeTeamNumber;
+    } else {
+      // Fallback to original team numbers if mapping failed
+      console.log('Fallback: Using original team numbers');
+      game.visitingTeamNumber = this.selectedRecord()?.visitingTeamNumber ?? 0;
+      game.homeTeamNumber = this.selectedRecord()?.homeTeamNumber ?? 0;
+    }
     game.visitingTeamScore = gameEditForm.visitingTeamScore ?? 0;
     game.homeTeamScore = gameEditForm.homeTeamScore ?? 0;
     game.visitingForfeited = false;

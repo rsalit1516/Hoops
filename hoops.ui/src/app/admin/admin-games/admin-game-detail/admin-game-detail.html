@@ -46,11 +46,7 @@
         <div class="flex-1">
           <mat-form-field class="form-control" appearance="fill">
             <mat-label>Location</mat-label>
-            <mat-select
-              formControlName="location"
-              [value]="location"
-              class="form-control"
-            >
+            <mat-select formControlName="location" class="form-control">
               @for(loc of locations; track loc) {
               <mat-option [value]="loc"> {{ loc.locationName }} </mat-option>
               }
@@ -64,11 +60,12 @@
             <mat-label>Visitor Team</mat-label>
             <mat-select
               formControlName="visitorTeam"
-              [value]="visitorTeam"
               class="form-control"
+              [compareWith]="scheduleTeamCompare"
             >
-              @for(team of divisionTeams(); track team) {
-              <mat-option [value]="team"> {{ team.teamName }} </mat-option>
+              @for(team of scheduleTeams(); track trackScheduleTeamBy($index,
+              team)) {
+              <mat-option [value]="team"> {{ team.displayName }} </mat-option>
               }
             </mat-select>
           </mat-form-field>
@@ -78,11 +75,12 @@
             <mat-label>HomeTeam</mat-label>
             <mat-select
               formControlName="homeTeam"
-              [value]="homeTeam"
               class="form-control"
+              [compareWith]="scheduleTeamCompare"
             >
-              @for(team of divisionTeams(); track team) {
-              <mat-option [value]="team"> {{ team.teamName }} </mat-option>
+              @for(team of scheduleTeams(); track trackScheduleTeamBy($index,
+              team)) {
+              <mat-option [value]="team"> {{ team.displayName }} </mat-option>
               }
             </mat-select>
           </mat-form-field>

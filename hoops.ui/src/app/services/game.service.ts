@@ -367,11 +367,15 @@ export class GameService {
     console.log(gameJson);
     let result = this.http
       .put(gameUrl, gameJson, httpOptions)
-      .subscribe((x) => console.log(x));
-    // .pipe(
-    //   tap(data => console.log(data)),
-    //   catchError(this.dataService.handleError)
-    // );
+      .pipe(
+        tap((data) => {
+          console.log('Game saved successfully:', data);
+          // Refresh the season games to reflect the changes
+          this.fetchSeasonGames();
+        }),
+        catchError(this.dataService.handleError('saveExistingGame', []))
+      )
+      .subscribe();
     // this.gameStore.dispatch(new gameActions.UpdateGame(game));
   }
   saveNewGame(game: RegularGameSaveObject) {
@@ -384,7 +388,15 @@ export class GameService {
     console.log(gameUrl);
     let result = this.http
       .post(gameUrl, game, httpOptions)
-      .subscribe((x) => console.log(x));
+      .pipe(
+        tap((data) => {
+          console.log('New game created successfully:', data);
+          // Refresh the season games to include the new game
+          this.fetchSeasonGames();
+        }),
+        catchError(this.dataService.handleError('saveNewGame', []))
+      )
+      .subscribe();
     // .pipe(
     //   tap(data => console.log(data)),
     //   catchError(this.dataService.handleError)

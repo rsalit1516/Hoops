@@ -209,4 +209,70 @@ export class TeamService {
   getTeamByTeamId(teamId: number): Team | undefined {
     return this.divisionTeams()!.find((team) => team.teamId === teamId);
   }
+
+  /**
+   * Gets the mapped team number from ScheduleDivTeams for proper database storage
+   * @param scheduleNumber The schedule number from the game
+   * @param teamNumber The team number from Teams table
+   * @returns Observable with the mapped team number
+   */
+  getMappedTeamNumber(
+    scheduleNumber: number,
+    teamNumber: number
+  ): Observable<number> {
+    const url = `${Constants.BASE_URL}/api/Team/GetMappedTeamNumber/${scheduleNumber}/${teamNumber}`;
+    return this.#http
+      .get<number>(url)
+      .pipe(
+        catchError(this.#dataService.handleError('getMappedTeamNumber', 0))
+      );
+  }
+
+  /**
+   * Gets the mapped team number from ScheduleDivTeams for proper database storage (season-aware)
+   * @param scheduleNumber The schedule number from the game
+   * @param teamNumber The team number from Teams table
+   * @param seasonId The season ID
+   * @returns Observable with the mapped team number
+   */
+  getMappedTeamNumberWithSeason(
+    scheduleNumber: number,
+    teamNumber: number,
+    seasonId: number
+  ): Observable<number> {
+    const url = `${Constants.BASE_URL}/api/Team/GetMappedTeamNumber/${scheduleNumber}/${teamNumber}/${seasonId}`;
+    return this.#http
+      .get<number>(url)
+      .pipe(
+        catchError(
+          this.#dataService.handleError('getMappedTeamNumberWithSeason', 0)
+        )
+      );
+  }
+
+  /**
+   * Gets the valid schedule team numbers for a specific schedule and season
+   * @param scheduleNumber The schedule number
+   * @param seasonId The season ID
+   * @returns Observable with array of valid schedule teams
+   */
+  getValidScheduleTeams(
+    scheduleNumber: number,
+    seasonId: number
+  ): Observable<
+    { scheduleTeamNumber: number; teamNumber: number; displayName: string }[]
+  > {
+    const url = `${Constants.BASE_URL}/api/Team/GetValidScheduleTeams/${scheduleNumber}/${seasonId}`;
+    return this.#http
+      .get<
+        {
+          scheduleTeamNumber: number;
+          teamNumber: number;
+          displayName: string;
+        }[]
+      >(url)
+      .pipe(
+        catchError(this.#dataService.handleError('getValidScheduleTeams', []))
+      );
+  }
 }

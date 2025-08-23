@@ -17,10 +17,11 @@ namespace Hoops.Api.Tests
         {
             var mockRepo = new Mock<ITeamRepository>();
             var mockLogger = new Mock<ILogger<TeamController>>();
+            var mockScheduleDivTeamsRepo = new Mock<IScheduleDivTeamsRepository>();
             var expectedTeams = new List<Team> { new Team { TeamId = 1, TeamName = "Test Team" } };
             mockRepo.Setup(r => r.GetAllAsync()).ReturnsAsync(expectedTeams);
             var mockSeasonService = new Mock<Hoops.Application.Services.SeasonService>(null!);
-            var controller = new TeamController(mockRepo.Object, mockLogger.Object, mockSeasonService.Object);
+            var controller = new TeamController(mockRepo.Object, mockLogger.Object, mockSeasonService.Object, mockScheduleDivTeamsRepo.Object);
             var result = await controller.GetTeams();
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
             var teams = Assert.IsAssignableFrom<IEnumerable<Team>>(okResult.Value);
@@ -32,10 +33,11 @@ namespace Hoops.Api.Tests
         {
             var mockRepo = new Mock<ITeamRepository>();
             var mockLogger = new Mock<ILogger<TeamController>>();
+            var mockScheduleDivTeamsRepo = new Mock<IScheduleDivTeamsRepository>();
             var team = new Team { TeamId = 2, TeamName = "Team 2" };
             mockRepo.Setup(r => r.GetByIdAsync(2)).ReturnsAsync(team);
             var mockSeasonService = new Mock<Hoops.Application.Services.SeasonService>(null!);
-            var controller = new TeamController(mockRepo.Object, mockLogger.Object, mockSeasonService.Object);
+            var controller = new TeamController(mockRepo.Object, mockLogger.Object, mockSeasonService.Object, mockScheduleDivTeamsRepo.Object);
             var result = await controller.GetTeam(2);
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
             var teamResult = Assert.IsType<Team>(okResult.Value);
@@ -47,9 +49,10 @@ namespace Hoops.Api.Tests
         {
             var mockRepo = new Mock<ITeamRepository>();
             var mockLogger = new Mock<ILogger<TeamController>>();
+            var mockScheduleDivTeamsRepo = new Mock<IScheduleDivTeamsRepository>();
             mockRepo.Setup(r => r.GetByIdAsync(99)).ReturnsAsync((Team?)null);
             var mockSeasonService = new Mock<Hoops.Application.Services.SeasonService>(null!);
-            var controller = new TeamController(mockRepo.Object, mockLogger.Object, mockSeasonService.Object);
+            var controller = new TeamController(mockRepo.Object, mockLogger.Object, mockSeasonService.Object, mockScheduleDivTeamsRepo.Object);
             var result = await controller.GetTeam(99);
             Assert.IsType<NotFoundResult>(result.Result);
         }
