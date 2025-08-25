@@ -55,7 +55,7 @@ export class DivisionService {
   _seasonDivisions: WritableSignal<Division[]> = signal([]);
   seasonDivisions = signal<Division[] | undefined>(undefined);
   updateSeasonDivisions(seasonDivisions: Division[]) {
-    this._seasonDivisions.set(seasonDivisions);
+    this.seasonDivisions.set(seasonDivisions);
   }
   // seasonDivisions = signal<Division[] | undefined>(undefined);
   _division = signal<Division>(new Division());

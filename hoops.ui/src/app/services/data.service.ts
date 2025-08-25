@@ -22,12 +22,12 @@ export class DataService {
   playoffGameUrl = `${Constants.BASE_URL}/api/SchedulePlayoff/GetSeasonGames`;
   getCurrentSeasonUrl = `${Constants.BASE_URL}/api/season/getCurrentSeason`;
   getSeasonTeamsUrl = `${Constants.BASE_URL}/api/Team/GetSeasonTeams/`;
-  getColorUrl = `${Constants.BASE_URL}/api/Color`;
-  getLocationUrl = `${Constants.BASE_URL}/api/Location`;
+  getColorUrl = `${Constants.FUNCTIONS_BASE_URL}/api/color`;
+  getLocationUrl = `${Constants.FUNCTIONS_BASE_URL}/api/location`;
   teamPostUrl = `${Constants.BASE_URL}/api/Team`;
   teamPutUrl = `${Constants.BASE_URL}/api/Team/`;
   getContentUrl = `${Constants.BASE_URL}/api/webcontent`;
-  getActiveContentUrl = `${Constants.BASE_URL}/api/webcontent/getActiveWebContent`;
+  getActiveContentUrl = `${Constants.FUNCTIONS_BASE_URL}/api/webcontent/getActiveWebContent`;
   postContentUrl = `${Constants.BASE_URL}/api/WebContent`;
   getCurrentSponsors = `${Constants.BASE_URL}/api/Sponsor/GetSeasonSponsors/`;
   getLocations = `${Constants.BASE_URL}/api/Locations/`;
@@ -47,8 +47,7 @@ export class DataService {
   constructor() {
     this.webUrl = environment.apiUrl;
     this.dotNetCoreUrl = environment.apiUrl;
-    this.getActiveWebContentUrl =
-      this.dotNetCoreUrl + '/api/webcontent/getActiveWebContent';
+    this.getActiveWebContentUrl = `${Constants.FUNCTIONS_BASE_URL}/api/webcontent/getActiveWebContent`;
   }
 
   get(url: string, data: string) {

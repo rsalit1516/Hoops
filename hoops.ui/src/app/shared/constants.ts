@@ -32,7 +32,7 @@ export class Constants {
     environment.apiUrl || 'https://localhost:5001';
   public static readonly FUNCTIONS_BASE_URL =
     (environment as any).functionsUrl || this.BASE_URL;
-  public static getActiveWebContentUrl = `${this.BASE_URL}/api/webcontent/getActiveWebContent`;
+  public static getActiveWebContentUrl = `${this.FUNCTIONS_BASE_URL}/api/webcontent/getActiveWebContent`;
   public static loginUrl = `${this.BASE_URL}/api/User/login`;
   public static GET_DIRECTOR_URL = `${this.BASE_URL}/api/Director`;
   public static SEASON_GAMES_URL = `${this.BASE_URL}/api/ScheduleGame/getSeasonGames`;
@@ -45,16 +45,16 @@ export class Constants {
   public static PLAYOFF_GAMES_URL = `${this.BASE_URL}/api/SchedulePlayoff/GetSeasonPlayoffGames`;
   public static getCurrentSeasonUrl = `${this.FUNCTIONS_BASE_URL}/api/season/getCurrentSeason/${this.COMPANYID}`;
   public static GET_SEASON_TEAMS_URL = `${this.BASE_URL}/api/Team/GetSeasonTeams/`;
-  public static getColorUrl = `${this.BASE_URL}/api/Color`;
-  public static GET_LOCATION_URL = `${this.BASE_URL}/api/Location`;
+  public static getColorUrl = `${this.FUNCTIONS_BASE_URL}/api/color`;
+  public static GET_LOCATION_URL = `${this.FUNCTIONS_BASE_URL}/api/location`;
   public static teamPostUrl = `${this.BASE_URL}/api/Team`;
   public static teamPutUrl = `${this.BASE_URL}/api/Team/`;
   public static getContentUrl = `${this.BASE_URL}/api/webcontent`;
-  public static getActiveContentUrl = `${this.BASE_URL}/api/webcontent/getActiveWebContent`;
+  public static getActiveContentUrl = `${this.FUNCTIONS_BASE_URL}/api/webcontent/getActiveWebContent`;
   public static postContentUrl = `${this.BASE_URL}/api/WebContent`;
   public static PUT_CONTENT_URL = `${this.BASE_URL}/api/WebContent/`;
   public static GET_SEASON_SPONSORS = `${this.BASE_URL}/api/Sponsor`;
-  public static GET_LOCATIONS = `${this.BASE_URL}/api/Location`;
+  public static GET_LOCATIONS = `${this.FUNCTIONS_BASE_URL}/api/location`;
   public static SEASON_URL = `${this.FUNCTIONS_BASE_URL}/api/Season/`;
   public static currentSeasonUrl = `${this.FUNCTIONS_BASE_URL}/api/Season/GetCurrentSeason/${this.COMPANYID}`;
   public static peopleUrl = `${this.BASE_URL}/api/People`;
