@@ -29,7 +29,9 @@ export class Constants {
   public static DEFAULTURL = environment.apiUrl;
 
   public static readonly BASE_URL =
-    environment.apiUrl || 'https://localhost:5001'; // Default to localhost if not set
+    environment.apiUrl || 'https://localhost:5001';
+  public static readonly FUNCTIONS_BASE_URL =
+    (environment as any).functionsUrl || this.BASE_URL;
   public static getActiveWebContentUrl = `${this.BASE_URL}/api/webcontent/getActiveWebContent`;
   public static loginUrl = `${this.BASE_URL}/api/User/login`;
   public static GET_DIRECTOR_URL = `${this.BASE_URL}/api/Director`;
@@ -41,7 +43,7 @@ export class Constants {
   public static SEASON_DIVISIONS_URL = `${this.BASE_URL}/api/division/GetSeasonDivisions/`;
   public static DIVISION_URL = `${this.BASE_URL}/api/Division`;
   public static PLAYOFF_GAMES_URL = `${this.BASE_URL}/api/SchedulePlayoff/GetSeasonPlayoffGames`;
-  public static getCurrentSeasonUrl = `${this.BASE_URL}/api/season/getCurrentSeason`;
+  public static getCurrentSeasonUrl = `${this.FUNCTIONS_BASE_URL}/api/season/getCurrentSeason/${this.COMPANYID}`;
   public static GET_SEASON_TEAMS_URL = `${this.BASE_URL}/api/Team/GetSeasonTeams/`;
   public static getColorUrl = `${this.BASE_URL}/api/Color`;
   public static GET_LOCATION_URL = `${this.BASE_URL}/api/Location`;
@@ -53,8 +55,8 @@ export class Constants {
   public static PUT_CONTENT_URL = `${this.BASE_URL}/api/WebContent/`;
   public static GET_SEASON_SPONSORS = `${this.BASE_URL}/api/Sponsor`;
   public static GET_LOCATIONS = `${this.BASE_URL}/api/Location`;
-  public static SEASON_URL = `${this.BASE_URL}/api/Season/`;
-  public static currentSeasonUrl = `${this.BASE_URL}/api/Season/GetCurrentSeason`;
+  public static SEASON_URL = `${this.FUNCTIONS_BASE_URL}/api/Season/`;
+  public static currentSeasonUrl = `${this.FUNCTIONS_BASE_URL}/api/Season/GetCurrentSeason/${this.COMPANYID}`;
   public static peopleUrl = `${this.BASE_URL}/api/People`;
   public static GET_ADS_URL = `${this.BASE_URL}/api/Person/GetADs`;
   public static GET_STANDINGS_URL = `${this.BASE_URL}/api/ScheduleGame/getStandings`;

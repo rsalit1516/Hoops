@@ -1,0 +1,14 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated"
+  },
+  "Host": {
+    "CORS": "http://localhost:4200,https://localhost:4200",
+    "CORSCredentials": true
+  },
+  "ConnectionStrings": {
+    "hoopsContext": "Server=localhost,1433;Database=csbchoops;Persist Security Info=False;User ID=sa;Password=@nKbr0407; Encrypt=True;TrustServerCertificate=true;MultipleActiveResultSets=False;Encrypt=True;Connection Timeout=30;"
+  }
+}
