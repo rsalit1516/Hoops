@@ -73,7 +73,7 @@ export class SeasonService {
     this.getCurrentSeason().subscribe((season) => {
       this.updateCurrentSeason(season!);
       this.updateSelectedSeason(season!);
-      console.log(this.selectedSeason);
+      console.log(this.selectedSeason());
     });
   }
   private _selectedSeason = signal<Season>(new Season());

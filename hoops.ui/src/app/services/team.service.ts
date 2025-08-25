@@ -23,13 +23,13 @@ import { SeasonService } from './season.service';
   providedIn: 'root',
 })
 export class TeamService {
-  readonly #http = inject(HttpClient);
-  readonly #dataService = inject(DataService);
-  readonly #divisionService = inject(DivisionService);
+  private readonly http = inject(HttpClient);
+  private readonly dataService = inject(DataService);
+  private readonly divisionService = inject(DivisionService);
   private readonly seasonService = inject(SeasonService);
   seasonId: number | undefined; // = 2192; // TO DO make this is passed in!
   selectedSeason = computed(() => this.seasonService.selectedSeason);
-  selectedDivision = computed(() => this.#divisionService.selectedDivision());
+  selectedDivision = computed(() => this.divisionService.selectedDivision());
   seasonTeams = signal<Team[] | undefined>(undefined);
   divisionTeams = signal<Team[]>([]);
   teams!: Team[];
@@ -73,9 +73,9 @@ export class TeamService {
       }
     });
     effect(() => {
-      const division = this.selectedDivision();
+      const division = this.divisionService.selectedDivision();
       const seasonTeams = this.seasonTeams();
-      if (!division || !seasonTeams) {
+      if (!division || !this.seasonTeams()!) {
         this.divisionTeams.set([]);
         return;
       }
@@ -113,10 +113,11 @@ export class TeamService {
     const sel = this.seasonService.selectedSeason();
     if (!sel || !sel.seasonId) return;
     const url = this.teamUrl + sel.seasonId;
-    this.#http.get<Team[]>(url).subscribe((teams) => {
+    console.log(url);
+    this.http.get<Team[]>(url).subscribe((teams) => {
       this.seasonTeams.set(teams ?? []);
       // Do not set selectedTeam here to avoid race conditions; handled in effect above
-    }, catchError(this.#dataService.handleError('getTeams', [])));
+    }, catchError(this.dataService.handleError('getTeams', [])));
   }
   // fetchSeasonTeams(): void {
   //   this.getSeasonTeams().subscribe((teams) => {
@@ -164,14 +165,14 @@ export class TeamService {
     }
   }
   addTeam(team: Team): Observable<Team | ArrayBuffer> {
-    console.log(this.#dataService.teamPostUrl);
-    return this.#http
+    console.log(this.dataService.teamPostUrl);
+    return this.http
       .post<Team>(
-        this.#dataService.teamPostUrl,
+        this.dataService.teamPostUrl,
         team,
-        this.#dataService.httpOptions
+        this.dataService.httpOptions
       )
-      .pipe(catchError(this.#dataService.handleError('addTeam', team)));
+      .pipe(catchError(this.dataService.handleError('addTeam', team)));
   }
   // addNewTeamDefaults(team: Team) {
   //   this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
@@ -192,18 +193,18 @@ export class TeamService {
   //   return team;
   // }
   updateTeam(team: Team) {
-    return this.#http
+    return this.http
       .put<Team>(
-        this.#dataService.teamPutUrl + team.teamId,
+        this.dataService.teamPutUrl + team.teamId,
         team,
-        this.#dataService.httpOptions
+        this.dataService.httpOptions
       )
-      .pipe(catchError(this.#dataService.handleError('updateTeam', team)));
+      .pipe(catchError(this.dataService.handleError('updateTeam', team)));
   }
   newTeam() {
     let team = new Team();
     team.teamId = 0;
-    team.divisionId = this.#divisionService.selectedDivision()!.divisionId;
+    team.divisionId = this.divisionService.selectedDivision()!.divisionId;
     return team;
   }
   getTeamByTeamId(teamId: number): Team | undefined {
@@ -221,11 +222,9 @@ export class TeamService {
     teamNumber: number
   ): Observable<number> {
     const url = `${Constants.BASE_URL}/api/Team/GetMappedTeamNumber/${scheduleNumber}/${teamNumber}`;
-    return this.#http
+    return this.http
       .get<number>(url)
-      .pipe(
-        catchError(this.#dataService.handleError('getMappedTeamNumber', 0))
-      );
+      .pipe(catchError(this.dataService.handleError('getMappedTeamNumber', 0)));
   }
 
   /**
@@ -241,11 +240,11 @@ export class TeamService {
     seasonId: number
   ): Observable<number> {
     const url = `${Constants.BASE_URL}/api/Team/GetMappedTeamNumber/${scheduleNumber}/${teamNumber}/${seasonId}`;
-    return this.#http
+    return this.http
       .get<number>(url)
       .pipe(
         catchError(
-          this.#dataService.handleError('getMappedTeamNumberWithSeason', 0)
+          this.dataService.handleError('getMappedTeamNumberWithSeason', 0)
         )
       );
   }
@@ -263,7 +262,7 @@ export class TeamService {
     { scheduleTeamNumber: number; teamNumber: number; displayName: string }[]
   > {
     const url = `${Constants.BASE_URL}/api/Team/GetValidScheduleTeams/${scheduleNumber}/${seasonId}`;
-    return this.#http
+    return this.http
       .get<
         {
           scheduleTeamNumber: number;
@@ -272,7 +271,7 @@ export class TeamService {
         }[]
       >(url)
       .pipe(
-        catchError(this.#dataService.handleError('getValidScheduleTeams', []))
+        catchError(this.dataService.handleError('getValidScheduleTeams', []))
       );
   }
 }

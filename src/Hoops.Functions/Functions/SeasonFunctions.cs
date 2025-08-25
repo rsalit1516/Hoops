@@ -1,5 +1,6 @@
 using System.Net;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Hoops.Application.Services;
 using Hoops.Core.Interface;
 using Hoops.Core.Models;
@@ -22,6 +23,20 @@ public class SeasonFunctions
     private readonly ISeasonService _seasonService;
     private readonly ISeasonRepository _seasonRepository;
     private readonly IConfiguration _configuration;
+
+    // Ensure camelCase JSON consistently for frontend expectations
+    private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web)
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        DictionaryKeyPolicy = JsonNamingPolicy.CamelCase,
+        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+    };
+
+    private static async Task WriteJsonAsync<T>(HttpResponseData response, T value)
+    {
+        response.Headers.Add("Content-Type", "application/json; charset=utf-8");
+        await JsonSerializer.SerializeAsync(response.Body, value, JsonOptions);
+    }
 
     public SeasonFunctions(ILogger<SeasonFunctions> logger, ISeasonService seasonService, ISeasonRepository seasonRepository, IConfiguration configuration)
     {
@@ -92,7 +107,7 @@ public class SeasonFunctions
             return res;
         }
         var dto = seasons.Select(ToDto);
-        await res.WriteAsJsonAsync(dto);
+        await WriteJsonAsync(res, dto);
         return res;
     }
 
@@ -116,7 +131,7 @@ public class SeasonFunctions
             }
             var dto = ToDto(season);
             var res = req.CreateResponse(HttpStatusCode.OK);
-            await res.WriteAsJsonAsync(dto);
+            await WriteJsonAsync(res, dto);
             return res;
         }
         catch (InvalidOperationException)
@@ -141,7 +156,7 @@ public class SeasonFunctions
         }
         var res = req.CreateResponse(HttpStatusCode.OK);
         var dto = ToDto(season);
-        await res.WriteAsJsonAsync(dto);
+        await WriteJsonAsync(res, dto);
         return res;
     }
 
@@ -168,7 +183,7 @@ public class SeasonFunctions
         await _seasonRepository.SaveChangesAsync();
         var res = req.CreateResponse(HttpStatusCode.OK);
         var dto = ToDto(season);
-        await res.WriteAsJsonAsync(dto);
+        await WriteJsonAsync(res, dto);
         return res;
     }
 
@@ -189,7 +204,7 @@ public class SeasonFunctions
         await _seasonRepository.SaveChangesAsync();
         var res = req.CreateResponse(HttpStatusCode.OK);
         var dto = ToDto(created);
-        await res.WriteAsJsonAsync(dto);
+        await WriteJsonAsync(res, dto);
         return res;
     }
 

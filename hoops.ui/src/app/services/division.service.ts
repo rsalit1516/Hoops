@@ -30,17 +30,14 @@ export class DivisionService {
   #dataService = inject(DataService);
   private readonly seasonService = inject(SeasonService);
   #store = inject(Store<fromAdmin.State>);
-  #logger = inject(LoggerService);
+  private readonly logger = inject(LoggerService);
   selectedSeason = computed(() => this.seasonService.selectedSeason);
-  private _selectedDivision: WritableSignal<Division | undefined> = signal<
-    Division | undefined
-  >(undefined);
-  // Expose as a readonly signal for consumers
-  selectedDivision = this._selectedDivision.asReadonly();
+
+  selectedDivision = signal<Division | undefined>(undefined);
 
   updateSelectedDivision(division: Division) {
     console.log(division);
-    this._selectedDivision.set(division);
+    this.selectedDivision.set(division);
     // Keep currentDivision in sync with the selected one
     this.setCurrent(division);
     // Persist last selected division for this season (client-side only)
@@ -56,9 +53,7 @@ export class DivisionService {
   }
 
   _seasonDivisions: WritableSignal<Division[]> = signal([]);
-  get seasonDivisions() {
-    return this._seasonDivisions.asReadonly();
-  }
+  seasonDivisions = signal<Division[] | undefined>(undefined);
   updateSeasonDivisions(seasonDivisions: Division[]) {
     this._seasonDivisions.set(seasonDivisions);
   }
@@ -147,13 +142,20 @@ export class DivisionService {
   constructor() {
     effect(() => {
       const season = this.seasonService.selectedSeason();
+      console.log('season changed in division service', season);
+      console.log(
+        'seasonid  changed in division service',
+        this.seasonService.selectedSeason()?.seasonId
+      );
       const sid = season?.seasonId ?? 0;
+      console.log(sid);
+
       if (sid > 0) {
         // Track the active season id for consumers that need it (e.g., editors on save)
         this.seasonId = sid;
         this.season = season;
         this.getSeasonDivisions(sid);
-        this.#logger.log(season);
+        this.logger.log(season);
       }
     });
     // this.#store.pipe(select(fromAdmin.getSelectedSeason)).subscribe((season) => {
@@ -202,7 +204,7 @@ export class DivisionService {
 
   getSeasonDivisions(id: number): void {
     const url = Constants.SEASON_DIVISIONS_URL + id;
-    // this.#logger.log(url);
+    this.logger.log(url);
     this.#http.get<Division[]>(url).subscribe(
       (data) => {
         this.updateSeasonDivisions(data);
@@ -249,14 +251,19 @@ export class DivisionService {
     let division = new Division();
     console.log(this.seasonDivisions);
     console.log(id);
-    for (const item of this.seasonDivisions()) {
-      if (item.divisionId === id) {
-        division = item;
-        console.log(division);
-        return item;
+    if (this.seasonDivisions) {
+      for (const item of this.seasonDivisions()!) {
+        if (item.divisionId === id) {
+          division = item;
+          console.log(division);
+          return item;
+        }
       }
+      console.log('Division: Found nothing!');
+      return new Division();
+    } else {
+      return new Division();
     }
-    return division;
   }
 
   // getSeasonDivisions (id: number) {

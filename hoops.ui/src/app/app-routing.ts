@@ -10,47 +10,49 @@ import { GamesResolver } from './games/games.resolver';
 import { ADMINROUTES } from './admin/admin-routing';
 import { Login } from './shared/components/login/login';
 import { adminGuard } from './shared/guards/admin-guard.guard';
+import { GAMES_ROUTES } from './games/games-routing.module';
 
 const appRoutes: Routes = [
   {
     path: 'home',
-    component: Home
+    component: Home,
   },
   {
     path: 'games',
-    loadChildren: () =>
-      import('./games/games.module').then(mod => mod.GamesModule),
-    resolve: { state: GamesResolver }
+    children: GAMES_ROUTES,
+    // loadChildren: () =>
+    //   import('./games/games-routing.module').then((m) => m.GAMES_ROUTES),
+    resolve: { state: GamesResolver },
   },
   {
     path: 'photos',
-    component: CsbcPhotos
+    component: CsbcPhotos,
   },
   {
     path: 'contacts',
-    component: Contacts
+    component: Contacts,
   },
   {
     path: 'clubDocs',
-    component: CsbcClubDocs
+    component: CsbcClubDocs,
   },
 
   {
     path: 'admin',
     children: ADMINROUTES,
-    canActivate: [adminGuard]
+    canActivate: [adminGuard],
   },
   {
     path: 'login',
-    component: Login
+    component: Login,
   },
 
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: '**', component: PageNotFound }
+  { path: '**', component: PageNotFound },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(appRoutes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRouting {}

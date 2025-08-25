@@ -26,16 +26,18 @@ import { SchedulePlayoffs } from '@app/games/components/schedule-playoffs/schedu
 import { RouterOutlet } from '@angular/router';
 import { GamesTopMenu } from '../../components/games-top-menu/games-top-menu';
 import { AuthService } from '@app/services/auth.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'csbc-games-shell',
-  templateUrl: "./games-shell.html",
+  standalone: true,
+  templateUrl: './games-shell.html',
   styleUrls: ['./games-shell.scss'],
-  imports: [GamesTopMenu, RouterOutlet],
+  imports: [CommonModule, RouterOutlet, GamesTopMenu],
 })
 export class GamesShell implements OnInit {
   readonly seasonService = inject(SeasonService);
-  readonly #divisionService = inject(DivisionService);
+  private readonly divisionService = inject(DivisionService);
   readonly #teamService = inject(TeamService);
   readonly #gameService = inject(GameService);
   private store = inject(Store<fromGames.State>);
@@ -83,8 +85,8 @@ export class GamesShell implements OnInit {
   filteredGamesByDate!: Observable<RegularGame[]>;
 
   // Signals for reactive state
-  divisions = computed(() => this.#divisionService.seasonDivisions()!);
-  currentDivision = computed(() => this.#divisionService.currentDivision());
+  divisions = computed(() => this.divisionService.seasonDivisions()!);
+  currentDivision = computed(() => this.divisionService.currentDivision());
   filteredTeams = computed(() => this.#teamService.divisionTeams());
 
   user = computed(() => this.#authService.currentUser());
@@ -92,11 +94,12 @@ export class GamesShell implements OnInit {
   constructor() {
     // Effect to handle side effects when the current division changes
     effect(() => {
-      const division = this.currentDivision();
+      const division = this.divisionService.currentDivision();
+      console.log('division changed in shell', division);
       if (division) {
-        this.store.dispatch(new gameActions.LoadFilteredTeams());
-        this.store.dispatch(new gameActions.LoadFilteredGames());
-        this.store.dispatch(new gameActions.LoadDivisionPlayoffGames());
+        // this.store.dispatch(new gameActions.LoadFilteredTeams());
+        // this.store.dispatch(new gameActions.LoadFilteredGames());
+        // this.store.dispatch(new gameActions.LoadDivisionPlayoffGames());
       }
     });
   }
@@ -105,22 +108,20 @@ export class GamesShell implements OnInit {
     this.setStateSubscriptions();
   }
   setStateSubscriptions() {
-    this.store.select(fromGames.getDivisions).subscribe((divisions) => {
-      // Update the divisions signal with the new value
-      this.store.dispatch(new gameActions.SetDivisions(divisions));
-    });
-    this.divisionId$ = this.store.pipe(
-      select(fromGames.getCurrentDivisionId)
-    ) as Observable<number>;
-
+    // this.store.select(fromGames.getDivisions).subscribe((divisions) => {
+    //   // Update the divisions signal with the new value
+    //   this.store.dispatch(new gameActions.SetDivisions(divisions));
+    // });
+    // this.divisionId$ = this.store.pipe(
+    //   select(fromGames.getCurrentDivisionId)
+    // ) as Observable<number>;
     // this.filteredGames$ = this.store.pipe(select(fromGames.getFilteredGames));
     // this.standings$ = this.store.pipe(select(fromGames.getStandings));
-    this.store.select(fromGames.getDivisions).subscribe((divisions) => {
-      if (divisions[0]) {
-        this.store.dispatch(new gameActions.SetCurrentDivision(divisions[0]));
-      }
-    });
-
+    // this.store.select(fromGames.getDivisions).subscribe((divisions) => {
+    //   if (divisions[0]) {
+    //     this.store.dispatch(new gameActions.SetCurrentDivision(divisions[0]));
+    //   }
+    // });
     // this.store.pipe(select(fromUser.getCurrentUser)).subscribe((user) => {
     //   this.user = user;
     // });

@@ -10,7 +10,6 @@ import {
 import { Division } from '@app/domain/division';
 import {
   UntypedFormControl,
-  UntypedFormGroup,
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
@@ -59,7 +58,9 @@ export class DivisionSelect implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log(this.divisionService.seasonDivisions());
+  }
   changeDivision(division: Division | null) {
     this.divisionService.updateSelectedDivision(division!);
   }
