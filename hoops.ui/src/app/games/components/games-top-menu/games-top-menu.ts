@@ -55,7 +55,7 @@ export class GamesTopMenu implements OnInit, OnDestroy {
   display = signal<string>('schedule');
   readonly selectedDivision = output<Division>();
   private errorMessageSubject = new Subject<string>();
-  readonly #seasonService = inject(SeasonService);
+  private readonly seasonService = inject(SeasonService);
   readonly #gameService = inject(GameService);
   readonly #playoffGameService = inject(PlayoffGameService);
   filteredTeams!: Team[];
@@ -67,9 +67,9 @@ export class GamesTopMenu implements OnInit, OnDestroy {
   hasPlayoffs = signal(false);
   divisionStandings = computed(() => this.#gameService.divisionStandings());
   hasStandings = signal(false);
-  currentSeason = computed(() => this.#seasonService.selectedSeason);
+  currentSeason = computed(() => this.seasonService.selectedSeason);
   seasonDescription = computed(
-    () => this.#seasonService.selectedSeason.description
+    () => this.seasonService.selectedSeason()!.description
   );
 
   constructor() {

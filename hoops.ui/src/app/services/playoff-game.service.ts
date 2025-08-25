@@ -20,7 +20,7 @@ export class PlayoffGameService {
   private http = inject(HttpClient);
   // private gameStore = inject(Store<fromGames.State>);
   private logger = inject(LoggerService);
-  readonly #seasonService = inject(SeasonService);
+  private readonly seasonService = inject(SeasonService);
   readonly #dataService = inject(DataService);
 
   divisionPlayoffGames = signal<PlayoffGame[] | undefined>(undefined);
@@ -28,7 +28,7 @@ export class PlayoffGameService {
   seasonPlayoffGames = signal<PlayoffGame[]>([]);
   allPlayoffGames: PlayoffGame[] | undefined;
   playoffGames$: Observable<PlayoffGame[]> | undefined;
-  selectedSeason = computed(() => this.#seasonService.selectedSeason);
+  selectedSeason = computed(() => this.seasonService.selectedSeason);
   selectedDivision = computed(() => this.#divisionService.selectedDivision());
   dailyPlayoffSchedule = signal<PlayoffGame[][]>([]);
   // Selected record for edit/detail view
@@ -37,7 +37,8 @@ export class PlayoffGameService {
 
   constructor() {
     effect(() => {
-      if (this.selectedSeason() !== undefined) {
+      const season = this.seasonService.selectedSeason();
+      if (season && season.seasonId && season.seasonId > 0) {
         this.fetchSeasonPlayoffGames();
       }
     });
@@ -53,13 +54,13 @@ export class PlayoffGameService {
   }
 
   getSeasonPlayoffGames(): Observable<PlayoffGame[] | null> {
-    if (this.#seasonService.selectedSeason === undefined) {
+    if (this.seasonService.selectedSeason === undefined) {
       return of(null);
     } else {
       const url =
         Constants.PLAYOFF_GAMES_URL +
         '?seasonId=' +
-        this.#seasonService.selectedSeason!.seasonId;
+        this.seasonService.selectedSeason()!.seasonId;
       return this.http.get<PlayoffGame[]>(url).pipe(
         // map((response) => (this.seasonPlayoffGames = response)),
         tap((data) => console.log('All: ' + JSON.stringify(data.length))),

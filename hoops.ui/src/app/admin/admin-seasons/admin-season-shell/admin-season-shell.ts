@@ -48,7 +48,7 @@ import { SeasonsToolbar } from '@app/admin/components/seasons-toolbar/seasons-to
   ],
 })
 export class AdminSeasonShell implements OnInit, AfterViewInit {
-  readonly #seasonService = inject(SeasonService);
+  private readonly seasonService = inject(SeasonService);
   pageTitle = 'Season Management';
   currentSeason$!: Observable<Season>;
   seasons$!: Observable<Season[]>;
@@ -56,18 +56,18 @@ export class AdminSeasonShell implements OnInit, AfterViewInit {
 
   constructor(private store: Store<fromAdmin.State>) {
     effect(() => {
-      const record = this.#seasonService.selectedSeason;
+      const record = this.seasonService.selectedSeason()!;
       console.log('Selected record changed:', record);
       if (record !== null) {
         console.log(`Record updated: ${record.description}`);
       }
     });
     effect(() => {
-      const saved = this.#seasonService.seasonSaved();
+      const saved = this.seasonService.seasonSaved();
       console.log(saved);
       if (saved) {
         // this.isSidenavOpen = false;
-        this.#seasonService.seasonSaved.set(false);
+        this.seasonService.seasonSaved.set(false);
       }
     });
   }

@@ -3,11 +3,7 @@ import { Division } from '../domain/division';
 import { Season } from '../domain/season';
 import { DataService } from './data.service';
 import { SeasonService } from './season.service';
-import {
-  HttpClient,
-  HttpErrorResponse,
-  httpResource,
-} from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import {
   Injectable,
   WritableSignal,
@@ -21,7 +17,7 @@ import { select, Store } from '@ngrx/store';
 
 import * as fromAdmin from '../admin/state';
 import { Constants } from '@app/shared/constants';
-import { setErrorMessage } from '@app/shared/error-message';
+// import { setErrorMessage } from '@app/shared/error-message';
 import { LoggerService } from './logging.service';
 
 @Injectable({
@@ -32,10 +28,10 @@ export class DivisionService {
   // private constants = inject(Constants);
   #http = inject(HttpClient);
   #dataService = inject(DataService);
-  #seasonService = inject(SeasonService);
+  private readonly seasonService = inject(SeasonService);
   #store = inject(Store<fromAdmin.State>);
   #logger = inject(LoggerService);
-  selectedSeason = computed(() => this.#seasonService.selectedSeason);
+  selectedSeason = computed(() => this.seasonService.selectedSeason);
   private _selectedDivision: WritableSignal<Division | undefined> = signal<
     Division | undefined
   >(undefined);
@@ -93,18 +89,13 @@ export class DivisionService {
     seasonDivisions: [],
     error: null,
   });
-  seasonR = computed(() => this.#seasonService.season1);
+  seasonR = computed(() => this.seasonService.season1);
   private divisionUrl = Constants.SEASON_DIVISIONS_URL;
-
-  private divisionResource = httpResource<DivisionResponse>(
-    () => `${this.divisionUrl + this.selectedSeason()?.seasonId}`
-  );
-
-  divisions = computed(
-    () => this.divisionResource.value()?.results ?? ([] as Division[])
-  );
-  error = computed(() => this.divisionResource.error() as HttpErrorResponse);
-  errorMessage = computed(() => setErrorMessage(this.error(), 'Vehicle'));
+  // Expose a simple error signal so components can bind to it
+  private _error = signal<HttpErrorResponse | null>(null);
+  error = computed(() => this._error());
+  // Removed eager httpResource to avoid requests with seasonId undefined (400s).
+  // We fetch explicitly in effect() once a valid seasonId is available.
   //  isLoading = this.divisionResource.isLoading;
   // selectors
   isLoading = computed(() => this.state().isLoading);
@@ -155,14 +146,14 @@ export class DivisionService {
 
   constructor() {
     effect(() => {
-      const season = this.#seasonService.selectedSeason;
-      if (season) {
+      const season = this.seasonService.selectedSeason();
+      const sid = season?.seasonId ?? 0;
+      if (sid > 0) {
         // Track the active season id for consumers that need it (e.g., editors on save)
-        this.seasonId = season.seasonId ?? 0;
+        this.seasonId = sid;
         this.season = season;
-        this.getSeasonDivisions(this.seasonId);
+        this.getSeasonDivisions(sid);
         this.#logger.log(season);
-        //     console.log(this.seasonDivisions());
       }
     });
     // this.#store.pipe(select(fromAdmin.getSelectedSeason)).subscribe((season) => {
@@ -215,6 +206,7 @@ export class DivisionService {
     this.#http.get<Division[]>(url).subscribe(
       (data) => {
         this.updateSeasonDivisions(data);
+        this._error.set(null);
         // Preserve existing selection if it exists in the latest payload
         const existing = this.selectedDivision();
         let toSelect: Division | undefined = undefined;
@@ -241,7 +233,10 @@ export class DivisionService {
         console.log(this.seasonDivisions());
       },
       (error) => {
-        catchError(() => of([]));
+        try {
+          this._error.set(error as HttpErrorResponse);
+        } catch {}
+        this.updateSeasonDivisions([]);
       }
     );
   }

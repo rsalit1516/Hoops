@@ -56,14 +56,14 @@ import * as fromAdmin from '../../state';
 })
 export class AdminSeasonDetail implements OnInit {
   title = 'Season';
-  readonly #seasonService = inject(SeasonService);
+  private readonly seasonService = inject(SeasonService);
   private fb = inject(UntypedFormBuilder);
   readonly router = inject(Router);
   private snackBar = inject(MatSnackBar);
   store = inject(Store<fromAdmin.State>);
   startDatePicker!: MatDatepickerPanel<MatDatepickerControl<any>, any, any>;
 
-  selectedSeason = computed(() => this.#seasonService.selectedSeason);
+  selectedSeason = computed(() => this.seasonService.selectedSeason()!);
   form = this.fb.group({
     name: ['', Validators.required], //this.division.divisionDescription,
     seasonId: [''], //this.division.seasonId,
@@ -90,7 +90,7 @@ export class AdminSeasonDetail implements OnInit {
   }
   ngOnInit(): void {
     console.log(this.selectedSeason());
-    if (this.selectedSeason().seasonId !== undefined) {
+    if (this.selectedSeason()!.seasonId !== undefined) {
       this.patchSeason();
     } else {
       this.form.patchValue({
@@ -149,17 +149,17 @@ export class AdminSeasonDetail implements OnInit {
     _season.currentSeason = value.currentSeason;
     _season.onlineRegistration =
       value.onlineRegistration !== undefined ? value.onlineRegistration : false;
-    this.#seasonService.season = signal(_season);
+    this.seasonService.season = signal(_season);
     console.log(_season);
     if (_season.seasonId === 0) {
       console.log('postSeason');
-      this.#seasonService.postSeason(_season).subscribe({
+      this.seasonService.postSeason(_season).subscribe({
         next: (created) => {
           console.log('Season created', created);
-          this.#seasonService.seasonSaved.set(true);
+          this.seasonService.seasonSaved.set(true);
           // Refresh seasons so the list reflects the new item
-          this.#seasonService.fetchSeasons();
-          this.#seasonService.fetchCurrentSeason();
+          this.seasonService.fetchSeasons();
+          this.seasonService.fetchCurrentSeason();
           this.snackBar.open('Season created', 'OK', { duration: 2500 });
           this.router.navigate(['/admin/seasons/list']);
         },
@@ -167,13 +167,13 @@ export class AdminSeasonDetail implements OnInit {
       });
     } else {
       console.log('put Season');
-      this.#seasonService.putSeason(_season).subscribe({
+      this.seasonService.putSeason(_season).subscribe({
         next: (updated) => {
           console.log('Season updated', updated);
-          this.#seasonService.seasonSaved.set(true);
+          this.seasonService.seasonSaved.set(true);
           // Refresh seasons so the list reflects the update
-          this.#seasonService.fetchSeasons();
-          this.#seasonService.fetchCurrentSeason();
+          this.seasonService.fetchSeasons();
+          this.seasonService.fetchCurrentSeason();
           this.snackBar.open('Season updated', 'OK', { duration: 2500 });
           this.router.navigate(['/admin/seasons/list']);
         },

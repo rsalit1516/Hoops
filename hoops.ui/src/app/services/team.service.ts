@@ -26,9 +26,9 @@ export class TeamService {
   readonly #http = inject(HttpClient);
   readonly #dataService = inject(DataService);
   readonly #divisionService = inject(DivisionService);
-  readonly #seasonService = inject(SeasonService);
+  private readonly seasonService = inject(SeasonService);
   seasonId: number | undefined; // = 2192; // TO DO make this is passed in!
-  selectedSeason = computed(() => this.#seasonService.selectedSeason);
+  selectedSeason = computed(() => this.seasonService.selectedSeason);
   selectedDivision = computed(() => this.#divisionService.selectedDivision());
   seasonTeams = signal<Team[] | undefined>(undefined);
   divisionTeams = signal<Team[]>([]);
@@ -45,7 +45,7 @@ export class TeamService {
     this._selectedTeam.set(value);
     // Persist selection per (season, division) for user convenience
     try {
-      const seasonId = this.selectedSeason()?.seasonId ?? 0;
+      const seasonId = this.seasonService.selectedSeason()!.seasonId ?? 0;
       const divisionId =
         value?.divisionId ?? this.selectedDivision()?.divisionId ?? 0;
       if (seasonId && divisionId) {
@@ -67,7 +67,7 @@ export class TeamService {
 
   constructor() {
     effect(() => {
-      const sel = this.selectedSeason();
+      const sel = this.seasonService.selectedSeason();
       if (sel && sel.seasonId) {
         this.getSeasonTeams();
       }
@@ -96,7 +96,7 @@ export class TeamService {
         // Try restoring last selection for this (season, division)
         let restored: Team | undefined = undefined;
         try {
-          const seasonId = this.selectedSeason()?.seasonId ?? 0;
+          const seasonId = this.seasonService.selectedSeason()?.seasonId ?? 0;
           const key = `games:lastTeam:${seasonId}:${division.divisionId}`;
           const raw = localStorage.getItem(key);
           const storedId = raw ? Number(raw) : NaN;
@@ -110,7 +110,7 @@ export class TeamService {
   }
 
   getSeasonTeams(): void {
-    const sel = this.selectedSeason();
+    const sel = this.seasonService.selectedSeason();
     if (!sel || !sel.seasonId) return;
     const url = this.teamUrl + sel.seasonId;
     this.#http.get<Team[]>(url).subscribe((teams) => {

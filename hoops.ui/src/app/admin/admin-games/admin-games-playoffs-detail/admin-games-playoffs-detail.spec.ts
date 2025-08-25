@@ -12,6 +12,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { signal } from '@angular/core';
 
+// Import jasmine types for SpyObj
+import 'jasmine';
+
 import { AdminGamesPlayoffsDetail } from './admin-games-playoffs-detail';
 import { DivisionService } from '@app/services/division.service';
 import { PlayoffGameService } from '@app/services/playoff-game.service';

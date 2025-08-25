@@ -39,10 +39,13 @@ export class GameService {
   private teamService = inject(TeamService);
   private authService = inject(AuthService);
   private logger = inject(LoggerService);
-  private scheduleGamesUrl =
-    Constants.SEASON_GAMES_URL +
-    '?seasonid=' +
-    this.seasonService.selectedSeason.seasonId;
+  // Build URL reactively when selected season changes
+  private scheduleGamesUrl = computed(
+    () =>
+      `${Constants.SEASON_GAMES_URL}?seasonId=${
+        this.seasonService.selectedSeason()!.seasonId ?? 0
+      }`
+  );
   private _games!: RegularGame[];
   standing: any[] = [];
   divisionStandings = signal<Standing[]>([]);
@@ -102,7 +105,7 @@ export class GameService {
 
   // Signals managed by the service
   selectedGames = signal<RegularGame | undefined>(undefined);
-  private games$ = this.http.get<GameResponse>(this.scheduleGamesUrl).pipe(
+  private games$ = this.http.get<GameResponse>(this.scheduleGamesUrl()).pipe(
     map((vr) =>
       vr.results.map(
         (v) =>
@@ -113,8 +116,8 @@ export class GameService {
     ),
     delay(2000)
   );
-  private gamesResource = httpResource<RegularGame>(
-    () => this.scheduleGamesUrl
+  private gamesResource = httpResource<RegularGame>(() =>
+    this.scheduleGamesUrl()
   );
   error = this.gamesResource.error;
 
@@ -136,7 +139,7 @@ export class GameService {
 
     effect(() => {
       const selectedSeason = this.selectedSeason();
-      if (selectedSeason) {
+      if (selectedSeason && selectedSeason()!.seasonId) {
         this.fetchSeasonGames();
       }
     });
@@ -176,7 +179,7 @@ export class GameService {
   }
 
   getGames(): Observable<RegularGame[]> {
-    return this.http.get<RegularGame[]>(this.scheduleGamesUrl).pipe(
+    return this.http.get<RegularGame[]>(this.scheduleGamesUrl()).pipe(
       map((response) => this.games),
       // tap(data => console.log('All: ' + JSON.stringify(data))),
       catchError(this.dataService.handleError('getGames', []))
@@ -184,12 +187,11 @@ export class GameService {
   }
   fetchSeasonGames() {
     // console.log(this.scheduleGamesUrl);
+    const seasonId = this.seasonService.selectedSeason()!.seasonId;
+    console.log(seasonId);
+    if (!seasonId) return;
     this.http
-      .get<RegularGame[]>(
-        Constants.SEASON_GAMES_URL +
-          '?seasonId=' +
-          this.seasonService.selectedSeason.seasonId
-      )
+      .get<RegularGame[]>(`${Constants.SEASON_GAMES_URL}?seasonId=${seasonId}`)
       .subscribe((games) => {
         // this.seasonGames$ = of(games);
         this.updateSeasonGames(games);
@@ -222,7 +224,7 @@ export class GameService {
   }
 
   getStandings(): Observable<RegularGame[]> {
-    return this.http.get<any[]>(this.scheduleGamesUrl).pipe(
+    return this.http.get<any[]>(this.scheduleGamesUrl()).pipe(
       map((response) => (this.games = response)),
       // tap(data => console.log('All: ' + JSON.stringify(data))),
       catchError(this.dataService.handleError('getStandings', []))
@@ -241,7 +243,7 @@ export class GameService {
       );
   }
   fetchStandingsByDivision() {
-    const seasonId = this.seasonService.selectedSeason.seasonId;
+    const seasonId = this.seasonService.selectedSeason()!.seasonId;
     if (!seasonId) {
       console.error('No season selected');
       this.divisionStandings.update(() => []);

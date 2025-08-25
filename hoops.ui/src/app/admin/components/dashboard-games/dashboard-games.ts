@@ -9,16 +9,13 @@ import { Literals } from '@app/shared/constants';
 
 @Component({
   selector: 'csbc-dashboard-games',
-  imports: [
-    MatCardModule,
-    AdminGamesList
-  ],
-  templateUrl: "./dashboard-games.html",
+  imports: [MatCardModule, AdminGamesList],
+  templateUrl: './dashboard-games.html',
   styleUrls: [
     '../../../shared/scss/cards.scss',
     '../../dashboard/admin-dashboard.scss',
-    '../../admin.scss'
-  ]
+    '../../admin.scss',
+  ],
 })
 export class DashboardGames {
   readonly #gameService = inject(GameService);
@@ -28,5 +25,5 @@ export class DashboardGames {
   teamGames = this.#gameService.teamGames;
   selectedTeam = this.teamService.selectedTeam;
   seasonGamesCount = this.#gameService.seasonGamesCount;
-  selectedSeason = this.seasonService.selectedSeason;
+  selectedSeason = this.seasonService.selectedSeason();
 }

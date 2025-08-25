@@ -32,7 +32,7 @@ export class SeasonService {
   private http = inject(HttpClient);
   private dataService = inject(DataService);
   private seasonUrl = Constants.SEASON_URL + 'getCurrentSeason';
-  private seasonsUrl = Constants.SEASON_URL + 'GetAll';
+  private seasonsUrl = `${Constants.SEASON_URL}GetAll/${Constants.COMPANYID}`;
 
   // selectedSeason?: Season | null;
   season = signal(new Season());
@@ -51,11 +51,11 @@ export class SeasonService {
     // catchError(this.dataService.handleError)
   );
   private _currentSeason = signal<Season | undefined>(undefined);
-  get currentSeason() {
-    return this._currentSeason();
-  }
+  currentSeason = signal<Season | undefined>(undefined);
+  //   return this._currentSeason();
+  // }
   updateCurrentSeason(season: Season) {
-    this._currentSeason.set(season);
+    this.currentSeason.set(season);
   }
 
   currentSeason$ = this.http.get<Season>(Constants.currentSeasonUrl).pipe(
@@ -77,11 +77,11 @@ export class SeasonService {
     });
   }
   private _selectedSeason = signal<Season>(new Season());
-  get selectedSeason(): Season {
-    return this._selectedSeason();
-  }
+  selectedSeason = signal<Season | undefined>(undefined);
+  //   return this._selectedSeason();
+  // }
   updateSelectedSeason(season: Season) {
-    this._selectedSeason.set(season);
+    this.selectedSeason.set(season);
   }
 
   private seasonResource = httpResource<SeasonResponse>(

@@ -25,7 +25,7 @@ import { SeasonService } from '@app/services/season.service';
       [compareWith]="compareSeasons"
       class="form-control"
     >
-      @for (season of seasonService.seasons; track season) {
+  @for (season of seasonService.seasons; track season.seasonId) {
       <mat-option [value]="season" (click)="changeSeason(season)">
         {{ season.description }}
       </mat-option>

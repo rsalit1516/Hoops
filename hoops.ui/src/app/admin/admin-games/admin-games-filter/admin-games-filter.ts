@@ -83,7 +83,7 @@ export class AdminGamesFilter {
     // regular
     const blankReg: RegularGame = {
       gameDescription: null,
-      seasonId: this.#seasonService.selectedSeason?.seasonId ?? 0,
+      seasonId: this.#seasonService.selectedSeason()?.seasonId ?? 0,
       divisionId,
       divisionDescription: undefined,
       gameId: 0,
