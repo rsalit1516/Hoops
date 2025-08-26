@@ -33,7 +33,8 @@ export class Constants {
   public static readonly FUNCTIONS_BASE_URL =
     (environment as any).functionsUrl || this.BASE_URL;
   public static getActiveWebContentUrl = `${this.FUNCTIONS_BASE_URL}/api/webcontent/getActiveWebContent`;
-  public static loginUrl = `${this.BASE_URL}/api/User/login`;
+  public static loginUrl = `${this.FUNCTIONS_BASE_URL}/api/auth/login`;
+  public static legacyUserLoginUrl = `${this.FUNCTIONS_BASE_URL}/api/user/login`;
   public static GET_DIRECTOR_URL = `${this.BASE_URL}/api/Director`;
   public static SEASON_GAMES_URL = `${this.BASE_URL}/api/ScheduleGame/getSeasonGames`;
   public static PUT_SEASON_GAME_URL = `${this.BASE_URL}/api/ScheduleGame/`;

@@ -32,7 +32,9 @@ export class AuthService {
     });
     // Hydrate from cookie on app load
     this.http
-      .get<User>(`${Constants.BASE_URL}/api/auth/me`, { withCredentials: true })
+      .get<User>(`${Constants.FUNCTIONS_BASE_URL}/api/auth/me`, {
+        withCredentials: true,
+      })
       .pipe(
         tap((user) => {
           if (user) {
@@ -50,7 +52,7 @@ export class AuthService {
   login(userName: string, password: string): Observable<User> {
     return this.http
       .post<User>(
-        `${Constants.BASE_URL}/api/auth/login`,
+        `${Constants.FUNCTIONS_BASE_URL}/api/auth/login`,
         { userName, password },
         { withCredentials: true }
       )
@@ -70,7 +72,7 @@ export class AuthService {
   logout(): void {
     this.http
       .post(
-        `${Constants.BASE_URL}/api/auth/logout`,
+        `${Constants.FUNCTIONS_BASE_URL}/api/auth/logout`,
         {},
         { withCredentials: true }
       )
