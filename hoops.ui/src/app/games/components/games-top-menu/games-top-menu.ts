@@ -69,7 +69,7 @@ export class GamesTopMenu implements OnInit, OnDestroy {
   hasStandings = signal(false);
   currentSeason = computed(() => this.seasonService.selectedSeason);
   seasonDescription = computed(
-    () => this.seasonService.selectedSeason()!.description
+    () => this.seasonService.selectedSeason()?.description ?? ''
   );
 
   constructor() {

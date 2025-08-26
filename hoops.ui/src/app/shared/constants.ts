@@ -41,15 +41,15 @@ export class Constants {
   public static PUT_SEASON_GAME_SCORES_URL = `${this.BASE_URL}/api/ScheduleGame/`; // use /{id}/scores
   public static POST_SEASON_GAME_URL = `${this.BASE_URL}/api/ScheduleGame`;
 
-  public static SEASON_DIVISIONS_URL = `${this.BASE_URL}/api/division/GetSeasonDivisions/`;
-  public static DIVISION_URL = `${this.BASE_URL}/api/Division`;
+  public static SEASON_DIVISIONS_URL = `${this.FUNCTIONS_BASE_URL}/api/Division/GetSeasonDivisions/`;
+  public static DIVISION_URL = `${this.FUNCTIONS_BASE_URL}/api/Division`;
   public static PLAYOFF_GAMES_URL = `${this.BASE_URL}/api/SchedulePlayoff/GetSeasonPlayoffGames`;
   public static getCurrentSeasonUrl = `${this.FUNCTIONS_BASE_URL}/api/season/getCurrentSeason/${this.COMPANYID}`;
-  public static GET_SEASON_TEAMS_URL = `${this.BASE_URL}/api/Team/GetSeasonTeams/`;
+  public static GET_SEASON_TEAMS_URL = `${this.FUNCTIONS_BASE_URL}/api/Team/GetSeasonTeams/`;
   public static getColorUrl = `${this.FUNCTIONS_BASE_URL}/api/color`;
   public static GET_LOCATION_URL = `${this.FUNCTIONS_BASE_URL}/api/location`;
-  public static teamPostUrl = `${this.BASE_URL}/api/Team`;
-  public static teamPutUrl = `${this.BASE_URL}/api/Team/`;
+  public static teamPostUrl = `${this.FUNCTIONS_BASE_URL}/api/Team`;
+  public static teamPutUrl = `${this.FUNCTIONS_BASE_URL}/api/Team/`;
   public static getContentUrl = `${this.BASE_URL}/api/webcontent`;
   public static getActiveContentUrl = `${this.FUNCTIONS_BASE_URL}/api/webcontent/getActiveWebContent`;
   public static postContentUrl = `${this.BASE_URL}/api/WebContent`;

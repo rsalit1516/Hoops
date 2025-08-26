@@ -269,6 +269,23 @@
 				"$msCompile"
 			],
 			"group": "build"
+		},
+		{
+			"label": "__adhoc: dotnet test fast",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"test",
+				"Hoops.sln",
+				"--filter",
+				"TestCategory!=Slow",
+				"--nologo"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "test"
 		}
 	]
 }

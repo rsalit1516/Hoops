@@ -63,7 +63,7 @@ export class AdminSeasonDetail implements OnInit {
   store = inject(Store<fromAdmin.State>);
   startDatePicker!: MatDatepickerPanel<MatDatepickerControl<any>, any, any>;
 
-  selectedSeason = computed(() => this.seasonService.selectedSeason()!);
+  selectedSeason = computed(() => this.seasonService.selectedSeason());
   form = this.fb.group({
     name: ['', Validators.required], //this.division.divisionDescription,
     seasonId: [''], //this.division.seasonId,
@@ -90,7 +90,7 @@ export class AdminSeasonDetail implements OnInit {
   }
   ngOnInit(): void {
     console.log(this.selectedSeason());
-    if (this.selectedSeason()!.seasonId !== undefined) {
+    if (this.selectedSeason()?.seasonId !== undefined) {
       this.patchSeason();
     } else {
       this.form.patchValue({
@@ -100,21 +100,21 @@ export class AdminSeasonDetail implements OnInit {
   }
   patchSeason() {
     this.form.patchValue({
-      name: this.selectedSeason().description,
-      seasonId: this.selectedSeason().seasonId,
-      startDate: this.selectedSeason().fromDate,
-      endDate: this.selectedSeason().toDate,
-      playerFee: this.selectedSeason().participationFee,
-      sponsorFee: this.selectedSeason().sponsorFee,
-      convenienceFee: this.selectedSeason().convenienceFee,
-      sponsorDiscount: this.selectedSeason().sponsorDiscount,
-      signUpStartDate: this.selectedSeason().onlineStarts,
-      signUpEndDate: this.selectedSeason().onlineStops,
+      name: this.selectedSeason()?.description ?? '',
+      seasonId: this.selectedSeason()?.seasonId ?? 0,
+      startDate: this.selectedSeason()?.fromDate ?? null,
+      endDate: this.selectedSeason()?.toDate ?? null,
+      playerFee: this.selectedSeason()?.participationFee ?? 0,
+      sponsorFee: this.selectedSeason()?.sponsorFee ?? 0,
+      convenienceFee: this.selectedSeason()?.convenienceFee ?? 0,
+      sponsorDiscount: this.selectedSeason()?.sponsorDiscount ?? 0,
+      signUpStartDate: this.selectedSeason()?.onlineStarts ?? null,
+      signUpEndDate: this.selectedSeason()?.onlineStops ?? null,
       // gameSchedules: this.selectedSeason().gameSchedules,
-      currentSeason: this.selectedSeason().currentSeason,
-      currentSchedule: this.selectedSeason().currentSchedule,
-      currentSignUps: this.selectedSeason().currentSignUps,
-      onlineRegistration: this.selectedSeason().onlineRegistration,
+      currentSeason: this.selectedSeason()?.currentSeason ?? false,
+      currentSchedule: this.selectedSeason()?.currentSchedule ?? false,
+      currentSignUps: this.selectedSeason()?.currentSignUps ?? false,
+      onlineRegistration: this.selectedSeason()?.onlineRegistration ?? false,
     });
   }
   onSubmit() {

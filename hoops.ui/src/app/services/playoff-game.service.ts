@@ -57,10 +57,8 @@ export class PlayoffGameService {
     if (this.seasonService.selectedSeason === undefined) {
       return of(null);
     } else {
-      const url =
-        Constants.PLAYOFF_GAMES_URL +
-        '?seasonId=' +
-        this.seasonService.selectedSeason()!.seasonId;
+      const sid = this.seasonService.selectedSeason()?.seasonId ?? 0;
+      const url = Constants.PLAYOFF_GAMES_URL + '?seasonId=' + sid;
       return this.http.get<PlayoffGame[]>(url).pipe(
         // map((response) => (this.seasonPlayoffGames = response)),
         tap((data) => console.log('All: ' + JSON.stringify(data.length))),

@@ -40,12 +40,11 @@ export class GameService {
   private authService = inject(AuthService);
   private logger = inject(LoggerService);
   // Build URL reactively when selected season changes
-  private scheduleGamesUrl = computed(
-    () =>
-      `${Constants.SEASON_GAMES_URL}?seasonId=${
-        this.seasonService.selectedSeason()!.seasonId ?? 0
-      }`
-  );
+  private scheduleGamesUrl = computed(() => {
+    const sel = this.seasonService.selectedSeason();
+    const seasonId = sel?.seasonId ?? 0;
+    return `${Constants.SEASON_GAMES_URL}?seasonId=${seasonId}`;
+  });
   private _games!: RegularGame[];
   standing: any[] = [];
   divisionStandings = signal<Standing[]>([]);
@@ -138,8 +137,8 @@ export class GameService {
     });
 
     effect(() => {
-      const selectedSeason = this.selectedSeason();
-      if (selectedSeason && selectedSeason()!.seasonId) {
+      const selectedSeason = this.seasonService.selectedSeason();
+      if (selectedSeason?.seasonId) {
         this.fetchSeasonGames();
       }
     });
@@ -187,9 +186,8 @@ export class GameService {
   }
   fetchSeasonGames() {
     // console.log(this.scheduleGamesUrl);
-    const seasonId = this.seasonService.selectedSeason()!.seasonId;
-    console.log(seasonId);
-    if (!seasonId) return;
+    const seasonId = this.seasonService.selectedSeason()?.seasonId;
+    if (!seasonId) return; // wait until season is set
     this.http
       .get<RegularGame[]>(`${Constants.SEASON_GAMES_URL}?seasonId=${seasonId}`)
       .subscribe((games) => {
@@ -243,7 +241,7 @@ export class GameService {
       );
   }
   fetchStandingsByDivision() {
-    const seasonId = this.seasonService.selectedSeason()!.seasonId;
+    const seasonId = this.seasonService.selectedSeason()?.seasonId;
     if (!seasonId) {
       console.error('No season selected');
       this.divisionStandings.update(() => []);

@@ -56,9 +56,9 @@ export class AdminSeasonShell implements OnInit, AfterViewInit {
 
   constructor(private store: Store<fromAdmin.State>) {
     effect(() => {
-      const record = this.seasonService.selectedSeason()!;
+      const record = this.seasonService.selectedSeason();
       console.log('Selected record changed:', record);
-      if (record !== null) {
+      if (record) {
         console.log(`Record updated: ${record.description}`);
       }
     });

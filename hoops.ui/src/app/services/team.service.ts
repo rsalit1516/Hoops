@@ -45,7 +45,7 @@ export class TeamService {
     this._selectedTeam.set(value);
     // Persist selection per (season, division) for user convenience
     try {
-      const seasonId = this.seasonService.selectedSeason()!.seasonId ?? 0;
+      const seasonId = this.seasonService.selectedSeason()?.seasonId ?? 0;
       const divisionId =
         value?.divisionId ?? this.selectedDivision()?.divisionId ?? 0;
       if (seasonId && divisionId) {
@@ -221,7 +221,7 @@ export class TeamService {
     scheduleNumber: number,
     teamNumber: number
   ): Observable<number> {
-    const url = `${Constants.BASE_URL}/api/Team/GetMappedTeamNumber/${scheduleNumber}/${teamNumber}`;
+    const url = `${Constants.FUNCTIONS_BASE_URL}/api/Team/GetMappedTeamNumber/${scheduleNumber}/${teamNumber}`;
     return this.http
       .get<number>(url)
       .pipe(catchError(this.dataService.handleError('getMappedTeamNumber', 0)));
@@ -239,7 +239,7 @@ export class TeamService {
     teamNumber: number,
     seasonId: number
   ): Observable<number> {
-    const url = `${Constants.BASE_URL}/api/Team/GetMappedTeamNumber/${scheduleNumber}/${teamNumber}/${seasonId}`;
+    const url = `${Constants.FUNCTIONS_BASE_URL}/api/Team/GetMappedTeamNumber/${scheduleNumber}/${teamNumber}/${seasonId}`;
     return this.http
       .get<number>(url)
       .pipe(
@@ -261,7 +261,7 @@ export class TeamService {
   ): Observable<
     { scheduleTeamNumber: number; teamNumber: number; displayName: string }[]
   > {
-    const url = `${Constants.BASE_URL}/api/Team/GetValidScheduleTeams/${scheduleNumber}/${seasonId}`;
+    const url = `${Constants.FUNCTIONS_BASE_URL}/api/Team/GetValidScheduleTeams/${scheduleNumber}/${seasonId}`;
     return this.http
       .get<
         {

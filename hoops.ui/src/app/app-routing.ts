@@ -6,7 +6,6 @@ import { Contacts } from './contacts/contacts';
 import { CsbcClubDocs } from './club-docs/csbc-club-docs';
 import { Home } from './home/home';
 import { PageNotFound } from './app.not-found';
-import { GamesResolver } from './games/games.resolver';
 import { ADMINROUTES } from './admin/admin-routing';
 import { Login } from './shared/components/login/login';
 import { adminGuard } from './shared/guards/admin-guard.guard';
@@ -22,7 +21,6 @@ const appRoutes: Routes = [
     children: GAMES_ROUTES,
     // loadChildren: () =>
     //   import('./games/games-routing.module').then((m) => m.GAMES_ROUTES),
-    resolve: { state: GamesResolver },
   },
   {
     path: 'photos',
