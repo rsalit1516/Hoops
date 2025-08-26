@@ -64,6 +64,30 @@ This guarantees camelCase payloads that match the Angular expectations (e.g., `s
 
 All Team responses return DTOs (below) to eliminate EF navigation cycles.
 
+### HouseholdFunctions
+
+- GET /api/Household → returns all households (HouseholdDto[])
+- GET /api/Household/{id}
+- GET /api/Household/search?name=&address=&email=&phone=
+- POST /api/Household (AuthorizationLevel.Function)
+- PUT /api/Household/{id} (AuthorizationLevel.Function)
+- DELETE /api/Household/{id} (AuthorizationLevel.Function)
+
+DTO: HouseholdDto with fields used by the UI: houseId, name, address1, address2, city, state, zip, email, phone. Navigation properties are not returned.
+
+Route casing preserves legacy shapes ("Household" and "search").
+
+### PersonFunctions
+
+- GET /api/Person → list all people (PersonDto[])
+- GET /api/Person/GetADs → list ADs for companyId=1
+- GET /api/Person/GetHouseholdMembers/{id} → members by household
+- GET /api/Person/search?lastName=&firstName=&playerOnly=
+
+DTO: PersonDto mirrors the scalar properties needed by the UI and avoids navigation properties to prevent cycles. Player-only filter is respected.
+
+Note: Write operations for Person are not exposed in the legacy controller and are not added here.
+
 ### WebContentFunctions / WebContentTypeFunctions
 
 - CRUD parity with legacy controllers. Active content endpoint retained at `/api/webcontent/getActiveWebContent`.
@@ -134,6 +158,8 @@ Endpoints projecting to DTOs:
   - `SEASON_DIVISIONS_URL = {functionsUrl}/api/Division/GetSeasonDivisions/`
   - `GET_SEASON_TEAMS_URL = {functionsUrl}/api/Team/GetSeasonTeams/`
   - Team write endpoints: `{functionsUrl}/api/Team` and `{functionsUrl}/api/Team/{id}`
+  - Household endpoints: `{functionsUrl}/api/Household/...`
+  - Person endpoints: `{functionsUrl}/api/Person`, `{functionsUrl}/api/Person/search`, `{functionsUrl}/api/Person/GetHouseholdMembers`, `{functionsUrl}/api/Person/GetADs`
 - Services guard for async season state to avoid `undefined` access at init time.
 
 ## Error Handling and Status Codes

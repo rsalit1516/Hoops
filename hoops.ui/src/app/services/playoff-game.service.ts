@@ -123,7 +123,7 @@ export class PlayoffGameService {
 
   // Create a new playoff game
   create(game: PlayoffGame): import('rxjs').Observable<PlayoffGame> {
-    const url = `${Constants.BASE_URL}/api/SchedulePlayoff`;
+    const url = `${Constants.FUNCTIONS_BASE_URL}/api/SchedulePlayoff`;
     return this.http.post<PlayoffGame>(
       url,
       this.toApiModel(game),
@@ -136,7 +136,7 @@ export class PlayoffGameService {
     // Prefer primary-key updates via by-id endpoint
     const id = (game as any).schedulePlayoffId as number | undefined;
     if (id) {
-      const url = `${Constants.BASE_URL}/api/SchedulePlayoff/by-id/${id}`;
+      const url = `${Constants.FUNCTIONS_BASE_URL}/api/SchedulePlayoff/by-id/${id}`;
       return this.http.put<void>(
         url,
         this.toApiModel(game),
@@ -149,7 +149,7 @@ export class PlayoffGameService {
         'Cannot update playoff game: missing primary key and composite keys'
       );
     }
-    const url = `${Constants.BASE_URL}/api/SchedulePlayoff/${game.scheduleNumber}/${game.gameNumber}`;
+    const url = `${Constants.FUNCTIONS_BASE_URL}/api/SchedulePlayoff/${game.scheduleNumber}/${game.gameNumber}`;
     return this.http.put<void>(
       url,
       this.toApiModel(game),

@@ -36,14 +36,14 @@ export class Constants {
   public static loginUrl = `${this.FUNCTIONS_BASE_URL}/api/auth/login`;
   public static legacyUserLoginUrl = `${this.FUNCTIONS_BASE_URL}/api/user/login`;
   public static GET_DIRECTOR_URL = `${this.BASE_URL}/api/Director`;
-  public static SEASON_GAMES_URL = `${this.BASE_URL}/api/ScheduleGame/getSeasonGames`;
-  public static PUT_SEASON_GAME_URL = `${this.BASE_URL}/api/ScheduleGame/`;
-  public static PUT_SEASON_GAME_SCORES_URL = `${this.BASE_URL}/api/ScheduleGame/`; // use /{id}/scores
-  public static POST_SEASON_GAME_URL = `${this.BASE_URL}/api/ScheduleGame`;
+  public static SEASON_GAMES_URL = `${this.FUNCTIONS_BASE_URL}/api/ScheduleGame/GetSeasonGames`;
+  public static PUT_SEASON_GAME_URL = `${this.FUNCTIONS_BASE_URL}/api/ScheduleGame/`;
+  public static PUT_SEASON_GAME_SCORES_URL = `${this.FUNCTIONS_BASE_URL}/api/ScheduleGame/`; // use /{id}/scores
+  public static POST_SEASON_GAME_URL = `${this.FUNCTIONS_BASE_URL}/api/ScheduleGame`;
 
   public static SEASON_DIVISIONS_URL = `${this.FUNCTIONS_BASE_URL}/api/Division/GetSeasonDivisions/`;
   public static DIVISION_URL = `${this.FUNCTIONS_BASE_URL}/api/Division`;
-  public static PLAYOFF_GAMES_URL = `${this.BASE_URL}/api/SchedulePlayoff/GetSeasonPlayoffGames`;
+  public static PLAYOFF_GAMES_URL = `${this.FUNCTIONS_BASE_URL}/api/SchedulePlayoff/GetSeasonPlayoffGames`;
   public static getCurrentSeasonUrl = `${this.FUNCTIONS_BASE_URL}/api/season/getCurrentSeason/${this.COMPANYID}`;
   public static GET_SEASON_TEAMS_URL = `${this.FUNCTIONS_BASE_URL}/api/Team/GetSeasonTeams/`;
   public static getColorUrl = `${this.FUNCTIONS_BASE_URL}/api/color`;
@@ -58,14 +58,14 @@ export class Constants {
   public static GET_LOCATIONS = `${this.FUNCTIONS_BASE_URL}/api/location`;
   public static SEASON_URL = `${this.FUNCTIONS_BASE_URL}/api/Season/`;
   public static currentSeasonUrl = `${this.FUNCTIONS_BASE_URL}/api/Season/GetCurrentSeason/${this.COMPANYID}`;
-  public static peopleUrl = `${this.BASE_URL}/api/People`;
-  public static GET_ADS_URL = `${this.BASE_URL}/api/Person/GetADs`;
-  public static GET_STANDINGS_URL = `${this.BASE_URL}/api/ScheduleGame/getStandings`;
-  public static SEARCH_HOUSEHOLD_URL = `${this.BASE_URL}/api/Household/search`;
-  public static GET_HOUSEHOLD_MEMBERS_URL = `${this.BASE_URL}/api/Person/GetHouseholdMembers`;
-  public static GET_HOUSEHOLD_BY_ID_URL = `${this.BASE_URL}/api/Household`;
-  public static SEARCH_PEOPLE_URL = `${this.BASE_URL}/api/Person/search`;
-  public static SAVE_HOUSEHOLD_URL = `${this.BASE_URL}/api/Household/`;
+  public static peopleUrl = `${this.FUNCTIONS_BASE_URL}/api/Person`;
+  public static GET_ADS_URL = `${this.FUNCTIONS_BASE_URL}/api/Person/GetADs`;
+  public static GET_STANDINGS_URL = `${this.FUNCTIONS_BASE_URL}/api/ScheduleGame/GetStandings`;
+  public static SEARCH_HOUSEHOLD_URL = `${this.FUNCTIONS_BASE_URL}/api/Household/search`;
+  public static GET_HOUSEHOLD_MEMBERS_URL = `${this.FUNCTIONS_BASE_URL}/api/Person/GetHouseholdMembers`;
+  public static GET_HOUSEHOLD_BY_ID_URL = `${this.FUNCTIONS_BASE_URL}/api/Household`;
+  public static SEARCH_PEOPLE_URL = `${this.FUNCTIONS_BASE_URL}/api/Person/search`;
+  public static SAVE_HOUSEHOLD_URL = `${this.FUNCTIONS_BASE_URL}/api/Household/`;
 }
 export const Literals = {
   BUTTONS: {
