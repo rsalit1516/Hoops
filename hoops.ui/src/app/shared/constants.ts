@@ -35,7 +35,7 @@ export class Constants {
   public static getActiveWebContentUrl = `${this.FUNCTIONS_BASE_URL}/api/webcontent/getActiveWebContent`;
   public static loginUrl = `${this.FUNCTIONS_BASE_URL}/api/auth/login`;
   public static legacyUserLoginUrl = `${this.FUNCTIONS_BASE_URL}/api/user/login`;
-  public static GET_DIRECTOR_URL = `${this.BASE_URL}/api/Director`;
+  public static GET_DIRECTOR_URL = `${this.FUNCTIONS_BASE_URL}/api/Director`;
   public static SEASON_GAMES_URL = `${this.FUNCTIONS_BASE_URL}/api/ScheduleGame/GetSeasonGames`;
   public static PUT_SEASON_GAME_URL = `${this.FUNCTIONS_BASE_URL}/api/ScheduleGame/`;
   public static PUT_SEASON_GAME_SCORES_URL = `${this.FUNCTIONS_BASE_URL}/api/ScheduleGame/`; // use /{id}/scores
@@ -54,7 +54,7 @@ export class Constants {
   public static getActiveContentUrl = `${this.FUNCTIONS_BASE_URL}/api/webcontent/getActiveWebContent`;
   public static postContentUrl = `${this.BASE_URL}/api/WebContent`;
   public static PUT_CONTENT_URL = `${this.BASE_URL}/api/WebContent/`;
-  public static GET_SEASON_SPONSORS = `${this.BASE_URL}/api/Sponsor`;
+  public static GET_SEASON_SPONSORS = `${this.FUNCTIONS_BASE_URL}/api/Sponsor/GetSeasonSponsors`;
   public static GET_LOCATIONS = `${this.FUNCTIONS_BASE_URL}/api/location`;
   public static SEASON_URL = `${this.FUNCTIONS_BASE_URL}/api/Season/`;
   public static currentSeasonUrl = `${this.FUNCTIONS_BASE_URL}/api/Season/GetCurrentSeason/${this.COMPANYID}`;

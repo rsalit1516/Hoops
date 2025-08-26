@@ -16,7 +16,7 @@ export class DataService {
   dotNetCoreUrl: string;
   getActiveWebContentUrl: string;
   // loginUrl = '${Constants.BASE_URL}/api/User/login';
-  directorUrl = `${Constants.BASE_URL}/api/Director`;
+  directorUrl = `${Constants.FUNCTIONS_BASE_URL}/api/Director`;
   seasonGamesUrl = `${Constants.BASE_URL}/api/Schedulegame/getSeasonGames`;
   seasonDivisionsUrl = Constants.SEASON_DIVISIONS_URL;
   playoffGameUrl = `${Constants.BASE_URL}/api/SchedulePlayoff/GetSeasonGames`;
@@ -29,7 +29,7 @@ export class DataService {
   getContentUrl = `${Constants.BASE_URL}/api/webcontent`;
   getActiveContentUrl = `${Constants.FUNCTIONS_BASE_URL}/api/webcontent/getActiveWebContent`;
   postContentUrl = `${Constants.BASE_URL}/api/WebContent`;
-  getCurrentSponsors = `${Constants.BASE_URL}/api/Sponsor/GetSeasonSponsors/`;
+  getCurrentSponsors = `${Constants.FUNCTIONS_BASE_URL}/api/Sponsor/GetSeasonSponsors/`;
   getLocations = `${Constants.BASE_URL}/api/Locations/`;
   // seasonUrl = `${Constants.BASE_URL}/api/Season/`;
   currentSeasonUrl = `${Constants.BASE_URL}/api/Season/GetCurrentSeason`;

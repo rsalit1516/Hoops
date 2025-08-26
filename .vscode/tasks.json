@@ -286,6 +286,20 @@
 				"$msCompile"
 			],
 			"group": "test"
+		},
+		{
+			"label": "Build Functions (Debug)",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"src/Hoops.Functions/Hoops.Functions.csproj",
+				"-c",
+				"Debug",
+				"/nologo"
+			],
+			"isBackground": false,
+			"group": "build"
 		}
 	]
 }
