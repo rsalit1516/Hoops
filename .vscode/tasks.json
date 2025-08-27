@@ -300,6 +300,58 @@
 			],
 			"isBackground": false,
 			"group": "build"
+		},
+		{
+			"label": "__adhoc: dotnet test fast",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"test",
+				"Hoops.sln",
+				"--filter",
+				"TestCategory!=Slow",
+				"--nologo"
+			]
+		},
+		{
+			"label": "Build Functions (Debug)",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"src/Hoops.Functions/Hoops.Functions.csproj",
+				"-c",
+				"Debug",
+				"/nologo"
+			],
+			"isBackground": false,
+			"group": "build"
+		},
+		{
+			"label": "Build Functions (Debug)",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"src/Hoops.Functions/Hoops.Functions.csproj",
+				"-c",
+				"Debug",
+				"/nologo"
+			],
+			"isBackground": false,
+			"group": "build"
+		},
+		{
+			"label": "Build Solution",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"Hoops.sln",
+				"-c",
+				"Debug",
+				"/nologo"
+			]
 		}
 	]
 }

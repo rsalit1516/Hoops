@@ -653,11 +653,12 @@ namespace Hoops.Data
         }
         public void DeleteTestComments(hoopsContext context)
         {
-            var rep = new CommentRepository(context);
-            var comments = rep.GetAll().ToList<Comment>();
-            foreach (Comment comment in comments)
+            // Use DbContext directly to avoid dependency on CommentRepository
+            var comments = context.Comments.ToList();
+            if (comments.Count > 0)
             {
-                rep.Delete(comment);
+                context.Comments.RemoveRange(comments);
+                context.SaveChanges();
             }
         }
         public void DeleteTestPlayers(hoopsContext context)
