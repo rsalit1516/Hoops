@@ -88,6 +88,16 @@ jobs:
               "KeyVaultUri=https://hoops-dev-kv.vault.azure.net/" \
               "ConnectionStrings__hoopsContext=${{ secrets.HOOPS_CONNECTION_STRING }}"
 
+      - name: Configure CORS
+        run: |
+          az functionapp cors add \
+            --name ${{ steps.selectapp.outputs.app_name }} \
+            --resource-group ${{ steps.selectapp.outputs.resource_group }} \
+            --allowed-origins \
+              "https://thankful-pond-090ec730f.4.azurestaticapps.net" \
+              "http://localhost:4200" \
+              "https://localhost:4200"
+
       - name: Enable Managed Identity and Grant Key Vault Access
         run: |
           # Enable system-assigned managed identity

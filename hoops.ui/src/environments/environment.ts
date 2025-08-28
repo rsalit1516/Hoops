@@ -6,8 +6,7 @@
 export const environment = {
   production: false,
   apiUrl: 'https://localhost:5001',
-  functionsUrl:
-    'https://hoops-functions-dev-djeqhegwahbua7eq.eastus-01.azurewebsites.net',
+  functionsUrl: 'http://localhost:7071',
   environment: 'local',
   securityEnabled: false,
   featureFlagPath: '/assets/feature-flags.dev.json',
