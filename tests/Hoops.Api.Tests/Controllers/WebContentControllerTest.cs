@@ -27,8 +27,10 @@ namespace Hoops.Api.Controllers.Tests
         {
             // Arrange
             int webContentId = 1;
-            _mockRepo.Setup(repo => repo.GetById(webContentId)).Returns((WebContent)null);
-
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type
+            _mockRepo.Setup(repo => repo.GetById(webContentId)).Returns((WebContent)null!);
+#pragma warning restore CS8625
+            
             // Act
             var result = await _controller.DeleteWebContent(webContentId);
 
