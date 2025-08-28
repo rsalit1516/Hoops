@@ -67,7 +67,7 @@ jobs:
           if [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
             echo "app_name=hoops-functions-dev-djeqhegwahbua7eq" >> $GITHUB_OUTPUT
           else
-            echo "app_name=hoops-functions-prod" >> $GITHUB_OUTPUT
+            echo "app_name=hoops-functions-prod-[YOUR-PROD-SUFFIX]" >> $GITHUB_OUTPUT
           fi
 
       - name: Deploy to Azure Functions (zipDeploy)
@@ -75,3 +75,31 @@ jobs:
         with:
           app-name: ${{ steps.selectapp.outputs.app_name }}
           package: functions.zip
+
+      - name: Configure Function App Settings
+        run: |
+          az functionapp config appsettings set \
+            --name ${{ steps.selectapp.outputs.app_name }} \
+            --resource-group hoops-dev \
+            --settings \
+              "CompanySettings__DefaultCompanyId=1" \
+              "KeyVaultUri=https://hoops-dev-kv.vault.azure.net/"
+
+      - name: Enable Managed Identity and Grant Key Vault Access
+        run: |
+          # Enable system-assigned managed identity
+          az functionapp identity assign \
+            --name ${{ steps.selectapp.outputs.app_name }} \
+            --resource-group hoops-dev
+
+          # Get the principal ID of the managed identity
+          PRINCIPAL_ID=$(az functionapp identity show \
+            --name ${{ steps.selectapp.outputs.app_name }} \
+            --resource-group hoops-dev \
+            --query principalId -o tsv)
+
+          # Grant Key Vault access
+          az keyvault set-policy \
+            --name hoops-dev-kv \
+            --object-id $PRINCIPAL_ID \
+            --secret-permissions get list
