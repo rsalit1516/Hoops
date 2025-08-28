@@ -30,7 +30,7 @@ namespace Hoops.Api.Controllers.Tests
 #pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type
             _mockRepo.Setup(repo => repo.GetById(webContentId)).Returns((WebContent)null!);
 #pragma warning restore CS8625
-            
+
             // Act
             var result = await _controller.DeleteWebContent(webContentId);
 
