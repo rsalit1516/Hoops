@@ -83,7 +83,8 @@ jobs:
             --resource-group hoops-dev \
             --settings \
               "CompanySettings__DefaultCompanyId=1" \
-              "KeyVaultUri=https://hoops-dev-kv.vault.azure.net/"
+              "KeyVaultUri=https://hoops-dev-kv.vault.azure.net/" \
+              "ConnectionStrings__hoopsContext=${{ secrets.HOOPS_CONNECTION_STRING }}"
 
       - name: Enable Managed Identity and Grant Key Vault Access
         run: |
