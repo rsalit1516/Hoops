@@ -65,7 +65,7 @@ jobs:
         id: selectapp
         run: |
           if [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
-            echo "app_name=hoops-functions-dev" >> $GITHUB_OUTPUT
+            echo "app_name=hoops-functions-dev-djeqhegwahbua7eq" >> $GITHUB_OUTPUT
           else
             echo "app_name=hoops-functions-prod" >> $GITHUB_OUTPUT
           fi

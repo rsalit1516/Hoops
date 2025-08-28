@@ -25,7 +25,7 @@ variables:
 
   # Branch-based environment mapping
   ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/develop') }}:
-    functionAppName: "hoops-functions-dev"
+    functionAppName: "hoops-functions-dev-djeqhegwahbua7eq"
     environmentName: "dev"
   ${{ if or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master')) }}:
     functionAppName: "hoops-functions-prod"
