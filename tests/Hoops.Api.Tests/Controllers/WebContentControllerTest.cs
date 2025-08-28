@@ -1,3 +1,4 @@
+#nullable disable
 using System.Threading.Tasks;
 using Hoops.Controllers;
 using Hoops.Core.Models;
@@ -27,9 +28,7 @@ namespace Hoops.Api.Controllers.Tests
         {
             // Arrange
             int webContentId = 1;
-#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type
             _mockRepo.Setup(repo => repo.GetById(webContentId)).Returns((WebContent)null!);
-#pragma warning restore CS8625
 
             // Act
             var result = await _controller.DeleteWebContent(webContentId);
