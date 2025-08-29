@@ -24,6 +24,15 @@ public class AuthFunctions
     private static async Task WriteJsonAsync<T>(HttpResponseData response, T value)
     {
         response.Headers.Add("Content-Type", "application/json; charset=utf-8");
+        // Enable credentialed CORS responses when allowed at the app level
+        if (!response.Headers.Contains("Access-Control-Allow-Credentials"))
+        {
+            response.Headers.Add("Access-Control-Allow-Credentials", "true");
+        }
+        if (!response.Headers.Contains("Vary"))
+        {
+            response.Headers.Add("Vary", "Origin");
+        }
         await JsonSerializer.SerializeAsync(response.Body, value, JsonOptions);
     }
 
@@ -61,15 +70,19 @@ public class AuthFunctions
     public Task<HttpResponseData> Me(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "auth/me")] HttpRequestData req)
     {
-        // Cookie-based auth is not configured in isolated worker; return 401 by default
-        return Task.FromResult(req.CreateResponse(HttpStatusCode.Unauthorized));
+    var res = req.CreateResponse(HttpStatusCode.Unauthorized);
+    res.Headers.Add("Access-Control-Allow-Credentials", "true");
+    res.Headers.Add("Vary", "Origin");
+    return Task.FromResult(res);
     }
 
     [Function("Auth_Logout")]
     public Task<HttpResponseData> Logout(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "auth/logout")] HttpRequestData req)
     {
-        var res = req.CreateResponse(HttpStatusCode.NoContent);
+    var res = req.CreateResponse(HttpStatusCode.NoContent);
+    res.Headers.Add("Access-Control-Allow-Credentials", "true");
+    res.Headers.Add("Vary", "Origin");
         return Task.FromResult(res);
     }
 }

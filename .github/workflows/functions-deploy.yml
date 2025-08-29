@@ -122,6 +122,22 @@ jobs:
               "http://localhost:4200" \
               "https://localhost:4200"
 
+      - name: Enable CORS credentials support
+        run: |
+          az resource update \
+            --resource-group ${{ steps.selectapp.outputs.resource_group }} \
+            --resource-type Microsoft.Web/sites/config \
+            --name "${{ steps.selectapp.outputs.app_name }}/web" \
+            --set properties.cors.supportsCredentials=true
+
+      - name: Show current CORS settings
+        run: |
+          az resource show \
+            --resource-group ${{ steps.selectapp.outputs.resource_group }} \
+            --resource-type Microsoft.Web/sites/config \
+            --name "${{ steps.selectapp.outputs.app_name }}/web" \
+            --query "properties.cors" -o jsonc
+
       - name: Enable Managed Identity and Grant Key Vault Access
         run: |
           # Enable system-assigned managed identity
