@@ -70,19 +70,19 @@ public class AuthFunctions
     public Task<HttpResponseData> Me(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "auth/me")] HttpRequestData req)
     {
-    var res = req.CreateResponse(HttpStatusCode.Unauthorized);
-    res.Headers.Add("Access-Control-Allow-Credentials", "true");
-    res.Headers.Add("Vary", "Origin");
-    return Task.FromResult(res);
+        var res = req.CreateResponse(HttpStatusCode.Unauthorized);
+        res.Headers.Add("Access-Control-Allow-Credentials", "true");
+        res.Headers.Add("Vary", "Origin");
+        return Task.FromResult(res);
     }
 
     [Function("Auth_Logout")]
     public Task<HttpResponseData> Logout(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "auth/logout")] HttpRequestData req)
     {
-    var res = req.CreateResponse(HttpStatusCode.NoContent);
-    res.Headers.Add("Access-Control-Allow-Credentials", "true");
-    res.Headers.Add("Vary", "Origin");
+        var res = req.CreateResponse(HttpStatusCode.NoContent);
+        res.Headers.Add("Access-Control-Allow-Credentials", "true");
+        res.Headers.Add("Vary", "Origin");
         return Task.FromResult(res);
     }
 }
