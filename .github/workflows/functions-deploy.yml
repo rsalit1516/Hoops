@@ -37,8 +37,14 @@ jobs:
       - name: Test (fast)
         run: dotnet test Hoops.sln -c Release --no-build --filter "TestCategory!=Slow" --nologo
 
-      - name: Publish Functions
-        run: dotnet publish ${{ env.FUNCTIONS_PROJECT }} -c Release -o ${{ env.PUBLISH_DIR }}
+      - name: Publish Functions (self-contained linux-x64)
+        run: |
+          dotnet publish ${{ env.FUNCTIONS_PROJECT }} \
+            -c Release \
+            -o ${{ env.PUBLISH_DIR }} \
+            -r linux-x64 \
+            --self-contained true \
+            /p:PublishSingleFile=false
 
       - name: Archive package
         run: |
@@ -108,9 +114,25 @@ jobs:
             --name ${{ steps.selectapp.outputs.app_name }} \
             --resource-group ${{ steps.selectapp.outputs.resource_group }} \
             --settings \
+              "FUNCTIONS_WORKER_RUNTIME=dotnet-isolated" \
+              "FUNCTIONS_EXTENSION_VERSION=~4" \
+              "AzureWebJobsFeatureFlags=EnableOpenApi" \
               "CompanySettings__DefaultCompanyId=1" \
               "KeyVaultUri=https://hoops-dev-kv.vault.azure.net/" \
               "ConnectionStrings__hoopsContext=${{ secrets.HOOPS_CONNECTION_STRING }}"
+
+      - name: Verify discovered functions
+        id: verify_functions
+        run: |
+          funcs=$(az functionapp function list \
+            --name ${{ steps.selectapp.outputs.app_name }} \
+            --resource-group ${{ steps.selectapp.outputs.resource_group }} \
+            -o tsv --query "[].name")
+          echo "Functions discovered:" $funcs
+          if [ -z "$funcs" ]; then
+            echo "No functions discovered by the host. Check runtime logs (Log stream) for startup errors." >&2
+            exit 1
+          fi
 
       - name: Configure CORS
         run: |
