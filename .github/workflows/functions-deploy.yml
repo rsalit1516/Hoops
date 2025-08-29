@@ -74,22 +74,13 @@ jobs:
           [ -n "${{ secrets.AZURE_SUBSCRIPTION_ID }}" ] && echo "AZURE_SUBSCRIPTION_ID: set" || (echo "AZURE_SUBSCRIPTION_ID: MISSING" && exit 1)
           [ -n "${{ secrets.AZURE_CLIENT_SECRET }}" ] && echo "AZURE_CLIENT_SECRET: set" || (echo "AZURE_CLIENT_SECRET: MISSING" && exit 1)
 
-      - name: Build Azure creds JSON
-        id: build_creds
-        run: |
-          json=$(jq -n \
-            --arg cid "${{ secrets.AZURE_CLIENT_ID }}" \
-            --arg cs "${{ secrets.AZURE_CLIENT_SECRET }}" \
-            --arg sid "${{ secrets.AZURE_SUBSCRIPTION_ID }}" \
-            --arg tid "${{ secrets.AZURE_TENANT_ID }}" \
-            '{clientId:$cid, clientSecret:$cs, subscriptionId:$sid, tenantId:$tid}')
-          echo "creds_len=$(echo "$json" | wc -c)" # for diagnostics only (length, not content)
-          echo "json=$json" >> $GITHUB_OUTPUT
-
       - name: Azure Login
         uses: azure/login@v2
         with:
-          creds: ${{ steps.build_creds.outputs.json }}
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
 
       - name: Select Function App by branch
         id: selectapp
