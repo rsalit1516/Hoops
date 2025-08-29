@@ -158,7 +158,7 @@ jobs:
             --name ${{ steps.selectapp.outputs.app_name }} \
             --resource-group ${{ steps.selectapp.outputs.resource_group }}
 
-          # Get the principal ID of the managed identity
+          # Get the principal ID of the managed identity 
           PRINCIPAL_ID=$(az functionapp identity show \
             --name ${{ steps.selectapp.outputs.app_name }} \
             --resource-group ${{ steps.selectapp.outputs.resource_group }} \
