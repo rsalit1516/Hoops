@@ -11,6 +11,10 @@ permissions:
   id-token: write
   contents: read
 
+concurrency:
+  group: functions-deploy-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   DOTNET_VERSION: 9.0.x
   FUNCTIONS_PROJECT: src/Hoops.Functions/Hoops.Functions.csproj
@@ -60,47 +64,48 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
-  environment: dev
+    environment: dev
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
           name: functions
+          path: .
 
-      
-        - name: Validate Azure secrets & select auth mode
-          id: auth
-          run: |
-            set -e
-            trim() { echo "$1" | sed 's/^\s\+//;s/\s\+$//' ; }
-            CID=$(trim "${{ secrets.AZURE_CLIENT_ID }}"); TID=$(trim "${{ secrets.AZURE_TENANT_ID }}"); SID=$(trim "${{ secrets.AZURE_SUBSCRIPTION_ID }}"); CSEC=$(trim "${{ secrets.AZURE_CLIENT_SECRET }}")
-            [ -n "$CID" ] && echo "AZURE_CLIENT_ID: set" || (echo "AZURE_CLIENT_ID: MISSING" && exit 1)
-            [ -n "$TID" ] && echo "AZURE_TENANT_ID: set" || (echo "AZURE_TENANT_ID: MISSING" && exit 1)
-            [ -n "$SID" ] && echo "AZURE_SUBSCRIPTION_ID: set" || (echo "AZURE_SUBSCRIPTION_ID: MISSING" && exit 1)
-            if [ -n "$CSEC" ]; then
-              echo "AZURE_CLIENT_SECRET: set (using Service Principal secret auth)"
-              echo "auth_mode=sp" >> $GITHUB_OUTPUT
-            else
-              echo "AZURE_CLIENT_SECRET: not set (using OIDC federated credentials)"
-              echo "auth_mode=oidc" >> $GITHUB_OUTPUT
-            fi
+      - name: Validate Azure secrets & select auth mode
+        id: auth
+        shell: bash
+        run: |
+          set -e
+          trim() { echo "$1" | sed 's/^[[:space:]]\+//;s/[[:space:]]\+$//' ; }
+          CID=$(trim "${{ secrets.AZURE_CLIENT_ID }}"); TID=$(trim "${{ secrets.AZURE_TENANT_ID }}"); SID=$(trim "${{ secrets.AZURE_SUBSCRIPTION_ID }}"); CSEC=$(trim "${{ secrets.AZURE_CLIENT_SECRET }}")
+          [ -n "$CID" ] && echo "AZURE_CLIENT_ID: set" || (echo "AZURE_CLIENT_ID: MISSING" && exit 1)
+          [ -n "$TID" ] && echo "AZURE_TENANT_ID: set" || (echo "AZURE_TENANT_ID: MISSING" && exit 1)
+          [ -n "$SID" ] && echo "AZURE_SUBSCRIPTION_ID: set" || (echo "AZURE_SUBSCRIPTION_ID: MISSING" && exit 1)
+          if [ -n "$CSEC" ]; then
+            echo "AZURE_CLIENT_SECRET: set (using Service Principal secret auth)"
+            echo "auth_mode=sp" >> $GITHUB_OUTPUT
+          else
+            echo "AZURE_CLIENT_SECRET: not set (using OIDC federated credentials)"
+            echo "auth_mode=oidc" >> $GITHUB_OUTPUT
+          fi
 
-        - name: Azure Login (Service Principal secret)
-          if: steps.auth.outputs.auth_mode == 'sp'
-          uses: azure/login@v2
-          with:
-            client-id: ${{ secrets.AZURE_CLIENT_ID }}
-            tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-            subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-            client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+      - name: Azure Login (Service Principal secret)
+        if: steps.auth.outputs.auth_mode == 'sp'
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
 
-        - name: Azure Login (OIDC federated)
-          if: steps.auth.outputs.auth_mode == 'oidc'
-          uses: azure/login@v2
-          with:
-            client-id: ${{ secrets.AZURE_CLIENT_ID }}
-            tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-            subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Azure Login (OIDC federated)
+        if: steps.auth.outputs.auth_mode == 'oidc'
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Select Function App by branch
         id: selectapp
