@@ -319,6 +319,11 @@ jobs:
           (zipinfo -1 functions.zip > zipinfo_listing.txt 2>&1 || true)
           (head -n 200 zipinfo_listing.txt || true) >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Folder package diagnostics (depth 2):" >> $GITHUB_STEP_SUMMARY
+          (du -h -d 2 package || true) >> $GITHUB_STEP_SUMMARY
+          echo "Top files in 'package':" >> $GITHUB_STEP_SUMMARY
+          (find package -maxdepth 2 -type f | head -n 100 || true) >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
           echo "Diagnostics files 'zip_listing.txt', 'zipinfo_listing.txt', and 'package_filelist.txt' (if present) are uploaded as artifacts." >> $GITHUB_STEP_SUMMARY
 
       - name: Prepare diagnostics files
@@ -338,11 +343,6 @@ jobs:
             zip_listing.txt
             zipinfo_listing.txt
             package_filelist.txt
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "Folder package diagnostics (depth 2):" >> $GITHUB_STEP_SUMMARY
-          (du -h -d 2 package || true) >> $GITHUB_STEP_SUMMARY
-          echo "Top files in 'package':" >> $GITHUB_STEP_SUMMARY
-          (find package -maxdepth 2 -type f | head -n 100 || true) >> $GITHUB_STEP_SUMMARY
 
       - name: Configure CORS
         run: |
