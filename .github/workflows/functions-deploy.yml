@@ -147,25 +147,37 @@ jobs:
       - name: Verify discovered functions
         id: verify_functions
         run: |
-          funcs=$(az functionapp function list \
-            --name ${{ steps.selectapp.outputs.app_name }} \
-            --resource-group ${{ steps.selectapp.outputs.resource_group }} \
-            -o tsv --query "[].name")
-          echo "Functions discovered:" $funcs
-          if [ -z "$funcs" ]; then
-            echo "No functions discovered by the host. Check runtime logs (Log stream) for startup errors." >&2
-            exit 1
-          fi
+          set -e
+          ATTEMPTS=0
+          until [ $ATTEMPTS -ge 6 ]
+          do
+            funcs=$(az functionapp function list \
+              --name ${{ steps.selectapp.outputs.app_name }} \
+              --resource-group ${{ steps.selectapp.outputs.resource_group }} \
+              -o tsv --query "[].name")
+            if [ -n "$funcs" ]; then
+              echo "Functions discovered:" $funcs
+              exit 0
+            fi
+            ATTEMPTS=$((ATTEMPTS+1))
+            echo "No functions yet. Waiting 10s and retrying ($ATTEMPTS/6)..."
+            sleep 10
+          done
+          echo "No functions discovered by the host after retries. Check runtime logs (Log stream) for startup errors." >&2
+          exit 1
 
       - name: Configure CORS
         run: |
-          az functionapp cors add \
-            --name ${{ steps.selectapp.outputs.app_name }} \
-            --resource-group ${{ steps.selectapp.outputs.resource_group }} \
-            --allowed-origins \
-              "https://thankful-pond-090ec730f.4.azurestaticapps.net" \
-              "http://localhost:4200" \
-              "https://localhost:4200"
+          for ORIGIN in \
+            "https://thankful-pond-090ec730f.4.azurestaticapps.net" \
+            "http://localhost:4200" \
+            "https://localhost:4200"; do
+            echo "Adding CORS origin: $ORIGIN"
+            az functionapp cors add \
+              --name ${{ steps.selectapp.outputs.app_name }} \
+              --resource-group ${{ steps.selectapp.outputs.resource_group }} \
+              --allowed-origins "$ORIGIN" || echo "Origin $ORIGIN may already exist; continuing."
+          done
 
       - name: Enable CORS credentials support
         run: |
