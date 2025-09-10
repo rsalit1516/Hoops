@@ -50,27 +50,54 @@ jobs:
             --self-contained true \
             /p:PublishSingleFile=false
 
+      - name: Verify publish output
+        shell: bash
+        run: |
+          set -e
+          echo "Publish directory tree (depth 2):"
+          du -h -d 2 ${{ env.PUBLISH_DIR }} || true
+          echo "Top files in publish directory:"
+          find ${{ env.PUBLISH_DIR }} -maxdepth 2 -type f | head -n 100 || true
+          echo "Ensure host.json present in publish root:" && ls -lah ${{ env.PUBLISH_DIR }}/host.json || (echo "host.json missing in publish output" >&2; exit 1)
+
       - name: Archive package
         run: |
           cd ${{ env.PUBLISH_DIR }}
           zip -r ../functions.zip .
+          cd ..
+          ls -lah functions.zip
+          du -h functions.zip
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: functions
           path: functions.zip
+          if-no-files-found: error
+
+      - name: Upload publish folder artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: functions-publish
+          path: ${{ env.PUBLISH_DIR }}
+          if-no-files-found: error
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
     environment: dev
     steps:
-      - name: Download artifact
+      - name: Download ZIP artifact
         uses: actions/download-artifact@v4
         with:
           name: functions
           path: .
+
+      - name: Download folder artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: functions-publish
+          path: package
 
       - name: Validate package file
         shell: bash
@@ -81,6 +108,11 @@ jobs:
             echo "functions.zip not found in working directory" >&2
             exit 1
           fi
+          SIZE=$(stat -c%s "functions.zip" || echo 0)
+          echo "ZIP size (bytes): $SIZE"
+          if [ "$SIZE" -le 10000 ]; then
+            echo "functions.zip is unexpectedly small (<= 10 KB)." >&2
+          fi
           echo "ZIP size:" && du -h functions.zip || true
           echo "Listing ZIP entries (top 50):"
           unzip -l functions.zip | head -n 50 || true
@@ -88,6 +120,16 @@ jobs:
           unzip -l functions.zip | grep -E "host.json|bin/.*\\.dll" || echo "Warning: expected files not found in listing"
           echo "Testing ZIP integrity:"
           unzip -t functions.zip || echo "zip integrity test reported issues"
+
+      - name: Validate folder package
+        shell: bash
+        run: |
+          set -e
+          echo "Listing 'package' folder (depth 2):"
+          du -h -d 2 package || true
+          echo "Top files in 'package':"
+          find package -maxdepth 2 -type f | head -n 100 || true
+          [ -f package/host.json ] && echo "host.json present in package" || (echo "host.json NOT found in 'package'" >&2; exit 1)
 
       - name: Validate Azure secrets & select auth mode
         id: auth
@@ -189,7 +231,7 @@ jobs:
         continue-on-error: true
         with:
           app-name: ${{ steps.selectapp.outputs.app_name }}
-          package: functions.zip
+          package: package
 
       - name: Fallback deploy via Azure CLI (config-zip)
         if: failure()
