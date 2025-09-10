@@ -71,6 +71,8 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       - name: Azure CLI version
         run: az --version | head -n 20
+      - name: Azure context
+        run: az account show -o table
       - name: Install EF Core Tools
         run: dotnet tool install --global dotnet-ef
       - name: Ensure dotnet tools on PATH
@@ -91,8 +93,12 @@ jobs:
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           package: package
+      - name: Verify Web App exists
+        run: az webapp show --name "${{ env.AZURE_WEBAPP_NAME }}" --resource-group "${{ env.AZURE_APIM_RESOURCEGROUP }}" -o table
       - name: Import API into Azure API Management
         run: az apim api import --path "${{ env.AZURE_APIM_RESOURCE_PATH }}" --resource-group "${{ env.AZURE_APIM_RESOURCEGROUP }}" --service-name "${{ env.AZURE_APIM_SERVICENAME }}" --api-id "${{ env.AZURE_APIM_API_ID }}" --service-url "${{ env.AZURE_APIM_APPSERVICEURL }}" --specification-path "package/swagger.json" --specification-format OpenApi --subscription-required false
+      - name: Verify APIM service exists
+        run: az apim show --name "${{ env.AZURE_APIM_SERVICENAME }}" --resource-group "${{ env.AZURE_APIM_RESOURCEGROUP }}" -o table
       - name: logout
         run: >
           az logout
