@@ -302,8 +302,15 @@ jobs:
           echo "All Function Apps in subscription (first 50):" >> $GITHUB_STEP_SUMMARY
           az functionapp list -o table | head -n 50 >> $GITHUB_STEP_SUMMARY || echo "functionapp list failed" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "Package contents (top 50):" >> $GITHUB_STEP_SUMMARY
-          unzip -l functions.zip | head -n 50 >> $GITHUB_STEP_SUMMARY || echo "zip listing failed" >> $GITHUB_STEP_SUMMARY
+          echo "ZIP diagnostics:" >> $GITHUB_STEP_SUMMARY
+          (ls -lah functions.zip || echo "functions.zip not found") >> $GITHUB_STEP_SUMMARY
+          (stat functions.zip || echo "stat failed") >> $GITHUB_STEP_SUMMARY 2>&1
+          (echo "unzip -l output (first 100 lines):"; unzip -l functions.zip 2>&1 | head -n 100) >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Folder package diagnostics (depth 2):" >> $GITHUB_STEP_SUMMARY
+          (du -h -d 2 package || true) >> $GITHUB_STEP_SUMMARY
+          echo "Top files in 'package':" >> $GITHUB_STEP_SUMMARY
+          (find package -maxdepth 2 -type f | head -n 100 || true) >> $GITHUB_STEP_SUMMARY
 
       - name: Configure CORS
         run: |
