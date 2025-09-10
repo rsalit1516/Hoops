@@ -114,6 +114,7 @@ jobs:
       - name: Azure Login (Service Principal secret)
         if: steps.auth.outputs.auth_mode == 'sp'
         uses: azure/login@v2
+        continue-on-error: true
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
@@ -123,10 +124,24 @@ jobs:
       - name: Azure Login (OIDC federated)
         if: steps.auth.outputs.auth_mode == 'oidc'
         uses: azure/login@v2
+        continue-on-error: true
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Verify Azure login
+        shell: bash
+        run: |
+          if ! az account show -o table; then
+            {
+              echo "## Azure Login Failed";
+              echo "- Check federated credential subject (should match environment: dev)";
+              echo "- Ensure id-token: write permission is set at workflow level";
+              echo "- Confirm AZURE_CLIENT_ID / TENANT_ID / SUBSCRIPTION_ID environment secrets exist";
+            } >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
 
       - name: Show Azure context
         run: az account show -o table
@@ -209,6 +224,23 @@ jobs:
           done
           echo "No functions discovered by the host after retries. Check runtime logs (Log stream) for startup errors." >&2
           exit 1
+
+      - name: Failure diagnostics
+        if: failure()
+        shell: bash
+        run: |
+          echo "## Failure diagnostics" >> $GITHUB_STEP_SUMMARY
+          echo "Runner info:" >> $GITHUB_STEP_SUMMARY
+          uname -a >> $GITHUB_STEP_SUMMARY || true
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Azure context:" >> $GITHUB_STEP_SUMMARY
+          az account show -o table >> $GITHUB_STEP_SUMMARY || echo "az context unavailable" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Function App existence check:" >> $GITHUB_STEP_SUMMARY
+          az functionapp show --name ${{ steps.selectapp.outputs.app_name }} --resource-group ${{ steps.selectapp.outputs.resource_group }} -o table >> $GITHUB_STEP_SUMMARY || echo "functionapp show failed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Package contents (top 50):" >> $GITHUB_STEP_SUMMARY
+          unzip -l functions.zip | head -n 50 >> $GITHUB_STEP_SUMMARY || echo "zip listing failed" >> $GITHUB_STEP_SUMMARY
 
       - name: Configure CORS
         run: |
