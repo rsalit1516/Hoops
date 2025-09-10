@@ -2,8 +2,8 @@ name: Deploy to Azure App Service
 on:
   push:
     branches:
-      - develop  # Change this if you want it to trigger on a different branch
-      
+      - develop # Change this if you want it to trigger on a different branch
+
 permissions:
   id-token: write
   contents: read
@@ -11,7 +11,7 @@ permissions:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-  environment: dev
+    environment: dev
 
     steps:
       - name: Checkout repository
@@ -23,24 +23,20 @@ jobs:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-  
+
       - name: Set up .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '9.0'  # Adjust this based on your .NET version
-  
+          dotnet-version: "9.0" # Adjust this based on your .NET version
+
       - name: Build .NET API
         run: dotnet build --configuration Release
-  
+
       - name: Publish .NET API
         run: dotnet publish src/Hoops.Api/Hoops.Api.csproj -c Release -o ./publish
-  
+
       - name: Deploy to Azure App Service
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'hoops-api-dev'
-          package: './publish'
-
-
-
-
+          app-name: "hoops-api-dev"
+          package: "./publish"
