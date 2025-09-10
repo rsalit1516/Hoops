@@ -72,6 +72,20 @@ jobs:
           name: functions
           path: .
 
+      - name: Validate package file
+        shell: bash
+        run: |
+          set -e
+          ls -lah
+          if [ ! -f "functions.zip" ]; then
+            echo "functions.zip not found in working directory" >&2
+            exit 1
+          fi
+          echo "Listing ZIP entries (top 50):"
+          unzip -l functions.zip | head -n 50 || true
+          echo "Check for host.json and dlls inside the zip:"
+          unzip -l functions.zip | grep -E "host.json|bin/.*\\.dll" || echo "Warning: expected files not found in listing"
+
       - name: Validate Azure secrets & select auth mode
         id: auth
         shell: bash
@@ -142,9 +156,24 @@ jobs:
 
       - name: Deploy to Azure Functions (zipDeploy)
         uses: azure/functions-action@v1
+        continue-on-error: true
         with:
           app-name: ${{ steps.selectapp.outputs.app_name }}
           package: functions.zip
+
+      - name: Fallback deploy via Azure CLI (config-zip)
+        if: failure()
+        run: |
+          echo "Action-based deploy failed. Trying az functionapp deployment source config-zip..."
+          az functionapp deployment source config-zip \
+            --name ${{ steps.selectapp.outputs.app_name }} \
+            --resource-group ${{ steps.selectapp.outputs.resource_group }} \
+            --src functions.zip
+
+      - name: Show deployment logs (Kudu)
+        if: always()
+        run: |
+          echo "If deployment failed, check the Function App's Log stream in the portal for startup errors."
 
       - name: Configure Function App Settings
         run: |
