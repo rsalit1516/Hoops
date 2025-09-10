@@ -81,10 +81,13 @@ jobs:
             echo "functions.zip not found in working directory" >&2
             exit 1
           fi
+          echo "ZIP size:" && du -h functions.zip || true
           echo "Listing ZIP entries (top 50):"
           unzip -l functions.zip | head -n 50 || true
           echo "Check for host.json and dlls inside the zip:"
           unzip -l functions.zip | grep -E "host.json|bin/.*\\.dll" || echo "Warning: expected files not found in listing"
+          echo "Testing ZIP integrity:"
+          unzip -t functions.zip || echo "zip integrity test reported issues"
 
       - name: Validate Azure secrets & select auth mode
         id: auth
@@ -130,6 +133,9 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
+      - name: Set subscription explicitly
+        run: az account set --subscription "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+
       - name: Verify Azure login
         shell: bash
         run: |
@@ -146,6 +152,26 @@ jobs:
       - name: Show Azure context
         run: az account show -o table
 
+      - name: Select Function App by branch (with optional overrides)
+        id: selectapp
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
+            APP_DEFAULT="hoops-functions-dev"; RG_DEFAULT="csbc-dev"
+            APP_OVERRIDE="${{ vars.FUNCTION_APP_NAME_DEV }}"; RG_OVERRIDE="${{ vars.FUNCTION_RG_DEV }}"
+          else
+            APP_DEFAULT="hoops-functions-prod"; RG_DEFAULT="csbc-prod"
+            APP_OVERRIDE="${{ vars.FUNCTION_APP_NAME_PROD }}"; RG_OVERRIDE="${{ vars.FUNCTION_RG_PROD }}"
+          fi
+          APP_NAME=${APP_OVERRIDE:-$APP_DEFAULT}
+          RG_NAME=${RG_OVERRIDE:-$RG_DEFAULT}
+          echo "Using app: $APP_NAME, resource group: $RG_NAME"
+          echo "app_name=$APP_NAME" >> $GITHUB_OUTPUT
+          echo "resource_group=$RG_NAME" >> $GITHUB_OUTPUT
+
+      - name: Verify Resource Group exists
+        run: |
+          az group show --name ${{ steps.selectapp.outputs.resource_group }} -o table
+
       - name: Verify Function App exists
         run: |
           az functionapp show \
@@ -157,17 +183,6 @@ jobs:
         shell: bash
         run: |
           [ -n "${{ secrets.HOOPS_CONNECTION_STRING }}" ] && echo "HOOPS_CONNECTION_STRING: set" || (echo "HOOPS_CONNECTION_STRING: MISSING (set environment secret for dev)" >&2; exit 1)
-
-      - name: Select Function App by branch
-        id: selectapp
-        run: |
-          if [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
-            echo "app_name=hoops-functions-dev" >> $GITHUB_OUTPUT
-            echo "resource_group=csbc-dev" >> $GITHUB_OUTPUT
-          else
-            echo "app_name=hoops-functions-prod" >> $GITHUB_OUTPUT
-            echo "resource_group=csbc-prod" >> $GITHUB_OUTPUT
-          fi
 
       - name: Deploy to Azure Functions (zipDeploy)
         uses: azure/functions-action@v1
@@ -238,6 +253,12 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "Function App existence check:" >> $GITHUB_STEP_SUMMARY
           az functionapp show --name ${{ steps.selectapp.outputs.app_name }} --resource-group ${{ steps.selectapp.outputs.resource_group }} -o table >> $GITHUB_STEP_SUMMARY || echo "functionapp show failed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Function Apps in resource group:" >> $GITHUB_STEP_SUMMARY
+          az functionapp list -g ${{ steps.selectapp.outputs.resource_group }} -o table >> $GITHUB_STEP_SUMMARY || echo "functionapp list -g failed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "All Function Apps in subscription (first 50):" >> $GITHUB_STEP_SUMMARY
+          az functionapp list -o table | head -n 50 >> $GITHUB_STEP_SUMMARY || echo "functionapp list failed" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "Package contents (top 50):" >> $GITHUB_STEP_SUMMARY
           unzip -l functions.zip | head -n 50 >> $GITHUB_STEP_SUMMARY || echo "zip listing failed" >> $GITHUB_STEP_SUMMARY
