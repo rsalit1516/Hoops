@@ -114,10 +114,15 @@ jobs:
             echo "functions.zip is unexpectedly small (<= 10 KB)." >&2
           fi
           echo "ZIP size:" && du -h functions.zip || true
-          echo "Listing ZIP entries (top 50):"
-          unzip -l functions.zip | head -n 50 || true
+          echo "Listing ZIP entries (first 200):"
+          (unzip -l functions.zip > zip_listing.txt 2>&1 || true)
+          head -n 200 zip_listing.txt || true
+          echo "Using zipinfo (first 200):"
+          (zipinfo -1 functions.zip > zipinfo_listing.txt 2>&1 || true)
+          head -n 200 zipinfo_listing.txt || true
+          echo "File type:" && (file functions.zip || true)
           echo "Check for host.json and dlls inside the zip:"
-          unzip -l functions.zip | grep -E "host.json|bin/.*\\.dll" || echo "Warning: expected files not found in listing"
+          (unzip -l functions.zip 2>/dev/null | grep -E "host.json|bin/.*\\.dll") || echo "Warning: expected files not found in listing"
           echo "Testing ZIP integrity:"
           unzip -t functions.zip || echo "zip integrity test reported issues"
 
@@ -305,7 +310,14 @@ jobs:
           echo "ZIP diagnostics:" >> $GITHUB_STEP_SUMMARY
           (ls -lah functions.zip || echo "functions.zip not found") >> $GITHUB_STEP_SUMMARY
           (stat functions.zip || echo "stat failed") >> $GITHUB_STEP_SUMMARY 2>&1
-          (echo "unzip -l output (first 100 lines):"; unzip -l functions.zip 2>&1 | head -n 100) >> $GITHUB_STEP_SUMMARY
+          echo "file output:" >> $GITHUB_STEP_SUMMARY
+          (file functions.zip || true) >> $GITHUB_STEP_SUMMARY
+          echo "unzip -l output (first 200):" >> $GITHUB_STEP_SUMMARY
+          (unzip -l functions.zip > zip_listing.txt 2>&1 || true)
+          (head -n 200 zip_listing.txt || true) >> $GITHUB_STEP_SUMMARY
+          echo "zipinfo -1 output (first 200):" >> $GITHUB_STEP_SUMMARY
+          (zipinfo -1 functions.zip > zipinfo_listing.txt 2>&1 || true)
+          (head -n 200 zipinfo_listing.txt || true) >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "Folder package diagnostics (depth 2):" >> $GITHUB_STEP_SUMMARY
           (du -h -d 2 package || true) >> $GITHUB_STEP_SUMMARY
