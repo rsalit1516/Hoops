@@ -320,7 +320,7 @@ jobs:
             --resource-group ${{ env.FUNCTIONS_RESOURCE_GROUP }} \
             --query principalId -o tsv)
 
-          az keyvault set-policy \
-            --name hoops-dev-kv \
-            --object-id $PRINCIPAL_ID \
-            --secret-permissions get list
+          az role assignment create \
+            --assignee $PRINCIPAL_ID \
+            --role "Key Vault Secrets User" \
+            --scope "/subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourcegroups/hoops-dev/providers/microsoft.keyvault/vaults/Hoops-Dev-KV"
