@@ -2,18 +2,6 @@ name: Deploy Azure Functions
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - develop
-      - main
-      - master
-    paths:
-      - "src/Hoops.Functions/**"
-      - "src/Hoops.Core/**"
-      - "src/Hoops.Application/**"
-      - "src/Hoops.Infrastructure/**"
-      - "src/Hoops.Data/**"
-      - ".github/workflows/functions-deploy.yml"
 
 permissions:
   id-token: write

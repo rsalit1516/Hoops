@@ -1,8 +1,6 @@
-name: Deploy to Azure App Service
+name: Deploy to Azure App Service (manual)
 on:
-  push:
-    branches:
-      - develop # Change this if you want it to trigger on a different branch
+  workflow_dispatch:
 
 permissions:
   id-token: write

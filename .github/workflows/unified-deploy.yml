@@ -1,0 +1,324 @@
+name: Unified CI/CD (API + Functions)
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - develop
+
+permissions:
+  id-token: write
+  contents: read
+
+concurrency:
+  group: unified-deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  DOTNET_VERSION: 9.0.x
+  # API settings
+  API_PROJECT: src/Hoops.Api/Hoops.Api.csproj
+  API_PUBLISH_DIR: artifacts/api
+  API_WEBAPP_NAME: hoops-api-dev
+  API_RESOURCE_GROUP: csbc-dev
+  # Swashbuckle CLI for OpenAPI generation
+  SWASHBUCKLE_CLI_VERSION: 5.6.3
+  SWASHBUCKLE_DOTNET_VERSION: 3.1.x
+  API_DLL_PATH: src/Hoops.Api/bin/Release/net9.0/Hoops.Api.dll
+  API_OPENAPI_VERSION: v1
+  APIM_RESOURCEGROUP: csbc-dev
+  APIM_SERVICENAME: HoopsApiapi
+  APIM_API_ID: HoopsApi
+  APIM_RESOURCE_PATH: /
+  APIM_APPSERVICEURL: https://hoops-api-dev-dnggf0ewe3c2b9ae.eastus-01.azurewebsites.net
+
+  # Functions settings
+  FUNCTIONS_PROJECT: src/Hoops.Functions/Hoops.Functions.csproj
+  FUNCTIONS_PUBLISH_DIR: artifacts/functions-publish
+  FUNCTIONS_ZIP: artifacts/functions.zip
+  FUNCTIONS_APP_NAME: hoops-functions-dev
+  FUNCTIONS_RESOURCE_GROUP: csbc-dev
+
+jobs:
+  build_test_publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore (solution)
+        run: dotnet restore Hoops.sln
+
+      - name: Build (solution)
+        run: dotnet build Hoops.sln -c Release --no-restore
+
+      - name: Test (fast)
+        run: dotnet test Hoops.sln -c Release --no-build --filter "TestCategory!=Slow" --nologo
+
+      - name: Publish API
+        run: dotnet publish ${{ env.API_PROJECT }} -c Release -o ${{ env.API_PUBLISH_DIR }}
+
+      - name: Generate OpenAPI (Swashbuckle CLI)
+        shell: bash
+        run: |
+          set -e
+          echo "Installing Swashbuckle CLI (requires .NET ${{ env.SWASHBUCKLE_DOTNET_VERSION }})"
+          echo "Setting up secondary .NET runtime for tool..."
+          echo "Note: this doesn't affect the primary SDK used above."
+          echo "" 
+          {
+            echo "Installing .NET ${{ env.SWASHBUCKLE_DOTNET_VERSION }}...";
+          } >&2
+          # Install .NET for Swashbuckle CLI
+          echo "${{ env.SWASHBUCKLE_DOTNET_VERSION }}" > /tmp/dotnet-version
+          # Use a separate setup-dotnet action invocation to install 3.1.x tool runtime
+          echo "::group::Install .NET runtime for Swashbuckle CLI"
+          echo "SWASH=${{ env.SWASHBUCKLE_DOTNET_VERSION }}"; 
+          echo "This step is informational; the actual .NET install occurs in the next action invocation." 
+          echo "::endgroup::"
+
+      - name: Setup .NET runtime for Swashbuckle CLI
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.SWASHBUCKLE_DOTNET_VERSION }}
+
+      - name: Install Swashbuckle CLI Tool
+        run: dotnet tool install --global Swashbuckle.AspNetCore.Cli --version ${{ env.SWASHBUCKLE_CLI_VERSION }}
+
+      - name: Ensure dotnet tools on PATH
+        run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+
+      - name: Produce OpenAPI spec into publish folder
+        run: swagger tofile --output "${{ env.API_PUBLISH_DIR }}/swagger.json" "${{ env.API_DLL_PATH }}" "${{ env.API_OPENAPI_VERSION }}"
+
+      - name: Publish Functions (self-contained linux-x64)
+        run: |
+          dotnet publish ${{ env.FUNCTIONS_PROJECT }} \
+            -c Release \
+            -o ${{ env.FUNCTIONS_PUBLISH_DIR }} \
+            -r linux-x64 \
+            --self-contained true \
+            /p:PublishSingleFile=false
+
+      - name: Verify Functions publish output
+        shell: bash
+        run: |
+          set -e
+          echo "Publish directory tree (depth 2):"
+          du -h -d 2 ${{ env.FUNCTIONS_PUBLISH_DIR }} || true
+          echo "Top files in publish directory:"
+          find ${{ env.FUNCTIONS_PUBLISH_DIR }} -maxdepth 2 -type f | head -n 100 || true
+          echo "Ensure host.json present in publish root:" && ls -lah ${{ env.FUNCTIONS_PUBLISH_DIR }}/host.json || (echo "host.json missing in publish output" >&2; exit 1)
+
+      - name: Create Functions zip
+        run: |
+          cd ${{ env.FUNCTIONS_PUBLISH_DIR }}
+          zip -r ../functions.zip .
+          cd -
+          ls -lah ${{ env.FUNCTIONS_ZIP }}
+          unzip -t ${{ env.FUNCTIONS_ZIP }} || true
+
+      - name: Upload API artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-publish
+          path: ${{ env.API_PUBLISH_DIR }}
+          if-no-files-found: error
+
+      - name: Upload Functions artifact (folder)
+        uses: actions/upload-artifact@v4
+        with:
+          name: functions-publish
+          path: ${{ env.FUNCTIONS_PUBLISH_DIR }}
+          if-no-files-found: error
+
+      - name: Upload Functions ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: functions-zip
+          path: ${{ env.FUNCTIONS_ZIP }}
+          if-no-files-found: error
+
+  deploy_api:
+    runs-on: ubuntu-latest
+    needs: build_test_publish
+    environment: dev
+    steps:
+      - name: Checkout source (for migrations)
+        uses: actions/checkout@v4
+        with:
+          clean: false
+
+      - name: Azure Login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Azure CLI version
+        run: az --version | head -n 20
+
+      - name: Azure context
+        run: az account show -o table
+
+      - name: Setup .NET SDK for migrations
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Install EF Core Tools
+        run: dotnet tool install --global dotnet-ef
+
+      - name: Ensure dotnet tools on PATH
+        run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+
+      - name: Run Database Migrations
+        run: dotnet ef database update --project src/Hoops.Data --startup-project src/Hoops.Api --connection "${{ secrets.AZURE_SQL_CONNECTION_STRING }}"
+
+      - name: Download API artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: api-publish
+          path: package
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.API_WEBAPP_NAME }}
+          package: package
+
+      - name: Verify Web App exists
+        run: az webapp show --name "${{ env.API_WEBAPP_NAME }}" --resource-group "${{ env.API_RESOURCE_GROUP }}" -o table
+
+      - name: Import API into Azure API Management
+        run: az apim api import --path "${{ env.APIM_RESOURCE_PATH }}" --resource-group "${{ env.APIM_RESOURCEGROUP }}" --service-name "${{ env.APIM_SERVICENAME }}" --api-id "${{ env.APIM_API_ID }}" --service-url "${{ env.APIM_APPSERVICEURL }}" --specification-path "package/swagger.json" --specification-format OpenApi --subscription-required false
+
+      - name: Verify APIM service exists
+        run: az apim show --name "${{ env.APIM_SERVICENAME }}" --resource-group "${{ env.APIM_RESOURCEGROUP }}" -o table
+
+  deploy_functions:
+    runs-on: ubuntu-latest
+    needs: build_test_publish
+    environment: dev
+    steps:
+      - name: Azure Login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Azure context
+        run: az account show -o table
+
+      - name: Download Functions (folder) artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: functions-publish
+          path: package
+
+      - name: Validate required secrets
+        shell: bash
+        run: |
+          [ -n "${{ secrets.HOOPS_CONNECTION_STRING }}" ] && echo "HOOPS_CONNECTION_STRING: set" || (echo "HOOPS_CONNECTION_STRING: MISSING (set environment secret for dev)" >&2; exit 1)
+
+      - name: Create deployment zip from folder
+        run: |
+          cd package
+          zip -r ../deploy.zip .
+          cd ..
+          ls -lah deploy.zip
+          unzip -t deploy.zip || true
+
+      - name: Deploy Functions via Azure CLI (config-zip)
+        run: |
+          az functionapp deployment source config-zip \
+            --name ${{ env.FUNCTIONS_APP_NAME }} \
+            --resource-group ${{ env.FUNCTIONS_RESOURCE_GROUP }} \
+            --src deploy.zip
+
+      - name: Configure Function App Settings
+        run: |
+          az functionapp config appsettings set \
+            --name ${{ env.FUNCTIONS_APP_NAME }} \
+            --resource-group ${{ env.FUNCTIONS_RESOURCE_GROUP }} \
+            --settings \
+              "FUNCTIONS_WORKER_RUNTIME=dotnet-isolated" \
+              "FUNCTIONS_EXTENSION_VERSION=~4" \
+              "AzureWebJobsFeatureFlags=EnableOpenApi" \
+              "CompanySettings__DefaultCompanyId=1" \
+              "KeyVaultUri=https://hoops-dev-kv.vault.azure.net/" \
+              "ConnectionStrings__hoopsContext=${{ secrets.HOOPS_CONNECTION_STRING }}"
+
+      - name: Verify discovered functions (non-blocking)
+        id: verify_functions
+        continue-on-error: true
+        run: |
+          set -e
+          ATTEMPTS=0
+          until [ $ATTEMPTS -ge 12 ]
+          do
+            funcs=$(az functionapp function list \
+              --name ${{ env.FUNCTIONS_APP_NAME }} \
+              --resource-group ${{ env.FUNCTIONS_RESOURCE_GROUP }} \
+              -o tsv --query "[].name")
+            if [ -n "$funcs" ]; then
+              echo "Functions discovered:" $funcs
+              exit 0
+            fi
+            ATTEMPTS=$((ATTEMPTS+1))
+            echo "No functions yet. Waiting 10s and retrying ($ATTEMPTS/12)..."
+            sleep 10
+          done
+          echo "No functions discovered by the host after retries. Continuing without failing the job. Check runtime logs for startup errors." >&2
+
+      - name: Configure CORS
+        run: |
+          for ORIGIN in \
+            "https://thankful-pond-090ec730f.4.azurestaticapps.net" \
+            "http://localhost:4200" \
+            "https://localhost:4200"; do
+            echo "Adding CORS origin: $ORIGIN"
+            az functionapp cors add \
+              --name ${{ env.FUNCTIONS_APP_NAME }} \
+              --resource-group ${{ env.FUNCTIONS_RESOURCE_GROUP }} \
+              --allowed-origins "$ORIGIN" || echo "Origin $ORIGIN may already exist; continuing."
+          done
+
+      - name: Enable CORS credentials support
+        run: |
+          az resource update \
+            --resource-group ${{ env.FUNCTIONS_RESOURCE_GROUP }} \
+            --resource-type Microsoft.Web/sites/config \
+            --name "${{ env.FUNCTIONS_APP_NAME }}/web" \
+            --set properties.cors.supportsCredentials=true
+
+      - name: Show current CORS settings
+        run: |
+          az resource show \
+            --resource-group ${{ env.FUNCTIONS_RESOURCE_GROUP }} \
+            --resource-type Microsoft.Web/sites/config \
+            --name "${{ env.FUNCTIONS_APP_NAME }}/web" \
+            --query "properties.cors" -o jsonc
+
+      - name: Enable Managed Identity and Grant Key Vault Access
+        run: |
+          az functionapp identity assign \
+            --name ${{ env.FUNCTIONS_APP_NAME }} \
+            --resource-group ${{ env.FUNCTIONS_RESOURCE_GROUP }}
+
+          PRINCIPAL_ID=$(az functionapp identity show \
+            --name ${{ env.FUNCTIONS_APP_NAME }} \
+            --resource-group ${{ env.FUNCTIONS_RESOURCE_GROUP }} \
+            --query principalId -o tsv)
+
+          az keyvault set-policy \
+            --name hoops-dev-kv \
+            --object-id $PRINCIPAL_ID \
+            --secret-permissions get list

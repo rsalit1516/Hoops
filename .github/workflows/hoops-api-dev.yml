@@ -1,9 +1,6 @@
 name: Build and deploy .NET Core application to Web App hoops-api-dev with API Management Service HoopsApiapi-HoopsApi
 on:
-  push:
-    branches:
-      - develop
-      - admin-signal-conversion
+  workflow_dispatch:
 env:
   AZURE_WEBAPP_NAME: hoops-api-dev
   AZURE_WEBAPP_PACKAGE_PATH: src/Hoops.Api/publish
