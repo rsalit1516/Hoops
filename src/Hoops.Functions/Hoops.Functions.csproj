@@ -5,16 +5,18 @@
     <OutputType>Exe</OutputType>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-  </PropertyGroup>
-  
-  <!-- Conditionally disable extension metadata generation on Linux to avoid libssl issues in CI -->
-  <PropertyGroup Condition="'$(OS)' != 'Windows_NT'">
+    <!-- Completely disable extension metadata generation to avoid libssl issues -->
     <GenerateFunctionsExtensionsMetadata>false</GenerateFunctionsExtensionsMetadata>
+    <_FunctionsSkipCleanOutput>true</_FunctionsSkipCleanOutput>
+    <!-- Disable all metadata generation tasks -->
+    <GenerateExtensionsMetadataFile>false</GenerateExtensionsMetadataFile>
+    <CreateExtensionsMetadataFile>false</CreateExtensionsMetadataFile>
   </PropertyGroup>
   <ItemGroup>
   <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="2.0.0" />
   <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.2.0" />
-  <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="2.0.0" OutputItemType="Analyzer" />
+  <!-- Temporarily remove the SDK to avoid metadata generation -->
+  <!-- <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="2.0.0" OutputItemType="Analyzer" /> -->
   <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.OpenApi" Version="1.5.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.0" />
