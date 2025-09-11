@@ -1,16 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-  <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <AzureFunctionsVersion>v4</AzureFunctionsVersion>
     <OutputType>Exe</OutputType>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <!-- Completely disable extension metadata generation to avoid libssl issues -->
-    <GenerateFunctionsExtensionsMetadata>false</GenerateFunctionsExtensionsMetadata>
-    <_FunctionsSkipCleanOutput>true</_FunctionsSkipCleanOutput>
-    <!-- Disable all metadata generation tasks -->
-    <GenerateExtensionsMetadataFile>false</GenerateExtensionsMetadataFile>
-    <CreateExtensionsMetadataFile>false</CreateExtensionsMetadataFile>
+    <!-- Configure for Azure Functions Linux consumption runtime -->
+    <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
+    <SelfContained>false</SelfContained>
+    <!-- Ensure proper metadata generation for function discovery -->
+    <GenerateFunctionsExtensionsMetadata>true</GenerateFunctionsExtensionsMetadata>
   </PropertyGroup>
   <ItemGroup>
   <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="2.0.0" />
