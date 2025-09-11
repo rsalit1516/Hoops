@@ -174,7 +174,10 @@ jobs:
         run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
 
       - name: Run Database Migrations
-        run: dotnet ef database update --project src/Hoops.Data --startup-project src/Hoops.Api --connection "${{ secrets.AZURE_SQL_CONNECTION_STRING }}"
+        run: dotnet ef database update --project src/Hoops.Infrastructure --startup-project src/Hoops.Api --connection "${{ secrets.AZURE_SQL_CONNECTION_STRING }}"
+        env:
+          # Skip Key Vault during migrations since connection string is provided directly
+          SKIP_KEYVAULT_CONFIG: true
 
       - name: Download API artifact
         uses: actions/download-artifact@v4
@@ -288,19 +291,23 @@ jobs:
 
       - name: Enable CORS credentials support
         run: |
-          az resource update \
+          az functionapp config appsettings set \
+            --name ${{ env.FUNCTIONS_APP_NAME }} \
             --resource-group ${{ env.FUNCTIONS_RESOURCE_GROUP }} \
-            --resource-type Microsoft.Web/sites/config \
-            --name "${{ env.FUNCTIONS_APP_NAME }}/web" \
-            --set properties.cors.supportsCredentials=true
+            --settings "WEBSITE_CORS_SUPPORT_CREDENTIALS=true"
 
       - name: Show current CORS settings
         run: |
-          az resource show \
+          echo "CORS allowed origins:"
+          az functionapp cors show \
+            --name ${{ env.FUNCTIONS_APP_NAME }} \
+            --resource-group ${{ env.FUNCTIONS_RESOURCE_GROUP }}
+          echo "CORS credentials support setting:"
+          az functionapp config appsettings list \
+            --name ${{ env.FUNCTIONS_APP_NAME }} \
             --resource-group ${{ env.FUNCTIONS_RESOURCE_GROUP }} \
-            --resource-type Microsoft.Web/sites/config \
-            --name "${{ env.FUNCTIONS_APP_NAME }}/web" \
-            --query "properties.cors" -o jsonc
+            --query "[?name=='WEBSITE_CORS_SUPPORT_CREDENTIALS'].{Name:name, Value:value}" \
+            --output table
 
       - name: Enable Managed Identity and Grant Key Vault Access
         run: |
