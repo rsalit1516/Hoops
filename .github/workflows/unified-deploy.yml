@@ -97,6 +97,70 @@ jobs:
       - name: Produce OpenAPI spec into publish folder
         run: swagger tofile --output "${{ env.API_PUBLISH_DIR }}/swagger.json" "${{ env.API_DLL_PATH }}" "${{ env.API_OPENAPI_VERSION }}"
 
+      - name: Validate and fix OpenAPI specification
+        shell: bash
+        run: |
+          set -e
+          echo "Validating generated OpenAPI specification..."
+
+          # Check if swagger.json exists
+          if [ ! -f "${{ env.API_PUBLISH_DIR }}/swagger.json" ]; then
+            echo "ERROR: swagger.json not found in publish directory" >&2
+            exit 1
+          fi
+
+          # Validate JSON format and fix common issues
+          python3 -c "
+          import json
+          import sys
+
+          try:
+              with open('${{ env.API_PUBLISH_DIR }}/swagger.json', 'r') as f:
+                  spec = json.load(f)
+              
+              # Ensure required fields are present and valid
+              if 'info' not in spec:
+                  spec['info'] = {}
+              
+              info = spec['info']
+              
+              # Fix missing or invalid contact information
+              if 'contact' not in info or not info['contact']:
+                  info['contact'] = {}
+              
+              contact = info['contact']
+              
+              # Ensure email is valid
+              if 'email' not in contact or not contact['email'] or '@' not in contact['email']:
+                  contact['email'] = 'rsalit@hoopsleague.com'
+              
+              # Ensure name is present
+              if 'name' not in contact or not contact['name']:
+                  contact['name'] = 'Hoops API Support'
+              
+              # Ensure other required info fields
+              if 'title' not in info or not info['title']:
+                  info['title'] = 'Hoops API'
+              
+              if 'version' not in info or not info['version']:
+                  info['version'] = '1.0.0'
+              
+              # Write back the fixed specification
+              with open('${{ env.API_PUBLISH_DIR }}/swagger.json', 'w') as f:
+                  json.dump(spec, f, indent=2)
+              
+              # Show key metadata for verification
+              print('OpenAPI specification metadata:')
+              print(f'Title: {info.get(\"title\", \"N/A\")}')
+              print(f'Version: {info.get(\"version\", \"N/A\")}')
+              print(f'Contact Email: {contact.get(\"email\", \"N/A\")}')
+              print('OpenAPI specification validated and fixed successfully.')
+              
+          except Exception as e:
+              print(f'Error processing OpenAPI specification: {e}', file=sys.stderr)
+              sys.exit(1)
+          "
+
       - name: Publish Functions (framework-dependent)
         run: dotnet publish ${{ env.FUNCTIONS_PROJECT }} -c Release -o ${{ env.FUNCTIONS_PUBLISH_DIR }} --no-self-contained
 

@@ -95,8 +95,8 @@ namespace Hoops.Api
                                 new OpenApiContact
                                 {
                                     Name = "Richard Salit",
-                                    Email = string.Empty,
-                                    Url = new Uri("https://twitter.com/rsalit")
+                                    Email = "rsalit@hoopsleague.com",
+                                    Url = new Uri("https://github.com/rsalit1516/Hoops")
                                 },
                             License =
                                 new OpenApiLicense
@@ -112,7 +112,10 @@ namespace Hoops.Api
                         $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                     var xmlPath =
                         Path.Combine(AppContext.BaseDirectory, xmlFile);
-                    // c.IncludeXmlComments(xmlPath);
+                    if (File.Exists(xmlPath))
+                    {
+                        c.IncludeXmlComments(xmlPath);
+                    }
                 });
             _ = services.AddControllers();
 
