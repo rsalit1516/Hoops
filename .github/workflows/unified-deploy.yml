@@ -97,8 +97,8 @@ jobs:
       - name: Produce OpenAPI spec into publish folder
         run: swagger tofile --output "${{ env.API_PUBLISH_DIR }}/swagger.json" "${{ env.API_DLL_PATH }}" "${{ env.API_OPENAPI_VERSION }}"
 
-      - name: Publish Functions (self-contained linux-x64)
-        run: dotnet publish ${{ env.FUNCTIONS_PROJECT }} -c Release -o ${{ env.FUNCTIONS_PUBLISH_DIR }} -r linux-x64 --self-contained true /p:PublishSingleFile=false
+      - name: Publish Functions (framework-dependent)
+        run: dotnet publish ${{ env.FUNCTIONS_PROJECT }} -c Release -o ${{ env.FUNCTIONS_PUBLISH_DIR }} --no-self-contained
 
       - name: Verify Functions publish output
         shell: bash
