@@ -18,11 +18,12 @@ namespace Hoops.Controllers
         /// <summary>
         /// WebContentController
         /// </summary>
-        /// <param name="_webContent"></param>
-        public WebContentController( IWebContentRepository _webContent, ILogger<WebContentController> logger )
+        /// <param name="_webContent">The web content repository</param>
+        /// <param name="logger">The logger instance</param>
+        public WebContentController(IWebContentRepository _webContent, ILogger<WebContentController> logger)
         {
             this.repository = _webContent;
-             _logger = (ILogger<WebContentController>)logger;
+            _logger = (ILogger<WebContentController>)logger;
             _logger.LogDebug(1, "NLog injected into Web Content Controller");
         }
 
