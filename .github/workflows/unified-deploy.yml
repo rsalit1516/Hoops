@@ -311,6 +311,7 @@ jobs:
 
       - name: Enable Managed Identity and Grant Key Vault Access
         run: |
+          echo "Enabling managed identity for Functions App..."
           az functionapp identity assign \
             --name ${{ env.FUNCTIONS_APP_NAME }} \
             --resource-group ${{ env.FUNCTIONS_RESOURCE_GROUP }}
@@ -320,7 +321,22 @@ jobs:
             --resource-group ${{ env.FUNCTIONS_RESOURCE_GROUP }} \
             --query principalId -o tsv)
 
-          az role assignment create \
+          echo "Function App Principal ID: $PRINCIPAL_ID"
+
+          # Check if role assignment already exists
+          EXISTING_ASSIGNMENT=$(az role assignment list \
             --assignee $PRINCIPAL_ID \
             --role "Key Vault Secrets User" \
-            --scope "/subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourcegroups/hoops-dev/providers/microsoft.keyvault/vaults/Hoops-Dev-KV"
+            --scope "/subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourcegroups/hoops-dev/providers/microsoft.keyvault/vaults/Hoops-Dev-KV" \
+            --query "[0].id" -o tsv 2>/dev/null || echo "none")
+
+          if [ "$EXISTING_ASSIGNMENT" == "none" ] || [ -z "$EXISTING_ASSIGNMENT" ]; then
+            echo "Creating Key Vault role assignment..."
+            az role assignment create \
+              --assignee $PRINCIPAL_ID \
+              --role "Key Vault Secrets User" \
+              --scope "/subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourcegroups/hoops-dev/providers/microsoft.keyvault/vaults/Hoops-Dev-KV" \
+              || echo "Role assignment may already exist or insufficient permissions; continuing..."
+          else
+            echo "Key Vault role assignment already exists: $EXISTING_ASSIGNMENT"
+          fi
