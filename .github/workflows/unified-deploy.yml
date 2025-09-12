@@ -219,6 +219,9 @@ jobs:
           Write-Host "Check for metadata files (extensions.json / functions.metadata):"
           Get-ChildItem $env:FUNCTIONS_PUBLISH_DIR -Filter *.json -Name | ForEach-Object { Write-Host $_ }
           Get-ChildItem $env:FUNCTIONS_PUBLISH_DIR -Filter *.metadata -Name | ForEach-Object { Write-Host $_ }
+          Write-Host "Search recursively for function.json files:"
+          $funcJsons = Get-ChildItem -Recurse -Filter function.json $env:FUNCTIONS_PUBLISH_DIR
+          if (-not $funcJsons) { Write-Warning "No function.json files found recursively in publish output" } else { $funcJsons | ForEach-Object { Write-Host $_.FullName } }
         shell: pwsh
 
       - name: Create Functions ZIP (Windows)
@@ -404,6 +407,7 @@ jobs:
             --resource-group ${{ env.FUNCTIONS_RESOURCE_GROUP }} \
             --settings \
               "FUNCTIONS_WORKER_RUNTIME=dotnet-isolated" \
+              "FUNCTIONS_WORKER_RUNTIME_VERSION=9.0" \
               "FUNCTIONS_EXTENSION_VERSION=~4" \
               "AzureWebJobsFeatureFlags=EnableOpenApi" \
               "CompanySettings__DefaultCompanyId=1" \
@@ -431,6 +435,15 @@ jobs:
           done
           echo "No functions discovered by the host after retries. Failing deployment." >&2
           exit 1
+
+      - name: Inspect deployed wwwroot via Kudu (on failure only)
+        if: failure()
+        env:
+          KUDU_USER: ${{ secrets.DEPLOY_USER }}
+          KUDU_PASS: ${{ secrets.DEPLOY_PASSWORD }}
+        run: |
+          echo "Listing wwwroot via Kudu API for diagnostics..."
+          curl -u "$KUDU_USER:$KUDU_PASS" https://${{ env.FUNCTIONS_APP_NAME }}.scm.azurewebsites.net/api/vfs/site/wwwroot/ -s | jq -r '.[] | "\(.name)\t\(.mime)\t\(.size)"' || true
 
       - name: Configure CORS
         run: |
