@@ -43,6 +43,8 @@ env:
 jobs:
   build_test_publish:
     runs-on: ubuntu-latest
+    env:
+      CI: true  # Exclude SDK package during CI to avoid libssl issues
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -363,6 +365,14 @@ jobs:
             --name ${{ env.FUNCTIONS_APP_NAME }} \
             --resource-group ${{ env.FUNCTIONS_RESOURCE_GROUP }} \
             --src deploy.zip
+
+      - name: Restart Function App (force metadata refresh)
+        run: |
+          echo "Restarting Function App to refresh metadata and discover functions..."
+          az functionapp restart \
+            --name ${{ env.FUNCTIONS_APP_NAME }} \
+            --resource-group ${{ env.FUNCTIONS_RESOURCE_GROUP }}
+          echo "Function App restarted successfully"
 
       - name: Configure Function App Settings
         run: |
