@@ -384,6 +384,42 @@ jobs:
         shell: bash
         run: |
           [ -n "${{ secrets.HOOPS_CONNECTION_STRING }}" ] && echo "HOOPS_CONNECTION_STRING: set" || (echo "HOOPS_CONNECTION_STRING: MISSING (set environment secret for dev)" >&2; exit 1)
+          [ -n "${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}" ] && echo "AZURE_STORAGE_CONNECTION_STRING: set" || (echo "AZURE_STORAGE_CONNECTION_STRING: MISSING (set environment secret for dev storage account)" >&2; exit 1)
+
+      - name: Configure Function App Settings (before deploy)
+        run: |
+          az functionapp config appsettings set \
+            --name ${{ env.FUNCTIONS_APP_NAME }} \
+            --resource-group ${{ env.FUNCTIONS_RESOURCE_GROUP }} \
+            --settings \
+              "FUNCTIONS_WORKER_RUNTIME=dotnet-isolated" \
+              "FUNCTIONS_WORKER_RUNTIME_VERSION=9.0" \
+              "FUNCTIONS_EXTENSION_VERSION=~4" \
+              "AzureWebJobsStorage=${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}" \
+              "AzureWebJobsFeatureFlags=EnableOpenApi" \
+              "CompanySettings__DefaultCompanyId=1" \
+              "KeyVaultUri=https://hoops-dev-kv.vault.azure.net/" \
+              "ConnectionStrings__hoopsContext=${{ secrets.HOOPS_CONNECTION_STRING }}"
+
+      - name: Configure CORS (before deploy)
+        run: |
+          for ORIGIN in \
+            "https://thankful-pond-090ec730f.4.azurestaticapps.net" \
+            "http://localhost:4200" \
+            "https://localhost:4200"; do
+            echo "Adding CORS origin: $ORIGIN"
+            az functionapp cors add \
+              --name ${{ env.FUNCTIONS_APP_NAME }} \
+              --resource-group ${{ env.FUNCTIONS_RESOURCE_GROUP }} \
+              --allowed-origins "$ORIGIN" || echo "Origin $ORIGIN may already exist; continuing."
+          done
+
+      - name: Enable CORS credentials support
+        run: |
+          az functionapp config appsettings set \
+            --name ${{ env.FUNCTIONS_APP_NAME }} \
+            --resource-group ${{ env.FUNCTIONS_RESOURCE_GROUP }} \
+            --settings "WEBSITE_CORS_SUPPORT_CREDENTIALS=true"
 
       - name: Deploy Functions via Azure CLI (config-zip)
         run: |
@@ -399,20 +435,6 @@ jobs:
             --name ${{ env.FUNCTIONS_APP_NAME }} \
             --resource-group ${{ env.FUNCTIONS_RESOURCE_GROUP }}
           echo "Function App restarted successfully"
-
-      - name: Configure Function App Settings
-        run: |
-          az functionapp config appsettings set \
-            --name ${{ env.FUNCTIONS_APP_NAME }} \
-            --resource-group ${{ env.FUNCTIONS_RESOURCE_GROUP }} \
-            --settings \
-              "FUNCTIONS_WORKER_RUNTIME=dotnet-isolated" \
-              "FUNCTIONS_WORKER_RUNTIME_VERSION=9.0" \
-              "FUNCTIONS_EXTENSION_VERSION=~4" \
-              "AzureWebJobsFeatureFlags=EnableOpenApi" \
-              "CompanySettings__DefaultCompanyId=1" \
-              "KeyVaultUri=https://hoops-dev-kv.vault.azure.net/" \
-              "ConnectionStrings__hoopsContext=${{ secrets.HOOPS_CONNECTION_STRING }}"
 
       - name: Verify discovered functions (fail if none)
         id: verify_functions
@@ -445,26 +467,6 @@ jobs:
           echo "Listing wwwroot via Kudu API for diagnostics..."
           curl -u "$KUDU_USER:$KUDU_PASS" https://${{ env.FUNCTIONS_APP_NAME }}.scm.azurewebsites.net/api/vfs/site/wwwroot/ -s | jq -r '.[] | "\(.name)\t\(.mime)\t\(.size)"' || true
 
-      - name: Configure CORS
-        run: |
-          for ORIGIN in \
-            "https://thankful-pond-090ec730f.4.azurestaticapps.net" \
-            "http://localhost:4200" \
-            "https://localhost:4200"; do
-            echo "Adding CORS origin: $ORIGIN"
-            az functionapp cors add \
-              --name ${{ env.FUNCTIONS_APP_NAME }} \
-              --resource-group ${{ env.FUNCTIONS_RESOURCE_GROUP }} \
-              --allowed-origins "$ORIGIN" || echo "Origin $ORIGIN may already exist; continuing."
-          done
-
-      - name: Enable CORS credentials support
-        run: |
-          az functionapp config appsettings set \
-            --name ${{ env.FUNCTIONS_APP_NAME }} \
-            --resource-group ${{ env.FUNCTIONS_RESOURCE_GROUP }} \
-            --settings "WEBSITE_CORS_SUPPORT_CREDENTIALS=true"
-
       - name: Show current CORS settings
         run: |
           echo "CORS allowed origins:"
@@ -496,7 +498,7 @@ jobs:
           EXISTING_ASSIGNMENT=$(az role assignment list \
             --assignee $PRINCIPAL_ID \
             --role "Key Vault Secrets User" \
-            --scope "/subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourcegroups/hoops-dev/providers/microsoft.keyvault/vaults/Hoops-Dev-KV" \
+            --scope "/subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourcegroups/csbc-dev/providers/microsoft.keyvault/vaults/Hoops-Dev-KV" \
             --query "[0].id" -o tsv 2>/dev/null || echo "none")
 
           if [ "$EXISTING_ASSIGNMENT" == "none" ] || [ -z "$EXISTING_ASSIGNMENT" ]; then
@@ -504,7 +506,7 @@ jobs:
             az role assignment create \
               --assignee $PRINCIPAL_ID \
               --role "Key Vault Secrets User" \
-              --scope "/subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourcegroups/hoops-dev/providers/microsoft.keyvault/vaults/Hoops-Dev-KV" \
+              --scope "/subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourcegroups/csbc-dev/providers/microsoft.keyvault/vaults/Hoops-Dev-KV" \
               || echo "Role assignment may already exist or insufficient permissions; continuing..."
           else
             echo "Key Vault role assignment already exists: $EXISTING_ASSIGNMENT"

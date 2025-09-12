@@ -34,13 +34,21 @@ var host = new HostBuilder()
             config.AddUserSecrets(typeof(Program).Assembly, optional: true);
         }
 
-        // Azure Key Vault (match existing API behavior in Development environment)
+        // Azure Key Vault (optional at startup; don't fail host if access is not yet granted)
         var built = config.Build();
         var keyVaultUri = built["KeyVaultUri"] ?? built["Hoops-Dev-KV:Uri"]; // support either format
         if (!string.IsNullOrWhiteSpace(keyVaultUri))
         {
-            var credential = new DefaultAzureCredential();
-            config.AddAzureKeyVault(new Uri(keyVaultUri), credential);
+            try
+            {
+                var credential = new DefaultAzureCredential();
+                config.AddAzureKeyVault(new Uri(keyVaultUri), credential);
+            }
+            catch (Exception ex)
+            {
+                // Log and continue; the app can run with env/appsettings values while identity/permissions are configured
+                Console.WriteLine($"Warning: Failed to add Azure Key Vault configuration from '{keyVaultUri}'. Continuing without Key Vault. Details: {ex.Message}");
+            }
         }
     })
     .ConfigureServices((context, services) =>
