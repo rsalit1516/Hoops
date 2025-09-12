@@ -10,7 +10,6 @@
     <SelfContained>false</SelfContained>
     <!-- Conditionally disable metadata generation to avoid libssl issues in CI -->
     <GenerateFunctionsExtensionsMetadata Condition="'$(CI)' != 'true'">true</GenerateFunctionsExtensionsMetadata>
-    <GenerateFunctionsExtensionsMetadata Condition="'$(CI)' == 'true'">false</GenerateFunctionsExtensionsMetadata>
     <_FunctionsSkipCleanOutput Condition="'$(CI)' == 'true'">true</_FunctionsSkipCleanOutput>
   </PropertyGroup>
   <ItemGroup>
