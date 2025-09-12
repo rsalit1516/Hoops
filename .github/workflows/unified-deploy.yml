@@ -47,16 +47,31 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Clear GitHub Actions cache (force fresh build)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "Attempting to clear GitHub Actions caches for this repository..."
+          gh api -X DELETE repos/${{ github.repository }}/actions/caches || echo "Cache clearing failed or no caches found"
+          echo "Cache clearing attempted"
+
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
+      - name: Clear caches and force clean restore
+        run: |
+          echo "Clearing all NuGet and build caches..."
+          dotnet nuget locals all --clear
+          dotnet clean Hoops.sln -c Release || true
+          echo "Cache clearing complete"
+
       - name: Restore (solution)
-        run: dotnet restore Hoops.sln
+        run: dotnet restore Hoops.sln --force --no-cache
 
       - name: Build (solution)
-        run: dotnet build Hoops.sln -c Release --no-restore
+        run: dotnet build Hoops.sln -c Release --no-restore -v normal
 
       - name: Test (fast)
         run: dotnet test Hoops.sln -c Release --no-build --filter "TestCategory!=Slow" --nologo
@@ -162,7 +177,16 @@ jobs:
           "
 
       - name: Publish Functions (framework-dependent for Windows)
-        run: dotnet publish ${{ env.FUNCTIONS_PROJECT }} -c Release -o ${{ env.FUNCTIONS_PUBLISH_DIR }} --no-self-contained --runtime win-x64
+        run: |
+          echo "Publishing Functions for Windows (win-x64) runtime..."
+          echo "Target runtime: win-x64"
+          echo "Self-contained: false"
+          echo "Configuration: Release"
+          echo "Project file contents (runtime verification):"
+          grep -A5 -B5 "RuntimeIdentifier\|TargetFramework" ${{ env.FUNCTIONS_PROJECT }} || true
+          echo "Publishing..."
+          dotnet publish ${{ env.FUNCTIONS_PROJECT }} -c Release -o ${{ env.FUNCTIONS_PUBLISH_DIR }} --no-self-contained --runtime win-x64 -v normal
+          echo "Publish completed successfully"
 
       - name: Verify Functions publish output
         shell: bash
