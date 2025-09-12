@@ -207,7 +207,7 @@ jobs:
       - name: Publish Functions (Windows, framework-dependent)
         run: |
           Write-Host "Publishing Functions on Windows with metadata generation..."
-          dotnet publish $env:FUNCTIONS_PROJECT -c Release -o $env:FUNCTIONS_PUBLISH_DIR --no-self-contained --runtime win-x64 -v normal
+          dotnet publish $env:FUNCTIONS_PROJECT -c Release -o $env:FUNCTIONS_PUBLISH_DIR --no-self-contained --runtime win-x64 -v normal -p:UseFunctionsSdk=true
           Write-Host "Publish completed"
         shell: pwsh
 
@@ -351,31 +351,23 @@ jobs:
       - name: Azure context
         run: az account show -o table
 
-      - name: Download Functions (folder) artifact
+      - name: Download Functions ZIP artifact
         uses: actions/download-artifact@v4
         with:
-          name: functions-publish
-          path: package
+          name: functions-zip
+          path: .
 
       - name: Validate required secrets
         shell: bash
         run: |
           [ -n "${{ secrets.HOOPS_CONNECTION_STRING }}" ] && echo "HOOPS_CONNECTION_STRING: set" || (echo "HOOPS_CONNECTION_STRING: MISSING (set environment secret for dev)" >&2; exit 1)
 
-      - name: Create deployment zip from folder
-        run: |
-          cd package
-          zip -r ../deploy.zip .
-          cd ..
-          ls -lah deploy.zip
-          unzip -t deploy.zip || true
-
       - name: Deploy Functions via Azure CLI (config-zip)
         run: |
           az functionapp deployment source config-zip \
             --name ${{ env.FUNCTIONS_APP_NAME }} \
             --resource-group ${{ env.FUNCTIONS_RESOURCE_GROUP }} \
-            --src deploy.zip
+            --src ${{ env.FUNCTIONS_ZIP }}
 
       - name: Restart Function App (force metadata refresh)
         run: |
@@ -398,13 +390,12 @@ jobs:
               "KeyVaultUri=https://hoops-dev-kv.vault.azure.net/" \
               "ConnectionStrings__hoopsContext=${{ secrets.HOOPS_CONNECTION_STRING }}"
 
-      - name: Verify discovered functions (non-blocking)
+      - name: Verify discovered functions (fail if none)
         id: verify_functions
-        continue-on-error: true
         run: |
           set -e
           ATTEMPTS=0
-          until [ $ATTEMPTS -ge 12 ]
+          until [ $ATTEMPTS -ge 18 ]
           do
             funcs=$(az functionapp function list \
               --name ${{ env.FUNCTIONS_APP_NAME }} \
@@ -415,10 +406,11 @@ jobs:
               exit 0
             fi
             ATTEMPTS=$((ATTEMPTS+1))
-            echo "No functions yet. Waiting 10s and retrying ($ATTEMPTS/12)..."
+            echo "No functions yet. Waiting 10s and retrying ($ATTEMPTS/18)..."
             sleep 10
           done
-          echo "No functions discovered by the host after retries. Continuing without failing the job. Check runtime logs for startup errors." >&2
+          echo "No functions discovered by the host after retries. Failing deployment." >&2
+          exit 1
 
       - name: Configure CORS
         run: |
