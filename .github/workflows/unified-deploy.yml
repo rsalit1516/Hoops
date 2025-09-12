@@ -357,6 +357,26 @@ jobs:
           name: functions-zip
           path: .
 
+      - name: Show downloaded files
+        run: |
+          echo "Workspace contents after download:"
+          ls -lah
+          echo "List ZIPs recursively:"
+          find . -maxdepth 3 -type f -name "*.zip" -print
+
+      - name: Locate Functions ZIP
+        id: locate_zip
+        shell: bash
+        run: |
+          set -e
+          ZIP=$(find . -maxdepth 3 -type f -name "*.zip" | head -n 1)
+          if [ -z "$ZIP" ]; then
+            echo "No ZIP file found after download" >&2
+            exit 1
+          fi
+          echo "Found ZIP: $ZIP"
+          echo "zip=$ZIP" >> $GITHUB_OUTPUT
+
       - name: Validate required secrets
         shell: bash
         run: |
@@ -367,7 +387,7 @@ jobs:
           az functionapp deployment source config-zip \
             --name ${{ env.FUNCTIONS_APP_NAME }} \
             --resource-group ${{ env.FUNCTIONS_RESOURCE_GROUP }} \
-            --src ${{ env.FUNCTIONS_ZIP }}
+            --src ${{ steps.locate_zip.outputs.zip }}
 
       - name: Restart Function App (force metadata refresh)
         run: |
