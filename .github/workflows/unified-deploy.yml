@@ -176,6 +176,43 @@ jobs:
           find ${{ env.FUNCTIONS_PUBLISH_DIR }} -maxdepth 2 -type f | head -n 100 || true
           echo "Ensure host.json present in publish root:" && ls -lah ${{ env.FUNCTIONS_PUBLISH_DIR }}/host.json || (echo "host.json missing in publish output" >&2; exit 1)
 
+      - name: Generate Functions metadata manually
+        shell: bash
+        run: |
+          set -e
+          echo "Generating Functions extensions metadata manually to avoid CI libssl issues..."
+          cd ${{ env.FUNCTIONS_PUBLISH_DIR }}
+          
+          # Check if metadata generation is needed
+          if [ ! -f "WorkerExtensions/extensions.json" ]; then
+            echo "Creating WorkerExtensions directory..."
+            mkdir -p WorkerExtensions
+            
+            # Use func core tools to generate metadata if available, otherwise create basic metadata
+            if command -v func &> /dev/null; then
+              echo "Using Azure Functions Core Tools to generate metadata..."
+              func extensions sync --show-warnings
+            else
+              echo "Azure Functions Core Tools not available, creating basic extensions.json..."
+              cat > WorkerExtensions/extensions.json << 'EOF'
+          {
+            "extensions": [
+              {
+                "name": "Microsoft.Azure.Functions.Worker.Extensions.Http",
+                "typeName": "Microsoft.Azure.Functions.Worker.Extensions.Http.HttpExtensionStartup",
+                "hintPath": "Microsoft.Azure.Functions.Worker.Extensions.Http.dll"
+              }
+            ]
+          }
+          EOF
+            fi
+            
+            echo "Generated extensions metadata:"
+            cat WorkerExtensions/extensions.json || echo "No extensions.json created"
+          else
+            echo "extensions.json already exists"
+          fi
+
       - name: Create Functions zip
         run: |
           cd ${{ env.FUNCTIONS_PUBLISH_DIR }}
