@@ -161,13 +161,6 @@ jobs:
               sys.exit(1)
           "
 
-      - name: Install OpenSSL for Functions metadata generation
-        shell: bash
-        run: |
-          echo "Installing OpenSSL libraries for Functions metadata generation..."
-          sudo apt-get update
-          sudo apt-get install -y libssl3 libssl-dev
-          
       - name: Publish Functions (framework-dependent for Linux)
         run: dotnet publish ${{ env.FUNCTIONS_PROJECT }} -c Release -o ${{ env.FUNCTIONS_PUBLISH_DIR }} --no-self-contained --runtime linux-x64
         env:

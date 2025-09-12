@@ -8,7 +8,8 @@
     <!-- Target Linux runtime for Azure Functions -->
     <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
     <SelfContained>false</SelfContained>
-    <!-- Try to work around libssl issues in CI -->
+    <!-- Disable problematic metadata generation during CI builds -->
+    <GenerateFunctionsExtensionsMetadata Condition="'$(CI)' == 'true'">false</GenerateFunctionsExtensionsMetadata>
     <_FunctionsSkipCleanOutput Condition="'$(CI)' == 'true'">true</_FunctionsSkipCleanOutput>
   </PropertyGroup>
   <ItemGroup>
