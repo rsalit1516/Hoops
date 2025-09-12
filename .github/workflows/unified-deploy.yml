@@ -44,7 +44,7 @@ jobs:
   build_test_publish:
     runs-on: ubuntu-latest
     env:
-      CI: true  # Exclude SDK package during CI to avoid libssl issues
+      CI: true # Exclude SDK package during CI to avoid libssl issues
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -178,44 +178,53 @@ jobs:
               sys.exit(1)
           "
 
-      - name: Publish Functions (framework-dependent for Windows)
-        run: |
-          echo "Publishing Functions for Windows (win-x64) runtime..."
-          echo "Target runtime: win-x64"
-          echo "Self-contained: false"
-          echo "Configuration: Release"
-          echo "Project file contents (runtime verification):"
-          grep -A5 -B5 "RuntimeIdentifier\|TargetFramework" ${{ env.FUNCTIONS_PROJECT }} || true
-          echo "Publishing..."
-          dotnet publish ${{ env.FUNCTIONS_PROJECT }} -c Release -o ${{ env.FUNCTIONS_PUBLISH_DIR }} --no-self-contained --runtime win-x64 -v normal
-          echo "Publish completed successfully"
-
-      - name: Verify Functions publish output
-        shell: bash
-        run: |
-          set -e
-          echo "Publish directory tree (depth 2):"
-          du -h -d 2 ${{ env.FUNCTIONS_PUBLISH_DIR }} || true
-          echo "Top files in publish directory:"
-          find ${{ env.FUNCTIONS_PUBLISH_DIR }} -maxdepth 2 -type f | head -n 100 || true
-          echo "Ensure host.json present in publish root:" && ls -lah ${{ env.FUNCTIONS_PUBLISH_DIR }}/host.json || (echo "host.json missing in publish output" >&2; exit 1)
-          echo "Check for Functions metadata files:"
-          ls -la ${{ env.FUNCTIONS_PUBLISH_DIR }}/*.json ${{ env.FUNCTIONS_PUBLISH_DIR }}/*.metadata || true
-
-      - name: Create Functions zip
-        run: |
-          cd ${{ env.FUNCTIONS_PUBLISH_DIR }}
-          zip -r ../functions.zip .
-          cd -
-          ls -lah ${{ env.FUNCTIONS_ZIP }}
-          unzip -t ${{ env.FUNCTIONS_ZIP }} || true
-
       - name: Upload API artifact
         uses: actions/upload-artifact@v4
         with:
           name: api-publish
           path: ${{ env.API_PUBLISH_DIR }}
           if-no-files-found: error
+
+  build_functions_win:
+    runs-on: windows-latest
+    env:
+      # Override default CI=true so the Worker SDK is included, generating function metadata
+      CI: 'false'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore Functions project (Windows)
+        run: dotnet restore ${{ env.FUNCTIONS_PROJECT }}
+
+      - name: Publish Functions (Windows, framework-dependent)
+        run: |
+          Write-Host "Publishing Functions on Windows with metadata generation..."
+          dotnet publish $env:FUNCTIONS_PROJECT -c Release -o $env:FUNCTIONS_PUBLISH_DIR --no-self-contained --runtime win-x64 -v normal
+          Write-Host "Publish completed"
+        shell: pwsh
+
+      - name: Verify Functions publish output (Windows)
+        run: |
+          Write-Host "List publish output:"
+          Get-ChildItem -Recurse $env:FUNCTIONS_PUBLISH_DIR | Select-Object FullName, Length | Format-Table -AutoSize | Out-String | Write-Host
+          if (-not (Test-Path "$env:FUNCTIONS_PUBLISH_DIR\host.json")) { Write-Error "host.json missing in publish output" }
+          Write-Host "Check for metadata files (extensions.json / functions.metadata):"
+          Get-ChildItem $env:FUNCTIONS_PUBLISH_DIR -Filter *.json -Name | ForEach-Object { Write-Host $_ }
+          Get-ChildItem $env:FUNCTIONS_PUBLISH_DIR -Filter *.metadata -Name | ForEach-Object { Write-Host $_ }
+        shell: pwsh
+
+      - name: Create Functions ZIP (Windows)
+        run: |
+          if (Test-Path $env:FUNCTIONS_ZIP) { Remove-Item -Force $env:FUNCTIONS_ZIP }
+          Compress-Archive -Path "$env:FUNCTIONS_PUBLISH_DIR\*" -DestinationPath "$env:FUNCTIONS_ZIP" -Force
+          Write-Host "ZIP created at $env:FUNCTIONS_ZIP"
+        shell: pwsh
 
       - name: Upload Functions artifact (folder)
         uses: actions/upload-artifact@v4
@@ -327,7 +336,7 @@ jobs:
 
   deploy_functions:
     runs-on: ubuntu-latest
-    needs: build_test_publish
+    needs: [build_test_publish, build_functions_win]
     environment: dev
     steps:
       - name: Azure Login (OIDC)
