@@ -44,7 +44,8 @@ jobs:
   build_test_publish:
     runs-on: ubuntu-latest
     env:
-      CI: true # Exclude SDK package during CI to avoid libssl issues
+      CI: true # Exclude SDK package during CI to avoid libssl issues (default)
+      UseFunctionsSdk: "false"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -188,8 +189,9 @@ jobs:
   build_functions_win:
     runs-on: windows-latest
     env:
-      # Override default CI=true so the Worker SDK is included, generating function metadata
-      CI: 'false'
+      # Override default CI and force include Worker SDK so metadata is generated
+      CI: "false"
+      UseFunctionsSdk: "true"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
