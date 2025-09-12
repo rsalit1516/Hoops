@@ -163,6 +163,8 @@ jobs:
 
       - name: Publish Functions (framework-dependent for Linux)
         run: dotnet publish ${{ env.FUNCTIONS_PROJECT }} -c Release -o ${{ env.FUNCTIONS_PUBLISH_DIR }} --no-self-contained --runtime linux-x64
+        env:
+          CI: true
 
       - name: Verify Functions publish output
         shell: bash

@@ -5,11 +5,13 @@
     <OutputType>Exe</OutputType>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <!-- Configure for Azure Functions Linux consumption runtime -->
+    <!-- Target Linux runtime for Azure Functions -->
     <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
     <SelfContained>false</SelfContained>
-    <!-- Ensure proper metadata generation for function discovery -->
-    <GenerateFunctionsExtensionsMetadata>true</GenerateFunctionsExtensionsMetadata>
+    <!-- Conditionally disable metadata generation to avoid libssl issues in CI -->
+    <GenerateFunctionsExtensionsMetadata Condition="'$(CI)' != 'true'">true</GenerateFunctionsExtensionsMetadata>
+    <GenerateFunctionsExtensionsMetadata Condition="'$(CI)' == 'true'">false</GenerateFunctionsExtensionsMetadata>
+    <_FunctionsSkipCleanOutput Condition="'$(CI)' == 'true'">true</_FunctionsSkipCleanOutput>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="2.0.0" />
