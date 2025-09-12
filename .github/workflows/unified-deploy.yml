@@ -161,10 +161,8 @@ jobs:
               sys.exit(1)
           "
 
-      - name: Publish Functions (framework-dependent for Linux)
-        run: dotnet publish ${{ env.FUNCTIONS_PROJECT }} -c Release -o ${{ env.FUNCTIONS_PUBLISH_DIR }} --no-self-contained --runtime linux-x64
-        env:
-          CI: true
+      - name: Publish Functions (framework-dependent for Windows)
+        run: dotnet publish ${{ env.FUNCTIONS_PROJECT }} -c Release -o ${{ env.FUNCTIONS_PUBLISH_DIR }} --no-self-contained --runtime win-x64
 
       - name: Verify Functions publish output
         shell: bash
