@@ -39,6 +39,8 @@ env:
   FUNCTIONS_ZIP: artifacts/functions.zip
   FUNCTIONS_APP_NAME: hoops-functions-dev
   FUNCTIONS_RESOURCE_GROUP: csbc-dev
+  # Optional: set to your storage account name to auto-generate AzureWebJobsStorage without a secret
+  FUNCTIONS_STORAGE_ACCOUNT_NAME: csbcdev8522
 
 jobs:
   build_test_publish:
@@ -202,7 +204,7 @@ jobs:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Restore Functions project (Windows)
-        run: dotnet restore ${{ env.FUNCTIONS_PROJECT }}
+        run: dotnet restore ${{ env.FUNCTIONS_PROJECT }} -p:UseFunctionsSdk=true
 
       - name: Publish Functions (Windows, framework-dependent)
         run: |
@@ -380,26 +382,63 @@ jobs:
           echo "Found ZIP: $ZIP"
           echo "zip=$ZIP" >> $GITHUB_OUTPUT
 
-      - name: Validate required secrets
+      - name: Resolve and configure app settings (before deploy)
         shell: bash
         run: |
-          [ -n "${{ secrets.HOOPS_CONNECTION_STRING }}" ] && echo "HOOPS_CONNECTION_STRING: set" || (echo "HOOPS_CONNECTION_STRING: MISSING (set environment secret for dev)" >&2; exit 1)
-          [ -n "${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}" ] && echo "AZURE_STORAGE_CONNECTION_STRING: set" || (echo "AZURE_STORAGE_CONNECTION_STRING: MISSING (set environment secret for dev storage account)" >&2; exit 1)
+          set -e
+          # Read existing values from the app
+          EXISTING_STORAGE=$(az functionapp config appsettings list \
+            --name ${{ env.FUNCTIONS_APP_NAME }} \
+            --resource-group ${{ env.FUNCTIONS_RESOURCE_GROUP }} \
+            --query "[?name=='AzureWebJobsStorage'].value" -o tsv)
 
-      - name: Configure Function App Settings (before deploy)
-        run: |
+          # Prefer GitHub secrets if provided, otherwise fall back to existing app value
+          AZWJS="${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}"
+          if [ -z "$AZWJS" ]; then AZWJS="$EXISTING_STORAGE"; fi
+
+          # If still not available, optionally compute from a storage account name
+          if [ -z "$AZWJS" ] && [ -n "${{ env.FUNCTIONS_STORAGE_ACCOUNT_NAME }}" ]; then
+            echo "No AzureWebJobsStorage provided or found on app. Attempting to build from storage account name..."
+            RG="${{ env.FUNCTIONS_RESOURCE_GROUP }}"
+            SA_NAME="${{ env.FUNCTIONS_STORAGE_ACCOUNT_NAME }}"
+            if az storage account show --name "$SA_NAME" --resource-group "$RG" >/dev/null 2>&1; then
+              SA_KEY=$(az storage account keys list --account-name "$SA_NAME" --resource-group "$RG" --query "[0].value" -o tsv)
+              if [ -n "$SA_KEY" ]; then
+                AZWJS="DefaultEndpointsProtocol=https;AccountName=$SA_NAME;AccountKey=$SA_KEY;EndpointSuffix=core.windows.net"
+                echo "Successfully built AzureWebJobsStorage from storage account: $SA_NAME"
+              else
+                echo "WARNING: Could not retrieve storage account key for $SA_NAME in $RG. Check RBAC (Storage Account Key Operator/Contributor)." >&2
+              fi
+            else
+              echo "WARNING: Storage account $SA_NAME not found in resource group $RG." >&2
+            fi
+          fi
+
+          if [ -z "$AZWJS" ]; then
+            echo "ERROR: AzureWebJobsStorage is not set via secret and not present on the Function App." >&2
+            echo "Provide AZURE_STORAGE_CONNECTION_STRING secret, preconfigure the app setting AzureWebJobsStorage, or set FUNCTIONS_STORAGE_ACCOUNT_NAME env to auto-generate it." >&2
+            exit 1
+          fi
+
+          # Build settings array; only include connection string if secret provided (don’t overwrite existing unless explicit)
+          SETTINGS=(
+            "FUNCTIONS_WORKER_RUNTIME=dotnet-isolated"
+            "FUNCTIONS_WORKER_RUNTIME_VERSION=9.0"
+            "FUNCTIONS_EXTENSION_VERSION=~4"
+            "AzureWebJobsStorage=$AZWJS"
+            "AzureWebJobsFeatureFlags=EnableOpenApi"
+            "CompanySettings__DefaultCompanyId=1"
+            "KeyVaultUri=https://hoops-dev-kv.vault.azure.net/"
+          )
+
+          if [ -n "${{ secrets.HOOPS_CONNECTION_STRING }}" ]; then
+            SETTINGS+=("ConnectionStrings__hoopsContext=${{ secrets.HOOPS_CONNECTION_STRING }}")
+          fi
+
           az functionapp config appsettings set \
             --name ${{ env.FUNCTIONS_APP_NAME }} \
             --resource-group ${{ env.FUNCTIONS_RESOURCE_GROUP }} \
-            --settings \
-              "FUNCTIONS_WORKER_RUNTIME=dotnet-isolated" \
-              "FUNCTIONS_WORKER_RUNTIME_VERSION=9.0" \
-              "FUNCTIONS_EXTENSION_VERSION=~4" \
-              "AzureWebJobsStorage=${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}" \
-              "AzureWebJobsFeatureFlags=EnableOpenApi" \
-              "CompanySettings__DefaultCompanyId=1" \
-              "KeyVaultUri=https://hoops-dev-kv.vault.azure.net/" \
-              "ConnectionStrings__hoopsContext=${{ secrets.HOOPS_CONNECTION_STRING }}"
+            --settings "${SETTINGS[@]}"
 
       - name: Configure CORS (before deploy)
         run: |

@@ -55,10 +55,19 @@ var host = new HostBuilder()
     {
         var configuration = context.Configuration;
 
-        // EF Core DbContext
+        // EF Core DbContext (be resilient if connection string is missing to allow host startup)
         var conn = configuration.GetConnectionString("hoopsContext");
-        services.AddDbContext<hoopsContext>(options =>
-            options.UseSqlServer(conn, sql => sql.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null)));
+        if (string.IsNullOrWhiteSpace(conn))
+        {
+            Console.WriteLine("Warning: ConnectionStrings:hoopsContext is not configured. Using in-memory database to allow Function host startup. Some endpoints may not function until the connection is configured.");
+            services.AddDbContext<hoopsContext>(options =>
+                options.UseInMemoryDatabase("hoops-fallback"));
+        }
+        else
+        {
+            services.AddDbContext<hoopsContext>(options =>
+                options.UseSqlServer(conn, sql => sql.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null)));
+        }
 
         services.AddHoopsRepositories();
         services.AddHoopsSeeders();
