@@ -21,9 +21,8 @@ public class AuthFunctions
         DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
     };
 
-    private static async Task WriteJsonAsync<T>(HttpResponseData response, T value)
+    private static void AddCorsHeaders(HttpResponseData response)
     {
-        response.Headers.Add("Content-Type", "application/json; charset=utf-8");
         // Enable credentialed CORS responses when allowed at the app level
         if (!response.Headers.Contains("Access-Control-Allow-Credentials"))
         {
@@ -33,6 +32,12 @@ public class AuthFunctions
         {
             response.Headers.Add("Vary", "Origin");
         }
+    }
+
+    private static async Task WriteJsonAsync<T>(HttpResponseData response, T value)
+    {
+        response.Headers.Add("Content-Type", "application/json; charset=utf-8");
+        AddCorsHeaders(response);
         await JsonSerializer.SerializeAsync(response.Body, value, JsonOptions);
     }
 
@@ -50,13 +55,17 @@ public class AuthFunctions
         var body = await JsonSerializer.DeserializeAsync<LoginRequest>(req.Body, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         if (body is null)
         {
-            return req.CreateResponse(HttpStatusCode.BadRequest);
+            var badResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+            AddCorsHeaders(badResponse);
+            return badResponse;
         }
         var repo = new UserRepository(_context);
         var user = repo.GetUser(body.userName, body.password);
         if (user == null)
         {
-            return req.CreateResponse(HttpStatusCode.Unauthorized);
+            var unauthorizedResponse = req.CreateResponse(HttpStatusCode.Unauthorized);
+            AddCorsHeaders(unauthorizedResponse);
+            return unauthorizedResponse;
         }
         var roles = _context.Roles.Where(s => s.UserId == user.UserId).Select(s => s.ScreenName);
         var divisions = _context.Divisions.Where(d => d.DirectorId == user.PersonId);
@@ -71,8 +80,7 @@ public class AuthFunctions
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "auth/me")] HttpRequestData req)
     {
         var res = req.CreateResponse(HttpStatusCode.Unauthorized);
-        res.Headers.Add("Access-Control-Allow-Credentials", "true");
-        res.Headers.Add("Vary", "Origin");
+        AddCorsHeaders(res);
         return Task.FromResult(res);
     }
 
@@ -81,8 +89,7 @@ public class AuthFunctions
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "auth/logout")] HttpRequestData req)
     {
         var res = req.CreateResponse(HttpStatusCode.NoContent);
-        res.Headers.Add("Access-Control-Allow-Credentials", "true");
-        res.Headers.Add("Vary", "Origin");
+        AddCorsHeaders(res);
         return Task.FromResult(res);
     }
 }
