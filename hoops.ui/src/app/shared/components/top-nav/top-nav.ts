@@ -11,6 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '@app/services/auth.service';
 import { FeatureFlagService } from '../../services/feature-flags';
+import { LoggerService } from '@app/services/logger.service';
 
 @Component({
   selector: 'csbc-top-nav',
@@ -30,6 +31,7 @@ export class TopNav implements OnInit {
   public readonly sidenavToggle = output();
   private authService = inject(AuthService);
   private featureFlags = inject(FeatureFlagService);
+  private logger = inject(LoggerService);
 
   userName: string | undefined;
   user = computed(() => this.authService.currentUser());
@@ -42,10 +44,10 @@ export class TopNav implements OnInit {
   // Show Admin menu when the feature flag is on and the logged-in user is an admin (userType 2 or 3)
   showAdminMenu = computed(() => {
     const flags = this.featureFlags.flags(); // signal read ensures reactivity to flag changes
-    console.log('Feature flags:', flags);
+    this.logger.log('Feature flags:', flags);
     const adminEnabled = !!flags['adminModule'];
     const currentUser = this.authService.currentUser(); // signal read ensures reactivity to login/logout
-    console.log('Current user:', currentUser);
+    this.logger.log('Current user:', currentUser);
     return adminEnabled && this.#isAdminUser(currentUser ?? undefined);
   });
 
@@ -67,9 +69,9 @@ export class TopNav implements OnInit {
     this.env = environment.environment;
     this.securityEnabled = environment.securityEnabled;
 
-    console.log('Environment = ' + this.env);
-    console.log('Show Admin = ' + this.showAdminFeature);
-    console.log('Show Admin Menu = ' + this.showAdminMenu());
+    this.logger.log('Environment = ' + this.env);
+    this.logger.log('Show Admin = ' + this.showAdminFeature);
+    this.logger.log('Show Admin Menu = ' + this.showAdminMenu());
   }
 
   // Deprecated: login dialog replaced by routed /login for mobile friendliness

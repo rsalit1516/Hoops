@@ -25,6 +25,12 @@ if (environment.production) {
   console.log = () => {};
   console.warn = () => {};
   console.error = () => {};
+} else {
+  // Enable console logging for development and non-production environments
+  console.log(
+    '🚀 Console logging enabled for environment:',
+    environment.environment
+  );
 }
 
 bootstrapApplication(App, {
