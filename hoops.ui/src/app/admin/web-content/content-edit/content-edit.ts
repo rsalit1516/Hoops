@@ -1,25 +1,22 @@
 import {
   Component,
   OnInit,
-  ElementRef,
-  Inject,
   signal,
   ChangeDetectionStrategy,
   inject,
-  viewChildren,
   computed,
-  effect
+  effect,
 } from '@angular/core';
 import {
   Validators,
   FormControl,
   FormBuilder,
-  ReactiveFormsModule
+  ReactiveFormsModule,
 } from '@angular/forms';
 
 import { Content } from '../../../domain/content';
 import { ContentService } from '../content.service';
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 
 import * as fromContent from '@app/admin/state';
 import * as contentActions from '@app/admin/state/admin.actions';
@@ -32,13 +29,15 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatOptionModule, NativeDateAdapter, provideNativeDateAdapter } from '@angular/material/core';
+import {
+  MatOptionModule,
+  provideNativeDateAdapter,
+} from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialog } from '@app/admin/shared/confirm-dialog/confirm-dialog';
 import { Constants } from '@app/shared/constants';
-import { State } from '../../state/index';
 import { WebContent } from '@app/domain/webContent';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
@@ -46,7 +45,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
   selector: 'csbc-content-edit',
 
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: "./content-edit.html",
+  templateUrl: './content-edit.html',
   styleUrls: [
     './content-edit.scss',
     '../../admin.scss',
@@ -67,8 +66,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
     MatSelectModule,
     ConfirmDialog,
   ],
-  providers: [
-    provideNativeDateAdapter(), ]
+  providers: [provideNativeDateAdapter()],
 })
 export class ContentEdit implements OnInit {
   readonly store = inject(Store<fromContent.State>);
@@ -129,17 +127,16 @@ export class ContentEdit implements OnInit {
   floatLabelType: FloatLabelType = 'auto';
   protected readonly value = signal('');
 
-  constructor(){
+  constructor() {
     effect(() => {
       if (this.selectedContent()) {
         this.onContentRetrieved();
       }
     });
     // @Inject(FormBuilder) private fb: FormBuilder,
+  }
 
-   }
-
-  ngOnInit (): void {
+  ngOnInit(): void {
     this.pageTitle = 'Edit Web Content Messages';
     this.hideId = true;
 
@@ -149,7 +146,7 @@ export class ContentEdit implements OnInit {
     // this.getContent();
   }
 
-  update (): void {
+  update(): void {
     this.contentForm.patchValue({
       title: this.content.title,
       subTitle: this.content.subTitle,
@@ -186,7 +183,7 @@ export class ContentEdit implements OnInit {
     if (content()!.webContentId! === 0) {
       this.pageTitle = 'Add Notice';
     } else {
-      this.pageTitle = `Edit Notice: ${ content()!.title }`;
+      this.pageTitle = `Edit Notice: ${content()!.title}`;
     }
 
     // // Update the data on the form
@@ -204,9 +201,9 @@ export class ContentEdit implements OnInit {
     this.selected = content()!.webContentType;
     // console.log(this.selected);
   }
-  saveContent () {
+  saveContent() {
     console.log(this.contentForm.value);
-    if ( this.contentForm.valid && this.contentForm.dirty ) {
+    if (this.contentForm.valid && this.contentForm.dirty) {
       let content = new WebContent();
       const form = this.contentForm.value;
       // content.webContentType = this.getWebContentType(
@@ -226,10 +223,10 @@ export class ContentEdit implements OnInit {
       content.webContentTypeId = form.webContentTypeControl!;
       this.#contentService.saveContent(content);
       this.store.dispatch(new contentActions.LoadAdminContent());
-      this.router.navigate([ '/admin/content' ]);
+      this.router.navigate(['/admin/content']);
     }
   }
-  getWebContentType (id: number): WebContentType {
+  getWebContentType(id: number): WebContentType {
     let webContentType = new WebContentType();
     console.log(id);
     switch (id) {
@@ -260,13 +257,13 @@ export class ContentEdit implements OnInit {
     // this.contentForm.controls[ controlName ].hasError(errorName);
   };
 
-  getFloatLabelValue (): FloatLabelType {
+  getFloatLabelValue(): FloatLabelType {
     return this.floatLabelType;
   }
-  protected onInput (event: Event) {
+  protected onInput(event: Event) {
     this.value.set((event.target as HTMLInputElement).value);
   }
-  deleteRecord (): void {
+  deleteRecord(): void {
     console.log(this.contentForm.get('webContentId')!.value);
     if (this.contentForm.get('webContentId')!.value !== 0) {
       this.#contentService.deleteContent(
@@ -275,7 +272,7 @@ export class ContentEdit implements OnInit {
       // this.onSaveComplete();
     }
   }
-  openDialog (): void {
+  openDialog(): void {
     const dialogRef = this.dialog.open(ConfirmDialog);
 
     dialogRef.afterClosed().subscribe((result) => {

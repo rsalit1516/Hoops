@@ -155,6 +155,7 @@ div.mat-mdc-select-panel {
 ::ng-deep .mat-mdc-input-element {
   caret-color: white;
   color: white;
+  background-color: v.$admin-background-color !important;
 }
 
 .button-row {
