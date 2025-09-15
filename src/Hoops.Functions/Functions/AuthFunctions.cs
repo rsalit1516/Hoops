@@ -30,7 +30,7 @@ public class AuthFunctions
         {
             return ResponseUtils.CreateErrorResponse(req, HttpStatusCode.BadRequest);
         }
-        
+
         var repo = new UserRepository(_context);
         try
         {
