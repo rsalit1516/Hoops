@@ -85,6 +85,14 @@ export class TopNav implements OnInit {
     this.env = environment.environment;
     this.securityEnabled = environment.securityEnabled;
 
+    // Direct console.log to bypass LoggerService for debugging
+    console.log('🔥 DIRECT: Environment = ' + this.env);
+    console.log('🔥 DIRECT: Environment object =', environment);
+    console.log(
+      '🔥 DIRECT: Feature flag path = ' + environment.featureFlagPath
+    );
+    console.log('🔥 DIRECT: Production flag = ' + environment.production);
+
     this.logger.log('🌍 Environment = ' + this.env);
     this.logger.log('🚩 Feature flag path = ' + environment.featureFlagPath);
     this.logger.log('🔧 Show Admin Feature = ' + this.showAdminFeature);

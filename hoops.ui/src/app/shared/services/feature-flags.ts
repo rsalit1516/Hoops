@@ -13,16 +13,20 @@ export class FeatureFlagService {
   }
 
   loadFlags(): void {
-    console.log('🚩 Loading feature flags from:', environment.featureFlagPath);
+    console.log(
+      '� DIRECT: Loading feature flags from:',
+      environment.featureFlagPath
+    );
+    console.log('🔥 DIRECT: Environment object:', environment);
     this.http
       .get<Record<string, boolean>>(environment.featureFlagPath)
       .subscribe({
         next: (flags) => {
-          console.log('✅ Feature flags loaded successfully:', flags);
+          console.log('🔥 DIRECT: Feature flags loaded successfully:', flags);
           this.flagsSignal.set(flags);
         },
         error: (err) => {
-          console.error('❌ Failed to load feature flags:', err);
+          console.error('🔥 DIRECT: Failed to load feature flags:', err);
           this.flagsSignal.set({});
         },
       });
