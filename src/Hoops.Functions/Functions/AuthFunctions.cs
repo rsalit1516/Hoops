@@ -30,18 +30,28 @@ public class AuthFunctions
         {
             return ResponseUtils.CreateErrorResponse(req, HttpStatusCode.BadRequest);
         }
+        
         var repo = new UserRepository(_context);
-        var user = repo.GetUser(body.userName, body.password);
-        if (user == null)
+        try
         {
+            var user = repo.GetUser(body.userName, body.password);
+            if (user == null)
+            {
+                return ResponseUtils.CreateErrorResponse(req, HttpStatusCode.Unauthorized);
+            }
+            var roles = _context.Roles.Where(s => s.UserId == user.UserId).Select(s => s.ScreenName);
+            var divisions = _context.Divisions.Where(d => d.DirectorId == user.PersonId);
+            var userVm = UserVm.ConvertToVm(user, roles, divisions);
+            var res = ResponseUtils.CreateResponse(req, HttpStatusCode.OK);
+            await ResponseUtils.WriteJsonAsync(res, userVm);
+            return res;
+        }
+        catch (Exception)
+        {
+            // UserRepository throws exception for invalid credentials
+            // Return 401 Unauthorized for authentication failures
             return ResponseUtils.CreateErrorResponse(req, HttpStatusCode.Unauthorized);
         }
-        var roles = _context.Roles.Where(s => s.UserId == user.UserId).Select(s => s.ScreenName);
-        var divisions = _context.Divisions.Where(d => d.DirectorId == user.PersonId);
-        var userVm = UserVm.ConvertToVm(user, roles, divisions);
-        var res = ResponseUtils.CreateResponse(req, HttpStatusCode.OK);
-        await ResponseUtils.WriteJsonAsync(res, userVm);
-        return res;
     }
 
     [Function("Auth_Me")]
