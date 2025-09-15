@@ -60,7 +60,12 @@ export class GamesShell implements OnInit {
   errorMessage$: Observable<string> | undefined;
   selectedDivision$: Observable<any> | undefined;
   standings: RegularGame[] | undefined;
-  canEdit: boolean | undefined;
+
+  // Access canEdit from AuthService computed signal
+  get canEdit(): boolean {
+    return this.#authService.canEditGames();
+  }
+
   // user: User | undefined;
   games: RegularGame[] | undefined;
   currentSeason$: Observable<any> | undefined; // = this.seasonService.currentSeason$.subscribe(season => this.seasonDescription = season.description);
@@ -164,20 +169,7 @@ export class GamesShell implements OnInit {
     this.store.dispatch(new gameActions.SetCurrentTeam(team));
   }
 
-  getCanEdit(user: User, divisionId: number): boolean {
-    console.log(divisionId);
-    console.log(user);
-    let canEdit = false;
-    if (user && user.divisions) {
-      user.divisions.forEach((element) => {
-        if (divisionId === element.divisionId) {
-          console.log('found ' + divisionId);
-          canEdit = true;
-        }
-      });
-    }
-    return canEdit;
-  }
+  // getCanEdit method removed - now handled by AuthService.canEditGames() computed signal
 
   setDivisionData(data: any[]): Division[] {
     let divisions: Division[] = [];

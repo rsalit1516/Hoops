@@ -329,29 +329,8 @@ export class GameService {
     return of(games);
   }
 
-  getCanEdit(user: User | undefined, divisionId: number): boolean {
-    // console.log(divisionId);
-    let tFlag = false;
-    if (user) {
-      if (user.userType === 2 || user.userType === 3) {
-        tFlag = true;
-        return true;
-      } else {
-        if (user.divisions) {
-          let found = user.divisions.find(
-            (div) => div.divisionId === divisionId
-          );
-          return found !== undefined;
-        }
-      }
-    }
-    return tFlag;
-  }
+  // getCanEdit and setCanEdit methods removed - now handled by AuthService.canEditGames computed signal
 
-  setCanEdit(division: number) {
-    let canEdit = this.getCanEdit(this.currentUser(), division);
-    // this.gameStore.dispatch(new gameActions.SetCanEdit(canEdit));
-  }
   extractDate(date: string): Date {
     return DateTime.fromISO(date).toJSDate();
   }

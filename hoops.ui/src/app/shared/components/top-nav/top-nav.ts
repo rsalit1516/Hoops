@@ -41,41 +41,22 @@ export class TopNav implements OnInit {
   env: any;
   constants: typeof Constants;
   securityEnabled: boolean = true;
-  // Show Admin menu when the feature flag is on and the logged-in user is an admin (userType 2 or 3)
+  // Enhanced computed signals
   showAdminMenu = computed(() => {
-    const flags = this.featureFlags.flags(); // signal read ensures reactivity to flag changes
-    this.logger.log('🚩 Feature flags loaded:', flags);
+    const adminModuleEnabled = this.featureFlags.getFlag('adminModule')();
+    const isAdmin = this.authService.isAdmin();
 
-    const adminEnabled = !!flags['adminModule'];
-    this.logger.log('🔧 Admin module enabled:', adminEnabled);
-
-    const currentUser = this.authService.currentUser(); // signal read ensures reactivity to login/logout
-    this.logger.log('👤 Current user:', currentUser);
-
-    const isAdmin = this.#isAdminUser(currentUser ?? undefined);
+    this.logger.log('� Admin module enabled:', adminModuleEnabled);
     this.logger.log('🔐 Is admin user:', isAdmin);
 
-    const showMenu = adminEnabled && isAdmin;
+    const showMenu = adminModuleEnabled && isAdmin;
     this.logger.log('📋 Show admin menu result:', showMenu);
 
     return showMenu;
   });
 
-  // Admin helper aligned with AuthService logic
-  #isAdminUser(user: User | undefined): boolean {
-    this.logger.log('🔍 Checking admin status for user:', user);
-    if (!user) {
-      this.logger.log('❌ No user found');
-      return false;
-    }
-    // userType: 2 = Admin, 3 = Director (based on existing checks in AuthService)
-    const isAdmin = user.userType === 2 || user.userType === 3;
-    this.logger.log(`🎯 User type: ${user.userType}, Is admin: ${isAdmin}`);
-    return isAdmin;
-  }
-  get showAdminFeature(): boolean {
-    return this.featureFlags.isEnabled('adminModule');
-  }
+  // Reactive admin feature flag
+  showAdminFeature = this.featureFlags.getFlag('adminModule');
   constructor() {
     // this.route.events.subscribe(route => console.log(route));
     this.constants = Constants;

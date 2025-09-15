@@ -1,4 +1,4 @@
-import { effect, inject, Injectable, signal } from '@angular/core';
+import { effect, inject, Injectable, signal, computed } from '@angular/core';
 import { tap } from 'rxjs/operators';
 
 import { Observable, of } from 'rxjs';
@@ -20,16 +20,37 @@ export class AuthService {
   readonly dataService = inject(DataService);
   readonly store = inject(Store<fromUser.State>);
   private divisionService = inject(DivisionService);
+
+  // Enhanced signal definitions
   currentUser = signal<User | undefined>(undefined);
-  canEditGames = signal<boolean>(false);
+
+  // Computed signals - auto-update when dependencies change
+  isLoggedIn = computed(() => !!this.currentUser());
+  isAdmin = computed(() => {
+    const user = this.currentUser();
+    return user ? user.userType === 2 || user.userType === 3 : false;
+  });
+  canEditGames = computed(() => {
+    const user = this.currentUser();
+    const divisionId = this.divisionService.selectedDivision()?.divisionId;
+
+    if (!user || !divisionId) return false;
+
+    // Admin users can edit all games
+    if (user.userType === 2 || user.userType === 3) return true;
+
+    // Check division-specific permissions
+    return (
+      user.divisions?.some((div) => div.divisionId === divisionId) ?? false
+    );
+  });
+
   redirectUrl: string | undefined;
   loginUrl: string | undefined;
   user: User | undefined;
 
   constructor() {
-    effect(() => {
-      this.setCanEdit(this.divisionService.selectedDivision()?.divisionId);
-    });
+    // Simplified constructor - effects and computed signals handle reactivity automatically
     // Hydrate from cookie on app load
     this.http
       .get<User>(`${Constants.FUNCTIONS_BASE_URL}/api/auth/me`, {
@@ -43,10 +64,6 @@ export class AuthService {
         })
       )
       .subscribe({ error: () => {} });
-  }
-
-  isLoggedIn(): boolean {
-    return !!this.currentUser();
   }
 
   login(userName: string, password: string): Observable<User> {
@@ -64,6 +81,7 @@ export class AuthService {
         })
       );
   }
+
   setUserState(user: User) {
     this.store.dispatch(new userActions.SetCurrentUser(user));
     this.currentUser.set(user);
@@ -86,56 +104,5 @@ export class AuthService {
           this.store.dispatch(new userActions.SetCurrentUser(undefined as any));
         },
       });
-  }
-
-  canEdit(user: User | undefined, divisionId: number | undefined): boolean {
-    console.log(divisionId);
-    console.log(user);
-    let tFlag = false;
-    if (user && divisionId) {
-      if (user.userType === 2 || user.userType === 3) {
-        tFlag = true;
-        this.canEditGames.set(true);
-        return true;
-      } else {
-        if (user.divisions) {
-          let found = user.divisions.find(
-            (div) => div.divisionId === divisionId
-          );
-          this.canEditGames.set(found !== undefined);
-          return found !== undefined;
-        }
-      }
-    }
-    return tFlag;
-  }
-  setCanEdit(divisionId: number | undefined): boolean {
-    let tFlag = false;
-    console.log(divisionId);
-    console.log(this.currentUser());
-
-    console.log('Setting canEditGames for divisionId:', divisionId);
-    if (this.currentUser() && divisionId) {
-      if (
-        this.currentUser()!.userType === 2 ||
-        this.currentUser()!.userType === 3
-      ) {
-        tFlag = true;
-        console.log('can edit games = true');
-        this.canEditGames.set(true);
-        return true;
-      } else {
-        if (this.currentUser()!.divisions) {
-          let found = this.currentUser()!.divisions!.find(
-            (div) => div.divisionId === divisionId
-          );
-          this.canEditGames.set(found !== undefined);
-          console.log(this.canEditGames());
-
-          return found !== undefined;
-        }
-      }
-    }
-    return tFlag;
   }
 }

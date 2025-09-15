@@ -52,7 +52,11 @@ export class Schedule implements OnInit {
     this._games = games;
   }
   private _games!: RegularGame[];
-  @Output() canEdit!: boolean;
+
+  // Access canEdit from AuthService computed signal
+  get canEdit(): boolean {
+    return this.authService.canEditGames();
+  }
 
   errorMessage: string | undefined;
   public title: string;
@@ -71,9 +75,8 @@ export class Schedule implements OnInit {
   }
 
   ngOnInit() {
-    this.authService.setCanEdit(
-      this.divisionService.selectedDivision()?.divisionId
-    );
+    // No longer needed - canEditGames is now a computed signal that automatically
+    // updates when the selected division or current user changes
   }
 
   editGame(game: RegularGame) {

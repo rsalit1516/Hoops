@@ -1,6 +1,4 @@
-import {
-  createFeatureSelector,
-  createSelector} from '@ngrx/store';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
 import * as fromRoot from '@app/state/app.state';
 import * as fromGames from './games.reducer';
 
@@ -12,77 +10,73 @@ const getGameFeatureState = createFeatureSelector<fromGames.GameState>('games');
 
 export const getCurrentSeason = createSelector(
   getGameFeatureState,
-  state => state.currentSeason
+  (state) => state.currentSeason
 );
 export const getCurrentDivision = createSelector(
   getGameFeatureState,
-  state => state.currentDivision
+  (state) => state.currentDivision
 );
 
 export const getCurrentDivisionId = createSelector(
   getGameFeatureState,
-  state => state.currentDivisionId
+  (state) => state.currentDivisionId
 );
 export const getCurrentTeam = createSelector(
   getGameFeatureState,
-  state => state.currentTeam
+  (state) => state.currentTeam
 );
 
 export const getCurrentTeamId = createSelector(
   getGameFeatureState,
-  state => state.currentTeamId
+  (state) => state.currentTeamId
 );
 
 export const getGames = createSelector(
   getGameFeatureState,
-  state => state.games
+  (state) => state.games
 );
 
 export const getPlayoffGames = createSelector(
   getGameFeatureState,
-  state => state.playoffGames
+  (state) => state.playoffGames
 );
 export const getDivisionPlayoffGames = createSelector(
   getGameFeatureState,
-  state => state.divisionPlayoffGames
+  (state) => state.divisionPlayoffGames
 );
 
 export const getDivisions = createSelector(
   getGameFeatureState,
-  state => state.divisions
+  (state) => state.divisions
 );
 export const getTeams = createSelector(
   getGameFeatureState,
-  state => state.teams
+  (state) => state.teams
 );
 export const getAllTeams = createSelector(
   getGameFeatureState,
-  state => state.showAllteams
+  (state) => state.showAllteams
 );
 export const getFilteredGames = createSelector(
   getGameFeatureState,
-  state => state.filteredGames
+  (state) => state.filteredGames
 );
 
 export const getFilteredGamesByTeam = createSelector(
   getGameFeatureState,
-  state => state.filteredGames
+  (state) => state.filteredGames
 );
 
 export const getFilteredTeams = createSelector(
   getGameFeatureState,
-  state => state.filteredTeams
+  (state) => state.filteredTeams
 );
 
 export const getStandings = createSelector(
   getGameFeatureState,
-  state => state.standings
-);
-export const getCanEdit = createSelector(
-  getGameFeatureState,
-  state => state.canEdit
+  (state) => state.standings
 );
 export const getCurrentGame = createSelector(
   getGameFeatureState,
-  state => state.currentGame
-)
+  (state) => state.currentGame
+);

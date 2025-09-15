@@ -25,7 +25,6 @@ export interface GameState {
   divisions: Division[];
   teams: Team[];
   showAllteams: boolean;
-  canEdit: boolean;
   currentGame: RegularGame;
 }
 
@@ -55,11 +54,10 @@ const cd = 0,
     divisions: [],
     teams: [],
     showAllteams: true,
-    canEdit: false,
     currentGame: new RegularGame(0, 0, 0, 0),
   };
 
-export function reducer (state = initialState, action: GameActions): GameState {
+export function reducer(state = initialState, action: GameActions): GameState {
   switch (action.type) {
     case GameActionTypes.SetCurrentSeason:
       return {
@@ -153,11 +151,6 @@ export function reducer (state = initialState, action: GameActions): GameState {
       return {
         ...state,
         standings: action.payload,
-      };
-    case GameActionTypes.SetCanEdit:
-      return {
-        ...state,
-        canEdit: action.payload,
       };
     case GameActionTypes.SetCurrentGame:
       return {
