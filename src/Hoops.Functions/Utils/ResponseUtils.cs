@@ -48,12 +48,12 @@ public static class ResponseUtils
     {
         var response = request.CreateResponse(statusCode);
         AddCorsHeaders(response);
-        
+
         if (!string.IsNullOrEmpty(message))
         {
             response.WriteString(message);
         }
-        
+
         return response;
     }
 
