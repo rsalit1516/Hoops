@@ -44,18 +44,34 @@ export class TopNav implements OnInit {
   // Show Admin menu when the feature flag is on and the logged-in user is an admin (userType 2 or 3)
   showAdminMenu = computed(() => {
     const flags = this.featureFlags.flags(); // signal read ensures reactivity to flag changes
-    this.logger.log('Feature flags:', flags);
+    this.logger.log('🚩 Feature flags loaded:', flags);
+
     const adminEnabled = !!flags['adminModule'];
+    this.logger.log('🔧 Admin module enabled:', adminEnabled);
+
     const currentUser = this.authService.currentUser(); // signal read ensures reactivity to login/logout
-    this.logger.log('Current user:', currentUser);
-    return adminEnabled && this.#isAdminUser(currentUser ?? undefined);
+    this.logger.log('👤 Current user:', currentUser);
+
+    const isAdmin = this.#isAdminUser(currentUser ?? undefined);
+    this.logger.log('🔐 Is admin user:', isAdmin);
+
+    const showMenu = adminEnabled && isAdmin;
+    this.logger.log('📋 Show admin menu result:', showMenu);
+
+    return showMenu;
   });
 
   // Admin helper aligned with AuthService logic
   #isAdminUser(user: User | undefined): boolean {
-    if (!user) return false;
+    this.logger.log('🔍 Checking admin status for user:', user);
+    if (!user) {
+      this.logger.log('❌ No user found');
+      return false;
+    }
     // userType: 2 = Admin, 3 = Director (based on existing checks in AuthService)
-    return user.userType === 2 || user.userType === 3;
+    const isAdmin = user.userType === 2 || user.userType === 3;
+    this.logger.log(`🎯 User type: ${user.userType}, Is admin: ${isAdmin}`);
+    return isAdmin;
   }
   get showAdminFeature(): boolean {
     return this.featureFlags.isEnabled('adminModule');
@@ -69,9 +85,11 @@ export class TopNav implements OnInit {
     this.env = environment.environment;
     this.securityEnabled = environment.securityEnabled;
 
-    this.logger.log('Environment = ' + this.env);
-    this.logger.log('Show Admin = ' + this.showAdminFeature);
-    this.logger.log('Show Admin Menu = ' + this.showAdminMenu());
+    this.logger.log('🌍 Environment = ' + this.env);
+    this.logger.log('🚩 Feature flag path = ' + environment.featureFlagPath);
+    this.logger.log('🔧 Show Admin Feature = ' + this.showAdminFeature);
+    this.logger.log('📋 Show Admin Menu = ' + this.showAdminMenu());
+    this.logger.log('🔐 Security enabled = ' + this.securityEnabled);
   }
 
   // Deprecated: login dialog replaced by routed /login for mobile friendliness

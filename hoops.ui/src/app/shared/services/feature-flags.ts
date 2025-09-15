@@ -8,16 +8,27 @@ import { environment } from 'environments/environment';
 export class FeatureFlagService {
   private flagsSignal = signal<Record<string, boolean>>({});
 
-  constructor (private http: HttpClient) {
+  constructor(private http: HttpClient) {
     this.loadFlags();
   }
 
-  loadFlags (): void {
-    this.http.get<Record<string, boolean>>(environment.featureFlagPath)
-      .subscribe(flags => this.flagsSignal.set(flags));
+  loadFlags(): void {
+    console.log('🚩 Loading feature flags from:', environment.featureFlagPath);
+    this.http
+      .get<Record<string, boolean>>(environment.featureFlagPath)
+      .subscribe({
+        next: (flags) => {
+          console.log('✅ Feature flags loaded successfully:', flags);
+          this.flagsSignal.set(flags);
+        },
+        error: (err) => {
+          console.error('❌ Failed to load feature flags:', err);
+          this.flagsSignal.set({});
+        },
+      });
   }
 
-  isEnabled (flag: string): boolean {
+  isEnabled(flag: string): boolean {
     return this.flagsSignal()[flag] ?? false;
   }
 
