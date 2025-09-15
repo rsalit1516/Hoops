@@ -5,7 +5,7 @@
     "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated"
   },
   "Host": {
-    "CORS": "http://localhost:4200,https://localhost:4200",
+    "CORS": "http://localhost:4200,https://localhost:4200,https://thankful-pond-090ec730f.4.azurestaticapps.net",
     "CORSCredentials": true
   },
   "ConnectionStrings": {
