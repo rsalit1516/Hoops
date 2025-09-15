@@ -42,8 +42,10 @@ export class TopNav implements OnInit {
   // Show Admin menu when the feature flag is on and the logged-in user is an admin (userType 2 or 3)
   showAdminMenu = computed(() => {
     const flags = this.featureFlags.flags(); // signal read ensures reactivity to flag changes
+    console.log('Feature flags:', flags);
     const adminEnabled = !!flags['adminModule'];
     const currentUser = this.authService.currentUser(); // signal read ensures reactivity to login/logout
+    console.log('Current user:', currentUser);
     return adminEnabled && this.#isAdminUser(currentUser ?? undefined);
   });
 
