@@ -1,6 +1,7 @@
-import { Component, OnInit, Input, input, Inject } from '@angular/core';
+import { Component, OnInit, Input, input, Inject, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
+import { AuthService } from '@app/services/auth.service';
 
 import * as fromGames from '../../state';
 import * as fromUser from '../../../user/state';
@@ -15,32 +16,31 @@ import { NgIf, DatePipe, CommonModule } from '@angular/common';
 
 @Component({
   selector: 'csbc-scores',
-  templateUrl: "./scores.html",
-  styleUrls: [
-    './scores.scss',
-    '../../containers/games-shell/games-shell.scss'
-  ],
-  imports: [CommonModule,
+  templateUrl: './scores.html',
+  styleUrls: ['./scores.scss', '../../containers/games-shell/games-shell.scss'],
+  imports: [
+    CommonModule,
     //
     MatTableModule,
     // NgIf,
     MatButtonModule,
     MatIconModule,
     // DatePipe
-  ]
+  ],
 })
 export class Scores implements OnInit {
+  readonly authService = inject(AuthService);
   dataSource!: MatTableDataSource<RegularGame>;
   groupedGames!: RegularGame[];
   _gamesByDate!: [Date, RegularGame[]];
   divisionId: number | undefined;
   flexMediaWatcher: any;
   currentScreenWidth: any;
-  get games () {
+  get games() {
     return this._games;
   }
   @Input()
-  set games (games: RegularGame[]) {
+  set games(games: RegularGame[]) {
     this._games = games;
     //    console.log(games);
     this.dataSource = new MatTableDataSource(games);
@@ -50,7 +50,6 @@ export class Scores implements OnInit {
     //});
   }
   private _games!: RegularGame[];
-  canEdit!: boolean;
 
   errorMessage!: string;
   public title: string;
@@ -61,64 +60,36 @@ export class Scores implements OnInit {
     'visitingTeamName',
     'homeTeamName',
     'visitingTeamScore',
-    'homeTeamScore'
+    'homeTeamScore',
   ];
-  constructor (
+  constructor(
     @Inject(Store) private store: Store<fromGames.State>,
     private userStore: Store<fromUser.State>,
-    public dialog: MatDialog,
-    // private media: MediaObserver
+    public dialog: MatDialog // private media: MediaObserver
   ) {
     this.title = 'Schedule!';
   }
 
-  ngOnInit () {
-    if (this.canEdit === true) {
-      this.displayedColumns.push('actions');
-    }
-    this.userStore.pipe(select(fromUser.getCurrentUser)).subscribe(user => {
+  ngOnInit() {
+    this.userStore.pipe(select(fromUser.getCurrentUser)).subscribe((user) => {
       this.user = user;
       console.log(this.user);
     });
     this.store
       .pipe(select(fromGames.getCurrentDivision))
-      .subscribe(division => {
-        console.log(division);
+      .subscribe((division) => {
         if (division !== null && fromGames.getCurrentDivisionId !== undefined) {
           this.divisionId = division?.divisionId;
-          console.log(this.divisionId);
-          this.canEdit = false;
-          if (this.user !== null && this.user !== undefined) {
-            if (this.user.userType === 3) {
-              this.canEdit = true;
-            } else {
-              for (let i = 0; i < this.user.divisions!.length!; i++) {
-                if (this.user.divisions![i].divisionId === this.divisionId) {
-                  this.canEdit = true;
-                  console.log('Found division');
-                  break;
-                }
-              }
-            }
-          }
         }
       });
-    // this.dataSource = new MatTableDataSource(this.games);
-    this.store.pipe(select(fromGames.getFilteredGames)).subscribe(games => {
+    this.store.pipe(select(fromGames.getFilteredGames)).subscribe((games) => {
       this.games = games;
       this.dataSource.data = games;
     });
-    this.store.pipe(select(fromGames.getCanEdit)).subscribe(canEdit => {
-      this.canEdit = canEdit;
-      if (canEdit) {
-        this.displayedColumns.push('actions');
-      }
-    });
-
     this.dataSource = new MatTableDataSource(this.games);
-    this.store.pipe(select(fromGames.getFilteredGames)).subscribe(games => {
-      this.games = games;
-      this.dataSource.data = games;
-    });
+    // Dynamically add actions column if user can edit
+    if (this.authService.canEditGames()) {
+      this.displayedColumns.push('actions');
+    }
   }
 }
