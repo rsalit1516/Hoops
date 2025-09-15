@@ -2,11 +2,11 @@
   "adminModule": false,
   "notificationModule": true,
   "scheduleModule": false,
-  "adminDirectors": false,
-  "adminHouseholds": false,
-  "adminPeople": false,
-  "adminTeams": false,
+  "adminDirectors": true,
+  "adminHouseholds": true,
+  "adminPeople": true,
+  "adminTeams": true,
   "adminColors": false,
-  "adminUsers": false,
-  "adminNotices": false
+  "adminUsers": true,
+  "adminNotices": true
 }

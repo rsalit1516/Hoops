@@ -5,6 +5,7 @@
     "ng": "ng",
     "build": "ng build csbc --configuration production",
     "build:prod": "ng build csbc --configuration production",
+    "build:staging": "ng build csbc --configuration staging",
     "start": "ng serve --configuration local",
     "test": "ng test",
     "app_build_command": "npm run docs:build"
