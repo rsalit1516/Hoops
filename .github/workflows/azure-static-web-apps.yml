@@ -32,7 +32,7 @@ jobs:
         working-directory: ./hoops.ui
 
       - name: Build Angular app
-        run: ng build csbc --configuration staging
+        run: npx ng build csbc --configuration staging
         working-directory: ./hoops.ui
 
       - name: List build output
