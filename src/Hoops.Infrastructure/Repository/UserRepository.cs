@@ -16,7 +16,7 @@ namespace Hoops.Infrastructure.Repository
             this.context = context;
             sSQL = string.Empty;
         }
-    
+
 
         // private readonly hoopsContext context;
         // protected DbSet<User> DbSet;
@@ -74,10 +74,14 @@ namespace Hoops.Infrastructure.Repository
         {
             try
             {
+                // Hash the input password to compare with stored encrypted password
+                var hashedPassword = HashPassword(password);
+
                 var user = context.Users
-                .FirstOrDefault(u => 
+                .FirstOrDefault(u =>
                 u.UserName.ToLower() == sUserName.ToLower()
-                && u.PassWord == password);
+                && (u.PassWord == hashedPassword || u.Pword == password)); // Support both encrypted and plain text for compatibility
+
                 if (user == null)
                 {
                     throw new Exception("Invalid username or password.");
@@ -94,7 +98,7 @@ namespace Hoops.Infrastructure.Repository
         public Task<User?> GetUserAsync(string sUserName, string sPwd)
         {
             var db = new hoopsContext();
-           
+
             try
             {
                 //var repo = new UserRepository(DB);
@@ -148,7 +152,7 @@ namespace Hoops.Infrastructure.Repository
         {
             var DB = new hoopsContext();
             DataTable? dtResults = default(DataTable);
-            
+
             try
             {
                 sSQL = "SELECT SeasonID, Sea_Desc, FromDate FROM Seasons WHERE Seasons.CurrentSeason=1";
@@ -187,7 +191,7 @@ namespace Hoops.Infrastructure.Repository
         public Task<User?> GetLoginInfoAsync(string userName, string password)
         {
             var db = new hoopsContext();
-           
+
             try
             {
                 var repo = new UserRepository(db);
@@ -201,7 +205,7 @@ namespace Hoops.Infrastructure.Repository
             {
                 throw new Exception("ClsUsers:GetSeason::" + ex.Message);
             }
-           
+
         }
         /*
         public void DELUserPtn(long HouseId, Int32 CompanyID)
@@ -224,7 +228,7 @@ namespace Hoops.Infrastructure.Repository
             }
         }
         */
-        private string HashPassword(string password)
+        public string HashPassword(string password)
         {
             string? hashedPassword = null;
             // dynamic hashProvider = new SHA256Managed();
@@ -285,7 +289,7 @@ namespace Hoops.Infrastructure.Repository
             {
                 DB = null;
                 dtResults = null;
-                
+
             }
             return accessType!;
         }
@@ -361,8 +365,8 @@ namespace Hoops.Infrastructure.Repository
                 sSQL += ", @PWord = " + user.Pword;
                 sSQL += ", @Password = " + HashPassword(user.PassWord);
                 sSQL += ", @CompanyID = " + user.CompanyId.ToString();
-// ToDo: Fix This
-               // DB.ExecuteGetSQL(sSQL);
+                // ToDo: Fix This
+                // DB.ExecuteGetSQL(sSQL);
 
             }
             catch (Exception ex)
