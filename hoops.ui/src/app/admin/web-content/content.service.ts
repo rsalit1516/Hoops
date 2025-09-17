@@ -1,11 +1,7 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { map, tap } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
-import {
-  HttpClient,
-  HttpParams,
-  httpResource,
-} from '@angular/common/http';
+import { HttpClient, HttpParams, httpResource } from '@angular/common/http';
 
 import { Content } from '../../domain/content';
 import { DataService } from '../../services/data.service';
@@ -24,7 +20,7 @@ import { DateTime } from 'luxon';
   providedIn: 'root',
 })
 export class ContentService {
-  readonly #http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
   readonly data = inject(DataService);
   readonly store = inject(Store<fromContent.State>);
 
@@ -32,43 +28,41 @@ export class ContentService {
   selectedContent$!: Observable<any>;
   standardNotice = 1;
   private _activeWebContent = signal<WebContent[]>([]);
-  public get activeWebContent () {
+  public get activeWebContent() {
     return this._activeWebContent;
   }
-  updateActiveWebContent (value: WebContent[]) {
+  updateActiveWebContent(value: WebContent[]) {
     this._activeWebContent.set(value);
   }
   allWebContent = signal<WebContent[]>([]);
   isActiveContent = signal<boolean>(true);
   selectedContent = signal<WebContent | undefined>(undefined);
   contents = signal<WebContent[]>([]);
-  getContents (): Observable<WebContent[]> {
-    return this.#http.get<WebContent[]>(this.data.getContentUrl);
+  getContents(): Observable<WebContent[]> {
+    return this.http.get<WebContent[]>(this.data.getContentUrl);
   }
-  fetchAllContents () {
-    this.#http.get<WebContent[]>(this.data.getContentUrl).subscribe((data) => {
+  fetchAllContents() {
+    this.http.get<WebContent[]>(this.data.getContentUrl).subscribe((data) => {
       this.allWebContent.update(() => data);
       this.contents.set(data);
     });
   }
-  retrieveAllContents () {
-    return httpResource<ContentResponse>(() =>
-      `${ Constants.getContentUrl }`);
+  retrieveAllContents() {
+    return httpResource<ContentResponse>(() => `${Constants.getContentUrl}`);
   }
 
-  getActiveContent () {
-    return this.#http.get<WebContent[]>(`${ Constants.getActiveWebContentUrl }`);
+  getActiveContent() {
+    return this.http.get<WebContent[]>(`${Constants.getActiveWebContentUrl}`);
   }
-  fetchActiveContents () {
-    this.getActiveContent()
-      .subscribe((data) => {
-        console.log('fetchActiveContents: ' + JSON.stringify(data));
-        this.updateActiveWebContent(data);
-        console.log(this._activeWebContent());
-      });
+  fetchActiveContents() {
+    this.getActiveContent().subscribe((data) => {
+      console.log('fetchActiveContents: ' + JSON.stringify(data));
+      this.updateActiveWebContent(data);
+      console.log(this._activeWebContent());
+    });
   }
 
-  getAllContents (): Observable<WebContent[]> {
+  getAllContents(): Observable<WebContent[]> {
     let filteredContent: WebContent[] = [];
     console.log(filteredContent);
     this.store.select(fromContent.getContentList).subscribe((contents) => {
@@ -82,36 +76,38 @@ export class ContentService {
     return of(filteredContent);
   }
 
-  getContent (webContentId: number) {
+  getContent(webContentId: number) {
     console.log(webContentId);
     if (webContentId === 0) {
       return of(this.initializeContent());
     }
-    return this.#http.get(this.data.getContentUrl).pipe(
+    return this.http.get(this.data.getContentUrl).pipe(
       tap((data) => {
         // this.store.dispatch(new contentActions.SetAllContent());
         // this.store.dispatch(new contentActions.SetActiveContent());
-        console.log('getContent: ' + JSON.stringify(data))
+        console.log('getContent: ' + JSON.stringify(data));
       }),
       catchError(this.data.handleError('getContent', []))
     );
   }
-  private webContentResource = httpResource(() =>
-    `${ Constants.getActiveWebContentUrl }`)
+  private webContentResource = httpResource(
+    () => `${Constants.getActiveWebContentUrl}`
+  );
 
-  activeWebContent2 = computed(() => this.webContentResource.value() as
-    WebContent[]);
-  deleteContent (webContentId: number | null) {
+  activeWebContent2 = computed(
+    () => this.webContentResource.value() as WebContent[]
+  );
+  deleteContent(webContentId: number | null) {
     console.log('Deleting content');
     let headers = new Headers({ 'Content-Type': 'application/json' });
     // To Do: add this back
     let options = { params: new HttpParams() };
 
-    const url = `${ this.data.getContentUrl }/${ webContentId }`;
+    const url = `${this.data.getContentUrl}/${webContentId}`;
     return this.data.delete(url);
   }
 
-  saveContent (data: WebContent) {
+  saveContent(data: WebContent) {
     let content = new WebContent();
     content.webContentId = data.webContentId === null ? 0 : data.webContentId;
     content.companyId = Constants.COMPANYID;
@@ -126,7 +122,8 @@ export class ContentService {
     content.expirationDate = data.expirationDate;
     content.modifiedDate = DateTime.now().toJSDate();
     content.modifiedUser = 121; // To Do: get this from the user
-    content.webContentTypeId = data.webContentTypeId === undefined ? 1 : data.webContentTypeId;
+    content.webContentTypeId =
+      data.webContentTypeId === undefined ? 1 : data.webContentTypeId;
 
     // console.log(content);
     if (data.webContentId === undefined) {
@@ -142,8 +139,7 @@ export class ContentService {
     }
   }
 
-  private createContent (content: WebContent): Observable<void | WebContent> {
-
+  private createContent(content: WebContent): Observable<void | WebContent> {
     console.log(content);
     return this.data.post(this.data.postContentUrl, content).pipe(
       // tap((data) => console.log('createContent: ' + JSON.stringify(data))),
@@ -152,22 +148,21 @@ export class ContentService {
     );
   }
 
-  private updateContent (content: WebContent): Observable<WebContent> {
+  private updateContent(content: WebContent): Observable<WebContent> {
     let url = Constants.PUT_CONTENT_URL + content.webContentId;
     console.log(url);
     // const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.#http.put<WebContent>(url, content);
-
+    return this.http.put<WebContent>(url, content);
   }
 
-  private extractData (response: Response) {
+  private extractData(response: Response) {
     let body = ''; // response.json();
     console.log(response);
     // console.log(body);
     return body || {};
   }
 
-  initializeContent (): Content {
+  initializeContent(): Content {
     return {
       webContentId: 0,
       companyId: 1,
@@ -182,7 +177,7 @@ export class ContentService {
       webContentType: new WebContentType(),
     };
   }
-  getWebContentType (id: number): WebContentType {
+  getWebContentType(id: number): WebContentType {
     let webContentType = new WebContentType();
     // console.log(id);
     switch (id) {
@@ -208,12 +203,11 @@ export class ContentService {
     }
     return webContentType;
   }
-
 }
 
 export interface ContentResponse {
   count: number;
   next: string;
   previous: string;
-  results: WebContent[]
+  results: WebContent[];
 }

@@ -54,6 +54,7 @@ export class Constants {
   public static getActiveContentUrl = `${this.FUNCTIONS_BASE_URL}/api/webcontent/getActiveWebContent`;
   public static postContentUrl = `${this.BASE_URL}/api/WebContent`;
   public static PUT_CONTENT_URL = `${this.BASE_URL}/api/WebContent/`;
+  public static GET_CONTENT_TYPES_URL = `${this.FUNCTIONS_BASE_URL}/api/WebContentType/`;
   public static GET_SEASON_SPONSORS = `${this.FUNCTIONS_BASE_URL}/api/Sponsor/GetSeasonSponsors`;
   public static GET_LOCATIONS = `${this.FUNCTIONS_BASE_URL}/api/location`;
   public static SEASON_URL = `${this.FUNCTIONS_BASE_URL}/api/Season/`;
