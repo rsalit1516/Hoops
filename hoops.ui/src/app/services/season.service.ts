@@ -23,6 +23,7 @@ import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { Constants } from '@app/shared/constants';
 import { fromFetch } from 'rxjs/fetch';
 import { getLocaleDateFormat } from '@angular/common';
+import { LoggerService } from './logger.service';
 
 @Injectable({
   providedIn: 'root',
@@ -31,6 +32,7 @@ export class SeasonService {
   /* private injections */
   private http = inject(HttpClient);
   private dataService = inject(DataService);
+  private logger = inject(LoggerService);
   private seasonUrl = Constants.SEASON_URL + 'getCurrentSeason';
   private seasonsUrl = `${Constants.SEASON_URL}GetAll/${Constants.COMPANYID}`;
 
@@ -73,7 +75,7 @@ export class SeasonService {
     this.getCurrentSeason().subscribe((season) => {
       this.updateCurrentSeason(season!);
       this.updateSelectedSeason(season!);
-      console.log(this.selectedSeason());
+      this.logger.debug('Selected season set', this.selectedSeason());
     });
   }
   private _selectedSeason = signal<Season>(new Season());
@@ -91,7 +93,16 @@ export class SeasonService {
   season2 = computed(() => this.vResource.value()?.results ?? ([] as Season[]));
   season1 = computed(() => this.seasonResource.value()!.results);
   error = computed(() => this.seasonResource.error() as HttpErrorResponse);
-  errorMessage = computed(() => console.log(this.error(), 'Season'));
+  errorMessage = computed(() => {
+    const err = this.error();
+    if (err) {
+      this.logger.error('Season error', err);
+      return `Season error: ${
+        err.message ?? err.statusText ?? 'Unknown error'
+      }`;
+    }
+    return '';
+  });
   isLoading = computed(() => this.seasonResource.isLoading());
   seasonSaved = signal<boolean>(false);
   fetchSeasons(): void {
@@ -106,7 +117,7 @@ export class SeasonService {
   }
 
   postSeason(season: Season): Observable<Season | null> {
-    console.log('posting season');
+    this.logger.info('Posting season');
     const payload = this.convertToSeasonApiFormat(season);
     return this.dataService.post<any>(
       Constants.SEASON_URL,
@@ -115,12 +126,12 @@ export class SeasonService {
   }
 
   putSeason(season: Season): Observable<Season> {
-    console.log('putting season', season);
+    this.logger.info('Putting season', season);
     const payload = this.convertToSeasonApiFormat(season);
-    console.log(payload);
+    this.logger.debug('Season payload', payload);
 
     const url = `${Constants.SEASON_URL}${season.seasonId}`;
-    console.log(url);
+    this.logger.debug('Season PUT url', url);
     return this.dataService.put<any>(
       url,
       payload

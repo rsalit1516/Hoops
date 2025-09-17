@@ -19,7 +19,7 @@ import { MatOptionModule } from '@angular/material/core';
 import { NgFor, CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { LoggerService } from '@app/services/logging.service';
+import { LoggerService } from '@app/services/logger.service';
 import { DivisionService } from '@app/services/division.service';
 import { TeamService } from '@app/services/team.service';
 import { SeasonService } from '@app/services/season.service';

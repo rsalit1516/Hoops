@@ -32,7 +32,7 @@ import { AdminGamesPlayoffsDetail } from '../admin-games-playoffs-detail/admin-g
 import { MatButtonModule } from '@angular/material/button';
 import { AdminGamesFilter } from '../admin-games-filter/admin-games-filter';
 import { AdminGameService } from '../adminGame.service';
-import { LoggerService } from '@app/services/logging.service';
+import { LoggerService } from '@app/services/logger.service';
 import { Router, RouterOutlet } from '@angular/router';
 import { AdminGamesState } from '../adminGamesState.service';
 @Component({
@@ -96,9 +96,9 @@ export class AdminGamesShell implements OnInit {
   constructor() {
     effect(() => {
       const record = this.gameService.selectedRecordSignal();
-      console.log('Selected record changed:', record);
+      this.logger.info('Selected record changed', record);
       if (record !== null) {
-        console.log(`Record updated: ${record.scheduleGamesId}`);
+        this.logger.debug('Record updated', record.scheduleGamesId);
         this.selectedRecord.set(record);
         this.isSidenavOpen = true;
         // Allow the sidenav to open first, then expand the first panel
@@ -114,20 +114,22 @@ export class AdminGamesShell implements OnInit {
         this.showPlayoffs.set(true);
         this.showRegularSeason.set(false);
         this.router.navigate(['admin/games/list-playoff']);
-        console.log('Playoff games are shown');
+        this.logger.info('Playoff games are shown');
       } else {
         this.showPlayoffs.set(false);
         this.showRegularSeason.set(true);
         this.router.navigate(['admin/games/list']);
-
-        console.log('Regular season games are shown');
+        this.logger.info('Regular season games are shown');
       }
     });
   }
 
   ngOnInit(): void {
     this.gameService.filteredGames();
-    console.log(this.gameService.filteredGames());
+    this.logger.debug(
+      'Filtered games signal',
+      this.gameService.filteredGames()
+    );
     // console.log((gameType === 'Regular Season'));
     // this.showPlayoffs = (gameType === 'Playoffs');
     // this.showRegularSeason = (gameType === 'Regular Season');
@@ -143,7 +145,7 @@ export class AdminGamesShell implements OnInit {
   }
   clickedDivision(division: MouseEvent) {
     // TODO: need to change the parameter
-    console.log(division);
+    this.logger.debug('Clicked division', division);
   }
   newGame() {}
   closeSidenav() {

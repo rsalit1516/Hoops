@@ -1,4 +1,11 @@
-import { Component, computed, effect, inject, linkedSignal, OnInit } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  linkedSignal,
+  OnInit,
+} from '@angular/core';
 
 import * as fromHome from './state';
 import * as homeActions from './state/home.actions';
@@ -14,7 +21,7 @@ import { CsbcAnnouncements } from './components/announcements/announcements';
 import { CsbcHomeSidebar } from './components/home-sidebar/home-sidebar';
 import { CommonModule, NgClass, NgIf } from '@angular/common';
 import { HomeCenter } from './components/home-center/home-center';
-import { LoggerService } from '@app/services/logging.service';
+import { LoggerService } from '@app/services/logger.service';
 import { SeasonService } from '@app/services/season.service';
 import { Season } from '@app/domain/season';
 import { Content } from '@app/domain/content';
@@ -22,7 +29,7 @@ import { ContentService } from '@app/admin/web-content/content.service';
 
 @Component({
   selector: 'csbc-home',
-  templateUrl: "./home.html",
+  templateUrl: './home.html',
   styleUrls: ['./home.scss'],
   imports: [
     CommonModule,
@@ -32,7 +39,7 @@ import { ContentService } from '@app/admin/web-content/content.service';
     CsbcHomeSidebar,
     CsbcAnnouncements,
     SponsorList,
-  ]
+  ],
 })
 export class Home implements OnInit {
   logger = inject(LoggerService);
@@ -43,7 +50,7 @@ export class Home implements OnInit {
 
   coverImage = 'images/sky.jpg';
   seasonInfoCount: number = 1;
-  latestNewsCount: number = 0
+  latestNewsCount: number = 0;
   meetingNoticeCount: number = 0;
   topImage = '../../assets/images/CSBCTopImage.jpg';
   errorMessage: string | undefined;
@@ -59,9 +66,9 @@ export class Home implements OnInit {
   meetingNoticeClass = 'col-sm-0 col-xs-0';
   announcementInfo: WebContent[] | undefined = [];
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit (): void {
+  ngOnInit(): void {
     this.setImageClass();
     // this.#gameStore.dispatch(new gameActions.LoadCurrentSeason());
     // this.#gameStore.select(fromGames.getCurrentSeason).subscribe((season) => {
@@ -100,11 +107,11 @@ export class Home implements OnInit {
     // });
   }
 
-  showSeasonInfo (): boolean {
+  showSeasonInfo(): boolean {
     return this.seasonInfoCount > 0;
   }
 
-  setImageClass (): void {
+  setImageClass(): void {
     const results = this.meetingNotices!;
     // this.showSidebar = results.length > 0;
     // if (results.length > 0) {
@@ -116,7 +123,7 @@ export class Home implements OnInit {
     // }
   }
 
-  setSeasonInfoClass () {
+  setSeasonInfoClass() {
     if (this.showNews()) {
       return 'col-sm-6 col-xs-12';
     } else {
@@ -132,17 +139,17 @@ export class Home implements OnInit {
   //     }
   //   }
 
-  setSeasonListClass (): string {
+  setSeasonListClass(): string {
     return this.seasonInfoCount > 1 ? 'showMultiItemList' : '';
   }
 
-  setNewsClass (): string {
+  setNewsClass(): string {
     return this.showSeasonInfo() || this.latestNewsCount > 0
       ? 'col-sm-6 col-sm-offset-0 col-xs-12'
       : 'col-sm-8 col-sm-offset-2  col-xs-12';
   }
 
-  showNews (): boolean {
+  showNews(): boolean {
     return this.latestNewsCount > 0;
   }
 }

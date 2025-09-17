@@ -11,6 +11,7 @@ import { NgFor, AsyncPipe, TitleCasePipe } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Director } from '@app/domain/director';
+import { LoggerService } from '@app/services/logger.service';
 
 @Component({
   selector: 'csbc-contacts',
@@ -25,6 +26,7 @@ import { Director } from '@app/domain/director';
 })
 export class Contacts implements OnInit {
   private directorService = inject(DirectorService);
+  private logger = inject(LoggerService);
   title = 'Contacts';
   directorList$: any;
   displayedColumns = ['title', 'name', 'cellPhone', 'email'];
@@ -32,7 +34,7 @@ export class Contacts implements OnInit {
   // directors = this.directorService.directors!;
   directors = computed(() => {
     const value = this.directorService.directors();
-    console.log('Directors computed:', value);
+    this.logger.debug('Directors computed', value);
     return value;
   });
   isLoading = this.directorService.isLoading;
@@ -44,7 +46,7 @@ export class Contacts implements OnInit {
   constructor() {
     effect(() => {
       const directors = this.directorService.directorsSignal();
-      console.log('Directors updated:', directors);
+      this.logger.info('Directors updated', directors);
       if (directors) {
         this.dataSource = new MatTableDataSource<Director>(directors);
       }

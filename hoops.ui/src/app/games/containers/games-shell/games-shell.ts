@@ -27,6 +27,7 @@ import { RouterOutlet } from '@angular/router';
 import { GamesTopMenu } from '../../components/games-top-menu/games-top-menu';
 import { AuthService } from '@app/services/auth.service';
 import { CommonModule } from '@angular/common';
+import { LoggerService } from '@app/services/logger.service';
 
 @Component({
   selector: 'csbc-games-shell',
@@ -43,6 +44,7 @@ export class GamesShell implements OnInit {
   private store = inject(Store<fromGames.State>);
   private userStore = inject(Store<fromUser.State>);
   readonly #authService = inject(AuthService);
+  private readonly logger = inject(LoggerService);
   readonly showAllTeams = input<boolean>();
   readonly currentTeam = input<string>();
   teamList: any[] | undefined;
@@ -100,7 +102,7 @@ export class GamesShell implements OnInit {
     // Effect to handle side effects when the current division changes
     effect(() => {
       const division = this.divisionService.currentDivision();
-      console.log('division changed in shell', division);
+      this.logger.info('Division changed in shell', division);
       if (division) {
         // this.store.dispatch(new gameActions.LoadFilteredTeams());
         // this.store.dispatch(new gameActions.LoadFilteredGames());
@@ -150,7 +152,7 @@ export class GamesShell implements OnInit {
     // })
   }
   public filterByDivision(divisionId: number): void {
-    console.log(divisionId);
+    this.logger.debug('Filter by division', divisionId);
     this.teamList = [];
   }
 
@@ -206,11 +208,11 @@ export class GamesShell implements OnInit {
         team.divisionId = data[i].divisionId;
         teams.push(team);
       }
-      console.log(teams);
+      this.logger.debug('Aggregated teams', teams);
     }
     return teams;
   }
   handlefilterUpdate($event: any) {
-    console.log($event);
+    this.logger.debug('Filter updated', $event);
   }
 }

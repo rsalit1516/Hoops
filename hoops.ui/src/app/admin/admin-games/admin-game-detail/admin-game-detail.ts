@@ -38,6 +38,7 @@ import { GameService } from '@app/services/game.service';
 import { Location as GymLocation } from '@app/domain/location';
 import { RegularGameSaveObject } from '@app/domain/RegularGameSaveObject';
 import { forkJoin, of } from 'rxjs';
+import { LoggerService } from '@app/services/logger.service';
 
 // Type for schedule-specific teams from the API
 export interface ScheduleTeam {
@@ -78,6 +79,7 @@ export class AdminGameDetail implements OnInit {
   readonly locationService = inject(LocationService);
   readonly #router = inject(Router);
   readonly gameService = inject(GameService);
+  readonly #logger = inject(LoggerService);
   selectedRecord = computed(
     () => this.gameService.selectedRecordSignal() as RegularGame | undefined
   );
@@ -140,12 +142,15 @@ export class AdminGameDetail implements OnInit {
   locations = this.locationService.locations();
   constructor() {
     effect(() => {
-      console.log(this.gameService.selectedRecordSignal());
+      this.#logger.debug(
+        'Selected record signal',
+        this.gameService.selectedRecordSignal()
+      );
       this.scheduleGamesId =
         this.gameService.selectedRecordSignal()?.scheduleGamesId ?? 0;
     });
     effect(() => {
-      console.log(this.divisionTeams());
+      this.#logger.debug('Division teams updated', this.divisionTeams());
     });
     effect(() => {
       //this.locations.set(this.locationService.locations());
@@ -192,10 +197,10 @@ export class AdminGameDetail implements OnInit {
     this.#teamService.getValidScheduleTeams(scheduleNumber, seasonId).subscribe(
       (teams) => {
         this.scheduleTeams.set(teams);
-        console.log('Loaded schedule teams:', teams);
+        this.#logger.info('Loaded schedule teams', teams);
       },
       (error) => {
-        console.error('Error loading schedule teams:', error);
+        this.#logger.error('Error loading schedule teams', error);
         this.scheduleTeams.set([]);
       }
     );
@@ -259,7 +264,7 @@ export class AdminGameDetail implements OnInit {
     st.scheduleTeamNumber;
 
   getTeam(teamId: number) {
-    console.log(teamId);
+    this.#logger.debug('Get team', teamId);
     // return this.divisionTeams.pipe(
     //   map((t) => t.find((s) => s.teamId === teamId))
     // );
@@ -267,11 +272,11 @@ export class AdminGameDetail implements OnInit {
 
   onSave() {
     if (!this.gameEditForm.valid) {
-      console.error('Form is invalid');
+      this.#logger.error('Form is invalid');
       return;
     }
 
-    console.log(this.gameEditForm.value);
+    this.#logger.debug('Game edit form value', this.gameEditForm.value);
 
     // Get team selections from form - now using ScheduleTeam
     const selectedVisitingTeam = this.gameEditForm.value
@@ -291,9 +296,10 @@ export class AdminGameDetail implements OnInit {
       this.selectedRecord()?.homeTeamNumber ??
       0;
 
-    console.log('Saving TeamNumber values (ScheduleDivTeams.TeamNumber):');
-    console.log('Visiting team number:', visitingTeamNumber);
-    console.log('Home team number:', homeTeamNumber);
+    this.#logger.info('Saving team numbers', {
+      visitingTeamNumber,
+      homeTeamNumber,
+    });
 
     // Create save object with schedule team numbers
     const saveObject = this.converttoSaveFormat(this.gameEditForm.value, {
@@ -302,10 +308,10 @@ export class AdminGameDetail implements OnInit {
     });
 
     if (this.scheduleGamesId === 0) {
-      console.log('Creating new game');
+      this.#logger.info('Creating new game');
       this.gameService.saveNewGame(saveObject);
     } else {
-      console.log('Updating existing game');
+      this.#logger.info('Updating existing game');
       this.gameService.saveExistingGame(saveObject);
     }
 
@@ -426,17 +432,15 @@ visitingTeamSeasonNumber:17
 
     // Use properly mapped team numbers from ScheduleDivTeams lookup
     if (teamNumbers) {
-      console.log('Using mapped team numbers from ScheduleDivTeams');
-      console.log(
-        'Mapped visiting team number:',
-        teamNumbers.visitingTeamNumber
+      this.#logger.debug(
+        'Using mapped team numbers from ScheduleDivTeams',
+        teamNumbers
       );
-      console.log('Mapped home team number:', teamNumbers.homeTeamNumber);
       game.visitingTeamNumber = teamNumbers.visitingTeamNumber;
       game.homeTeamNumber = teamNumbers.homeTeamNumber;
     } else {
       // Fallback to original team numbers if mapping failed
-      console.log('Fallback: Using original team numbers');
+      this.#logger.warn('Fallback: Using original team numbers');
       game.visitingTeamNumber = this.selectedRecord()?.visitingTeamNumber ?? 0;
       game.homeTeamNumber = this.selectedRecord()?.homeTeamNumber ?? 0;
     }
@@ -450,7 +454,7 @@ visitingTeamSeasonNumber:17
     return game;
   }
   cancel() {
-    console.log('cancel');
+    this.#logger.info('Cancel edit');
     this.#router.navigate(['./admin/games/list']);
     // this.gameEditForm.reset();
   }

@@ -16,6 +16,7 @@ import { GameService } from '@app/services/game.service';
 import { PlayoffGameService } from '@app/services/playoff-game.service';
 import { RegularGame } from '@app/domain/regularGame';
 import { PlayoffGame } from '@app/domain/playoffGame';
+import { LoggerService } from '@app/services/logger.service';
 
 @Component({
   selector: 'csbc-admin-games-filter',
@@ -43,6 +44,7 @@ export class AdminGamesFilter {
   adminGameService = inject(AdminGameService);
   regularService = inject(GameService);
   playoffService = inject(PlayoffGameService);
+  private readonly logger = inject(LoggerService);
 
   selectSeason: Season | undefined;
   selectDivision: Division | undefined;
@@ -114,17 +116,20 @@ export class AdminGamesFilter {
   }
 
   handleSeasonChange(season: Season) {
-    console.log('Selected season:', season);
+    this.logger.info('Selected season', season);
     // Handle the selected season
   }
   handleDivisionChange(division: Division) {
-    console.log('Selected division:', division);
+    this.logger.info('Selected division', division);
     // Handle the selected season
   }
   handleGameTypeChange(gameType: string) {
-    console.log('Selected gameType:', gameType);
-    console.log('Selected season:', this.selectedSeason());
-    console.log('Selected division:', this.selectedDivision());
+    this.logger.info('Selected gameType', gameType);
+    this.logger.debug('Selected season signal value', this.selectedSeason());
+    this.logger.debug(
+      'Selected division signal value',
+      this.selectedDivision()
+    );
     if (!this.selectedSeason()) {
       this.#seasonService.updateSelectedSeason(this.selectedSeason()!);
     }
@@ -133,8 +138,14 @@ export class AdminGamesFilter {
         () => this.#divisionService.selectedDivision
       );
     }
-    console.log('Selected season:', this.selectedSeason());
-    console.log('Selected division:', this.selectedDivision());
+    this.logger.debug(
+      'Selected season after potential update',
+      this.selectedSeason()
+    );
+    this.logger.debug(
+      'Selected division after potential update',
+      this.selectedDivision()
+    );
 
     // if (this.selectedSeason() && this.selectedDivision()) {
     this.gameFilterChanged.emit({

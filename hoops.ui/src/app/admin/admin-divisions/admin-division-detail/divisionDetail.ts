@@ -36,6 +36,7 @@ import { Person } from '@app/domain/person';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NotificationService } from '@app/shared/services/notification.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { LoggerService } from '@app/services/logger.service';
 
 @Component({
   selector: 'csbc-division-detail',
@@ -72,6 +73,7 @@ export class DivisionDetail implements OnInit {
   private router = inject(Router);
   private peopleService = inject(PeopleService);
   private notify = inject(NotificationService);
+  private logger = inject(LoggerService);
   fb = inject(FormBuilder);
 
   // selectedDivision = signal<Division>(new Division());
@@ -134,7 +136,10 @@ export class DivisionDetail implements OnInit {
   selectedDivision = computed(() => this.divisionService.selectedDivision());
   constructor() {
     effect(() => {
-      console.log(this.divisionService.selectedDivision);
+      this.logger.debug(
+        'Selected division signal',
+        this.divisionService.selectedDivision
+      );
 
       // patchForm();
     });
@@ -156,7 +161,7 @@ export class DivisionDetail implements OnInit {
           });
         }
       },
-      error: (e) => console.error('Failed to load ADs', e),
+      error: (e) => this.logger.error('Failed to load ADs', e),
     });
 
     const division = this.divisionService.selectedDivision(); // read the selected division from the service
@@ -248,7 +253,7 @@ export class DivisionDetail implements OnInit {
           this.router.navigate(['/admin/division']);
         },
         error: (err) => {
-          console.error('Failed to save division', err);
+          this.logger.error('Failed to save division', err);
           this.notify.error('Failed to save division');
         },
       });
@@ -290,7 +295,7 @@ export class DivisionDetail implements OnInit {
         this.router.navigate(['/admin/division']);
       },
       error: (err: HttpErrorResponse) => {
-        console.error('Failed to delete division', err);
+        this.logger.error('Failed to delete division', err);
         if (err.status === 409) {
           const detail =
             (err.error && (err.error.detail || err.error.title)) ||
@@ -315,7 +320,7 @@ export class DivisionDetail implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log(result);
+      this.logger.info('Delete confirmation result', result);
       if (result) this.deleteRecord();
     });
   }

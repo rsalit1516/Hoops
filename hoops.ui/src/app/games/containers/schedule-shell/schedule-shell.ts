@@ -23,7 +23,7 @@ import { DivisionService } from './../../../services/division.service';
 import { GameService } from '@app/services/game.service';
 import { Schedule } from '../../components/schedule/schedule';
 import { CommonModule } from '@angular/common';
-import { LoggerService } from '@app/services/logging.service';
+import { LoggerService } from '@app/services/logger.service';
 
 @Component({
   selector: 'csbc-schedule-shell',
@@ -76,12 +76,15 @@ export class ScheduleShell implements OnInit {
     effect(() => {
       const selectedDivision = this.selectedDivision();
       if (selectedDivision) {
-        this.#loggerService.log(selectedDivision);
+        this.#loggerService.info(
+          'Selected division in schedule-shell',
+          selectedDivision
+        );
         //        this.#store.dispatch(new gameActions.// LoadDivisionGames(selectedDivision.divisionId));
         // this.gameService.currentDivision$
         // this.gameService.filterGamesByDivision();
         // this.dailySchedule = this.#gameService.groupRegularGamesByDate(this.games!);
-        this.#loggerService.log(this.dailySchedule);
+        this.#loggerService.debug('Daily schedule signal', this.dailySchedule);
       }
     });
   }
@@ -98,13 +101,13 @@ export class ScheduleShell implements OnInit {
   }
 
   getCanEdit(user: User | undefined, divisionId: number): boolean {
-    console.log(divisionId);
+    this.#loggerService.debug('Check canEdit for division', divisionId);
     if (user !== undefined) {
       if (user.divisions !== undefined) {
         user.divisions.forEach((element) => {
           if (divisionId === element.divisionId) {
             return true;
-            console.log('found ' + divisionId);
+            this.#loggerService.debug('Division match found', divisionId);
           }
           return false;
         });

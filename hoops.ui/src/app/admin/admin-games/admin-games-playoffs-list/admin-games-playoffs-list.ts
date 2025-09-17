@@ -11,6 +11,7 @@ import { NgIf, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PlayoffGameService } from '@app/services/playoff-game.service';
 import { Router } from '@angular/router';
+import { LoggerService } from '@app/services/logger.service';
 
 @Component({
   selector: 'csbc-admin-games-playoffs-list',
@@ -32,6 +33,7 @@ import { Router } from '@angular/router';
 export class AdminGamesPlayoffsList implements OnInit {
   gameService = inject(PlayoffGameService);
   readonly router = inject(Router);
+  private readonly logger = inject(LoggerService);
   title = 'Playoff Games';
   dataSource!: MatTableDataSource<PlayoffGame>;
   clickedRows = new Set<PlayoffGame>();
@@ -46,11 +48,14 @@ export class AdminGamesPlayoffsList implements OnInit {
   flexMediaWatcher: any;
   constructor(private store: Store<fromAdmin.State>, public dialog: MatDialog) {
     effect(() => {
-      console.log(this.gameService.divisionPlayoffGames());
+      this.logger.debug(
+        'Division playoff games',
+        this.gameService.divisionPlayoffGames()
+      );
       this.dataSource = new MatTableDataSource(
         this.gameService.divisionPlayoffGames()!
       );
-      console.log(this.dataSource);
+      this.logger.debug('DataSource instance', this.dataSource);
     });
     this.setupTable();
   }
@@ -112,7 +117,7 @@ export class AdminGamesPlayoffsList implements OnInit {
     this.router.navigate(['./admin/games/detail-playoff']);
   }
   selectRow(row: any) {
-    console.log(row);
+    this.logger.debug('Row selected', row);
     // Ensure record is normalized for keys and time parsing
     const record: PlayoffGame = {
       scheduleNumber: (row.scheduleNumber ?? row.ScheduleNumber) as number,

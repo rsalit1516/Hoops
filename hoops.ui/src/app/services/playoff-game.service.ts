@@ -6,7 +6,7 @@ import { select, Store } from '@ngrx/store';
 import { Observable, catchError, map, of, tap } from 'rxjs';
 
 import * as fromGames from '../games/state';
-import { LoggerService } from './logging.service';
+import { LoggerService } from './logger.service';
 import { SeasonService } from '@app/services/season.service';
 import { DivisionService } from './division.service';
 import { DataService } from './data.service';
@@ -61,7 +61,11 @@ export class PlayoffGameService {
       const url = Constants.PLAYOFF_GAMES_URL + '?seasonId=' + sid;
       return this.http.get<PlayoffGame[]>(url).pipe(
         // map((response) => (this.seasonPlayoffGames = response)),
-        tap((data) => console.log('All: ' + JSON.stringify(data.length))),
+        tap((data) =>
+          this.logger.debug('Loaded season playoff games', {
+            count: data.length,
+          })
+        ),
         catchError(this.#dataService.handleError('getCurrentSeason', null))
       );
     }

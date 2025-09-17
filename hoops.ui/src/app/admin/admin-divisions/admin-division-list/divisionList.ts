@@ -27,6 +27,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DivisionToolbar } from '../../components/division-toolbar/division-toolbar';
+import { LoggerService } from '@app/services/logger.service';
 
 @Component({
   selector: 'csbc-division-list',
@@ -51,6 +52,7 @@ export class DivisionList implements OnInit, OnChanges {
   #seasonService = inject(SeasonService);
   private store = inject(Store<fromAdmin.State>);
   #router = inject(Router);
+  private logger = inject(LoggerService);
 
   // Signals
   // users = this.userService.members;
@@ -108,7 +110,7 @@ export class DivisionList implements OnInit, OnChanges {
 
   onSelectedSeason() {
     // this.selectedSeason = season;
-    console.log('Help');
+    this.logger.debug('Selected season change requested');
     //    this.seasonService.selectedSeason$.subscribe(
 
     //          () => console.log('Help'));
@@ -118,9 +120,9 @@ export class DivisionList implements OnInit, OnChanges {
   }
   setDivisionData(data: any[]): Division[] {
     let divisions: Division[] = [];
-    console.log(data);
+    this.logger.debug('Raw division data', data);
     for (let i = 0; i <= data.length; i++) {
-      console.log(data[i]);
+      this.logger.debug('Division data row', data[i]);
       if (data[i] !== undefined) {
         let division: Division = {
           companyId: 1,
@@ -137,12 +139,12 @@ export class DivisionList implements OnInit, OnChanges {
         };
         divisions.push(division);
       }
-      console.log(divisions);
+      this.logger.debug('Aggregated divisions', divisions);
     }
     return divisions;
   }
   addDivision() {
-    console.log('Add Division');
+    this.logger.info('Add division clicked');
     let division = new Division();
 
     // this.#divisionService.setCurrentDivision(division.divisionId);
@@ -150,17 +152,23 @@ export class DivisionList implements OnInit, OnChanges {
     this.#router.navigate(['./admin/division/edit']);
   }
   viewTeams(division: any) {
-    console.log(division);
+    this.logger.debug('View teams for division', division);
     // Always set selected first (this also syncs current via service)
     this.divisionService.updateSelectedDivision(division);
-    console.log(this.divisionService.selectedDivision());
+    this.logger.debug(
+      'Selected division after update',
+      this.divisionService.selectedDivision()
+    );
     this.#router.navigate(['./admin/season-setup']);
   }
   getRecord(division: any) {
     //this.divisionService.setCurrentDivision(division.divisionId);
     // Always set selected first (this also syncs current via service)
     this.divisionService.updateSelectedDivision(division);
-    console.log(this.divisionService.selectedDivision());
+    this.logger.debug(
+      'Selected division after update',
+      this.divisionService.selectedDivision()
+    );
     //this.divisionService.getDvision(division);
     //console.log(this.divisionService.currentDivision());
     // this.store.dispatch(new adminActions.SetSelectedDivision(division));

@@ -20,7 +20,7 @@ import { Division } from '@app/domain/division';
 import { User } from '@app/domain/user';
 import { SeasonService } from './season.service';
 import { DivisionService } from './division.service';
-import { LoggerService } from './logging.service';
+import { LoggerService } from './logger.service';
 import { AuthService } from './auth.service';
 import { Standing } from '@app/domain/standing';
 import { TeamService } from './team.service';
@@ -76,8 +76,8 @@ export class GameService {
   }
   updateSelectedGame(record: RegularGame) {
     this._selectedGame.set(record);
-    console.log(`Selected game updated: ${record}`);
-    console.log(this._selectedGame());
+    this.logger.debug('Selected game updated', record);
+    this.logger.debug('Selected game signal value', this._selectedGame());
   }
   clearSelectedGame() {
     this._selectedGame.set(null);
@@ -131,7 +131,7 @@ export class GameService {
     effect(() => {
       const record = this.selectedGame;
       if (record !== null) {
-        console.log(`Record updated: ${record.scheduleGamesId}`);
+        this.logger.debug('Record updated', record.scheduleGamesId);
         // Optionally trigger additional logic here
       }
     });
@@ -145,7 +145,10 @@ export class GameService {
 
     effect(() => {
       // const selectedDivision = this.selectedDivision();
-      console.log(this.divisionService.selectedDivision());
+      this.logger.debug(
+        'Selected division',
+        this.divisionService.selectedDivision()
+      );
       if (this.divisionService.selectedDivision()!) {
         this.recomputeDivisionDerived();
         this.fetchStandingsByDivision();
@@ -243,7 +246,7 @@ export class GameService {
   fetchStandingsByDivision() {
     const seasonId = this.seasonService.selectedSeason()?.seasonId;
     if (!seasonId) {
-      console.error('No season selected');
+      this.logger.error('No season selected');
       this.divisionStandings.update(() => []);
       return;
     }
@@ -341,14 +344,14 @@ export class GameService {
       }),
     };
     const gameUrl = Constants.PUT_SEASON_GAME_URL + game.scheduleGamesId;
-    console.log(gameUrl);
+    this.logger.info('Saving existing game via', gameUrl);
     const gameJson = JSON.stringify(game);
-    console.log(gameJson);
+    this.logger.debug('Existing game payload', gameJson);
     let result = this.http
       .put(gameUrl, gameJson, httpOptions)
       .pipe(
         tap((data) => {
-          console.log('Game saved successfully:', data);
+          this.logger.info('Game saved successfully', data);
           // Refresh the season games to reflect the changes
           this.fetchSeasonGames();
         }),
@@ -364,12 +367,12 @@ export class GameService {
       }),
     };
     const gameUrl = Constants.POST_SEASON_GAME_URL;
-    console.log(gameUrl);
+    this.logger.info('Creating new game via', gameUrl);
     let result = this.http
       .post(gameUrl, game, httpOptions)
       .pipe(
         tap((data) => {
-          console.log('New game created successfully:', data);
+          this.logger.info('New game created successfully', data);
           // Refresh the season games to include the new game
           this.fetchSeasonGames();
         }),
@@ -403,9 +406,9 @@ export class GameService {
       homeForfeited: (game as any).homeForfeited ?? null,
       visitingForfeited: (game as any).visitingForfeited ?? null,
     };
-    console.log('Score update payload', payload);
+    this.logger.debug('Score update payload', payload);
     const gameUrl = `${Constants.PUT_SEASON_GAME_SCORES_URL}${game.scheduleGamesId}/scores`; // api/ScheduleGame/{id}/scores
-    console.log('Updating game via', gameUrl);
+    this.logger.info('Updating game via', gameUrl);
     return this.http.put<void>(gameUrl, payload, httpOptions).pipe(
       // First, map the void response to a strongly-typed RegularGame result
       map(() => ({ ...game, homeTeamScore, visitingTeamScore } as RegularGame)),

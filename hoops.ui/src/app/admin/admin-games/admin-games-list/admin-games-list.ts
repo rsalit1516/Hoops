@@ -24,7 +24,7 @@ import { AdminGameService } from '../adminGame.service';
 import { GameService } from '@app/services/game.service';
 import { ShellTitle } from '@app/shared/components/shell-title/shell-title';
 import { AdminGamesFilter } from '../admin-games-filter/admin-games-filter';
-import { LoggerService } from '@app/services/logging.service';
+import { LoggerService } from '@app/services/logger.service';
 import { Router } from '@angular/router';
 @Component({
   selector: 'csbc-admin-games-list',
@@ -83,7 +83,7 @@ export class AdminGamesList implements OnInit, OnChanges, AfterViewInit {
     this.setupTable();
 
     effect(() => {
-      console.log('list component effect');
+      this.logger.debug('Admin games list component effect triggered');
       this.dataSource = new MatTableDataSource(
         this.gameService.divisionGames()!
       );
@@ -166,7 +166,7 @@ export class AdminGamesList implements OnInit, OnChanges, AfterViewInit {
     // TODO: implement this method
   }
   selectRow(row: RegularGame) {
-    console.log(row);
+    this.logger.debug('Row selected', row);
     this.gameService.updateSelectedGame(row);
     this.router.navigate(['./admin/games/detail-regular']);
   }
