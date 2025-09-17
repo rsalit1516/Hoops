@@ -9,10 +9,6 @@ import { appConfig } from './app/app.config';
 
 if (environment.production) {
   enableProdMode();
-  // Override console methods to disable them in production
-  console.log = () => {};
-  console.warn = () => {};
-  console.error = () => {};
 } else {
   // Enable console logging for development and non-production environments
   console.log(

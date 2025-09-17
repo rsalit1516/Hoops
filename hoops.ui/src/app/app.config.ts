@@ -14,9 +14,20 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { reducers, metaReducers } from './reducers';
 import { DataService } from './services/data.service';
 import { environment } from '../environments/environment';
+import { LOGGER_OPTIONS, LoggerOptions } from './services/logger.tokens';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    {
+      provide: LOGGER_OPTIONS,
+      useValue: {
+        enableInfo: !environment.production,
+        enableDebug:
+          !environment.production && environment.environment === 'local',
+        prefix: `[${environment.environment.toUpperCase()}]`,
+        alwaysLogErrors: true,
+      } as LoggerOptions,
+    },
     importProvidersFrom(
       BrowserModule,
       AppRouting,
