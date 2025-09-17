@@ -4,12 +4,14 @@ import { map, tap, catchError } from 'rxjs/operators';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Constants } from '@app/shared/constants';
+import { LoggerService } from './logger.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DataService {
   #http = inject(HttpClient);
+  #logger = inject(LoggerService);
 
   webUrl: string;
   baseUrl = Constants.DEFAULTURL;
@@ -53,22 +55,22 @@ export class DataService {
   get(url: string, data: string) {
     return this.#http.get(url, this.httpOptions).pipe(
       tap((data) => {
-        console.log('getContent: ' + JSON.stringify(data));
+        this.#logger.info('getContent: ' + JSON.stringify(data));
       }),
       catchError(this.handleError('get ', data))
     );
   }
   post<T>(url: string, data: T): Observable<T> {
-    console.log(data);
-    console.log(url);
+    this.#logger.debug('POST data:', data);
+    this.#logger.debug('POST url:', url);
     return this.#http.post<T>(url, data, this.httpOptions).pipe(
-      tap((data) => console.log('PostContent: ' + JSON.stringify(data))),
+      tap((data) => this.#logger.info('PostContent: ' + JSON.stringify(data))),
       catchError(this.handleError('Error', data))
     );
   }
   put<T>(url: string, data: T): Observable<T> {
-    console.log(url);
-    console.log(data);
+    this.#logger.debug('PUT url:', url);
+    this.#logger.debug('PUT data:', data);
     // let url = this.data.putContentUrl + content.webContentId;
     return this.#http.put<T>(url, data, this.httpOptions);
     //.put<T>(url, data)
@@ -83,11 +85,16 @@ export class DataService {
 
   //TODO:  Fix delete method
   delete(url: string) {
-    console.log(url);
+    this.#logger.debug('DELETE url:', url);
     return this.#http.delete(url, this.httpOptions).pipe(
-      tap((data) => console.log('deleteContent: ' + JSON.stringify(data))),
+      tap((data) =>
+        this.#logger.info('deleteContent: ' + JSON.stringify(data))
+      ),
       // catchError(this.handleError('deleteContent', []))
-      catchError(async (error) => console.error(error))
+      catchError(async (error) => {
+        this.#logger.error('DELETE failed:', error);
+        return error;
+      })
     );
   }
   /**
@@ -99,7 +106,7 @@ export class DataService {
   handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       // TODO: send the error to remote logging infrastructure
-      console.error(error); // log to console instead
+      this.#logger.error(`${operation} failed`, error); // log to logger
 
       // TODO: better job of transforming error for user consumption
       // this.log(`${operation} failed: ${error.message}`);

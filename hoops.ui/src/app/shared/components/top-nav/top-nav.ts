@@ -46,7 +46,7 @@ export class TopNav implements OnInit {
     const adminModuleEnabled = this.featureFlags.getFlag('adminModule')();
     const isAdmin = this.authService.isAdmin();
 
-    this.logger.log('� Admin module enabled:', adminModuleEnabled);
+    this.logger.log('🧩 Admin module enabled:', adminModuleEnabled);
     this.logger.log('🔐 Is admin user:', isAdmin);
 
     const showMenu = adminModuleEnabled && isAdmin;
@@ -66,16 +66,11 @@ export class TopNav implements OnInit {
     this.env = environment.environment;
     this.securityEnabled = environment.securityEnabled;
 
-    // Direct console.log to bypass LoggerService for debugging
-    console.log('🔥 DIRECT: Environment = ' + this.env);
-    console.log('🔥 DIRECT: Environment object =', environment);
-    console.log(
-      '🔥 DIRECT: Feature flag path = ' + environment.featureFlagPath
-    );
-    console.log('🔥 DIRECT: Production flag = ' + environment.production);
-
+    // Using LoggerService for environment diagnostics
     this.logger.log('🌍 Environment = ' + this.env);
+    this.logger.log('🧱 Environment object =', environment);
     this.logger.log('🚩 Feature flag path = ' + environment.featureFlagPath);
+    this.logger.log('🏭 Production flag = ' + environment.production);
     this.logger.log('🔧 Show Admin Feature = ' + this.showAdminFeature);
     this.logger.log('📋 Show Admin Menu = ' + this.showAdminMenu());
     this.logger.log('🔐 Security enabled = ' + this.securityEnabled);

@@ -9,12 +9,6 @@ import { appConfig } from './app/app.config';
 
 if (environment.production) {
   enableProdMode();
-} else {
-  // Enable console logging for development and non-production environments
-  console.log(
-    '🚀 Console logging enabled for environment:',
-    environment.environment
-  );
 }
 
 bootstrapApplication(App, appConfig).catch((err) => console.error(err));

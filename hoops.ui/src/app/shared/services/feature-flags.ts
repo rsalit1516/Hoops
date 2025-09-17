@@ -1,11 +1,13 @@
 // src/app/services/feature-flag.service.ts
-import { computed, Injectable, signal, resource } from '@angular/core';
+import { computed, Injectable, signal, resource, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'environments/environment';
+import { LoggerService } from '@app/services/logger.service';
 
 @Injectable({ providedIn: 'root' })
 export class FeatureFlagService {
   private flagsSignal = signal<Record<string, boolean>>({});
+  private logger = inject(LoggerService);
 
   // Enhanced computed signals for better reactivity
   readonly flags = computed(() => this.flagsSignal());
@@ -18,20 +20,17 @@ export class FeatureFlagService {
   }
 
   loadFlags(): void {
-    console.log(
-      '🔥 DIRECT: Loading feature flags from:',
-      environment.featureFlagPath
-    );
-    console.log('🔥 DIRECT: Environment object:', environment);
+    this.logger.log('Loading feature flags from:', environment.featureFlagPath);
+    this.logger.log('Environment object:', environment);
     this.http
       .get<Record<string, boolean>>(environment.featureFlagPath)
       .subscribe({
         next: (flags) => {
-          console.log('🔥 DIRECT: Feature flags loaded successfully:', flags);
+          this.logger.log('Feature flags loaded successfully:', flags);
           this.flagsSignal.set(flags);
         },
         error: (err) => {
-          console.error('🔥 DIRECT: Failed to load feature flags:', err);
+          this.logger.error('Failed to load feature flags:', err);
           this.flagsSignal.set({});
         },
       });
