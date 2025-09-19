@@ -14,12 +14,11 @@
       <mat-form-field class="form-control w-full" appearance="fill">
         <mat-label>Color</mat-label>
         <mat-select formControlName="color" class="form-control">
-          <mat-option
-            *ngFor="let color of colorService.colors()"
-            [value]="color.colorId"
-          >
+          @for (color of colorService.colors(); track color.colorId) {
+          <mat-option [value]="color.colorId">
             {{ color.colorName }}
           </mat-option>
+          }
         </mat-select>
       </mat-form-field>
       <mat-form-field class="form-control w-full" appearance="fill">

@@ -6,6 +6,7 @@ import {
   inject,
   computed,
   effect,
+  ChangeDetectorRef,
 } from '@angular/core';
 import {
   Validators,
@@ -41,6 +42,7 @@ import { Constants } from '@app/shared/constants';
 import { WebContent } from '@app/domain/webContent';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { NoticeTypesService } from '@app/shared/services/notice-types.service';
+import { LoggerService } from '@app/services/logger.service';
 
 @Component({
   selector: 'csbc-content-edit',
@@ -74,9 +76,11 @@ export class ContentEdit implements OnInit {
   private fb = inject(FormBuilder);
   readonly contentService = inject(ContentService);
   readonly noticeTypesSvc = inject(NoticeTypesService);
-  route = inject(ActivatedRoute);
-  router = inject(Router);
+  private cdRef = inject(ChangeDetectorRef);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
   dialog = inject(MatDialog);
+  private logger = inject(LoggerService);
 
   contentForm = this.fb.group({
     title: new FormControl('', {
@@ -140,11 +144,44 @@ export class ContentEdit implements OnInit {
       const status = this.noticeTypesSvc.notificationTypes.status();
       const current = this.selectedContent();
       if (status === 'resolved' && current) {
-        const id = Number(current.webContentTypeId);
-        const ctl = this.contentForm.get('webContentTypeControl');
-        if (ctl && ctl.value !== id) {
-          ctl.setValue(id, { emitEvent: false });
+        // Compute id robustly: prefer explicit id; fallback to nested object id; finally map by description
+        const fromId = this.toNumber((current as any).webContentTypeId);
+        const fromObj = this.toNumber(
+          (current as any).webContentType?.webContentTypeId
+        );
+        let id = fromId ?? fromObj;
+        if (id === null || id === undefined) {
+          const desc =
+            (current as any).webContentTypeDescription ??
+            (current as any).webContentType?.webContentTypeDescription;
+          if (desc) {
+            const norm = (s: unknown) => s?.toString().trim().toLowerCase();
+            const match = this.contentTypes().find(
+              (t) => norm(t.webContentTypeDescription) === norm(desc)
+            );
+            if (match) id = match.webContentTypeId;
+          }
         }
+        const ctl = this.contentForm.get('webContentTypeControl');
+        if (!ctl) return;
+        // Ensure control is enabled before setting value
+        if (ctl.disabled) ctl.enable({ emitEvent: false });
+        if (id !== null && id !== undefined && ctl.value !== id) {
+          ctl.setValue(id, { emitEvent: false });
+          ctl.updateValueAndValidity({ onlySelf: true, emitEvent: false });
+          this.cdRef.markForCheck();
+        }
+      }
+    });
+    // Enable/disable the select control based on resource loading status (moved from template)
+    effect(() => {
+      const status = this.noticeTypesSvc.notificationTypes.status();
+      const ctl = this.contentForm.get('webContentTypeControl');
+      if (!ctl) return;
+      if (status === 'loading' || status === 'reloading') {
+        if (ctl.enabled) ctl.disable({ emitEvent: false });
+      } else {
+        if (ctl.disabled) ctl.enable({ emitEvent: false });
       }
     });
   }
@@ -152,11 +189,6 @@ export class ContentEdit implements OnInit {
   ngOnInit(): void {
     this.pageTitle = 'Edit Web Content Messages';
     this.hideId = true;
-
-    // this.record$.pipe(takeUntil(this.destroy$)).subscribe((record) => {
-    //   if (record) { this.recordForm.patchValue(record); }
-    // });
-    // this.getContent();
   }
 
   update(): void {
@@ -194,6 +226,7 @@ export class ContentEdit implements OnInit {
       content.webContentId === 0
         ? 'Add Notice'
         : `Edit Notice: ${content.title}`;
+    this.logger.info(content);
     this.contentForm.patchValue(
       {
         title: content.title,
@@ -204,7 +237,7 @@ export class ContentEdit implements OnInit {
         expirationDate: content.expirationDate,
         webContentId: content.webContentId,
         contentSequence: content.contentSequence,
-        webContentTypeControl: Number(content.webContentTypeId),
+        // Do NOT set webContentTypeControl here; let the effect set it once types are resolved
       },
       { emitEvent: false }
     );
