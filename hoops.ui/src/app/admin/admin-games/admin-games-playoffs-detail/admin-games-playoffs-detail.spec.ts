@@ -12,9 +12,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { signal } from '@angular/core';
 
-// Import jasmine types for SpyObj
-import 'jasmine';
-
 import { AdminGamesPlayoffsDetail } from './admin-games-playoffs-detail';
 import { DivisionService } from '@app/services/division.service';
 import { PlayoffGameService } from '@app/services/playoff-game.service';
@@ -36,7 +33,6 @@ describe('AdminGamesPlayoffsDetail - Date/Time Pickers', () => {
       'selectedDivision',
     ]);
     mockPlayoffService = jasmine.createSpyObj('PlayoffGameService', [
-      'selectedRecordSignal',
       'update',
       'create',
       'fetchSeasonPlayoffGames',
@@ -52,12 +48,6 @@ describe('AdminGamesPlayoffsDetail - Date/Time Pickers', () => {
       divisionId: 1,
       divisionName: 'Test Division',
     } as any);
-
-    // Create a proper signal mock for selectedRecordSignal
-    const selectedRecordSignal = signal<any>(null);
-    mockPlayoffService.selectedRecordSignal.and.returnValue(
-      selectedRecordSignal
-    );
 
     Object.defineProperty(mockLocationService, 'locations', {
       value: signal([{ locationNumber: 1, locationName: 'Test Location' }]),
@@ -111,10 +101,6 @@ describe('AdminGamesPlayoffsDetail - Date/Time Pickers', () => {
       locationNumber: 1,
       descr: 'Test Game',
     };
-
-    // Update the signal with the mock record
-    const selectedSignal = signal<any>(mockRecord as any);
-    mockPlayoffService.selectedRecordSignal.and.returnValue(selectedSignal);
 
     // Reinitialize component
     component.ngOnInit();
