@@ -21,7 +21,7 @@ variables:
 
   # Azure deployment (replace with your values in the pipeline UI or variable group)
   azureServiceConnection: "YOUR-AZURE-SVC-CONN" # e.g., Hoops-Dev-Connection
-  appType: "functionAppLinux"                   # change to 'functionApp' if Windows
+  appType: "functionAppLinux" # change to 'functionApp' if Windows
 
   # Branch-based environment mapping
   ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/develop') }}:
@@ -71,12 +71,33 @@ stages:
               projects: "$(solution)"
               arguments: "--filter TestCategory!=Slow --nologo -c Release"
 
-          # Optional: Frontend build only (SWA deploy handled elsewhere)
+          # Frontend build and test
           - script: |
               cd hoops.ui
               npm ci
               npm run build
             displayName: "Build Angular app"
+
+          - script: |
+              cd hoops.ui
+              npm run test -- --watch=false --browsers=ChromeHeadless --code-coverage
+            displayName: "Test Angular app"
+
+          - task: PublishTestResults@2
+            displayName: "Publish Angular test results"
+            condition: succeededOrFailed()
+            inputs:
+              testResultsFormat: "JUnit"
+              testResultsFiles: "hoops.ui/test-results.xml"
+              failTaskOnFailedTests: true
+
+          - task: PublishCodeCoverageResults@2
+            displayName: "Publish Angular code coverage"
+            condition: succeededOrFailed()
+            inputs:
+              summaryFileLocation: "hoops.ui/coverage/lcov.info"
+              pathToSources: "hoops.ui/src"
+              reportDirectory: "hoops.ui/coverage"
 
           - task: DotNetCoreCLI@2
             displayName: "Publish Functions project"
@@ -109,7 +130,7 @@ stages:
     jobs:
       - deployment: Deploy
         displayName: "Deploy to Azure Functions"
-  environment: "$(environmentName)"
+        environment: "$(environmentName)"
         pool:
           vmImage: $(vmImage)
         strategy:
@@ -119,11 +140,11 @@ stages:
                 - download: current
                   artifact: functions
 
-        - task: AzureFunctionApp@1
+                - task: AzureFunctionApp@1
                   displayName: "Deploy Functions package"
                   inputs:
                     azureSubscription: "$(azureServiceConnection)"
-          appType: "$(appType)"
+                    appType: "$(appType)"
                     appName: "$(functionAppName)"
                     package: "$(Pipeline.Workspace)/functions/functions.zip"
                     deploymentMethod: "zipDeploy"
