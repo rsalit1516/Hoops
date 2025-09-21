@@ -1,21 +1,28 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, input, model, OnInit, output } from '@angular/core';
+import {
+  Component,
+  inject,
+  input,
+  model,
+  OnInit,
+  output,
+  signal,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { peopleSearchCriteria, PeopleService } from '@app/services/people.service';
+import {
+  peopleSearchCriteria,
+  PeopleService,
+} from '@app/services/people.service';
 
 @Component({
   selector: 'csbc-people-alphabet',
   templateUrl: './people-alphabet.html',
-  styleUrls: ['./people-alphabet.scss',
-  ],
-  imports: [
-    CommonModule,
-    MatButtonModule
-  ]
+  styleUrls: ['./people-alphabet.scss'],
+  imports: [CommonModule, MatButtonModule],
 })
 export class PeopleAlphabet implements OnInit {
   #peopleService = inject(PeopleService);
-  selectedLetter = input<string>('A');
+  selectedLetter = signal<string>('A'); // Changed to internal signal
   selectedLetterChange = output<string>();
 
   alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
@@ -28,20 +35,27 @@ export class PeopleAlphabet implements OnInit {
     playerOnly: false,
   };
 
-  ngOnInit () {
+  ngOnInit() {
     const saved = localStorage.getItem('peopleSearchCriteria');
     if (saved) {
       // if
-    }// this.loadPeople(this.selectedLetter);
+    } // this.loadPeople(this.selectedLetter);
   }
 
-  selectLetter (letter: string) {
+  selectLetter(letter: string) {
     console.log('Selected letter:', letter);
+    this.selectedLetter.set(letter); // Update internal signal
     this.selectedLetterChange.emit(letter);
+    this.selectedCriteria = {
+      lastName: letter ?? '',
+      firstName: '',
+      playerOnly: false,
+    };
+    this.#peopleService.updateSelectedCriteria(this.selectedCriteria);
     // this.loadPeople(letter);
   }
 
-  loadPeople (letter: string) {
+  loadPeople(letter: string) {
     this.isLoading = true;
     this.selectedCriteria = {
       lastName: letter ?? '',
@@ -51,7 +65,7 @@ export class PeopleAlphabet implements OnInit {
     // this.#peopleService.updateSelectedCriteria(this.selectedCriteria);
     // this.#peopleService.executeSearch();
   }
-  clearSelection () {
+  clearSelection() {
     this.selectLetter('A');
     this.people = [];
     this.isLoading = false;

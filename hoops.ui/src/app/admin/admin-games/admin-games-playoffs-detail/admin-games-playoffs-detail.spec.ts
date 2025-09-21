@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatTimepickerModule } from '@angular/material/timepicker';
@@ -11,6 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { signal } from '@angular/core';
+import { of } from 'rxjs';
 
 import { AdminGamesPlayoffsDetail } from './admin-games-playoffs-detail';
 import { DivisionService } from '@app/services/division.service';
@@ -37,6 +38,10 @@ describe('AdminGamesPlayoffsDetail - Date/Time Pickers', () => {
       'create',
       'fetchSeasonPlayoffGames',
     ]);
+
+    // Create a signal that can be used in tests
+    (mockPlayoffService as any).selectedRecordSignal = signal(null);
+
     mockLocationService = jasmine.createSpyObj('LocationService', [
       'locations',
       'fetchLocations',
@@ -73,6 +78,14 @@ describe('AdminGamesPlayoffsDetail - Date/Time Pickers', () => {
         { provide: DivisionService, useValue: mockDivisionService },
         { provide: PlayoffGameService, useValue: mockPlayoffService },
         { provide: LocationService, useValue: mockLocationService },
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            params: of({}),
+            queryParams: of({}),
+            snapshot: { params: {}, queryParams: {} },
+          },
+        },
       ],
     }).compileComponents();
 
@@ -102,6 +115,9 @@ describe('AdminGamesPlayoffsDetail - Date/Time Pickers', () => {
       descr: 'Test Game',
     };
 
+    // Update the signal to return the mock record
+    (mockPlayoffService.selectedRecordSignal as any).set(mockRecord);
+
     // Reinitialize component
     component.ngOnInit();
 
@@ -112,6 +128,20 @@ describe('AdminGamesPlayoffsDetail - Date/Time Pickers', () => {
   it('should combine date and time when saving', () => {
     const gameDate = new Date('2025-08-20T00:00:00');
     const gameTime = new Date('1970-01-01T14:30:00'); // Only time matters
+
+    // Set up a mock record with schedule number for new record creation
+    const mockSelectedRecord = {
+      scheduleNumber: 123,
+      gameNumber: 0, // 0 allows server to assign next
+    };
+    (mockPlayoffService.selectedRecordSignal as any).set(mockSelectedRecord);
+
+    // Mock location service
+    mockLocationService.getLocationById.and.returnValue({
+      locationNumber: 1,
+      locationName: 'Test Location',
+      notes: '',
+    });
 
     component.form.patchValue({
       divisionId: 1,
@@ -124,7 +154,9 @@ describe('AdminGamesPlayoffsDetail - Date/Time Pickers', () => {
 
     component.isEditing = false; // New record
     mockPlayoffService.create.and.returnValue({
-      subscribe: jasmine.createSpy(),
+      subscribe: jasmine.createSpy().and.callFake((callbacks: any) => {
+        callbacks.next();
+      }),
     } as any);
 
     component.save();
@@ -145,6 +177,8 @@ describe('AdminGamesPlayoffsDetail - Date/Time Pickers', () => {
 
     // After making changes
     component.form.get('homeTeam')?.setValue('Modified Team');
+    component.form.get('homeTeam')?.markAsDirty();
+    fixture.detectChanges();
     expect(component.isFormDirty()).toBeTrue();
   });
 });

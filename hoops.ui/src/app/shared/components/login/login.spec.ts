@@ -8,6 +8,7 @@ import { Login } from './login';
 import { AuthService } from '@app/services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
+import { provideMockStore, MockStore } from '@ngrx/store/testing';
 
 describe('Login Component', () => {
   let fixture: ComponentFixture<Login>;
@@ -19,6 +20,7 @@ describe('Login Component', () => {
     await TestBed.configureTestingModule({
       imports: [Login],
       providers: [
+        provideMockStore(),
         {
           provide: AuthService,
           useValue: {
