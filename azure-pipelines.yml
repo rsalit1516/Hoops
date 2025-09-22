@@ -80,7 +80,7 @@ stages:
 
           - script: |
               cd hoops.ui
-              npm run test -- --watch=false --browsers=ChromeHeadless --code-coverage
+              npm run test:ci
             displayName: "Test Angular app"
 
           - task: PublishTestResults@2

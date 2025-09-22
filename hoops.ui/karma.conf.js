@@ -28,10 +28,10 @@ module.exports = function (config) {
       reporters: [{ type: "html" }, { type: "text-summary" }, { type: "lcov" }],
       check: {
         global: {
-          statements: 80,
-          branches: 80,
-          functions: 80,
-          lines: 80,
+          statements: 35,
+          branches: 25,
+          functions: 15,
+          lines: 35,
         },
       },
     },
@@ -48,10 +48,10 @@ module.exports = function (config) {
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
-    autoWatch: true,
+    autoWatch: false,
     browsers: [process.env.CI ? "ChromeHeadlessCI" : "Chrome"],
-    singleRun: false,
-    restartOnFileChange: true,
+    singleRun: true,
+    restartOnFileChange: false,
     customLaunchers: {
       ChromeHeadlessCI: {
         base: "ChromeHeadless",

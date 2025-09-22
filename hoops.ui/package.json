@@ -8,6 +8,7 @@
     "build:staging": "ng build csbc --configuration staging",
     "start": "ng serve --configuration local",
     "test": "ng test",
+    "test:ci": "ng test --watch=false --browsers=ChromeHeadless --code-coverage",
     "lint": "eslint src --ext .ts",
     "app_build_command": "npm run docs:build"
   },
