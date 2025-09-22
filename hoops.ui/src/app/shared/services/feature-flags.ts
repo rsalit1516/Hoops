@@ -20,13 +20,16 @@ export class FeatureFlagService {
   }
 
   loadFlags(): void {
-    this.logger.log('Loading feature flags from:', environment.featureFlagPath);
-    this.logger.log('Environment object:', environment);
+    this.logger.info(
+      'Loading feature flags from:',
+      environment.featureFlagPath
+    );
+    this.logger.info('Environment object:', environment);
     this.http
       .get<Record<string, boolean>>(environment.featureFlagPath)
       .subscribe({
         next: (flags) => {
-          this.logger.log('Feature flags loaded successfully:', flags);
+          this.logger.info('Feature flags loaded successfully:', flags);
           this.flagsSignal.set(flags);
         },
         error: (err) => {

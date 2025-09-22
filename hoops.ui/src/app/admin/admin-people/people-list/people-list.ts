@@ -6,7 +6,7 @@ import {
   peopleSearchCriteria,
   PeopleService,
 } from '@app/services/people.service';
-import { LoggerService } from '@app/services/logging.service';
+import { LoggerService } from '@app/services/logger.service';
 
 @Component({
   selector: 'csbc-people-list',
@@ -35,11 +35,11 @@ export class PeopleList implements OnInit {
   constructor() {
     effect(() => {
       const letter = this.selectedLetter();
-      this.logger.log('Selected letter changed:', letter);
+      this.logger.info('Selected letter changed:', letter);
     });
     effect(() => {
       const criteria = this.selectedCriteria();
-      this.logger.log(
+      this.logger.info(
         'Selected criteria changed:',
         criteria.lastName,
         criteria.firstName,
@@ -51,7 +51,7 @@ export class PeopleList implements OnInit {
 
   ngOnInit() {
     const saved = localStorage.getItem('peopleSearchCriteria');
-    this.logger.log('Loading saved search criteria:', saved);
+    this.logger.info('Loading saved search criteria:', saved);
     if (saved) {
       try {
         const parsed = JSON.parse(saved);

@@ -159,7 +159,7 @@ export class DivisionService {
         this.seasonId = sid;
         this.season = season;
         this.getSeasonDivisions(sid);
-        this.logger.log(season);
+        this.logger.info(season);
       }
     });
     // this.#store.pipe(select(fromAdmin.getSelectedSeason)).subscribe((season) => {
@@ -208,7 +208,7 @@ export class DivisionService {
 
   getSeasonDivisions(id: number): void {
     const url = Constants.SEASON_DIVISIONS_URL + id;
-    this.logger.log(url);
+    this.logger.info(url);
     this.#http.get<Division[]>(url).subscribe(
       (data) => {
         this.updateSeasonDivisions(data);

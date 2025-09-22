@@ -179,7 +179,7 @@ export class AdminGamesList implements OnInit, OnChanges, AfterViewInit {
     this.dataSource.connect();
   }
   handlefilterUpdate($event: any) {
-    this.logger.log($event.gametType);
+    this.logger.info($event.gametType);
     if ($event.gameType === 'Playoffs') {
       this.showPlayoffs = true;
       this.showRegularSeason = false;

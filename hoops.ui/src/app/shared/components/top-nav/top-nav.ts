@@ -46,11 +46,11 @@ export class TopNav implements OnInit {
     const adminModuleEnabled = this.featureFlags.getFlag('adminModule')();
     const isAdmin = this.authService.isAdmin();
 
-    this.logger.log('🧩 Admin module enabled:', adminModuleEnabled);
-    this.logger.log('🔐 Is admin user:', isAdmin);
+    this.logger.info('🧩 Admin module enabled:', adminModuleEnabled);
+    this.logger.info('🔐 Is admin user:', isAdmin);
 
     const showMenu = adminModuleEnabled && isAdmin;
-    this.logger.log('📋 Show admin menu result:', showMenu);
+    this.logger.info('📋 Show admin menu result:', showMenu);
 
     return showMenu;
   });
@@ -67,13 +67,13 @@ export class TopNav implements OnInit {
     this.securityEnabled = environment.securityEnabled;
 
     // Using LoggerService for environment diagnostics
-    this.logger.log('🌍 Environment = ' + this.env);
-    this.logger.log('🧱 Environment object =', environment);
-    this.logger.log('🚩 Feature flag path = ' + environment.featureFlagPath);
-    this.logger.log('🏭 Production flag = ' + environment.production);
-    this.logger.log('🔧 Show Admin Feature = ' + this.showAdminFeature);
-    this.logger.log('📋 Show Admin Menu = ' + this.showAdminMenu());
-    this.logger.log('🔐 Security enabled = ' + this.securityEnabled);
+    this.logger.info('🌍 Environment = ' + this.env);
+    this.logger.info('🧱 Environment object =', environment);
+    this.logger.info('🚩 Feature flag path = ' + environment.featureFlagPath);
+    this.logger.info('🏭 Production flag = ' + environment.production);
+    this.logger.info('🔧 Show Admin Feature = ' + this.showAdminFeature);
+    this.logger.info('📋 Show Admin Menu = ' + this.showAdminMenu());
+    this.logger.info('🔐 Security enabled = ' + this.securityEnabled);
   }
 
   // Deprecated: login dialog replaced by routed /login for mobile friendliness
