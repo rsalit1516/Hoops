@@ -9,8 +9,16 @@
   "files.associations": {
     "**/coverage/**/*.html": "plaintext"
   },
+  // Disable HTML validation entirely for this project
   "html.validate.styles": false,
   "html.validate.scripts": false,
+  "css.validate": false,
+  // Language-specific settings
+  "[html]": {
+    "editor.suggest.insertMode": "replace",
+    "html.validate.styles": false,
+    "html.validate.scripts": false
+  },
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#9108ac",
     "activityBar.activeBorder": "#1e1a01",
