@@ -1,32 +1,35 @@
 {
-    "appService.zipIgnorePattern": [
-        "node_modules{,/**}",
-        ".vscode{,/**}"
-    ],
-    "appService.defaultWebAppToDeploy": "/subscriptions/8e346d0a-6768-4719-b95e-b058700d71ab/resourceGroups/Default-Web-EastUS/providers/Microsoft.Web/sites/csbchoops-ui",
-    "appService.deploySubpath": "dist/test",
-    "search.useGlobalIgnoreFiles": true,
-    "search.useParentIgnoreFiles": true,
-    "dotnet-test-explorer.testProjectPath": "**/*.sln",
-    "workbench.colorCustomizations": {
-        "activityBar.activeBackground": "#9108ac",
-        "activityBar.activeBorder": "#1e1a01",
-        "activityBar.background": "#9108ac",
-        "activityBar.foreground": "#e7e7e7",
-        "activityBar.inactiveForeground": "#e7e7e799",
-        "activityBarBadge.background": "#1e1a01",
-        "activityBarBadge.foreground": "#e7e7e7",
-        "statusBar.background": "#68067b",
-        "statusBar.foreground": "#e7e7e7",
-        "statusBarItem.hoverBackground": "#9108ac",
-        "titleBar.activeBackground": "#68067b",
-        "titleBar.activeForeground": "#e7e7e7",
-        "titleBar.inactiveBackground": "#68067b99",
-        "titleBar.inactiveForeground": "#e7e7e799",
-        "commandCenter.border": "#e7e7e799",
-        "sash.hoverBorder": "#9108ac",
-        "statusBarItem.remoteBackground": "#68067b",
-        "statusBarItem.remoteForeground": "#e7e7e7"
-    },
-    "peacock.color": "#68067b"
+  "appService.zipIgnorePattern": ["node_modules{,/**}", ".vscode{,/**}"],
+  "appService.defaultWebAppToDeploy": "/subscriptions/8e346d0a-6768-4719-b95e-b058700d71ab/resourceGroups/Default-Web-EastUS/providers/Microsoft.Web/sites/csbchoops-ui",
+  "appService.deploySubpath": "dist/test",
+  "search.useGlobalIgnoreFiles": true,
+  "search.useParentIgnoreFiles": true,
+  "dotnet-test-explorer.testProjectPath": "**/*.sln",
+  // Suppress HTML validation warnings for coverage report files
+  "files.associations": {
+    "**/coverage/**/*.html": "plaintext"
+  },
+  "html.validate.styles": false,
+  "html.validate.scripts": false,
+  "workbench.colorCustomizations": {
+    "activityBar.activeBackground": "#9108ac",
+    "activityBar.activeBorder": "#1e1a01",
+    "activityBar.background": "#9108ac",
+    "activityBar.foreground": "#e7e7e7",
+    "activityBar.inactiveForeground": "#e7e7e799",
+    "activityBarBadge.background": "#1e1a01",
+    "activityBarBadge.foreground": "#e7e7e7",
+    "statusBar.background": "#68067b",
+    "statusBar.foreground": "#e7e7e7",
+    "statusBarItem.hoverBackground": "#9108ac",
+    "titleBar.activeBackground": "#68067b",
+    "titleBar.activeForeground": "#e7e7e7",
+    "titleBar.inactiveBackground": "#68067b99",
+    "titleBar.inactiveForeground": "#e7e7e799",
+    "commandCenter.border": "#e7e7e799",
+    "sash.hoverBorder": "#9108ac",
+    "statusBarItem.remoteBackground": "#68067b",
+    "statusBarItem.remoteForeground": "#e7e7e7"
+  },
+  "peacock.color": "#68067b"
 }
