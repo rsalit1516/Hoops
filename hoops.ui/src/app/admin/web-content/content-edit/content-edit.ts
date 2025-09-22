@@ -79,6 +79,7 @@ export class ContentEdit implements OnInit {
   private cdRef = inject(ChangeDetectorRef);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+
   dialog = inject(MatDialog);
   private logger = inject(LoggerService);
 
@@ -204,7 +205,7 @@ export class ContentEdit implements OnInit {
     const text = this.contentForm.get('body')?.value;
     const formattedText = this.formatText(text ?? '');
     // Use formattedText where needed
-    console.log(formattedText);
+    this.logger.info(formattedText);
   }
   formatText(text: string): string {
     return text.replace(/\n/g, '<br>');
@@ -244,7 +245,7 @@ export class ContentEdit implements OnInit {
     this.selected = content.webContentType;
   }
   saveContent() {
-    console.log(this.contentForm.value);
+    this.logger.info(this.contentForm.value);
     if (this.contentForm.valid && this.contentForm.dirty) {
       let content = new WebContent();
       const form = this.contentForm.value;
@@ -270,7 +271,7 @@ export class ContentEdit implements OnInit {
   }
   getWebContentType(id: number): WebContentType {
     let webContentType = new WebContentType();
-    console.log(id);
+    this.logger.info(id);
     switch (id) {
       case 1: {
         webContentType.webContentTypeId = id;
@@ -310,7 +311,7 @@ export class ContentEdit implements OnInit {
     return typeof val === 'number' ? val : Number(val);
   }
   deleteRecord(): void {
-    console.log(this.contentForm.get('webContentId')!.value);
+    this.logger.info(this.contentForm.get('webContentId')!.value);
     if (this.contentForm.get('webContentId')!.value !== 0) {
       this.contentService.deleteContent(
         this.contentForm.get('webContentId')!.value!
@@ -322,7 +323,7 @@ export class ContentEdit implements OnInit {
     const dialogRef = this.dialog.open(ConfirmDialog);
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log(result);
+      this.logger.info(result);
       if (result) {
         this.deleteRecord();
       }

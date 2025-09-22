@@ -9,6 +9,7 @@ import {
   signal,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { LoggerService } from '@app/services/logger.service';
 import {
   peopleSearchCriteria,
   PeopleService,
@@ -22,6 +23,7 @@ import {
 })
 export class PeopleAlphabet implements OnInit {
   #peopleService = inject(PeopleService);
+  private logger = inject(LoggerService);
   selectedLetter = signal<string>('A'); // Changed to internal signal
   selectedLetterChange = output<string>();
 
@@ -43,7 +45,7 @@ export class PeopleAlphabet implements OnInit {
   }
 
   selectLetter(letter: string) {
-    console.log('Selected letter:', letter);
+    this.logger.info('Selected letter:', letter);
     this.selectedLetter.set(letter); // Update internal signal
     this.selectedLetterChange.emit(letter);
     this.selectedCriteria = {
