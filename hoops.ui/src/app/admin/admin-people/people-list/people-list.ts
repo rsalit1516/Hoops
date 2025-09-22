@@ -2,50 +2,56 @@ import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import { PeopleSearch } from '../people-search/people-search';
 import { PeopleAlphabet } from '../people-alphabet/people-alphabet';
 import { PeopleSearchResults } from '../people-search-results/people-search-results';
-import { peopleSearchCriteria, PeopleService } from '@app/services/people.service';
+import {
+  peopleSearchCriteria,
+  PeopleService,
+} from '@app/services/people.service';
+import { LoggerService } from '@app/services/logging.service';
 
 @Component({
   selector: 'csbc-people-list',
-  imports: [PeopleSearch,
-    PeopleAlphabet,
-    PeopleSearchResults
-  ],
-  template: `
-  <div class="row">
-  <csbc-people-search [(selectedFilter)] = "selectedCriteria"/>
-</div>
-<div class="row">
-  <csbc-people-alphabet [(selectedLetter)] = "selectedLetter" />
-</div>
-<div>
-  <csbc-people-search-results />
-</div>`,
-  styleUrl: './people-list.scss'
+  imports: [PeopleSearch, PeopleAlphabet, PeopleSearchResults],
+  template: ` <div class="row">
+      <csbc-people-search [(selectedFilter)]="selectedCriteria" />
+    </div>
+    <div class="row">
+      <csbc-people-alphabet [(selectedLetter)]="selectedLetter" />
+    </div>
+    <div>
+      <csbc-people-search-results />
+    </div>`,
+  styleUrl: './people-list.scss',
 })
 export class PeopleList implements OnInit {
   #peopleService = inject(PeopleService);
+  private readonly logger = inject(LoggerService);
   selectedLetter = signal<string>('A');
   selectedCriteria = signal<peopleSearchCriteria>({
-    lastName: 'A', firstName: '', playerOnly: false
+    lastName: 'A',
+    firstName: '',
+    playerOnly: false,
   });
 
-  constructor () {
+  constructor() {
     effect(() => {
       const letter = this.selectedLetter();
-      console.log('Selected letter changed:', letter);
-      this.handleLetterChange(letter); // reacts to changes
+      this.logger.log('Selected letter changed:', letter);
     });
     effect(() => {
       const criteria = this.selectedCriteria();
-      console.log('Selected criteria changed:', criteria.lastName, criteria.firstName, criteria.playerOnly);
+      this.logger.log(
+        'Selected criteria changed:',
+        criteria.lastName,
+        criteria.firstName,
+        criteria.playerOnly
+      );
       this.handleFilterChange(criteria); // reacts to changes
     });
-
   }
 
-  ngOnInit () {
+  ngOnInit() {
     const saved = localStorage.getItem('peopleSearchCriteria');
-    console.log('Loading saved search criteria:', saved);
+    this.logger.log('Loading saved search criteria:', saved);
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
@@ -62,7 +68,6 @@ export class PeopleList implements OnInit {
 
           default:
             this.selectedLetter.set(''); // Default to A if no last name
-
         }
       } catch (e) {
         console.error('Invalid search criteria in storage', e);
@@ -70,20 +75,19 @@ export class PeopleList implements OnInit {
       }
     }
   }
-  handleLetterChange (letter: string) {
+  handleLetterChange(letter: string) {
     // this.selectedLetter = letter;
     this.#peopleService.updateSelectedCriteria({
       lastName: letter,
       firstName: '',
-      playerOnly: false
+      playerOnly: false,
     });
   }
-  handleFilterChange (filter: peopleSearchCriteria) {
+  handleFilterChange(filter: peopleSearchCriteria) {
     this.#peopleService.updateSelectedCriteria({
       lastName: filter.lastName,
       firstName: filter.firstName,
-      playerOnly: filter.playerOnly
+      playerOnly: filter.playerOnly,
     });
   }
-
 }

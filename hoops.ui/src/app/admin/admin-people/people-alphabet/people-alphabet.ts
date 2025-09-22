@@ -24,8 +24,7 @@ import {
 export class PeopleAlphabet implements OnInit {
   #peopleService = inject(PeopleService);
   private logger = inject(LoggerService);
-  selectedLetter = signal<string>('A'); // Changed to internal signal
-  selectedLetterChange = output<string>();
+  selectedLetter = model<string>('A'); // Use model for two-way binding
 
   alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
@@ -46,8 +45,7 @@ export class PeopleAlphabet implements OnInit {
 
   selectLetter(letter: string) {
     this.logger.info('Selected letter:', letter);
-    this.selectedLetter.set(letter); // Update internal signal
-    this.selectedLetterChange.emit(letter);
+    this.selectedLetter.set(letter); // Update model signal - this will automatically emit
     this.selectedCriteria = {
       lastName: letter ?? '',
       firstName: '',
@@ -68,7 +66,7 @@ export class PeopleAlphabet implements OnInit {
     // this.#peopleService.executeSearch();
   }
   clearSelection() {
-    this.selectLetter('A');
+    this.selectedLetter.set('A'); // Use model signal
     this.people = [];
     this.isLoading = false;
     this.selectedCriteria = {

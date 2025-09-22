@@ -52,7 +52,7 @@ export class DivisionList implements OnInit, OnChanges {
   #seasonService = inject(SeasonService);
   private store = inject(Store<fromAdmin.State>);
   #router = inject(Router);
-  private logger = inject(LoggerService);
+  private readonly logger = inject(LoggerService);
 
   // Signals
   // users = this.userService.members;
