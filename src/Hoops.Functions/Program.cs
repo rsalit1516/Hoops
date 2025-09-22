@@ -55,16 +55,27 @@ var host = new HostBuilder()
     {
         var configuration = context.Configuration;
 
-        // EF Core DbContext (be resilient if connection string is missing to allow host startup)
-        var conn = configuration.GetConnectionString("hoopsContext");
+        // EF Core DbContext (centralized connection selection with a safe demo toggle)
+        // Toggle via env/config: USE_PROD_DATA=true will prefer a read-only production connection string
+        var useProdData = string.Equals(configuration["USE_PROD_DATA"], "true", StringComparison.OrdinalIgnoreCase);
+
+        // Prefer ConnectionStrings entries; fall back to flat env vars if present
+        var devConn = configuration.GetConnectionString("hoopsContext")
+                      ?? configuration["SQL_CONNECTION_DEV"];
+        var prodRoConn = configuration.GetConnectionString("hoopsContextProdRO")
+                         ?? configuration["SQL_CONNECTION_PROD_RO"];
+
+        var selectedName = useProdData ? "ConnectionStrings:hoopsContextProdRO|SQL_CONNECTION_PROD_RO" : "ConnectionStrings:hoopsContext|SQL_CONNECTION_DEV";
+        var conn = useProdData ? prodRoConn : devConn;
+
         if (string.IsNullOrWhiteSpace(conn))
         {
-            Console.WriteLine("Warning: ConnectionStrings:hoopsContext is not configured. Using in-memory database to allow Function host startup. Some endpoints may not function until the connection is configured.");
-            services.AddDbContext<hoopsContext>(options =>
-                options.UseInMemoryDatabase("hoops-fallback"));
+            Console.WriteLine($"Warning: No SQL connection string resolved for '{selectedName}'. Using in-memory database to allow Function host startup. Some endpoints may not function until the connection is configured.");
+            services.AddDbContext<hoopsContext>(options => options.UseInMemoryDatabase("hoops-fallback"));
         }
         else
         {
+            Console.WriteLine($"Info: Using {(useProdData ? "READ-ONLY PROD" : "DEV")} SQL connection (configured from {selectedName}).");
             services.AddDbContext<hoopsContext>(options =>
                 options.UseSqlServer(conn, sql => sql.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null)));
         }
