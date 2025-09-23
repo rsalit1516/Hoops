@@ -16,6 +16,7 @@ import { ADMIN_DIVISION_ROUTES } from './admin-divisions/admin-division-routing'
 import { ADMIN_HOUSEHOLD_ROUTES } from './admin-household/admin-household-routing';
 import { ADMIN_PEOPLE_ROUTES } from './admin-people/admin-people-routing';
 import { ADMIN_SEASONS_ROUTES } from './admin-seasons/admin-seasons-routing';
+import { PendingChangesGuard } from './admin-games/pending-changes.guard';
 
 export const ADMINROUTES: Routes = [
   {
@@ -72,10 +73,24 @@ export const ADMINROUTES: Routes = [
       },
       {
         path: 'users',
-        loadComponent: () =>
-          import('./admin-users/admin-users-list/admin-users-list').then(
-            (m) => m.AdminUsersList
-          ),
+        children: [
+          {
+            path: '',
+            pathMatch: 'full',
+            loadComponent: () =>
+              import('./admin-users/admin-users-list/admin-users-list').then(
+                (m) => m.AdminUsersList
+              ),
+          },
+          {
+            path: ':id',
+            loadComponent: () =>
+              import('./admin-users/admin-user-detail/admin-user-detail').then(
+                (m) => m.AdminUserDetail
+              ),
+            canDeactivate: [PendingChangesGuard],
+          },
+        ],
       },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: '**', component: PageNotFound },

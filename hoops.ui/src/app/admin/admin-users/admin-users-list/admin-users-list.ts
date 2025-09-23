@@ -3,9 +3,10 @@ import {
   Component,
   OnInit,
   ViewChild,
+  effect,
   inject,
-  signal,
 } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
@@ -23,6 +24,7 @@ import { AdminUsersService } from '../admin-users.service';
     MatPaginatorModule,
     MatSortModule,
     MatIconModule,
+    RouterLink,
   ],
   templateUrl: './admin-users-list.html',
   styleUrls: ['./admin-users-list.scss', '../../../shared/scss/tables.scss'],
@@ -39,11 +41,14 @@ export class AdminUsersList implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
 
   ngOnInit(): void {
-    this.usersService.getUsers().subscribe((users) => {
-      // map to include a computed name field for display
+    // Kick off load using signals API
+    this.usersService.loadUsers();
+
+    // Reactively update table when users list changes
+    effect(() => {
+      const users = this.usersService.users();
       const mapped = users.map((u) => ({
         ...u,
-        // For template convenience, ensure first/last names are handled
         firstName: u.firstName ?? '',
         lastName: u.lastName ?? '',
       }));

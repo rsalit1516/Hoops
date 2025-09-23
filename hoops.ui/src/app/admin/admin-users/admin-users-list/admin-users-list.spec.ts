@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { AdminUsersList } from './admin-users-list';
 import { AdminUsersService } from '../admin-users.service';
@@ -7,7 +8,7 @@ import { AdminUsersService } from '../admin-users.service';
 describe('AdminUsersList', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AdminUsersList, HttpClientTestingModule],
+      imports: [AdminUsersList, HttpClientTestingModule, RouterTestingModule],
       providers: [
         {
           provide: AdminUsersService,
