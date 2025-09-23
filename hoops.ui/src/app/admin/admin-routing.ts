@@ -70,6 +70,13 @@ export const ADMINROUTES: Routes = [
         resolve: { data: getWebContentDataResolver },
         children: CONTENT_ROUTES,
       },
+      {
+        path: 'users',
+        loadComponent: () =>
+          import('./admin-users/admin-users-list/admin-users-list').then(
+            (m) => m.AdminUsersList
+          ),
+      },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: '**', component: PageNotFound },
     ],
