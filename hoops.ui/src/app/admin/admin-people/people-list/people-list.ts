@@ -1,4 +1,11 @@
-import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  effect,
+  inject,
+  model,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { PeopleSearch } from '../people-search/people-search';
 import { PeopleAlphabet } from '../people-alphabet/people-alphabet';
 import { PeopleSearchResults } from '../people-search-results/people-search-results';
@@ -23,11 +30,11 @@ import { LoggerService } from '@app/services/logger.service';
   styleUrl: './people-list.scss',
 })
 export class PeopleList implements OnInit {
-  #peopleService = inject(PeopleService);
+  private readonly peopleService = inject(PeopleService);
   private readonly logger = inject(LoggerService);
-  selectedLetter = signal<string>('A');
-  selectedCriteria = signal<peopleSearchCriteria>({
-    lastName: 'A',
+  selectedLetter = model<string>('A');
+  selectedCriteria = model<peopleSearchCriteria>({
+    lastName: '',
     firstName: '',
     playerOnly: false,
   });
@@ -36,6 +43,12 @@ export class PeopleList implements OnInit {
     effect(() => {
       const letter = this.selectedLetter();
       this.logger.info('Selected letter changed:', letter);
+      // Update criteria when letter changes
+      this.selectedCriteria.update((criteria) => ({
+        ...criteria,
+        lastName: letter,
+        firstName: '', // Reset first name when letter changes
+      }));
     });
     effect(() => {
       const criteria = this.selectedCriteria();
@@ -55,7 +68,7 @@ export class PeopleList implements OnInit {
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        this.#peopleService.updateSelectedCriteria(parsed); // or signal.
+        this.peopleService.updateSelectedCriteria(parsed); // or signal.
         // value = parsed if you're outside setup
         switch (parsed.lastName.length) {
           case 0:
@@ -75,16 +88,16 @@ export class PeopleList implements OnInit {
       }
     }
   }
-  handleLetterChange(letter: string) {
-    // this.selectedLetter = letter;
-    this.#peopleService.updateSelectedCriteria({
-      lastName: letter,
-      firstName: '',
-      playerOnly: false,
-    });
-  }
+  // handleLetterChange(letter: string) {
+  //   // this.selectedLetter = letter;
+  //   this.peopleService.updateSelectedCriteria({
+  //     lastName: letter,
+  //     firstName: '',
+  //     playerOnly: false,
+  //   });
+  // }
   handleFilterChange(filter: peopleSearchCriteria) {
-    this.#peopleService.updateSelectedCriteria({
+    this.peopleService.updateSelectedCriteria({
       lastName: filter.lastName,
       firstName: filter.firstName,
       playerOnly: filter.playerOnly,

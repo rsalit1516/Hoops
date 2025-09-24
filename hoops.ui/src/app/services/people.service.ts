@@ -5,14 +5,16 @@ import { DataService } from './data.service';
 import { Constants } from '../shared/constants';
 import { Person } from '@app/domain/person';
 import { first } from 'rxjs-compat/operator/first';
+import { LoggerService } from './logger.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PeopleService {
-  #http = inject(HttpClient);
-  dataService = inject(DataService);
-  inithUrl = Constants.SEARCH_PEOPLE_URL;
+  private readonly http = inject(HttpClient);
+  private readonly dataService = inject(DataService);
+  private readonly logger = inject(LoggerService);
+  initUrl = Constants.SEARCH_PEOPLE_URL;
   searchUrl = '';
   householdMembers = signal<Person[]>([]);
   private selectedCriteria = signal<peopleSearchCriteria>({
@@ -41,37 +43,37 @@ export class PeopleService {
 
   constructor() {
     effect(() => {
-      console.log(this.selectedCriteria);
+      this.logger.info('[People Service] ' + this.selectedCriteria);
       this.executeSearch();
     });
   }
 
   getData(): Observable<any> {
-    return this.#http.get<any>(Constants.peopleUrl);
+    return this.http.get<any>(Constants.peopleUrl);
   }
   getADPeople(): Observable<any> {
-    return this.#http.get<Person[]>(Constants.GET_ADS_URL);
+    return this.http.get<Person[]>(Constants.GET_ADS_URL);
   }
   private searchPeople$(): Observable<Person[] | undefined> {
-    return this.#http.get<Person[]>(this.searchUrl, { responseType: 'json' });
+    return this.http.get<Person[]>(this.searchUrl, { responseType: 'json' });
   }
   getHouseholdMembers(id: number): void {
     //     const url = Constants.GET_HOUSEHOLD_MEMBERS_URL + '/' + this.selectedRecordSignal()?.houseId;
-    //  console.log('URL: ', url);
+    //  this.logger.info('URL: ', url);
 
     this.getHouseholdMembers$(id).subscribe((response) => {
-      console.log('Household Members: ', response);
+      this.logger.info('Household Members: ', response);
       this.householdMembers.set(response);
       return response;
     });
   }
   private getHouseholdMembers$(id: number): Observable<Person[]> {
     const url = Constants.GET_HOUSEHOLD_MEMBERS_URL + '/' + id;
-    console.log('URL: ', url);
-    return this.#http.get<Person[]>(url, { responseType: 'json' });
+    this.logger.info('URL: ', url);
+    return this.http.get<Person[]>(url, { responseType: 'json' });
   }
   constructQueryString(criteria: peopleSearchCriteria): string {
-    let url = this.inithUrl;
+    let url = this.initUrl;
 
     if (criteria == null) {
       return '';
@@ -106,7 +108,7 @@ export class PeopleService {
     );
 
     this.searchPeople$().subscribe((response) => {
-      console.log('Search People: ', response);
+      this.logger.info('Search People: ', response);
       this.updateResults(response!);
     });
   }

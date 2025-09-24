@@ -39,6 +39,7 @@ export class PeopleAlphabet implements OnInit {
   ngOnInit() {
     const saved = localStorage.getItem('peopleSearchCriteria');
     if (saved) {
+      this.logger.info(saved);
       // if
     } // this.loadPeople(this.selectedLetter);
   }
@@ -51,7 +52,7 @@ export class PeopleAlphabet implements OnInit {
       firstName: '',
       playerOnly: false,
     };
-    this.#peopleService.updateSelectedCriteria(this.selectedCriteria);
+    // this.#peopleService.updateSelectedCriteria(this.selectedCriteria);
     // this.loadPeople(letter);
   }
 

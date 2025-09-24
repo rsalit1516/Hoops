@@ -1,15 +1,31 @@
-<form [formGroup]="searchForm" class="flex-1">
-  <mat-toolbar color="primary">
-    <mat-form-field [appearance]="inputStyle" class="full-width">
-      <mat-label>Last Name</mat-label>
-      <input matInput type="text" formControlName="lastName" />
-    </mat-form-field>
+<mat-toolbar color="primary">
+  <button mat-raised-button color="accent" (click)="newPerson()">
+    New Person
+  </button>
 
-    <mat-form-field [appearance]="inputStyle" class="full-width">
-      <mat-label>First Name</mat-label>
-      <input matInput formControlName="firstName" />
-    </mat-form-field>
-    <!-- Remove mat-form-field wrapper for the checkbox -->
-    <mat-checkbox formControlName="playerOnly">Player Only</mat-checkbox>
-  </mat-toolbar>
-</form>
+  <mat-form-field [appearance]="inputStyle" class="full-width">
+    <mat-label>Last Name</mat-label>
+    <input
+      matInput
+      type="text"
+      [value]="selectedFilter().lastName"
+      (input)="updateLastName($event)"
+    />
+  </mat-form-field>
+
+  <mat-form-field [appearance]="inputStyle" class="full-width">
+    <mat-label>First Name</mat-label>
+    <input
+      matInput
+      [value]="selectedFilter().firstName"
+      (input)="updateFirstName($event)"
+    />
+  </mat-form-field>
+
+  <mat-checkbox
+    [checked]="selectedFilter().playerOnly"
+    (change)="updatePlayerOnly($event.checked)"
+  >
+    Player Only
+  </mat-checkbox>
+</mat-toolbar>

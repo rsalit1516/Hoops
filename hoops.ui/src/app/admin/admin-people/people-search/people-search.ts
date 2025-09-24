@@ -1,101 +1,79 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, input, OnInit, output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, inject, model, effect } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { peopleSearchCriteria, PeopleService } from '@app/services/people.service';
+import { peopleSearchCriteria } from '@app/services/people.service';
 import { FormSettings } from '@app/shared/constants';
-import { debounceTime, map } from 'rxjs';
+import { LoggerService } from '@app/services/logger.service';
 
 @Component({
   selector: 'csbc-people-search',
   imports: [
     CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatToolbarModule,
     MatButtonModule,
-    MatCheckboxModule
+    MatCheckboxModule,
   ],
   templateUrl: './people-search.html',
-  styleUrls: ['./people-search.scss',
+  styleUrls: [
+    './people-search.scss',
     '../../admin.scss',
     '../../../shared/scss/forms.scss',
   ],
 })
-export class PeopleSearch implements OnInit {
-  #peopleService = inject(PeopleService);
-  selectedFilter = input<peopleSearchCriteria>();
-  selectedFilterChange = output<peopleSearchCriteria>();
+export class PeopleSearch {
+  private readonly logger = inject(LoggerService);
 
-  pageTitle = 'Search People';
-  fb = inject(FormBuilder);
-  // inputStyle: 'fill' | 'outline' = 'outline';
-  searchForm = this.fb.group({
-    lastName: [''],
-    firstName: [''],
-    playerOnly: [false],
-  });
-
-  selectedCriteria: peopleSearchCriteria = {
+  // Two-way binding with parent component
+  selectedFilter = model<peopleSearchCriteria>({
     lastName: '',
     firstName: '',
     playerOnly: false,
-  };
-  inputStyle = FormSettings.inputStyle;
-  constructor () {
+  });
 
-    // https://localhost:5001/api/Person/search?lastName=sali&firstName=j&playerOnly=true
-    this.searchForm.valueChanges.pipe(
-      debounceTime(300),
-      map(values => {
-        this.selectedCriteria = {
-          lastName: this.searchForm.value.lastName ?? '',
-          firstName: this.searchForm.value.firstName ?? '',
-          playerOnly: this.searchForm.value.playerOnly ?? false,
-        };
-        this.search();
+  readonly inputStyle = FormSettings.inputStyle;
+  readonly pageTitle = 'Search People';
 
-      })
-    ).subscribe();
+  constructor() {
+    // React to changes in the filter model
+    effect(() => {
+      const filter = this.selectedFilter();
+      this.logger.info('Filter criteria changed:', filter);
+      // Save to localStorage for persistence
+      localStorage.setItem('peopleSearchCriteria', JSON.stringify(filter));
+    });
   }
-  ngOnInit (): void {
-    // Try to get criteria from localStorage
-    const stored = localStorage.getItem('peopleSearchCriteria');
-    if (stored) {
-      try {
-        const parsed: peopleSearchCriteria = JSON.parse(stored);
-        this.selectedCriteria = {
-          lastName: parsed.lastName ?? '',
-          firstName: parsed.firstName ?? '',
-          playerOnly: parsed.playerOnly ?? false,
-        };
-        this.searchForm.patchValue(this.selectedCriteria, { emitEvent: false });
-      } catch (e) {
-        // If parsing fails, ignore and use defaults
-      }
-    }
-    // Optionally, trigger initial search
-    this.search();
+
+  updateLastName(event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
+    this.selectedFilter.update((criteria) => ({
+      ...criteria,
+      lastName: value,
+    }));
   }
-  onSearch () {
-    console.log('Searching...');
+
+  updateFirstName(event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
+    this.selectedFilter.update((criteria) => ({
+      ...criteria,
+      firstName: value,
+    }));
   }
-  hasError (controlName: string, errorName: string) {
-    // return this.searchForm.controls[controlName].hasError(errorName);
+
+  updatePlayerOnly(checked: boolean): void {
+    this.selectedFilter.update((criteria) => ({
+      ...criteria,
+      playerOnly: checked,
+    }));
   }
-  newPerson () {
-    console.log('New person');
-  }
-  search () {
-    console.log('Search submitted');
-    this.selectedFilterChange.emit(this.selectedCriteria);
-    // this.#peopleService.updateSelectedCriteria(this.selectedCriteria);
-    // this.#peopleService.executeSearch();
+
+  newPerson(): void {
+    this.logger.info('New person requested');
+    // Implement new person logic
   }
 }
