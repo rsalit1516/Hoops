@@ -19,7 +19,7 @@ import { SectionTitle } from '@app/shared/components/section-title/section-title
 import { PeopleSearch } from '../people-search/people-search';
 import { Router } from '@angular/router';
 import { HouseholdService } from '@app/services/household.service';
-import { AlphabeticalSearch } from '../../admin-shared/people-alphabet/alphabetical-search';
+import { AlphabeticalSearch } from '../../admin-shared/alphabetical-search/alphabetical-search';
 import { LoggerService } from '@app/services/logger.service';
 
 @Component({

@@ -7,7 +7,7 @@ import {
   signal,
 } from '@angular/core';
 import { PeopleSearch } from '../people-search/people-search';
-import { AlphabeticalSearch } from '../../admin-shared/people-alphabet/alphabetical-search';
+import { AlphabeticalSearch } from '../../admin-shared/alphabetical-search/alphabetical-search';
 import { PeopleSearchResults } from '../people-search-results/people-search-results';
 import {
   peopleSearchCriteria,
