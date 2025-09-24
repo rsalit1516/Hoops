@@ -7,7 +7,7 @@ import {
   signal,
 } from '@angular/core';
 import { PeopleSearch } from '../people-search/people-search';
-import { PeopleAlphabet } from '../../admin-shared/people-alphabet/people-alphabet';
+import { AlphabeticalSearch } from '../../admin-shared/people-alphabet/alphabetical-search';
 import { PeopleSearchResults } from '../people-search-results/people-search-results';
 import {
   peopleSearchCriteria,
@@ -17,12 +17,12 @@ import { LoggerService } from '@app/services/logger.service';
 
 @Component({
   selector: 'csbc-people-list',
-  imports: [PeopleSearch, PeopleAlphabet, PeopleSearchResults],
+  imports: [PeopleSearch, AlphabeticalSearch, PeopleSearchResults],
   template: ` <div class="row">
       <csbc-people-search [(selectedFilter)]="selectedCriteria" />
     </div>
     <div class="row">
-      <csbc-people-alphabet [(selectedLetter)]="selectedLetter" />
+      <csbc-alphabetical-search [(selectedLetter)]="selectedLetter" />
     </div>
     <div>
       <csbc-people-search-results />

@@ -16,12 +16,12 @@ import {
 } from '@app/services/people.service';
 
 @Component({
-  selector: 'csbc-people-alphabet',
-  templateUrl: './people-alphabet.html',
-  styleUrls: ['./people-alphabet.scss'],
+  selector: 'csbc-alphabetical-search',
+  templateUrl: './alphabetical-search.html',
+  styleUrls: ['./alphabetical-search.scss'],
   imports: [CommonModule, MatButtonModule],
 })
-export class PeopleAlphabet implements OnInit {
+export class AlphabeticalSearch implements OnInit {
   #peopleService = inject(PeopleService);
   private logger = inject(LoggerService);
   selectedLetter = model<string>('A'); // Use model for two-way binding

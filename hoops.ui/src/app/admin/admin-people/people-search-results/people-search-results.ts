@@ -19,7 +19,7 @@ import { SectionTitle } from '@app/shared/components/section-title/section-title
 import { PeopleSearch } from '../people-search/people-search';
 import { Router } from '@angular/router';
 import { HouseholdService } from '@app/services/household.service';
-import { PeopleAlphabet } from '../../admin-shared/people-alphabet/people-alphabet';
+import { PeopleAlphabet } from '../../admin-shared/people-alphabet/alphabetical-search';
 
 @Component({
   selector: 'csbc-people-search-results',

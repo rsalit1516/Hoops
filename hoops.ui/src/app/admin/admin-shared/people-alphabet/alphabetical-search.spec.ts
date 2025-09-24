@@ -1,16 +1,16 @@
 // alphabet-filter.spec.ts
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { PeopleAlphabet } from './people-alphabet';
+import { AlphabeticalSearch } from './alphabetical-search';
 import { By } from '@angular/platform-browser';
 import { PeopleService } from '@app/services/people.service';
 
-describe('PeopleAlphabet', () => {
-  let component: PeopleAlphabet;
-  let fixture: ComponentFixture<PeopleAlphabet>;
+describe('AlphabeticalSearch', () => {
+  let component: AlphabeticalSearch;
+  let fixture: ComponentFixture<AlphabeticalSearch>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PeopleAlphabet],
+      imports: [AlphabeticalSearch],
       providers: [
         {
           provide: PeopleService,
@@ -23,7 +23,7 @@ describe('PeopleAlphabet', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(PeopleAlphabet);
+    fixture = TestBed.createComponent(AlphabeticalSearch);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
