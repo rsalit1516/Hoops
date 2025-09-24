@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '@app/services/auth.service';
 import { FeatureFlagService } from '../../services/feature-flags';
 import { LoggerService } from '@app/services/logger.service';
+import { SessionTimerComponent } from '../session-timer/session-timer.component';
 
 @Component({
   selector: 'csbc-top-nav',
@@ -25,6 +26,7 @@ import { LoggerService } from '@app/services/logger.service';
     MatIconModule,
     RouterModule,
     RouterLinkActive,
+    SessionTimerComponent,
   ],
 })
 export class TopNav implements OnInit {
@@ -35,6 +37,7 @@ export class TopNav implements OnInit {
 
   userName: string | undefined;
   user = computed(() => this.authService.currentUser());
+  sessionInfo = computed(() => this.authService.getSessionInfo());
   drawer!: {
     opened: false;
   };

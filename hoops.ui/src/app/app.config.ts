@@ -2,6 +2,7 @@ import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import {
   provideHttpClient,
   withInterceptorsFromDi,
+  HTTP_INTERCEPTORS,
 } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
@@ -15,6 +16,7 @@ import { reducers, metaReducers } from './reducers';
 import { DataService } from './services/data.service';
 import { environment } from '../environments/environment';
 import { LOGGER_OPTIONS, LoggerOptions } from './services/logger.tokens';
+import { ActivityTrackingInterceptor } from './services/activity-tracking.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -27,6 +29,11 @@ export const appConfig: ApplicationConfig = {
         prefix: `[${environment.environment.toUpperCase()}]`,
         alwaysLogErrors: true,
       } as LoggerOptions,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ActivityTrackingInterceptor,
+      multi: true,
     },
     importProvidersFrom(
       BrowserModule,

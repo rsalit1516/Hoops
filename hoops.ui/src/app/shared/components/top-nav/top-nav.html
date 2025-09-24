@@ -57,6 +57,8 @@
       </button>
       <div *ngIf="user()" class="flex items-center gap-2">
         <span class="user-name">Hello {{ user()?.firstName }}</span>
+        <!-- Session timer - only show in development for debugging -->
+        <csbc-session-timer *ngIf="!env?.production"></csbc-session-timer>
         <button mat-button (click)="logout()">Logout</button>
       </div>
     </div>

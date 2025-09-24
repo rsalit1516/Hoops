@@ -19,7 +19,8 @@ import { SectionTitle } from '@app/shared/components/section-title/section-title
 import { PeopleSearch } from '../people-search/people-search';
 import { Router } from '@angular/router';
 import { HouseholdService } from '@app/services/household.service';
-import { PeopleAlphabet } from '../../admin-shared/people-alphabet/alphabetical-search';
+import { AlphabeticalSearch } from '../../admin-shared/people-alphabet/alphabetical-search';
+import { LoggerService } from '@app/services/logger.service';
 
 @Component({
   selector: 'csbc-people-search-results',
@@ -31,7 +32,7 @@ import { PeopleAlphabet } from '../../admin-shared/people-alphabet/alphabetical-
     DatePipe,
     SectionTitle,
     PeopleSearch,
-    PeopleAlphabet,
+    AlphabeticalSearch,
   ],
   templateUrl: './people-search-results.html',
   styleUrls: [
@@ -46,6 +47,7 @@ export class PeopleSearchResults implements OnInit, OnChanges, AfterViewInit {
   pageTitle = 'People Search Results';
   #peopleService = inject(PeopleService);
   #householdService = inject(HouseholdService);
+  private logger = inject(LoggerService);
   readonly #router = inject(Router);
   results = input<Person[]>();
   register = 'Register';
@@ -89,7 +91,7 @@ export class PeopleSearchResults implements OnInit, OnChanges, AfterViewInit {
   }
 
   getRecord(row: any) {
-    console.log(row);
+    this.logger.info('Selected person record:', row);
     this.#peopleService.updateSelectedPerson(row);
     this.#householdService.selectedHouseholdByHouseId(row.houseId);
     this.#router.navigate(['/admin/people/detail']);

@@ -1,5 +1,5 @@
 import { effect, inject, Injectable, signal, computed } from '@angular/core';
-import { tap } from 'rxjs/operators';
+import { tap, catchError } from 'rxjs/operators';
 
 import { Observable, of } from 'rxjs';
 import { User } from '../domain/user';
@@ -11,6 +11,8 @@ import * as userActions from '@app/user/state/user.actions';
 
 import { Constants } from '../shared/constants';
 import { DivisionService } from './division.service';
+import { UserActivityService } from './user-activity.service';
+import { LoggerService } from './logger.service';
 
 @Injectable({
   providedIn: 'root',
@@ -20,6 +22,8 @@ export class AuthService {
   readonly dataService = inject(DataService);
   readonly store = inject(Store<fromUser.State>);
   private divisionService = inject(DivisionService);
+  private userActivityService = inject(UserActivityService);
+  private logger = inject(LoggerService);
 
   // Enhanced signal definitions
   currentUser = signal<User | undefined>(undefined);
@@ -50,8 +54,34 @@ export class AuthService {
   user: User | undefined;
 
   constructor() {
-    // Simplified constructor - effects and computed signals handle reactivity automatically
-    // Hydrate from cookie on app load
+    this.initializeAuth();
+
+    // Effect to save user session when currentUser changes
+    effect(() => {
+      const user = this.currentUser();
+      if (user) {
+        this.userActivityService.saveUserSession(user);
+        this.logger.info('👤 User session saved for:', user.userName);
+      }
+    });
+  }
+
+  /**
+   * Initialize authentication by checking localStorage first, then falling back to server
+   */
+  private initializeAuth(): void {
+    // First, try to restore from localStorage (immediate)
+    const sessionData = this.userActivityService.loadUserSession();
+    if (sessionData) {
+      this.logger.info('🔄 Restoring user session from localStorage');
+      this.setUserState(sessionData.user);
+      // Record activity to restart the timer
+      this.userActivityService.recordActivity();
+      return;
+    }
+
+    // Fall back to server authentication (cookie-based)
+    this.logger.info('🌐 Checking server authentication...');
     this.http
       .get<User>(`${Constants.FUNCTIONS_BASE_URL}/api/auth/me`, {
         withCredentials: true,
@@ -59,11 +89,18 @@ export class AuthService {
       .pipe(
         tap((user) => {
           if (user) {
+            this.logger.info('✅ Server authentication successful');
             this.setUserState(user);
+          } else {
+            this.logger.info('❌ No server authentication found');
           }
+        }),
+        catchError((error) => {
+          this.logger.error('❌ Server authentication failed:', error);
+          return of(null);
         })
       )
-      .subscribe({ error: () => {} });
+      .subscribe();
   }
 
   login(userName: string, password: string): Observable<User> {
@@ -76,8 +113,15 @@ export class AuthService {
       .pipe(
         tap((user) => {
           if (user) {
+            this.logger.info('🔐 Login successful for:', userName);
             this.setUserState(user);
+            // Record login activity
+            this.userActivityService.recordActivity();
           }
+        }),
+        catchError((error) => {
+          this.logger.error('❌ Login failed:', error);
+          throw error;
         })
       );
   }
@@ -85,9 +129,12 @@ export class AuthService {
   setUserState(user: User) {
     this.store.dispatch(new userActions.SetCurrentUser(user));
     this.currentUser.set(user);
+    this.logger.info('👤 User state updated:', user.userName);
   }
 
   logout(): void {
+    this.logger.info('🚪 Logging out user');
+
     this.http
       .post(
         `${Constants.FUNCTIONS_BASE_URL}/api/auth/logout`,
@@ -96,13 +143,51 @@ export class AuthService {
       )
       .subscribe({
         complete: () => {
-          this.currentUser.set(undefined);
-          this.store.dispatch(new userActions.SetCurrentUser(undefined as any));
+          this.clearUserSession();
         },
         error: () => {
-          this.currentUser.set(undefined);
-          this.store.dispatch(new userActions.SetCurrentUser(undefined as any));
+          this.clearUserSession();
         },
       });
+  }
+
+  /**
+   * Clear user session both locally and from activity service
+   */
+  private clearUserSession(): void {
+    this.currentUser.set(undefined);
+    this.store.dispatch(new userActions.SetCurrentUser(undefined as any));
+    this.userActivityService.clearUserSession();
+    this.logger.info('🗑️ User session cleared');
+  }
+
+  /**
+   * Force logout due to inactivity
+   */
+  logoutDueToInactivity(): void {
+    this.logger.info('⏰ Logging out due to inactivity');
+    this.clearUserSession();
+    // Optionally, you could show a toast notification here
+  }
+
+  /**
+   * Get session information for UI display
+   */
+  getSessionInfo() {
+    return this.userActivityService.getSessionInfo();
+  }
+
+  /**
+   * Check if user has a valid session
+   */
+  hasValidSession(): boolean {
+    return this.userActivityService.hasValidSession();
+  }
+
+  /**
+   * Manually record user activity (for API calls, etc.)
+   */
+  recordActivity(): void {
+    this.userActivityService.recordActivity();
   }
 }
