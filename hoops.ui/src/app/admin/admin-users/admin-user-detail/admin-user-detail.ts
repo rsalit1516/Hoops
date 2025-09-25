@@ -14,6 +14,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AdminUsersService } from '../admin-users.service';
 import { User } from '@app/domain/user';
+import { LoggerService } from '@app/services/logging.service';
 
 @Component({
   selector: 'csbc-admin-user-detail',
@@ -36,6 +37,7 @@ export class AdminUserDetail implements OnInit {
   private fb = inject(FormBuilder);
   private usersService = inject(AdminUsersService);
   private snack = inject(MatSnackBar);
+  private logger = inject(LoggerService);
 
   form!: FormGroup;
   userId!: number;
@@ -47,6 +49,32 @@ export class AdminUserDetail implements OnInit {
     { value: 3, label: 'Admin' },
   ];
 
+  constructor() {
+    // Use service-based selectedUser - much simpler!
+    effect(() => {
+      const u = this.usersService.selectedUser();
+
+      // Make sure form is initialized before trying to patch it
+      if (!this.form) return;
+
+      if (u) {
+        // Existing user - populate form
+        this.form.patchValue(u);
+        this.form.markAsPristine();
+        this.userId = u.userId;
+      } else {
+        // New user - reset form to defaults
+        this.form.reset({
+          userId: 0,
+          userName: '',
+          firstName: '',
+          lastName: '',
+          userType: 1,
+        });
+        this.userId = 0;
+      }
+    });
+  }
   ngOnInit(): void {
     this.form = this.fb.group({
       userId: [{ value: 0, disabled: true }],
@@ -55,43 +83,42 @@ export class AdminUserDetail implements OnInit {
       lastName: [''],
       userType: [1, Validators.required],
     });
-
-    this.route.paramMap.subscribe((params) => {
-      const id = Number(params.get('id'));
-      this.userId = id;
-      if (id) {
-        this.usersService.loadUser(id);
-      } else {
-        this.usersService.selectedUser.set(null);
-      }
-    });
-
-    // Patch form when selectedUser changes
-    effect(() => {
-      const u = this.usersService.selectedUser();
-      if (u) {
-        this.form.patchValue(u);
-        this.form.markAsPristine();
-      }
-    });
   }
 
   save() {
     if (this.form.invalid) return;
     this.isSaving.set(true);
     const value: User = { ...this.form.getRawValue() } as User;
-    this.usersService.updateUser(value).subscribe({
-      next: () => {
-        this.isSaving.set(false);
-        this.snack.open('User saved', 'Close', { duration: 2500 });
-        this.form.markAsPristine();
-        this.router.navigate(['../'], { relativeTo: this.route });
-      },
-      error: () => {
-        this.isSaving.set(false);
-        this.snack.open('Failed to save user', 'Close', { duration: 3000 });
-      },
-    });
+
+    const isNew = this.userId === 0;
+
+    if (isNew) {
+      this.usersService.createUser(value).subscribe({
+        next: () => {
+          this.isSaving.set(false);
+          this.snack.open('User created', 'Close', { duration: 2500 });
+          this.form.markAsPristine();
+          this.router.navigate(['../'], { relativeTo: this.route });
+        },
+        error: () => {
+          this.isSaving.set(false);
+          this.snack.open('Failed to create user', 'Close', { duration: 3000 });
+        },
+      });
+    } else {
+      this.usersService.updateUser(value).subscribe({
+        next: () => {
+          this.isSaving.set(false);
+          this.snack.open('User updated', 'Close', { duration: 2500 });
+          this.form.markAsPristine();
+          this.router.navigate(['../'], { relativeTo: this.route });
+        },
+        error: () => {
+          this.isSaving.set(false);
+          this.snack.open('Failed to update user', 'Close', { duration: 3000 });
+        },
+      });
+    }
   }
 
   cancel() {

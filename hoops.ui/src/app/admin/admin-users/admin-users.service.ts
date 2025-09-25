@@ -3,10 +3,12 @@ import { Injectable, inject, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Constants } from '@app/shared/constants';
 import { User } from '@app/domain/user';
+import { LoggerService } from '@app/services/logger.service';
 
 @Injectable({ providedIn: 'root' })
 export class AdminUsersService {
   private http = inject(HttpClient);
+  private logger = inject(LoggerService);
   private baseUrl = `${Constants.FUNCTIONS_BASE_URL}/api/user`;
 
   // Signals-based state
@@ -21,6 +23,10 @@ export class AdminUsersService {
 
   getUser(id: number): Observable<User> {
     return this.http.get<User>(`${this.baseUrl}/${id}`);
+  }
+
+  createUser(user: User): Observable<User> {
+    return this.http.post<User>(this.baseUrl, user);
   }
 
   updateUser(user: User): Observable<void> {

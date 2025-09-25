@@ -1,3 +1,7 @@
+<div class="form-header">
+  <h2>{{ userId === 0 ? 'Create New User' : 'Edit User' }}</h2>
+</div>
+
 <form class="form-container" [formGroup]="form" (ngSubmit)="save()">
   <div class="form-grid">
     <mat-form-field appearance="fill">
@@ -40,7 +44,7 @@
       type="submit"
       [disabled]="form.invalid || isSaving()"
     >
-      Save
+      {{ userId === 0 ? 'Create User' : 'Save Changes' }}
     </button>
     <button mat-button type="button" (click)="cancel()">Cancel</button>
   </div>

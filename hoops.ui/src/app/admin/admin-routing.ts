@@ -83,7 +83,7 @@ export const ADMINROUTES: Routes = [
               ),
           },
           {
-            path: ':id',
+            path: 'detail',
             loadComponent: () =>
               import('./admin-users/admin-user-detail/admin-user-detail').then(
                 (m) => m.AdminUserDetail
