@@ -25,19 +25,26 @@ namespace Hoops.Infrastructure.Repository
         #region IRepository<T> Members
         public override User Insert(User entity)
         {
-
+            // Calculate the next available UserId manually
             entity.UserId = context.Users.Any() ? context.Users.Max(t => t.UserId) + 1 : 1;
             var newUser = context.Users.Add(entity);
             var no = context.SaveChanges();
             return context.Users.FirstOrDefault(user => user.UserName == entity.UserName)!;
-
         }
         public override User Update(User entity)
         {
-            var user = GetById(entity.UserId);
-            user = entity;
+            var existingUser = GetById(entity.UserId);
+            if (existingUser == null)
+                throw new InvalidOperationException($"User with ID {entity.UserId} not found.");
+
+            // Update the tracked entity's properties
+            existingUser.UserName = entity.UserName;
+            existingUser.Name = entity.Name;
+            existingUser.UserType = entity.UserType;
+            // Don't update CreatedDate and CreatedUser as they should remain unchanged
+
             context.SaveChanges();
-            return user!;
+            return existingUser;
         }
         public override void Delete(User entity)
         {
@@ -382,7 +389,80 @@ namespace Hoops.Infrastructure.Repository
 
         User IRepository<User>.Insert(User entity)
         {
-            throw new NotImplementedException();
+            return Insert(entity);
+        }
+
+        // New async methods for Azure Functions compatibility
+        public async Task<List<User>> GetAllUsersAsync()
+        {
+            return await context.Users.ToListAsync();
+        }
+
+        public async Task<User?> GetUserByIdAsync(int id)
+        {
+            return await context.Users.FindAsync(id);
+        }
+
+        public async Task<User?> GetUserByUsernameAsync(string userName)
+        {
+            return await context.Users.FirstOrDefaultAsync(u => u.UserName == userName);
+        }
+
+        public async Task<User> InsertUserAsync(User user)
+        {
+            // Calculate the next available UserId manually since auto-increment isn't configured
+            var maxUserId = await context.Users.AnyAsync()
+                ? await context.Users.MaxAsync(u => u.UserId)
+                : 0;
+            user.UserId = maxUserId + 1;
+
+            context.Users.Add(user);
+            await context.SaveChangesAsync();
+
+            // Return the user with the manually assigned UserId
+            return user;
+        }
+
+        public async Task<User> UpdateUserAsync(User user)
+        {
+            context.Entry(user).State = EntityState.Modified;
+            await context.SaveChangesAsync();
+            return user;
+        }
+
+        public async Task DeleteUserAsync(int id)
+        {
+            var user = await context.Users.FindAsync(id);
+            if (user != null)
+            {
+                context.Users.Remove(user);
+                await context.SaveChangesAsync();
+            }
+        }
+
+        public async Task<bool> UserExistsAsync(int id)
+        {
+            return await context.Users.AnyAsync(e => e.UserId == id);
+        }
+
+        public async Task<User?> AuthenticateUserAsync(string userName, string password)
+        {
+            try
+            {
+                // Hash the input password to compare with stored encrypted password
+                var hashedPassword = HashPassword(password);
+
+                var user = await context.Users
+                    .FirstOrDefaultAsync(u =>
+                        u.UserName.ToLower() == userName.ToLower()
+                        && (u.PassWord == hashedPassword || u.Pword == password)); // Support both encrypted and plain text for compatibility
+
+                return user;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("UserRepository:AuthenticateUserAsync::" + ex.Message);
+            }
         }
     }
 }

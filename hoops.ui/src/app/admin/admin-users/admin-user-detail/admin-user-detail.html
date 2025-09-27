@@ -18,13 +18,8 @@
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-      <mat-label>First Name</mat-label>
-      <input matInput formControlName="firstName" />
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Last Name</mat-label>
-      <input matInput formControlName="lastName" />
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name" />
     </mat-form-field>
 
     <mat-form-field appearance="fill">
@@ -42,10 +37,19 @@
       mat-raised-button
       color="primary"
       type="submit"
-      [disabled]="form.invalid || isSaving()"
+      [disabled]="!isSaveEnabled"
+      [ngClass]="saveButtonClasses"
+      [title]="saveButtonTooltip"
     >
-      {{ userId === 0 ? 'Create User' : 'Save Changes' }}
+      {{ saveButtonText }}
     </button>
     <button mat-button type="button" (click)="cancel()">Cancel</button>
+  </div>
+
+  <!-- Optional validation feedback -->
+  <div class="form-status" *ngIf="hasValidationErrors && form.dirty">
+    <small class="text-warning">
+      Please correct the errors above before saving.
+    </small>
   </div>
 </form>

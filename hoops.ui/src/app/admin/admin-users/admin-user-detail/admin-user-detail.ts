@@ -15,9 +15,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AdminUsersService } from '../admin-users.service';
 import { User } from '@app/domain/user';
 import { LoggerService } from '@app/services/logging.service';
+import { FormValidationService } from '@app/shared/services/form-validation.service';
+import { BaseFormComponent } from '@app/shared/services/base-form.component';
 
 @Component({
-  selector: 'csbc-admin-user-detail',
+  selector: 'app-admin-user-detail',
   standalone: true,
   imports: [
     CommonModule,
@@ -31,7 +33,7 @@ import { LoggerService } from '@app/services/logging.service';
   templateUrl: './admin-user-detail.html',
   styleUrls: ['../../../shared/scss/forms.scss'],
 })
-export class AdminUserDetail implements OnInit {
+export class AdminUserDetail extends BaseFormComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private fb = inject(FormBuilder);
@@ -49,7 +51,12 @@ export class AdminUserDetail implements OnInit {
     { value: 3, label: 'Admin' },
   ];
 
+  protected get isNewRecord(): boolean {
+    return this.userId === 0;
+  }
+
   constructor() {
+    super();
     // Use service-based selectedUser - much simpler!
     effect(() => {
       const u = this.usersService.selectedUser();
@@ -67,8 +74,7 @@ export class AdminUserDetail implements OnInit {
         this.form.reset({
           userId: 0,
           userName: '',
-          firstName: '',
-          lastName: '',
+          name: '',
           userType: 1,
         });
         this.userId = 0;
@@ -79,14 +85,15 @@ export class AdminUserDetail implements OnInit {
     this.form = this.fb.group({
       userId: [{ value: 0, disabled: true }],
       userName: ['', [Validators.required, Validators.maxLength(100)]],
-      firstName: [''],
-      lastName: [''],
+      name: [''],
       userType: [1, Validators.required],
     });
   }
 
   save() {
-    if (this.form.invalid) return;
+    // Only proceed if save should be enabled (form is dirty and valid)
+    if (!this.canSave()) return;
+
     this.isSaving.set(true);
     const value: User = { ...this.form.getRawValue() } as User;
 
@@ -97,7 +104,7 @@ export class AdminUserDetail implements OnInit {
         next: () => {
           this.isSaving.set(false);
           this.snack.open('User created', 'Close', { duration: 2500 });
-          this.form.markAsPristine();
+          this.markFormAsPristine();
           this.router.navigate(['../'], { relativeTo: this.route });
         },
         error: () => {
@@ -110,7 +117,7 @@ export class AdminUserDetail implements OnInit {
         next: () => {
           this.isSaving.set(false);
           this.snack.open('User updated', 'Close', { duration: 2500 });
-          this.form.markAsPristine();
+          this.markFormAsPristine();
           this.router.navigate(['../'], { relativeTo: this.route });
         },
         error: () => {
@@ -126,8 +133,8 @@ export class AdminUserDetail implements OnInit {
     this.router.navigate(['../'], { relativeTo: this.route });
   }
 
-  // For PendingChangesGuard
+  // For PendingChangesGuard - use base implementation
   isFormDirty(): boolean {
-    return this.form?.dirty ?? false;
+    return this.hasUnsavedChanges();
   }
 }

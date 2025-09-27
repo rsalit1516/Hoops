@@ -339,3 +339,55 @@ mat-form-field input::placeholder {
   color: v.$admin-font-color !important;
   --mat-pseudo-checkbox-minimal-selected-checkmark-color: v.$admin-font-color !important;
 }
+
+/* Save button states for better UX */
+.form-actions {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.form-status {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+
+  .text-warning {
+    color: #ff9800;
+    font-style: italic;
+  }
+}
+
+/* Disabled save button with helpful tooltip */
+button[mat-raised-button][disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Visual feedback for save button states */
+.save-enabled {
+  background-color: v.$brand-color !important;
+  color: white !important;
+}
+
+.save-disabled {
+  background-color: color.adjust(
+    v.$admin-background-color,
+    $lightness: 20%
+  ) !important;
+  color: color.adjust(v.$admin-font-color, $lightness: -30%) !important;
+}
+
+.save-saving {
+  background-color: color.adjust(v.$brand-color, $lightness: -10%) !important;
+  animation: pulse 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.7;
+  }
+}
