@@ -1,8 +1,10 @@
 <h1 mat-dialog-title>{{ data?.title || 'Confirm Delete' }}</h1>
 <div mat-dialog-content>
-  {{ data?.message || 'Are you sure you want to delete this item?' }}
+  <p>{{ data?.message || 'Are you sure you want to delete this item?' }}</p>
 </div>
-<div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">No</button>
-  <button mat-button (click)="onYesClick()">Yes</button>
+<div mat-dialog-actions align="end" class="flex gap-2">
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onYesClick()">
+    {{ data?.title?.includes('Discard') ? 'Discard Changes' : 'Yes' }}
+  </button>
 </div>
