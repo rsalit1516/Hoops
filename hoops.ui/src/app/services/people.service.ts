@@ -72,6 +72,10 @@ export class PeopleService {
     this.logger.info('URL: ', url);
     return this.http.get<Person[]>(url, { responseType: 'json' });
   }
+
+  getHouseholdMembersObservable(id: number): Observable<Person[]> {
+    return this.getHouseholdMembers$(id);
+  }
   constructQueryString(criteria: peopleSearchCriteria): string {
     let url = this.initUrl;
 

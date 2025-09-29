@@ -17,6 +17,10 @@ import { User } from '@app/domain/user';
 import { LoggerService } from '@app/services/logging.service';
 import { FormValidationService } from '@app/shared/services/form-validation.service';
 import { BaseFormComponent } from '@app/shared/services/base-form.component';
+import { HouseholdService } from '@app/services/household.service';
+import { PeopleService } from '@app/services/people.service';
+import { Household } from '@app/domain/household';
+import { Person } from '@app/domain/person';
 
 @Component({
   selector: 'app-admin-user-detail',
@@ -38,6 +42,8 @@ export class AdminUserDetail extends BaseFormComponent implements OnInit {
   private router = inject(Router);
   private fb = inject(FormBuilder);
   private usersService = inject(AdminUsersService);
+  private householdService = inject(HouseholdService);
+  private peopleService = inject(PeopleService);
   private snack = inject(MatSnackBar);
   private logger = inject(LoggerService);
 
@@ -50,6 +56,9 @@ export class AdminUserDetail extends BaseFormComponent implements OnInit {
     { value: 2, label: 'Director' },
     { value: 3, label: 'Admin' },
   ];
+
+  householdOptions = signal<Household[]>([]);
+  peopleOptions = signal<Person[]>([]);
 
   protected get isNewRecord(): boolean {
     return this.userId === 0;
@@ -76,7 +85,10 @@ export class AdminUserDetail extends BaseFormComponent implements OnInit {
           userName: '',
           name: '',
           userType: 1,
+          houseId: '',
+          personId: '',
         });
+        this.peopleOptions.set([]);
         this.userId = 0;
       }
     });
@@ -87,6 +99,53 @@ export class AdminUserDetail extends BaseFormComponent implements OnInit {
       userName: ['', [Validators.required, Validators.maxLength(100)]],
       name: [''],
       userType: [1, Validators.required],
+      houseId: [''],
+      personId: [''],
+    });
+
+    // Load household options
+    this.householdService.getAllHouseholds().subscribe({
+      next: (households) => {
+        this.householdOptions.set(households);
+      },
+      error: (error) => {
+        this.logger.error('Failed to load households', error);
+        this.snack.open('Failed to load households', 'Close', {
+          duration: 3000,
+        });
+      },
+    });
+
+    // Watch for household changes and load people accordingly
+    this.form.get('houseId')?.valueChanges.subscribe((houseId) => {
+      if (houseId) {
+        this.loadPeopleForHousehold(houseId);
+      } else {
+        // Clear people options and disable people dropdown when no household selected
+        this.peopleOptions.set([]);
+        this.form.get('personId')?.setValue('');
+      }
+    });
+  }
+
+  private loadPeopleForHousehold(houseId: number): void {
+    this.peopleService.getHouseholdMembersObservable(houseId).subscribe({
+      next: (people) => {
+        // Sort people by last name, then first name
+        const sortedPeople = people.sort((a, b) => {
+          const lastNameComparison = a.lastName.localeCompare(b.lastName);
+          if (lastNameComparison !== 0) return lastNameComparison;
+          return a.firstName.localeCompare(b.firstName);
+        });
+        this.peopleOptions.set(sortedPeople);
+      },
+      error: (error) => {
+        this.logger.error('Failed to load people for household', error);
+        this.snack.open('Failed to load household members', 'Close', {
+          duration: 3000,
+        });
+        this.peopleOptions.set([]);
+      },
     });
   }
 

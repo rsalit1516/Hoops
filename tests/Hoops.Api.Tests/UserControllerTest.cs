@@ -136,6 +136,56 @@ namespace Hoops.Api.Tests
             Assert.IsType<NotFoundResult>(result.Result);
         }
 
+        [Fact]
+        public async Task PostUser_WithHouseId_SetsHouseIdCorrectly()
+        {
+            // Arrange
+            var newUser = new User
+            {
+                UserId = 0,
+                UserName = "testuser2",
+                Name = "Test User 2",
+                UserType = 1,
+                HouseId = 5
+            };
+
+            // Act
+            var result = await _controller.PostUser(newUser);
+
+            // Assert
+            var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(result.Result);
+            var returnedUser = Assert.IsType<User>(createdAtActionResult.Value);
+
+            Assert.True(returnedUser.UserId > 0);
+            Assert.Equal(5, returnedUser.HouseId);
+            Assert.Equal("testuser2", returnedUser.UserName);
+        }
+
+        [Fact]
+        public async Task PutUser_WithUpdatedHouseId_UpdatesHouseIdCorrectly()
+        {
+            // Arrange
+            var existingUser = await _context.Users.FindAsync(1);
+            Assert.NotNull(existingUser);
+
+            // Update the user's household
+            existingUser.HouseId = 10;
+            existingUser.Name = "Updated Name";
+
+            // Act
+            var result = await _controller.PutUser(1, existingUser);
+
+            // Assert
+            Assert.IsType<NoContentResult>(result);
+
+            // Verify the update in the database
+            var updatedUser = await _context.Users.FindAsync(1);
+            Assert.NotNull(updatedUser);
+            Assert.Equal(10, updatedUser.HouseId);
+            Assert.Equal("Updated Name", updatedUser.Name);
+            Assert.Equal("existinguser", updatedUser.UserName); // Should remain unchanged
+        }
+
         public void Dispose()
         {
             _context?.Dispose();

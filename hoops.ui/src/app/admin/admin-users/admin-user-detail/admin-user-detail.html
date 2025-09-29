@@ -30,6 +30,33 @@
         >
       </mat-select>
     </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Household</mat-label>
+      <mat-select formControlName="houseId">
+        <mat-option value="">-- Select Household --</mat-option>
+        <mat-option
+          *ngFor="let household of householdOptions()"
+          [value]="household.houseId"
+          >{{ household.name }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Person</mat-label>
+      <mat-select
+        formControlName="personId"
+        [disabled]="!form.get('houseId')?.value"
+      >
+        <mat-option value="">-- Select Person --</mat-option>
+        <mat-option
+          *ngFor="let person of peopleOptions()"
+          [value]="person.personId"
+          >{{ person.lastName }}, {{ person.firstName }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
   </div>
 
   <div class="form-actions">

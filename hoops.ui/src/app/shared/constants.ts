@@ -63,6 +63,7 @@ export class Constants {
   public static GET_ADS_URL = `${this.FUNCTIONS_BASE_URL}/api/Person/GetADs`;
   public static GET_STANDINGS_URL = `${this.FUNCTIONS_BASE_URL}/api/ScheduleGame/GetStandings`;
   public static SEARCH_HOUSEHOLD_URL = `${this.FUNCTIONS_BASE_URL}/api/Household/search`;
+  public static GET_ALL_HOUSEHOLDS_URL = `${this.FUNCTIONS_BASE_URL}/api/Household`;
   public static GET_HOUSEHOLD_MEMBERS_URL = `${this.FUNCTIONS_BASE_URL}/api/Person/GetHouseholdMembers`;
   public static GET_HOUSEHOLD_BY_ID_URL = `${this.FUNCTIONS_BASE_URL}/api/Household`;
   public static SEARCH_PEOPLE_URL = `${this.FUNCTIONS_BASE_URL}/api/Person/search`;

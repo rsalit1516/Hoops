@@ -1,5 +1,18 @@
-import { HttpClient, HttpErrorResponse, httpResource } from '@angular/common/http';
-import { computed, effect, inject, Injectable, linkedSignal, Signal, signal, WritableSignal } from '@angular/core';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  httpResource,
+} from '@angular/common/http';
+import {
+  computed,
+  effect,
+  inject,
+  Injectable,
+  linkedSignal,
+  Signal,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { Household } from '@app/domain/household';
 import { Person } from '@app/domain/person';
@@ -9,7 +22,7 @@ import { map, Observable, tap } from 'rxjs';
 import { PeopleService } from './people.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class HouseholdService {
   // Injected services
@@ -22,10 +35,12 @@ export class HouseholdService {
     householdName: '',
     address: '',
     email: '',
-    phone: ''
+    phone: '',
   });
   // Signal to support the template
-  criteria = linkedSignal<householdSearchCriteria>(() => this.selectedCriteria());
+  criteria = linkedSignal<householdSearchCriteria>(() =>
+    this.selectedCriteria()
+  );
 
   householdSearchResults = signal<Household[]>([]);
   error = computed(() => this.householdResource.error() as HttpErrorResponse);
@@ -39,13 +54,13 @@ export class HouseholdService {
   selectedRecordSignal = this._selectedHousehold.asReadonly();
   householdSaved = signal<boolean>(false);
 
-  constructor () {
+  constructor() {
     // Optional: Effect for side effects when the signal changes
     effect(() => {
       const record = this._selectedHousehold();
       console.log('Selected record changed:', record);
       if (record !== null) {
-        console.log(`Record updated: ${ record.name }`);
+        console.log(`Record updated: ${record.name}`);
         // Optionally trigger additional logic here
       }
     });
@@ -55,62 +70,67 @@ export class HouseholdService {
   }
 
   // Method to update the selected record ID
-  updateSelectedHousehold (record: Household) {
+  updateSelectedHousehold(record: Household) {
     this._selectedHousehold.set(record);
     this.getHouseholdMembers();
   }
 
-  get selectedHousehold () {
+  get selectedHousehold() {
     return this._selectedHousehold();
   }
 
-  executeSearch () {
+  executeSearch() {
     this.searchUrl = this.constructQueryString(this.selectedCriteria());
-    this.searchHouseholds$().subscribe(response => {
+    this.searchHouseholds$().subscribe((response) => {
       this.householdSearchResults.set(response!);
       console.log(this.results);
       //       console.log('Household data: ', this.householdsResult());
     });
   }
 
-  getHouseholdMembers () {
-    this.#peopleService.getHouseholdMembers(this.selectedRecordSignal()!.houseId);
+  getHouseholdMembers() {
+    this.#peopleService.getHouseholdMembers(
+      this.selectedRecordSignal()!.houseId
+    );
   }
 
   // To generate an error, add characters to the URL
   private householdResource = httpResource<HouseholdResponse>(
-    () => this.searchUrl);
+    () => this.searchUrl
+  );
 
-  private searchHouseholds$ (): Observable<Household[] | undefined> {
+  private searchHouseholds$(): Observable<Household[] | undefined> {
     return this.http.get<Household[]>(this.searchUrl, { responseType: 'json' });
   }
-  searchHouseholds (): Signal<Household[] | undefined> {
+  searchHouseholds(): Signal<Household[] | undefined> {
     return toSignal(this.searchHouseholds$());
   }
 
-  getResults (criteria: householdSearchCriteria): Observable<Household[] | undefined> {
+  getResults(
+    criteria: householdSearchCriteria
+  ): Observable<Household[] | undefined> {
     this.searchUrl = this.constructQueryString(criteria);
     return this.searchHouseholds$();
   }
 
-  get results () {
+  get results() {
     return this.householdSearchResults();
   }
 
-  fetchFilteredData (filters: any): Observable<any[]> {
+  fetchFilteredData(filters: any): Observable<any[]> {
     console.log(filters);
     const filterObject: householdSearchCriteria = {
       householdName: filters.householdName,
       address: filters.address,
       email: filters.email,
-      phone: filters.phone
+      phone: filters.phone,
     };
     this.searchUrl = this.constructQueryString(filterObject);
     console.log('Query String: ', this.searchUrl);
     return this.http.get<Household[]>(this.searchUrl, { responseType: 'json' });
   }
 
-  constructQueryString (criteria: householdSearchCriteria): string {
+  constructQueryString(criteria: householdSearchCriteria): string {
     let url = this.inithUrl;
 
     if (criteria == null) {
@@ -132,28 +152,47 @@ export class HouseholdService {
     // add additional criteria as needed
     // https://localhost:5001/api/Household/search?name=salit&email=richard.salit%40gmail.com
   }
-  saveHousehold (household: Household): void {
+  saveHousehold(household: Household): void {
     if (household.houseId !== 0) {
       const url = Constants.SAVE_HOUSEHOLD_URL + household.houseId;
       console.log('URL: ', url);
-      this.http.put<Household>(url, household).subscribe(response => {
+      this.http.put<Household>(url, household).subscribe((response) => {
         console.log('Household updated:', response);
       });
     } else {
       console.log('New household');
-      this.http.post<Household>(Constants.SAVE_HOUSEHOLD_URL, household).subscribe(response => {
-        console.log('Household created:', response);
-      });
+      this.http
+        .post<Household>(Constants.SAVE_HOUSEHOLD_URL, household)
+        .subscribe((response) => {
+          console.log('Household created:', response);
+        });
     }
   }
-  newHousehold () {
+  newHousehold() {
     const household = new Household();
     this._selectedHousehold.set(household);
   }
-  selectedHouseholdByHouseId (houseId: number) {
-    this.http.get<Household>(Constants.GET_HOUSEHOLD_BY_ID_URL + '/' + houseId.toString(), { responseType: 'json' }).subscribe(response => {
-      this.updateSelectedHousehold(response);
-    });
+  selectedHouseholdByHouseId(houseId: number) {
+    this.http
+      .get<Household>(
+        Constants.GET_HOUSEHOLD_BY_ID_URL + '/' + houseId.toString(),
+        { responseType: 'json' }
+      )
+      .subscribe((response) => {
+        this.updateSelectedHousehold(response);
+      });
+  }
+
+  getAllHouseholds(): Observable<Household[]> {
+    return this.http
+      .get<Household[]>(Constants.GET_ALL_HOUSEHOLDS_URL, {
+        responseType: 'json',
+      })
+      .pipe(
+        map((households) =>
+          households.sort((a, b) => a.name.localeCompare(b.name))
+        )
+      );
   }
 }
 export interface householdSearchCriteria {
