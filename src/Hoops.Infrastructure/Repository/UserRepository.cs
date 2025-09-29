@@ -27,6 +27,13 @@ namespace Hoops.Infrastructure.Repository
         {
             // Calculate the next available UserId manually
             entity.UserId = context.Users.Any() ? context.Users.Max(t => t.UserId) + 1 : 1;
+
+            // Set default CompanyId if not provided or is 0
+            if (!entity.CompanyId.HasValue || entity.CompanyId.Value == 0)
+            {
+                entity.CompanyId = 1; // Default CompanyId value used throughout the application
+            }
+
             var newUser = context.Users.Add(entity);
             var no = context.SaveChanges();
             return context.Users.FirstOrDefault(user => user.UserName == entity.UserName)!;
@@ -416,6 +423,12 @@ namespace Hoops.Infrastructure.Repository
                 : 0;
             user.UserId = maxUserId + 1;
 
+            // Set default CompanyId if not provided or is 0
+            if (!user.CompanyId.HasValue || user.CompanyId.Value == 0)
+            {
+                user.CompanyId = 1; // Default CompanyId value used throughout the application
+            }
+
             context.Users.Add(user);
             await context.SaveChangesAsync();
 
@@ -425,11 +438,44 @@ namespace Hoops.Infrastructure.Repository
 
         public async Task<User> UpdateUserAsync(User user)
         {
-            context.Entry(user).State = EntityState.Modified;
-            await context.SaveChangesAsync();
-            return user;
-        }
+            var existingUser = await context.Users.FindAsync(user.UserId);
+            if (existingUser == null)
+                throw new InvalidOperationException($"User with ID {user.UserId} not found.");
 
+            // Only update fields that are explicitly provided and different from existing values
+            // Use a more restrictive approach to avoid overwriting with null/default values
+
+            if (!string.IsNullOrWhiteSpace(user.UserName))
+                existingUser.UserName = user.UserName;
+
+            if (!string.IsNullOrWhiteSpace(user.Name))
+                existingUser.Name = user.Name;
+
+            // Only update UserType if it has a meaningful value (not null/0)
+            if (user.UserType.HasValue && user.UserType > 0)
+                existingUser.UserType = user.UserType;
+
+            // Only update CompanyId if it's provided and has a meaningful value (not null/0)
+            if (user.CompanyId.HasValue && user.CompanyId > 0)
+                existingUser.CompanyId = user.CompanyId;
+
+            // Only update Pword if it's provided and not empty
+            if (!string.IsNullOrWhiteSpace(user.Pword))
+                existingUser.Pword = user.Pword;
+
+            // Only update PassWord if it's provided and not empty
+            if (!string.IsNullOrWhiteSpace(user.PassWord))
+                existingUser.PassWord = user.PassWord;
+
+            // Only update HouseId if it's provided and not 0 (HouseId is non-nullable int)
+            if (user.HouseId > 0)
+                existingUser.HouseId = user.HouseId;
+
+            // Never update CreatedDate and CreatedUser as they should remain unchanged
+
+            await context.SaveChangesAsync();
+            return existingUser;
+        }
         public async Task DeleteUserAsync(int id)
         {
             var user = await context.Users.FindAsync(id);
