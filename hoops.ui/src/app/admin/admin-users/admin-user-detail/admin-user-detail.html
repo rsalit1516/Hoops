@@ -3,34 +3,14 @@
 </div>
 
 <form class="form-container" [formGroup]="form" (ngSubmit)="save()">
-  <div class="form-grid">
-    <mat-form-field appearance="fill">
+  <div class="grid grid-cols-2 gap-4">
+    <!-- First row: User Id (spans both columns for consistency) -->
+    <mat-form-field appearance="fill" class="col-span-2">
       <mat-label>User Id</mat-label>
       <input matInput formControlName="userId" />
     </mat-form-field>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Username</mat-label>
-      <input matInput formControlName="userName" required />
-      <mat-error *ngIf="form.get('userName')?.hasError('required')"
-        >Username is required</mat-error
-      >
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Name</mat-label>
-      <input matInput formControlName="name" />
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>User Type</mat-label>
-      <mat-select formControlName="userType" required>
-        <mat-option *ngFor="let opt of userTypeOptions" [value]="opt.value"
-          >{{ opt.label }}</mat-option
-        >
-      </mat-select>
-    </mat-form-field>
-
+    <!-- Second row: Household and Person dropdowns -->
     <mat-form-field appearance="fill">
       <mat-label>Household</mat-label>
       <mat-select formControlName="houseId">
@@ -54,6 +34,30 @@
           *ngFor="let person of peopleOptions()"
           [value]="person.personId"
           >{{ person.lastName }}, {{ person.firstName }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Third row: Username and Name fields -->
+    <mat-form-field appearance="fill">
+      <mat-label>Username</mat-label>
+      <input matInput formControlName="userName" required />
+      <mat-error *ngIf="form.get('userName')?.hasError('required')"
+        >Username is required</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name" />
+    </mat-form-field>
+
+    <!-- Fourth row: User Type (spans both columns) -->
+    <mat-form-field appearance="fill" class="col-span-2">
+      <mat-label>User Type</mat-label>
+      <mat-select formControlName="userType" required>
+        <mat-option *ngFor="let opt of userTypeOptions" [value]="opt.value"
+          >{{ opt.label }}</mat-option
         >
       </mat-select>
     </mat-form-field>
