@@ -48,6 +48,8 @@ namespace Hoops.Infrastructure.Repository
             existingUser.UserName = entity.UserName;
             existingUser.Name = entity.Name;
             existingUser.UserType = entity.UserType;
+            existingUser.HouseId = entity.HouseId;
+            existingUser.PersonId = entity.PersonId;
             // Don't update CreatedDate and CreatedUser as they should remain unchanged
 
             context.SaveChanges();
@@ -470,6 +472,10 @@ namespace Hoops.Infrastructure.Repository
             // Only update HouseId if it's provided and not 0 (HouseId is non-nullable int)
             if (user.HouseId > 0)
                 existingUser.HouseId = user.HouseId;
+
+            // Update PersonId (PeopleID in database) if it's provided
+            if (user.PersonId.HasValue)
+                existingUser.PersonId = user.PersonId;
 
             // Never update CreatedDate and CreatedUser as they should remain unchanged
 

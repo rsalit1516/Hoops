@@ -86,7 +86,7 @@ export class AdminUserDetail extends BaseFormComponent implements OnInit {
           name: '',
           userType: 1,
           houseId: '',
-          personId: '',
+          peopleId: '',
         });
         this.peopleOptions.set([]);
         this.userId = 0;
@@ -100,7 +100,7 @@ export class AdminUserDetail extends BaseFormComponent implements OnInit {
       name: [''],
       userType: [1, Validators.required],
       houseId: [''],
-      personId: [''],
+      peopleId: [''],
     });
 
     // Load household options
@@ -123,7 +123,7 @@ export class AdminUserDetail extends BaseFormComponent implements OnInit {
       } else {
         // Clear people options and disable people dropdown when no household selected
         this.peopleOptions.set([]);
-        this.form.get('personId')?.setValue('');
+        this.form.get('peopleId')?.setValue('');
       }
     });
   }

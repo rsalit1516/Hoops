@@ -97,15 +97,15 @@ describe('AdminUserDetail', () => {
     expect(component.householdOptions()).toEqual(mockHouseholds);
   });
 
-  it('should include houseId and personId in form configuration', () => {
+  it('should include houseId and peopleId in form configuration', () => {
     // Act
     component.ngOnInit();
 
     // Assert
     expect(component.form.get('houseId')).toBeTruthy();
-    expect(component.form.get('personId')).toBeTruthy();
+    expect(component.form.get('peopleId')).toBeTruthy();
     expect(component.form.get('houseId')?.value).toBe('');
-    expect(component.form.get('personId')?.value).toBe('');
+    expect(component.form.get('peopleId')?.value).toBe('');
   });
 
   it('should load people when household is selected', () => {
@@ -129,7 +129,7 @@ describe('AdminUserDetail', () => {
 
     // Assert
     expect(component.peopleOptions()).toEqual([]);
-    expect(component.form.get('personId')?.value).toBe('');
+    expect(component.form.get('peopleId')?.value).toBe('');
   });
 
   it('should sort people by last name then first name', () => {
@@ -190,7 +190,7 @@ describe('AdminUserDetail', () => {
     expect(households[2].name).toBe('Zeta Household');
   });
 
-  it('should reset form with empty houseId and personId for new user', () => {
+  it('should reset form with empty houseId and peopleId for new user', () => {
     // Arrange
     component.ngOnInit();
     adminUsersService.selectedUser.and.returnValue(null);
@@ -202,11 +202,11 @@ describe('AdminUserDetail', () => {
       name: '',
       userType: 1,
       houseId: '',
-      personId: '',
+      peopleId: '',
     });
 
     // Assert
     expect(component.form.get('houseId')?.value).toBe('');
-    expect(component.form.get('personId')?.value).toBe('');
+    expect(component.form.get('peopleId')?.value).toBe('');
   });
 });
