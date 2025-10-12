@@ -1,5 +1,6 @@
 # Epic {EPIC_ID}: {Epic Title}
 
+
 **Epic ID:** {EPIC_ID}  
 **Product Area:** {PRODUCT_AREA}  
 **Product Owner:** {PO_NAME}  
@@ -7,6 +8,8 @@
 **Target Release:** {VERSION_NUMBER}  
 **Epic Size:** {S|M|L|XL}  
 **Business Priority:** {Critical|High|Medium|Low}  
+
+**Azure Boards:** [Epic #{WORK_ITEM_ID}](https://dev.azure.com/{org}/{project}/_workitems/edit/{id})
 
 ## Epic Overview
 {2-3 sentence description of what this epic delivers and why it matters to the business}
@@ -78,6 +81,18 @@
 - **Sprint Allocation:** {List of sprints}
 
 ---
-**Created:** {YYYY-MM-DD}  
-**Last Updated:** {YYYY-MM-DD}  
 **Epic Status:** {Not Started|In Progress|In Review|Done|On Hold}
+
+## Story Generation Guidelines
+**Story Naming Pattern:** `STORY-{XXX}-{kebab-case-title}.md`
+**Default Story Points:** {Typical size for stories in this epic}
+**Standard Components:** {List of components stories will typically touch}
+**Testing Requirements:** {Default testing expectations}
+
+### AI Prompt for Story Creation
+
+## Version History
+| Date | Author | Changes |
+|------|--------|---------|
+| {YYYY-MM-DD} | {Name} | Initial creation |
+| {YYYY-MM-DD} | {Name} | {Description of changes} |
