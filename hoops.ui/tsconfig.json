@@ -2,7 +2,6 @@
 {
   "compileOnSave": true,
   "compilerOptions": {
-    "baseUrl": "./src",
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "esModuleInterop": true,
@@ -16,26 +15,13 @@
     "importHelpers": true,
     "target": "ES2022",
     "module": "ES2022",
-    "lib": [
-      "ES2022",
-      "dom"
-    ],
+    "lib": ["ES2022", "dom"],
     "paths": {
-      "@app/*": [
-        "app/*"
-      ],
-      "@domain/*": [
-        "app/domain/*"
-      ],
-      "@shared/*": [
-        "app/shared/*"
-      ],
-      "@content/*": [
-        "app/services/*"
-      ],
-      "@styles/*": [
-        "content/*"
-      ],
+      "@app/*": ["./src/app/*"],
+      "@domain/*": ["./src/app/domain/*"],
+      "@shared/*": ["./src/app/shared/*"],
+      "@content/*": ["./src/app/services/*"],
+      "@styles/*": ["./src/content/*"]
     },
     "useDefineForClassFields": false
   },
@@ -50,7 +36,7 @@
       "checks": {
         "unusedStandaloneImports": "suppress"
       }
-    },
+    }
   },
   "exclude": [
     "./node_modules",
