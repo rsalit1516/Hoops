@@ -35,6 +35,7 @@ export class Schedule implements OnInit {
   private gameService = inject(GameService);
   private divisionService = inject(DivisionService);
   private authService = inject(AuthService);
+  // Depend on the signal's VALUE so changes propagate to the view
   readonly dailySchedule = computed(() => this.gameService.dailySchedule());
 
   groupedGames: RegularGame[] | undefined;
@@ -51,7 +52,11 @@ export class Schedule implements OnInit {
     this._games = games;
   }
   private _games!: RegularGame[];
-  @Output() canEdit!: boolean;
+
+  // Access canEdit from AuthService computed signal
+  get canEdit(): boolean {
+    return this.authService.canEditGames();
+  }
 
   errorMessage: string | undefined;
   public title: string;
@@ -70,15 +75,15 @@ export class Schedule implements OnInit {
   }
 
   ngOnInit() {
-    this.authService.setCanEdit(
-      this.divisionService.selectedDivision()?.divisionId
-    );
+    // No longer needed - canEditGames is now a computed signal that automatically
+    // updates when the selected division or current user changes
   }
 
   editGame(game: RegularGame) {
     this.store.dispatch(new gameActions.SetCurrentGame(game));
     const dialogRef = this.dialog.open(GameScoreDialog, {
       width: '500px',
+      data: { game },
     });
 
     dialogRef.afterClosed().subscribe((result) => {

@@ -1,13 +1,14 @@
+@use "variables" as v;
+
 h1 {
   font-size: 1.2rem;
+  color: v.$brand-color;
 }
 .teamName {
   font-weight: 700;
+  color: v.$brand-color;
 }
 input {
   width: 60px;
   color: black;
-}
-body {
-  background-color: darkblue;
 }

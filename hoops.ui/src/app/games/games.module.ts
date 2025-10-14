@@ -48,6 +48,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatNativeDateModule,
   ],
   exports: [GamesRoutingModule],
-  providers: [GameService],
+  // GameService is providedIn: 'root' already; avoid shadowing with a feature-level provider
+  providers: [],
 })
 export class GamesModule {}

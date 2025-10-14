@@ -1,0 +1,86 @@
+<div class="form-header">
+  <h2>{{ userId === 0 ? 'Create New User' : 'Edit User' }}</h2>
+</div>
+
+<form class="form-container" [formGroup]="form" (ngSubmit)="save()">
+  <div class="grid grid-cols-2 gap-4">
+    <!-- First row: User Id (spans both columns for consistency) -->
+    <mat-form-field appearance="fill" class="col-span-2">
+      <mat-label>User Id</mat-label>
+      <input matInput formControlName="userId" />
+    </mat-form-field>
+
+    <!-- Second row: Household and Person dropdowns -->
+    <mat-form-field appearance="fill">
+      <mat-label>Household</mat-label>
+      <mat-select formControlName="houseId">
+        <mat-option value="">-- Select Household --</mat-option>
+        <mat-option
+          *ngFor="let household of householdOptions()"
+          [value]="household.houseId"
+          >{{ household.name }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Person</mat-label>
+      <mat-select
+        formControlName="peopleId"
+        [disabled]="!form.get('houseId')?.value"
+      >
+        <mat-option value="">-- Select Person --</mat-option>
+        <mat-option
+          *ngFor="let person of peopleOptions()"
+          [value]="person.personId"
+          >{{ person.lastName }}, {{ person.firstName }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Third row: Username and Name fields -->
+    <mat-form-field appearance="fill">
+      <mat-label>Username</mat-label>
+      <input matInput formControlName="userName" required />
+      <mat-error *ngIf="form.get('userName')?.hasError('required')"
+        >Username is required</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name" />
+    </mat-form-field>
+
+    <!-- Fourth row: User Type (spans both columns) -->
+    <mat-form-field appearance="fill" class="col-span-2">
+      <mat-label>User Type</mat-label>
+      <mat-select formControlName="userType" required>
+        <mat-option *ngFor="let opt of userTypeOptions" [value]="opt.value"
+          >{{ opt.label }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="form-actions">
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="!isSaveEnabled"
+      [ngClass]="saveButtonClasses"
+      [title]="saveButtonTooltip"
+    >
+      {{ saveButtonText }}
+    </button>
+    <button mat-button type="button" (click)="cancel()">Cancel</button>
+  </div>
+
+  <!-- Optional validation feedback -->
+  <div class="form-status" *ngIf="hasValidationErrors && form.dirty">
+    <small class="text-warning">
+      Please correct the errors above before saving.
+    </small>
+  </div>
+</form>

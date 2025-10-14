@@ -11,17 +11,8 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { Color } from '@app/domain/color';
-import { Division } from '@app/domain/division';
 import { Team } from '@app/domain/team';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import * as fromAdmin from '../../state';
-import * as adminActions from '../../state/admin.actions';
 
-import * as fromUser from '../../../user/state';
-
-import { User } from '@app/domain/user';
 import { MatButtonModule } from '@angular/material/button';
 import { MatOptionModule } from '@angular/material/core';
 import { NgFor, AsyncPipe } from '@angular/common';
@@ -37,7 +28,7 @@ import { ColorService } from '../services/color.service';
 import { LocationService } from '../services/location.service';
 @Component({
   selector: 'app-admin-team-detail',
-  templateUrl: "./admin-team-detail.html",
+  templateUrl: './admin-team-detail.html',
   styleUrls: [
     './../../../shared/scss/forms.scss',
     './../../../shared/scss/cards.scss',
@@ -58,16 +49,16 @@ import { LocationService } from '../services/location.service';
   ],
 })
 export class AdminTeamDetail implements OnInit {
-  readonly #authService = inject(AuthService);
-  readonly #teamService = inject(TeamService);
-  private divisionService = inject(DivisionService);
-  readonly #seasonService = inject(SeasonService);
+  private readonly authService = inject(AuthService);
+  readonly teamService = inject(TeamService);
+  private readonly divisionService = inject(DivisionService);
+  private readonly seasonService = inject(SeasonService);
   readonly colorService = inject(ColorService);
   readonly locationService = inject(LocationService);
-  private store = inject(Store<fromAdmin.State>);
+  // private store = inject(Store<fromAdmin.State>);
   private fb = inject(UntypedFormBuilder);
 
-  user = computed(() => this.#authService.currentUser());
+  user = computed(() => this.authService.currentUser());
   editTeamForm = this.fb.group({
     teamNo: [''],
     color: [''],
@@ -75,7 +66,6 @@ export class AdminTeamDetail implements OnInit {
     // coachName: [''],
     // sponsor: [''],
   });
-  // colors$: Observable<Color[]>;
   _team = signal<Team | undefined>(undefined);
   get team() {
     return this._team();
@@ -83,31 +73,18 @@ export class AdminTeamDetail implements OnInit {
   updateTeam(val: Team) {
     this._team.set(val);
   }
-  // selectedDivision$ = this.store.select(fromAdmin.getSelectedDivision);
-  // selectedSeason$ = this.store.select(fromAdmin.getSelectedSeason);
-  selectedSeason = computed(() => this.#seasonService.selectedSeason);
+  selectedSeason = computed(() => this.seasonService.selectedSeason);
   selectedDivision = computed(() => this.divisionService.selectedDivision());
 
   title = 'Team';
 
   constructor() {
-    // this.colors$ = this.store.select(fromAdmin.getColors);
     effect(() => {
-      // this.updateTeam(this.#teamService.selectedTeam!);
-      this.patchTeamForm(this.#teamService.selectedTeam!); //
+      this.patchTeamForm(this.teamService.selectedTeam!); //
     });
   }
 
-  ngOnInit(): void {
-    // this.selectedDivision$.subscribe(
-    //   (division) => (this.selectedDivision = division)
-    // );
-    // this.store.select(fromAdmin.getSelectedTeam).subscribe((team) => {
-    // const team = this.#teamService.selectedTeam; // this.store.select(fromAdmin.getSelectedTeam);
-    // console.log(team);
-    // this.team = team as Team;
-    // });
-  }
+  ngOnInit(): void {}
   patchTeamForm(team: Team) {
     console.log(team);
     if (team) {
@@ -130,7 +107,7 @@ export class AdminTeamDetail implements OnInit {
     newTeam.teamId = 0;
     newTeam.teamName = '';
     // this.store.dispatch(new adminActions.SetSelectedTeam(newTeam));
-    this.#teamService.updateSelectedTeam(newTeam);
+    this.teamService.updateSelectedTeam(newTeam);
   }
   save() {
     let team: Team;
@@ -138,7 +115,7 @@ export class AdminTeamDetail implements OnInit {
     const div = this.selectedDivision()?.divisionId ?? 0;
 
     team = {
-      teamId: this.#teamService.selectedTeam?.teamId as number,
+      teamId: this.teamService.selectedTeam?.teamId as number,
       name: '',
       divisionId: div,
       teamNumber: this.editTeamForm.value.teamNo,
@@ -148,8 +125,8 @@ export class AdminTeamDetail implements OnInit {
       createdUser: 'rsalit', //this.user()!.userName,
       createdDate: new Date(),
     };
-    this.#teamService.saveTeam(team);
-    this.#teamService.getSeasonTeams();
+    this.teamService.saveTeam(team);
+    this.teamService.getSeasonTeams();
     this.newTeam();
   }
   cancel() {}

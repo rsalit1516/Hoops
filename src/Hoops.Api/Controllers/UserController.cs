@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,7 +25,7 @@ namespace csbc_server.Controllers
         // GET: api/User
         [HttpGet]
         public ActionResult<IEnumerable<User>> GetUsers()
-        {   
+        {
             return _context.Users.ToList();
         }
 
@@ -53,25 +54,22 @@ namespace csbc_server.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(user).State = EntityState.Modified;
+            var repo = new UserRepository(_context);
 
             try
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(id))
+                if (!await repo.UserExistsAsync(id))
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
-            }
 
-            return NoContent();
+                await repo.UpdateUserAsync(user);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error updating user: {ex.Message}");
+            }
         }
 
         // POST: api/User
@@ -80,24 +78,19 @@ namespace csbc_server.Controllers
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
-            _context.Users.Add(user);
+            var repo = new UserRepository(_context);
+
             try
             {
-                await _context.SaveChangesAsync();
+                var createdUser = await repo.InsertUserAsync(user);
+                return CreatedAtAction("GetUser", new { id = createdUser.UserId }, createdUser);
             }
-            catch (DbUpdateException)
+            catch (Exception ex)
             {
-                if (UserExists(user.UserId))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
+                // Log the specific error for debugging
+                // You might want to add proper logging here
+                return BadRequest($"Error creating user: {ex.Message}");
             }
-
-            return CreatedAtAction("GetUser", new { id = user.UserId }, user);
         }
 
         // DELETE: api/User/5

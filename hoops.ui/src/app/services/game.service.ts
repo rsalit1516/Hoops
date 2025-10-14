@@ -20,7 +20,7 @@ import { Division } from '@app/domain/division';
 import { User } from '@app/domain/user';
 import { SeasonService } from './season.service';
 import { DivisionService } from './division.service';
-import { LoggerService } from './logging.service';
+import { LoggerService } from './logger.service';
 import { AuthService } from './auth.service';
 import { Standing } from '@app/domain/standing';
 import { TeamService } from './team.service';
@@ -39,10 +39,12 @@ export class GameService {
   private teamService = inject(TeamService);
   private authService = inject(AuthService);
   private logger = inject(LoggerService);
-  private scheduleGamesUrl =
-    Constants.SEASON_GAMES_URL +
-    '?seasonid=' +
-    this.seasonService.selectedSeason.seasonId;
+  // Build URL reactively when selected season changes
+  private scheduleGamesUrl = computed(() => {
+    const sel = this.seasonService.selectedSeason();
+    const seasonId = sel?.seasonId ?? 0;
+    return `${Constants.SEASON_GAMES_URL}?seasonId=${seasonId}`;
+  });
   private _games!: RegularGame[];
   standing: any[] = [];
   divisionStandings = signal<Standing[]>([]);
@@ -74,8 +76,8 @@ export class GameService {
   }
   updateSelectedGame(record: RegularGame) {
     this._selectedGame.set(record);
-    console.log(`Selected game updated: ${record}`);
-    console.log(this._selectedGame());
+    this.logger.debug('Selected game updated', record);
+    this.logger.debug('Selected game signal value', this._selectedGame());
   }
   clearSelectedGame() {
     this._selectedGame.set(null);
@@ -93,6 +95,7 @@ export class GameService {
   }
   updateSeasonGames(games: RegularGame[]) {
     this._seasonGames.set(games);
+    this.recomputeDivisionDerived();
   }
   seasonGamesCount = computed(() =>
     this.seasonGames ? this.seasonGames.length : 0
@@ -101,7 +104,7 @@ export class GameService {
 
   // Signals managed by the service
   selectedGames = signal<RegularGame | undefined>(undefined);
-  private games$ = this.http.get<GameResponse>(this.scheduleGamesUrl).pipe(
+  private games$ = this.http.get<GameResponse>(this.scheduleGamesUrl()).pipe(
     map((vr) =>
       vr.results.map(
         (v) =>
@@ -112,8 +115,8 @@ export class GameService {
     ),
     delay(2000)
   );
-  private gamesResource = httpResource<RegularGame>(
-    () => this.scheduleGamesUrl
+  private gamesResource = httpResource<RegularGame>(() =>
+    this.scheduleGamesUrl()
   );
   error = this.gamesResource.error;
 
@@ -128,37 +131,57 @@ export class GameService {
     effect(() => {
       const record = this.selectedGame;
       if (record !== null) {
-        console.log(`Record updated: ${record.scheduleGamesId}`);
+        this.logger.debug('Record updated', record.scheduleGamesId);
         // Optionally trigger additional logic here
       }
     });
 
     effect(() => {
-      const selectedSeason = this.selectedSeason();
-      if (selectedSeason) {
+      const selectedSeason = this.seasonService.selectedSeason();
+      if (selectedSeason?.seasonId) {
         this.fetchSeasonGames();
       }
     });
 
     effect(() => {
       // const selectedDivision = this.selectedDivision();
-      console.log(this.divisionService.selectedDivision());
+      this.logger.debug(
+        'Selected division',
+        this.divisionService.selectedDivision()
+      );
       if (this.divisionService.selectedDivision()!) {
-        const filteredGames = this.filterGamesByDivision();
-        this.divisionGames.update(() => filteredGames);
-        const dailyGames = this.groupRegularGamesByDate(this.divisionGames());
-        this.dailySchedule.update(() => dailyGames);
+        this.recomputeDivisionDerived();
         this.fetchStandingsByDivision();
       }
     });
     effect(() => {
+      // When the selected team changes, recompute derived lists
       //      console.log(this.selectedTeam());
-      this.filterGamesByTeam();
+      this.recomputeDivisionDerived();
     });
   }
 
+  private recomputeDivisionDerived() {
+    // First, filter by division
+    const base = this.filterGamesByDivision();
+    // Then, if a concrete team is selected (id != 0), filter by team
+    const st = this.selectedTeam();
+    const filtered =
+      st && st.teamId && st.teamId !== 0
+        ? base.filter(
+            (g) => g.visitingTeamId === st.teamId || g.homeTeamId === st.teamId
+          )
+        : base;
+    // IMPORTANT: Don't read divisionGames() here after writing it, or the effect
+    // that calls this will track divisionGames and retrigger on our own write.
+    // Compute derived data from the local variable instead to avoid a feedback loop.
+    const dailyGames = this.groupRegularGamesByDate(filtered);
+    this.divisionGames.set(filtered);
+    this.dailySchedule.set(dailyGames);
+  }
+
   getGames(): Observable<RegularGame[]> {
-    return this.http.get<RegularGame[]>(this.scheduleGamesUrl).pipe(
+    return this.http.get<RegularGame[]>(this.scheduleGamesUrl()).pipe(
       map((response) => this.games),
       // tap(data => console.log('All: ' + JSON.stringify(data))),
       catchError(this.dataService.handleError('getGames', []))
@@ -166,12 +189,10 @@ export class GameService {
   }
   fetchSeasonGames() {
     // console.log(this.scheduleGamesUrl);
+    const seasonId = this.seasonService.selectedSeason()?.seasonId;
+    if (!seasonId) return; // wait until season is set
     this.http
-      .get<RegularGame[]>(
-        Constants.SEASON_GAMES_URL +
-          '?seasonId=' +
-          this.seasonService.selectedSeason.seasonId
-      )
+      .get<RegularGame[]>(`${Constants.SEASON_GAMES_URL}?seasonId=${seasonId}`)
       .subscribe((games) => {
         // this.seasonGames$ = of(games);
         this.updateSeasonGames(games);
@@ -204,7 +225,7 @@ export class GameService {
   }
 
   getStandings(): Observable<RegularGame[]> {
-    return this.http.get<any[]>(this.scheduleGamesUrl).pipe(
+    return this.http.get<any[]>(this.scheduleGamesUrl()).pipe(
       map((response) => (this.games = response)),
       // tap(data => console.log('All: ' + JSON.stringify(data))),
       catchError(this.dataService.handleError('getStandings', []))
@@ -223,9 +244,9 @@ export class GameService {
       );
   }
   fetchStandingsByDivision() {
-    const seasonId = this.seasonService.selectedSeason.seasonId;
+    const seasonId = this.seasonService.selectedSeason()?.seasonId;
     if (!seasonId) {
-      console.error('No season selected');
+      this.logger.error('No season selected');
       this.divisionStandings.update(() => []);
       return;
     }
@@ -311,29 +332,8 @@ export class GameService {
     return of(games);
   }
 
-  getCanEdit(user: User | undefined, divisionId: number): boolean {
-    // console.log(divisionId);
-    let tFlag = false;
-    if (user) {
-      if (user.userType === 2 || user.userType === 3) {
-        tFlag = true;
-        return true;
-      } else {
-        if (user.divisions) {
-          let found = user.divisions.find(
-            (div) => div.divisionId === divisionId
-          );
-          return found !== undefined;
-        }
-      }
-    }
-    return tFlag;
-  }
+  // getCanEdit and setCanEdit methods removed - now handled by AuthService.canEditGames computed signal
 
-  setCanEdit(division: number) {
-    let canEdit = this.getCanEdit(this.currentUser(), division);
-    // this.gameStore.dispatch(new gameActions.SetCanEdit(canEdit));
-  }
   extractDate(date: string): Date {
     return DateTime.fromISO(date).toJSDate();
   }
@@ -344,16 +344,20 @@ export class GameService {
       }),
     };
     const gameUrl = Constants.PUT_SEASON_GAME_URL + game.scheduleGamesId;
-    console.log(gameUrl);
+    this.logger.info('Saving existing game via', gameUrl);
     const gameJson = JSON.stringify(game);
-    console.log(gameJson);
+    this.logger.debug('Existing game payload', gameJson);
     let result = this.http
       .put(gameUrl, gameJson, httpOptions)
-      .subscribe((x) => console.log(x));
-    // .pipe(
-    //   tap(data => console.log(data)),
-    //   catchError(this.dataService.handleError)
-    // );
+      .pipe(
+        tap((data) => {
+          this.logger.info('Game saved successfully', data);
+          // Refresh the season games to reflect the changes
+          this.fetchSeasonGames();
+        }),
+        catchError(this.dataService.handleError('saveExistingGame', []))
+      )
+      .subscribe();
     // this.gameStore.dispatch(new gameActions.UpdateGame(game));
   }
   saveNewGame(game: RegularGameSaveObject) {
@@ -363,10 +367,18 @@ export class GameService {
       }),
     };
     const gameUrl = Constants.POST_SEASON_GAME_URL;
-    console.log(gameUrl);
+    this.logger.info('Creating new game via', gameUrl);
     let result = this.http
       .post(gameUrl, game, httpOptions)
-      .subscribe((x) => console.log(x));
+      .pipe(
+        tap((data) => {
+          this.logger.info('New game created successfully', data);
+          // Refresh the season games to include the new game
+          this.fetchSeasonGames();
+        }),
+        catchError(this.dataService.handleError('saveNewGame', []))
+      )
+      .subscribe();
     // .pipe(
     //   tap(data => console.log(data)),
     //   catchError(this.dataService.handleError)
@@ -380,20 +392,47 @@ export class GameService {
     game: RegularGame;
     homeTeamScore: number;
     visitingTeamScore: number;
-  }) {
+  }): Observable<RegularGame> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       }),
     };
-    game.homeTeamScore = homeTeamScore;
-    game.visitingTeamScore = visitingTeamScore;
-    console.log(game);
-    const gameUrl = this.dataService.webUrl + '/api/games/updateScores';
-    console.log(gameUrl);
-    let result = this.http
-      .put(gameUrl, game, httpOptions)
-      .subscribe((x) => console.log(x));
+    // Build minimal payload to avoid model validation on unrelated fields (e.g., GameTime)
+    const payload = {
+      scheduleGamesId: game.scheduleGamesId,
+      homeTeamScore,
+      visitingTeamScore,
+      homeForfeited: (game as any).homeForfeited ?? null,
+      visitingForfeited: (game as any).visitingForfeited ?? null,
+    };
+    this.logger.debug('Score update payload', payload);
+    const gameUrl = `${Constants.PUT_SEASON_GAME_SCORES_URL}${game.scheduleGamesId}/scores`; // api/ScheduleGame/{id}/scores
+    this.logger.info('Updating game via', gameUrl);
+    return this.http.put<void>(gameUrl, payload, httpOptions).pipe(
+      // First, map the void response to a strongly-typed RegularGame result
+      map(() => ({ ...game, homeTeamScore, visitingTeamScore } as RegularGame)),
+      // Then, side-effect on the typed stream to update local state
+      tap((updated: RegularGame) => {
+        // Optimistically update local state so UI reflects new scores
+        this._selectedGame.set(updated);
+        // Update seasonGames list immutably
+        this._seasonGames.update((arr) => {
+          if (!arr) return arr;
+          const idx = arr.findIndex(
+            (g) => g.scheduleGamesId === updated.scheduleGamesId
+          );
+          if (idx === -1) return arr;
+          const copy = arr.slice();
+          copy[idx] = { ...arr[idx], homeTeamScore, visitingTeamScore };
+          return copy;
+        });
+        // Recompute filtered/daily groups for immediate UI update
+        this.recomputeDivisionDerived();
+        // Standings may change; trigger refresh
+        this.fetchStandingsByDivision();
+      })
+    );
     // .pipe(
     //   tap(data => console.log(data)),
     //   catchError(this.dataService.handleError)

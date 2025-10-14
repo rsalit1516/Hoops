@@ -10,19 +10,20 @@
       ></csbc-admin-games-filter>
       <h2>Games</h2>
       <csbc-admin-games-list
-        *ngIf="showRegularSeason"
+        *ngIf="state.gameType() === 'regular'"
         [showScores]="true"
       ></csbc-admin-games-list>
+
       <csbc-admin-games-playoffs-list
-        *ngIf="showPlayoffs"
-      ></csbc-admin-games-playoffs-list> </mat-sidenav-content
-    >
+        *ngIf="state.gameType() ==='playoff'"
+      ></csbc-admin-games-playoffs-list>
+    </mat-sidenav-content>
     <!-- Side Panel for Details -->
     <mat-sidenav #sidenav mode="side" [opened]="isSidenavOpen" position="end">
       <div class="sidenav-content">
         <h3>
-          Details for
-          {{ gameService.selectedRecordSignal()?.gameDescription }} Household
+          Details for {{ gameService.selectedRecordSignal()?.gameDescription }}
+          Household
         </h3>
         <button mat-icon-button (click)="closeSidenav()">
           <mat-icon>close</mat-icon>

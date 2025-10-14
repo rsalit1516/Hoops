@@ -15,15 +15,15 @@ public partial class hoopsContext : DbContext
         : base(options)
     {
     }
-protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-{
-    if (!optionsBuilder.IsConfigured)
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        // Use your actual connection string here
-        optionsBuilder.UseSqlServer("Server=localhost,1433;Database=csbchoops;Persist Security Info=False;User ID=sa;Password=@nKbr0407; Encrypt=True;TrustServerCertificate=true;MultipleActiveResultSets=False;Encrypt=True;Connection Timeout=30;")
-            .ConfigureWarnings(warnings => warnings.Ignore(Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.PendingModelChangesWarning));
+        if (!optionsBuilder.IsConfigured)
+        {
+            // Use your actual connection string here
+            optionsBuilder.UseSqlServer("Server=localhost,1433;Database=csbchoops;Persist Security Info=False;User ID=sa;Password=@nKbr0407; Encrypt=True;TrustServerCertificate=true;MultipleActiveResultSets=False;Encrypt=True;Connection Timeout=30;")
+                .ConfigureWarnings(warnings => warnings.Ignore(Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.PendingModelChangesWarning));
+        }
     }
-}
     public virtual DbSet<Coach> Coaches { get; set; }
     public virtual DbSet<Color> Colors { get; set; }
     public virtual DbSet<Comment> Comments { get; set; }
@@ -525,14 +525,14 @@ protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         modelBuilder.Entity<ScheduleDivTeam>(entity =>
         {
             entity.ToTable("ScheduleDivTeams");
-            
+
             // Primary key is ScheduleDivTeamsId
             entity.HasKey(e => e.ScheduleDivTeamsId);
-            
+
             // Configure ScheduleDivTeamsId as identity column
             entity.Property(e => e.ScheduleDivTeamsId)
                 .ValueGeneratedOnAdd();
-            
+
             // Configure the index
             entity.HasIndex(e => new { e.ScheduleNumber, e.TeamNumber })
                 .HasDatabaseName("IX_ScheduleDivTeams");
@@ -622,7 +622,7 @@ protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             entity.Property(e => e.SchedulePlayoffId).HasColumnName("SchedulePlayoffID");
             entity.Property(e => e.DivisionId).HasColumnName("DivisionId");
             entity.Property(e => e.GameDate).HasColumnType("datetime2");
-            
+
             // Add compound unique constraint on ScheduleNumber + GameNumber
             entity.HasIndex(e => new { e.ScheduleNumber, e.GameNumber })
                   .IsUnique()
@@ -1007,7 +1007,9 @@ protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             entity.HasIndex(e => e.UserName)
                 .HasDatabaseName("idx_DCh_4811_4810_Users");
 
-            entity.Property(e => e.UserId).HasColumnName("UserID");
+            entity.Property(e => e.UserId)
+                .HasColumnName("UserID")
+                .ValueGeneratedOnAdd();
 
             entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
 
@@ -2233,7 +2235,7 @@ protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         // });
 
 
-        modelBuilder.Entity<User>().HasData(new User { UserId = 1, UserName = "TestUser", UserType = 0 });
+
 
         OnModelCreatingPartial(modelBuilder);
     }

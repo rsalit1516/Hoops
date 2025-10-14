@@ -19,7 +19,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Moq" Version="4.20.72" />
   </ItemGroup>
 
   <PropertyGroup>
@@ -27,5 +26,10 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+
+  <!-- Exclude misplaced test file from production build -->
+  <ItemGroup>
+    <Compile Remove="Repository/DivisionRepositoryTest.cs" />
+  </ItemGroup>
 
 </Project>

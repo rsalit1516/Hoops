@@ -155,6 +155,7 @@ div.mat-mdc-select-panel {
 ::ng-deep .mat-mdc-input-element {
   caret-color: white;
   color: white;
+  background-color: v.$admin-background-color !important;
 }
 
 .button-row {
@@ -179,6 +180,18 @@ button {
 
 .mat-select-panel {
   background-color: v.$admin-background-color;
+}
+
+/* Ensure mat-select displayed value mirrors input text color (white) */
+::ng-deep .mat-mdc-select-value-text,
+::ng-deep .mat-mdc-select .mat-select-value-text,
+::ng-deep .mdc-select__selected-text {
+  color: #fff !important;
+}
+
+/* Ensure selected option text appears with the same color */
+::ng-deep .mat-mdc-option.mdc-list-item .mdc-list-item__primary-text {
+  color: #fff !important;
 }
 
 .mat-form-field {
@@ -309,4 +322,118 @@ mat-form-field input::placeholder {
 // }
 .mat-mdc-dialog-surface {
   background-color: v.$admin-background-color !important;
+}
+
+/* Dialog styling for confirm dialogs and others */
+.mat-mdc-dialog-title,
+h1[mat-dialog-title] {
+  color: v.$admin-font-color !important;
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+
+.mat-mdc-dialog-content,
+div[mat-dialog-content] {
+  color: v.$admin-font-color !important;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.mat-mdc-dialog-actions,
+div[mat-dialog-actions] {
+  button {
+    color: v.$admin-font-color !important;
+
+    &.mat-mdc-button {
+      background-color: transparent;
+      border: 1px solid color.adjust(v.$admin-font-color, $lightness: -20%);
+
+      &:hover {
+        background-color: color.adjust(
+          v.$admin-background-color,
+          $lightness: 10%
+        );
+      }
+    }
+
+    &.mat-mdc-raised-button {
+      background-color: v.$brand-color !important;
+      color: white !important;
+
+      &:hover {
+        background-color: color.adjust(
+          v.$brand-color,
+          $lightness: -10%
+        ) !important;
+      }
+    }
+  }
+}
+.mat-mdc-icon-button .mat-icon {
+  color: v.$admin-font-color !important;
+}
+.mat-button-toggle-button {
+  color: v.$admin-font-color !important;
+  background-color: v.$admin-background-color !important;
+}
+.mat-button-toggle-checkbox-wrapper {
+  color: v.$admin-font-color !important;
+  background-color: v.$admin-background-color !important;
+}
+.mat-button-toggle-group-appearance-standard .mat-pseudo-checkbox {
+  background-color: v.$admin-background-color !important;
+  color: v.$admin-font-color !important;
+  --mat-pseudo-checkbox-minimal-selected-checkmark-color: v.$admin-font-color !important;
+}
+
+/* Save button states for better UX */
+.form-actions {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.form-status {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+
+  .text-warning {
+    color: #ff9800;
+    font-style: italic;
+  }
+}
+
+/* Disabled save button with helpful tooltip */
+button[mat-raised-button][disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Visual feedback for save button states */
+.save-enabled {
+  background-color: v.$brand-color !important;
+  color: white !important;
+}
+
+.save-disabled {
+  background-color: color.adjust(
+    v.$admin-background-color,
+    $lightness: 20%
+  ) !important;
+  color: color.adjust(v.$admin-font-color, $lightness: -30%) !important;
+}
+
+.save-saving {
+  background-color: color.adjust(v.$brand-color, $lightness: -10%) !important;
+  animation: pulse 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.7;
+  }
 }

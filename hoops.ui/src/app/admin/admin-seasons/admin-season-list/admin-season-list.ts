@@ -1,7 +1,13 @@
-import { AfterViewInit, Component, OnInit, computed, effect, inject, viewChild } from '@angular/core';
-import { Store } from '@ngrx/store';
+import {
+  AfterViewInit,
+  Component,
+  OnInit,
+  computed,
+  effect,
+  inject,
+  viewChild,
+} from '@angular/core';
 
-import * as fromAdmin from '../../state';
 import { Season } from '@app/domain/season';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { DatePipe } from '@angular/common';
@@ -17,15 +23,16 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
   styleUrls: [
     './../../../shared/scss/tables.scss',
     './admin-season-list.scss',
-    '../../admin.scss'
+    '../../admin.scss',
   ],
-  imports: [MatTableModule, DatePipe,
+  imports: [
+    MatTableModule,
+    DatePipe,
     SeasonsToolbar,
     MatSortModule,
-    MatPaginatorModule
+    MatPaginatorModule,
   ],
   providers: [MatSort, MatPaginator],
-
 })
 export class AdminSeasonList implements OnInit, AfterViewInit {
   readonly #seasonService = inject(SeasonService);
@@ -38,31 +45,28 @@ export class AdminSeasonList implements OnInit, AfterViewInit {
 
   dataSource = new MatTableDataSource<Season>(this.seasons());
 
-  displayColumns = [
-    'seasonId',
-    'description',
-    'fromDate',
-    'toDate',
-  ];
+  // React to seasons signal changes and update the table data (must run in injection context)
+  private seasonsEffect = effect(() => {
+    this.dataSource.data = this.seasons();
+  });
 
-  constructor () {
-    // effect(() => {
-    //   this.dataSource.data = this.seasons()!;
-    // });
-  }
+  displayColumns = ['seasonId', 'description', 'fromDate', 'toDate'];
 
-  ngOnInit () {
+  constructor() {}
+
+  ngOnInit() {
+    // Ensure we have fresh seasons when the list loads
+    this.#seasonService.fetchSeasons();
     this.dataSource = new MatTableDataSource<Season>(this.seasons());
   }
-  ngAfterViewInit () {
+  ngAfterViewInit() {
     this.dataSource.paginator = this.paginator() ?? null;
     this.dataSource.sort = this.sort() ?? null;
   }
-  edit (row: Season) {
+  edit(row: Season) {
     this.#seasonService.updateSelectedSeason(row);
     console.log(row);
     // this.#store.dispatch(new adminActions.SetSelectedSeason(row));
-    this.#router.navigate(['./admin/seasons/edit']);
-
+    this.#router.navigate(['/admin/seasons/detail']);
   }
 }

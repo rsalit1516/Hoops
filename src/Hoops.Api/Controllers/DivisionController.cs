@@ -5,6 +5,7 @@ using Hoops.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
 
 namespace csbc_server.Controllers
 {
@@ -45,31 +46,51 @@ namespace csbc_server.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutDivision(int id, Division division)
         {
-            if (id != division.DivisionId)
-            {
-                return BadRequest();
-            }
-
-            repository.Update(division);
-
             try
             {
-                repository.SaveChanges();
-            }
-            catch (Exception)
-            {
+                if (id != division.DivisionId)
+                {
+                    return BadRequest(new ProblemDetails
+                    {
+                        Title = "Invalid division id",
+                        Detail = $"Route id {id} does not match payload DivisionId {division.DivisionId}",
+                        Status = StatusCodes.Status400BadRequest
+                    });
+                }
 
+                // Treat 0 as null for optional foreign keys to satisfy FK constraints
+                if (division.DirectorId.HasValue && division.DirectorId.Value == 0)
+                {
+                    division.DirectorId = null;
+                }
+                if (division.CoDirectorId.HasValue && division.CoDirectorId.Value == 0)
+                {
+                    division.CoDirectorId = null;
+                }
+
+                repository.Update(division);
+                repository.SaveChanges();
+                return Ok(division);
+            }
+            catch (Microsoft.EntityFrameworkCore.DbUpdateException ex)
+            {
+                return Problem(
+                    title: "Failed to update division",
+                    detail: ex.InnerException?.Message ?? ex.Message,
+                    statusCode: StatusCodes.Status409Conflict);
+            }
+            catch (Exception ex)
+            {
                 if (await DivisionExists(id) == false)
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
-            }
 
-            return NoContent();
+                return Problem(
+                    title: "Unexpected error updating division",
+                    detail: ex.Message,
+                    statusCode: StatusCodes.Status500InternalServerError);
+            }
         }
 
         // POST: api/Division
@@ -78,6 +99,15 @@ namespace csbc_server.Controllers
         [HttpPost]
         public async Task<ActionResult<Division>> PostDivision(Division division)
         {
+            // Treat 0 as null for optional foreign keys to satisfy FK constraints
+            if (division.DirectorId.HasValue && division.DirectorId.Value == 0)
+            {
+                division.DirectorId = null;
+            }
+            if (division.CoDirectorId.HasValue && division.CoDirectorId.Value == 0)
+            {
+                division.CoDirectorId = null;
+            }
             await repository.InsertAsync(division);
             await repository.SaveChangesAsync();
 
@@ -90,12 +120,37 @@ namespace csbc_server.Controllers
         {
             try
             {
+                // Verify existence first to return 404 when appropriate
+                try
+                {
+                    var _ = await repository.FindByAsync(id);
+                }
+                catch
+                {
+                    return NotFound();
+                }
+
                 await repository.DeleteAsync(id);
                 return Ok();
             }
-             catch
+            catch (Microsoft.EntityFrameworkCore.DbUpdateException)
             {
-                return NotFound();
+                // Likely FK constraint (e.g., teams/games depend on division)
+                return Conflict(new ProblemDetails
+                {
+                    Title = "Cannot delete division",
+                    Detail = "The division has related records (e.g., teams or games). Remove dependencies first.",
+                    Status = StatusCodes.Status409Conflict
+                });
+            }
+            catch (System.Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ProblemDetails
+                {
+                    Title = "Delete failed",
+                    Detail = ex.Message,
+                    Status = StatusCodes.Status500InternalServerError
+                });
             }
         }
 

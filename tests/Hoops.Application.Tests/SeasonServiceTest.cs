@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -88,6 +89,16 @@ namespace Hoops.Application.Tests
             Assert.Equal(40, result.ScheduleDivTeamsId);
             var updatedSeason = await repo.GetByIdAsync(5);
             Assert.Contains(updatedSeason.ScheduleDivTeams, sdt2 => sdt2.ScheduleDivTeamsId == 40);
+        }
+
+        [Fact]
+        public async Task GetCurrentSeason_Throws_WhenNoCurrentSeason()
+        {
+            var repo = new TestSeasonRepository();
+            // No seasons added -> repository returns null
+            var service = new Hoops.Application.Services.SeasonService(repo);
+
+            await Assert.ThrowsAsync<InvalidOperationException>(() => service.GetCurrentSeasonAsync(1));
         }
     }
 }

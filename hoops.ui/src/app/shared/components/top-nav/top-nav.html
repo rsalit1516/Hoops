@@ -20,15 +20,15 @@
         routerLinkActive="activelink"
         >{{ constants.GAMESMENU }}</a
       >
-      <a routerLink="/photos" routerLinkActive="activelink" mat-button>{{
-        constants.PHOTOMENU
-      }}</a>
-      <a routerLink="/contacts" routerLinkActive="activelink" mat-button>{{
-        constants.CONTACTSMENU
-      }}</a>
-      <a routerLink="/clubDocs" routerLinkActive="activelink" mat-button>{{
-        constants.CLUBDOCSMENU
-      }}</a>
+      <a routerLink="/photos" routerLinkActive="activelink" mat-button
+        >{{ constants.PHOTOMENU }}</a
+      >
+      <a routerLink="/contacts" routerLinkActive="activelink" mat-button
+        >{{ constants.CONTACTSMENU }}</a
+      >
+      <a routerLink="/clubDocs" routerLinkActive="activelink" mat-button
+        >{{ constants.CLUBDOCSMENU }}</a
+      >
 
       <!-- *appFeatureFlag = "'adminModule'" -->
 
@@ -47,7 +47,8 @@
       <button
         mat-raised-button
         *ngIf="!user()"
-        routerLink="/login"
+        [routerLink]="['/login']"
+        [queryParams]="{ returnUrl: (user() ? '/home' : undefined) }"
         matTooltip="Login for division directors"
         matTooltipClass="tooltip"
         class="ml-auto"
@@ -56,6 +57,8 @@
       </button>
       <div *ngIf="user()" class="flex items-center gap-2">
         <span class="user-name">Hello {{ user()?.firstName }}</span>
+        <!-- Session timer - only show in development for debugging -->
+        <csbc-session-timer *ngIf="!env?.production"></csbc-session-timer>
         <button mat-button (click)="logout()">Logout</button>
       </div>
     </div>

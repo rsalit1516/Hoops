@@ -144,6 +144,12 @@ _TeamCity*
 *.coverage
 *.coveragexml
 
+# Frontend coverage results
+coverage/
+cov/
+*.lcov
+test-results/
+
 # NCrunch
 _NCrunch_*
 .*crunch*.local.xml

@@ -33,6 +33,11 @@ namespace Hoops.Application.Services
             return await _seasonRepository.GetAllAsync(1);
         }
 
+        public async Task<IEnumerable<Season>> GetAllSeasonsAsync(int companyId)
+        {
+            return await _seasonRepository.GetAllAsync(companyId);
+        }
+
         // --- Aggregate Root Methods ---
 
         public async Task<Division> AddDivisionToSeason(int seasonId, Division division)

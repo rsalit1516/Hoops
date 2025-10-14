@@ -4,13 +4,15 @@
     <mat-card-subtitle class="">
       <div class="counter-wrapper">
         <div class="counter">
-          {{ (seasonGamesCount()) }} {{ seasonService.selectedSeason.description }} games
+          {{ (seasonGamesCount()) }} {{
+          seasonService.selectedSeason().description }} games
         </div>
         <div class="counter">
           <!-- <div>{{divisionGames.length}} division games</div> -->
         </div>
         <div class="counter">
-          {{ teamGames().length }} {{ teamService.selectedTeam?.teamName }} games
+          {{ teamGames().length }} {{ teamService.selectedTeam?.teamName }}
+          games
         </div>
       </div>
     </mat-card-subtitle>

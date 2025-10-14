@@ -58,7 +58,10 @@ namespace Hoops.Api
         {
             var env = context.HostingEnvironment;
 
-            if (env.IsEnvironment("Development"))
+            // Skip Key Vault configuration during migrations or when explicitly disabled
+            var skipKeyVault = Environment.GetEnvironmentVariable("SKIP_KEYVAULT_CONFIG") == "true";
+
+            if (env.IsEnvironment("Development") && !skipKeyVault)
             {
                 var builtConfig = config.Build(); // Access to appsettings
 

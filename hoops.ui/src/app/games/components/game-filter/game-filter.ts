@@ -19,15 +19,16 @@ import { MatOptionModule } from '@angular/material/core';
 import { NgFor, CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { LoggerService } from '@app/services/logging.service';
+import { LoggerService } from '@app/services/logger.service';
 import { DivisionService } from '@app/services/division.service';
 import { TeamService } from '@app/services/team.service';
 import { SeasonService } from '@app/services/season.service';
 import { DivisionSelect } from '@app/admin/admin-shared/division-select/division-select';
+import { TeamSelect } from '../../shared/team-select/team-select';
 
 @Component({
   selector: 'csbc-game-filter',
-  templateUrl: "./game-filter.html",
+  templateUrl: './game-filter.html',
   styleUrls: [
     './game-filter.scss',
     '../../../shared/scss/forms.scss',
@@ -41,6 +42,7 @@ import { DivisionSelect } from '@app/admin/admin-shared/division-select/division
     NgFor,
     MatOptionModule,
     DivisionSelect,
+    TeamSelect,
   ],
 })
 export class GameFilter implements OnInit {
@@ -50,11 +52,9 @@ export class GameFilter implements OnInit {
   readonly #teamService = inject(TeamService);
   readonly #seasonService = inject(SeasonService);
   // readonly divisions = input.required<Division[]>();
-  readonly teams = input.required<Team[] | null>();
   readonly display = input.required<string>();
   // divisionService = inject(GameService);
   gameStore = inject(Store<fromGames.State>);
-  currentTeam!: Team;
   showAllTeams!: boolean;
   // readonly selectedTeam = output<Team>();
   selectedDivision = computed(() => this.divisionService.selectedDivision());
@@ -74,6 +74,8 @@ export class GameFilter implements OnInit {
 
   ngOnInit() {
     this.showAllTeams = true;
+    // Explicitly enable the sentinel "All Teams" for games views
+    this.#teamService.updateAllTeams(true);
   }
 
   onDivisionChange(val: Division) {
@@ -85,12 +87,5 @@ export class GameFilter implements OnInit {
     }
   }
 
-  onTeamChange(val: Team) {
-    if (val !== undefined) {
-      this.currentTeam = val;
-      this.#teamService.updateSelectedTeam(val);
-      // this.gameStore.dispatch(new gameActions.SetCurrentTeam(val));
-      // this.store.dispatch(new gameActions.LoadTeamGames);
-    }
-  }
+  // Team selection is handled by TeamSelect component -> TeamService; no extra handler needed here.
 }

@@ -26,21 +26,25 @@ import { SchedulePlayoffs } from '@app/games/components/schedule-playoffs/schedu
 import { RouterOutlet } from '@angular/router';
 import { GamesTopMenu } from '../../components/games-top-menu/games-top-menu';
 import { AuthService } from '@app/services/auth.service';
+import { CommonModule } from '@angular/common';
+import { LoggerService } from '@app/services/logger.service';
 
 @Component({
   selector: 'csbc-games-shell',
-  templateUrl: "./games-shell.html",
+  standalone: true,
+  templateUrl: './games-shell.html',
   styleUrls: ['./games-shell.scss'],
-  imports: [GamesTopMenu, RouterOutlet],
+  imports: [CommonModule, RouterOutlet, GamesTopMenu],
 })
 export class GamesShell implements OnInit {
   readonly seasonService = inject(SeasonService);
-  readonly #divisionService = inject(DivisionService);
+  private readonly divisionService = inject(DivisionService);
   readonly #teamService = inject(TeamService);
   readonly #gameService = inject(GameService);
   private store = inject(Store<fromGames.State>);
   private userStore = inject(Store<fromUser.State>);
   readonly #authService = inject(AuthService);
+  private readonly logger = inject(LoggerService);
   readonly showAllTeams = input<boolean>();
   readonly currentTeam = input<string>();
   teamList: any[] | undefined;
@@ -58,7 +62,12 @@ export class GamesShell implements OnInit {
   errorMessage$: Observable<string> | undefined;
   selectedDivision$: Observable<any> | undefined;
   standings: RegularGame[] | undefined;
-  canEdit: boolean | undefined;
+
+  // Access canEdit from AuthService computed signal
+  get canEdit(): boolean {
+    return this.#authService.canEditGames();
+  }
+
   // user: User | undefined;
   games: RegularGame[] | undefined;
   currentSeason$: Observable<any> | undefined; // = this.seasonService.currentSeason$.subscribe(season => this.seasonDescription = season.description);
@@ -83,8 +92,8 @@ export class GamesShell implements OnInit {
   filteredGamesByDate!: Observable<RegularGame[]>;
 
   // Signals for reactive state
-  divisions = computed(() => this.#divisionService.seasonDivisions()!);
-  currentDivision = computed(() => this.#divisionService.currentDivision());
+  divisions = computed(() => this.divisionService.seasonDivisions()!);
+  currentDivision = computed(() => this.divisionService.currentDivision());
   filteredTeams = computed(() => this.#teamService.divisionTeams());
 
   user = computed(() => this.#authService.currentUser());
@@ -92,11 +101,12 @@ export class GamesShell implements OnInit {
   constructor() {
     // Effect to handle side effects when the current division changes
     effect(() => {
-      const division = this.currentDivision();
+      const division = this.divisionService.currentDivision();
+      this.logger.info('Division changed in shell', division);
       if (division) {
-        this.store.dispatch(new gameActions.LoadFilteredTeams());
-        this.store.dispatch(new gameActions.LoadFilteredGames());
-        this.store.dispatch(new gameActions.LoadDivisionPlayoffGames());
+        // this.store.dispatch(new gameActions.LoadFilteredTeams());
+        // this.store.dispatch(new gameActions.LoadFilteredGames());
+        // this.store.dispatch(new gameActions.LoadDivisionPlayoffGames());
       }
     });
   }
@@ -105,22 +115,20 @@ export class GamesShell implements OnInit {
     this.setStateSubscriptions();
   }
   setStateSubscriptions() {
-    this.store.select(fromGames.getDivisions).subscribe((divisions) => {
-      // Update the divisions signal with the new value
-      this.store.dispatch(new gameActions.SetDivisions(divisions));
-    });
-    this.divisionId$ = this.store.pipe(
-      select(fromGames.getCurrentDivisionId)
-    ) as Observable<number>;
-
+    // this.store.select(fromGames.getDivisions).subscribe((divisions) => {
+    //   // Update the divisions signal with the new value
+    //   this.store.dispatch(new gameActions.SetDivisions(divisions));
+    // });
+    // this.divisionId$ = this.store.pipe(
+    //   select(fromGames.getCurrentDivisionId)
+    // ) as Observable<number>;
     // this.filteredGames$ = this.store.pipe(select(fromGames.getFilteredGames));
     // this.standings$ = this.store.pipe(select(fromGames.getStandings));
-    this.store.select(fromGames.getDivisions).subscribe((divisions) => {
-      if (divisions[0]) {
-        this.store.dispatch(new gameActions.SetCurrentDivision(divisions[0]));
-      }
-    });
-
+    // this.store.select(fromGames.getDivisions).subscribe((divisions) => {
+    //   if (divisions[0]) {
+    //     this.store.dispatch(new gameActions.SetCurrentDivision(divisions[0]));
+    //   }
+    // });
     // this.store.pipe(select(fromUser.getCurrentUser)).subscribe((user) => {
     //   this.user = user;
     // });
@@ -144,7 +152,7 @@ export class GamesShell implements OnInit {
     // })
   }
   public filterByDivision(divisionId: number): void {
-    console.log(divisionId);
+    this.logger.debug('Filter by division', divisionId);
     this.teamList = [];
   }
 
@@ -163,20 +171,7 @@ export class GamesShell implements OnInit {
     this.store.dispatch(new gameActions.SetCurrentTeam(team));
   }
 
-  getCanEdit(user: User, divisionId: number): boolean {
-    console.log(divisionId);
-    console.log(user);
-    let canEdit = false;
-    if (user && user.divisions) {
-      user.divisions.forEach((element) => {
-        if (divisionId === element.divisionId) {
-          console.log('found ' + divisionId);
-          canEdit = true;
-        }
-      });
-    }
-    return canEdit;
-  }
+  // getCanEdit method removed - now handled by AuthService.canEditGames() computed signal
 
   setDivisionData(data: any[]): Division[] {
     let divisions: Division[] = [];
@@ -213,11 +208,11 @@ export class GamesShell implements OnInit {
         team.divisionId = data[i].divisionId;
         teams.push(team);
       }
-      console.log(teams);
+      this.logger.debug('Aggregated teams', teams);
     }
     return teams;
   }
   handlefilterUpdate($event: any) {
-    console.log($event);
+    this.logger.debug('Filter updated', $event);
   }
 }

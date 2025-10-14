@@ -16,7 +16,7 @@ namespace Hoops.Infrastructure.Repository
             this.context = context;
             sSQL = string.Empty;
         }
-    
+
 
         // private readonly hoopsContext context;
         // protected DbSet<User> DbSet;
@@ -25,19 +25,35 @@ namespace Hoops.Infrastructure.Repository
         #region IRepository<T> Members
         public override User Insert(User entity)
         {
-
+            // Calculate the next available UserId manually
             entity.UserId = context.Users.Any() ? context.Users.Max(t => t.UserId) + 1 : 1;
+
+            // Set default CompanyId if not provided or is 0
+            if (!entity.CompanyId.HasValue || entity.CompanyId.Value == 0)
+            {
+                entity.CompanyId = 1; // Default CompanyId value used throughout the application
+            }
+
             var newUser = context.Users.Add(entity);
             var no = context.SaveChanges();
             return context.Users.FirstOrDefault(user => user.UserName == entity.UserName)!;
-
         }
         public override User Update(User entity)
         {
-            var user = GetById(entity.UserId);
-            user = entity;
+            var existingUser = GetById(entity.UserId);
+            if (existingUser == null)
+                throw new InvalidOperationException($"User with ID {entity.UserId} not found.");
+
+            // Update the tracked entity's properties
+            existingUser.UserName = entity.UserName;
+            existingUser.Name = entity.Name;
+            existingUser.UserType = entity.UserType;
+            existingUser.HouseId = entity.HouseId;
+            existingUser.PersonId = entity.PersonId;
+            // Don't update CreatedDate and CreatedUser as they should remain unchanged
+
             context.SaveChanges();
-            return user!;
+            return existingUser;
         }
         public override void Delete(User entity)
         {
@@ -74,10 +90,14 @@ namespace Hoops.Infrastructure.Repository
         {
             try
             {
+                // Hash the input password to compare with stored encrypted password
+                var hashedPassword = HashPassword(password);
+
                 var user = context.Users
-                .FirstOrDefault(u => 
+                .FirstOrDefault(u =>
                 u.UserName.ToLower() == sUserName.ToLower()
-                && u.PassWord == password);
+                && (u.PassWord == hashedPassword || u.Pword == password)); // Support both encrypted and plain text for compatibility
+
                 if (user == null)
                 {
                     throw new Exception("Invalid username or password.");
@@ -94,7 +114,7 @@ namespace Hoops.Infrastructure.Repository
         public Task<User?> GetUserAsync(string sUserName, string sPwd)
         {
             var db = new hoopsContext();
-           
+
             try
             {
                 //var repo = new UserRepository(DB);
@@ -148,7 +168,7 @@ namespace Hoops.Infrastructure.Repository
         {
             var DB = new hoopsContext();
             DataTable? dtResults = default(DataTable);
-            
+
             try
             {
                 sSQL = "SELECT SeasonID, Sea_Desc, FromDate FROM Seasons WHERE Seasons.CurrentSeason=1";
@@ -187,7 +207,7 @@ namespace Hoops.Infrastructure.Repository
         public Task<User?> GetLoginInfoAsync(string userName, string password)
         {
             var db = new hoopsContext();
-           
+
             try
             {
                 var repo = new UserRepository(db);
@@ -201,7 +221,7 @@ namespace Hoops.Infrastructure.Repository
             {
                 throw new Exception("ClsUsers:GetSeason::" + ex.Message);
             }
-           
+
         }
         /*
         public void DELUserPtn(long HouseId, Int32 CompanyID)
@@ -224,7 +244,7 @@ namespace Hoops.Infrastructure.Repository
             }
         }
         */
-        private string HashPassword(string password)
+        public string HashPassword(string password)
         {
             string? hashedPassword = null;
             // dynamic hashProvider = new SHA256Managed();
@@ -285,7 +305,7 @@ namespace Hoops.Infrastructure.Repository
             {
                 DB = null;
                 dtResults = null;
-                
+
             }
             return accessType!;
         }
@@ -361,8 +381,8 @@ namespace Hoops.Infrastructure.Repository
                 sSQL += ", @PWord = " + user.Pword;
                 sSQL += ", @Password = " + HashPassword(user.PassWord);
                 sSQL += ", @CompanyID = " + user.CompanyId.ToString();
-// ToDo: Fix This
-               // DB.ExecuteGetSQL(sSQL);
+                // ToDo: Fix This
+                // DB.ExecuteGetSQL(sSQL);
 
             }
             catch (Exception ex)
@@ -378,7 +398,123 @@ namespace Hoops.Infrastructure.Repository
 
         User IRepository<User>.Insert(User entity)
         {
-            throw new NotImplementedException();
+            return Insert(entity);
+        }
+
+        // New async methods for Azure Functions compatibility
+        public async Task<List<User>> GetAllUsersAsync()
+        {
+            return await context.Users.ToListAsync();
+        }
+
+        public async Task<User?> GetUserByIdAsync(int id)
+        {
+            return await context.Users.FindAsync(id);
+        }
+
+        public async Task<User?> GetUserByUsernameAsync(string userName)
+        {
+            return await context.Users.FirstOrDefaultAsync(u => u.UserName == userName);
+        }
+
+        public async Task<User> InsertUserAsync(User user)
+        {
+            // Calculate the next available UserId manually since auto-increment isn't configured
+            var maxUserId = await context.Users.AnyAsync()
+                ? await context.Users.MaxAsync(u => u.UserId)
+                : 0;
+            user.UserId = maxUserId + 1;
+
+            // Set default CompanyId if not provided or is 0
+            if (!user.CompanyId.HasValue || user.CompanyId.Value == 0)
+            {
+                user.CompanyId = 1; // Default CompanyId value used throughout the application
+            }
+
+            context.Users.Add(user);
+            await context.SaveChangesAsync();
+
+            // Return the user with the manually assigned UserId
+            return user;
+        }
+
+        public async Task<User> UpdateUserAsync(User user)
+        {
+            var existingUser = await context.Users.FindAsync(user.UserId);
+            if (existingUser == null)
+                throw new InvalidOperationException($"User with ID {user.UserId} not found.");
+
+            // Only update fields that are explicitly provided and different from existing values
+            // Use a more restrictive approach to avoid overwriting with null/default values
+
+            if (!string.IsNullOrWhiteSpace(user.UserName))
+                existingUser.UserName = user.UserName;
+
+            if (!string.IsNullOrWhiteSpace(user.Name))
+                existingUser.Name = user.Name;
+
+            // Only update UserType if it has a meaningful value (not null/0)
+            if (user.UserType.HasValue && user.UserType > 0)
+                existingUser.UserType = user.UserType;
+
+            // Only update CompanyId if it's provided and has a meaningful value (not null/0)
+            if (user.CompanyId.HasValue && user.CompanyId > 0)
+                existingUser.CompanyId = user.CompanyId;
+
+            // Only update Pword if it's provided and not empty
+            if (!string.IsNullOrWhiteSpace(user.Pword))
+                existingUser.Pword = user.Pword;
+
+            // Only update PassWord if it's provided and not empty
+            if (!string.IsNullOrWhiteSpace(user.PassWord))
+                existingUser.PassWord = user.PassWord;
+
+            // Only update HouseId if it's provided and not 0 (HouseId is non-nullable int)
+            if (user.HouseId > 0)
+                existingUser.HouseId = user.HouseId;
+
+            // Update PersonId (PeopleID in database) if it's provided
+            if (user.PersonId.HasValue)
+                existingUser.PersonId = user.PersonId;
+
+            // Never update CreatedDate and CreatedUser as they should remain unchanged
+
+            await context.SaveChangesAsync();
+            return existingUser;
+        }
+        public async Task DeleteUserAsync(int id)
+        {
+            var user = await context.Users.FindAsync(id);
+            if (user != null)
+            {
+                context.Users.Remove(user);
+                await context.SaveChangesAsync();
+            }
+        }
+
+        public async Task<bool> UserExistsAsync(int id)
+        {
+            return await context.Users.AnyAsync(e => e.UserId == id);
+        }
+
+        public async Task<User?> AuthenticateUserAsync(string userName, string password)
+        {
+            try
+            {
+                // Hash the input password to compare with stored encrypted password
+                var hashedPassword = HashPassword(password);
+
+                var user = await context.Users
+                    .FirstOrDefaultAsync(u =>
+                        u.UserName.ToLower() == userName.ToLower()
+                        && (u.PassWord == hashedPassword || u.Pword == password)); // Support both encrypted and plain text for compatibility
+
+                return user;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("UserRepository:AuthenticateUserAsync::" + ex.Message);
+            }
         }
     }
 }

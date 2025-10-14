@@ -155,11 +155,11 @@ namespace Hoops.Data.Seeders
         private async Task<DivisionPlayoffInfo> GetDivisionPlayoffInfoAsync(int divisionId, int seasonId)
         {
             Console.WriteLine($"[DEBUG] Getting playoff info for Division {divisionId}, Season {seasonId}");
-            
+
             // Try querying directly from context instead of repository
             var totalGames = await context.ScheduleGames.CountAsync();
             Console.WriteLine($"[DEBUG] Total games in ScheduleGames table (direct context): {totalGames}");
-            
+
             // Also try the repository approach
             var scheduleGames = await _scheduleGameRepo.GetAllAsync();
             var totalGamesRepo = scheduleGames.Count();
@@ -404,8 +404,9 @@ namespace Hoops.Data.Seeders
                 // Create full DateTime with date and time combined
                 var fullGameDateTime = playoffGame.GameDate.Date.Add(playoffGame.GameTime);
 
-                // Create legacy GameTime format
-                var legacyGameTime = new DateTime(1899, 12, 30).Add(playoffGame.GameTime).ToString("yyyy-MM-dd HH:mm:ss");
+                // Create GameTime in AM/PM format to match frontend expectations
+                // Format: "06:00:00 PM" - required by Angular Material timepicker and playoff-game.service
+                var gameTimeAmPm = new DateTime(1899, 12, 30).Add(playoffGame.GameTime).ToString("hh:mm:ss tt");
 
                 // Create the SchedulePlayoff entity
                 var game = new SchedulePlayoff
@@ -414,7 +415,7 @@ namespace Hoops.Data.Seeders
                     GameNumber = playoffGame.GameNumber,
                     LocationNumber = selectedLocation.LocationNumber,
                     GameDate = fullGameDateTime,
-                    GameTime = legacyGameTime,
+                    GameTime = gameTimeAmPm,
                     HomeTeam = playoffGame.HomeTeam,
                     VisitingTeam = playoffGame.VisitingTeam,
                     Descr = playoffGame.Description,

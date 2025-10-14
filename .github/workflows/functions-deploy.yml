@@ -1,0 +1,389 @@
+name: Deploy Azure Functions
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+concurrency:
+  group: functions-deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  DOTNET_VERSION: 9.0.x
+  FUNCTIONS_PROJECT: src/Hoops.Functions/Hoops.Functions.csproj
+  PUBLISH_DIR: publish
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore
+        run: dotnet restore Hoops.sln
+
+      - name: Build
+        run: dotnet build Hoops.sln -c Release --no-restore
+
+      - name: Test (fast)
+        run: dotnet test Hoops.sln -c Release --no-build --filter "TestCategory!=Slow" --nologo
+
+      - name: Publish Functions (self-contained linux-x64)
+        run: |
+          dotnet publish ${{ env.FUNCTIONS_PROJECT }} \
+            -c Release \
+            -o ${{ env.PUBLISH_DIR }} \
+            -r linux-x64 \
+            --self-contained true \
+            /p:PublishSingleFile=false
+
+      - name: Verify publish output
+        shell: bash
+        run: |
+          set -e
+          echo "Publish directory tree (depth 2):"
+          du -h -d 2 ${{ env.PUBLISH_DIR }} || true
+          echo "Top files in publish directory:"
+          find ${{ env.PUBLISH_DIR }} -maxdepth 2 -type f | head -n 100 || true
+          echo "Ensure host.json present in publish root:" && ls -lah ${{ env.PUBLISH_DIR }}/host.json || (echo "host.json missing in publish output" >&2; exit 1)
+
+      - name: Archive package
+        run: |
+          cd ${{ env.PUBLISH_DIR }}
+          zip -r ../functions.zip .
+          cd ..
+          ls -lah functions.zip
+          du -h functions.zip
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: functions
+          path: functions.zip
+          if-no-files-found: error
+
+      - name: Upload publish folder artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: functions-publish
+          path: ${{ env.PUBLISH_DIR }}
+          if-no-files-found: error
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - name: Download ZIP artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: functions
+          path: .
+
+      - name: Download folder artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: functions-publish
+          path: package
+
+      - name: Validate package file
+        shell: bash
+        run: |
+          set -e
+          ls -lah
+          if [ ! -f "functions.zip" ]; then
+            echo "functions.zip not found in working directory" >&2
+            exit 1
+          fi
+          SIZE=$(stat -c%s "functions.zip" || echo 0)
+          echo "ZIP size (bytes): $SIZE"
+          if [ "$SIZE" -le 10000 ]; then
+            echo "functions.zip is unexpectedly small (<= 10 KB)." >&2
+          fi
+          echo "ZIP size:" && du -h functions.zip || true
+          echo "Listing ZIP entries (first 200):"
+          (unzip -l functions.zip > zip_listing.txt 2>&1 || true)
+          head -n 200 zip_listing.txt || true
+          echo "Using zipinfo (first 200):"
+          (zipinfo -1 functions.zip > zipinfo_listing.txt 2>&1 || true)
+          head -n 200 zipinfo_listing.txt || true
+          echo "File type:" && (file functions.zip || true)
+          echo "Check for host.json and dlls inside the zip:"
+          (unzip -l functions.zip 2>/dev/null | grep -E "host.json|bin/.*\\.dll") || echo "Warning: expected files not found in listing"
+          echo "Testing ZIP integrity:"
+          unzip -t functions.zip || echo "zip integrity test reported issues"
+
+      - name: Validate folder package
+        shell: bash
+        run: |
+          set -e
+          echo "Listing 'package' folder (depth 2):"
+          du -h -d 2 package || true
+          echo "Top files in 'package':"
+          find package -maxdepth 2 -type f | head -n 100 || true
+          [ -f package/host.json ] && echo "host.json present in package" || (echo "host.json NOT found in 'package'" >&2; exit 1)
+
+      - name: Validate Azure secrets & select auth mode
+        id: auth
+        shell: bash
+        run: |
+          set -e
+          trim() { echo "$1" | sed 's/^[[:space:]]\+//;s/[[:space:]]\+$//' ; }
+          CID=$(trim "${{ secrets.AZURE_CLIENT_ID }}"); TID=$(trim "${{ secrets.AZURE_TENANT_ID }}"); SID=$(trim "${{ secrets.AZURE_SUBSCRIPTION_ID }}"); CSEC=$(trim "${{ secrets.AZURE_CLIENT_SECRET }}")
+          [ -n "$CID" ] && echo "AZURE_CLIENT_ID: set" || (echo "AZURE_CLIENT_ID: MISSING" && exit 1)
+          [ -n "$TID" ] && echo "AZURE_TENANT_ID: set" || (echo "AZURE_TENANT_ID: MISSING" && exit 1)
+          [ -n "$SID" ] && echo "AZURE_SUBSCRIPTION_ID: set" || (echo "AZURE_SUBSCRIPTION_ID: MISSING" && exit 1)
+          BRANCH="${{ github.ref }}"
+          echo "Branch: $BRANCH"
+          if [ "$BRANCH" = "refs/heads/develop" ]; then
+            echo "Forcing OIDC on develop"
+            echo "auth_mode=oidc" >> $GITHUB_OUTPUT
+          else
+            if [ -n "$CSEC" ]; then
+              echo "AZURE_CLIENT_SECRET: set (using Service Principal secret auth)"
+              echo "auth_mode=sp" >> $GITHUB_OUTPUT
+            else
+              echo "AZURE_CLIENT_SECRET: not set (using OIDC federated credentials)"
+              echo "auth_mode=oidc" >> $GITHUB_OUTPUT
+            fi
+          fi
+
+      - name: Azure Login (Service Principal secret)
+        if: steps.auth.outputs.auth_mode == 'sp'
+        uses: azure/login@v2
+        continue-on-error: true
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+
+      - name: Azure Login (OIDC federated)
+        if: steps.auth.outputs.auth_mode == 'oidc'
+        uses: azure/login@v2
+        continue-on-error: true
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Set subscription explicitly
+        run: az account set --subscription "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+
+      - name: Verify Azure login
+        shell: bash
+        run: |
+          if ! az account show -o table; then
+            {
+              echo "## Azure Login Failed";
+              echo "- Check federated credential subject (should match environment: dev)";
+              echo "- Ensure id-token: write permission is set at workflow level";
+              echo "- Confirm AZURE_CLIENT_ID / TENANT_ID / SUBSCRIPTION_ID environment secrets exist";
+            } >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
+
+      - name: Show Azure context
+        run: az account show -o table
+
+      - name: Select Function App by branch (with optional overrides)
+        id: selectapp
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
+            APP_DEFAULT="hoops-functions-dev"; RG_DEFAULT="csbc-dev"
+            APP_OVERRIDE="${{ vars.FUNCTION_APP_NAME_DEV }}"; RG_OVERRIDE="${{ vars.FUNCTION_RG_DEV }}"
+          else
+            APP_DEFAULT="hoops-functions-prod"; RG_DEFAULT="csbc-prod"
+            APP_OVERRIDE="${{ vars.FUNCTION_APP_NAME_PROD }}"; RG_OVERRIDE="${{ vars.FUNCTION_RG_PROD }}"
+          fi
+          APP_NAME=${APP_OVERRIDE:-$APP_DEFAULT}
+          RG_NAME=${RG_OVERRIDE:-$RG_DEFAULT}
+          echo "Using app: $APP_NAME, resource group: $RG_NAME"
+          echo "app_name=$APP_NAME" >> $GITHUB_OUTPUT
+          echo "resource_group=$RG_NAME" >> $GITHUB_OUTPUT
+
+      - name: Verify Resource Group exists
+        run: |
+          az group show --name ${{ steps.selectapp.outputs.resource_group }} -o table
+
+      - name: Verify Function App exists
+        run: |
+          az functionapp show \
+            --name ${{ steps.selectapp.outputs.app_name }} \
+            --resource-group ${{ steps.selectapp.outputs.resource_group }} \
+            -o table
+
+      - name: Validate required secrets
+        shell: bash
+        run: |
+          [ -n "${{ secrets.HOOPS_CONNECTION_STRING }}" ] && echo "HOOPS_CONNECTION_STRING: set" || (echo "HOOPS_CONNECTION_STRING: MISSING (set environment secret for dev)" >&2; exit 1)
+
+      - name: Create deployment zip from folder
+        run: |
+          cd package
+          zip -r ../deploy.zip .
+          cd ..
+          ls -lah deploy.zip
+          unzip -t deploy.zip || true
+
+      - name: Deploy via Azure CLI (config-zip)
+        run: |
+          echo "Deploying deploy.zip via config-zip..."
+          az functionapp deployment source config-zip \
+            --name ${{ steps.selectapp.outputs.app_name }} \
+            --resource-group ${{ steps.selectapp.outputs.resource_group }} \
+            --src deploy.zip
+
+      - name: Show deployment logs (Kudu)
+        if: always()
+        run: |
+          echo "If deployment failed, check the Function App's Log stream in the portal for startup errors."
+
+      - name: Configure Function App Settings
+        run: |
+          az functionapp config appsettings set \
+            --name ${{ steps.selectapp.outputs.app_name }} \
+            --resource-group ${{ steps.selectapp.outputs.resource_group }} \
+            --settings \
+              "FUNCTIONS_WORKER_RUNTIME=dotnet-isolated" \
+              "FUNCTIONS_EXTENSION_VERSION=~4" \
+              "AzureWebJobsFeatureFlags=EnableOpenApi" \
+              "CompanySettings__DefaultCompanyId=1" \
+              "KeyVaultUri=https://hoops-dev-kv.vault.azure.net/" \
+              "ConnectionStrings__hoopsContext=${{ secrets.HOOPS_CONNECTION_STRING }}"
+
+      - name: Verify discovered functions (non-blocking)
+        id: verify_functions
+        continue-on-error: true
+        run: |
+          set -e
+          ATTEMPTS=0
+          until [ $ATTEMPTS -ge 12 ]
+          do
+            funcs=$(az functionapp function list \
+              --name ${{ steps.selectapp.outputs.app_name }} \
+              --resource-group ${{ steps.selectapp.outputs.resource_group }} \
+              -o tsv --query "[].name")
+            if [ -n "$funcs" ]; then
+              echo "Functions discovered:" $funcs
+              exit 0
+            fi
+            ATTEMPTS=$((ATTEMPTS+1))
+            echo "No functions yet. Waiting 10s and retrying ($ATTEMPTS/12)..."
+            sleep 10
+          done
+          echo "No functions discovered by the host after retries. Continuing without failing the job. Check runtime logs for startup errors." >&2
+
+      - name: Failure diagnostics
+        if: failure()
+        shell: bash
+        run: |
+          echo "## Failure diagnostics" >> $GITHUB_STEP_SUMMARY
+          echo "Runner info:" >> $GITHUB_STEP_SUMMARY
+          uname -a >> $GITHUB_STEP_SUMMARY || true
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Azure context:" >> $GITHUB_STEP_SUMMARY
+          az account show -o table >> $GITHUB_STEP_SUMMARY || echo "az context unavailable" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Function App existence check:" >> $GITHUB_STEP_SUMMARY
+          az functionapp show --name ${{ steps.selectapp.outputs.app_name }} --resource-group ${{ steps.selectapp.outputs.resource_group }} -o table >> $GITHUB_STEP_SUMMARY || echo "functionapp show failed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Function Apps in resource group:" >> $GITHUB_STEP_SUMMARY
+          az functionapp list -g ${{ steps.selectapp.outputs.resource_group }} -o table >> $GITHUB_STEP_SUMMARY || echo "functionapp list -g failed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "All Function Apps in subscription (first 50):" >> $GITHUB_STEP_SUMMARY
+          az functionapp list -o table | head -n 50 >> $GITHUB_STEP_SUMMARY || echo "functionapp list failed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "ZIP diagnostics:" >> $GITHUB_STEP_SUMMARY
+          (ls -lah functions.zip || echo "functions.zip not found") >> $GITHUB_STEP_SUMMARY
+          (stat functions.zip || echo "stat failed") >> $GITHUB_STEP_SUMMARY 2>&1
+          echo "file output:" >> $GITHUB_STEP_SUMMARY
+          (file functions.zip || true) >> $GITHUB_STEP_SUMMARY
+          echo "unzip -l output (first 200):" >> $GITHUB_STEP_SUMMARY
+          (unzip -l functions.zip > zip_listing.txt 2>&1 || true)
+          (head -n 200 zip_listing.txt || true) >> $GITHUB_STEP_SUMMARY
+          echo "zipinfo -1 output (first 200):" >> $GITHUB_STEP_SUMMARY
+          (zipinfo -1 functions.zip > zipinfo_listing.txt 2>&1 || true)
+          (head -n 200 zipinfo_listing.txt || true) >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Folder package diagnostics (depth 2):" >> $GITHUB_STEP_SUMMARY
+          (du -h -d 2 package || true) >> $GITHUB_STEP_SUMMARY
+          echo "Top files in 'package':" >> $GITHUB_STEP_SUMMARY
+          (find package -maxdepth 2 -type f | head -n 100 || true) >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Diagnostics files 'zip_listing.txt', 'zipinfo_listing.txt', and 'package_filelist.txt' (if present) are uploaded as artifacts." >> $GITHUB_STEP_SUMMARY
+
+      - name: Prepare diagnostics files
+        if: failure()
+        shell: bash
+        run: |
+          (unzip -l functions.zip > zip_listing.txt 2>&1 || true)
+          (zipinfo -1 functions.zip > zipinfo_listing.txt 2>&1 || true)
+          (find package -maxdepth 5 -type f > package_filelist.txt 2>&1 || true)
+
+      - name: Upload diagnostics artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: functions-deploy-diagnostics
+          path: |
+            zip_listing.txt
+            zipinfo_listing.txt
+            package_filelist.txt
+
+      - name: Configure CORS
+        run: |
+          for ORIGIN in \
+            "https://thankful-pond-090ec730f.4.azurestaticapps.net" \
+            "http://localhost:4200" \
+            "https://localhost:4200"; do
+            echo "Adding CORS origin: $ORIGIN"
+            az functionapp cors add \
+              --name ${{ steps.selectapp.outputs.app_name }} \
+              --resource-group ${{ steps.selectapp.outputs.resource_group }} \
+              --allowed-origins "$ORIGIN" || echo "Origin $ORIGIN may already exist; continuing."
+          done
+
+      - name: Enable CORS credentials support
+        run: |
+          az resource update \
+            --resource-group ${{ steps.selectapp.outputs.resource_group }} \
+            --resource-type Microsoft.Web/sites/config \
+            --name "${{ steps.selectapp.outputs.app_name }}/web" \
+            --set properties.cors.supportsCredentials=true
+
+      - name: Show current CORS settings
+        run: |
+          az resource show \
+            --resource-group ${{ steps.selectapp.outputs.resource_group }} \
+            --resource-type Microsoft.Web/sites/config \
+            --name "${{ steps.selectapp.outputs.app_name }}/web" \
+            --query "properties.cors" -o jsonc
+
+      - name: Enable Managed Identity and Grant Key Vault Access
+        run: |
+          # Enable system-assigned managed identity
+          az functionapp identity assign \
+            --name ${{ steps.selectapp.outputs.app_name }} \
+            --resource-group ${{ steps.selectapp.outputs.resource_group }}
+
+          # Get the principal ID of the managed identity 
+          PRINCIPAL_ID=$(az functionapp identity show \
+            --name ${{ steps.selectapp.outputs.app_name }} \
+            --resource-group ${{ steps.selectapp.outputs.resource_group }} \
+            --query principalId -o tsv)
+
+          # Grant Key Vault access
+          az keyvault set-policy \
+            --name hoops-dev-kv \
+            --object-id $PRINCIPAL_ID \
+            --secret-permissions get list

@@ -9,7 +9,7 @@ namespace Hoops.Infrastructure.Repository
 {
     public class SeasonRepository : EFRepository<Season>, ISeasonRepository
     {
-        public SeasonRepository(hoopsContext _context) : base(_context) {}
+        public SeasonRepository(hoopsContext _context) : base(_context) { }
 
         #region IRepository<T> Members
         public async Task<List<Season>> GetAllAsync(int companyId) =>
@@ -42,27 +42,12 @@ namespace Hoops.Infrastructure.Repository
 
         public async Task<Season> GetCurrentSeason(int companyId)
         {
-            try
-            {
-                var season =
-                    context
-                        .Set<Season>()
-                        .Include(s => s.Divisions)
-                        .FirstOrDefaultAsync(n =>
-                            (n.CurrentSeason == true) &&
-                            (n.CompanyId == companyId));
-                var result = await season;
-                if (result == null)
-                {
-                    throw new Exception("Season not found");
-                }
-                return result;
-            }
-            catch
-            {
-                var season = new Season();
-                return season;
-            }
+            // Return null when not found; callers (services/controllers) should handle NotFound explicitly
+            var result = await context
+                .Set<Season>()
+                .Include(s => s.Divisions)
+                .FirstOrDefaultAsync(n => n.CurrentSeason == true && n.CompanyId == companyId);
+            return result!; // may be null at runtime; service layer checks for null and throws appropriately
         }
 
         public int GetSeason(int companyId, string seasonDescription)
@@ -112,7 +97,7 @@ namespace Hoops.Infrastructure.Repository
         //         throw new Exception(ex.Message);
         //     }
         // }
-        
+
 
         public IQueryable<Hoops.Core.ViewModels.SeasonCount> GetSeasonCountsSimple(int seasonId)
         {
@@ -141,6 +126,6 @@ namespace Hoops.Infrastructure.Repository
             return result;
         }
 
-        
+
     }
 }

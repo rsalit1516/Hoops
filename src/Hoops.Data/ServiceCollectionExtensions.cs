@@ -8,6 +8,7 @@ namespace Hoops.Data
         public static IServiceCollection AddHoopsSeeders(this IServiceCollection services)
         {
             services.AddScoped<SeedCoordinator>();
+            services.AddScoped<DirectorSeeder>();
             services.AddScoped<ColorSeeder>();
             services.AddScoped<LocationSeeder>();
             services.AddScoped<SeasonSeeder>();

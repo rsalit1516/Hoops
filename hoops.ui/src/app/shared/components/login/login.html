@@ -1,38 +1,56 @@
-<div class="container d-flex justify-content-center align-items-center mt-6 login" >
-  <div class="col-4">
-    <mat-card >
+<div class="login-page">
+  <div class="login-card">
+    <mat-card>
       <mat-card-header>
         <mat-card-title>Login</mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <form
+          id="loginForm"
           class="login-form"
           [formGroup]="loginForm"
           (ngSubmit)="onSubmitClick()"
         >
-          <mat-error *ngIf="!isFormValid && loginForm.dirty" class="error"
-            >User Name or password is not valid
+          <mat-error *ngIf="!isFormValid && attemptedSubmit" class="error">
+            User Name or password is not valid
           </mat-error>
           <div>
-            <mat-form-field>
+            <mat-form-field appearance="fill" class="full-width">
               <mat-label for="userName">User Name</mat-label>
-              <input matInput type="text" required formControlName="userName" />
-              <!-- <mat-error *ngIf="userName.errors">login name is required</mat-error> -->
+              <input
+                matInput
+                type="text"
+                required
+                formControlName="userName"
+                autocomplete="username"
+                inputmode="email"
+              />
             </mat-form-field>
           </div>
           <div>
-            <mat-form-field>
+            <mat-form-field appearance="fill" class="full-width">
               <mat-label for="password">Password</mat-label>
-
               <input
                 matInput
-                type="password"
+                [type]="hidePassword ? 'password' : 'text'"
                 required
                 formControlName="password"
+                autocomplete="current-password"
+                enterkeyhint="done"
               />
-              <!-- <mat-error *ngIf="password.invalid" class="error"
-        >Password is required!</mat-error
-      > -->
+              <button
+                mat-icon-button
+                matSuffix
+                type="button"
+                (click)="hidePassword = !hidePassword"
+                [attr.aria-label]="hidePassword ? 'Show password' : 'Hide password'"
+                [attr.aria-pressed]="!hidePassword"
+              >
+                <mat-icon
+                  >{{ hidePassword ? 'visibility' : 'visibility_off'
+                  }}</mat-icon
+                >
+              </button>
             </mat-form-field>
           </div>
         </form>
@@ -40,12 +58,13 @@
       <mat-card-actions>
         <button
           mat-raised-button
-          mat-dialog-close
-          (click)="onSubmitClick()"
+          type="submit"
+          form="loginForm"
           cdkFocusInitial
           color="primary"
+          [disabled]="saving"
         >
-          Ok
+          {{ saving ? 'Signing in…' : 'Ok' }}
         </button>
 
         <button mat-raised-button color="primary" (click)="onCancelClick()">

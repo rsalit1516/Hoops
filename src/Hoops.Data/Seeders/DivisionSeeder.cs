@@ -50,7 +50,7 @@ namespace Hoops.Data.Seeders
                 var seasonYear = season.FromDate.HasValue ? season.FromDate.Value.Year : 2024;
                 var divisions = new List<Division>
                 {
-new Division
+new()
                     {
                         CompanyId = 1,
                         SeasonId = season.SeasonId,
@@ -72,18 +72,34 @@ new Division
                     {
                         CompanyId = 1,
                         SeasonId = season.SeasonId,
-                        DivisionDescription = "HS Boys",
+                        DivisionDescription = "T4 - Coed",
                         Gender = "M",
                         Gender2 = "F",
-                        MinDate = new DateTime(seasonYear, 08, 31).AddYears(-18),
-                        MaxDate = new DateTime(seasonYear, 09, 1).AddYears(-16),
-                        Stats = true,
+                        MinDate = new DateTime(seasonYear, 08, 31).AddYears(-10),
+                        MaxDate = new DateTime(seasonYear, 09, 1).AddYears(-9),
+                        MinDate2 = new DateTime(seasonYear, 08, 31).AddYears(-10),
+                        MaxDate2 = new DateTime(seasonYear, 09, 1).AddYears(-9),
+    Stats = true,
                         DraftVenue = "Mullins Hall",
                         DraftTime = "7:00 PM",
                         CreatedDate = DateTime.Now,
                         CreatedUser = "Seed"
 
                     },
+                    new() {
+                        CompanyId = 1,
+                        SeasonId = season.SeasonId,
+                        DivisionDescription = "JV Girls",
+                        Gender = "F",
+                        MinDate = new DateTime(seasonYear, 08, 31).AddYears(-16),
+                        MaxDate = new DateTime(seasonYear, 09, 1).AddYears(-14),
+                        Stats = true,
+                        DraftVenue = "Mullins Hall",
+                        DraftTime = "7:00 PM",
+                        CreatedDate = DateTime.Now,
+                        CreatedUser = "Seed"
+                    },
+
                     new Division
                     {
                         CompanyId = 1,
@@ -98,7 +114,24 @@ new Division
                         DraftTime = "7:00 PM",
                         CreatedDate = DateTime.Now,
                         CreatedUser = "Seed"
-                    }
+                    },
+                    new Division
+                    {
+                        CompanyId = 1,
+                        SeasonId = season.SeasonId,
+                        DivisionDescription = "HS Boys",
+                        Gender = "M",
+                        Gender2 = "F",
+                        MinDate = new DateTime(seasonYear, 08, 31).AddYears(-18),
+                        MaxDate = new DateTime(seasonYear, 09, 1).AddYears(-16),
+                        Stats = true,
+                        DraftVenue = "Mullins Hall",
+                        DraftTime = "7:00 PM",
+                        CreatedDate = DateTime.Now,
+                        CreatedUser = "Seed"
+
+                    },
+
                 };
 
                 foreach (var division in divisions)

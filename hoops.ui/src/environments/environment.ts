@@ -6,9 +6,10 @@
 export const environment = {
   production: false,
   apiUrl: 'https://localhost:5001',
+  functionsUrl: 'http://localhost:7071',
   environment: 'local',
   securityEnabled: false,
-  featureFlagPath: '/assets/feature-flags.dev.json'
+  featureFlagPath: '/assets/feature-flags.dev.json',
 };
 // export const environment = {
 //   production: false,

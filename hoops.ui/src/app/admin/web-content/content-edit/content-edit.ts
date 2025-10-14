@@ -1,25 +1,23 @@
 import {
   Component,
   OnInit,
-  ElementRef,
-  Inject,
   signal,
   ChangeDetectionStrategy,
   inject,
-  viewChildren,
   computed,
-  effect
+  effect,
+  ChangeDetectorRef,
 } from '@angular/core';
 import {
   Validators,
   FormControl,
   FormBuilder,
-  ReactiveFormsModule
+  ReactiveFormsModule,
 } from '@angular/forms';
 
 import { Content } from '../../../domain/content';
 import { ContentService } from '../content.service';
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 
 import * as fromContent from '@app/admin/state';
 import * as contentActions from '@app/admin/state/admin.actions';
@@ -32,21 +30,25 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatOptionModule, NativeDateAdapter, provideNativeDateAdapter } from '@angular/material/core';
+import {
+  MatOptionModule,
+  provideNativeDateAdapter,
+} from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialog } from '@app/admin/shared/confirm-dialog/confirm-dialog';
 import { Constants } from '@app/shared/constants';
-import { State } from '../../state/index';
 import { WebContent } from '@app/domain/webContent';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { NoticeTypesService } from '@app/shared/services/notice-types.service';
+import { LoggerService } from '@app/services/logger.service';
 
 @Component({
   selector: 'csbc-content-edit',
 
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: "./content-edit.html",
+  templateUrl: './content-edit.html',
   styleUrls: [
     './content-edit.scss',
     '../../admin.scss',
@@ -67,16 +69,19 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
     MatSelectModule,
     ConfirmDialog,
   ],
-  providers: [
-    provideNativeDateAdapter(), ]
+  providers: [provideNativeDateAdapter()],
 })
 export class ContentEdit implements OnInit {
   readonly store = inject(Store<fromContent.State>);
   private fb = inject(FormBuilder);
-  readonly #contentService = inject(ContentService);
-  route = inject(ActivatedRoute);
-  router = inject(Router);
+  readonly contentService = inject(ContentService);
+  readonly noticeTypesSvc = inject(NoticeTypesService);
+  private cdRef = inject(ChangeDetectorRef);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+
   dialog = inject(MatDialog);
+  private logger = inject(LoggerService);
 
   contentForm = this.fb.group({
     title: new FormControl('', {
@@ -92,7 +97,8 @@ export class ContentEdit implements OnInit {
     location: new FormControl<string | null>(''),
     dateAndTime: new FormControl<string | null>(''),
     webContentId: new FormControl<number>(0),
-    webContentTypeControl: new FormControl<number>(1),
+    // Start as null so the UI doesn't flash a default before the actual value is applied
+    webContentTypeControl: new FormControl<number | null>(null),
     contentSequence: new FormControl<number>(1),
     expirationDate: new FormControl<Date | null>(
       new Date(),
@@ -105,22 +111,19 @@ export class ContentEdit implements OnInit {
   pageTitle: string | undefined;
   hideId: boolean | undefined;
   private baseUrl = 'api/webcontent';
-  selectedRecord$ = this.#contentService.selectedContent$;
-  selectedContent = computed(() => this.#contentService.selectedContent);
-  contentTypes: WebContentType[] = [
-    {
-      webContentTypeId: 1,
-      webContentTypeDescription: 'Season Info',
-    },
-    {
-      webContentTypeId: 2,
-      webContentTypeDescription: 'Events',
-    },
-    {
-      webContentTypeId: 3,
-      webContentTypeDescription: 'Meeting Notice',
-    },
-  ];
+  selectedRecord$ = this.contentService.selectedContent$;
+  // Direct reference to the signal from the service (assumes service exposes a signal<WebContent | null>)
+  // If the service instead exposes a getter function, adapt accordingly.
+  selectedContent = this.contentService.selectedContent;
+  // Content types from API via httpResource. Expose as a signal-friendly computed.
+  contentTypes = computed(() => {
+    const raw = this.noticeTypesSvc.notificationTypes.value() ?? [];
+    // Ensure ids are numeric so strict equality works with the FormControl value
+    return raw.map((t: any) => ({
+      ...t,
+      webContentTypeId: Number(t.webContentTypeId),
+    })) as WebContentType[];
+  });
   selected!: WebContentType;
   webContent = 'Web Content';
   expirationDate = 'Expiration Date';
@@ -129,27 +132,67 @@ export class ContentEdit implements OnInit {
   floatLabelType: FloatLabelType = 'auto';
   protected readonly value = signal('');
 
-  constructor(){
+  constructor() {
+    // Populate form when a new content selection arrives
     effect(() => {
-      if (this.selectedContent()) {
-        this.onContentRetrieved();
+      const current = this.selectedContent();
+      if (current) {
+        this.onContentRetrieved(current);
       }
     });
-    // @Inject(FormBuilder) private fb: FormBuilder,
-
-   }
-
-  ngOnInit (): void {
-    this.pageTitle = 'Edit Web Content Messages';
-    this.hideId = true;
-
-    // this.record$.pipe(takeUntil(this.destroy$)).subscribe((record) => {
-    //   if (record) { this.recordForm.patchValue(record); }
-    // });
-    // this.getContent();
+    // After both resource resolved and content loaded, ensure select control reflects correct id
+    effect(() => {
+      const status = this.noticeTypesSvc.notificationTypes.status();
+      const current = this.selectedContent();
+      if (status === 'resolved' && current) {
+        // Compute id robustly: prefer explicit id; fallback to nested object id; finally map by description
+        const fromId = this.toNumber((current as any).webContentTypeId);
+        const fromObj = this.toNumber(
+          (current as any).webContentType?.webContentTypeId
+        );
+        let id = fromId ?? fromObj;
+        if (id === null || id === undefined) {
+          const desc =
+            (current as any).webContentTypeDescription ??
+            (current as any).webContentType?.webContentTypeDescription;
+          if (desc) {
+            const norm = (s: unknown) => s?.toString().trim().toLowerCase();
+            const match = this.contentTypes().find(
+              (t) => norm(t.webContentTypeDescription) === norm(desc)
+            );
+            if (match) id = match.webContentTypeId;
+          }
+        }
+        const ctl = this.contentForm.get('webContentTypeControl');
+        if (!ctl) return;
+        // Ensure control is enabled before setting value
+        if (ctl.disabled) ctl.enable({ emitEvent: false });
+        if (id !== null && id !== undefined && ctl.value !== id) {
+          ctl.setValue(id, { emitEvent: false });
+          ctl.updateValueAndValidity({ onlySelf: true, emitEvent: false });
+          this.cdRef.markForCheck();
+        }
+      }
+    });
+    // Enable/disable the select control based on resource loading status (moved from template)
+    effect(() => {
+      const status = this.noticeTypesSvc.notificationTypes.status();
+      const ctl = this.contentForm.get('webContentTypeControl');
+      if (!ctl) return;
+      if (status === 'loading' || status === 'reloading') {
+        if (ctl.enabled) ctl.disable({ emitEvent: false });
+      } else {
+        if (ctl.disabled) ctl.enable({ emitEvent: false });
+      }
+    });
   }
 
-  update (): void {
+  ngOnInit(): void {
+    this.pageTitle = 'Edit Web Content Messages';
+    this.hideId = true;
+  }
+
+  update(): void {
     this.contentForm.patchValue({
       title: this.content.title,
       subTitle: this.content.subTitle,
@@ -157,12 +200,12 @@ export class ContentEdit implements OnInit {
       dateAndTime: this.content.dateAndTime,
       location: this.content.location,
       expirationDate: this.content.expirationDate,
-      // webContentTypeControl: this.content.webContentType,
+      webContentTypeControl: this.content.webContentTypeId,
     });
     const text = this.contentForm.get('body')?.value;
     const formattedText = this.formatText(text ?? '');
     // Use formattedText where needed
-    console.log(formattedText);
+    this.logger.info(formattedText);
   }
   formatText(text: string): string {
     return text.replace(/\n/g, '<br>');
@@ -177,36 +220,33 @@ export class ContentEdit implements OnInit {
   //       }
   //     });
   // }
-  onContentRetrieved(): void {
-    const content = this.selectedContent()!;
-    if (this.contentForm) {
-      this.contentForm.reset();
-    }
-
-    if (content()!.webContentId! === 0) {
-      this.pageTitle = 'Add Notice';
-    } else {
-      this.pageTitle = `Edit Notice: ${ content()!.title }`;
-    }
-
-    // // Update the data on the form
-    this.contentForm.patchValue({
-      title: content()!.title,
-      subTitle: content()!.subTitle,
-      body: content()!.body,
-      dateAndTime: content()!.dateAndTime,
-      location: content()!.location,
-      expirationDate: content()!.expirationDate,
-      webContentId: content()!.webContentId,
-      contentSequence: content()!.contentSequence,
-      webContentTypeControl: content()!.webContentTypeId,
-    });
-    this.selected = content()!.webContentType;
-    // console.log(this.selected);
+  onContentRetrieved(content: WebContent): void {
+    // Avoid full reset (which clears validators states and temporarily nulls controls) unless specifically needed.
+    // Instead patch values directly.
+    this.pageTitle =
+      content.webContentId === 0
+        ? 'Add Notice'
+        : `Edit Notice: ${content.title}`;
+    this.logger.info(content);
+    this.contentForm.patchValue(
+      {
+        title: content.title,
+        subTitle: content.subTitle,
+        body: content.body,
+        dateAndTime: content.dateAndTime,
+        location: content.location,
+        expirationDate: content.expirationDate,
+        webContentId: content.webContentId,
+        contentSequence: content.contentSequence,
+        // Do NOT set webContentTypeControl here; let the effect set it once types are resolved
+      },
+      { emitEvent: false }
+    );
+    this.selected = content.webContentType;
   }
-  saveContent () {
-    console.log(this.contentForm.value);
-    if ( this.contentForm.valid && this.contentForm.dirty ) {
+  saveContent() {
+    this.logger.info(this.contentForm.value);
+    if (this.contentForm.valid && this.contentForm.dirty) {
       let content = new WebContent();
       const form = this.contentForm.value;
       // content.webContentType = this.getWebContentType(
@@ -224,14 +264,14 @@ export class ContentEdit implements OnInit {
       content.contentSequence = form.contentSequence!;
       content.companyId = Constants.COMPANYID;
       content.webContentTypeId = form.webContentTypeControl!;
-      this.#contentService.saveContent(content);
+      this.contentService.saveContent(content);
       this.store.dispatch(new contentActions.LoadAdminContent());
-      this.router.navigate([ '/admin/content' ]);
+      this.router.navigate(['/admin/content']);
     }
   }
-  getWebContentType (id: number): WebContentType {
+  getWebContentType(id: number): WebContentType {
     let webContentType = new WebContentType();
-    console.log(id);
+    this.logger.info(id);
     switch (id) {
       case 1: {
         webContentType.webContentTypeId = id;
@@ -260,26 +300,30 @@ export class ContentEdit implements OnInit {
     // this.contentForm.controls[ controlName ].hasError(errorName);
   };
 
-  getFloatLabelValue (): FloatLabelType {
+  getFloatLabelValue(): FloatLabelType {
     return this.floatLabelType;
   }
-  protected onInput (event: Event) {
+  protected onInput(event: Event) {
     this.value.set((event.target as HTMLInputElement).value);
   }
-  deleteRecord (): void {
-    console.log(this.contentForm.get('webContentId')!.value);
+  toNumber(val: unknown): number | null {
+    if (val === null || val === undefined || val === '') return null;
+    return typeof val === 'number' ? val : Number(val);
+  }
+  deleteRecord(): void {
+    this.logger.info(this.contentForm.get('webContentId')!.value);
     if (this.contentForm.get('webContentId')!.value !== 0) {
-      this.#contentService.deleteContent(
+      this.contentService.deleteContent(
         this.contentForm.get('webContentId')!.value!
       );
       // this.onSaveComplete();
     }
   }
-  openDialog (): void {
+  openDialog(): void {
     const dialogRef = this.dialog.open(ConfirmDialog);
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log(result);
+      this.logger.info(result);
       if (result) {
         this.deleteRecord();
       }

@@ -1,0 +1,331 @@
+﻿{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI Document on Azure Functions",
+    "description": "This is the OpenAPI Document on Azure Functions",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:7071/api"
+    }
+  ],
+  "paths": {
+    "/Season/GetAll/{companyId}": {
+      "get": {
+        "tags": [
+          "Season"
+        ],
+        "summary": "Get all seasons",
+        "description": "Returns all seasons for a company.",
+        "operationId": "Season_GetAll",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-ms-summary": "Company identifier (optional; defaults to 1)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of seasons.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/seasonDto"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No seasons found."
+          }
+        }
+      }
+    },
+    "/Season/GetCurrentSeason/{companyId}": {
+      "get": {
+        "tags": [
+          "Season"
+        ],
+        "summary": "Get current season",
+        "description": "Returns the current active season for a company.",
+        "operationId": "Season_GetCurrentSeason",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-ms-summary": "Company identifier (optional; defaults to 1)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Current season.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/seasonDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Current season not found."
+          }
+        }
+      }
+    },
+    "/Season/{id}": {
+      "get": {
+        "tags": [
+          "Season"
+        ],
+        "summary": "Get season by id",
+        "description": "Returns a season by its identifier.",
+        "operationId": "Season_GetById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-ms-summary": "Season identifier"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Season detail.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/seasonDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Season not found."
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Season"
+        ],
+        "summary": "Update a season",
+        "description": "Updates an existing season by id.",
+        "operationId": "Season_Put",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-ms-summary": "Season identifier"
+          }
+        ],
+        "requestBody": {
+          "description": "Season payload",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/seasonDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Updated season.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/seasonDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid payload."
+          },
+          "404": {
+            "description": "Season not found."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Season"
+        ],
+        "summary": "Delete a season",
+        "description": "Deletes a season by id.",
+        "operationId": "Season_Delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-ms-summary": "Season identifier"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted season.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/seasonDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Season not found."
+          }
+        }
+      }
+    },
+    "/Season": {
+      "post": {
+        "tags": [
+          "Season"
+        ],
+        "summary": "Create a season",
+        "description": "Creates a new season.",
+        "operationId": "Season_Post",
+        "requestBody": {
+          "description": "Season payload",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/seasonDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Created season.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/seasonDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid payload."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "seasonDto": {
+        "type": "object",
+        "properties": {
+          "seasonId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "companyId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "description": {
+            "type": "string"
+          },
+          "fromDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "toDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "participationFee": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "sponsorFee": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "convenienceFee": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "currentSeason": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "currentSchedule": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "currentSignUps": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signUpsDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "signUpsEnd": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "testSeason": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "newSchoolYear": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "createdUser": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

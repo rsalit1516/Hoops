@@ -57,7 +57,9 @@ export class GameScoreDialog implements OnDestroy {
   ): ValidationErrors | null {
     const v = ctrl.value;
     if (v === null || v === undefined || v === '') return null; // required handled separately
-    return Number.isInteger(v) ? null : { integer: true };
+    const n = typeof v === 'string' ? Number(v) : v;
+    if (!Number.isFinite(n)) return { integer: true };
+    return Number.isInteger(n) ? null : { integer: true };
   }
   gameScoreForm = this.fb.nonNullable.group({
     homeTeamScore: [
@@ -84,6 +86,7 @@ export class GameScoreDialog implements OnDestroy {
   readonly game: Signal<RegularGame | null> =
     this.gameService.selectedGameSignal;
   private effectRef?: EffectRef; // (may be removed if no live updates)
+  saving = false;
 
   constructor(
     public dialogRef: MatDialogRef<GameScoreDialog>,
@@ -91,7 +94,7 @@ export class GameScoreDialog implements OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: { game?: RegularGame }
   ) {
     const initial = data?.game ?? this.game();
-    console.log('GameScoreDialog initial game:', initial);
+    // Use a logging service if needed, e.g., this.logger.log('GameScoreDialog initial game:', initial);
     if (initial) {
       // Sync the service-selected game so template signal updates between dialog openings
       this.gameService.updateSelectedGame(initial);
@@ -113,23 +116,37 @@ export class GameScoreDialog implements OnDestroy {
     this.dialogRef.close();
   }
   onSubmitClick() {
+    // Use a logging service if needed, e.g., this.logger.log('Submitting game score:', this.gameScoreForm.value);
     const selectedGame = this.game();
     if (!selectedGame) return;
     if (this.gameScoreForm.invalid) return;
     const { homeTeamScore, visitorTeamScore } =
       this.gameScoreForm.getRawValue();
+    const h = Number(homeTeamScore);
+    const v = Number(visitorTeamScore);
     // Additional explicit validation (integer + range) safeguard
-    if (!this.validate(homeTeamScore, visitorTeamScore)) return;
-    this.gameService.saveGame({
-      game: selectedGame,
-      homeTeamScore,
-      visitingTeamScore: visitorTeamScore,
-    });
-    this.dialogRef.close();
+    if (!this.validate(h, v)) return;
+    this.saving = true;
+    this.gameService
+      .saveGame({
+        game: selectedGame,
+        homeTeamScore: h,
+        visitingTeamScore: v,
+      })
+      .subscribe({
+        next: () => {
+          this.saving = false;
+          this.dialogRef.close();
+        },
+        error: (err) => {
+          // Use a logging service if needed, e.g., this.logger.error('Failed to save scores', err);
+          this.saving = false;
+        },
+      });
   }
 
   private patchForm(g: RegularGame, forceAll: boolean) {
-    console.log('Patching form with game:', g);
+    // Use a logging service if needed, e.g., this.logger.log('Patching form with game:', g);
     const { homeTeamScore = 0, visitingTeamScore = 0 } = g;
     const homeCtrl = this.gameScoreForm.controls.homeTeamScore;
     const visitCtrl = this.gameScoreForm.controls.visitorTeamScore;

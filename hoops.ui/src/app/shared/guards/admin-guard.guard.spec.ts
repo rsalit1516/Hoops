@@ -1,17 +1,30 @@
 import { TestBed } from '@angular/core/testing';
 import { CanActivateFn } from '@angular/router';
+import { adminGuard } from './admin-guard.guard';
+import { FeatureFlagService } from '../services/feature-flags';
 
-import { adminGuardGuard } from './admin-guard.guard';
+describe('adminGuard', () => {
+  function runGuardWith(flagEnabled: boolean) {
+    TestBed.configureTestingModule({
+      providers: [
+        {
+          provide: FeatureFlagService,
+          useValue: { isEnabled: () => flagEnabled },
+        },
+      ],
+    });
+    const executeGuard: CanActivateFn = (...guardParameters) =>
+      TestBed.runInInjectionContext(() => adminGuard(...guardParameters));
+    return executeGuard({} as any, {} as any);
+  }
 
-describe('adminGuardGuard', () => {
-  const executeGuard: CanActivateFn = (...guardParameters) => 
-      TestBed.runInInjectionContext(() => adminGuardGuard(...guardParameters));
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
+  it('allows when adminModule flag enabled', () => {
+    const result = runGuardWith(true);
+    expect(result).toBeTrue();
   });
 
-  it('should be created', () => {
-    expect(executeGuard).toBeTruthy();
+  it('blocks when adminModule flag disabled', () => {
+    const result = runGuardWith(false);
+    expect(result).toBeFalse();
   });
 });

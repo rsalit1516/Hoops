@@ -55,7 +55,7 @@ namespace Hoops.Data.Seeders
                 foreach (var season in seasons)
                 {
                     Console.WriteLine($"[DEBUG] Seeding ScheduleDivTeams for Season: {season.Description}");
-                    
+
                     var divisions = await context.Divisions
                         .Where(d => d.SeasonId == season.SeasonId)
                         .OrderBy(d => d.DivisionId)
@@ -71,7 +71,9 @@ namespace Hoops.Data.Seeders
                     foreach (var division in divisions)
                     {
                         // Randomize number of teams per division (4-14 teams)
-                        var numberOfTeams = random.Next(4, 15);
+                        // var numberOfTeams = random.Next(4, 15);
+                        // changed to get what was created - assumes teams is done first.
+                        var numberOfTeams = context.Teams.Count(t => t.DivisionId == division.DivisionId);
                         Console.WriteLine($"[DEBUG] Creating {numberOfTeams} teams for External Schedule #{externalScheduleNumber} (Division: {division.DivisionDescription})");
 
                         // Simulate external program logic:
@@ -94,9 +96,13 @@ namespace Hoops.Data.Seeders
                             };
 
                             await _scheduleDivTeamsRepo.InsertAsync(scheduleDivTeam);
+
+                            // Debug logging for team mapping
+                            Console.WriteLine($"[DEBUG] Created ScheduleDivTeam: SeasonId={season.SeasonId}, ScheduleNumber={scheduleNumber}, ScheduleTeamNumber={teamIndex}, TeamNumber={seasonTeamNumber}");
+
                             seasonTeamNumber++; // Increment for next team in season
                         }
-                        
+
                         externalScheduleNumber++; // Increment for next external schedule group
                     }
 
@@ -105,6 +111,18 @@ namespace Hoops.Data.Seeders
                 }
 
                 Console.WriteLine("[DEBUG] ScheduleDivTeams seeding completed successfully");
+
+                // Log summary of team mappings created
+                var teamMappingsCount = await _scheduleDivTeamsRepo.GetAllAsync();
+                Console.WriteLine($"[SUMMARY] Created {teamMappingsCount.Count()} ScheduleDivTeam mappings");
+
+                foreach (var mapping in teamMappingsCount.OrderBy(x => x.SeasonId).ThenBy(x => x.ScheduleNumber).ThenBy(x => x.ScheduleTeamNumber))
+                {
+                    Console.WriteLine($"  SeasonId={mapping.SeasonId}, Schedule={mapping.ScheduleNumber}, ScheduleTeam={mapping.ScheduleTeamNumber}, TeamNumber={mapping.TeamNumber}");
+                }
+
+                // Validate the mappings we just created
+                await ValidateTeamMappings(teamMappingsCount);
             }
             catch (Exception ex)
             {
@@ -112,6 +130,66 @@ namespace Hoops.Data.Seeders
                 Console.WriteLine($"[ERROR] Stack trace: {ex.StackTrace}");
                 throw;
             }
+        }
+
+        private Task ValidateTeamMappings(IEnumerable<ScheduleDivTeam> teamMappings)
+        {
+            Console.WriteLine("[VALIDATION] Starting ScheduleDivTeam validation...");
+
+            var mappingsList = teamMappings.ToList();
+            var validationErrors = new List<string>();
+
+            // Check for duplicate team numbers within same season
+            var duplicateTeamNumbers = mappingsList
+                .GroupBy(x => new { x.SeasonId, x.TeamNumber })
+                .Where(g => g.Count() > 1)
+                .Select(g => g.Key);
+
+            foreach (var dup in duplicateTeamNumbers)
+            {
+                validationErrors.Add($"Duplicate TeamNumber {dup.TeamNumber} found in Season {dup.SeasonId}");
+            }
+
+            // Check for duplicate schedule team numbers within same schedule
+            var duplicateScheduleTeams = mappingsList
+                .GroupBy(x => new { x.SeasonId, x.ScheduleNumber, x.ScheduleTeamNumber })
+                .Where(g => g.Count() > 1)
+                .Select(g => g.Key);
+
+            foreach (var dup in duplicateScheduleTeams)
+            {
+                validationErrors.Add($"Duplicate ScheduleTeamNumber {dup.ScheduleTeamNumber} found in Season {dup.SeasonId}, Schedule {dup.ScheduleNumber}");
+            }
+
+            // Check for gaps in team numbering
+            var seasonGroups = mappingsList.GroupBy(x => x.SeasonId);
+            foreach (var seasonGroup in seasonGroups)
+            {
+                var teamNumbers = seasonGroup.Select(x => x.TeamNumber).OrderBy(x => x).ToList();
+                for (int i = 1; i < teamNumbers.Count; i++)
+                {
+                    if (teamNumbers[i] != teamNumbers[i - 1] + 1)
+                    {
+                        validationErrors.Add($"Gap in TeamNumber sequence in Season {seasonGroup.Key}: {teamNumbers[i - 1]} -> {teamNumbers[i]}");
+                    }
+                }
+            }
+
+            if (validationErrors.Any())
+            {
+                Console.WriteLine($"[VALIDATION ERROR] Found {validationErrors.Count} validation errors:");
+                foreach (var error in validationErrors)
+                {
+                    Console.WriteLine($"  - {error}");
+                }
+                throw new InvalidOperationException($"ScheduleDivTeam validation failed with {validationErrors.Count} errors");
+            }
+            else
+            {
+                Console.WriteLine("[VALIDATION SUCCESS] All ScheduleDivTeam mappings are valid");
+            }
+
+            return Task.CompletedTask;
         }
     }
 }

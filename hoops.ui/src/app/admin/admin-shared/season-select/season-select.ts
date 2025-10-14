@@ -1,4 +1,11 @@
-import { Component, inject, OnInit, computed, OnChanges, effect } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnInit,
+  computed,
+  OnChanges,
+  effect,
+} from '@angular/core';
 
 import { Season } from '@app/domain/season';
 import { UntypedFormControl, FormsModule } from '@angular/forms';
@@ -12,28 +19,30 @@ import { SeasonService } from '@app/services/season.service';
 @Component({
   selector: 'season-select',
   template: `<mat-form-field>
-  <mat-label>{{title}}</mat-label>
-  <mat-select
-    [(value)]="season"
-    class="form-control"
-  >
-    @for( season of seasonService.seasons; track season) {
-    <mat-option [value]="season" (click)="changeSeason(season)">
-      {{ season.description }}
-    </mat-option>
-    }
-  </mat-select>
-</mat-form-field>
-`,
-  styleUrls: ['./../../../shared/scss/select.scss',
-    './../../../shared/scss/forms.scss'],
+    <mat-label>{{ title }}</mat-label>
+    <mat-select
+      [(value)]="season"
+      [compareWith]="compareSeasons"
+      class="form-control"
+    >
+  @for (season of seasonService.seasons; track season.seasonId) {
+      <mat-option [value]="season" (click)="changeSeason(season)">
+        {{ season.description }}
+      </mat-option>
+      }
+    </mat-select>
+  </mat-form-field>`,
+  styleUrls: [
+    './../../../shared/scss/select.scss',
+    './../../../shared/scss/forms.scss',
+  ],
   imports: [
     CommonModule,
     FormsModule,
     MatFormFieldModule,
     MatSelectModule,
     MatOptionModule,
-  ]
+  ],
 })
 export class SeasonSelect implements OnInit {
   readonly seasonService = inject(SeasonService);
@@ -44,19 +53,33 @@ export class SeasonSelect implements OnInit {
   selectedSeason = computed(() => this.seasonService.selectedSeason);
   season = this.selectedSeason();
 
-  constructor () {
+  constructor() {
     effect(() => {
-      console.log(this.seasonService.selectedSeason);
-      this.season = this.selectedSeason();
+      const sel = this.selectedSeason();
+      // Keep bound selection in sync with the service's selected season
+      this.season = sel;
     });
   }
 
-  ngOnInit () {
+  ngOnInit() {
+    // Ensure seasons and current season are loaded so selector initializes
+    if (
+      !this.seasonService.seasons ||
+      this.seasonService.seasons.length === 0
+    ) {
+      this.seasonService.fetchSeasons();
+    }
+    if (!this.seasonService.currentSeason) {
+      this.seasonService.fetchCurrentSeason();
+    }
   }
-  changeSeason (season: Season) {
+  changeSeason(season: Season) {
     console.log('Season from changeSeason = ', season);
     this.seasonService.updateSelectedSeason(season);
   }
+
+  compareSeasons = (a: Season, b: Season) =>
+    !!a && !!b && a.seasonId === b.seasonId;
 
   // onChange (season: Season) {
   //   this.seasonService.selectSeason(season);

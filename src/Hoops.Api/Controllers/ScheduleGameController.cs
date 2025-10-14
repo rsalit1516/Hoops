@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Linq;
+using Hoops.Api.Dtos;
 
 namespace Hoops.Controllers
 {
@@ -62,7 +63,7 @@ namespace Hoops.Controllers
         public IActionResult GetSeasonGames(int seasonId)
         {
             _logger.LogInformation("Retrieving season games for seasonId: {SeasonId}", seasonId);
-            
+
             if (seasonId <= 0)
             {
                 return BadRequest("Season ID must be greater than 0");
@@ -81,19 +82,20 @@ namespace Hoops.Controllers
             }
         }
 
-        ///
-        /// GET: api/GetStandings?seasonId=123&divisionId=456
+        /// <summary>
+        /// GET: api/GetStandings?seasonId=123&amp;divisionId=456
+        /// </summary>
         // [Route("GetStandings")]
         [HttpGet("GetStandings/{seasonId:int}/{divisionId:int}")]
         public IActionResult GetStandings(int seasonId, int divisionId)
         {
             _logger.LogInformation("Retrieving division standings for seasonId: {SeasonId} divisionId: {DivisionId}", seasonId, divisionId);
-            
+
             if (divisionId <= 0)
             {
                 return BadRequest("Division ID must be greater than 0");
             }
-            
+
             if (seasonId <= 0)
             {
                 return BadRequest("Season ID must be greater than 0");
@@ -107,7 +109,7 @@ namespace Hoops.Controllers
                     _logger.LogInformation("No standings found for season {SeasonId} division {DivisionId}", seasonId, divisionId);
                     return Ok(new List<ScheduleStandingsVM>());
                 }
-                
+
                 return Ok(standings);
             }
             catch (Exception ex)
@@ -128,9 +130,87 @@ namespace Hoops.Controllers
             {
                 return BadRequest();
             }
+            // Basic score validation (0-150 inclusive) if scores provided
+            if (scheduleGame.HomeTeamScore.HasValue && (scheduleGame.HomeTeamScore < 0 || scheduleGame.HomeTeamScore > 150))
+            {
+                return BadRequest("HomeTeamScore must be between 0 and 150.");
+            }
+            if (scheduleGame.VisitingTeamScore.HasValue && (scheduleGame.VisitingTeamScore < 0 || scheduleGame.VisitingTeamScore > 150))
+            {
+                return BadRequest("VisitingTeamScore must be between 0 and 150.");
+            }
 
-            repository.Update(scheduleGame);
+            // Fetch existing entity to avoid overposting
+            var existing = await repository.GetByIdAsync(id);
+            if (existing == null)
+            {
+                return NotFound();
+            }
 
+            // Update only mutable fields we currently allow via this endpoint
+            existing.HomeTeamScore = scheduleGame.HomeTeamScore;
+            existing.VisitingTeamScore = scheduleGame.VisitingTeamScore;
+            existing.HomeForfeited = scheduleGame.HomeForfeited;
+            existing.VisitingForfeited = scheduleGame.VisitingForfeited;
+
+            // Update game details for admin editing
+            existing.GameDate = scheduleGame.GameDate;
+            existing.GameTime = scheduleGame.GameTime;
+            existing.LocationNumber = scheduleGame.LocationNumber;
+            existing.HomeTeamNumber = scheduleGame.HomeTeamNumber;
+            existing.VisitingTeamNumber = scheduleGame.VisitingTeamNumber;
+
+            repository.Update(existing);
+
+            try
+            {
+                await repository.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ScheduleGameExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        // PUT: api/ScheduleGame/5/scores
+        [HttpPut("{id}/scores")]
+        public async Task<IActionResult> PutScheduleGameScores(int id, [FromBody] UpdateGameScoresDto dto)
+        {
+            if (id != dto.ScheduleGamesId)
+            {
+                return BadRequest();
+            }
+
+            if (dto.HomeTeamScore.HasValue && (dto.HomeTeamScore < 0 || dto.HomeTeamScore > 150))
+            {
+                return BadRequest("HomeTeamScore must be between 0 and 150.");
+            }
+            if (dto.VisitingTeamScore.HasValue && (dto.VisitingTeamScore < 0 || dto.VisitingTeamScore > 150))
+            {
+                return BadRequest("VisitingTeamScore must be between 0 and 150.");
+            }
+
+            var existing = await repository.GetByIdAsync(id);
+            if (existing == null)
+            {
+                return NotFound();
+            }
+
+            existing.HomeTeamScore = dto.HomeTeamScore;
+            existing.VisitingTeamScore = dto.VisitingTeamScore;
+            existing.HomeForfeited = dto.HomeForfeited;
+            existing.VisitingForfeited = dto.VisitingForfeited;
+
+            repository.Update(existing);
             try
             {
                 await repository.SaveChangesAsync();

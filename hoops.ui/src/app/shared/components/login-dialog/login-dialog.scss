@@ -8,6 +8,12 @@
   color: black;
 }
 
+/* Make fields expand to container width when class applied */
+.full-width {
+  display: block;
+  width: 100%;
+}
+
 h1 {
   font-size: 1.2rem;
 }
@@ -23,4 +29,25 @@ input {
 }
 button {
   margin-right: 10px;
+}
+
+/* Responsive centering */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 12px 8px;
+}
+
+.login-form {
+  max-width: 480px;
+  width: 100%;
+  padding: 8px 12px 4px 12px;
+  border-radius: 4px;
+}
+
+@media (min-width: 1200px) {
+  .login-form {
+    max-width: 560px;
+  }
 }

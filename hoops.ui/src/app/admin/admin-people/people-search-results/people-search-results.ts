@@ -1,5 +1,14 @@
 import { DatePipe } from '@angular/common';
-import { AfterViewInit, Component, effect, inject, input, OnChanges, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  effect,
+  inject,
+  input,
+  OnChanges,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -10,8 +19,8 @@ import { SectionTitle } from '@app/shared/components/section-title/section-title
 import { PeopleSearch } from '../people-search/people-search';
 import { Router } from '@angular/router';
 import { HouseholdService } from '@app/services/household.service';
-import { PeopleAlphabet } from '../people-alphabet/people-alphabet';
-
+import { AlphabeticalSearch } from '../../admin-shared/alphabetical-search/alphabetical-search';
+import { LoggerService } from '@app/services/logger.service';
 
 @Component({
   selector: 'csbc-people-search-results',
@@ -23,20 +32,22 @@ import { PeopleAlphabet } from '../people-alphabet/people-alphabet';
     DatePipe,
     SectionTitle,
     PeopleSearch,
-    PeopleAlphabet
+    AlphabeticalSearch,
   ],
   templateUrl: './people-search-results.html',
-  styleUrls: ['./people-search-results.scss',
+  styleUrls: [
+    './people-search-results.scss',
     '../../admin.scss',
     '../../../shared/scss/tables.scss',
     '../../../shared/scss/cards.scss',
   ],
-  providers: [MatSort, MatPaginator, DatePipe]
+  providers: [MatSort, MatPaginator, DatePipe],
 })
 export class PeopleSearchResults implements OnInit, OnChanges, AfterViewInit {
   pageTitle = 'People Search Results';
   #peopleService = inject(PeopleService);
   #householdService = inject(HouseholdService);
+  private logger = inject(LoggerService);
   readonly #router = inject(Router);
   results = input<Person[]>();
   register = 'Register';
@@ -52,41 +63,42 @@ export class PeopleSearchResults implements OnInit, OnChanges, AfterViewInit {
     'firstName',
     'birthDate',
     'gender',
-    'register'
-  ]
-  dataSource = new MatTableDataSource<Person>([]);;
+    'register',
+  ];
+  dataSource = new MatTableDataSource<Person>([]);
 
-  constructor () {
+  constructor() {
     effect(() => {
-      this.dataSource = new MatTableDataSource<Person>(this.#peopleService.results());
+      this.dataSource = new MatTableDataSource<Person>(
+        this.#peopleService.results()
+      );
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
       this.paginator.pageSize = this.pageSize;
       this.paginator.page.subscribe(() => this.refreshData());
-
     });
   }
-  ngOnInit () { }
-  ngAfterViewInit () {
+  ngOnInit() {}
+  ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 
-  ngOnChanges () {
+  ngOnChanges() {
     this.paginator.page.subscribe(() => this.refreshData());
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 
-  getRecord (row: any) {
-    console.log(row);
+  getRecord(row: any) {
+    this.logger.info('Selected person record:', row);
     this.#peopleService.updateSelectedPerson(row);
     this.#householdService.selectedHouseholdByHouseId(row.houseId);
     this.#router.navigate(['/admin/people/detail']);
   }
-  refreshData () {
+  refreshData() {
     this.dataSource._updateChangeSubscription();
-    this.dataSource.disconnect()
+    this.dataSource.disconnect();
     this.dataSource.connect();
   }
 }

@@ -15,6 +15,10 @@ namespace Hoops.Core.Interface
         /// Gets all seasons
         /// </summary>
         Task<IEnumerable<Season>> GetAllSeasonsAsync();
+        /// <summary>
+        /// Gets all seasons for a specific company
+        /// </summary>
+        Task<IEnumerable<Season>> GetAllSeasonsAsync(int companyId);
 
         // Aggregate Root Methods
         Task<Division> AddDivisionToSeason(int seasonId, Division division);

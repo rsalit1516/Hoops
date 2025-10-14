@@ -1,34 +1,78 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 
-import { GamesShell } from './containers/games-shell/games-shell';
-import { Schedule } from './components/schedule/schedule';
-import { ScheduleCardView } from './components/schedule-card-view/schedule-card-view';
-import { ScheduleShell } from './containers/schedule-shell/schedule-shell';
-import { Scores } from './components/scores/scores';
-import { StandingsShell } from './containers/standings-shell/standings-shell';
-import { PageNotFound } from '@app/app.not-found';
-import { PlayoffsShell } from './containers/playoffs-shell/playoffs-shell';
-
-const gamesRoutes: Routes = [
+// Export routes for standalone lazy-loading
+export const GAMES_ROUTES: Routes = [
   {
     path: '',
-    component: GamesShell,
+    loadComponent: () =>
+      import('./containers/games-shell/games-shell').then((m) => m.GamesShell),
     children: [
-      { path: '', component: ScheduleShell },
-      { path: 'schedule', component: ScheduleShell },
-      { path: 'standings', component: StandingsShell },
-      { path: 'card', component: ScheduleCardView },
-      { path: 'list', component: ScheduleShell },
-      { path: 'scores', component: Scores },
-      { path: 'playoffs', component: PlayoffsShell },
-      { path: '**', component: PageNotFound },
+      {
+        path: '',
+        loadComponent: () =>
+          import('./containers/schedule-shell/schedule-shell').then(
+            (m) => m.ScheduleShell
+          ),
+      },
+      {
+        path: 'schedule',
+        loadComponent: () =>
+          import('./containers/schedule-shell/schedule-shell').then(
+            (m) => m.ScheduleShell
+          ),
+      },
+      {
+        path: 'standings',
+        loadComponent: () =>
+          import('./containers/standings-shell/standings-shell').then(
+            (m) => m.StandingsShell
+          ),
+      },
+      {
+        path: 'card',
+        loadComponent: () =>
+          import('./components/schedule-card-view/schedule-card-view').then(
+            (m) => m.ScheduleCardView
+          ),
+      },
+      {
+        path: 'list',
+        loadComponent: () =>
+          import('./containers/schedule-shell/schedule-shell').then(
+            (m) => m.ScheduleShell
+          ),
+      },
+      {
+        path: 'scores',
+        loadComponent: () =>
+          import('./components/scores/scores').then((m) => m.Scores),
+      },
+      {
+        path: 'playoffs',
+        loadComponent: () =>
+          import('./containers/playoffs-shell/playoffs-shell').then(
+            (m) => m.PlayoffsShell
+          ),
+      },
+      {
+        path: '**',
+        loadComponent: () =>
+          import('@app/app.not-found').then((m) => m.PageNotFound),
+      },
     ],
   },
 ];
+//       { path: 'card', component: ScheduleCardView },
+//       { path: 'list', component: ScheduleShell },
+//       { path: 'scores', component: Scores },
+//       { path: 'playoffs', component: PlayoffsShell },
+//       { path: '**', component: PageNotFound },
+//     ],
+//   },
+// ];
 
-@NgModule({
-  imports: [RouterModule.forChild(gamesRoutes)],
-  exports: [RouterModule],
-})
+// @NgModule({
+//   imports: [RouterModule.forChild(gamesRoutes)],
+//   exports: [RouterModule],
+// })
 export class GamesRoutingModule {}

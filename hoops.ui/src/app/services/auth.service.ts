@@ -1,5 +1,5 @@
-import { effect, inject, Injectable, signal } from '@angular/core';
-import { tap } from 'rxjs/operators';
+import { effect, inject, Injectable, signal, computed } from '@angular/core';
+import { tap, catchError } from 'rxjs/operators';
 
 import { Observable, of } from 'rxjs';
 import { User } from '../domain/user';
@@ -11,6 +11,8 @@ import * as userActions from '@app/user/state/user.actions';
 
 import { Constants } from '../shared/constants';
 import { DivisionService } from './division.service';
+import { UserActivityService } from './user-activity.service';
+import { LoggerService } from './logger.service';
 
 @Injectable({
   providedIn: 'root',
@@ -20,92 +22,172 @@ export class AuthService {
   readonly dataService = inject(DataService);
   readonly store = inject(Store<fromUser.State>);
   private divisionService = inject(DivisionService);
+  private userActivityService = inject(UserActivityService);
+  private logger = inject(LoggerService);
+
+  // Enhanced signal definitions
   currentUser = signal<User | undefined>(undefined);
-  canEditGames = signal<boolean>(false);
+
+  // Computed signals - auto-update when dependencies change
+  isLoggedIn = computed(() => !!this.currentUser());
+  isAdmin = computed(() => {
+    const user = this.currentUser();
+    return user ? user.userType === 2 || user.userType === 3 : false;
+  });
+  canEditGames = computed(() => {
+    const user = this.currentUser();
+    const divisionId = this.divisionService.selectedDivision()?.divisionId;
+
+    if (!user || !divisionId) return false;
+
+    // Admin users can edit all games
+    if (user.userType === 2 || user.userType === 3) return true;
+
+    // Check division-specific permissions
+    return (
+      user.divisions?.some((div) => div.divisionId === divisionId) ?? false
+    );
+  });
+
   redirectUrl: string | undefined;
   loginUrl: string | undefined;
   user: User | undefined;
 
   constructor() {
+    this.initializeAuth();
+
+    // Effect to save user session when currentUser changes
     effect(() => {
-      this.setCanEdit(this.divisionService.selectedDivision()?.divisionId);
+      const user = this.currentUser();
+      if (user) {
+        this.userActivityService.saveUserSession(user);
+        this.logger.info('👤 User session saved for:', user.userName);
+      }
     });
   }
 
-  isLoggedIn(): boolean {
-    return !!this.currentUser();
-  }
+  /**
+   * Initialize authentication by checking localStorage first, then falling back to server
+   */
+  private initializeAuth(): void {
+    // First, try to restore from localStorage (immediate)
+    const sessionData = this.userActivityService.loadUserSession();
+    if (sessionData) {
+      this.logger.info('🔄 Restoring user session from localStorage');
+      this.setUserState(sessionData.user);
+      // Record activity to restart the timer
+      this.userActivityService.recordActivity();
+      return;
+    }
 
-  login(userName: string, password: string): Observable<User> {
-    console.log(userName + ', ' + password);
-    return this.http
-      .get<User>(Constants.loginUrl + '/' + userName + '/' + password)
+    // Fall back to server authentication (cookie-based)
+    this.logger.info('🌐 Checking server authentication...');
+    this.http
+      .get<User>(`${Constants.FUNCTIONS_BASE_URL}/api/auth/me`, {
+        withCredentials: true,
+      })
       .pipe(
         tap((user) => {
           if (user) {
+            this.logger.info('✅ Server authentication successful');
             this.setUserState(user);
+          } else {
+            this.logger.info('❌ No server authentication found');
           }
+        }),
+        catchError((error) => {
+          this.logger.error('❌ Server authentication failed:', error);
+          return of(null);
+        })
+      )
+      .subscribe();
+  }
+
+  login(userName: string, password: string): Observable<User> {
+    return this.http
+      .post<User>(
+        `${Constants.FUNCTIONS_BASE_URL}/api/auth/login`,
+        { userName, password },
+        { withCredentials: true }
+      )
+      .pipe(
+        tap((user) => {
+          if (user) {
+            this.logger.info('🔐 Login successful for:', userName);
+            this.setUserState(user);
+            // Record login activity
+            this.userActivityService.recordActivity();
+          }
+        }),
+        catchError((error) => {
+          this.logger.error('❌ Login failed:', error);
+          throw error;
         })
       );
   }
+
   setUserState(user: User) {
     this.store.dispatch(new userActions.SetCurrentUser(user));
     this.currentUser.set(user);
+    this.logger.info('👤 User state updated:', user.userName);
   }
 
   logout(): void {
+    this.logger.info('🚪 Logging out user');
+
+    this.http
+      .post(
+        `${Constants.FUNCTIONS_BASE_URL}/api/auth/logout`,
+        {},
+        { withCredentials: true }
+      )
+      .subscribe({
+        complete: () => {
+          this.clearUserSession();
+        },
+        error: () => {
+          this.clearUserSession();
+        },
+      });
+  }
+
+  /**
+   * Clear user session both locally and from activity service
+   */
+  private clearUserSession(): void {
     this.currentUser.set(undefined);
     this.store.dispatch(new userActions.SetCurrentUser(undefined as any));
+    this.userActivityService.clearUserSession();
+    this.logger.info('🗑️ User session cleared');
   }
 
-  canEdit(user: User | undefined, divisionId: number | undefined): boolean {
-    console.log(divisionId);
-    console.log(user);
-    let tFlag = false;
-    if (user && divisionId) {
-      if (user.userType === 2 || user.userType === 3) {
-        tFlag = true;
-        this.canEditGames.set(true);
-        return true;
-      } else {
-        if (user.divisions) {
-          let found = user.divisions.find(
-            (div) => div.divisionId === divisionId
-          );
-          this.canEditGames.set(found !== undefined);
-          return found !== undefined;
-        }
-      }
-    }
-    return tFlag;
+  /**
+   * Force logout due to inactivity
+   */
+  logoutDueToInactivity(): void {
+    this.logger.info('⏰ Logging out due to inactivity');
+    this.clearUserSession();
+    // Optionally, you could show a toast notification here
   }
-  setCanEdit(divisionId: number | undefined): boolean {
-    let tFlag = false;
-    console.log(divisionId);
-    console.log(this.currentUser());
 
-    console.log('Setting canEditGames for divisionId:', divisionId);
-    if (this.currentUser() && divisionId) {
-      if (
-        this.currentUser()!.userType === 2 ||
-        this.currentUser()!.userType === 3
-      ) {
-        tFlag = true;
-        console.log('can edit games = true');
-        this.canEditGames.set(true);
-        return true;
-      } else {
-        if (this.currentUser()!.divisions) {
-          let found = this.currentUser()!.divisions!.find(
-            (div) => div.divisionId === divisionId
-          );
-          this.canEditGames.set(found !== undefined);
-          console.log(this.canEditGames());
+  /**
+   * Get session information for UI display
+   */
+  getSessionInfo() {
+    return this.userActivityService.getSessionInfo();
+  }
 
-          return found !== undefined;
-        }
-      }
-    }
-    return tFlag;
+  /**
+   * Check if user has a valid session
+   */
+  hasValidSession(): boolean {
+    return this.userActivityService.hasValidSession();
+  }
+
+  /**
+   * Manually record user activity (for API calls, etc.)
+   */
+  recordActivity(): void {
+    this.userActivityService.recordActivity();
   }
 }

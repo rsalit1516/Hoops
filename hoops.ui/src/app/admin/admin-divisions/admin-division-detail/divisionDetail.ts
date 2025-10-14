@@ -31,10 +31,16 @@ import { ConfirmDialog } from '@app/admin/shared/confirm-dialog/confirm-dialog';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { DateTime } from 'luxon';
+import { PeopleService } from '@app/services/people.service';
+import { Person } from '@app/domain/person';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { NotificationService } from '@app/shared/services/notification.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { LoggerService } from '@app/services/logger.service';
 
 @Component({
   selector: 'csbc-division-detail',
-  templateUrl: "./divisionDetail.html",
+  templateUrl: './divisionDetail.html',
   styleUrls: [
     '../../admin.scss',
     '../../../shared/scss/forms.scss',
@@ -53,6 +59,7 @@ import { DateTime } from 'luxon';
     MatOptionModule,
     MatDialogModule,
     MatButtonModule,
+    MatSnackBarModule,
     NewDivisionSelector,
     ConfirmDialog,
   ],
@@ -62,8 +69,11 @@ import { DateTime } from 'luxon';
 export class DivisionDetail implements OnInit {
   // store = inject(Store<fromAdmin.State>);
   dialog = inject(MatDialog);
-  private divisionService = inject(DivisionService);
+  divisionService = inject(DivisionService);
   private router = inject(Router);
+  private peopleService = inject(PeopleService);
+  private notify = inject(NotificationService);
+  private logger = inject(LoggerService);
   fb = inject(FormBuilder);
 
   // selectedDivision = signal<Division>(new Division());
@@ -102,9 +112,11 @@ export class DivisionDetail implements OnInit {
     ],
     gender1: [''],
     gender2: [''],
+    director: this.fb.control<number | null>(null),
   });
 
   genders = ['M', 'F'];
+  ads: Person[] = [];
   minDateHint = 'Min date: mm//dd/yyyy';
   maxDateHint = 'Max date: mm//dd/yyyy';
 
@@ -124,43 +136,57 @@ export class DivisionDetail implements OnInit {
   selectedDivision = computed(() => this.divisionService.selectedDivision());
   constructor() {
     effect(() => {
-      console.log(this.divisionService.selectedDivision);
+      this.logger.debug(
+        'Selected division signal',
+        this.divisionService.selectedDivision
+      );
 
       // patchForm();
     });
   }
   ngOnInit(): void {
-    let currentDivision = this.divisionService.currentDivision();
-    const division = this.divisionService.selectedDivision(); // get the current selected division
+    // Load ADs for Director dropdown, then patch director if present
+    this.peopleService.getADPeople().subscribe({
+      next: (ads) => {
+        this.ads = ads ?? [];
+        const division = this.divisionService.selectedDivision();
+        if (division && division.divisionDescription !== undefined) {
+          // Only patch director once ADs are ready so the control can resolve the value
+          const directorValue =
+            division.directorId && division.directorId > 0
+              ? division.directorId
+              : null;
+          this.divisionForm.get('director')?.setValue(directorValue, {
+            emitEvent: false,
+          });
+        }
+      },
+      error: (e) => this.logger.error('Failed to load ADs', e),
+    });
 
-    /* Need to fix this!!!!! */
-    if (division !== null) {
-      if (division?.divisionDescription !== undefined) {
-        const matchingDivision = this.divisionService.getmatchingDivision(
-          division.divisionDescription
-        );
-        console.log(matchingDivision);
-
-        this.selectedDivisionDescription = matchingDivision;
-        console.log(division);
-        this.divisionForm.patchValue({
-          name: division.divisionDescription,
-          maxDate1: division.maxDate
-            ? new Date(division.maxDate).toISOString().split('T')[0]
-            : '',
-          minDate1: division.minDate
-            ? new Date(division.minDate).toISOString().split('T')[0]
-            : '',
-          gender1: division.gender,
-          maxDate2: division.maxDate2
-            ? new Date(division.maxDate2).toISOString().split('T')[0]
-            : '',
-          minDate2: division.minDate2
-            ? new Date(division.minDate2).toISOString().split('T')[0]
-            : '',
-          gender2: division.gender2,
-        }); // this.divisionForm.get('maxDate2')?.setValue(formatDate(division.maxDate2, this.dateFormat, this.languageFormat));
-      }
+    const division = this.divisionService.selectedDivision(); // read the selected division from the service
+    if (division) {
+      const matchingDivision = this.divisionService.getmatchingDivision(
+        division.divisionDescription ?? ''
+      );
+      this.selectedDivisionDescription = matchingDivision;
+      this.divisionForm.patchValue({
+        name: division.divisionDescription,
+        maxDate1: division.maxDate
+          ? new Date(division.maxDate).toISOString().split('T')[0]
+          : '',
+        minDate1: division.minDate
+          ? new Date(division.minDate).toISOString().split('T')[0]
+          : '',
+        gender1: division.gender,
+        maxDate2: division.maxDate2
+          ? new Date(division.maxDate2).toISOString().split('T')[0]
+          : '',
+        minDate2: division.minDate2
+          ? new Date(division.minDate2).toISOString().split('T')[0]
+          : '',
+        gender2: division.gender2,
+      });
     }
   }
 
@@ -168,6 +194,7 @@ export class DivisionDetail implements OnInit {
     // console.log('Save');
     let division = new Division();
     division.companyId = 1; // get from constants
+    // Default to the currently selected season id; if editing, we'll override with the record's seasonId below
     division.seasonId = this.divisionService.seasonId;
     division.divisionDescription = this.divisionForm.get('name')?.value ?? '';
     division.maxDate = new Date(
@@ -177,37 +204,59 @@ export class DivisionDetail implements OnInit {
       this.divisionForm.get('minDate1')?.value ?? DateTime.now().toISO()
     );
     division.gender = this.divisionForm.get('gender1')?.value ?? '';
-    if (division.maxDate2 !== null) {
-      division.maxDate2 = new Date(
-        this.divisionForm.get('maxDate2')?.value ?? DateTime.now().toISO()
-      );
+    const maxDate2Val = this.divisionForm.get('maxDate2')?.value;
+    if (maxDate2Val) {
+      division.maxDate2 = new Date(maxDate2Val);
     }
     // this.divisionForm.get('maxDate2')?.setValue(formatDate(division.maxDate2, this.dateFormat, this.languageFormat));
-    if (division.minDate2 !== null) {
-      division.minDate2 = new Date(
-        this.divisionForm.get('minDate2')?.value ?? DateTime.now().toISO()
-      );
+    const minDate2Val = this.divisionForm.get('minDate2')?.value;
+    if (minDate2Val) {
+      division.minDate2 = new Date(minDate2Val);
     }
-    if (division.maxDate2 !== null || division.minDate2 !== null) {
+    if (division.maxDate2 || division.minDate2) {
       division.gender2 = this.divisionForm.get('gender2')?.value ?? '';
     }
-    if (this.divisionService.currentDivision() == undefined) {
+    // Use selectedDivision as the single source of truth
+    if (this.divisionService.selectedDivision() == undefined) {
       throw new Error('Division is not defined');
     } else {
-      let _division = this.divisionService.currentDivision();
+      let _division = this.divisionService.selectedDivision();
       if (_division!.divisionId === undefined) {
         division.divisionId = 0;
       } else {
         division.divisionId = _division!.divisionId;
       }
-      if (this.divisionForm.get('director')?.value !== null) {
-        division.directorId =
-          Number(this.divisionForm.get('director')?.value) ?? 0;
+      // Preserve the original season for existing records; fallback to active season for new ones
+      if (_division && _division.seasonId && _division.seasonId > 0) {
+        division.seasonId = _division.seasonId;
       }
+      const directorVal = this.divisionForm.get('director')?.value;
+      // If a director is chosen, send its numeric ID; otherwise send null
+      division.directorId =
+        directorVal !== null &&
+        directorVal !== undefined &&
+        typeof directorVal === 'number' &&
+        directorVal > 0
+          ? directorVal
+          : null;
       // console.log(division);
-      this.divisionService.save(division);
-
-      this.router.navigate(['/admin/division']);
+      this.divisionService.save(division).subscribe({
+        next: () => {
+          // mark as clean and navigate after successful save
+          this.divisionForm.markAsPristine();
+          // Refresh list so changes are visible when returning
+          const activeSeasonId = this.divisionService.seasonId;
+          if (activeSeasonId && activeSeasonId > 0) {
+            this.divisionService.getSeasonDivisions(activeSeasonId);
+          }
+          this.notify.success('Division saved');
+          this.router.navigate(['/admin/division']);
+        },
+        error: (err) => {
+          this.logger.error('Failed to save division', err);
+          this.notify.error('Failed to save division');
+        },
+      });
     }
   }
 
@@ -228,17 +277,51 @@ export class DivisionDetail implements OnInit {
     this.hideNameInput.set($event.value !== 'other');
   }
   deleteRecord() {
-    //TODO:  Fix delete method
+    const current = this.divisionService.currentDivision();
+    const id = current?.divisionId ?? 0;
+    if (!id) {
+      this.notify.error('No division to delete');
+      return;
+    }
+
+    this.divisionService.delete(id).subscribe({
+      next: () => {
+        // Refresh list and navigate back
+        const seasonId = this.divisionService.seasonId;
+        if (seasonId && seasonId > 0) {
+          this.divisionService.getSeasonDivisions(seasonId);
+        }
+        this.notify.success('Division deleted');
+        this.router.navigate(['/admin/division']);
+      },
+      error: (err: HttpErrorResponse) => {
+        this.logger.error('Failed to delete division', err);
+        if (err.status === 409) {
+          const detail =
+            (err.error && (err.error.detail || err.error.title)) ||
+            'The division has related records (e.g., teams or games). Remove dependencies first.';
+          this.notify.warn(detail);
+        } else if (err.status === 404) {
+          this.notify.error('Division not found');
+        } else {
+          this.notify.error('Failed to delete division');
+        }
+      },
+    });
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(ConfirmDialog);
+    const dialogRef = this.dialog.open(ConfirmDialog, {
+      data: {
+        title: 'Delete Division?',
+        message: 'Are you sure you want to delete this division?',
+      },
+      panelClass: 'csbc-login-dialog-panel',
+    });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log(result);
-      if (result) {
-        this.deleteRecord();
-      }
+      this.logger.info('Delete confirmation result', result);
+      if (result) this.deleteRecord();
     });
   }
   isFormDirty(): boolean {

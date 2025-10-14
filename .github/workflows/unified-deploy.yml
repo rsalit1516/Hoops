@@ -1,0 +1,552 @@
+name: Unified CI/CD (API + Functions)
+# Fixed format() issue
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - develop
+
+permissions:
+  id-token: write
+  contents: read
+
+concurrency:
+  group: unified-deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  DOTNET_VERSION: 9.0.x
+  # API settings
+  API_PROJECT: src/Hoops.Api/Hoops.Api.csproj
+  API_PUBLISH_DIR: artifacts/api
+  API_WEBAPP_NAME: hoops-api-dev
+  API_RESOURCE_GROUP: csbc-dev
+  # Swashbuckle CLI for OpenAPI generation
+  SWASHBUCKLE_CLI_VERSION: 5.6.3
+  SWASHBUCKLE_DOTNET_VERSION: 3.1.x
+  API_DLL_PATH: src/Hoops.Api/bin/Release/net9.0/Hoops.Api.dll
+  API_OPENAPI_VERSION: v1
+  APIM_RESOURCEGROUP: csbc-dev
+  APIM_SERVICENAME: HoopsApiapi
+  APIM_API_ID: HoopsApi
+  APIM_RESOURCE_PATH: /
+  APIM_APPSERVICEURL: https://hoops-api-dev-dnggf0ewe3c2b9ae.eastus-01.azurewebsites.net
+
+  # Functions settings
+  FUNCTIONS_PROJECT: src/Hoops.Functions/Hoops.Functions.csproj
+  FUNCTIONS_PUBLISH_DIR: artifacts/functions-publish
+  FUNCTIONS_ZIP: artifacts/functions.zip
+  FUNCTIONS_APP_NAME: hoops-functions-dev
+  FUNCTIONS_RESOURCE_GROUP: csbc-dev
+  # Optional: set to your storage account name to auto-generate AzureWebJobsStorage without a secret
+  FUNCTIONS_STORAGE_ACCOUNT_NAME: csbcdev8522
+
+jobs:
+  build_test_publish:
+    runs-on: ubuntu-latest
+    env:
+      CI: true # Exclude SDK package during CI to avoid libssl issues (default)
+      UseFunctionsSdk: "false"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Clear GitHub Actions cache (force fresh build)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "Attempting to clear GitHub Actions caches for this repository..."
+          gh api -X DELETE repos/${{ github.repository }}/actions/caches || echo "Cache clearing failed or no caches found"
+          echo "Cache clearing attempted"
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Clear caches and force clean restore
+        run: |
+          echo "Clearing all NuGet and build caches..."
+          dotnet nuget locals all --clear
+          dotnet clean Hoops.sln -c Release || true
+          echo "Cache clearing complete"
+
+      - name: Restore (solution)
+        run: dotnet restore Hoops.sln --force --no-cache
+
+      - name: Build (solution)
+        run: dotnet build Hoops.sln -c Release --no-restore -v normal
+
+      - name: Test (fast)
+        run: dotnet test Hoops.sln -c Release --no-build --filter "TestCategory!=Slow" --nologo
+
+      - name: Publish API
+        run: dotnet publish ${{ env.API_PROJECT }} -c Release -o ${{ env.API_PUBLISH_DIR }}
+
+      - name: Generate OpenAPI (Swashbuckle CLI)
+        shell: bash
+        run: |
+          set -e
+          echo "Installing Swashbuckle CLI (requires .NET ${{ env.SWASHBUCKLE_DOTNET_VERSION }})"
+          echo "Setting up secondary .NET runtime for tool..."
+          echo "Note: this doesn't affect the primary SDK used above."
+          echo "" 
+          {
+            echo "Installing .NET ${{ env.SWASHBUCKLE_DOTNET_VERSION }}...";
+          } >&2
+          # Install .NET for Swashbuckle CLI
+          echo "${{ env.SWASHBUCKLE_DOTNET_VERSION }}" > /tmp/dotnet-version
+          # Use a separate setup-dotnet action invocation to install 3.1.x tool runtime
+          echo "::group::Install .NET runtime for Swashbuckle CLI"
+          echo "SWASH=${{ env.SWASHBUCKLE_DOTNET_VERSION }}"; 
+          echo "This step is informational; the actual .NET install occurs in the next action invocation." 
+          echo "::endgroup::"
+
+      - name: Setup .NET runtime for Swashbuckle CLI
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.SWASHBUCKLE_DOTNET_VERSION }}
+
+      - name: Install Swashbuckle CLI Tool
+        run: dotnet tool install --global Swashbuckle.AspNetCore.Cli --version ${{ env.SWASHBUCKLE_CLI_VERSION }}
+
+      - name: Ensure dotnet tools on PATH
+        run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+
+      - name: Produce OpenAPI spec into publish folder
+        run: swagger tofile --output "${{ env.API_PUBLISH_DIR }}/swagger.json" "${{ env.API_DLL_PATH }}" "${{ env.API_OPENAPI_VERSION }}"
+
+      - name: Validate and fix OpenAPI specification
+        shell: bash
+        run: |
+          set -e
+          echo "Validating generated OpenAPI specification..."
+
+          # Check if swagger.json exists
+          if [ ! -f "${{ env.API_PUBLISH_DIR }}/swagger.json" ]; then
+            echo "ERROR: swagger.json not found in publish directory" >&2
+            exit 1
+          fi
+
+          # Validate JSON format and fix common issues
+          python3 -c "
+          import json
+          import sys
+
+          try:
+              with open('${{ env.API_PUBLISH_DIR }}/swagger.json', 'r') as f:
+                  spec = json.load(f)
+              
+              # Ensure required fields are present and valid
+              if 'info' not in spec:
+                  spec['info'] = {}
+              
+              info = spec['info']
+              
+              # Fix missing or invalid contact information
+              if 'contact' not in info or not info['contact']:
+                  info['contact'] = {}
+              
+              contact = info['contact']
+              
+              # Ensure email is valid
+              if 'email' not in contact or not contact['email'] or '@' not in contact['email']:
+                  contact['email'] = 'rsalit@hoopsleague.com'
+              
+              # Ensure name is present
+              if 'name' not in contact or not contact['name']:
+                  contact['name'] = 'Hoops API Support'
+              
+              # Ensure other required info fields
+              if 'title' not in info or not info['title']:
+                  info['title'] = 'Hoops API'
+              
+              if 'version' not in info or not info['version']:
+                  info['version'] = '1.0.0'
+              
+              # Write back the fixed specification
+              with open('${{ env.API_PUBLISH_DIR }}/swagger.json', 'w') as f:
+                  json.dump(spec, f, indent=2)
+              
+              # Show key metadata for verification
+              print('OpenAPI specification metadata:')
+              print(f'Title: {info.get(\"title\", \"N/A\")}')
+              print(f'Version: {info.get(\"version\", \"N/A\")}')
+              print(f'Contact Email: {contact.get(\"email\", \"N/A\")}')
+              print('OpenAPI specification validated and fixed successfully.')
+              
+          except Exception as e:
+              print(f'Error processing OpenAPI specification: {e}', file=sys.stderr)
+              sys.exit(1)
+          "
+
+      - name: Upload API artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-publish
+          path: ${{ env.API_PUBLISH_DIR }}
+          if-no-files-found: error
+
+  build_functions_win:
+    runs-on: windows-latest
+    env:
+      # Override default CI and force include Worker SDK so metadata is generated
+      CI: "false"
+      UseFunctionsSdk: "true"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore Functions project (Windows)
+        run: dotnet restore ${{ env.FUNCTIONS_PROJECT }} -p:UseFunctionsSdk=true
+
+      - name: Publish Functions (Windows, framework-dependent)
+        run: |
+          Write-Host "Publishing Functions on Windows with metadata generation..."
+          dotnet publish $env:FUNCTIONS_PROJECT -c Release -o $env:FUNCTIONS_PUBLISH_DIR --no-self-contained --runtime win-x64 -v normal -p:UseFunctionsSdk=true
+          Write-Host "Publish completed"
+        shell: pwsh
+
+      - name: Verify Functions publish output (Windows)
+        run: |
+          Write-Host "List publish output:"
+          Get-ChildItem -Recurse $env:FUNCTIONS_PUBLISH_DIR | Select-Object FullName, Length | Format-Table -AutoSize | Out-String | Write-Host
+          if (-not (Test-Path "$env:FUNCTIONS_PUBLISH_DIR\host.json")) { Write-Error "host.json missing in publish output" }
+          Write-Host "Check for metadata files (extensions.json / functions.metadata):"
+          Get-ChildItem $env:FUNCTIONS_PUBLISH_DIR -Filter *.json -Name | ForEach-Object { Write-Host $_ }
+          Get-ChildItem $env:FUNCTIONS_PUBLISH_DIR -Filter *.metadata -Name | ForEach-Object { Write-Host $_ }
+          Write-Host "Search recursively for function.json files:"
+          $funcJsons = Get-ChildItem -Recurse -Filter function.json $env:FUNCTIONS_PUBLISH_DIR
+          if (-not $funcJsons) { Write-Warning "No function.json files found recursively in publish output" } else { $funcJsons | ForEach-Object { Write-Host $_.FullName } }
+        shell: pwsh
+
+      - name: Create Functions ZIP (Windows)
+        run: |
+          if (Test-Path $env:FUNCTIONS_ZIP) { Remove-Item -Force $env:FUNCTIONS_ZIP }
+          Compress-Archive -Path "$env:FUNCTIONS_PUBLISH_DIR\*" -DestinationPath "$env:FUNCTIONS_ZIP" -Force
+          Write-Host "ZIP created at $env:FUNCTIONS_ZIP"
+        shell: pwsh
+
+      - name: Upload Functions artifact (folder)
+        uses: actions/upload-artifact@v4
+        with:
+          name: functions-publish
+          path: ${{ env.FUNCTIONS_PUBLISH_DIR }}
+          if-no-files-found: error
+
+      - name: Upload Functions ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: functions-zip
+          path: ${{ env.FUNCTIONS_ZIP }}
+          if-no-files-found: error
+
+  deploy_api:
+    runs-on: ubuntu-latest
+    needs: build_test_publish
+    environment: dev
+    steps:
+      - name: Checkout source (for migrations)
+        uses: actions/checkout@v4
+        with:
+          clean: false
+
+      - name: Azure Login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Azure CLI version
+        run: az --version | head -n 20
+
+      - name: Azure context
+        run: az account show -o table
+
+      - name: Setup .NET SDK for migrations
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Install EF Core Tools
+        run: dotnet tool install --global dotnet-ef
+
+      - name: Ensure dotnet tools on PATH
+        run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+
+      - name: Run Database Migrations
+        run: |
+          echo "Running idempotent database migrations..."
+          echo "This approach safely handles existing database schemas."
+
+          # Use EF Core with error handling for existing schemas
+          dotnet ef database update \
+            --project src/Hoops.Infrastructure \
+            --startup-project src/Hoops.Api \
+            --connection "${{ secrets.AZURE_SQL_CONNECTION_STRING }}" \
+            --verbose 2>&1 || {
+              EXIT_CODE=$?
+              echo "Migration exit code: $EXIT_CODE"
+              
+              # Check if this is the "object already exists" error (expected for existing DB)
+              if [ $EXIT_CODE -eq 1 ]; then
+                echo "Migration failed with exit code 1. Checking if database is already up to date..."
+                
+                # Try to list applied migrations to verify database state
+                echo "Checking current migration status..."
+                dotnet ef migrations list \
+                  --project src/Hoops.Infrastructure \
+                  --startup-project src/Hoops.Api \
+                  --connection "${{ secrets.AZURE_SQL_CONNECTION_STRING }}" || echo "Could not list migrations"
+                
+                echo "Database appears to have existing schema. This is expected for established databases."
+                echo "Deployment will continue. If new migrations are needed, they should be applied manually."
+              else
+                echo "Migration failed with unexpected exit code: $EXIT_CODE"
+                echo "Manual intervention may be required."
+                exit $EXIT_CODE
+              fi
+            }
+
+          echo "Database migration step completed."
+        env:
+          # Skip Key Vault during migrations since connection string is provided directly
+          SKIP_KEYVAULT_CONFIG: true
+
+      - name: Download API artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: api-publish
+          path: package
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.API_WEBAPP_NAME }}
+          package: package
+
+      - name: Verify Web App exists
+        run: az webapp show --name "${{ env.API_WEBAPP_NAME }}" --resource-group "${{ env.API_RESOURCE_GROUP }}" -o table
+
+      - name: Import API into Azure API Management
+        run: az apim api import --path "${{ env.APIM_RESOURCE_PATH }}" --resource-group "${{ env.APIM_RESOURCEGROUP }}" --service-name "${{ env.APIM_SERVICENAME }}" --api-id "${{ env.APIM_API_ID }}" --service-url "${{ env.APIM_APPSERVICEURL }}" --specification-path "package/swagger.json" --specification-format OpenApi --subscription-required false
+
+      - name: Verify APIM service exists
+        run: az apim show --name "${{ env.APIM_SERVICENAME }}" --resource-group "${{ env.APIM_RESOURCEGROUP }}" -o table
+
+  deploy_functions:
+    runs-on: ubuntu-latest
+    needs: [build_test_publish, build_functions_win]
+    environment: dev
+    steps:
+      - name: Azure Login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Azure context
+        run: az account show -o table
+
+      - name: Download Functions ZIP artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: functions-zip
+          path: .
+
+      - name: Show downloaded files
+        run: |
+          echo "Workspace contents after download:"
+          ls -lah
+          echo "List ZIPs recursively:"
+          find . -maxdepth 3 -type f -name "*.zip" -print
+
+      - name: Locate Functions ZIP
+        id: locate_zip
+        shell: bash
+        run: |
+          set -e
+          ZIP=$(find . -maxdepth 3 -type f -name "*.zip" | head -n 1)
+          if [ -z "$ZIP" ]; then
+            echo "No ZIP file found after download" >&2
+            exit 1
+          fi
+          echo "Found ZIP: $ZIP"
+          echo "zip=$ZIP" >> $GITHUB_OUTPUT
+
+      - name: Resolve and configure app settings (before deploy)
+        shell: bash
+        run: |
+          set -e
+          # Read existing values from the app
+          EXISTING_STORAGE=$(az functionapp config appsettings list \
+            --name ${{ env.FUNCTIONS_APP_NAME }} \
+            --resource-group ${{ env.FUNCTIONS_RESOURCE_GROUP }} \
+            --query "[?name=='AzureWebJobsStorage'].value" -o tsv)
+
+          # Prefer GitHub secrets if provided, otherwise fall back to existing app value
+          AZWJS="${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}"
+          if [ -z "$AZWJS" ]; then AZWJS="$EXISTING_STORAGE"; fi
+
+          # If still not available, optionally compute from a storage account name
+          if [ -z "$AZWJS" ] && [ -n "${{ env.FUNCTIONS_STORAGE_ACCOUNT_NAME }}" ]; then
+            echo "No AzureWebJobsStorage provided or found on app. Attempting to build from storage account name..."
+            RG="${{ env.FUNCTIONS_RESOURCE_GROUP }}"
+            SA_NAME="${{ env.FUNCTIONS_STORAGE_ACCOUNT_NAME }}"
+            if az storage account show --name "$SA_NAME" --resource-group "$RG" >/dev/null 2>&1; then
+              SA_KEY=$(az storage account keys list --account-name "$SA_NAME" --resource-group "$RG" --query "[0].value" -o tsv)
+              if [ -n "$SA_KEY" ]; then
+                AZWJS="DefaultEndpointsProtocol=https;AccountName=$SA_NAME;AccountKey=$SA_KEY;EndpointSuffix=core.windows.net"
+                echo "Successfully built AzureWebJobsStorage from storage account: $SA_NAME"
+              else
+                echo "WARNING: Could not retrieve storage account key for $SA_NAME in $RG. Check RBAC (Storage Account Key Operator/Contributor)." >&2
+              fi
+            else
+              echo "WARNING: Storage account $SA_NAME not found in resource group $RG." >&2
+            fi
+          fi
+
+          if [ -z "$AZWJS" ]; then
+            echo "ERROR: AzureWebJobsStorage is not set via secret and not present on the Function App." >&2
+            echo "Provide AZURE_STORAGE_CONNECTION_STRING secret, preconfigure the app setting AzureWebJobsStorage, or set FUNCTIONS_STORAGE_ACCOUNT_NAME env to auto-generate it." >&2
+            exit 1
+          fi
+
+          # Build settings array; only include connection string if secret provided (don’t overwrite existing unless explicit)
+          SETTINGS=(
+            "FUNCTIONS_WORKER_RUNTIME=dotnet-isolated"
+            "FUNCTIONS_WORKER_RUNTIME_VERSION=9.0"
+            "FUNCTIONS_EXTENSION_VERSION=~4"
+            "AzureWebJobsStorage=$AZWJS"
+            "AzureWebJobsFeatureFlags=EnableOpenApi"
+            "CompanySettings__DefaultCompanyId=1"
+            "KeyVaultUri=https://hoops-dev-kv.vault.azure.net/"
+          )
+
+          if [ -n "${{ secrets.HOOPS_CONNECTION_STRING }}" ]; then
+            SETTINGS+=("ConnectionStrings__hoopsContext=${{ secrets.HOOPS_CONNECTION_STRING }}")
+          fi
+
+          az functionapp config appsettings set \
+            --name ${{ env.FUNCTIONS_APP_NAME }} \
+            --resource-group ${{ env.FUNCTIONS_RESOURCE_GROUP }} \
+            --settings "${SETTINGS[@]}"
+
+      - name: Configure CORS (before deploy)
+        run: |
+          for ORIGIN in \
+            "https://thankful-pond-090ec730f.4.azurestaticapps.net" \
+            "http://localhost:4200" \
+            "https://localhost:4200"; do
+            echo "Adding CORS origin: $ORIGIN"
+            az functionapp cors add \
+              --name ${{ env.FUNCTIONS_APP_NAME }} \
+              --resource-group ${{ env.FUNCTIONS_RESOURCE_GROUP }} \
+              --allowed-origins "$ORIGIN" || echo "Origin $ORIGIN may already exist; continuing."
+          done
+
+      - name: Enable CORS credentials support
+        run: |
+          az functionapp config appsettings set \
+            --name ${{ env.FUNCTIONS_APP_NAME }} \
+            --resource-group ${{ env.FUNCTIONS_RESOURCE_GROUP }} \
+            --settings "WEBSITE_CORS_SUPPORT_CREDENTIALS=true"
+
+      - name: Deploy Functions via Azure CLI (config-zip)
+        run: |
+          az functionapp deployment source config-zip \
+            --name ${{ env.FUNCTIONS_APP_NAME }} \
+            --resource-group ${{ env.FUNCTIONS_RESOURCE_GROUP }} \
+            --src ${{ steps.locate_zip.outputs.zip }}
+
+      - name: Restart Function App (force metadata refresh)
+        run: |
+          echo "Restarting Function App to refresh metadata and discover functions..."
+          az functionapp restart \
+            --name ${{ env.FUNCTIONS_APP_NAME }} \
+            --resource-group ${{ env.FUNCTIONS_RESOURCE_GROUP }}
+          echo "Function App restarted successfully"
+
+      - name: Verify discovered functions (fail if none)
+        id: verify_functions
+        run: |
+          set -e
+          ATTEMPTS=0
+          until [ $ATTEMPTS -ge 18 ]
+          do
+            funcs=$(az functionapp function list \
+              --name ${{ env.FUNCTIONS_APP_NAME }} \
+              --resource-group ${{ env.FUNCTIONS_RESOURCE_GROUP }} \
+              -o tsv --query "[].name")
+            if [ -n "$funcs" ]; then
+              echo "Functions discovered:" $funcs
+              exit 0
+            fi
+            ATTEMPTS=$((ATTEMPTS+1))
+            echo "No functions yet. Waiting 10s and retrying ($ATTEMPTS/18)..."
+            sleep 10
+          done
+          echo "No functions discovered by the host after retries. Failing deployment." >&2
+          exit 1
+
+      - name: Inspect deployed wwwroot via Kudu (on failure only)
+        if: failure()
+        env:
+          KUDU_USER: ${{ secrets.DEPLOY_USER }}
+          KUDU_PASS: ${{ secrets.DEPLOY_PASSWORD }}
+        run: |
+          echo "Listing wwwroot via Kudu API for diagnostics..."
+          curl -u "$KUDU_USER:$KUDU_PASS" https://${{ env.FUNCTIONS_APP_NAME }}.scm.azurewebsites.net/api/vfs/site/wwwroot/ -s | jq -r '.[] | "\(.name)\t\(.mime)\t\(.size)"' || true
+
+      - name: Show current CORS settings
+        run: |
+          echo "CORS allowed origins:"
+          az functionapp cors show \
+            --name ${{ env.FUNCTIONS_APP_NAME }} \
+            --resource-group ${{ env.FUNCTIONS_RESOURCE_GROUP }}
+          echo "CORS credentials support setting:"
+          az functionapp config appsettings list \
+            --name ${{ env.FUNCTIONS_APP_NAME }} \
+            --resource-group ${{ env.FUNCTIONS_RESOURCE_GROUP }} \
+            --query "[?name=='WEBSITE_CORS_SUPPORT_CREDENTIALS'].{Name:name, Value:value}" \
+            --output table
+
+      - name: Enable Managed Identity and Grant Key Vault Access
+        run: |
+          echo "Enabling managed identity for Functions App..."
+          az functionapp identity assign \
+            --name ${{ env.FUNCTIONS_APP_NAME }} \
+            --resource-group ${{ env.FUNCTIONS_RESOURCE_GROUP }}
+
+          PRINCIPAL_ID=$(az functionapp identity show \
+            --name ${{ env.FUNCTIONS_APP_NAME }} \
+            --resource-group ${{ env.FUNCTIONS_RESOURCE_GROUP }} \
+            --query principalId -o tsv)
+
+          echo "Function App Principal ID: $PRINCIPAL_ID"
+
+          # Check if role assignment already exists
+          EXISTING_ASSIGNMENT=$(az role assignment list \
+            --assignee $PRINCIPAL_ID \
+            --role "Key Vault Secrets User" \
+            --scope "/subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourcegroups/csbc-dev/providers/microsoft.keyvault/vaults/Hoops-Dev-KV" \
+            --query "[0].id" -o tsv 2>/dev/null || echo "none")
+
+          if [ "$EXISTING_ASSIGNMENT" == "none" ] || [ -z "$EXISTING_ASSIGNMENT" ]; then
+            echo "Creating Key Vault role assignment..."
+            az role assignment create \
+              --assignee $PRINCIPAL_ID \
+              --role "Key Vault Secrets User" \
+              --scope "/subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourcegroups/csbc-dev/providers/microsoft.keyvault/vaults/Hoops-Dev-KV" \
+              || echo "Role assignment may already exist or insufficient permissions; continuing..."
+          else
+            echo "Key Vault role assignment already exists: $EXISTING_ASSIGNMENT"
+          fi

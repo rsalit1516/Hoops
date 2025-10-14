@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Hoops.Core.Models;
 using Hoops.Core.Interface;
 using Hoops.Infrastructure.Data;
+using Hoops.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hoops.Data.Seeders
@@ -44,6 +45,9 @@ namespace Hoops.Data.Seeders
 
         public async Task SeedAsync()
         {
+            // Create UserRepository instance to access HashPassword method
+            var userRepo = new UserRepository(context);
+
             // Get parent/AD people records created by HouseholdAndPeopleSeeder
             var parentAdPeople = await context.People
                 .Where(p => p.Parent == true && p.Ad == true)
@@ -54,6 +58,9 @@ namespace Hoops.Data.Seeders
                 Console.WriteLine($"[WARNING] Expected at least 8 parent/AD people records, found {parentAdPeople.Count}");
                 return;
             }
+
+            const string defaultPassword = "p@ssword1";
+            string hashedPassword = userRepo.HashPassword(defaultPassword);
 
             // Create 3 admin users (UserType = 3)
             var adminPeople = parentAdPeople.Take(3).ToList();
@@ -66,8 +73,8 @@ namespace Hoops.Data.Seeders
                     CompanyId = 1,
                     UserName = GenerateUserName(person.FirstName, person.LastName),
                     Name = $"{person.FirstName} {person.LastName}",
-                    Pword = "p@ssword1", // Standard default password
-                    PassWord = "p@ssword1", // Some systems use both fields
+                    Pword = defaultPassword, // Plain text for backwards compatibility
+                    PassWord = hashedPassword, // Encrypted password for production use
                     UserType = 3, // Admin users
                     PersonId = person.PersonId,
                     HouseId = person.HouseId ?? 1, // Default to household 1 if null
@@ -90,8 +97,8 @@ namespace Hoops.Data.Seeders
                     CompanyId = 1,
                     UserName = GenerateUserName(person.FirstName, person.LastName),
                     Name = $"{person.FirstName} {person.LastName}",
-                    Pword = "p@ssword1", // Standard default password
-                    PassWord = "p@ssword1", // Some systems use both fields
+                    Pword = defaultPassword, // Plain text for backwards compatibility
+                    PassWord = hashedPassword, // Encrypted password for production use
                     UserType = 2, // AD users (Athletic Directors)
                     PersonId = person.PersonId,
                     HouseId = person.HouseId ?? 1, // Default to household 1 if null
@@ -105,6 +112,7 @@ namespace Hoops.Data.Seeders
 
             await context.SaveChangesAsync();
             Console.WriteLine($"[DEBUG] Created {adminPeople.Count} admin users and {adPeople.Count} AD users");
+            Console.WriteLine($"[DEBUG] All users created with default password (encrypted): {defaultPassword}");
         }
 
         /// <summary>

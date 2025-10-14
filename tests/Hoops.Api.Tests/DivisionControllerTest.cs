@@ -6,11 +6,60 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Xunit;
 using csbc_server.Controllers;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hoops.Api.Tests
 {
-    public class DivisionControllerTest
+    public class DivisionControllerTests
     {
+        [Fact]
+        public async Task DeleteDivision_ReturnsOk_WhenDeleteSucceeds()
+        {
+            var repo = new Mock<IDivisionRepository>();
+            // Existence check succeeds
+            repo.Setup(r => r.FindByAsync(123)).ReturnsAsync(new Division { DivisionId = 123 });
+            // Delete completes
+            repo.Setup(r => r.DeleteAsync(123)).Returns(Task.CompletedTask);
+            var seasonSvc = new Mock<ISeasonService>();
+            var controller = new DivisionController(repo.Object, seasonSvc.Object);
+
+            var result = await controller.DeleteDivision(123);
+
+            Assert.IsType<OkResult>(result);
+            repo.Verify(r => r.DeleteAsync(123), Times.Once);
+        }
+
+        [Fact]
+        public async Task DeleteDivision_ReturnsNotFound_WhenDivisionDoesNotExist()
+        {
+            var repo = new Mock<IDivisionRepository>();
+            // Simulate repository throwing when entity not found (matches EFRepository behavior)
+            repo.Setup(r => r.FindByAsync(999)).ThrowsAsync(new InvalidOperationException("Entity not found"));
+            var seasonSvc = new Mock<ISeasonService>();
+            var controller = new DivisionController(repo.Object, seasonSvc.Object);
+
+            var result = await controller.DeleteDivision(999);
+
+            Assert.IsType<NotFoundResult>(result);
+            repo.Verify(r => r.DeleteAsync(It.IsAny<int>()), Times.Never);
+        }
+
+        [Fact]
+        public async Task DeleteDivision_ReturnsConflict_OnDbUpdateException()
+        {
+            var repo = new Mock<IDivisionRepository>();
+            repo.Setup(r => r.FindByAsync(5)).ReturnsAsync(new Division { DivisionId = 5 });
+            repo.Setup(r => r.DeleteAsync(5)).ThrowsAsync(new DbUpdateException("FK constraint"));
+            var seasonSvc = new Mock<ISeasonService>();
+            var controller = new DivisionController(repo.Object, seasonSvc.Object);
+
+            var result = await controller.DeleteDivision(5);
+
+            var conflict = Assert.IsType<ConflictObjectResult>(result);
+            var problem = Assert.IsType<ProblemDetails>(conflict.Value);
+            Assert.Equal(409, problem.Status);
+        }
+
         [Fact]
         public async Task GetDivision_ReturnsOkResult_WithDivisions()
         {
@@ -56,6 +105,7 @@ namespace Hoops.Api.Tests
         public async Task GetDivisionById_ReturnsNotFound_WhenNoDivision()
         {
             var mockRepo = new Mock<IDivisionRepository>();
+            // Simulate null result path
             mockRepo.Setup(r => r.FindByAsync(99)).ReturnsAsync((Division?)null);
             var mockSeasonService = new Mock<ISeasonService>();
             var controller = new DivisionController(mockRepo.Object, mockSeasonService.Object);
@@ -63,37 +113,33 @@ namespace Hoops.Api.Tests
             Assert.IsType<NotFoundResult>(result.Result);
         }
 
-        // Tests for GetSeasonDivisions method
         [Fact]
         public async Task GetSeasonDivisions_ReturnsOkResult_WithDivisions_WhenSeasonExists()
         {
-            // Arrange
             var seasonId = 1;
             var divisions = new List<Division>
             {
                 new Division { DivisionId = 1, DivisionDescription = "Division A", SeasonId = seasonId },
                 new Division { DivisionId = 2, DivisionDescription = "Division B", SeasonId = seasonId }
             };
-            
-            var season = new Season 
-            { 
-                SeasonId = seasonId, 
+
+            var season = new Season
+            {
+                SeasonId = seasonId,
                 Description = "Test Season",
                 Divisions = divisions
             };
-            
+
             var allSeasons = new List<Season> { season };
-            
+
             var mockRepo = new Mock<IDivisionRepository>();
             var mockSeasonService = new Mock<ISeasonService>();
             mockSeasonService.Setup(s => s.GetAllSeasonsAsync()).ReturnsAsync(allSeasons);
-            
+
             var controller = new DivisionController(mockRepo.Object, mockSeasonService.Object);
 
-            // Act
             var result = await controller.GetSeasonDivisions(seasonId);
 
-            // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
             var returnedDivisions = Assert.IsAssignableFrom<ICollection<Division>>(okResult.Value);
             Assert.Equal(2, returnedDivisions.Count);
@@ -104,23 +150,20 @@ namespace Hoops.Api.Tests
         [Fact]
         public async Task GetSeasonDivisions_ReturnsEmptyList_WhenSeasonNotFound()
         {
-            // Arrange
-            var seasonId = 999; // Non-existent season
+            var seasonId = 999;
             var allSeasons = new List<Season>
             {
                 new Season { SeasonId = 1, Description = "Different Season", Divisions = new List<Division>() }
             };
-            
+
             var mockRepo = new Mock<IDivisionRepository>();
             var mockSeasonService = new Mock<ISeasonService>();
             mockSeasonService.Setup(s => s.GetAllSeasonsAsync()).ReturnsAsync(allSeasons);
-            
+
             var controller = new DivisionController(mockRepo.Object, mockSeasonService.Object);
 
-            // Act
             var result = await controller.GetSeasonDivisions(seasonId);
 
-            // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
             var returnedDivisions = Assert.IsAssignableFrom<IEnumerable<Division>>(okResult.Value);
             Assert.Empty(returnedDivisions);
@@ -129,27 +172,24 @@ namespace Hoops.Api.Tests
         [Fact]
         public async Task GetSeasonDivisions_ReturnsEmptyList_WhenSeasonHasNoDivisions()
         {
-            // Arrange
             var seasonId = 1;
-            var season = new Season 
-            { 
-                SeasonId = seasonId, 
+            var season = new Season
+            {
+                SeasonId = seasonId,
                 Description = "Season Without Divisions",
-                Divisions = null // No divisions
+                Divisions = null
             };
-            
+
             var allSeasons = new List<Season> { season };
-            
+
             var mockRepo = new Mock<IDivisionRepository>();
             var mockSeasonService = new Mock<ISeasonService>();
             mockSeasonService.Setup(s => s.GetAllSeasonsAsync()).ReturnsAsync(allSeasons);
-            
+
             var controller = new DivisionController(mockRepo.Object, mockSeasonService.Object);
 
-            // Act
             var result = await controller.GetSeasonDivisions(seasonId);
 
-            // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
             var returnedDivisions = Assert.IsAssignableFrom<IEnumerable<Division>>(okResult.Value);
             Assert.Empty(returnedDivisions);
@@ -158,27 +198,24 @@ namespace Hoops.Api.Tests
         [Fact]
         public async Task GetSeasonDivisions_ReturnsEmptyList_WhenSeasonHasEmptyDivisionsList()
         {
-            // Arrange
             var seasonId = 1;
-            var season = new Season 
-            { 
-                SeasonId = seasonId, 
+            var season = new Season
+            {
+                SeasonId = seasonId,
                 Description = "Season With Empty Divisions",
-                Divisions = new List<Division>() // Empty list
+                Divisions = new List<Division>()
             };
-            
+
             var allSeasons = new List<Season> { season };
-            
+
             var mockRepo = new Mock<IDivisionRepository>();
             var mockSeasonService = new Mock<ISeasonService>();
             mockSeasonService.Setup(s => s.GetAllSeasonsAsync()).ReturnsAsync(allSeasons);
-            
+
             var controller = new DivisionController(mockRepo.Object, mockSeasonService.Object);
 
-            // Act
             var result = await controller.GetSeasonDivisions(seasonId);
 
-            // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
             var returnedDivisions = Assert.IsAssignableFrom<IEnumerable<Division>>(okResult.Value);
             Assert.Empty(returnedDivisions);
@@ -187,25 +224,20 @@ namespace Hoops.Api.Tests
         [Fact]
         public async Task GetSeasonDivisions_ReturnsEmptyList_WhenNoSeasonsExist()
         {
-            // Arrange
             var seasonId = 1;
-            var allSeasons = new List<Season>(); // No seasons at all
-            
+            var allSeasons = new List<Season>();
+
             var mockRepo = new Mock<IDivisionRepository>();
             var mockSeasonService = new Mock<ISeasonService>();
             mockSeasonService.Setup(s => s.GetAllSeasonsAsync()).ReturnsAsync(allSeasons);
-            
+
             var controller = new DivisionController(mockRepo.Object, mockSeasonService.Object);
 
-            // Act
             var result = await controller.GetSeasonDivisions(seasonId);
 
-            // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
             var returnedDivisions = Assert.IsAssignableFrom<IEnumerable<Division>>(okResult.Value);
             Assert.Empty(returnedDivisions);
         }
-
-        // Additional tests for Put, Post, Delete can be added here following the same pattern.
     }
 }

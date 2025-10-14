@@ -9,10 +9,10 @@ import { Observable } from 'rxjs';
 import { Constants } from '@app/shared/constants';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-  currentUser: User  | undefined;
+  currentUser: User | undefined;
   redirectUrl: string | undefined;
   loginUrl: string | undefined;
   user: User | undefined;
@@ -21,8 +21,7 @@ export class AuthService {
     private http: HttpClient,
     private dataService: DataService,
     private store: Store<fromUser.State>
-  ) {
-  }
+  ) {}
 
   isLoggedIn(): boolean {
     return !!this.currentUser;
@@ -31,9 +30,9 @@ export class AuthService {
   login(userName: string, password: string): Observable<User> {
     let tFlag = false;
     console.log(userName + ', ' + password);
-    return this.http
-      .get<User>(Constants.loginUrl + '/' + userName + '/' + password);
-
+    return this.http.get<User>(
+      Constants.legacyUserLoginUrl + '/' + userName + '/' + password
+    );
   }
   setUserState(user: User) {
     this.store.dispatch(new userActions.SetCurrentUser(user));

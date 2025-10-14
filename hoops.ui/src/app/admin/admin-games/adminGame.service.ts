@@ -14,7 +14,7 @@ import { Division } from '@app/domain/division';
 import { AuthService } from '@app/services/auth.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AdminGameService {
   private http = inject(HttpClient);
@@ -29,6 +29,7 @@ export class AdminGameService {
   selectedRecordSignal = this.selectedRecord.asReadonly();
   filteredGames = signal<RegularGame[] | null>(null);
   currentUser = computed(() => this.authService.currentUser());
+
   constructor(
     private store: Store<fromGames.State>,
     private userStore: Store<fromUser.State>
@@ -39,20 +40,20 @@ export class AdminGameService {
     });
   }
 
-  filterGamesByDivision (): Observable<RegularGame[]> {
+  filterGamesByDivision(): Observable<RegularGame[]> {
     let games: RegularGame[] = [];
     let gamesSortedByDate: RegularGame[] = [];
     this.store.pipe(select(fromGames.getSeasonGames)).subscribe((allGames) => {
       this.allGames = allGames;
-      // console.log('Selected Division', /this.selectedDivision());
-      // console.log('allGames', allGames);
       if (this.selectedDivision() !== null) {
         this.setCanEdit(this.selectedDivision()!.divisionId);
       }
       if (allGames) {
         // console.log(div);
         for (let i = 0; i < this.allGames.length; i++) {
-          if (this.allGames[i].divisionId === this.selectedDivision()?.divisionId) {
+          if (
+            this.allGames[i].divisionId === this.selectedDivision()?.divisionId
+          ) {
             let game = allGames[i];
             games.push(game);
           }
@@ -80,7 +81,7 @@ export class AdminGameService {
   // errorMessage = computed(() => setErrorMessage(this.error(), 'Game'));
   // isLoading = this.gamesResource.isLoading;
 
-  filterGamesByTeam (team: number): Observable<RegularGame[]> {
+  filterGamesByTeam(team: number): Observable<RegularGame[]> {
     let games: RegularGame[] = [];
     let sortedDate: RegularGame[] = [];
     // console.log(team);
@@ -89,7 +90,10 @@ export class AdminGameService {
       this.setCanEdit(team);
       if (allGames) {
         for (let i = 0; i < this.allGames.length; i++) {
-          if (this.allGames[i].homeTeamId === team || this.allGames[i].visitingTeamId === team) {
+          if (
+            this.allGames[i].homeTeamId === team ||
+            this.allGames[i].visitingTeamId === team
+          ) {
             let game = allGames[i];
             // console.log(game);
             games.push(game);
@@ -105,19 +109,19 @@ export class AdminGameService {
     });
     return of(sortedDate);
   }
-  compare (a: Date | string, b: Date | string, isAsc: boolean) {
+  compare(a: Date | string, b: Date | string, isAsc: boolean) {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 
-  setCanEdit (division: number) {
+  setCanEdit(division: number) {
     console.log(this.currentUser());
     let canEdit = this.getCanEdit(this.currentUser(), division);
   }
-  getCanEdit (user: User | undefined, divisionId: number): boolean {
+  getCanEdit(user: User | undefined, divisionId: number): boolean {
     // console.log(divisionId);
     let tFlag = false;
     if (user) {
-      if ((user.userType === 2) || (user.userType === 3)) {
+      if (user.userType === 2 || user.userType === 3) {
         tFlag = true;
         return true;
       } else {
@@ -131,11 +135,11 @@ export class AdminGameService {
     }
     return tFlag;
   }
-  updateSelectedRecord (record: RegularGame) {
+  updateSelectedRecord(record: RegularGame) {
     this.selectedRecord.set(record);
   }
 
-  reloadGames () {
+  reloadGames() {
     // this.gamesResource.reload();
     //this.store.dispatch(gameActions.loadGames());
   }

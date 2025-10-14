@@ -1,4 +1,13 @@
-import { AfterViewInit, Component, OnChanges, OnInit, ViewChild, effect, inject, input } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnChanges,
+  OnInit,
+  ViewChild,
+  effect,
+  inject,
+  input,
+} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { RegularGame } from '@app/domain/regularGame';
 import * as fromAdmin from '../../state';
@@ -15,35 +24,39 @@ import { AdminGameService } from '../adminGame.service';
 import { GameService } from '@app/services/game.service';
 import { ShellTitle } from '@app/shared/components/shell-title/shell-title';
 import { AdminGamesFilter } from '../admin-games-filter/admin-games-filter';
-import { LoggerService } from '@app/services/logging.service';
+import { LoggerService } from '@app/services/logger.service';
 import { Router } from '@angular/router';
 @Component({
   selector: 'csbc-admin-games-list',
-  imports: [CommonModule, MatIconModule, MatTableModule,
+  imports: [
+    CommonModule,
+    MatIconModule,
+    MatTableModule,
     MatPaginatorModule,
     MatIconModule,
     ShellTitle,
-    AdminGamesFilter],
-  templateUrl: "./admin-games-list.html",
+    AdminGamesFilter,
+  ],
+  templateUrl: './admin-games-list.html',
   styleUrls: [
     '../../../shared/scss/tables.scss',
     './admin-games-list.scss',
     '../../admin.scss',
   ],
-  providers: [MatSort, MatPaginator]
+  providers: [MatSort, MatPaginator],
 })
 export class AdminGamesList implements OnInit, OnChanges, AfterViewInit {
   adminGameService = inject(AdminGameService);
   gameService = inject(GameService);
-  readonly #router = inject(Router);
-  readonly #logger = inject(LoggerService);
+  readonly router = inject(Router);
+  readonly logger = inject(LoggerService);
   readonly showScores = input<boolean>(false);
   pageTitle = 'Admin Game List';
   dialog = inject(MatDialog);
   dataSource!: MatTableDataSource<RegularGame>;
   games!: RegularGame[];
   games$: Observable<RegularGame[]> | undefined;
-  pageSizeOptions = [5, 10, 25]
+  pageSizeOptions = [5, 10, 25];
   flexMediaWatcher: any;
   currentScreenWidth: any;
   title = 'Game List';
@@ -63,23 +76,22 @@ export class AdminGamesList implements OnInit, OnChanges, AfterViewInit {
     'visitingTeamName',
     'homeTeamScore',
     'visitingTeamScore',
-
   ];
   showPlayoffs = false;
   showRegularSeason = true;
-  constructor (
-  ) {
+  constructor() {
     this.setupTable();
 
     effect(() => {
-      console.log("list component effect");
-      this.dataSource = new MatTableDataSource(this.gameService.divisionGames()!);
+      this.logger.debug('Admin games list component effect triggered');
+      this.dataSource = new MatTableDataSource(
+        this.gameService.divisionGames()!
+      );
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
       this.paginator.pageSize = this.pageSize;
       this.paginator.page.subscribe(() => this.refreshData());
-
-    })
+    });
     //  this.store.select(fromAdmin.getFilteredGames).subscribe((games) => {
     // this.dataSource = new MatTableDataSource(this.filteredGames());
     // if (this.dataSource.paginator) {
@@ -88,7 +100,7 @@ export class AdminGamesList implements OnInit, OnChanges, AfterViewInit {
     // });
   }
 
-  ngOnInit (): void {
+  ngOnInit(): void {
     this.setupTable();
     // this.store.select(fromAdmin.getFilteredGames).subscribe((games) => {
     // console.log(games);
@@ -99,19 +111,18 @@ export class AdminGamesList implements OnInit, OnChanges, AfterViewInit {
     // }
     // });
   }
-  ngAfterViewInit () {
+  ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 
-  ngOnChanges () {
+  ngOnChanges() {
     this.paginator.page.subscribe(() => this.refreshData());
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-
   }
 
-  setupTable () {
+  setupTable() {
     if (this.showScores()) {
       this.displayedColumns = [
         'gameDate',
@@ -143,7 +154,7 @@ export class AdminGamesList implements OnInit, OnChanges, AfterViewInit {
       ];
     }
   }
-  applyFilter (event: Event) {
+  applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
 
@@ -151,31 +162,30 @@ export class AdminGamesList implements OnInit, OnChanges, AfterViewInit {
       this.dataSource.paginator.firstPage();
     }
   }
-  editGame (game: RegularGame) {
+  editGame(game: RegularGame) {
     // TODO: implement this method
   }
-  selectRow (row: RegularGame) {
-    console.log(row);
+  selectRow(row: RegularGame) {
+    this.logger.debug('Row selected', row);
     this.gameService.updateSelectedGame(row);
-    this.#router.navigate(['./admin/games/detail-regular']);
+    this.router.navigate(['./admin/games/detail-regular']);
   }
-  dataExists (): boolean {
+  dataExists(): boolean {
     return this.games.length > 0;
   }
-  refreshData () {
+  refreshData() {
     this.dataSource._updateChangeSubscription();
-    this.dataSource.disconnect()
+    this.dataSource.disconnect();
     this.dataSource.connect();
   }
-  handlefilterUpdate ($event: any) {
-    this.#logger.log($event.gametType);
+  handlefilterUpdate($event: any) {
+    this.logger.info($event.gametType);
     if ($event.gameType === 'Playoffs') {
       this.showPlayoffs = true;
       this.showRegularSeason = false;
     } else {
       this.showPlayoffs = false;
       this.showRegularSeason = true;
-
     }
   }
 }
