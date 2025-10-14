@@ -1,7 +1,7 @@
 // src/app/services/feature-flag.service.ts
 import { computed, Injectable, signal, resource, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from 'environments/environment';
+import { environment } from '../../../environments/environment';
 import { LoggerService } from '@app/services/logger.service';
 
 @Injectable({ providedIn: 'root' })
