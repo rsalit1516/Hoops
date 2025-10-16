@@ -32,7 +32,7 @@ fi
 
 EPIC_ID="$1"
 EPIC_TITLE="$2"
-EPIC_DESCRIPTION="$3"
+EPIC_DESCRIPTION="${3:-}"
 
 # Validate epic ID format
 if [[ ! "$EPIC_ID" =~ ^[A-Z]{3}-[0-9]{3}$ ]]; then
@@ -91,7 +91,7 @@ EPIC_CONTENT="${EPIC_CONTENT//\{\{CURRENT_DATE\}\}/$CURRENT_DATE}"
 if [[ -n "$EPIC_DESCRIPTION" ]]; then
     EPIC_CONTENT="${EPIC_CONTENT//\{\{EPIC_DESCRIPTION\}\}/$EPIC_DESCRIPTION}"
 else
-    EPIC_CONTENT="${EPIC_CONTENT//\{\{EPIC_DESCRIPTION\}\}/Brief description of the epic's purpose and goals.}"
+    EPIC_CONTENT="${EPIC_CONTENT//\{\{EPIC_DESCRIPTION\}\}/Brief description of the epic purpose and goals.}"
 fi
 
 # Create epic file
