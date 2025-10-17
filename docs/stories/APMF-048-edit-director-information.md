@@ -1,8 +1,8 @@
-# Story {{STORY_ID}}: {{STORY_TITLE}}
+# Story APMF-048: Edit Director Information
 
-**Story ID:** {{STORY_ID}}  
+**Story ID:** APMF-048  
 **Feature:** [{{FEATURE_ID}}](../../features/{{FEATURE_AREA}}/{{FEATURE_ID}}.md)  
-**Epic:** [{{EPIC_ID}}](../../epics/{{EPIC_ID}}.md)  
+**Epic:** [APM-001](../../epics/APM-001.md)  
 **Azure Boards:** [Story #{{WORK_ITEM_ID}}](https://dev.azure.com/rsalit1516/Hoops/_workitems/edit/{{WORK_ITEM_ID}})
 
 **Story Points:** {{POINTS}}  
@@ -28,15 +28,15 @@ As a {{USER_TYPE}}, I want {{FUNCTIONALITY}} so that {{BUSINESS_VALUE}}.
 
 ## Dependencies
 
-- **Blocked by:** {{STORY_ID}} or None
-- **Blocks:** {{STORY_ID}} or None
-- **Related:** {{STORY_ID}} or None
+- **Blocked by:** APMF-048 or None
+- **Blocks:** APMF-048 or None
+- **Related:** APMF-048 or None
 
 ## Dependencies
 
-- **Blocked by:** {{STORY_ID}} or None
-- **Blocks:** {{STORY_ID}} or None
-- **Related:** {{STORY_ID}} or None
+- **Blocked by:** APMF-048 or None
+- **Blocks:** APMF-048 or None
+- **Related:** APMF-048 or None
 
 ## Technical Implementation
 
@@ -55,7 +55,7 @@ As a {{USER_TYPE}}, I want {{FUNCTIONALITY}} so that {{BUSINESS_VALUE}}.
 
 ## Related Files
 
-- **BDD Feature:** [{{STORY_ID}}-{{feature-name}}.feature](../features/{{FEATURE_AREA}}/{{STORY_ID}}-{{feature-name}}.feature)
+- **BDD Feature:** [APMF-048-{{feature-name}}.feature](../features/{{FEATURE_AREA}}/APMF-048-{{feature-name}}.feature)
 - **Component:** `/src/app/{{path}}/`
 - **Service:** `/src/app/{{path}}/`
 
@@ -81,6 +81,6 @@ As a {{USER_TYPE}}, I want {{FUNCTIONALITY}} so that {{BUSINESS_VALUE}}.
 
 ---
 
-**Created:** {{CURRENT_DATE}}  
-**Last Updated:** {{CURRENT_DATE}}  
+**Created:** 2025-10-17  
+**Last Updated:** 2025-10-17  
 **Status:** {{Not Started|In Progress|Done}}

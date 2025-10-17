@@ -1,4 +1,23 @@
-# Project Documentation Summary - User Management Cascading Dropdowns
+# Hoops Documentation
+
+## 📖 Documentation Structure
+
+This project uses a three-level hierarchy for organizing development work:
+
+**Epic → Feature → Story**
+
+### Quick Start Guides
+
+- **[🎯 Quick Reference](QUICK-REFERENCE.md)** - Fast answers, decision tree, when to use each level
+- **[📊 Visual Guide](VISUAL-HIERARCHY-GUIDE.md)** - Diagrams and visual examples
+- **[📚 Complete Hierarchy Guide](README-hierarchy.md)** - Full documentation of the system
+- **[✅ Reorganization Summary](REORGANIZATION-SUMMARY.md)** - What changed and why
+- **[🚀 Completion Summary](COMPLETION-SUMMARY.md)** - Quick overview of new structure
+
+### For Developers
+
+- **[🔧 Script Usage](../scripts/README.md)** - How to use automation scripts
+- **[📝 Templates](templates/)** - Epic, Feature, and Story templates
 
 ## Overview
 
