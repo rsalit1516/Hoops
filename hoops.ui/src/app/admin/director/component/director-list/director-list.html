@@ -1,15 +1,56 @@
-<p>
-  director-list works!
-</p>
-<div class="table-wrapper">
-  <mat-table id="grdDirectors" [dataSource]="datasource" >
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef>Name</th>
-      <td mat-cell *matCellDef="let d">
-        {{ d.name }}
-      </td>
-    </ng-container>
-    <tr mat-header-row *matHeaderRowDef="displayedColumns;"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-  </mat-table>
+<div class="director-list-container">
+  <div class="table-header">
+    <h2>Directors</h2>
+    <button mat-raised-button color="primary" (click)="addDirector()">
+      Add Director
+    </button>
+  </div>
+
+  @if (errorMessage) {
+  <div class="error-message" role="alert">{{ errorMessage }}</div>
+  }
+
+  <div class="table-container">
+    <table mat-table [dataSource]="dataSource" matSort class="directors-table">
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+        <td mat-cell *matCellDef="let director">
+          {{ getDirectorName(director) }}
+        </td>
+      </ng-container>
+
+      <!-- Title Column -->
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
+        <td mat-cell *matCellDef="let director">
+          {{ director.title || 'N/A' }}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        (click)="editDirector(row)"
+        class="clickable-row"
+      ></tr>
+
+      <!-- No Data Row -->
+      <tr class="mat-row no-data-row" *matNoDataRow>
+        <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+          No directors found
+        </td>
+      </tr>
+    </table>
+
+    <mat-paginator
+      #directorPaginator
+      [pageSize]="pageSize"
+      [pageSizeOptions]="[10, 25, 50, 100]"
+      [showFirstLastButtons]="showFirstLastButtons"
+      aria-label="Select page of directors"
+    >
+    </mat-paginator>
+  </div>
 </div>
