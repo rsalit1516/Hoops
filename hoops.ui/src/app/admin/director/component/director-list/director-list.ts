@@ -75,12 +75,6 @@ export class DirectorList implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
 
-    // Set default sort
-    if (this.sort) {
-      this.sort.active = 'name';
-      this.sort.direction = 'asc';
-    }
-
     // Custom sort accessor for the name column (combines firstName and lastName)
     this.dataSource.sortingDataAccessor = (
       director: Director,

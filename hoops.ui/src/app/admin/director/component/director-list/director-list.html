@@ -11,7 +11,14 @@
   }
 
   <div class="table-container">
-    <table mat-table [dataSource]="dataSource" matSort class="directors-table">
+    <table
+      mat-table
+      [dataSource]="dataSource"
+      matSort
+      matSortActive="name"
+      matSortDirection="asc"
+      class="directors-table"
+    >
       <!-- Name Column -->
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>

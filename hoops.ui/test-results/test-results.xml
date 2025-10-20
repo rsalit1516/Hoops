@@ -1,34 +1,34 @@
 <?xml version="1.0"?>
-<testsuite name="Chrome 140.0.0.0 (Windows 10)" package="unit" timestamp="2025-09-30T13:49:34" id="0" hostname="Rich-Think" tests="66" errors="0" failures="2" time="1.876">
+<testsuite name="Chrome 141.0.0.0 (Windows 10)" package="unit" timestamp="2025-10-17T15:49:23" id="0" hostname="Rich-Think" tests="109" errors="0" failures="2" time="3.136">
   <properties>
-    <property name="browser.fullName" value="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36"/>
+    <property name="browser.fullName" value="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"/>
   </properties>
-  <testcase name="AuthGuard should allow activation when logged in" time="0.023" classname=".AuthGuard"/>
-  <testcase name="AuthGuard should redirect to login with returnUrl when not logged in" time="0.015" classname=".AuthGuard"/>
-  <testcase name="AuthGuard should allow load when logged in" time="0.008" classname=".AuthGuard"/>
-  <testcase name="AuthGuard should block load when not logged in" time="0.004" classname=".AuthGuard"/>
-  <testcase name="YourService put should make a PUT request with the correct URL and data" time="0.016" classname=".YourService put"/>
+  <testcase name="AuthGuard should allow activation when logged in" time="0.021" classname=".AuthGuard"/>
+  <testcase name="AuthGuard should redirect to login with returnUrl when not logged in" time="0.005" classname=".AuthGuard"/>
+  <testcase name="AuthGuard should allow load when logged in" time="0.004" classname=".AuthGuard"/>
+  <testcase name="AuthGuard should block load when not logged in" time="0.002" classname=".AuthGuard"/>
+  <testcase name="YourService put should make a PUT request with the correct URL and data" time="0.012" classname=".YourService put"/>
   <testcase name="YourService put should handle errors appropriately" time="0.005" classname=".YourService put"/>
   <testcase name="YourService put should handle null response" time="0.004" classname=".YourService put"/>
   <testcase name="YourService put should include custom headers in the request" time="0.004" classname=".YourService put"/>
-  <testcase name="PlayoffGameService - Time Formatting should create" time="0.006" classname=".PlayoffGameService - Time Formatting"/>
-  <testcase name="PlayoffGameService - Time Formatting should format time with AM/PM format" time="0.029" classname=".PlayoffGameService - Time Formatting"/>
-  <testcase name="PlayoffGameService - Time Formatting should convert AM/PM time to 24-hour format" time="0.004" classname=".PlayoffGameService - Time Formatting"/>
-  <testcase name="PlayoffGameService - Time Formatting should normalize API playoff game with AM/PM time" time="0.002" classname=".PlayoffGameService - Time Formatting"/>
-  <testcase name="AppFeatureFlagDirective creates embedded view when flag enabled" time="0.005" classname=".AppFeatureFlagDirective"/>
+  <testcase name="PlayoffGameService - Time Formatting should create" time="0.007" classname=".PlayoffGameService - Time Formatting"/>
+  <testcase name="PlayoffGameService - Time Formatting should format time with AM/PM format" time="0.023" classname=".PlayoffGameService - Time Formatting"/>
+  <testcase name="PlayoffGameService - Time Formatting should convert AM/PM time to 24-hour format" time="0.005" classname=".PlayoffGameService - Time Formatting"/>
+  <testcase name="PlayoffGameService - Time Formatting should normalize API playoff game with AM/PM time" time="0.003" classname=".PlayoffGameService - Time Formatting"/>
+  <testcase name="AppFeatureFlagDirective creates embedded view when flag enabled" time="0.003" classname=".AppFeatureFlagDirective"/>
   <testcase name="AppFeatureFlagDirective does not create embedded view when flag disabled" time="0.003" classname=".AppFeatureFlagDirective"/>
   <testcase name="adminGuard allows when adminModule flag enabled" time="0.002" classname=".adminGuard"/>
   <testcase name="adminGuard blocks when adminModule flag disabled" time="0.002" classname=".adminGuard"/>
-  <testcase name="NoticeTypesService should be created" time="0.005" classname=".NoticeTypesService"/>
-  <testcase name="AdminGamesPlayoffsDetail - Date/Time Pickers should create" time="0.232" classname=".AdminGamesPlayoffsDetail - Date/Time Pickers"/>
-  <testcase name="AdminGamesPlayoffsDetail - Date/Time Pickers should have form controls for gameDate and gameTime as Date objects" time="0.049" classname=".AdminGamesPlayoffsDetail - Date/Time Pickers"/>
-  <testcase name="AdminGamesPlayoffsDetail - Date/Time Pickers should set Date objects in form when editing existing record" time="0.042" classname=".AdminGamesPlayoffsDetail - Date/Time Pickers"/>
-  <testcase name="AdminGamesPlayoffsDetail - Date/Time Pickers should combine date and time when saving" time="0.049" classname=".AdminGamesPlayoffsDetail - Date/Time Pickers"/>
-  <testcase name="AdminGamesPlayoffsDetail - Date/Time Pickers should have isFormDirty method for PendingChangesGuard" time="0.062" classname=".AdminGamesPlayoffsDetail - Date/Time Pickers"/>
-  <testcase name="AdminSeasonDetail should create" time="0.111" classname=".AdminSeasonDetail"/>
-  <testcase name="AlphabeticalSearch should highlight selected letter" time="0.031" classname=".AlphabeticalSearch"/>
-  <testcase name="AlphabeticalSearch should default to A on clear" time="0.012" classname=".AlphabeticalSearch"/>
-  <testcase name="AlphabeticalSearch should update criteria in PeopleService when letter is selected" time="0.012" classname=".AlphabeticalSearch">
+  <testcase name="NoticeTypesService should be created" time="0.004" classname=".NoticeTypesService"/>
+  <testcase name="AdminGamesPlayoffsDetail - Date/Time Pickers should create" time="0.227" classname=".AdminGamesPlayoffsDetail - Date/Time Pickers"/>
+  <testcase name="AdminGamesPlayoffsDetail - Date/Time Pickers should have form controls for gameDate and gameTime as Date objects" time="0.085" classname=".AdminGamesPlayoffsDetail - Date/Time Pickers"/>
+  <testcase name="AdminGamesPlayoffsDetail - Date/Time Pickers should set Date objects in form when editing existing record" time="0.075" classname=".AdminGamesPlayoffsDetail - Date/Time Pickers"/>
+  <testcase name="AdminGamesPlayoffsDetail - Date/Time Pickers should combine date and time when saving" time="0.08" classname=".AdminGamesPlayoffsDetail - Date/Time Pickers"/>
+  <testcase name="AdminGamesPlayoffsDetail - Date/Time Pickers should have isFormDirty method for PendingChangesGuard" time="0.06" classname=".AdminGamesPlayoffsDetail - Date/Time Pickers"/>
+  <testcase name="AdminSeasonDetail should create" time="0.091" classname=".AdminSeasonDetail"/>
+  <testcase name="AlphabeticalSearch should highlight selected letter" time="0.027" classname=".AlphabeticalSearch"/>
+  <testcase name="AlphabeticalSearch should default to A on clear" time="0.014" classname=".AlphabeticalSearch"/>
+  <testcase name="AlphabeticalSearch should update criteria in PeopleService when letter is selected" time="0.016" classname=".AlphabeticalSearch">
     <failure type="">Expected spy updateSelectedCriteria to have been called with:
   [ &lt;jasmine.objectContaining(Object({ lastName: 'D' }))&gt; ]
 but it was never called.
@@ -39,17 +39,15 @@ but it was never called.
     at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
 </failure>
   </testcase>
-  <testcase name="PlayerBalance should create" time="0.013" classname=".PlayerBalance"/>
-  <testcase name="PlayerHistory should create" time="0.006" classname=".PlayerHistory"/>
-  <testcase name="AdminUserDetail should create" time="0.069" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail should load households on init" time="0.037" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail should include houseId and peopleId in form configuration" time="0.028" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail should load people when household is selected" time="0.043" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail should clear people options when household is deselected" time="0.022" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail should sort people by last name then first name" time="0.019" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail should sort households alphabetically by name" time="0.017" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail should reset form with empty houseId and peopleId for new user" time="0.017" classname=".AdminUserDetail"/>
-  <testcase name="AdminUsersList should create and render rows" time="0.035" classname=".AdminUsersList">
+  <testcase name="AdminUserDetail should create" time="0.098" classname=".AdminUserDetail"/>
+  <testcase name="AdminUserDetail should load households on init" time="0.025" classname=".AdminUserDetail"/>
+  <testcase name="AdminUserDetail should include houseId and peopleId in form configuration" time="0.021" classname=".AdminUserDetail"/>
+  <testcase name="AdminUserDetail should load people when household is selected" time="0.025" classname=".AdminUserDetail"/>
+  <testcase name="AdminUserDetail should clear people options when household is deselected" time="0.02" classname=".AdminUserDetail"/>
+  <testcase name="AdminUserDetail should sort people by last name then first name" time="0.028" classname=".AdminUserDetail"/>
+  <testcase name="AdminUserDetail should sort households alphabetically by name" time="0.022" classname=".AdminUserDetail"/>
+  <testcase name="AdminUserDetail should reset form with empty houseId and peopleId for new user" time="0.024" classname=".AdminUserDetail"/>
+  <testcase name="AdminUsersList should create and render rows" time="0.037" classname=".AdminUsersList">
     <failure type="">TypeError: this.usersService.loadUsers is not a function
     at AdminUsersList.call [as ngOnInit] (src/app/admin/admin-users/admin-users-list/admin-users-list.ts:70:23)
     at callHookInternal (node_modules/@angular/core/fesm2022/debug_node.mjs:860:14)
@@ -63,48 +61,93 @@ but it was never called.
     at ViewRef.detectChanges (node_modules/@angular/core/fesm2022/debug_node.mjs:9734:9)
 </failure>
   </testcase>
-  <testcase name="ContentEdit Component Initialization should create" time="0.063" classname=".ContentEdit Component Initialization"/>
-  <testcase name="ContentEdit Component Initialization should initialize with correct default values" time="0.019" classname=".ContentEdit Component Initialization"/>
-  <testcase name="ContentEdit Component Initialization should initialize form with correct structure and validators" time="0.041" classname=".ContentEdit Component Initialization"/>
-  <testcase name="ContentEdit Form Validation should validate title field correctly" time="0.033" classname=".ContentEdit Form Validation"/>
-  <testcase name="ContentEdit Form Validation should validate subtitle field correctly" time="0.031" classname=".ContentEdit Form Validation"/>
-  <testcase name="ContentEdit Form Validation should validate expiration date field correctly" time="0.031" classname=".ContentEdit Form Validation"/>
-  <testcase name="ContentEdit Content Loading and Effects should populate form when content is retrieved" time="0.031" classname=".ContentEdit Content Loading and Effects"/>
-  <testcase name="ContentEdit Content Loading and Effects should set page title correctly for new content" time="0.026" classname=".ContentEdit Content Loading and Effects"/>
-  <testcase name="ContentEdit Content Loading and Effects should set page title correctly for existing content" time="0.028" classname=".ContentEdit Content Loading and Effects"/>
-  <testcase name="ContentEdit Content Loading and Effects should compute content types correctly" time="0.029" classname=".ContentEdit Content Loading and Effects"/>
-  <testcase name="ContentEdit Save Functionality should save content when form is valid and dirty" time="0.031" classname=".ContentEdit Save Functionality"/>
-  <testcase name="ContentEdit Save Functionality should not save content when form is invalid" time="0.027" classname=".ContentEdit Save Functionality"/>
-  <testcase name="ContentEdit Save Functionality should not save content when form is not dirty" time="0.026" classname=".ContentEdit Save Functionality"/>
-  <testcase name="ContentEdit Save Functionality should create WebContent object with correct values when saving" time="0.039" classname=".ContentEdit Save Functionality"/>
-  <testcase name="ContentEdit Delete Functionality should delete content when webContentId is not 0" time="0.028" classname=".ContentEdit Delete Functionality"/>
-  <testcase name="ContentEdit Delete Functionality should not delete content when webContentId is 0" time="0.025" classname=".ContentEdit Delete Functionality"/>
-  <testcase name="ContentEdit Helper Methods should format text correctly" time="0.028" classname=".ContentEdit Helper Methods"/>
-  <testcase name="ContentEdit Helper Methods should convert values to numbers correctly" time="0.028" classname=".ContentEdit Helper Methods"/>
-  <testcase name="ContentEdit Helper Methods should return correct float label value" time="0.024" classname=".ContentEdit Helper Methods"/>
-  <testcase name="ContentEdit Helper Methods should detect form dirty state correctly" time="0.029" classname=".ContentEdit Helper Methods"/>
-  <testcase name="ContentEdit Helper Methods should get web content type correctly" time="0.025" classname=".ContentEdit Helper Methods"/>
-  <testcase name="ContentEdit Helper Methods should handle input events" time="0.023" classname=".ContentEdit Helper Methods"/>
-  <testcase name="ContentEdit Update Method should update form with content values" time="0.034" classname=".ContentEdit Update Method"/>
-  <testcase name="ContentEdit Update Method should format text and log it" time="0.024" classname=".ContentEdit Update Method"/>
-  <testcase name="ContentEdit Error Handling should have hasError method that returns empty string" time="0.025" classname=".ContentEdit Error Handling"/>
-  <testcase name="Login Component navigates to returnUrl on successful login" time="0.064" classname=".Login Component"/>
+  <testcase name="PlayerBalance should create" time="0.012" classname=".PlayerBalance"/>
+  <testcase name="PlayerHistory should create" time="0.008" classname=".PlayerHistory"/>
+  <testcase name="ContentEdit Component Initialization should create" time="0.076" classname=".ContentEdit Component Initialization"/>
+  <testcase name="ContentEdit Component Initialization should initialize with correct default values" time="0.039" classname=".ContentEdit Component Initialization"/>
+  <testcase name="ContentEdit Component Initialization should initialize form with correct structure and validators" time="0.062" classname=".ContentEdit Component Initialization"/>
+  <testcase name="ContentEdit Form Validation should validate title field correctly" time="0.046" classname=".ContentEdit Form Validation"/>
+  <testcase name="ContentEdit Form Validation should validate subtitle field correctly" time="0.037" classname=".ContentEdit Form Validation"/>
+  <testcase name="ContentEdit Form Validation should validate expiration date field correctly" time="0.04" classname=".ContentEdit Form Validation"/>
+  <testcase name="ContentEdit Content Loading and Effects should populate form when content is retrieved" time="0.032" classname=".ContentEdit Content Loading and Effects"/>
+  <testcase name="ContentEdit Content Loading and Effects should set page title correctly for new content" time="0.032" classname=".ContentEdit Content Loading and Effects"/>
+  <testcase name="ContentEdit Content Loading and Effects should set page title correctly for existing content" time="0.04" classname=".ContentEdit Content Loading and Effects"/>
+  <testcase name="ContentEdit Content Loading and Effects should compute content types correctly" time="0.034" classname=".ContentEdit Content Loading and Effects"/>
+  <testcase name="ContentEdit Save Functionality should save content when form is valid and dirty" time="0.057" classname=".ContentEdit Save Functionality"/>
+  <testcase name="ContentEdit Save Functionality should not save content when form is invalid" time="0.046" classname=".ContentEdit Save Functionality"/>
+  <testcase name="ContentEdit Save Functionality should not save content when form is not dirty" time="0.047" classname=".ContentEdit Save Functionality"/>
+  <testcase name="ContentEdit Save Functionality should create WebContent object with correct values when saving" time="0.048" classname=".ContentEdit Save Functionality"/>
+  <testcase name="ContentEdit Delete Functionality should delete content when webContentId is not 0" time="0.047" classname=".ContentEdit Delete Functionality"/>
+  <testcase name="ContentEdit Delete Functionality should not delete content when webContentId is 0" time="0.037" classname=".ContentEdit Delete Functionality"/>
+  <testcase name="ContentEdit Helper Methods should format text correctly" time="0.041" classname=".ContentEdit Helper Methods"/>
+  <testcase name="ContentEdit Helper Methods should convert values to numbers correctly" time="0.033" classname=".ContentEdit Helper Methods"/>
+  <testcase name="ContentEdit Helper Methods should return correct float label value" time="0.028" classname=".ContentEdit Helper Methods"/>
+  <testcase name="ContentEdit Helper Methods should detect form dirty state correctly" time="0.033" classname=".ContentEdit Helper Methods"/>
+  <testcase name="ContentEdit Helper Methods should get web content type correctly" time="0.029" classname=".ContentEdit Helper Methods"/>
+  <testcase name="ContentEdit Helper Methods should handle input events" time="0.039" classname=".ContentEdit Helper Methods"/>
+  <testcase name="ContentEdit Update Method should update form with content values" time="0.027" classname=".ContentEdit Update Method"/>
+  <testcase name="ContentEdit Update Method should format text and log it" time="0.029" classname=".ContentEdit Update Method"/>
+  <testcase name="ContentEdit Error Handling should have hasError method that returns empty string" time="0.031" classname=".ContentEdit Error Handling"/>
+  <testcase name="Login Component navigates to returnUrl on successful login" time="0.081" classname=".Login Component"/>
   <testcase name="Login Component toggles hidePassword state" time="0.013" classname=".Login Component"/>
-  <testcase name="SectionTitle should create" time="0.003" classname=".SectionTitle"/>
-  <testcase name="ShellTitle should create" time="0.005" classname=".ShellTitle"/>
+  <testcase name="SectionTitle should create" time="0.004" classname=".SectionTitle"/>
+  <testcase name="ShellTitle should create" time="0.006" classname=".ShellTitle"/>
+  <testcase name="DirectorList Component Initialization should create" time="0.048" classname=".DirectorList Component Initialization"/>
+  <testcase name="DirectorList Component Initialization should initialize with correct default values" time="0.02" classname=".DirectorList Component Initialization"/>
+  <testcase name="DirectorList Component Initialization should initialize dataSource as MatTableDataSource" time="0.019" classname=".DirectorList Component Initialization"/>
+  <testcase name="DirectorList Component Initialization should call fetchDirectors on init if no directors provided" time="0.02" classname=".DirectorList Component Initialization"/>
+  <testcase name="DirectorList Data Loading should display directors from service signal" time="0.024" classname=".DirectorList Data Loading"/>
+  <testcase name="DirectorList Data Loading should update dataSource when directors input changes" time="0.022" classname=".DirectorList Data Loading"/>
+  <testcase name="DirectorList Data Loading should handle empty directors list" time="0.025" classname=".DirectorList Data Loading"/>
+  <testcase name="DirectorList Data Loading should call loadDirectors method" time="0.021" classname=".DirectorList Data Loading"/>
+  <testcase name="DirectorList Data Loading should reload data when refreshList is called" time="0.024" classname=".DirectorList Data Loading"/>
+  <testcase name="DirectorList Table Display should render table with correct columns" time="0.019" classname=".DirectorList Table Display"/>
+  <testcase name="DirectorList Table Display should render correct number of rows" time="0.024" classname=".DirectorList Table Display"/>
+  <testcase name="DirectorList Table Display should display director names correctly" time="0.02" classname=".DirectorList Table Display"/>
+  <testcase name="DirectorList Table Display should display titles in table cells" time="0.019" classname=".DirectorList Table Display"/>
+  <testcase name="DirectorList Table Display should display &quot;N/A&quot; for missing titles" time="0.021" classname=".DirectorList Table Display"/>
+  <testcase name="DirectorList Sorting Functionality should bind sort to dataSource" time="0.024" classname=".DirectorList Sorting Functionality"/>
+  <testcase name="DirectorList Sorting Functionality should have default sort configured in template" time="0.025" classname=".DirectorList Sorting Functionality"/>
+  <testcase name="DirectorList Sorting Functionality should have custom sortingDataAccessor for name" time="0.026" classname=".DirectorList Sorting Functionality"/>
+  <testcase name="DirectorList Sorting Functionality should sort by name correctly" time="0.024" classname=".DirectorList Sorting Functionality"/>
+  <testcase name="DirectorList Sorting Functionality should sort by title correctly" time="0.021" classname=".DirectorList Sorting Functionality"/>
+  <testcase name="DirectorList Sorting Functionality should handle null titles in sorting" time="0.021" classname=".DirectorList Sorting Functionality"/>
+  <testcase name="DirectorList Pagination Functionality should bind paginator to dataSource" time="0.039" classname=".DirectorList Pagination Functionality"/>
+  <testcase name="DirectorList Pagination Functionality should have correct page size" time="0.018" classname=".DirectorList Pagination Functionality"/>
+  <testcase name="DirectorList Pagination Functionality should show first/last buttons" time="0.017" classname=".DirectorList Pagination Functionality"/>
+  <testcase name="DirectorList Pagination Functionality should render paginator element" time="0.019" classname=".DirectorList Pagination Functionality"/>
+  <testcase name="DirectorList Pagination Functionality should have correct paginator configuration" time="0.02" classname=".DirectorList Pagination Functionality"/>
+  <testcase name="DirectorList User Interactions should call editDirector when row is clicked" time="0.02" classname=".DirectorList User Interactions"/>
+  <testcase name="DirectorList User Interactions should have TODO comment for navigation in editDirector" time="0.018" classname=".DirectorList User Interactions"/>
+  <testcase name="DirectorList User Interactions should call addDirector when Add button is clicked" time="0.016" classname=".DirectorList User Interactions"/>
+  <testcase name="DirectorList User Interactions should have TODO comment for navigation in addDirector" time="0.016" classname=".DirectorList User Interactions"/>
+  <testcase name="DirectorList User Interactions should apply clickable-row class to table rows" time="0.014" classname=".DirectorList User Interactions"/>
+  <testcase name="DirectorList UI Elements should display page title" time="0.015" classname=".DirectorList UI Elements"/>
+  <testcase name="DirectorList UI Elements should display Add Director button" time="0.018" classname=".DirectorList UI Elements"/>
+  <testcase name="DirectorList UI Elements should display error message when errorMessage is set" time="0.02" classname=".DirectorList UI Elements"/>
+  <testcase name="DirectorList UI Elements should not display error message when errorMessage is undefined" time="0.017" classname=".DirectorList UI Elements"/>
+  <testcase name="DirectorList Accessibility should have proper ARIA label on paginator" time="0.025" classname=".DirectorList Accessibility"/>
+  <testcase name="DirectorList Accessibility should have role alert on error message" time="0.024" classname=".DirectorList Accessibility"/>
+  <testcase name="DirectorList Accessibility should have semantic table structure" time="0.02" classname=".DirectorList Accessibility"/>
+  <testcase name="DirectorList Edge Cases should handle directors with empty names" time="0.02" classname=".DirectorList Edge Cases"/>
+  <testcase name="DirectorList Edge Cases should handle null paginator gracefully" time="0.019" classname=".DirectorList Edge Cases"/>
+  <testcase name="DirectorList Edge Cases should handle null sort gracefully" time="0.024" classname=".DirectorList Edge Cases"/>
+  <testcase name="DirectorList Edge Cases should update dataSource when directors array is modified" time="0.017" classname=".DirectorList Edge Cases"/>
+  <testcase name="DirectorList Integration with DirectorService should react to signal changes" time="0.019" classname=".DirectorList Integration with DirectorService"/>
+  <testcase name="DirectorList Integration with DirectorService should handle empty signal" time="0.016" classname=".DirectorList Integration with DirectorService"/>
   <system-out>
-    <![CDATA[Chrome 140.0.0.0 (Windows 10) DEBUG: '[DEBUG]', 'PUT url:', 'api/test'
-,Chrome 140.0.0.0 (Windows 10) DEBUG: '[DEBUG]', 'PUT data:', Object{id: 1, name: 'Test'}
-,Chrome 140.0.0.0 (Windows 10) DEBUG: '[DEBUG]', 'PUT url:', 'api/test'
-,Chrome 140.0.0.0 (Windows 10) DEBUG: '[DEBUG]', 'PUT data:', Object{id: 1, name: 'Test'}
-,Chrome 140.0.0.0 (Windows 10) DEBUG: '[DEBUG]', 'PUT url:', 'api/test'
-,Chrome 140.0.0.0 (Windows 10) DEBUG: '[DEBUG]', 'PUT data:', Object{id: 1, name: 'Test'}
-,Chrome 140.0.0.0 (Windows 10) DEBUG: '[DEBUG]', 'PUT url:', 'api/test'
-,Chrome 140.0.0.0 (Windows 10) DEBUG: '[DEBUG]', 'PUT data:', Object{id: 1, name: 'Test'}
-,Chrome 140.0.0.0 (Windows 10) LOG: undefined
-,Chrome 140.0.0.0 (Windows 10) INFO: '[LOCAL]', 'Selected letter:', 'B'
-,Chrome 140.0.0.0 (Windows 10) INFO: '[LOCAL]', 'Selected letter:', 'C'
-,Chrome 140.0.0.0 (Windows 10) INFO: '[LOCAL]', 'Selected letter:', 'D'
+    <![CDATA[Chrome 141.0.0.0 (Windows 10) DEBUG: '[DEBUG]', 'PUT url:', 'api/test'
+,Chrome 141.0.0.0 (Windows 10) DEBUG: '[DEBUG]', 'PUT data:', Object{id: 1, name: 'Test'}
+,Chrome 141.0.0.0 (Windows 10) DEBUG: '[DEBUG]', 'PUT url:', 'api/test'
+,Chrome 141.0.0.0 (Windows 10) DEBUG: '[DEBUG]', 'PUT data:', Object{id: 1, name: 'Test'}
+,Chrome 141.0.0.0 (Windows 10) DEBUG: '[DEBUG]', 'PUT url:', 'api/test'
+,Chrome 141.0.0.0 (Windows 10) DEBUG: '[DEBUG]', 'PUT data:', Object{id: 1, name: 'Test'}
+,Chrome 141.0.0.0 (Windows 10) DEBUG: '[DEBUG]', 'PUT url:', 'api/test'
+,Chrome 141.0.0.0 (Windows 10) DEBUG: '[DEBUG]', 'PUT data:', Object{id: 1, name: 'Test'}
+,Chrome 141.0.0.0 (Windows 10) LOG: undefined
+,Chrome 141.0.0.0 (Windows 10) INFO: '[LOCAL]', 'Selected letter:', 'B'
+,Chrome 141.0.0.0 (Windows 10) INFO: '[LOCAL]', 'Selected letter:', 'C'
+,Chrome 141.0.0.0 (Windows 10) INFO: '[LOCAL]', 'Selected letter:', 'D'
 
 ]]>
   </system-out>
