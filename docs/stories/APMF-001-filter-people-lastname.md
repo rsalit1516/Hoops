@@ -1,12 +1,12 @@
 # Story APMF-001: Filter People by Last Name
 
-**Story ID:** APMF-001  
-**Epic:** APM-001 - Admin People Management  
-**Feature Area:** Admin People  
-**Sprint:** TBD  
-**Story Points:** 3  
-**Priority:** High  
-**Assignee:** TBD  
+**Story ID:** APMF-001
+**Feature:** [APMF-001 - People Filtering](../features/admin-people/APMF-001-people-filtering.md)
+**Epic:** [APM-001](../epics/APM-001-admin-people-management.md)
+**Azure Boards:** [Story #TBD](https://dev.azure.com/rsalit1516/Hoops/_workitems/edit/TBD)
+
+**Story Points:** 3
+**Priority:** High
 
 ## User Story
 As an administrator, I want to filter the people list by last name so that I can quickly find specific individuals when managing league data.

@@ -1,12 +1,12 @@
 # Story APMF-002: Filter People by First Name
 
-**Story ID:** APMF-002  
-**Epic:** APM-001 - Admin People Management  
-**Feature Area:** Admin People  
-**Sprint:** TBD  
-**Story Points:** 2  
+**Story ID:** APMF-002
+**Feature:** [APMF-001 - People Filtering](../features/admin-people/APMF-001-people-filtering.md)
+**Epic:** [APM-001](../epics/APM-001-admin-people-management.md)
+**Azure Boards:** [Story #TBD](https://dev.azure.com/rsalit1516/Hoops/_workitems/edit/TBD)
+
+**Story Points:** 2
 **Priority:** Medium  
-**Assignee:** TBD  
 
 ## User Story
 As an administrator, I want to filter the people list by first name so that I can find people when I only know their first name.

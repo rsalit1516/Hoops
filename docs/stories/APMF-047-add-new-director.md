@@ -1,22 +1,32 @@
 # Story APMF-047: Add New Director
 
-**Story ID:** APMF-047  
-**Feature:** [{{FEATURE_ID}}](../../features/{{FEATURE_AREA}}/{{FEATURE_ID}}.md)  
-**Epic:** [APM-001](../../epics/APM-001.md)  
-**Azure Boards:** [Story #{{WORK_ITEM_ID}}](https://dev.azure.com/rsalit1516/Hoops/_workitems/edit/{{WORK_ITEM_ID}})
+**Story ID:** APMF-047
+**Feature:** [APMF-046 - Director Management](../features/apm/APMF-046-director-management.md)
+**Epic:** [APM-001](../epics/APM-001-admin-people-management.md)
+**Azure Boards:** [Story #47](https://dev.azure.com/rsalit1516/Hoops/_workitems/edit/47)
 
-**Story Points:** {{POINTS}}  
-**Priority:** {{PRIORITY}}
+**Story Points:** 3
+**Priority:** High
 
 ## User Story
 
-As a {{USER_TYPE}}, I want {{FUNCTIONALITY}} so that {{BUSINESS_VALUE}}.
+As an administrator, I want to add a new director to the system so that the public-facing director list remains current and accurate.
 
 ## Acceptance Criteria
 
-- [ ] {{Criterion 1 - specific, testable behavior}}
-- [ ] {{Criterion 2 - specific, testable behavior}}
-- [ ] {{Criterion 3 - specific, testable behavior}}
+- [ ] "Add Director" button is visible on the directors list page
+- [ ] Clicking "Add Director" opens a form with required fields:
+  - [ ] Board Member dropdown (from people table where boardMember = 1 or boardOfficer = 1, displayed as "LastName, FirstName")
+  - [ ] Title field (text, max 50 characters, required)
+  - [ ] Sequence Number field (integer, required, for display ordering)
+- [ ] All fields are validated (required, proper data types, max lengths)
+- [ ] "Save" button is enabled only when form is valid
+- [ ] Clicking "Save" persists the new director to the database
+- [ ] After successful save, user is navigated back to directors list
+- [ ] New director appears in the list with correct information
+- [ ] "Cancel" button returns to directors list without saving
+- [ ] Form displays validation errors inline with appropriate fields
+- [ ] Success message displays after successful save
 
 ## Definition of Done
 
@@ -28,59 +38,69 @@ As a {{USER_TYPE}}, I want {{FUNCTIONALITY}} so that {{BUSINESS_VALUE}}.
 
 ## Dependencies
 
-- **Blocked by:** APMF-047 or None
-- **Blocks:** APMF-047 or None
-- **Related:** APMF-047 or None
-
-## Dependencies
-
-- **Blocked by:** APMF-047 or None
-- **Blocks:** APMF-047 or None
-- **Related:** APMF-047 or None
+- **Blocked by:** APMF-046 (View Directors List)
+- **Blocks:** None
+- **Related:** APMF-048 (Edit Director), APMF-049 (Delete Director)
 
 ## Technical Implementation
 
 ### Components
 
-- **Primary:** `{{ComponentName}}` - {{description}}
-- **Supporting:** `{{SupportingComponent}}` - {{description}}
+- **Primary:** `DirectorForm` - Reactive form component for adding director
+- **Supporting:** `DirectorFormDialog` - Modal wrapper for the form
+- **Supporting:** `PeopleSelector` - Dropdown component for selecting board members
 
 ### Services
 
-- `{{ServiceName}}` - {{description}}
+- `DirectorService` - API integration for creating director records
+- `PeopleService` - Fetch list of eligible board members for dropdown
+- `DirectorValidationService` - Client-side validation rules
 
 ### Models/Interfaces
 
-- `{{InterfaceName}}` - {{description}}
+- `Director` - Director entity interface
+- `DirectorFormData` - Form data interface for add/edit operations
+- `BoardMember` - Interface for board member dropdown options
 
 ## Related Files
 
-- **BDD Feature:** [APMF-047-{{feature-name}}.feature](../features/{{FEATURE_AREA}}/APMF-047-{{feature-name}}.feature)
-- **Component:** `/src/app/{{path}}/`
-- **Service:** `/src/app/{{path}}/`
+- **BDD Feature:** [APMF-047-add-new-director.feature](../features/apm/APMF-047-add-new-director.feature)
+- **Component:** `/src/app/admin/directors/director-form/`
+- **Service:** `/src/app/admin/directors/services/director.service.ts`
 
 ## Technical Notes
 
-{{Any implementation details, constraints, or architectural considerations}}
+- Use Angular reactive forms with validators
+- Board member dropdown should filter people where `boardMember = 1` OR `boardOfficer = 1`
+- Sequence number should default to next available number (max + 1)
+- Consider implementing duplicate detection (same person + title combination)
+- Use optimistic updates with rollback on error
+- Form should be reusable for both add and edit operations
 
 ## Test Scenarios
 
 ### Happy Path
 
-- {{Description of normal user flow}}
+- Admin clicks "Add Director", fills in all required fields, clicks "Save"
+- New director is created and appears in the list
+- Admin is returned to directors list with success message
 
 ### Edge Cases
 
-- {{Edge case 1}}
-- {{Edge case 2}}
+- Attempting to add director with existing person + title combination (warn or prevent)
+- Sequence number conflicts are handled gracefully
+- Very long titles (near 50 character limit) display properly
+- Dropdown with many board members (100+) performs well
 
 ### Error Conditions
 
-- {{Error condition 1}}
-- {{Error condition 2}}
+- Save fails due to API error - error message displayed, form remains open
+- Network timeout during save - appropriate feedback with retry option
+- Invalid data submitted - validation errors displayed inline
+- Required fields left blank - save button remains disabled
 
 ---
 
-**Created:** 2025-10-17  
-**Last Updated:** 2025-10-17  
-**Status:** {{Not Started|In Progress|Done}}
+**Created:** 2025-10-17
+**Last Updated:** 2025-10-23
+**Status:** Not Started

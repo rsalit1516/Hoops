@@ -1,12 +1,12 @@
 # Story APMF-003: Alphabet Navigation for People List
 
-**Story ID:** APMF-003  
-**Epic:** APM-001 - Admin People Management  
-**Feature Area:** Admin People  
-**Sprint:** TBD  
-**Story Points:** 3  
+**Story ID:** APMF-003
+**Feature:** [APMF-003 - Alphabet Navigation](../features/admin-people/APMF-003-alphabet-navigation.md) (TBD - Feature doc needed)
+**Epic:** [APM-001](../epics/APM-001-admin-people-management.md)
+**Azure Boards:** [Story #TBD](https://dev.azure.com/rsalit1516/Hoops/_workitems/edit/TBD)
+
+**Story Points:** 3
 **Priority:** Medium  
-**Assignee:** TBD  
 
 ## User Story
 As an administrator, I want to click on alphabet letters to filter the people list by the first letter of their last name so that I can quickly navigate through large lists of people.
