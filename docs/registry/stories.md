@@ -3,6 +3,7 @@
 ## Active Stories
 
 | Story ID | Title | Epic | Type | Status | Points | Assignee | Sprint | Priority |
+| APMF-059 | Edit Person Information with Validation | APM-001 | Feature | Not Started | TBD | TBD | TBD | Medium |
 | APMF-049 | Delete Director | APM-001 | Feature | Not Started | TBD | TBD | TBD | Medium |
 | APMF-048 | Edit Director Information | APM-001 | Feature | Not Started | TBD | TBD | TBD | Medium |
 | APMF-047 | Add New Director | APM-001 | Feature | Not Started | TBD | TBD | TBD | Medium |

@@ -47,7 +47,7 @@ As an administrator, I want to view and edit existing director information so th
 
 ### Components
 
-- **Primary:** `DirectorForm` - Reusable reactive form component (shared with add)
+- **Primary:** `AdminDirectorForm` - Reusable reactive form component (shared with add)
 - **Supporting:** `DirectorFormDialog` - Modal wrapper configured for edit mode
 - **Supporting:** `PeopleSelector` - Dropdown component for selecting board members
 
