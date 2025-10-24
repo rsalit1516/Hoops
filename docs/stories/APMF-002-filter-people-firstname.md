@@ -1,8 +1,8 @@
 # Story APMF-002: Filter People by First Name
 
 **Story ID:** APMF-002
-**Feature:** [APMF-001 - People Filtering](../features/admin-people/APMF-001-people-filtering.md)
-**Epic:** [APM-001](../epics/APM-001-admin-people-management.md)
+**Feature:** [APMF-001 - Admin People Management](../features/admin-people/APMF-001-admin-people-management.md)
+**Epic:** [APM-001 - League Participant Management](../epics/APM-001-admin-people-management.md)
 **Azure Boards:** [Story #TBD](https://dev.azure.com/rsalit1516/Hoops/_workitems/edit/TBD)
 
 **Story Points:** 2

@@ -1,10 +1,10 @@
-# Feature APMF-046: Director Management
+# Feature APMF-046: Admin Director Management
 
-**Feature ID:** APMF-046  
-**Epic:** [APM-001](../../epics/APM-001-admin-people-management.md)  
+**Feature ID:** APMF-046
+**Epic:** [APM-001 - League Participant Management](../../epics/APM-001-admin-people-management.md)
 **Azure Boards:** [Feature #45](https://dev.azure.com/rsalit1516/Hoops/_workitems/edit/45)
 
-**Product Area:** Admin People Management  
+**Product Area:** League Participant Management
 **Priority:** High
 
 ## Feature Overview
@@ -66,6 +66,6 @@ Enables efficient management of the director list which is exposed on the public
 
 ---
 
-**Created:** 2025-10-17  
-**Last Updated:** 2025-10-17  
-**Status:** Not Started
+**Created:** 2025-10-17
+**Last Updated:** 2025-10-23
+**Status:** In Progress

@@ -1,14 +1,14 @@
-# Epic APM-001: Admin People Management
+# Epic APM-001: League Participant Management
 
-**Epic ID:** APM-001  
-**Product Area:** Admin People Management  
+**Epic ID:** APM-001
+**Product Area:** League Participant Management
 **Azure Boards:** [Epic #1](https://dev.azure.com/rsalit1516/Hoops/_workitems/edit/1)
 
 **Priority:** High
 
 ## Epic Overview
 
-Provide administrators with comprehensive tools to manage people in the league database, including viewing, filtering, editing, and organizing people data with their household relationships and participation history. This epic encompasses all people-related management functions including general people management, household management, and director management.
+Provide administrators with comprehensive tools to manage all league participants including individuals, households, and directors. This epic encompasses viewing, filtering, editing, and organizing participant data with household relationships, participation history, and board leadership information.
 
 ## Business Value
 
@@ -23,23 +23,13 @@ Provide administrators with comprehensive tools to manage people in the league d
 
 ## Features in Epic
 
-| Feature ID | Feature Title        | Stories | Status      |
-| ---------- | -------------------- | ------- | ----------- |
-| APMF-001   | People Management    | 10      | Not Started |
-| APMF-040   | Household Management | 5       | Not Started |
-| APMF-046   | Director Management  | 4       | Not Started |
+| Feature ID | Feature Title                | Stories | Status      |
+| ---------- | ---------------------------- | ------- | ----------- |
+| APMF-001   | Admin People Management      | ~10     | Not Started |
+| APMF-040   | Admin Household Management   | ~5      | Not Started |
+| APMF-046   | Admin Director Management    | 4       | In Progress |
 
 **Total Features:** 3
-
-## Epic Acceptance Criteria
-
-- [ ] Administrators can efficiently search and filter people by multiple criteria
-- [ ] People information can be viewed, added, edited, and deleted with proper validation
-- [ ] Household relationships are clearly displayed and manageable
-- [ ] Directors can be managed with dedicated interface and public display
-- [ ] All changes are audited with user metadata for accountability
-- [ ] Interface is responsive and accessible (WCAG 2.1 AA)
-- [ ] Performance supports datasets of 2000+ people with <2s load times
 
 ## Epic Acceptance Criteria
 
@@ -97,6 +87,6 @@ Provide administrators with comprehensive tools to manage people in the league d
 
 ---
 
-**Created:** 2025-10-11  
-**Last Updated:** 2025-10-17  
-**Status:** Not Started
+**Created:** 2025-10-11
+**Last Updated:** 2025-10-23
+**Status:** In Progress

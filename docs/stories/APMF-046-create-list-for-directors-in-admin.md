@@ -1,8 +1,8 @@
 # Story APMF-046: View Directors List with Sort and Pagination
 
-**Story ID:** APMF-046  
-**Feature:** [APMF-046 - Director Management](../features/apm/APMF-046-director-management.md)  
-**Epic:** [APM-001 - Admin People Management](../epics/APM-001-admin-people-management.md)  
+**Story ID:** APMF-046
+**Feature:** [APMF-046 - Admin Director Management](../features/apm/APMF-046-director-management.md)
+**Epic:** [APM-001 - League Participant Management](../epics/APM-001-admin-people-management.md)  
 **Azure Boards:** [Story #46](https://dev.azure.com/rsalit1516/Hoops/_workitems/edit/46)
 
 **Story Points:** 5  

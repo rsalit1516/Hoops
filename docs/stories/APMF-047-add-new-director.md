@@ -1,8 +1,8 @@
 # Story APMF-047: Add New Director
 
 **Story ID:** APMF-047
-**Feature:** [APMF-046 - Director Management](../features/apm/APMF-046-director-management.md)
-**Epic:** [APM-001](../epics/APM-001-admin-people-management.md)
+**Feature:** [APMF-046 - Admin Director Management](../features/apm/APMF-046-director-management.md)
+**Epic:** [APM-001 - League Participant Management](../epics/APM-001-admin-people-management.md)
 **Azure Boards:** [Story #47](https://dev.azure.com/rsalit1516/Hoops/_workitems/edit/47)
 
 **Story Points:** 3
