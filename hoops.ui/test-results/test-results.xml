@@ -1,154 +1,319 @@
 <?xml version="1.0"?>
-<testsuite name="Chrome 141.0.0.0 (Windows 10)" package="unit" timestamp="2025-10-17T15:49:23" id="0" hostname="Rich-Think" tests="109" errors="0" failures="2" time="3.136">
+<testsuite name="Chrome Headless 141.0.0.0 (Windows 10)" package="unit" timestamp="2025-10-27T15:30:46" id="0" hostname="Rich-Think" tests="60" errors="0" failures="24" time="1.282">
   <properties>
-    <property name="browser.fullName" value="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"/>
+    <property name="browser.fullName" value="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/141.0.0.0 Safari/537.36"/>
   </properties>
-  <testcase name="AuthGuard should allow activation when logged in" time="0.021" classname=".AuthGuard"/>
-  <testcase name="AuthGuard should redirect to login with returnUrl when not logged in" time="0.005" classname=".AuthGuard"/>
-  <testcase name="AuthGuard should allow load when logged in" time="0.004" classname=".AuthGuard"/>
-  <testcase name="AuthGuard should block load when not logged in" time="0.002" classname=".AuthGuard"/>
-  <testcase name="YourService put should make a PUT request with the correct URL and data" time="0.012" classname=".YourService put"/>
-  <testcase name="YourService put should handle errors appropriately" time="0.005" classname=".YourService put"/>
-  <testcase name="YourService put should handle null response" time="0.004" classname=".YourService put"/>
-  <testcase name="YourService put should include custom headers in the request" time="0.004" classname=".YourService put"/>
-  <testcase name="PlayoffGameService - Time Formatting should create" time="0.007" classname=".PlayoffGameService - Time Formatting"/>
-  <testcase name="PlayoffGameService - Time Formatting should format time with AM/PM format" time="0.023" classname=".PlayoffGameService - Time Formatting"/>
-  <testcase name="PlayoffGameService - Time Formatting should convert AM/PM time to 24-hour format" time="0.005" classname=".PlayoffGameService - Time Formatting"/>
-  <testcase name="PlayoffGameService - Time Formatting should normalize API playoff game with AM/PM time" time="0.003" classname=".PlayoffGameService - Time Formatting"/>
-  <testcase name="AppFeatureFlagDirective creates embedded view when flag enabled" time="0.003" classname=".AppFeatureFlagDirective"/>
-  <testcase name="AppFeatureFlagDirective does not create embedded view when flag disabled" time="0.003" classname=".AppFeatureFlagDirective"/>
-  <testcase name="adminGuard allows when adminModule flag enabled" time="0.002" classname=".adminGuard"/>
-  <testcase name="adminGuard blocks when adminModule flag disabled" time="0.002" classname=".adminGuard"/>
-  <testcase name="NoticeTypesService should be created" time="0.004" classname=".NoticeTypesService"/>
-  <testcase name="AdminGamesPlayoffsDetail - Date/Time Pickers should create" time="0.227" classname=".AdminGamesPlayoffsDetail - Date/Time Pickers"/>
-  <testcase name="AdminGamesPlayoffsDetail - Date/Time Pickers should have form controls for gameDate and gameTime as Date objects" time="0.085" classname=".AdminGamesPlayoffsDetail - Date/Time Pickers"/>
-  <testcase name="AdminGamesPlayoffsDetail - Date/Time Pickers should set Date objects in form when editing existing record" time="0.075" classname=".AdminGamesPlayoffsDetail - Date/Time Pickers"/>
-  <testcase name="AdminGamesPlayoffsDetail - Date/Time Pickers should combine date and time when saving" time="0.08" classname=".AdminGamesPlayoffsDetail - Date/Time Pickers"/>
-  <testcase name="AdminGamesPlayoffsDetail - Date/Time Pickers should have isFormDirty method for PendingChangesGuard" time="0.06" classname=".AdminGamesPlayoffsDetail - Date/Time Pickers"/>
-  <testcase name="AdminSeasonDetail should create" time="0.091" classname=".AdminSeasonDetail"/>
-  <testcase name="AlphabeticalSearch should highlight selected letter" time="0.027" classname=".AlphabeticalSearch"/>
-  <testcase name="AlphabeticalSearch should default to A on clear" time="0.014" classname=".AlphabeticalSearch"/>
-  <testcase name="AlphabeticalSearch should update criteria in PeopleService when letter is selected" time="0.016" classname=".AlphabeticalSearch">
-    <failure type="">Expected spy updateSelectedCriteria to have been called with:
-  [ &lt;jasmine.objectContaining(Object({ lastName: 'D' }))&gt; ]
-but it was never called.
+  <testcase name="AdminListDetailShell Component Initialization should create the component" time="0.151" classname=".AdminListDetailShell Component Initialization"/>
+  <testcase name="AdminListDetailShell Component Initialization should have default input values" time="0.014" classname=".AdminListDetailShell Component Initialization"/>
+  <testcase name="AdminListDetailShell Component Initialization should accept custom configuration values" time="0.012" classname=".AdminListDetailShell Component Initialization"/>
+  <testcase name="AdminListDetailShell Component Initialization should initialize with loading state" time="0.038" classname=".AdminListDetailShell Component Initialization"/>
+  <testcase name="AdminListDetailShell Component Initialization should initialize with error state" time="0.029" classname=".AdminListDetailShell Component Initialization"/>
+  <testcase name="AdminListDetailShell Table Display should render the title" time="0.097" classname=".AdminListDetailShell Table Display"/>
+  <testcase name="AdminListDetailShell Table Display should render the add button when showAddButton is true" time="0.04" classname=".AdminListDetailShell Table Display"/>
+  <testcase name="AdminListDetailShell Table Display should not render the add button when showAddButton is false" time="0.051" classname=".AdminListDetailShell Table Display">
+    <failure type="">Expected &lt;button _ngcontent-a-c344620742 mat-raised-button color="primary" class="mdc-button mat-mdc-button-base add-button mdc-button--raised mat-mdc-raised-button mat-primary _mat-animation-noopable" mat-ripple-loader-uninitialized mat-ripple-loader-class-name="mat-mdc-button-ripple"&gt;...&lt;/button&gt; to be falsy.
     at &lt;Jasmine&gt;
-    at UserContext.apply (src/app/admin/admin-shared/alphabetical-search/alphabetical-search.spec.ts:52:44)
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:129:25)
     at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
     at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
     at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
 </failure>
   </testcase>
-  <testcase name="AdminUserDetail should create" time="0.098" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail should load households on init" time="0.025" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail should include houseId and peopleId in form configuration" time="0.021" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail should load people when household is selected" time="0.025" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail should clear people options when household is deselected" time="0.02" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail should sort people by last name then first name" time="0.028" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail should sort households alphabetically by name" time="0.022" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail should reset form with empty houseId and peopleId for new user" time="0.024" classname=".AdminUserDetail"/>
-  <testcase name="AdminUsersList should create and render rows" time="0.037" classname=".AdminUsersList">
-    <failure type="">TypeError: this.usersService.loadUsers is not a function
-    at AdminUsersList.call [as ngOnInit] (src/app/admin/admin-users/admin-users-list/admin-users-list.ts:70:23)
-    at callHookInternal (node_modules/@angular/core/fesm2022/debug_node.mjs:860:14)
-    at callHook (node_modules/@angular/core/fesm2022/debug_node.mjs:887:13)
-    at callHooks (node_modules/@angular/core/fesm2022/debug_node.mjs:841:17)
-    at executeInitAndCheckHooks (node_modules/@angular/core/fesm2022/debug_node.mjs:791:9)
-    at refreshView (node_modules/@angular/core/fesm2022/debug_node.mjs:8990:21)
-    at detectChangesInView (node_modules/@angular/core/fesm2022/debug_node.mjs:9195:9)
-    at detectChangesInViewWhileDirty (node_modules/@angular/core/fesm2022/debug_node.mjs:8884:9)
-    at detectChangesInternal (node_modules/@angular/core/fesm2022/debug_node.mjs:8872:9)
-    at ViewRef.detectChanges (node_modules/@angular/core/fesm2022/debug_node.mjs:9734:9)
+  <testcase name="AdminListDetailShell Table Display should render custom add button text" time="0.025" classname=".AdminListDetailShell Table Display">
+    <failure type="">Expected 'add Add New ' to contain 'Create Director'.
+    at &lt;Jasmine&gt;
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:137:38)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
 </failure>
   </testcase>
-  <testcase name="PlayerBalance should create" time="0.012" classname=".PlayerBalance"/>
-  <testcase name="PlayerHistory should create" time="0.008" classname=".PlayerHistory"/>
-  <testcase name="ContentEdit Component Initialization should create" time="0.076" classname=".ContentEdit Component Initialization"/>
-  <testcase name="ContentEdit Component Initialization should initialize with correct default values" time="0.039" classname=".ContentEdit Component Initialization"/>
-  <testcase name="ContentEdit Component Initialization should initialize form with correct structure and validators" time="0.062" classname=".ContentEdit Component Initialization"/>
-  <testcase name="ContentEdit Form Validation should validate title field correctly" time="0.046" classname=".ContentEdit Form Validation"/>
-  <testcase name="ContentEdit Form Validation should validate subtitle field correctly" time="0.037" classname=".ContentEdit Form Validation"/>
-  <testcase name="ContentEdit Form Validation should validate expiration date field correctly" time="0.04" classname=".ContentEdit Form Validation"/>
-  <testcase name="ContentEdit Content Loading and Effects should populate form when content is retrieved" time="0.032" classname=".ContentEdit Content Loading and Effects"/>
-  <testcase name="ContentEdit Content Loading and Effects should set page title correctly for new content" time="0.032" classname=".ContentEdit Content Loading and Effects"/>
-  <testcase name="ContentEdit Content Loading and Effects should set page title correctly for existing content" time="0.04" classname=".ContentEdit Content Loading and Effects"/>
-  <testcase name="ContentEdit Content Loading and Effects should compute content types correctly" time="0.034" classname=".ContentEdit Content Loading and Effects"/>
-  <testcase name="ContentEdit Save Functionality should save content when form is valid and dirty" time="0.057" classname=".ContentEdit Save Functionality"/>
-  <testcase name="ContentEdit Save Functionality should not save content when form is invalid" time="0.046" classname=".ContentEdit Save Functionality"/>
-  <testcase name="ContentEdit Save Functionality should not save content when form is not dirty" time="0.047" classname=".ContentEdit Save Functionality"/>
-  <testcase name="ContentEdit Save Functionality should create WebContent object with correct values when saving" time="0.048" classname=".ContentEdit Save Functionality"/>
-  <testcase name="ContentEdit Delete Functionality should delete content when webContentId is not 0" time="0.047" classname=".ContentEdit Delete Functionality"/>
-  <testcase name="ContentEdit Delete Functionality should not delete content when webContentId is 0" time="0.037" classname=".ContentEdit Delete Functionality"/>
-  <testcase name="ContentEdit Helper Methods should format text correctly" time="0.041" classname=".ContentEdit Helper Methods"/>
-  <testcase name="ContentEdit Helper Methods should convert values to numbers correctly" time="0.033" classname=".ContentEdit Helper Methods"/>
-  <testcase name="ContentEdit Helper Methods should return correct float label value" time="0.028" classname=".ContentEdit Helper Methods"/>
-  <testcase name="ContentEdit Helper Methods should detect form dirty state correctly" time="0.033" classname=".ContentEdit Helper Methods"/>
-  <testcase name="ContentEdit Helper Methods should get web content type correctly" time="0.029" classname=".ContentEdit Helper Methods"/>
-  <testcase name="ContentEdit Helper Methods should handle input events" time="0.039" classname=".ContentEdit Helper Methods"/>
-  <testcase name="ContentEdit Update Method should update form with content values" time="0.027" classname=".ContentEdit Update Method"/>
-  <testcase name="ContentEdit Update Method should format text and log it" time="0.029" classname=".ContentEdit Update Method"/>
-  <testcase name="ContentEdit Error Handling should have hasError method that returns empty string" time="0.031" classname=".ContentEdit Error Handling"/>
-  <testcase name="Login Component navigates to returnUrl on successful login" time="0.081" classname=".Login Component"/>
-  <testcase name="Login Component toggles hidePassword state" time="0.013" classname=".Login Component"/>
-  <testcase name="SectionTitle should create" time="0.004" classname=".SectionTitle"/>
-  <testcase name="ShellTitle should create" time="0.006" classname=".ShellTitle"/>
-  <testcase name="DirectorList Component Initialization should create" time="0.048" classname=".DirectorList Component Initialization"/>
-  <testcase name="DirectorList Component Initialization should initialize with correct default values" time="0.02" classname=".DirectorList Component Initialization"/>
-  <testcase name="DirectorList Component Initialization should initialize dataSource as MatTableDataSource" time="0.019" classname=".DirectorList Component Initialization"/>
-  <testcase name="DirectorList Component Initialization should call fetchDirectors on init if no directors provided" time="0.02" classname=".DirectorList Component Initialization"/>
-  <testcase name="DirectorList Data Loading should display directors from service signal" time="0.024" classname=".DirectorList Data Loading"/>
-  <testcase name="DirectorList Data Loading should update dataSource when directors input changes" time="0.022" classname=".DirectorList Data Loading"/>
-  <testcase name="DirectorList Data Loading should handle empty directors list" time="0.025" classname=".DirectorList Data Loading"/>
-  <testcase name="DirectorList Data Loading should call loadDirectors method" time="0.021" classname=".DirectorList Data Loading"/>
-  <testcase name="DirectorList Data Loading should reload data when refreshList is called" time="0.024" classname=".DirectorList Data Loading"/>
-  <testcase name="DirectorList Table Display should render table with correct columns" time="0.019" classname=".DirectorList Table Display"/>
-  <testcase name="DirectorList Table Display should render correct number of rows" time="0.024" classname=".DirectorList Table Display"/>
-  <testcase name="DirectorList Table Display should display director names correctly" time="0.02" classname=".DirectorList Table Display"/>
-  <testcase name="DirectorList Table Display should display titles in table cells" time="0.019" classname=".DirectorList Table Display"/>
-  <testcase name="DirectorList Table Display should display &quot;N/A&quot; for missing titles" time="0.021" classname=".DirectorList Table Display"/>
-  <testcase name="DirectorList Sorting Functionality should bind sort to dataSource" time="0.024" classname=".DirectorList Sorting Functionality"/>
-  <testcase name="DirectorList Sorting Functionality should have default sort configured in template" time="0.025" classname=".DirectorList Sorting Functionality"/>
-  <testcase name="DirectorList Sorting Functionality should have custom sortingDataAccessor for name" time="0.026" classname=".DirectorList Sorting Functionality"/>
-  <testcase name="DirectorList Sorting Functionality should sort by name correctly" time="0.024" classname=".DirectorList Sorting Functionality"/>
-  <testcase name="DirectorList Sorting Functionality should sort by title correctly" time="0.021" classname=".DirectorList Sorting Functionality"/>
-  <testcase name="DirectorList Sorting Functionality should handle null titles in sorting" time="0.021" classname=".DirectorList Sorting Functionality"/>
-  <testcase name="DirectorList Pagination Functionality should bind paginator to dataSource" time="0.039" classname=".DirectorList Pagination Functionality"/>
-  <testcase name="DirectorList Pagination Functionality should have correct page size" time="0.018" classname=".DirectorList Pagination Functionality"/>
-  <testcase name="DirectorList Pagination Functionality should show first/last buttons" time="0.017" classname=".DirectorList Pagination Functionality"/>
-  <testcase name="DirectorList Pagination Functionality should render paginator element" time="0.019" classname=".DirectorList Pagination Functionality"/>
-  <testcase name="DirectorList Pagination Functionality should have correct paginator configuration" time="0.02" classname=".DirectorList Pagination Functionality"/>
-  <testcase name="DirectorList User Interactions should call editDirector when row is clicked" time="0.02" classname=".DirectorList User Interactions"/>
-  <testcase name="DirectorList User Interactions should have TODO comment for navigation in editDirector" time="0.018" classname=".DirectorList User Interactions"/>
-  <testcase name="DirectorList User Interactions should call addDirector when Add button is clicked" time="0.016" classname=".DirectorList User Interactions"/>
-  <testcase name="DirectorList User Interactions should have TODO comment for navigation in addDirector" time="0.016" classname=".DirectorList User Interactions"/>
-  <testcase name="DirectorList User Interactions should apply clickable-row class to table rows" time="0.014" classname=".DirectorList User Interactions"/>
-  <testcase name="DirectorList UI Elements should display page title" time="0.015" classname=".DirectorList UI Elements"/>
-  <testcase name="DirectorList UI Elements should display Add Director button" time="0.018" classname=".DirectorList UI Elements"/>
-  <testcase name="DirectorList UI Elements should display error message when errorMessage is set" time="0.02" classname=".DirectorList UI Elements"/>
-  <testcase name="DirectorList UI Elements should not display error message when errorMessage is undefined" time="0.017" classname=".DirectorList UI Elements"/>
-  <testcase name="DirectorList Accessibility should have proper ARIA label on paginator" time="0.025" classname=".DirectorList Accessibility"/>
-  <testcase name="DirectorList Accessibility should have role alert on error message" time="0.024" classname=".DirectorList Accessibility"/>
-  <testcase name="DirectorList Accessibility should have semantic table structure" time="0.02" classname=".DirectorList Accessibility"/>
-  <testcase name="DirectorList Edge Cases should handle directors with empty names" time="0.02" classname=".DirectorList Edge Cases"/>
-  <testcase name="DirectorList Edge Cases should handle null paginator gracefully" time="0.019" classname=".DirectorList Edge Cases"/>
-  <testcase name="DirectorList Edge Cases should handle null sort gracefully" time="0.024" classname=".DirectorList Edge Cases"/>
-  <testcase name="DirectorList Edge Cases should update dataSource when directors array is modified" time="0.017" classname=".DirectorList Edge Cases"/>
-  <testcase name="DirectorList Integration with DirectorService should react to signal changes" time="0.019" classname=".DirectorList Integration with DirectorService"/>
-  <testcase name="DirectorList Integration with DirectorService should handle empty signal" time="0.016" classname=".DirectorList Integration with DirectorService"/>
+  <testcase name="AdminListDetailShell Table Display should render table with correct columns" time="0.025" classname=".AdminListDetailShell Table Display">
+    <failure type="">Expected 0 to be 4.
+    at &lt;Jasmine&gt;
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:142:30)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+</failure>
+    <failure type="">TypeError: Cannot read properties of undefined (reading 'textContent')
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:144:25)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+    at ZoneImpl.run (node_modules/zone.js/fesm2015/zone.js:111:43)
+    at runInTestZone (node_modules/zone.js/fesm2015/zone-testing.js:216:38)
+    at UserContext.&lt;anonymous&gt; (node_modules/zone.js/fesm2015/zone-testing.js:234:32)
+    at &lt;Jasmine&gt;
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Table Display should render table rows with data" time="0.025" classname=".AdminListDetailShell Table Display">
+    <failure type="">Expected 0 to be 3.
+    at &lt;Jasmine&gt;
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:152:27)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Table Display should render table cells with correct data" time="0.022" classname=".AdminListDetailShell Table Display">
+    <failure type="">Expected undefined to be 4.
+    at &lt;Jasmine&gt;
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:159:29)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+</failure>
+    <failure type="">Expected undefined to be '1'.
+    at &lt;Jasmine&gt;
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:160:46)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+</failure>
+    <failure type="">Expected undefined to be 'John Doe'.
+    at &lt;Jasmine&gt;
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:161:46)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+</failure>
+    <failure type="">Expected undefined to be 'john@example.com'.
+    at &lt;Jasmine&gt;
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:162:46)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+</failure>
+    <failure type="">Expected undefined to be 'Active'.
+    at &lt;Jasmine&gt;
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:163:46)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Table Display should render actions column when showActionsColumn is true" time="0.02" classname=".AdminListDetailShell Table Display">
+    <failure type="">Expected null to be truthy.
+    at &lt;Jasmine&gt;
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:171:29)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Table Display should not render actions column when showActionsColumn is false" time="0.021" classname=".AdminListDetailShell Table Display"/>
+  <testcase name="AdminListDetailShell Computed Signals should compute displayedColumns correctly without actions" time="0.004" classname=".AdminListDetailShell Computed Signals"/>
+  <testcase name="AdminListDetailShell Computed Signals should compute displayedColumns correctly with actions" time="0.004" classname=".AdminListDetailShell Computed Signals"/>
+  <testcase name="AdminListDetailShell Computed Signals should filter out invisible columns" time="0.005" classname=".AdminListDetailShell Computed Signals"/>
+  <testcase name="AdminListDetailShell Computed Signals should compute hasFilterContent as false when no filter projected" time="0.005" classname=".AdminListDetailShell Computed Signals"/>
+  <testcase name="AdminListDetailShell Column Configuration should use valueGetter when provided" time="0.026" classname=".AdminListDetailShell Column Configuration">
+    <failure type="">Expected undefined to be 'JOHN DOE'.
+    at &lt;Jasmine&gt;
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:227:46)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Column Configuration should apply custom cellClass when provided" time="0.022" classname=".AdminListDetailShell Column Configuration"/>
+  <testcase name="AdminListDetailShell Column Configuration should apply custom headerClass when provided" time="0.023" classname=".AdminListDetailShell Column Configuration"/>
+  <testcase name="AdminListDetailShell Column Configuration should apply width styles when provided" time="0.024" classname=".AdminListDetailShell Column Configuration">
+    <failure type="">TypeError: Cannot read properties of null (reading 'style')
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:263:21)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+    at ZoneImpl.run (node_modules/zone.js/fesm2015/zone.js:111:43)
+    at runInTestZone (node_modules/zone.js/fesm2015/zone-testing.js:216:38)
+    at UserContext.&lt;anonymous&gt; (node_modules/zone.js/fesm2015/zone-testing.js:234:32)
+    at &lt;Jasmine&gt;
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Column Configuration should enable sorting for sortable columns" time="0.028" classname=".AdminListDetailShell Column Configuration">
+    <failure type="">Expected 0 to be 3.
+    at &lt;Jasmine&gt;
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:272:38)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Column Configuration should not enable sorting for non-sortable columns" time="0.022" classname=".AdminListDetailShell Column Configuration">
+    <failure type="">TypeError: Cannot read properties of undefined (reading 'querySelector')
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:280:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+    at ZoneImpl.run (node_modules/zone.js/fesm2015/zone.js:111:43)
+    at runInTestZone (node_modules/zone.js/fesm2015/zone-testing.js:216:38)
+    at UserContext.&lt;anonymous&gt; (node_modules/zone.js/fesm2015/zone-testing.js:234:32)
+    at &lt;Jasmine&gt;
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Event Emissions should emit addClick when add button is clicked" time="0.022" classname=".AdminListDetailShell Event Emissions"/>
+  <testcase name="AdminListDetailShell Event Emissions should emit rowClick when a row is clicked" time="0.018" classname=".AdminListDetailShell Event Emissions">
+    <failure type="">TypeError: Cannot read properties of null (reading 'click')
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:305:16)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+    at ZoneImpl.run (node_modules/zone.js/fesm2015/zone.js:111:43)
+    at runInTestZone (node_modules/zone.js/fesm2015/zone-testing.js:216:38)
+    at UserContext.&lt;anonymous&gt; (node_modules/zone.js/fesm2015/zone-testing.js:234:32)
+    at &lt;Jasmine&gt;
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Event Emissions should not emit rowClick when rowClickable is false" time="0.017" classname=".AdminListDetailShell Event Emissions">
+    <failure type="">TypeError: Cannot read properties of null (reading 'click')
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:316:16)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+    at ZoneImpl.run (node_modules/zone.js/fesm2015/zone.js:111:43)
+    at runInTestZone (node_modules/zone.js/fesm2015/zone-testing.js:216:38)
+    at UserContext.&lt;anonymous&gt; (node_modules/zone.js/fesm2015/zone-testing.js:234:32)
+    at &lt;Jasmine&gt;
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Event Emissions should call onRowClick method when row is clicked" time="0.017" classname=".AdminListDetailShell Event Emissions">
+    <failure type="">TypeError: Cannot read properties of null (reading 'click')
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:327:16)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+    at ZoneImpl.run (node_modules/zone.js/fesm2015/zone.js:111:43)
+    at runInTestZone (node_modules/zone.js/fesm2015/zone-testing.js:216:38)
+    at UserContext.&lt;anonymous&gt; (node_modules/zone.js/fesm2015/zone-testing.js:234:32)
+    at &lt;Jasmine&gt;
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Event Emissions should call onAdd method when add button is clicked" time="0.032" classname=".AdminListDetailShell Event Emissions"/>
+  <testcase name="AdminListDetailShell Loading State should show loading spinner when isLoading is true" time="0.006" classname=".AdminListDetailShell Loading State"/>
+  <testcase name="AdminListDetailShell Loading State should show loading text when isLoading is true" time="0.006" classname=".AdminListDetailShell Loading State"/>
+  <testcase name="AdminListDetailShell Loading State should hide table when isLoading is true" time="0.008" classname=".AdminListDetailShell Loading State"/>
+  <testcase name="AdminListDetailShell Loading State should show table when isLoading is false" time="0.015" classname=".AdminListDetailShell Loading State"/>
+  <testcase name="AdminListDetailShell Error State should show error message when errorMessage is set" time="0.005" classname=".AdminListDetailShell Error State"/>
+  <testcase name="AdminListDetailShell Error State should show error icon when errorMessage is set" time="0.005" classname=".AdminListDetailShell Error State"/>
+  <testcase name="AdminListDetailShell Error State should hide table when errorMessage is set" time="0.006" classname=".AdminListDetailShell Error State"/>
+  <testcase name="AdminListDetailShell Error State should not show error message when errorMessage is null" time="0.015" classname=".AdminListDetailShell Error State"/>
+  <testcase name="AdminListDetailShell Error State should have proper ARIA role for error message" time="0.005" classname=".AdminListDetailShell Error State"/>
+  <testcase name="AdminListDetailShell Empty State should show default empty state when no data" time="0.017" classname=".AdminListDetailShell Empty State"/>
+  <testcase name="AdminListDetailShell Empty State should show empty state icon" time="0.017" classname=".AdminListDetailShell Empty State"/>
+  <testcase name="AdminListDetailShell Empty State should show empty state message" time="0.014" classname=".AdminListDetailShell Empty State"/>
+  <testcase name="AdminListDetailShell Empty State should show empty state hint when showAddButton is true" time="0.013" classname=".AdminListDetailShell Empty State"/>
+  <testcase name="AdminListDetailShell Empty State should not show empty state hint when showAddButton is false" time="0.016" classname=".AdminListDetailShell Empty State">
+    <failure type="">Expected &lt;p _ngcontent-a-c344620742 class="empty-state-hint"&gt;...&lt;/p&gt; to be falsy.
+    at &lt;Jasmine&gt;
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:469:20)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Empty State should show custom add button text in empty state hint" time="0.016" classname=".AdminListDetailShell Empty State">
+    <failure type="">Expected ' Click "Add New" to get started. ' to contain 'Click "Create Director" to get started'.
+    at &lt;Jasmine&gt;
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:477:33)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Pagination should render paginator" time="0.017" classname=".AdminListDetailShell Pagination"/>
+  <testcase name="AdminListDetailShell Pagination should use custom page size options" time="0.016" classname=".AdminListDetailShell Pagination">
+    <failure type="">Expected $.length = 4 to equal 3.
+Expected $[0] = 10 to equal 5.
+Expected $[1] = 25 to equal 10.
+Expected $[2] = 50 to equal 20.
+Unexpected $[3] = 100 in array.
+    at &lt;Jasmine&gt;
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:497:51)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Pagination should use custom default page size" time="0.017" classname=".AdminListDetailShell Pagination">
+    <failure type="">Expected 25 to be 50.
+    at &lt;Jasmine&gt;
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:504:44)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Pagination should use custom aria label" time="0.016" classname=".AdminListDetailShell Pagination">
+    <failure type="">Expected 'Select page' to be 'Custom paginator'.
+    at &lt;Jasmine&gt;
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:512:53)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Pagination should show first/last buttons" time="0.014" classname=".AdminListDetailShell Pagination"/>
+  <testcase name="AdminListDetailShell Sorting and Pagination Integration should wire up sort to dataSource after view init" time="0.016" classname=".AdminListDetailShell Sorting and Pagination Integration"/>
+  <testcase name="AdminListDetailShell Sorting and Pagination Integration should wire up paginator to dataSource after view init" time="0.015" classname=".AdminListDetailShell Sorting and Pagination Integration"/>
+  <testcase name="AdminListDetailShell Sorting and Pagination Integration should handle null dataSource gracefully" time="0.015" classname=".AdminListDetailShell Sorting and Pagination Integration"/>
+  <testcase name="AdminListDetailShell Row Styling should apply clickable-row class when rowClickable is true" time="0.015" classname=".AdminListDetailShell Row Styling">
+    <failure type="">Expected undefined to be true.
+    at &lt;Jasmine&gt;
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:555:56)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Row Styling should not apply clickable-row class when rowClickable is false" time="0.017" classname=".AdminListDetailShell Row Styling">
+    <failure type="">Expected undefined to be false.
+    at &lt;Jasmine&gt;
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:563:56)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Content Projection should project filter content" time="0.024" classname=".AdminListDetailShell Content Projection">
+    <failure type="">Expected null to be truthy.
+    at &lt;Jasmine&gt;
+    at UserContext.&lt;anonymous&gt; (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:600:27)
+    at Generator.next (&lt;anonymous&gt;)
+    at asyncGeneratorStep (node_modules/@angular-devkit/build-angular/node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js:3:1)
+    at _next (node_modules/@angular-devkit/build-angular/node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js:17:1)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Content Projection should show filter section when filter content is projected" time="0.033" classname=".AdminListDetailShell Content Projection">
+    <failure type="">Expected null to be truthy.
+    at &lt;Jasmine&gt;
+    at UserContext.&lt;anonymous&gt; (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:609:29)
+    at Generator.next (&lt;anonymous&gt;)
+    at asyncGeneratorStep (node_modules/@angular-devkit/build-angular/node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js:3:1)
+    at _next (node_modules/@angular-devkit/build-angular/node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js:17:1)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Content Projection should project detail form content" time="0.017" classname=".AdminListDetailShell Content Projection"/>
+  <testcase name="AdminListDetailShell Accessibility should have proper ARIA label on paginator" time="0.016" classname=".AdminListDetailShell Accessibility"/>
+  <testcase name="AdminListDetailShell Accessibility should use custom ARIA label when provided" time="0.016" classname=".AdminListDetailShell Accessibility">
+    <failure type="">Expected 'Select page' to be 'Navigate directors pages'.
+    at &lt;Jasmine&gt;
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:639:53)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Accessibility should have role=&quot;alert&quot; on error message" time="0.015" classname=".AdminListDetailShell Accessibility">
+    <failure type="">Expected undefined to be 'alert'.
+    at &lt;Jasmine&gt;
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:647:46)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+</failure>
+  </testcase>
   <system-out>
-    <![CDATA[Chrome 141.0.0.0 (Windows 10) DEBUG: '[DEBUG]', 'PUT url:', 'api/test'
-,Chrome 141.0.0.0 (Windows 10) DEBUG: '[DEBUG]', 'PUT data:', Object{id: 1, name: 'Test'}
-,Chrome 141.0.0.0 (Windows 10) DEBUG: '[DEBUG]', 'PUT url:', 'api/test'
-,Chrome 141.0.0.0 (Windows 10) DEBUG: '[DEBUG]', 'PUT data:', Object{id: 1, name: 'Test'}
-,Chrome 141.0.0.0 (Windows 10) DEBUG: '[DEBUG]', 'PUT url:', 'api/test'
-,Chrome 141.0.0.0 (Windows 10) DEBUG: '[DEBUG]', 'PUT data:', Object{id: 1, name: 'Test'}
-,Chrome 141.0.0.0 (Windows 10) DEBUG: '[DEBUG]', 'PUT url:', 'api/test'
-,Chrome 141.0.0.0 (Windows 10) DEBUG: '[DEBUG]', 'PUT data:', Object{id: 1, name: 'Test'}
-,Chrome 141.0.0.0 (Windows 10) LOG: undefined
-,Chrome 141.0.0.0 (Windows 10) INFO: '[LOCAL]', 'Selected letter:', 'B'
-,Chrome 141.0.0.0 (Windows 10) INFO: '[LOCAL]', 'Selected letter:', 'C'
-,Chrome 141.0.0.0 (Windows 10) INFO: '[LOCAL]', 'Selected letter:', 'D'
-
+    <![CDATA[
 ]]>
   </system-out>
   <system-err/>
