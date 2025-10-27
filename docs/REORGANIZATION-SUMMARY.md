@@ -85,7 +85,7 @@
 
 ### 8. Updated Epic: Admin People Management
 
-**File:** `/docs/epics/APM-001-admin-people-management.md`
+**File:** `/docs/epics/APM-045-admin-people-management.md`
 **Changes:**
 
 - Changed "Stories in Epic" section to "Features in Epic"
@@ -98,7 +98,7 @@
 ### 9. Archived Old Epic APM-002
 
 **File:** `/docs/epics/APM-002-director-management-interface.md.archived`
-**Reason:** Director Management is now a Feature (APMF-046) under Epic APM-001, not its own epic
+**Reason:** Director Management is now a Feature (APMF-046) under Epic APM-045, not its own epic
 
 ### 10. Created Hierarchy Documentation
 
@@ -116,7 +116,7 @@
 ## New Hierarchy Structure
 
 ```
-Epic: APM-001 - Admin People Management
+Epic: APM-045 - Admin People Management
 ├── Feature: APMF-001 - People Management
 │   └── Stories: APMF-001 through APMF-010
 ├── Feature: APMF-040 - Household Management
@@ -159,7 +159,7 @@ Epic APM-002: Director Management
 **After:**
 
 ```
-Epic APM-001: Admin People Management
+Epic APM-045: Admin People Management
 └── Feature APMF-046: Director Management
     └── Story APMF-046: View Directors List
 ```
@@ -174,7 +174,7 @@ Epic APM-001: Admin People Management
 
 ## Next Steps
 
-1. **Create remaining features** for Epic APM-001:
+1. **Create remaining features** for Epic APM-045:
 
    - APMF-001: People Management
    - APMF-040: Household Management
@@ -199,7 +199,7 @@ To verify the reorganization is correct:
 - [ ] Example documents follow the new structure
 - [ ] Documentation explains the hierarchy
 - [ ] Old APM-002 epic is archived
-- [ ] APM-001 epic references features, not stories directly
+- [ ] APM-045 epic references features, not stories directly
 
 ## Questions Answered
 
@@ -223,7 +223,7 @@ To verify the reorganization is correct:
 
 **Q: Example for Director Management?**
 
-- **Epic:** Admin People Management (APM-001)
+- **Epic:** Admin People Management (APM-045)
 - **Feature:** Director Management (APMF-046)
 - **Stories:** View List, Add, Edit, Delete (APMF-046 through APMF-049)
 

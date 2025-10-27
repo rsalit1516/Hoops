@@ -220,6 +220,6 @@ The project has ESLint configured to disallow console.log statements (only conso
 - **Story Document**: `docs/stories/APMF-046-create-list-for-directors-in-admin.md`
 - **BDD Feature**: `docs/features/apm/APMF-046-create-list-for-directors-in-admin.feature`
 - **Feature Document**: `docs/features/apm/APMF-046-director-management.md`
-- **Epic Document**: `docs/epics/APM-001-admin-people-management.md`
+- **Epic Document**: `docs/epics/APM-045-admin-people-management.md`
 - **Reference Implementation**: `hoops.ui/src/app/admin/content/component/content-list/content-list.ts`
 - **Styling Reference**: `hoops.ui/src/app/shared/scss/tables.scss`

@@ -3,14 +3,14 @@
 ## Active Stories
 
 | Story ID | Title | Epic | Type | Status | Points | Assignee | Sprint | Priority |
-| APMF-049 | Delete Director | APM-001 | Feature | Not Started | TBD | TBD | TBD | Medium |
-| APMF-048 | Edit Director Information | APM-001 | Feature | Not Started | TBD | TBD | TBD | Medium |
-| APMF-047 | Add New Director | APM-001 | Feature | Not Started | TBD | TBD | TBD | Medium |
-| APMF-046 | Create list for directors in admin | APM-001 | Feature | Not Started | TBD | TBD | TBD | Medium |
+| APMF-049 | Delete Director | APM-045 | Feature | Not Started | TBD | TBD | TBD | Medium |
+| APMF-048 | Edit Director Information | APM-045 | Feature | Not Started | TBD | TBD | TBD | Medium |
+| APMF-047 | Add New Director | APM-045 | Feature | Not Started | TBD | TBD | TBD | Medium |
+| APMF-046 | Create list for directors in admin | APM-045 | Feature | Not Started | TBD | TBD | TBD | Medium |
 |----------|-------|------|------|--------|--------|----------|--------|----------|
-| APMF-001 | Filter People by Last Name | APM-001 | Feature | Not Started | 3 | TBD | TBD | High |
-| APMF-002 | Filter People by First Name | APM-001 | Feature | Not Started | 2 | TBD | TBD | Medium |
-| APMF-003 | Alphabet Navigation for People List | APM-001 | Feature | Not Started | 3 | TBD | TBD | Medium |
+| APMF-001 | Filter People by Last Name | APM-045 | Feature | Not Started | 3 | TBD | TBD | High |
+| APMF-002 | Filter People by First Name | APM-045 | Feature | Not Started | 2 | TBD | TBD | Medium |
+| APMF-003 | Alphabet Navigation for People List | APM-045 | Feature | Not Started | 3 | TBD | TBD | Medium |
 
 ## Completed Stories
 

@@ -5,26 +5,27 @@
 | Epic ID | Title | Product Area | Status | Stories | Story Points | Start Date | Target Date | Product Owner |
 | APM-002 | Director Management Interface | Admin People Management | Planning | 0 | 0 | 2025-10-15 | TBD | TBD |
 |---------|-------|--------------|--------|---------|--------------|------------|-------------|---------------|
-| APM-001 | Admin People Management | Admin | Planning | 3 | 8 | 2025-10-11 | 2025-12-15 | TBD |
+| APM-045 | Admin People Management | Admin | Planning | 3 | 8 | 2025-10-11 | 2025-12-15 | TBD |
 
 ## Planned Epics
 
-| Epic ID | Title | Product Area | Priority | Estimated Stories | Notes |
-|---------|-------|--------------|----------|-------------------|-------|
-| AGM-001 | Admin Game Management | Admin | High | 8-12 | Scheduling, editing, results |
-| PLY-001 | Playoff Management | Admin | Medium | 6-10 | Bracket generation, seeding |
-| USR-001 | User Authentication | System | High | 4-6 | Login, permissions, roles |
+| Epic ID | Title                 | Product Area | Priority | Estimated Stories | Notes                        |
+| ------- | --------------------- | ------------ | -------- | ----------------- | ---------------------------- |
+| AGM-001 | Admin Game Management | Admin        | High     | 8-12              | Scheduling, editing, results |
+| PLY-001 | Playoff Management    | Admin        | Medium   | 6-10              | Bracket generation, seeding  |
+| USR-001 | User Authentication   | System       | High     | 4-6               | Login, permissions, roles    |
 
 ## Completed Epics
 
-| Epic ID | Title | Status | Completion Date | Final Story Count | Notes |
-|---------|-------|--------|-----------------|-------------------|-------|
-| - | - | - | - | - | No completed epics yet |
+| Epic ID | Title | Status | Completion Date | Final Story Count | Notes                  |
+| ------- | ----- | ------ | --------------- | ----------------- | ---------------------- |
+| -       | -     | -      | -               | -                 | No completed epics yet |
 
 ## Epic ID Assignment Rules
 
 ### Product Areas
-- `APM` - Admin People Management  
+
+- `APM` - Admin People Management
 - `AGM` - Admin Game Management
 - `AHM` - Admin Household Management
 - `APL` - Admin Player Management
@@ -35,6 +36,7 @@
 - `INF` - Infrastructure & DevOps
 
 ### Next Available IDs
+
 - `APM-002` - Next Admin People Management epic
 - `AGM-001` - First Admin Game Management epic
 - `AHM-001` - First Admin Household Management epic
@@ -46,5 +48,6 @@
 - `INF-001` - First Infrastructure & DevOps epic
 
 ---
-*Last Updated: 2025-10-11*
-*Recent Changes: Added APM-001 Admin People Management epic with 3 initial stories*
+
+_Last Updated: 2025-10-11_
+_Recent Changes: Added APM-045 Admin People Management epic with 3 initial stories_

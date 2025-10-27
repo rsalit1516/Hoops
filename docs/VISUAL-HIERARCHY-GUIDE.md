@@ -4,7 +4,7 @@
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│  EPIC: APM-001 - Admin People Management               │
+│  EPIC: APM-045 - Admin People Management               │
 │  Duration: 2-6 months                                   │
 │  Business capability spanning multiple features          │
 └─────────────────────────────────────────────────────────┘
@@ -166,7 +166,7 @@ Epic: Admin People Management
 ```
 docs/
 ├── epics/
-│   └── APM-001-admin-people-management.md       ← Strategic
+│   └── APM-045-admin-people-management.md       ← Strategic
 │
 ├── features/
 │   └── apm/

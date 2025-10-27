@@ -1,7 +1,7 @@
 # Feature APMF-046: Admin Director Management
 
 **Feature ID:** APMF-046
-**Epic:** [APM-001 - League Participant Management](../../epics/APM-001-admin-people-management.md)
+**Epic:** [APM-045 - League Participant Management](../../epics/APM-045-admin-people-management.md)
 **Azure Boards:** [Feature #45](https://dev.azure.com/rsalit1516/Hoops/_workitems/edit/45)
 
 **Product Area:** League Participant Management

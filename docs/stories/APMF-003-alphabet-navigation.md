@@ -2,7 +2,7 @@
 
 **Story ID:** APMF-54
 **Feature:** [APMF-001 - Admin People Management](../features/admin-people/APMF-001-admin-people-management.md)
-**Epic:** [APM-001 - League Participant Management](../epics/APM-001-admin-people-management.md)
+**Epic:** [APM-045 - League Participant Management](../epics/APM-045-admin-people-management.md)
 **Azure Boards:** [Story #54](https://dev.azure.com/rsalit1516/Hoops/_workitems/edit/54)
 
 **Story Points:** 3

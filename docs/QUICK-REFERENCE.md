@@ -39,7 +39,7 @@
 ### ✅ CORRECT Structure:
 
 ```
-Epic: APM-001 - Admin People Management
+Epic: APM-045 - Admin People Management
 └── Feature: APMF-046 - Director Management
     ├── Story: APMF-046 - View Directors List (5 pts)
     ├── Story: APMF-047 - Add New Director (3 pts)
@@ -61,19 +61,19 @@ Epic: APM-002 - Director Management  ← TOO SMALL FOR EPIC
 ### Create an Epic
 
 ```bash
-./scripts/create-epic.sh APM-001 "Admin People Management" "Tools for managing league people"
+./scripts/create-epic.sh APM-045 "Admin People Management" "Tools for managing league people"
 ```
 
 ### Create a Feature
 
 ```bash
-./scripts/create-feature.sh APMF-046 "Director Management" APM-001 "Manage league directors"
+./scripts/create-feature.sh APMF-046 "Director Management" APM-045 "Manage league directors"
 ```
 
 ### Create a Story
 
 ```bash
-./scripts/create-story.sh APMF-046 "View Directors List" APM-001
+./scripts/create-story.sh APMF-046 "View Directors List" APM-045
 ```
 
 ---
@@ -84,7 +84,7 @@ Epic: APM-002 - Director Management  ← TOO SMALL FOR EPIC
 
 - **ABC** = 3-letter product area code
 - **123** = Sequential number
-- Examples: `APM-001`, `AGM-001`, `PLY-001`
+- Examples: `APM-045`, `AGM-001`, `PLY-001`
 
 ### Feature ID: `ABCF-123`
 
@@ -137,7 +137,7 @@ Split if story is > 8 points:
 ```
 docs/
 ├── epics/           ← Strategic level (months)
-│   └── APM-001-admin-people-management.md
+│   └── APM-045-admin-people-management.md
 ├── features/        ← Tactical level (weeks)
 │   └── apm/
 │       └── APMF-046-director-management.md

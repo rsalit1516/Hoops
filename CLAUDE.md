@@ -30,6 +30,7 @@ The solution follows a layered architecture pattern:
 - **Hoops.Functions**: Azure Functions for background processing
 
 **Key Patterns:**
+
 - Repository pattern: All repositories implement interfaces from `Hoops.Core.Interface` (e.g., `ISeasonRepository`, `IPersonRepository`)
 - Dependency injection: Repositories registered in `ServiceCollectionExtensions.AddHoopsRepositories()`
 - Services: Application services in `Hoops.Application` (e.g., `ISeasonService`)
@@ -46,6 +47,7 @@ Located in `hoops.ui/src/app/`:
 ### Core Domain Model
 
 Key entities and relationships:
+
 - `Person` ↔ `Household` (many-to-one)
 - `Season` → `Division` → `Team` → `Player`
 - `Division` → `Game` (schedule games and playoff games)
@@ -150,6 +152,7 @@ dotnet ef migrations script --project src/Hoops.Infrastructure --startup-project
 ### Backend Environments
 
 Configuration files in `src/Hoops.Api/`:
+
 - `appsettings.json` - Base configuration
 - `appsettings.Development.json` - Dev environment
 - `appsettings.Local.json` - Local development
@@ -160,6 +163,7 @@ Connection strings and secrets loaded from Azure Key Vault in production.
 ### Frontend Environments
 
 Environment files in `hoops.ui/src/environments/`:
+
 - `environment.ts` - Base
 - `environment.local.ts` - Local dev (default)
 - `environment.development.ts` - Dev/staging
@@ -190,6 +194,7 @@ Build configurations: `local` (default), `development`, `staging`, `production`
 Azure Pipelines configuration in `azure-pipelines.yml`:
 
 **Build & Test Stage:**
+
 1. Restore and build .NET solution (Release config)
 2. Run fast backend tests (`--filter TestCategory!=Slow`)
 3. Install npm dependencies and build Angular app
@@ -197,6 +202,7 @@ Azure Pipelines configuration in `azure-pipelines.yml`:
 5. Publish test results and code coverage
 
 **Deploy Stage:**
+
 - Publishes Azure Functions to dev/prod based on branch
 - Branch mapping: `develop` → dev environment, `master`/`main` → prod
 
@@ -206,7 +212,7 @@ Azure Pipelines configuration in `azure-pipelines.yml`:
 
 The project uses a structured epic/story tracking system in `docs/`:
 
-- **Epics**: Documented in `docs/epics/` with standardized IDs (e.g., `APM-001`, `AGM-001`)
+- **Epics**: Documented in `docs/epics/` with standardized IDs (e.g., `APM-045`, `AGM-001`)
 - **Stories**: Tracked in `docs/stories/` with type-based IDs (e.g., `APMF-001` for features, `APMB-001` for bugs)
 - **Registry**: `docs/registry/epics.md` maintains active, planned, and completed epics
 - **Automation**: Use scripts in `scripts/` to generate IDs and create documentation:
@@ -216,6 +222,7 @@ The project uses a structured epic/story tracking system in `docs/`:
   - `./scripts/create-story.sh APMF-001 "Title"` - Create story with BDD template
 
 **Product Area Codes:**
+
 - `APM` - Admin People Management
 - `AGM` - Admin Game Management
 - `AHM` - Admin Household Management

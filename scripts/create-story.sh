@@ -25,7 +25,7 @@ Arguments:
 Examples:
   ./scripts/create-story.sh APMF-004 "Export People List"
   ./scripts/create-story.sh AGMF-001 "Schedule Game Editor" AGM-001
-  ./scripts/create-story.sh APMB-001 "Fix duplicate person entries" APM-001 "Users can create duplicate person records"
+  ./scripts/create-story.sh APMB-001 "Fix duplicate person entries" APM-045 "Users can create duplicate person records"
 
 Note: Use generate-story-id.sh first to get the next available ID
 EOF

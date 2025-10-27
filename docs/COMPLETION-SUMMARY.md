@@ -20,7 +20,7 @@ Epic (Strategic - Months)
 **CORRECT Structure:**
 
 ```
-Epic: APM-001 - Admin People Management
+Epic: APM-045 - Admin People Management
 └── Feature: APMF-046 - Director Management
     ├── Story: APMF-046 - View Directors List (5 pts)
     ├── Story: APMF-047 - Add New Director (3 pts)
@@ -32,13 +32,13 @@ Epic: APM-001 - Admin People Management
 
 ```bash
 # Create Epic
-./scripts/create-epic.sh APM-001 "Admin People Management" "Description"
+./scripts/create-epic.sh APM-045 "Admin People Management" "Description"
 
 # Create Feature
-./scripts/create-feature.sh APMF-046 "Director Management" APM-001 "Description"
+./scripts/create-feature.sh APMF-046 "Director Management" APM-045 "Description"
 
 # Create Story
-./scripts/create-story.sh APMF-046 "View Directors List" APM-001
+./scripts/create-story.sh APMF-046 "View Directors List" APM-045
 ```
 
 ## 📚 Documentation Created
@@ -66,16 +66,16 @@ Epic: APM-001 - Admin People Management
 1. **Create remaining stories** for Director Management:
 
    ```bash
-   ./scripts/create-story.sh APMF-047 "Add New Director" APM-001
-   ./scripts/create-story.sh APMF-048 "Edit Director Information" APM-001
-   ./scripts/create-story.sh APMF-049 "Delete Director" APM-001
+   ./scripts/create-story.sh APMF-047 "Add New Director" APM-045
+   ./scripts/create-story.sh APMF-048 "Edit Director Information" APM-045
+   ./scripts/create-story.sh APMF-049 "Delete Director" APM-045
    ```
 
-2. **Create other features** under APM-001:
+2. **Create other features** under APM-045:
 
    ```bash
-   ./scripts/create-feature.sh APMF-001 "People Management" APM-001
-   ./scripts/create-feature.sh APMF-040 "Household Management" APM-001
+   ./scripts/create-feature.sh APMF-001 "People Management" APM-045
+   ./scripts/create-feature.sh APMF-040 "Household Management" APM-045
    ```
 
 3. **Update Azure Boards** to match the hierarchy

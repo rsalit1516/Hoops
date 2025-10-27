@@ -2,7 +2,7 @@
 
 **Story ID:** APMF-048
 **Feature:** [APMF-046 - Admin Director Management](../features/apm/APMF-046-director-management.md)
-**Epic:** [APM-001 - League Participant Management](../epics/APM-001-admin-people-management.md)
+**Epic:** [APM-045 - League Participant Management](../epics/APM-045-admin-people-management.md)
 **Azure Boards:** [Story #48](https://dev.azure.com/rsalit1516/Hoops/_workitems/edit/48)
 
 **Story Points:** 3

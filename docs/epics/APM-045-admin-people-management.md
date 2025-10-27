@@ -1,8 +1,8 @@
-# Epic APM-001: League Participant Management
+# Epic APM-045: League Participant Management
 
-**Epic ID:** APM-001
+**Epic ID:** APM-045
 **Product Area:** League Participant Management
-**Azure Boards:** [Epic #1](https://dev.azure.com/rsalit1516/Hoops/_workitems/edit/1)
+**Azure Boards:** [Epic #1](https://dev.azure.com/rsalit1516/Hoops/_workitems/edit/45)
 
 **Priority:** High
 
@@ -23,11 +23,11 @@ Provide administrators with comprehensive tools to manage all league participant
 
 ## Features in Epic
 
-| Feature ID | Feature Title                | Stories | Status      |
-| ---------- | ---------------------------- | ------- | ----------- |
-| APMF-001   | Admin People Management      | ~10     | Not Started |
-| APMF-040   | Admin Household Management   | ~5      | Not Started |
-| APMF-046   | Admin Director Management    | 4       | In Progress |
+| Feature ID | Feature Title              | Stories | Status      |
+| ---------- | -------------------------- | ------- | ----------- |
+| APMF-001   | Admin People Management    | ~10     | Not Started |
+| APMF-040   | Admin Household Management | ~5      | Not Started |
+| APMF-046   | Admin Director Management  | 4       | In Progress |
 
 **Total Features:** 3
 

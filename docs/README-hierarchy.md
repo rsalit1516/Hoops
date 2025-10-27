@@ -11,7 +11,7 @@ This document explains the three-level hierarchy used for organizing development
 **Purpose:** Represents a large business capability or strategic initiative  
 **Duration:** 2-6 months  
 **Location:** `/docs/epics/`  
-**Naming:** `{PREFIX}-{NUMBER}-{kebab-case-title}.md` (e.g., `APM-001-admin-people-management.md`)
+**Naming:** `{PREFIX}-{NUMBER}-{kebab-case-title}.md` (e.g., `APM-045-admin-people-management.md`)
 
 **Epic Prefix Codes:**
 
@@ -29,7 +29,7 @@ This document explains the three-level hierarchy used for organizing development
 **Example:**
 
 ```
-Epic APM-001: Admin People Management
+Epic APM-045: Admin People Management
 ├── Feature APMF-001: People Management
 ├── Feature APMF-040: Household Management
 └── Feature APMF-046: Director Management
@@ -84,19 +84,19 @@ Feature APMF-046: Director Management
 ### Create an Epic
 
 ```bash
-./scripts/create-epic.sh APM-001 "Admin People Management" "Comprehensive people management tools"
+./scripts/create-epic.sh APM-045 "Admin People Management" "Comprehensive people management tools"
 ```
 
 ### Create a Feature
 
 ```bash
-./scripts/create-feature.sh APMF-046 "Director Management" APM-001 "Manage league directors"
+./scripts/create-feature.sh APMF-046 "Director Management" APM-045 "Manage league directors"
 ```
 
 ### Create a Story
 
 ```bash
-./scripts/create-story.sh APMF-046 "View Directors List" APM-001
+./scripts/create-story.sh APMF-046 "View Directors List" APM-045
 ```
 
 ## File Organization
@@ -104,7 +104,7 @@ Feature APMF-046: Director Management
 ```
 docs/
 ├── epics/
-│   ├── APM-001-admin-people-management.md
+│   ├── APM-045-admin-people-management.md
 │   ├── AGM-001-admin-game-management.md
 │   └── PLY-001-playoff-management.md
 ├── features/
@@ -174,7 +174,7 @@ User Story (Azure) ←→ Story (Markdown)
 
 ## Workflow Example: Director Management
 
-1. **Epic Level** - APM-001: Admin People Management
+1. **Epic Level** - APM-045: Admin People Management
 
    - Business goal: Provide comprehensive people management
    - Scope: All people, households, and directors

@@ -17,12 +17,12 @@ Usage: ./scripts/create-epic.sh <epic-id> <title> [description]
 Create a new epic file from template with proper ID and update registry.
 
 Arguments:
-  epic-id       Epic ID (e.g., APM-001, AGM-001)
+  epic-id       Epic ID (e.g., APM-045, AGM-001)
   title         Epic title
   description   Optional epic description
 
 Examples:
-  ./scripts/create-epic.sh APM-001 "Admin People Management"
+  ./scripts/create-epic.sh APM-045 "Admin People Management"
   ./scripts/create-epic.sh AGM-001 "Admin Game Management" "Complete game scheduling and management system"
 
 Note: Use generate-epic-id.sh first to get the next available ID
@@ -36,7 +36,7 @@ EPIC_DESCRIPTION="${3:-}"
 
 # Validate epic ID format
 if [[ ! "$EPIC_ID" =~ ^[A-Z]{3}-[0-9]{3}$ ]]; then
-    echo "Error: Epic ID must be in format ABC-123 (e.g., APM-001)" >&2
+    echo "Error: Epic ID must be in format ABC-123 (e.g., APM-045)" >&2
     exit 1
 fi
 

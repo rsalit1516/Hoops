@@ -1,7 +1,7 @@
 # Feature APMF-001: Admin People Management
 
 **Feature ID:** APMF-001
-**Epic:** [APM-001 - League Participant Management](../../epics/APM-001-admin-people-management.md)
+**Epic:** [APM-045 - League Participant Management](../../epics/APM-045-admin-people-management.md)
 **Azure Boards:** [Feature #TBD](https://dev.azure.com/rsalit1516/Hoops/_workitems/edit/TBD)
 
 **Product Area:** League Participant Management

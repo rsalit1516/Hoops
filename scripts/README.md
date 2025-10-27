@@ -49,13 +49,13 @@ This directory contains automation scripts for generating unique IDs and creatin
 
 ```bash
 # Create new epic with files and registry update
-./scripts/create-epic.sh APM-001 "Admin People Management" "Tools for managing league people"
+./scripts/create-epic.sh APM-045 "Admin People Management" "Tools for managing league people"
 
 # Create new feature within an epic
-./scripts/create-feature.sh APMF-046 "Director Management" APM-001 "Manage league directors"
+./scripts/create-feature.sh APMF-046 "Director Management" APM-045 "Manage league directors"
 
 # Create new story within a feature
-./scripts/create-story.sh APMF-046 "View Directors List" APM-001
+./scripts/create-story.sh APMF-046 "View Directors List" APM-045
 ```
 
 ### Validation and Testing
@@ -72,7 +72,7 @@ This directory contains automation scripts for generating unique IDs and creatin
 
 ### Epic IDs: `{AREA}-{SEQUENCE}`
 
-- **APM-001** - Admin People Management
+- **APM-045** - Admin People Management
 - **AGM-001** - Admin Game Management
 - **PLY-001** - Playoff Management
 
@@ -116,15 +116,15 @@ This directory contains automation scripts for generating unique IDs and creatin
 ### Creating a New Epic
 
 1. Generate ID: `./scripts/generate-epic-id.sh APM "Admin People Management"`
-2. Create files: `./scripts/create-epic.sh APM-001 "Admin People Management" "Tools for managing league people"`
+2. Create files: `./scripts/create-epic.sh APM-045 "Admin People Management" "Tools for managing league people"`
 3. Edit the generated epic file with business details
 4. Create epic work item in Azure Boards
 5. Update markdown file with Azure Boards work item ID
 
 ### Creating a New Feature
 
-1. Determine parent epic: APM-001
-2. Create feature: `./scripts/create-feature.sh APMF-046 "Director Management" APM-001 "Manage league directors"`
+1. Determine parent epic: APM-045
+2. Create feature: `./scripts/create-feature.sh APMF-046 "Director Management" APM-045 "Manage league directors"`
 3. Edit the generated feature file with functional details
 4. Create feature work item in Azure Boards
 5. Update markdown file with Azure Boards work item ID
@@ -133,7 +133,7 @@ This directory contains automation scripts for generating unique IDs and creatin
 ### Creating a New Story
 
 1. Generate ID: `./scripts/generate-story-id.sh APM feature "View Directors List"`
-2. Create files: `./scripts/create-story.sh APMF-046 "View Directors List" APM-001`
+2. Create files: `./scripts/create-story.sh APMF-046 "View Directors List" APM-045`
 3. Edit story file with acceptance criteria
 4. Update BDD feature file with test scenarios
 5. Create user story work item in Azure Boards

@@ -1,7 +1,7 @@
 # Feature APMF-063: Admin-People-Framework
 
 **Feature ID:** APMF-063  
-**Epic:** [APM-001](../../epics/APM-001.md)  
+**Epic:** [APM-045](../../epics/APM-045.md)  
 **Azure Boards:** [Feature #000](https://dev.azure.com/rsalit1516/Hoops/_workitems/edit/000)
 
 **Product Area:** Admin People Management  

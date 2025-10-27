@@ -23,8 +23,8 @@ Arguments:
   description   Optional feature description
 
 Examples:
-  ./scripts/create-feature.sh APMF-001 "People Management" APM-001
-  ./scripts/create-feature.sh APMF-046 "Director Management" APM-001 "Manage league directors"
+  ./scripts/create-feature.sh APMF-001 "People Management" APM-045
+  ./scripts/create-feature.sh APMF-046 "Director Management" APM-045 "Manage league directors"
 
 Note: Feature IDs follow the pattern: [EPIC_PREFIX]F-[NUMBER]
       - EPIC_PREFIX: 3-letter product area (APM, AGM, etc.)
