@@ -81,8 +81,8 @@ export class DirectorList implements OnInit, AfterViewInit {
       property: string
     ) => {
       switch (property) {
-        case 'name':
-          return `${director.lastName}, ${director.firstName}`.toLowerCase();
+        // case 'name':
+        //  return `${director.lastName}, ${director.firstName}`.toLowerCase();
         case 'title':
           return director.title?.toLowerCase() || '';
         default:
@@ -114,9 +114,9 @@ export class DirectorList implements OnInit, AfterViewInit {
   /**
    * Get the full name of a director
    */
-  getDirectorName(director: Director): string {
-    return `${director.firstName} ${director.lastName}`;
-  }
+  // getDirectorName(director: Director): string {
+  //   return `${director.firstName} ${director.lastName}`;
+  // }
 
   /**
    * Refresh the director list

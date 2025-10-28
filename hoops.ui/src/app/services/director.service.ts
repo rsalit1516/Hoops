@@ -1,6 +1,10 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { DataService } from '@app/services/data.service';
-import { HttpClient, HttpErrorResponse, httpResource } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  httpResource,
+} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
@@ -11,9 +15,8 @@ import { rxResource } from '@angular/core/rxjs-interop';
 import { fromFetch } from 'rxjs/fetch';
 import { switchMap } from 'rxjs/operators';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DirectorService {
   url = Constants.GET_DIRECTOR_URL;
@@ -24,8 +27,7 @@ export class DirectorService {
   //directors = signal<Director[] | null>(null);
   handleError: ((err: any, caught: Observable<any[]>) => never) | undefined;
 
-  directorsResource = httpResource<DirectorResponse>(() =>
-    `${ this.url }`);
+  directorsResource = httpResource<DirectorResponse>(() => `${this.url}`);
 
   directors = computed(() => {
     const value = this.directorsResource.value();
@@ -40,14 +42,13 @@ export class DirectorService {
   // errorMessage = computed(() => setErrorMessage(this.error(), 'Vehicle'));
   isLoading = this.directorsResource.isLoading;
 
-
-  constructor () {
+  constructor() {
     // Fetch directors initially
     this.fetchDirectors();
   }
 
-  fetchDirectors () {
-    this.http.get<Director[]>(`${ this.url }`).subscribe(
+  fetchDirectors() {
+    this.http.get<Director[]>(`${this.url}`).subscribe(
       (directors) => {
         this.directorsSignal.update(() => directors);
       },
@@ -58,7 +59,19 @@ export class DirectorService {
     this.directorsResource.reload();
   }
 
-
+  update(item: Director) {
+    // ToDo: implement update logic
+    return this.http.put<Director>(`${this.url}${item.id}/`, item).pipe(
+      tap((data) => console.log('Updated Director: ' + JSON.stringify(data))),
+      catchError(this.dataService.handleError<Director>('updateDirector'))
+    );
+  }
+  create(item: Director) {
+    return this.http.post<Director>(`${this.url}`, item).pipe(
+      tap((data) => console.log('Created Director: ' + JSON.stringify(data))),
+      catchError(this.dataService.handleError<Director>('createDirector'))
+    );
+  }
 
   // dataResource = rxResource({
   //   // Request function that returns the current ID
@@ -71,7 +84,7 @@ export class DirectorService {
   //     ),
   // });
 
-  reloadDirectors () {
+  reloadDirectors() {
     this.directorsResource.reload();
   }
 
@@ -90,5 +103,5 @@ export interface DirectorResponse {
   count: number;
   next: string;
   previous: string;
-  results: Director[]
+  results: Director[];
 }

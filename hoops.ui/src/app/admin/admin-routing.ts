@@ -48,6 +48,7 @@ export const ADMINROUTES: Routes = [
       },
       {
         path: 'people',
+        title: 'People',
         children: ADMIN_PEOPLE_ROUTES,
       },
       { path: 'teams', component: TeamList },
