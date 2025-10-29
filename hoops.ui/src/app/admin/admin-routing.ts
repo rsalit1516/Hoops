@@ -17,6 +17,7 @@ import { ADMIN_HOUSEHOLD_ROUTES } from './admin-household/admin-household-routin
 import { ADMIN_PEOPLE_ROUTES } from './admin-people/admin-people-routing';
 import { ADMIN_SEASONS_ROUTES } from './admin-seasons/admin-seasons-routing';
 import { PendingChangesGuard } from './admin-games/pending-changes.guard';
+import { ADMIN_DIRECTORS_ROUTES } from './admin-directors/admin-directors-routing';
 
 export const ADMINROUTES: Routes = [
   {
@@ -62,8 +63,8 @@ export const ADMINROUTES: Routes = [
       },
       {
         path: 'director',
-        loadChildren: () =>
-          import('./director/director.module').then((m) => m.DirectorModule),
+        title: 'Directors',
+        children: ADMIN_DIRECTORS_ROUTES,
       },
 
       {

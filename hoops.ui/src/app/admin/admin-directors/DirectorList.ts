@@ -1,7 +1,7 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { TableColumn } from '../shared/GenericMatTable';
 import { Director } from '@app/domain/director';
-import { BaseListComponent } from '../shared/BaseList';
+import { BaseList } from '../shared/BaseList';
 
 // director-list.component.ts (extended)
 @Component({
@@ -56,7 +56,7 @@ import { BaseListComponent } from '../shared/BaseList';
     </ng-template>
   `,
 })
-export class DirectorListComponent extends BaseListComponent<Director> {
+export class DirectorListComponent extends BaseList<Director> {
   override get basePath(): string {
     return '/admin-directors';
   }

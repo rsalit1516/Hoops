@@ -14,7 +14,15 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss"
+          "style": "scss",
+          "type": "",
+          "standalone": true
+        },
+        "@schematics/angular:directive": {
+          "standalone": true
+        },
+        "@schematics/angular:pipe": {
+          "standalone": true
         },
         "@schematics/angular:application": {
           "strict": true
@@ -165,13 +173,13 @@
   },
   "schematics": {
     "@schematics/angular:component": {
-      "type": "component"
+      "type": ""
     },
     "@schematics/angular:directive": {
-      "type": "directive"
+      "type": ""
     },
     "@schematics/angular:service": {
-      "type": "service"
+      "type": ""
     },
     "@schematics/angular:guard": {
       "typeSeparator": "."

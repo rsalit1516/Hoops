@@ -2,7 +2,7 @@ import { inject, signal } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 // base-list.component.ts
-export abstract class BaseListComponent<T extends { id: string | number }> {
+export abstract class BaseList<T extends { id: string | number }> {
   protected router = inject(Router);
   protected route = inject(ActivatedRoute);
 

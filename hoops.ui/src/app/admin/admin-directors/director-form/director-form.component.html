@@ -1,0 +1,62 @@
+<p>director-form works!</p>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="form-grid">
+    <ng-container *ngFor="let field of fields">
+      <!-- Text/Email/Number Input -->
+      <mat-form-field
+        appearance="outline"
+        *ngIf="['text', 'email', 'number'].includes(field.type)"
+      >
+        <mat-label>{{ field.label }}</mat-label>
+        <input
+          matInput
+          [type]="field.type"
+          [formControlName]="field.key"
+          [placeholder]="field.placeholder || ''"
+        />
+        <mat-error *ngIf="form.get(field.key)?.hasError('required')">
+          {{ field.label }} is required
+        </mat-error>
+        <mat-error *ngIf="form.get(field.key)?.hasError('email')">
+          Invalid email format
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Textarea -->
+      <mat-form-field appearance="outline" *ngIf="field.type === 'textarea'">
+        <mat-label>{{ field.label }}</mat-label>
+        <textarea matInput [formControlName]="field.key" rows="4"></textarea>
+      </mat-form-field>
+
+      <!-- Select -->
+      <mat-form-field appearance="outline" *ngIf="field.type === 'select'">
+        <mat-label>{{ field.label }}</mat-label>
+        <mat-select [formControlName]="field.key">
+          <mat-option *ngFor="let opt of field.options" [value]="opt.value">
+            {{ opt.label }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Checkbox -->
+      <mat-checkbox
+        *ngIf="field.type === 'checkbox'"
+        [formControlName]="field.key"
+      >
+        {{ field.label }}
+      </mat-checkbox>
+    </ng-container>
+  </div>
+
+  <div class="form-actions">
+    <button mat-button type="button" (click)="onCancelClick()">Cancel</button>
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="form.invalid || saving()"
+    >
+      {{ saving() ? "Saving..." : "Save" }}
+    </button>
+  </div>
+</form>

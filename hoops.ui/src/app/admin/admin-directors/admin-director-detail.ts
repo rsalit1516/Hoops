@@ -1,4 +1,7 @@
 import { Component, inject } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+
 import { Director } from '@app/domain/director';
 import { Person } from '@app/domain/person';
 import { DirectorService } from '@app/services/director.service';
@@ -6,7 +9,8 @@ import { Observable } from 'rxjs';
 import { BaseDetail } from '../shared/BaseDetail';
 
 @Component({
-  selector: 'app-admin-people-detail',
+  selector: 'csbc-director-detail',
+  imports: [MatCardModule, MatButtonModule],
   template: `
     <mat-card>
       <mat-card-header>
