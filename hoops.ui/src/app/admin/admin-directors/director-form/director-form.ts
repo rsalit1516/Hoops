@@ -15,10 +15,10 @@ import { Person } from '@app/domain/person';
 @Component({
   selector: 'csbc-director-form',
   imports: [],
-  templateUrl: './director-form.component.html',
-  styleUrl: './director-form.component.scss',
+  templateUrl: './director-form.html',
+  styleUrl: './director-form.scss',
 })
-export class DirectorFormComponent implements OnInit, OnChanges {
+export class DirectorForm implements OnInit, OnChanges {
   private fb = inject(FormBuilder);
 
   @Input() person?: Person;
