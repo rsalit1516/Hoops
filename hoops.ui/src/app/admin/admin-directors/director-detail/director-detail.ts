@@ -1,17 +1,25 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { BaseDetail } from '@app/admin/shared/BaseDetail';
 import { Director } from '@app/domain/director';
 import { DirectorService } from '@app/services/director.service';
+import { MatCardModule } from '@angular/material/card';
+import { DirectorForm } from '../director-form/director-form';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'csbc-director-form',
-  imports: [],
+  selector: 'csbc-director-detail',
+  imports: [MatCardModule, DirectorForm],
   templateUrl: './director-detail.html',
   styleUrl: './director-detail.scss',
 })
 export class DirectorDetail extends BaseDetail<Director> {
-  private personService = inject(DirectorService);
+  private directorService = inject(DirectorService);
+
+  // Computed signal to get the current director or create a new one
+  director = computed(() => {
+    const item = this.item();
+    return item || this.createNew();
+  });
 
   protected override getBasePath(): string {
     return '/admin/director';
@@ -19,8 +27,8 @@ export class DirectorDetail extends BaseDetail<Director> {
 
   protected override saveItem(item: Director): Observable<Director> {
     return item.id
-      ? this.personService.update(item)
-      : this.personService.create(item);
+      ? this.directorService.update(item)
+      : this.directorService.create(item);
   }
 
   protected override createNew(): Director {

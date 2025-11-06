@@ -16,3 +16,10 @@ export class Director {
     title: string
   ) {}
 }
+
+// Interface for director list display
+export interface DirectorListItem {
+  id: number;
+  name: string;
+  title: string;
+}

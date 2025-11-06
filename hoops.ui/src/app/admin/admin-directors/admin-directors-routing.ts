@@ -1,7 +1,7 @@
 import { AuthGuard } from '@app/auth/auth.guard';
-import { DirectorList } from '../director/component/director-list/director-list';
-import { AdminDirectorDetail } from './admin-director-detail';
 import { Routes } from '@angular/router';
+import { DirectorList } from './director-list/director-list';
+import { DirectorDetail } from './director-detail/director-detail';
 
 export const ADMIN_DIRECTORS_ROUTES: Routes = [
   {
@@ -11,13 +11,13 @@ export const ADMIN_DIRECTORS_ROUTES: Routes = [
   },
   {
     path: 'new',
-    component: AdminDirectorDetail,
+    component: DirectorDetail,
     canActivate: [AuthGuard],
     data: { mode: 'create' },
   },
   {
     path: ':id',
-    component: AdminDirectorDetail,
+    component: DirectorDetail,
     canActivate: [AuthGuard],
     data: { mode: 'edit' },
   },

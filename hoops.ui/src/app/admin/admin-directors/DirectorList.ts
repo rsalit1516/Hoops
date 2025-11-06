@@ -1,5 +1,5 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { TableColumn } from '../shared/GenericMatTable';
+import { TableColumn } from '../shared/generic-mat-table/generic-mat-table';
 import { Director } from '@app/domain/director';
 import { BaseList } from '../shared/BaseList';
 
@@ -7,13 +7,13 @@ import { BaseList } from '../shared/BaseList';
 @Component({
   selector: 'app-director-list',
   template: `
-    <app-list-page-shell>
+    <csbc-list-page-shell>
       <div filter>
-        <app-people-filter
+        <csbc-director-filter
           [filters]="filters()"
           (filterChange)="onFilterChange($event)"
         >
-        </app-people-filter>
+        </csbc-director-filter>
       </div>
 
       <div actions>

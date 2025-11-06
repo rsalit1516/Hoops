@@ -1,1 +1,44 @@
 <p>director-list works!</p>
+<csbc-list-page-shell>
+  <div filter>
+    <csbc-director-filters
+      [filters]="filters()"
+      (filterChange)="onFilterChange($event)"
+    >
+    </csbc-director-filters>
+  </div>
+
+  <div actions>
+    <h2>Director ({{ filteredDirectors().length }})</h2>
+    <button mat-raised-button color="primary" (click)="navigateToNew()">
+      <mat-icon>add</mat-icon>
+      Add Person
+    </button>
+  </div>
+
+  <div list>
+    <app-generic-mat-table
+      [columns]="columns"
+      [data]="filteredDirectors()"
+      (rowClick)="onRowClick($event)"
+    >
+    </app-generic-mat-table>
+  </div>
+</csbc-list-page-shell>
+
+<!-- Custom column templates -->
+<!-- <ng-template #statusTemplate let-director>
+  <mat-chip [color]="director.active ? 'primary' : 'warn'">
+    {{ director.active ? 'Active' : 'Inactive' }}
+  </mat-chip>
+</ng-template> -->
+
+<ng-template #actionsTemplate let-director>
+  <button mat-icon-button (click)="$event.stopPropagation()">
+    <mat-icon>more_vert</mat-icon>
+  </button>
+  <!-- <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="onEdit(director)">Edit</button>
+    <button mat-menu-item (click)="onDelete(director)">Delete</button>
+  </mat-menu> -->
+</ng-template>

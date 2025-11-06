@@ -1,0 +1,24 @@
+<div class="list-page-container">
+  <!-- Filter Section -->
+  <div class="filter-section" *ngIf="hasFilterContent">
+    <mat-card>
+      <mat-card-content>
+        <ng-content select="[filter]"></ng-content>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Action Bar (optional - for add buttons, etc) -->
+  <div class="action-bar" *ngIf="hasActionsContent">
+    <ng-content select="[actions]"></ng-content>
+  </div>
+
+  <!-- List/Table Section -->
+  <div class="list-section">
+    <mat-card>
+      <mat-card-content>
+        <ng-content select="[list]"></ng-content>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

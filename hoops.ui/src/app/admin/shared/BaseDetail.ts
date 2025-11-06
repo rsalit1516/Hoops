@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Observable, firstValueFrom } from 'rxjs';
 
 // base-detail.component.ts
-export abstract class BaseDetail<T extends { id?: string | number }> {
+export abstract class BaseDetail<T> {
   protected router = inject(Router);
   protected route = inject(ActivatedRoute);
 

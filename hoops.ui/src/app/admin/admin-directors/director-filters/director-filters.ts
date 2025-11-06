@@ -9,6 +9,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
 import { debounceTime } from 'rxjs';
 
 // Interface for filter data structure
@@ -20,9 +21,9 @@ export interface DirectorFilterCriteria {
 
 @Component({
   selector: 'csbc-director-filters',
-  imports: [],
-  templateUrl: './director-filters.component.html',
-  styleUrl: './director-filters.component.scss',
+  imports: [MatCardModule],
+  templateUrl: './director-filters.html',
+  styleUrl: './director-filters.scss',
 })
 export class DirectorFilters implements OnInit, OnChanges {
   private fb = inject(FormBuilder);

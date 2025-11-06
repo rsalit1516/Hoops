@@ -23,60 +23,16 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 // generic-mat-table.component.ts
 @Component({
   selector: 'app-generic-mat-table',
-  template: `
-    <div class="table-container">
-      <table mat-table [dataSource]="dataSource" matSort>
-        <!-- Dynamic columns -->
-        <ng-container
-          *ngFor="let column of columns"
-          [matColumnDef]="column.key"
-        >
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>
-            {{ column.header }}
-          </th>
-          <td mat-cell *matCellDef="let item">
-            <!-- Use template if provided, otherwise show field value -->
-            <ng-container *ngIf="column.template; else defaultCell">
-              <ng-container
-                *ngTemplateOutlet="
-                  column.template;
-                  context: { $implicit: item, column: column }
-                "
-              >
-              </ng-container>
-            </ng-container>
-            <ng-template #defaultCell>
-              {{ getFieldValue(item, column.field) }}
-            </ng-template>
-          </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr
-          mat-row
-          *matRowDef="let row; columns: displayedColumns"
-          (click)="onRowClick(row)"
-          class="clickable-row"
-        ></tr>
-      </table>
-
-      <mat-paginator
-        [pageSizeOptions]="[10, 25, 50, 100]"
-        [pageSize]="pageSize"
-        showFirstLastButtons
-      >
-      </mat-paginator>
-    </div>
-  `,
-  styles: [
-    `
-      .clickable-row {
-        cursor: pointer;
-      }
-      .clickable-row:hover {
-        background-color: #f5f5f5;
-      }
-    `,
+  templateUrl: './generic-mat-table.html',
+  styleUrl: './generic-mat-table.scss',
+  imports: [
+    CommonModule,
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule,
+    MatButtonModule,
+    MatIconModule,
+    MatProgressSpinnerModule,
   ],
 })
 export class GenericMatTableComponent<T> implements AfterViewInit {
