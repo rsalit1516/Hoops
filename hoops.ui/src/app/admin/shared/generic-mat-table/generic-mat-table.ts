@@ -24,7 +24,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @Component({
   selector: 'app-generic-mat-table',
   templateUrl: './generic-mat-table.html',
-  styleUrl: './generic-mat-table.scss',
+  styleUrls: ['./generic-mat-table.scss', '../../../shared/scss/tables.scss'],
   imports: [
     CommonModule,
     MatTableModule,

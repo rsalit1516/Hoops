@@ -1,6 +1,9 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { BaseList } from '@app/admin/shared/BaseList';
-import { TableColumn, GenericMatTableComponent } from '@app/admin/shared/generic-mat-table/generic-mat-table';
+import {
+  TableColumn,
+  GenericMatTableComponent,
+} from '@app/admin/shared/generic-mat-table/generic-mat-table';
 import { DirectorListItem } from '@app/domain/director';
 import { Person } from '@app/domain/person';
 import {
@@ -45,11 +48,14 @@ export class DirectorList extends BaseList<DirectorListItem> {
     const directorsData = this.directorService.directorsSignal();
     if (!directorsData) return [];
 
-    return directorsData.map(director => ({
-      id: director.id,
-      name: director.name,
-      title: director.title,
-    } as DirectorListItem));
+    return directorsData.map(
+      (director) =>
+        ({
+          id: director.id,
+          name: director.name,
+          title: director.title,
+        } as DirectorListItem)
+    );
   });
 
   // Computed signal for filtered directors
@@ -62,7 +68,7 @@ export class DirectorList extends BaseList<DirectorListItem> {
     }
 
     // Apply filters here based on your filter criteria
-    return directors.filter(director => {
+    return directors.filter((director) => {
       // Add your filtering logic based on filterCriteria
       return true;
     });
@@ -73,6 +79,7 @@ export class DirectorList extends BaseList<DirectorListItem> {
   }
 
   onRowClick(item: DirectorListItem): void {
+    console.log('Row clicked:', item);
     this.navigateToDetail(item);
   }
 }

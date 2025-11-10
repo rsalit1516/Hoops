@@ -7,7 +7,11 @@ import { MatCardModule } from '@angular/material/card';
   selector: 'csbc-list-page-shell',
   imports: [CommonModule, MatCardModule],
   templateUrl: './list-page-shell.html',
-  styleUrls: ['./list-page-shell.scss'],
+  styleUrls: [
+    '../../../shared/scss/tables.scss',
+    '../../../shared/scss/cards.scss',
+    './list-page-shell.scss',
+  ],
 })
 export class ListPageShellComponent {
   @ContentChild('[filter]') filterContent?: any;
