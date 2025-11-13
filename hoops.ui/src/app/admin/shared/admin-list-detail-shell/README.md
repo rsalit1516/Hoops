@@ -529,7 +529,7 @@ export class DirectorListComponent implements OnInit {
 
   deleteDirector(director: Director): void {
     if (confirm(`Are you sure you want to delete ${director.firstName} ${director.lastName}?`)) {
-      this.directorService.deleteDirector(director.id).subscribe({
+      this.directorService.deleteDirector(director.directorId).subscribe({
         next: () => {
           this.loadDirectors();
         },

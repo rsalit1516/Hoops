@@ -37,6 +37,7 @@ export class DirectorList extends BaseList<DirectorListItem> {
   }
 
   columns: TableColumn<DirectorListItem>[] = [
+    { key: 'directorId', header: 'ID', field: 'directorId' },
     { key: 'name', header: 'Name', field: 'name' },
     { key: 'title', header: 'Title', field: 'title' },
   ];
@@ -51,7 +52,8 @@ export class DirectorList extends BaseList<DirectorListItem> {
     return directorsData.map(
       (director) =>
         ({
-          id: director.id,
+          id: director.directorId, // For BaseList compatibility
+          directorId: director.directorId,
           name: director.name,
           title: director.title,
         } as DirectorListItem)
@@ -80,6 +82,6 @@ export class DirectorList extends BaseList<DirectorListItem> {
 
   onRowClick(item: DirectorListItem): void {
     console.log('Row clicked:', item);
-    this.navigateToDetail(item);
+    this.router.navigate([item.directorId], { relativeTo: this.route });
   }
 }

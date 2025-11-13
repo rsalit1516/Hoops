@@ -35,10 +35,10 @@ export class UserActivityService {
     // Effect to handle activity changes
     effect(() => {
       const activity = this.lastActivity();
-      this.logger.info(
-        '🎯 User activity updated:',
-        new Date(activity).toLocaleTimeString()
-      );
+      // this.logger.info(
+      //   '🎯 User activity updated:',
+      //   new Date(activity).toLocaleTimeString()
+      // );
       this.resetInactivityTimer();
     });
   }

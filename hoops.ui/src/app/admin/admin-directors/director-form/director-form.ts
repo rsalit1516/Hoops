@@ -51,7 +51,7 @@ export class DirectorForm implements OnInit, OnChanges {
   saving = signal(false);
 
   form = this.fb.group({
-    id: [0],
+    directorId: [0],
     companyId: [1],
     peopleId: [0],
     seq: [0],

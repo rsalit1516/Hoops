@@ -1,5 +1,5 @@
 export class Director {
-  id!: number;
+  directorId!: number;
   companyId!: number;
   peopleId!: number;
   seq!: number;
@@ -8,7 +8,7 @@ export class Director {
   createdDate!: Date;
   createdUser: string | undefined;
   constructor(
-    id: number,
+    directorId: number,
     name: string,
     companyId: number,
     peopleId: number,
@@ -19,7 +19,8 @@ export class Director {
 
 // Interface for director list display
 export interface DirectorListItem {
-  id: number;
+  id: number; // For BaseList compatibility
+  directorId: number;
   name: string;
   title: string;
 }

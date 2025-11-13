@@ -14,7 +14,7 @@ describe('DirectorList', () => {
 
   const mockDirectors: Director[] = [
     {
-      id: 1,
+      directorId: 1,
       companyId: 1,
       peopleId: 101,
       seq: 1,
@@ -25,7 +25,7 @@ describe('DirectorList', () => {
       createdUser: 'admin',
     },
     {
-      id: 2,
+      directorId: 2,
       companyId: 1,
       peopleId: 102,
       seq: 2,
@@ -35,7 +35,7 @@ describe('DirectorList', () => {
       createdUser: 'admin',
     },
     {
-      id: 3,
+      directorId: 3,
       companyId: 1,
       peopleId: 103,
       seq: 3,
@@ -105,7 +105,7 @@ describe('DirectorList', () => {
       expect(compiled.textContent).toContain('Bob Williams');
       const newDirectors: Director[] = [
         {
-          id: 4,
+          directorId: 4,
           companyId: 1,
           peopleId: 104,
           seq: 4,
@@ -411,7 +411,7 @@ describe('DirectorList', () => {
     it('should react to signal changes', () => {
       const newDirectors: Director[] = [
         {
-          id: 5,
+          directorId: 5,
           companyId: 1,
           peopleId: 105,
           seq: 5,

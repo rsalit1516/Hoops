@@ -100,7 +100,7 @@ export class DirectorList implements OnInit, AfterViewInit {
    */
   editDirector(director: Director): void {
     // TODO: Implement navigation to edit form
-    // this.router.navigate(['/admin/directors/edit', director.id]);
+    // this.router.navigate(['/admin/directors/edit', director.directorId]);
   }
 
   /**

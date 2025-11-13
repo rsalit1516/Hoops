@@ -1,8 +1,9 @@
-import { inject, signal } from '@angular/core';
+import { Directive, inject, signal } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable, firstValueFrom } from 'rxjs';
 
 // base-detail.component.ts
+@Directive()
 export abstract class BaseDetail<T> {
   protected router = inject(Router);
   protected route = inject(ActivatedRoute);

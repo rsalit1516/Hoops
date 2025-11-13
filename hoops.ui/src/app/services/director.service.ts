@@ -61,7 +61,7 @@ export class DirectorService {
 
   update(item: Director) {
     // ToDo: implement update logic
-    return this.http.put<Director>(`${this.url}${item.id}/`, item).pipe(
+    return this.http.put<Director>(`${this.url}${item.directorId}/`, item).pipe(
       tap((data) => console.log('Updated Director: ' + JSON.stringify(data))),
       catchError(this.dataService.handleError<Director>('updateDirector'))
     );
