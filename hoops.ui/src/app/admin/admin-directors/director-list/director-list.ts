@@ -37,7 +37,7 @@ export class DirectorList extends BaseList<DirectorListItem> {
   }
 
   columns: TableColumn<DirectorListItem>[] = [
-    { key: 'directorId', header: 'ID', field: 'directorId' },
+    { key: 'seq', header: 'Seq', field: 'seq' },
     { key: 'name', header: 'Name', field: 'name' },
     { key: 'title', header: 'Title', field: 'title' },
   ];
@@ -56,6 +56,7 @@ export class DirectorList extends BaseList<DirectorListItem> {
           directorId: director.directorId,
           name: director.name,
           title: director.title,
+          seq: director.seq,
         } as DirectorListItem)
     );
   });

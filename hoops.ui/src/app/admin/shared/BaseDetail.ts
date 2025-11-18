@@ -29,10 +29,14 @@ export abstract class BaseDetail<T> {
   }
 
   async onSave(item: T): Promise<void> {
+    console.log('BaseDetail.onSave called with:', item);
     try {
+      console.log('Calling saveItem...');
       const saved = await firstValueFrom(this.saveItem(item));
+      console.log('Save successful:', saved);
       this.navigateToList();
     } catch (error) {
+      console.error('Save failed:', error);
       // Handle error
     }
   }

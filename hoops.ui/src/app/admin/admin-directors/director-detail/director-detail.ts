@@ -54,7 +54,10 @@ export class DirectorDetail extends BaseDetail<Director> {
   }
 
   protected override saveItem(item: Director): Observable<Director> {
-    return item.directorId
+    console.log('DirectorDetail.saveItem called with:', item);
+    console.log('Is update?', item.directorId > 0);
+
+    return item.directorId && item.directorId > 0
       ? this.directorService.update(item)
       : this.directorService.create(item);
   }
@@ -64,7 +67,7 @@ export class DirectorDetail extends BaseDetail<Director> {
       name: '',
       companyId: 1,
       directorId: 0,
-      peopleId: 0,
+      personId: 0,
       seq: 0,
       title: '',
       createdDate: new Date(),

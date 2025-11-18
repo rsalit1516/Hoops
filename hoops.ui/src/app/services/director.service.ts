@@ -60,15 +60,21 @@ export class DirectorService {
   }
 
   update(item: Director) {
-    // ToDo: implement update logic
-    return this.http.put<Director>(`${this.url}${item.directorId}/`, item).pipe(
-      tap((data) => console.log('Updated Director: ' + JSON.stringify(data))),
+    return this.http.put<Director>(`${this.url}/${item.directorId}`, item).pipe(
+      tap((data) => {
+        console.log('Updated Director: ' + JSON.stringify(data));
+        this.fetchDirectors(); // Refresh the list after update
+      }),
       catchError(this.dataService.handleError<Director>('updateDirector'))
     );
   }
+
   create(item: Director) {
     return this.http.post<Director>(`${this.url}`, item).pipe(
-      tap((data) => console.log('Created Director: ' + JSON.stringify(data))),
+      tap((data) => {
+        console.log('Created Director: ' + JSON.stringify(data));
+        this.fetchDirectors(); // Refresh the list after create
+      }),
       catchError(this.dataService.handleError<Director>('createDirector'))
     );
   }

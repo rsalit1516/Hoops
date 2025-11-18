@@ -39,7 +39,11 @@ interface FormField {
     MatButtonModule,
   ],
   templateUrl: './director-form.html',
-  styleUrl: './director-form.scss',
+  styleUrls: [
+    './director-form.scss',
+    '../../../shared/scss/forms.scss',
+    '../../../shared/scss/cards.scss',
+  ],
 })
 export class DirectorForm implements OnInit, OnChanges {
   private fb = inject(FormBuilder);
@@ -53,7 +57,7 @@ export class DirectorForm implements OnInit, OnChanges {
   form = this.fb.group({
     directorId: [0],
     companyId: [1],
-    peopleId: [0],
+    personId: [0],
     seq: [0],
     name: ['', Validators.required],
     title: ['', Validators.required],
@@ -65,7 +69,12 @@ export class DirectorForm implements OnInit, OnChanges {
   fields: FormField[] = [
     { key: 'name', label: 'Name', type: 'text', placeholder: 'Enter name' },
     { key: 'title', label: 'Title', type: 'text', placeholder: 'Enter title' },
-    { key: 'seq', label: 'Sequence', type: 'number', placeholder: 'Display order' },
+    {
+      key: 'seq',
+      label: 'Sequence',
+      type: 'number',
+      placeholder: 'Display order',
+    },
   ];
 
   ngOnInit() {
@@ -81,8 +90,23 @@ export class DirectorForm implements OnInit, OnChanges {
   }
 
   onSubmit() {
+    console.log('DirectorForm.onSubmit called');
+    console.log('Form valid:', this.form.valid);
+    console.log('Form value:', this.form.value);
+    console.log('Form errors:', this.form.errors);
+
     if (this.form.valid) {
+      console.log('Emitting save event with:', this.form.value);
       this.save.emit(this.form.value as Director);
+    } else {
+      console.error('Form is invalid!', this.form.value);
+      // Log which fields are invalid
+      Object.keys(this.form.controls).forEach(key => {
+        const control = this.form.get(key);
+        if (control && control.invalid) {
+          console.error(`Field '${key}' is invalid:`, control.errors);
+        }
+      });
     }
   }
 

@@ -16,7 +16,7 @@ describe('DirectorList', () => {
     {
       directorId: 1,
       companyId: 1,
-      peopleId: 101,
+      personId: 101,
       seq: 1,
       title: 'Board President',
       name: 'John Smith',
@@ -27,7 +27,7 @@ describe('DirectorList', () => {
     {
       directorId: 2,
       companyId: 1,
-      peopleId: 102,
+      personId: 102,
       seq: 2,
       title: 'Vice President',
       name: 'Alice Johnson',
@@ -37,7 +37,7 @@ describe('DirectorList', () => {
     {
       directorId: 3,
       companyId: 1,
-      peopleId: 103,
+      personId: 103,
       seq: 3,
       title: 'Treasurer',
       name: 'Bob Williams',
@@ -107,7 +107,7 @@ describe('DirectorList', () => {
         {
           directorId: 4,
           companyId: 1,
-          peopleId: 104,
+          personId: 104,
           seq: 4,
           title: 'Secretary',
           name: 'Charlie Brown',
@@ -413,7 +413,7 @@ describe('DirectorList', () => {
         {
           directorId: 5,
           companyId: 1,
-          peopleId: 105,
+          personId: 105,
           seq: 5,
           title: 'Board Member',
           name: 'Frank Wilson',

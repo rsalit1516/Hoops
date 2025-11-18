@@ -46,7 +46,7 @@ h2 {
   margin-bottom: 1rem;
 }
 
-label {
+label .mdc-floating-label {
   display: block;
   // margin-bottom: 0.9rem;
   // padding-bottom: 12px;
@@ -87,7 +87,8 @@ input {
   background-color: transparent !important;
 }
 
-.mat-label {
+.mat-label,
+.mdc-floating-label {
   color: v.$admin-font-color !important;
   font-size: 0.9rem;
   font-weight: 800;
