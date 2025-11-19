@@ -18,6 +18,17 @@ namespace Hoops.Controllers
         public IActionResult Get() => Ok(repository.GetAll(1));
 
         /// <summary>
+        /// GET: api/Director/volunteers
+        /// Get all people who are eligible to be directors (BoardOfficer or BoardMember = true)
+        /// </summary>
+        [HttpGet("volunteers")]
+        public IActionResult GetDirectorVolunteers()
+        {
+            var volunteers = repository.GetDirectorVolunteers(1);
+            return Ok(volunteers);
+        }
+
+        /// <summary>
         /// GET: api/Director/5
         /// Get a specific director by ID
         /// </summary>

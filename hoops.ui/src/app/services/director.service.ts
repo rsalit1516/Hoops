@@ -94,6 +94,13 @@ export class DirectorService {
     this.directorsResource.reload();
   }
 
+  getDirectorVolunteers(): Observable<Director[]> {
+    return this.http.get<Director[]>(`${this.url}/volunteers`).pipe(
+      tap(data => console.log('Director Volunteers: ' + JSON.stringify(data))),
+      catchError(this.dataService.handleError<Director[]>('getDirectorVolunteers', []))
+    );
+  }
+
   // getDirectors (): Observable<Director[]> {
   //   return this.http.get<Director[]>(this.url).pipe(
   //     map(response => {

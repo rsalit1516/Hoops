@@ -17,6 +17,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { Director } from '@app/domain/director';
+import { DirectorService } from '@app/services/director.service';
 
 // Interface for form field definitions
 interface FormField {
@@ -47,19 +48,21 @@ interface FormField {
 })
 export class DirectorForm implements OnInit, OnChanges {
   private fb = inject(FormBuilder);
+  private directorService = inject(DirectorService);
 
   @Input() director?: Director | null;
   @Output() save = new EventEmitter<Director>();
   @Output() cancel = new EventEmitter<void>();
 
   saving = signal(false);
+  volunteers = signal<Director[]>([]);
 
   form = this.fb.group({
     directorId: [0],
     companyId: [1],
-    personId: [0],
+    personId: [0, Validators.required],
     seq: [0],
-    name: ['', Validators.required],
+    name: [''],
     title: ['', Validators.required],
     createdDate: [new Date()],
     createdUser: [''],
@@ -67,7 +70,6 @@ export class DirectorForm implements OnInit, OnChanges {
 
   // Field definitions for the dynamic form template
   fields: FormField[] = [
-    { key: 'name', label: 'Name', type: 'text', placeholder: 'Enter name' },
     { key: 'title', label: 'Title', type: 'text', placeholder: 'Enter title' },
     {
       key: 'seq',
@@ -78,6 +80,16 @@ export class DirectorForm implements OnInit, OnChanges {
   ];
 
   ngOnInit() {
+    // Load volunteers for the dropdown
+    this.directorService.getDirectorVolunteers().subscribe({
+      next: (volunteers) => {
+        this.volunteers.set(volunteers);
+      },
+      error: (error) => {
+        console.error('Failed to load director volunteers', error);
+      }
+    });
+
     if (this.director) {
       this.form.patchValue(this.director);
     }
@@ -86,6 +98,16 @@ export class DirectorForm implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['director'] && this.director) {
       this.form.patchValue(this.director);
+    }
+  }
+
+  onVolunteerSelected(personId: number) {
+    const selectedVolunteer = this.volunteers().find(v => v.personId === personId);
+    if (selectedVolunteer) {
+      this.form.patchValue({
+        personId: selectedVolunteer.personId,
+        name: selectedVolunteer.name
+      });
     }
   }
 

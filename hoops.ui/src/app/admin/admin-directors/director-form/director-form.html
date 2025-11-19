@@ -1,5 +1,22 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <div class="form-grid">
+    <!-- Volunteer/Person Dropdown -->
+    <mat-form-field appearance="outline">
+      <mat-label>Director Name</mat-label>
+      <mat-select
+        formControlName="personId"
+        (selectionChange)="onVolunteerSelected($event.value)"
+        placeholder="Select a person"
+      >
+        <mat-option *ngFor="let volunteer of volunteers()" [value]="volunteer.personId">
+          {{ volunteer.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('personId')?.hasError('required')">
+        Director name is required
+      </mat-error>
+    </mat-form-field>
+
     <ng-container *ngFor="let field of fields">
       <!-- Text/Email/Number Input -->
       <mat-form-field
