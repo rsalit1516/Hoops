@@ -5,7 +5,9 @@
       "Bash(test:*)",
       "mcp__ide__getDiagnostics",
       "Bash(dotnet test:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(npm run lint:*)",
+      "Bash(npx ng build:*)"
     ],
     "deny": [],
     "ask": []

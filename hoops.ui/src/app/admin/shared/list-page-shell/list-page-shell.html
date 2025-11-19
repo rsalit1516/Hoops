@@ -1,15 +1,11 @@
 <div class="list-page-container">
   <!-- Filter Section -->
-  <div class="filter-section" *ngIf="hasFilterContent">
-    <mat-card>
-      <mat-card-content>
-        <ng-content select="[filter]"></ng-content>
-      </mat-card-content>
-    </mat-card>
+  <div class="filter-section">
+    <ng-content select="[filter]"></ng-content>
   </div>
 
   <!-- Action Bar (optional - for add buttons, etc) -->
-  <div class="action-bar" *ngIf="hasActionsContent">
+  <div class="action-bar">
     <ng-content select="[actions]"></ng-content>
   </div>
 

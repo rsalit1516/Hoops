@@ -29,7 +29,7 @@ import { Router } from '@angular/router';
   ],
   providers: [MatSort, MatPaginator],
 })
-export class DirectorList implements OnInit, AfterViewInit {
+export class DirectorListOld implements OnInit, AfterViewInit {
   @ViewChild('directorPaginator') paginator: MatPaginator =
     inject(MatPaginator);
   @ViewChild(MatSort) sort: MatSort = inject(MatSort);

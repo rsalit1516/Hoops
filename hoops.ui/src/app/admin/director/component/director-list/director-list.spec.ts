@@ -2,13 +2,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { DirectorList } from './director-list';
+import { DirectorListOld } from './director-list';
 import { DirectorService } from '@app/services/director.service';
 import { Director } from '@app/domain/director';
 
 describe('DirectorList', () => {
-  let component: DirectorList;
-  let fixture: ComponentFixture<DirectorList>;
+  let component: DirectorListOld;
+  let fixture: ComponentFixture<DirectorListOld>;
   let mockDirectorService: jasmine.SpyObj<DirectorService>;
   let mockRouter: jasmine.SpyObj<Router>;
 
@@ -63,14 +63,14 @@ describe('DirectorList', () => {
     mockRouter = jasmine.createSpyObj('Router', ['navigate']);
 
     await TestBed.configureTestingModule({
-      imports: [DirectorList, NoopAnimationsModule],
+      imports: [DirectorListOld, NoopAnimationsModule],
       providers: [
         { provide: DirectorService, useValue: mockDirectorService },
         { provide: Router, useValue: mockRouter },
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(DirectorList);
+    fixture = TestBed.createComponent(DirectorListOld);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
