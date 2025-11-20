@@ -69,12 +69,9 @@
               !householdDetailForm.valid || !householdDetailForm.dirty
             "
             type="submit"
-            [ngStyle]="{
-              opacity:
-                !householdDetailForm.valid || !householdDetailForm.dirty
+            [style.opacity]="!householdDetailForm.valid || !householdDetailForm.dirty
                   ? 0.5
-                  : 1
-            }"
+                  : 1"
           >
             Save
           </button>

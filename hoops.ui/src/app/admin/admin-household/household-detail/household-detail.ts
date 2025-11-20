@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, effect, inject, input, OnChanges, OnInit, signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HouseholdService } from '@app/services/household.service';
@@ -15,7 +15,6 @@ import { HouseholdMembers } from '@app/admin/admin-people/household-members/hous
 @Component({
   selector: 'csbc-household-detail',
   imports: [
-    CommonModule,
     FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
@@ -25,8 +24,7 @@ import { HouseholdMembers } from '@app/admin/admin-people/household-members/hous
     MatCardModule,
     RouterModule,
     HouseholdMembers
-
-  ],
+],
   templateUrl: "./household-detail.html",
   styleUrls: ['./household-detail.scss',
     '../../admin.scss',
