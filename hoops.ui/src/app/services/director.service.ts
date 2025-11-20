@@ -101,6 +101,16 @@ export class DirectorService {
     );
   }
 
+  delete(id: number): Observable<Director> {
+    return this.http.delete<Director>(`${this.url}/${id}`).pipe(
+      tap((data) => {
+        console.log('Deleted Director: ' + JSON.stringify(data));
+        this.fetchDirectors(); // Refresh the list after delete
+      }),
+      catchError(this.dataService.handleError<Director>('deleteDirector'))
+    );
+  }
+
   // getDirectors (): Observable<Director[]> {
   //   return this.http.get<Director[]>(this.url).pipe(
   //     map(response => {

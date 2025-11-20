@@ -62,6 +62,11 @@ export class DirectorDetail extends BaseDetail<Director> {
       : this.directorService.create(item);
   }
 
+  protected override deleteItem(item: Director): Observable<Director> {
+    console.log('DirectorDetail.deleteItem called with:', item);
+    return this.directorService.delete(item.directorId);
+  }
+
   protected override createNew(): Director {
     return {
       name: '',

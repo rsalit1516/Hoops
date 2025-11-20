@@ -53,6 +53,7 @@ export class DirectorForm implements OnInit, OnChanges {
   @Input() director?: Director | null;
   @Output() save = new EventEmitter<Director>();
   @Output() cancel = new EventEmitter<void>();
+  @Output() delete = new EventEmitter<Director>();
 
   saving = signal(false);
   volunteers = signal<Director[]>([]);
@@ -134,5 +135,11 @@ export class DirectorForm implements OnInit, OnChanges {
 
   onCancelClick() {
     this.cancel.emit();
+  }
+
+  onDeleteClick() {
+    if (this.director && this.director.directorId) {
+      this.delete.emit(this.director);
+    }
   }
 }

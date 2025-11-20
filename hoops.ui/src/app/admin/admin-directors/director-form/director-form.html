@@ -67,6 +67,15 @@
   <div class="form-actions">
     <button mat-button type="button" (click)="onCancelClick()">Cancel</button>
     <button
+      *ngIf="director?.directorId"
+      mat-raised-button
+      color="warn"
+      type="button"
+      (click)="onDeleteClick()"
+    >
+      Delete
+    </button>
+    <button
       mat-raised-button
       color="primary"
       type="submit"

@@ -13,6 +13,7 @@ export abstract class BaseDetail<T> {
 
   protected abstract getBasePath(): string;
   protected abstract saveItem(item: T): Observable<T>;
+  protected abstract deleteItem(item: T): Observable<T>;
   protected abstract createNew(): T;
 
   ngOnInit() {
@@ -47,5 +48,24 @@ export abstract class BaseDetail<T> {
 
   onCancel(): void {
     this.navigateToList();
+  }
+
+  async onDelete(item: T): Promise<void> {
+    console.log('BaseDetail.onDelete called with:', item);
+
+    // Confirm deletion
+    if (!confirm('Are you sure you want to delete this record?')) {
+      return;
+    }
+
+    try {
+      console.log('Calling deleteItem...');
+      await firstValueFrom(this.deleteItem(item));
+      console.log('Delete successful');
+      this.navigateToList();
+    } catch (error) {
+      console.error('Delete failed:', error);
+      // Handle error
+    }
   }
 }
