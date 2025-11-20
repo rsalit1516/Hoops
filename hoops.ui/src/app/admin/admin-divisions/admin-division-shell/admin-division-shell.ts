@@ -45,11 +45,16 @@ import { ShellTitle } from "../../../shared/components/shell-title/shell-title";
 ],
 })
 export class AdminDivisionShell implements OnInit {
+  private store = inject<Store<fromAdmin.State>>(Store);
+
   season = input(new Season());
   router = inject(Router);
   _divisionService = inject(DivisionService);
   title = 'Division Management';
-  constructor (private store: Store<fromAdmin.State>) { }
+
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+  constructor () { }
 
   ngOnInit () {
     // this.store.dispatch(new adminActions.LoadSeasons());

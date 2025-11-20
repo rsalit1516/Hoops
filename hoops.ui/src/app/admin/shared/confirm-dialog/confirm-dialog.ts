@@ -1,5 +1,5 @@
 
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import {
   MAT_DIALOG_DATA,
@@ -13,10 +13,16 @@ import {
   imports: [MatButtonModule, MatDialogModule],
 })
 export class ConfirmDialog {
-  constructor(
-    public dialogRef: MatDialogRef<ConfirmDialog>,
-    @Inject(MAT_DIALOG_DATA) public data?: { title?: string; message?: string }
-  ) {}
+  dialogRef = inject<MatDialogRef<ConfirmDialog>>(MatDialogRef);
+  data? = inject<{
+    title?: string;
+    message?: string;
+}>(MAT_DIALOG_DATA);
+
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {}
 
   onNoClick(): void {
     this.dialogRef.close(false);

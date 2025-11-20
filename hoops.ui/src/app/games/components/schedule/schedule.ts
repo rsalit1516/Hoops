@@ -34,6 +34,9 @@ import { DivisionService } from '@app/services/division.service';
   imports: [DailySchedule],
 })
 export class Schedule implements OnInit {
+  private store = inject<Store<fromGames.State>>(Store);
+  dialog = inject(MatDialog);
+
   private gameService = inject(GameService);
   private divisionService = inject(DivisionService);
   private authService = inject(AuthService);
@@ -63,10 +66,10 @@ export class Schedule implements OnInit {
   errorMessage: string | undefined;
   public title: string;
 
-  constructor(
-    private store: Store<fromGames.State>,
-    public dialog: MatDialog // private media: MediaObserver,
-  ) {
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {
     this.title = 'Schedule!';
     // this.flexMediaWatcher = media.media$.subscribe((change) => {
     //   if (change.mqAlias !== this.currentScreenWidth) {

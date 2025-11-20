@@ -1,12 +1,4 @@
-import {
-  Component,
-  OnDestroy,
-  effect,
-  inject,
-  EffectRef,
-  Signal,
-  Inject,
-} from '@angular/core';
+import { Component, OnDestroy, effect, inject, EffectRef, Signal } from '@angular/core';
 import {
   FormBuilder,
   Validators,
@@ -50,6 +42,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 ],
 })
 export class GameScoreDialog implements OnDestroy {
+  dialogRef = inject<MatDialogRef<GameScoreDialog>>(MatDialogRef);
+  private fb = inject(FormBuilder);
+  data = inject<{
+    game?: RegularGame;
+}>(MAT_DIALOG_DATA);
+
   // Typed, non-nullable form for editable score fields only
   private static integerValidator(
     ctrl: AbstractControl
@@ -87,11 +85,12 @@ export class GameScoreDialog implements OnDestroy {
   private effectRef?: EffectRef; // (may be removed if no live updates)
   saving = false;
 
-  constructor(
-    public dialogRef: MatDialogRef<GameScoreDialog>,
-    private fb: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) public data: { game?: RegularGame }
-  ) {
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {
+    const data = this.data;
+
     const initial = data?.game ?? this.game();
     // Use a logging service if needed, e.g., this.logger.log('GameScoreDialog initial game:', initial);
     if (initial) {

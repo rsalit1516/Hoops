@@ -31,6 +31,9 @@ import { GameService } from '@app/services/game.service';
   imports: [CommonModule, MatTableModule, MatButtonModule, MatIconModule],
 })
 export class DailySchedule implements OnInit {
+  private store = inject<Store<fromGames.State>>(Store);
+  dialog = inject(MatDialog);
+
   readonly games = input.required<RegularGame[]>();
   // @Input() canEdit!: boolean;
   canEdit = signal<boolean>(false);
@@ -49,12 +52,12 @@ export class DailySchedule implements OnInit {
   gameDate!: Date;
   flexMediaWatcher: any;
   currentScreenWidth: string | undefined;
+
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
   // canEdit = this.authService.canEditGames();
 
-  constructor(
-    private store: Store<fromGames.State>,
-    public dialog: MatDialog // private media: MediaObserver
-  ) {
+  constructor() {
     effect(() => {
       this.canEdit.set(this.authService.canEditGames());
       if (this.canEdit() === true) {

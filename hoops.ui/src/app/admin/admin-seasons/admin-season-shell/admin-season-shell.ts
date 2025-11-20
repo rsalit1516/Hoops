@@ -47,13 +47,18 @@ import { SeasonsToolbar } from '@app/admin/components/seasons-toolbar/seasons-to
 ],
 })
 export class AdminSeasonShell implements OnInit, AfterViewInit {
+  private store = inject<Store<fromAdmin.State>>(Store);
+
   private readonly seasonService = inject(SeasonService);
   pageTitle = 'Season Management';
   currentSeason$!: Observable<Season>;
   seasons$!: Observable<Season[]>;
   title = 'Seasons';
 
-  constructor(private store: Store<fromAdmin.State>) {
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {
     effect(() => {
       const record = this.seasonService.selectedSeason();
       console.log('Selected record changed:', record);

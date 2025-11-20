@@ -17,6 +17,9 @@ import { AuthService } from '@app/services/auth.service';
   providedIn: 'root',
 })
 export class AdminGameService {
+  private store = inject<Store<fromGames.State>>(Store);
+  private userStore = inject<Store<fromUser.State>>(Store);
+
   private http = inject(HttpClient);
   private dataService = inject(DataService);
   private authService = inject(AuthService);
@@ -30,10 +33,10 @@ export class AdminGameService {
   filteredGames = signal<RegularGame[] | null>(null);
   currentUser = computed(() => this.authService.currentUser());
 
-  constructor(
-    private store: Store<fromGames.State>,
-    private userStore: Store<fromUser.State>
-  ) {
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {
     effect(() => {
       const filteredGames = this.filteredGames();
       // console.log('Filtered Games', filteredGames);

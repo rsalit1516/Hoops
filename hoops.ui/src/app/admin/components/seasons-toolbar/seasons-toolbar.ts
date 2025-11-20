@@ -33,6 +33,10 @@ import { SeasonService } from '@app/services/season.service';
   styleUrls: ['./../../../shared/scss/forms.scss', './../../admin.scss'],
 })
 export class SeasonsToolbar implements OnInit {
+  private router = inject(Router);
+  private fb = inject(UntypedFormBuilder);
+  private store = inject<Store<fromAdmin.State>>(Store);
+
   readonly #seasonService = inject(SeasonService);
   checked = true;
   filterForm = this.fb.group({
@@ -40,12 +44,10 @@ export class SeasonsToolbar implements OnInit {
   });
   title = 'Seasons List';
 
-  constructor(
-    private router: Router,
-    // private store: Store<fromContent.State>,
-    private fb: UntypedFormBuilder,
-    private store: Store<fromAdmin.State>
-  ) {}
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {}
 
   ngOnInit(): void {
     // throw new Error('Method not implemented.');

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, input, Inject, inject } from '@angular/core';
+import { Component, OnInit, Input, input, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
 import { AuthService } from '@app/services/auth.service';
@@ -29,6 +29,10 @@ import { DatePipe, CommonModule } from '@angular/common';
   ],
 })
 export class Scores implements OnInit {
+  private store = inject<Store<fromGames.State>>(Store);
+  private userStore = inject<Store<fromUser.State>>(Store);
+  dialog = inject(MatDialog);
+
   readonly authService = inject(AuthService);
   dataSource!: MatTableDataSource<RegularGame>;
   groupedGames!: RegularGame[];
@@ -62,11 +66,10 @@ export class Scores implements OnInit {
     'visitingTeamScore',
     'homeTeamScore',
   ];
-  constructor(
-    @Inject(Store) private store: Store<fromGames.State>,
-    private userStore: Store<fromUser.State>,
-    public dialog: MatDialog // private media: MediaObserver
-  ) {
+
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+  constructor() {
     this.title = 'Schedule!';
   }
 

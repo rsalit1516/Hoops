@@ -1,27 +1,29 @@
-import { Component, inject }   from '@angular/core';
-import { Router }      from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from '@app/services/auth.service';
 
-
 @Component({
-    template: `
-    <h2>LOGIN</h2>
-    <p>{{message}}</p>
+  template: ` <h2>LOGIN</h2>
+    <p>{{ message }}</p>
     <p>
-      @if (!authService.isLoggedIn) {
-        <button  >Login</button>
-      }
-      @if (authService.isLoggedIn) {
-        <button (click)="logout()">Logout</button>
+      @if (!authService.isLoggedIn()) {
+      <button>Login</button>
+      } @if (authService.isLoggedIn()) {
+      <button (click)="logout()">Logout</button>
       }
     </p>`,
-    imports: []
+  imports: [],
 })
 export class Login {
-readonly authService = inject(AuthService);
+  router = inject(Router);
+
+  readonly authService = inject(AuthService);
   message: string = '';
 
-  constructor( public router: Router) {
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {
     // this.setMessage();
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 
 import { SchedulePlayoffs } from '@app/games/components/schedule-playoffs/schedule-playoffs';
 import { Store } from '@ngrx/store';
@@ -17,10 +17,15 @@ import { PlayoffGameService } from '@app/services/playoff-game.service';
   styleUrl: './playoffs-shell.scss'
 })
 export class PlayoffsShell implements OnInit {
+  private store = inject<Store<fromGames.State>>(Store);
+  private gameService = inject(PlayoffGameService);
+
   dailyPlayoffSchedule!: Array<PlayoffGame[]>;
 
-  constructor (private store: Store<fromGames.State>,
-    private gameService: PlayoffGameService) { }
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor () { }
 
   ngOnInit () {
     this.store.select(fromGames.getCurrentDivision).subscribe((division) => {

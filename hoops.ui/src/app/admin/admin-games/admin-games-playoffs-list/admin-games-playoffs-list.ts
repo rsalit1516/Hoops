@@ -30,6 +30,9 @@ import { LoggerService } from '@app/services/logger.service';
 ],
 })
 export class AdminGamesPlayoffsList implements OnInit {
+  private store = inject<Store<fromAdmin.State>>(Store);
+  dialog = inject(MatDialog);
+
   gameService = inject(PlayoffGameService);
   readonly router = inject(Router);
   private readonly logger = inject(LoggerService);
@@ -45,7 +48,10 @@ export class AdminGamesPlayoffsList implements OnInit {
 
   displayedColumns!: string[];
   flexMediaWatcher: any;
-  constructor(private store: Store<fromAdmin.State>, public dialog: MatDialog) {
+
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+  constructor() {
     effect(() => {
       this.logger.debug(
         'Division playoff games',

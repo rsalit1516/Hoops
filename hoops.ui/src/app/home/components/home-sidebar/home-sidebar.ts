@@ -19,6 +19,9 @@ import { AsyncPipe } from '@angular/common';
 ]
 })
 export class CsbcHomeSidebar implements OnInit {
+  private _webContentService = inject(ContentService);
+  private store = inject<Store<fromHome.State>>(Store);
+
   // content = input.required<WebContent[]>();
   readonly #contentService = inject(ContentService);
   boardMeetingMessage: string;
@@ -34,10 +37,10 @@ export class CsbcHomeSidebar implements OnInit {
       // tap (result => console.log(result)
     );
 
-  constructor (
-    private _webContentService: ContentService,
-    private store: Store<fromHome.State>
-  ) {
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor () {
     this.boardMeetingMessage = 'Board Meeting';
   }
 

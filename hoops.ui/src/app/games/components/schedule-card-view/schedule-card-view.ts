@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, inject } from '@angular/core';
 import { RegularGame } from '../../../domain/regularGame';
 import { Store, select } from '@ngrx/store';
 import * as fromGames from '../../state';
@@ -13,6 +13,9 @@ import { GameCard } from '../game-card/game-card';
   imports: [GameCard]
 })
 export class ScheduleCardView implements OnInit {
+  private store = inject<Store<fromGames.State>>(Store);
+  private userStore = inject<Store<fromUser.State>>(Store);
+
   errorMessage: string | undefined;
   public title: string;
   get games () {
@@ -25,8 +28,10 @@ export class ScheduleCardView implements OnInit {
   }
   private _games!: RegularGame[] | null;
 
-  constructor (private store: Store<fromGames.State>,
-    private userStore: Store<fromUser.State>) {
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor () {
     this.title = 'Games!';
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Sponsor } from '@app/domain/sponsor';
 import { Store } from '@ngrx/store';
 import * as fromHome from '../../state';
@@ -13,9 +13,14 @@ import * as fromHome from '../../state';
     imports: []
 })
 export class SponsorList implements OnInit {
+  private store = inject<Store<fromHome.State>>(Store);
+
   sponsors: Sponsor[] | undefined;
 
-  constructor(private store: Store<fromHome.State>) { }
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() { }
 
   ngOnInit(): void {
     this.store

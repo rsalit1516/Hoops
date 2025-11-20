@@ -6,6 +6,8 @@ import { LoggerService } from '@app/services/logger.service';
 
 @Injectable({ providedIn: 'root' })
 export class FeatureFlagService {
+  private http = inject(HttpClient);
+
   private flagsSignal = signal<Record<string, boolean>>({});
   private logger = inject(LoggerService);
 
@@ -15,7 +17,10 @@ export class FeatureFlagService {
     () => Object.keys(this.flagsSignal()).length > 0
   );
 
-  constructor(private http: HttpClient) {
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {
     this.loadFlags();
   }
 

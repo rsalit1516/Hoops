@@ -25,6 +25,9 @@ import { ContentService } from '../content.service';
 ]
 })
 export class ContentListToolbar implements OnInit {
+  private router = inject(Router);
+  private store = inject<Store<fromContent.State>>(Store);
+
   readonly #contentService = inject(ContentService);
   checked = true;
   isActiveContent$ = this.store.select(fromContent.getIsActiveOnly);
@@ -34,11 +37,10 @@ export class ContentListToolbar implements OnInit {
   isActive = signal<boolean>(true);
   activeLabel = 'Active Only';
 
-  constructor(
-    private router: Router,
-    private store: Store<fromContent.State>,
-    // private fb: UntypedFormBuilder
-  ) {
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {
 
   }
 
