@@ -22,7 +22,7 @@ import { DivisionService } from '@app/services/division.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
-import { CommonModule, formatDate } from '@angular/common';
+import { formatDate } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 
 import { MatSelectModule } from '@angular/material/select';
@@ -47,7 +47,6 @@ import { LoggerService } from '@app/services/logger.service';
     '../../../shared/scss/cards.scss',
   ],
   imports: [
-    CommonModule,
     FormsModule,
     RouterModule,
     MatCardModule,
@@ -60,7 +59,7 @@ import { LoggerService } from '@app/services/logger.service';
     MatDialogModule,
     MatButtonModule,
     MatSnackBarModule
-    ],
+],
   changeDetection: ChangeDetectionStrategy.OnPush,
   // providers: [DivisionService, PeopleService],
 })

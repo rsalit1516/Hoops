@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import {
   Component,
   inject,
@@ -19,7 +19,7 @@ import {
   selector: 'csbc-alphabetical-search',
   templateUrl: './alphabetical-search.html',
   styleUrls: ['./alphabetical-search.scss'],
-  imports: [CommonModule, MatButtonModule],
+  imports: [MatButtonModule],
 })
 export class AlphabeticalSearch implements OnInit {
   #peopleService = inject(PeopleService);

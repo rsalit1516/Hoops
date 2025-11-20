@@ -42,12 +42,9 @@
           </mat-form-field>
           <mat-form-field
             floatLabel="auto"
-              [ngClass]="{
-                'has-error':
-                  (divisionForm.get('maxDate1')?.touched ||
+              [class.has-error]="(divisionForm.get('maxDate1')?.touched ||
                     divisionForm.get('maxDate1')?.dirty) &&
-                  !divisionForm.get('maxDate1')?.valid
-              }"
+                  !divisionForm.get('maxDate1')?.valid"
             >
             <mat-label>Max Date</mat-label>
             <input matInput required type="date" formControlName="maxDate1" />
@@ -75,12 +72,9 @@
           </mat-form-field>
           <mat-form-field
             floatLabel="auto"
-              [ngClass]="{
-                'has-error':
-                  (divisionForm.get('maxDate2')?.touched ||
+              [class.has-error]="(divisionForm.get('maxDate2')?.touched ||
                     divisionForm.get('maxDate2')?.dirty) &&
-                  !divisionForm.get('maxDate2')?.valid
-              }"
+                  !divisionForm.get('maxDate2')?.valid"
             >
             <mat-label>Max Date</mat-label>
             <input matInput type="date" formControlName="maxDate2" />

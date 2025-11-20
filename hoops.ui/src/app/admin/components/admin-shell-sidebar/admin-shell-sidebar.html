@@ -62,7 +62,7 @@
                 @for (item of seasonSetupItems; track item) {
                   <mat-list-item
                     (click)="navigate(item)"
-                    [ngClass]="{ 'selected-list-item': isSelected(item) }"
+                    [class.selected-list-item]="isSelected(item)"
                     >
                     {{ item.name }}
                   </mat-list-item>
@@ -77,7 +77,7 @@
                     @for (item of communicationItems; track item) {
                       <mat-list-item
                         (click)="navigate(item)"
-                        [ngClass]="{ 'selected-list-item': isSelected(item) }"
+                        [class.selected-list-item]="isSelected(item)"
                         >
                         {{ item.name }}
                       </mat-list-item>
@@ -90,7 +90,7 @@
                     @for (item of peopleItems; track item) {
                       <mat-list-item
                         (click)="navigate(item)"
-                        [ngClass]="{ 'selected-list-item': isSelected(item) }"
+                        [class.selected-list-item]="isSelected(item)"
                         >
                         {{ item.name }}
                       </mat-list-item>

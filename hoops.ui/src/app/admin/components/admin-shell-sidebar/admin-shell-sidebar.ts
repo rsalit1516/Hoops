@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, inject, Inject } from '@angular/core';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
@@ -9,7 +9,6 @@ import { FeatureFlagService } from '@app/shared/services/feature-flags';
 @Component({
   selector: 'app-admin-shell-sidebar',
   imports: [
-    CommonModule,
     MatSidenavModule,
     MatListModule,
     RouterLink,
