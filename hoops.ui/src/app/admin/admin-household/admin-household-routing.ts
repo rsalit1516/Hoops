@@ -14,7 +14,9 @@ export const ADMIN_HOUSEHOLD_ROUTES: Routes = [
 
     children: [
       { path: 'list', component: HouseholdList },
+      { path: 'new', component: HouseholdDetail },
       { path: 'detail', component: HouseholdDetail },
+      { path: ':id', component: HouseholdDetail },
       { path: '', redirectTo: 'list', pathMatch: 'full' },
       { path: '**', component: PageNotFound }
     ]

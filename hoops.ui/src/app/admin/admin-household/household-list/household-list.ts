@@ -1,95 +1,130 @@
-
-import { AfterViewInit, Component, effect, inject, input, OnChanges, OnInit, ViewChild } from '@angular/core';
-import { MatCardModule } from '@angular/material/card';
-import { MatListModule } from '@angular/material/list';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { Router } from '@angular/router';
-import { Household } from '@app/domain/household';
+import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
+import { MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { BaseList } from '@app/admin/shared/BaseList';
+import {
+  TableColumn,
+  GenericMatTableComponent,
+} from '@app/admin/shared/generic-mat-table/generic-mat-table';
+import { Household, HouseholdListItem } from '@app/domain/household';
 import { HouseholdService } from '@app/services/household.service';
-
-import { HouseholdSearch } from "../household-search/household-search";
+import {
+  HouseholdFilterCriteria,
+  HouseholdFilters,
+} from '../household-filters/household-filters';
+import { ListPageShellComponent } from '@app/admin/shared/list-page-shell/ListPageShell';
+import { LoggerService } from '@app/services/logger.service';
 
 @Component({
   selector: 'csbc-household-list',
   imports: [
-    MatCardModule,
     MatTableModule,
-    MatListModule,
-    MatSortModule,
-    MatPaginatorModule,
-    HouseholdSearch
-],
-  templateUrl: "./household-list.html",
-  styleUrls: ['./household-list.scss',
-    '../../admin.scss',
-    '../../../shared/scss/tables.scss',
-    '../../../shared/scss/cards.scss',
+    MatIconModule,
+    MatButtonModule,
+    GenericMatTableComponent,
+    ListPageShellComponent,
+    HouseholdFilters,
   ],
-  providers: [MatSort, MatPaginator]
+  templateUrl: './household-list.html',
+  styleUrl: './household-list.scss',
 })
-export class HouseholdList implements OnInit, OnChanges, AfterViewInit {
-  readonly #router = inject(Router);
-  households = input<Household[]>(); // Signal
-  pageTitle = 'Household List';
-  results = input<Household[]>();
-  readonly #householdService = inject(HouseholdService);
+export class HouseholdList extends BaseList<HouseholdListItem> implements OnInit {
+  private householdService = inject(HouseholdService);
+  private logger = inject(LoggerService);
 
-  @ViewChild('householdPaginator') paginator: MatPaginator = inject(MatPaginator);
-  @ViewChild(MatSort) sort: MatSort = inject(MatSort);
-  showFirstLastButtons = true;
-  pageSize = 10;
-  errorMessage = this.#householdService.errorMessage;
-  noDataMessage = 'Enter search criteria';
-  displayedColumns = [
-    'houseId',
-    'name',
-    'address1',
-    'phone',
-    'email',
-  ]
+  override get basePath(): string {
+    return '/admin/households';
+  }
 
-  dataSource = new MatTableDataSource<Household>([]);
+  columns: TableColumn<HouseholdListItem>[] = [
+    { key: 'houseId', header: 'ID', field: 'houseId' },
+    { key: 'name', header: 'Name', field: 'name' },
+    { key: 'address1', header: 'Address', field: 'address1' },
+    { key: 'phone', header: 'Phone', field: 'phone' },
+    { key: 'email', header: 'Email', field: 'email' },
+  ];
 
-  constructor () {
+  filters = signal<HouseholdFilterCriteria>({ letter: 'A' });
+
+  constructor() {
+    super();
+    // Initialize with 'A' filter on construction
     effect(() => {
-      this.dataSource = new MatTableDataSource<Household>(this.#householdService.householdSearchResults());
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-      this.paginator.pageSize = this.pageSize;
-      this.paginator.page.subscribe(() => this.refreshData());
-
+      const currentFilters = this.filters();
+      this.logger.info('Household filters changed:', currentFilters);
     });
   }
 
-  ngOnInit () {
-    // this.dataSource = new MatTableDataSource(this.results());
-    // this.refreshData();
-  }
-  ngAfterViewInit () {
-    this.dataSource.data = this.results() || [];
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-    this.paginator.pageSize = this.pageSize;
-    this.paginator.page.subscribe(() => this.refreshData());
+  ngOnInit() {
+    // Load initial data with 'A' filter
+    this.onFilterChange({ letter: 'A' });
   }
 
-  ngOnChanges () {
-    this.dataSource.data = this.results() || [];;
-    this.paginator.page.subscribe(() => this.refreshData());
+  // Computed signal to convert Households to HouseholdListItems
+  households = computed(() => {
+    const householdsData = this.householdService.householdSearchResults();
+    if (!householdsData) return [];
+
+    return householdsData.map(
+      (household) =>
+        ({
+          id: household.houseId, // For BaseList compatibility
+          houseId: household.houseId,
+          name: household.name,
+          address1: household.address1,
+          phone: household.phone,
+          email: household.email,
+        } as HouseholdListItem)
+    );
+  });
+
+  // Computed signal for filtered households
+  filteredHouseholds = computed(() => {
+    const households = this.households();
+    const filterCriteria = this.filters();
+
+    if (!filterCriteria || Object.keys(filterCriteria).length === 0) {
+      return households;
+    }
+
+    // Filter logic is handled by the service/backend
+    // This computed just passes through the data
+    return households;
+  });
+
+  onFilterChange(filters: HouseholdFilterCriteria): void {
+    this.logger.info('Filter change received:', filters);
+    this.filters.set(filters);
+
+    // Update service criteria and execute search
+    const criteria = {
+      householdName: filters.letter || '',
+      address: '',
+      email: filters.email || '',
+      phone: filters.phone || '',
+    };
+
+    // If there's a searchText, use it instead of just the letter
+    if (filters.searchText) {
+      criteria.householdName = filters.searchText;
+    }
+
+    this.householdService.selectedCriteria.set(criteria);
+    this.householdService.executeSearch();
   }
-  getRecord (row: Household) {
-    this.#householdService.updateSelectedHousehold(row);
-    console.log(this.#householdService.selectedHousehold);
-    //this.divisionService.getDvision(division);
-    //console.log(this.divisionService.currentDivision());
-    // this.store.dispatch(new adminActions.SetSelectedDivision(division));
-    this.#router.navigate(['./admin/households/detail']);
-  }
-  refreshData () {
-    this.dataSource._updateChangeSubscription();
-    this.dataSource.disconnect()
-    this.dataSource.connect();
+
+  onRowClick(item: HouseholdListItem): void {
+    this.logger.info('Row clicked:', item);
+    // Convert back to full Household for service
+    const household = new Household();
+    household.houseId = item.houseId;
+    household.name = item.name;
+    household.address1 = item.address1;
+    household.phone = item.phone;
+    household.email = item.email;
+
+    this.householdService.updateSelectedHousehold(household);
+    this.router.navigate(['detail'], { relativeTo: this.route });
   }
 }

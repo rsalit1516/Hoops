@@ -9,3 +9,13 @@ export class Household {
   public email?: string;
   public phone?: string;
 }
+
+// Interface for household list display
+export interface HouseholdListItem {
+  id: number; // For BaseList compatibility
+  houseId: number;
+  name: string;
+  address1?: string;
+  phone?: string;
+  email?: string;
+}

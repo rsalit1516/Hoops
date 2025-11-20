@@ -12,6 +12,7 @@ import {
   computed,
   ChangeDetectionStrategy,
 } from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
 
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatSortModule, MatSort } from '@angular/material/sort';
@@ -26,6 +27,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   templateUrl: './generic-mat-table.html',
   styleUrls: ['./generic-mat-table.scss', '../../../shared/scss/tables.scss'],
   imports: [
+    NgTemplateOutlet,
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,

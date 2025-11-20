@@ -123,13 +123,24 @@ namespace Hoops.Infrastructure.Repository
         {
             var query = context.Households.AsQueryable();
             if (!string.IsNullOrEmpty(criteria.Name))
-                query = query.Where(p => p.Name.Contains(criteria.Name));
+            {
+                // Use StartsWith for single letter (alphabetical filtering)
+                // Use Contains for longer strings (text search)
+                if (criteria.Name.Length == 1)
+                    query = query.Where(p => p.Name.StartsWith(criteria.Name));
+                else
+                    query = query.Where(p => p.Name.Contains(criteria.Name));
+            }
             if (!string.IsNullOrEmpty(criteria.Address))
                 query = query.Where(p => p.Address1.Contains(criteria.Address));
             if (!string.IsNullOrEmpty(criteria.Email))
                 query = query.Where(p => p.Email.Contains(criteria.Email));
             if (!string.IsNullOrEmpty(criteria.Phone))
                 query = query.Where(p => p.Phone.Contains(criteria.Phone));
+
+            // Order by name for consistent results
+            query = query.OrderBy(p => p.Name);
+
             return query.ToList();
         }
     }

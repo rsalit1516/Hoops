@@ -9,7 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { Household } from '@app/domain/household';
-import { Router, RouterLink, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink, RouterModule } from '@angular/router';
 import { HouseholdMembers } from '@app/admin/admin-people/household-members/household-members';
 
 @Component({
@@ -36,6 +36,7 @@ export class HouseholdDetail implements OnInit, OnChanges {
   /* injected */
   #householdService = inject(HouseholdService);
   #router = inject(Router);
+  #route = inject(ActivatedRoute);
   fb = inject(FormBuilder);
 
   // householdDetailForm: FormGroup;
@@ -73,7 +74,11 @@ export class HouseholdDetail implements OnInit, OnChanges {
   }
 
   ngOnInit () {
-
+    // Check if this is a new household
+    const url = this.#route.snapshot.url;
+    if (url.length > 0 && url[0].path === 'new') {
+      this.#householdService.newHousehold();
+    }
   }
   ngOnChanges () {
     if (this.household() !== null) {
