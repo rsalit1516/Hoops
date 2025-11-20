@@ -12,21 +12,20 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { DatePipe, CommonModule } from '@angular/common';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'csbc-scores',
   templateUrl: './scores.html',
   styleUrls: ['./scores.scss', '../../containers/games-shell/games-shell.scss'],
   imports: [
-    CommonModule,
     //
     MatTableModule,
     // NgIf,
     MatButtonModule,
     MatIconModule,
-    // DatePipe
-  ],
+    DatePipe
+],
 })
 export class Scores implements OnInit {
   private store = inject<Store<fromGames.State>>(Store);

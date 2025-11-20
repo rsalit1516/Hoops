@@ -12,7 +12,7 @@ import { Store } from '@ngrx/store';
 import { RegularGame } from '@app/domain/regularGame';
 import * as fromAdmin from '../../state';
 import { Observable } from 'rxjs';
-import { CommonModule } from '@angular/common';
+import { DatePipe, NgIf } from '@angular/common';
 // import { ReactiveFormsModule } from '@angular/forms';
 
 import { MatDialog } from '@angular/material/dialog';
@@ -29,12 +29,13 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'csbc-admin-games-list',
   imports: [
-    CommonModule,
     MatIconModule,
     MatTableModule,
     MatPaginatorModule,
-    MatIconModule
-    ],
+    MatIconModule,
+    DatePipe,
+    NgIf
+],
   templateUrl: './admin-games-list.html',
   styleUrls: [
     '../../../shared/scss/tables.scss',

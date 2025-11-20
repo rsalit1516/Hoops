@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component, OnInit, effect, inject, signal } from '@angular/core';
 import {
   FormBuilder,
@@ -26,14 +26,14 @@ import { Person } from '@app/domain/person';
   selector: 'app-admin-user-detail',
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
     MatButtonModule,
     MatSnackBarModule,
-  ],
+    NgClass
+],
   templateUrl: './admin-user-detail.html',
   styleUrls: ['../../../shared/scss/forms.scss'],
 })

@@ -17,7 +17,7 @@ import * as fromGames from '../../state';
 import * as fromUser from '../../../user/state';
 // import * as gameActions from '../../state/games.actions';
 import { MatDialog } from '@angular/material/dialog';
-import { CommonModule, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
@@ -28,7 +28,7 @@ import { GameService } from '@app/services/game.service';
   selector: 'csbc-daily-schedule',
   templateUrl: './daily-schedule.html',
   styleUrls: ['./daily-schedule.scss', './../../../shared/scss/tables.scss'],
-  imports: [CommonModule, MatTableModule, MatButtonModule, MatIconModule],
+  imports: [MatTableModule, MatButtonModule, MatIconModule, DatePipe],
 })
 export class DailySchedule implements OnInit {
   private store = inject<Store<fromGames.State>>(Store);

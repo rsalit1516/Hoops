@@ -12,7 +12,7 @@ import {
   computed,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatSortModule, MatSort } from '@angular/material/sort';
 import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
@@ -26,14 +26,13 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   templateUrl: './generic-mat-table.html',
   styleUrls: ['./generic-mat-table.scss', '../../../shared/scss/tables.scss'],
   imports: [
-    CommonModule,
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
     MatButtonModule,
     MatIconModule,
-    MatProgressSpinnerModule,
-  ],
+    MatProgressSpinnerModule
+],
 })
 export class GenericMatTableComponent<T> implements AfterViewInit {
   @Input() columns: TableColumn<T>[] = [];

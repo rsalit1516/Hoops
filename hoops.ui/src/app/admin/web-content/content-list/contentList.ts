@@ -19,7 +19,7 @@ import * as contentActions from '../../state/admin.actions';
 import { WebContent } from '../../../domain/webContent';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { CommonModule } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { ContentListToolbar } from '../content-list-toolbar/content-list-toolbar';
 import { DateTime } from 'luxon';
@@ -37,14 +37,14 @@ import { LoggerService } from '@app/services/logger.service';
     '../../../shared/scss/tables.scss',
   ],
   imports: [
-    CommonModule,
     MatDialogModule,
     MatTableModule,
     MatIconModule,
     ContentListToolbar,
     MatSortModule,
     MatPaginatorModule,
-  ],
+    DatePipe
+],
   providers: [MatSort, MatPaginator],
 })
 export class ContentList implements OnInit, AfterViewInit {

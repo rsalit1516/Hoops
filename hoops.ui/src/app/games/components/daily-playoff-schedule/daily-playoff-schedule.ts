@@ -1,5 +1,5 @@
 import { Component, computed, inject, input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { PlayoffGame } from '@app/domain/playoffGame';
 import { MatTableModule } from '@angular/material/table';
 import { PlayoffGameService } from '@app/services/playoff-game.service';
@@ -7,7 +7,7 @@ import { PlayoffGameService } from '@app/services/playoff-game.service';
 
 @Component({
   selector: 'csbc-daily-playoff-schedule',
-  imports: [CommonModule, MatTableModule],
+  imports: [MatTableModule, DatePipe],
   templateUrl: './daily-playoff-schedule.html',
   styleUrls: [
     // '../../../shared/scss/tables.scss',

@@ -1,12 +1,12 @@
 import { Component, OnInit, Input, input } from '@angular/core';
 import { Standing } from '@domain/standing';
 import { GameService } from '@app/services/game.service';
-import { CommonModule } from '@angular/common';
+import { DecimalPipe } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 
 @Component({
   selector: 'csbc-standings',
-  imports: [CommonModule, MatTableModule],
+  imports: [MatTableModule, DecimalPipe],
   templateUrl: "./standings.html",
   styleUrls: [
     '../../../shared/scss/tables.scss',

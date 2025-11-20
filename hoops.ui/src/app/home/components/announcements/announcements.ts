@@ -2,7 +2,7 @@ import { Component, OnInit, computed, effect, inject, signal } from '@angular/co
 import { ContentService } from '../../../admin/web-content/content.service';
 
 import { WebContent } from '../../../domain/webContent';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Announcement } from '../announcement/announcement';
 import { map } from 'rxjs';
 
@@ -10,7 +10,7 @@ import { map } from 'rxjs';
   selector: 'csbc-announcements',
   templateUrl: "./announcements.html",
   styleUrls: ['./announcements.scss'],
-  imports: [CommonModule, Announcement],
+  imports: [Announcement, NgClass],
   providers: [ContentService]
 })
 export class CsbcAnnouncements implements OnInit {
