@@ -61,13 +61,11 @@
         (click)="getRecord(row)"
       ></tr>
     </table>
-    <mat-paginator
-      #householdPaginator
+    <mat-paginator #householdPaginator
       aria-label="Select page of users"
       [pageSizeOptions]="[5, 10, 25, 100]"
       [pageSize]="pageSize"
-    >
-    </mat-paginator>
+     />
   </div>
   <!-- </mat-card-content>
   <mat-card-actions>

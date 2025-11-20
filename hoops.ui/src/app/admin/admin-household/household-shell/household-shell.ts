@@ -16,7 +16,7 @@ import { RouterModule } from '@angular/router';
   imports: [RouterModule, MatSidenavModule, MatExpansionModule, MatIconModule, ShellTitle],
   template: `<section class="container">
   <csbc-shell-title [title]="title"/>
-  <router-outlet></router-outlet>
+  <router-outlet />
 </section>`,
   styleUrls: ['./household-shell.scss',
     '../../admin.scss',

@@ -10,14 +10,14 @@
       </div>
     </div>
     <div class="mx-auto">
-      <csbc-home-center class="sm:w-6/12 w-full px-2"></csbc-home-center>
+      <csbc-home-center class="sm:w-6/12 w-full px-2" />
     </div>
     <div>
       <div [ngClass]="meetingNoticeClass" [hidden]="!showSidebar" class="">
-        <csbc-home-sidebar class=""></csbc-home-sidebar>
+        <csbc-home-sidebar class="" />
       </div>
       <div [ngClass]="imageClass" class="mx-auto">
-        <csbc-announcements class="announcements"></csbc-announcements>
+        <csbc-announcements class="announcements" />
       </div>
     </div>
     <div class="justify-end">
@@ -27,7 +27,7 @@
   </div>
   @if (showSponsors) {
     <div class="sponsor">
-      <app-sponsor-list class=""></app-sponsor-list>
+      <app-sponsor-list class="" />
     </div>
   }
 </div>

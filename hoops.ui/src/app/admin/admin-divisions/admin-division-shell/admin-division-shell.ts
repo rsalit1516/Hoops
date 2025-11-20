@@ -22,7 +22,7 @@ import { ShellTitle } from "../../../shared/components/shell-title/shell-title";
   selector: 'csbc-admin-division-shell',
   template: `<section class="container">
     <csbc-shell-title [title]="title"/>
-    <router-outlet></router-outlet>
+    <router-outlet />
   </section>`,
   styleUrls: [
     '../../../shared/scss/forms.scss',

@@ -63,13 +63,11 @@
         (click)="getRecord(row)"
       ></tr>
     </table>
-    <mat-paginator
-      #peoplePaginator
+    <mat-paginator #peoplePaginator
       aria-label="Select page of users"
       [pageSizeOptions]="[5, 10, 25, 100]"
       [pageSize]="pageSize"
       [showFirstLastButtons]="showFirstLastButtons"
-    >
-    </mat-paginator>
+     />
   </div>
 </div>

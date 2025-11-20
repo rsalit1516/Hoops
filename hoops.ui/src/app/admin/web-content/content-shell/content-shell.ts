@@ -12,7 +12,7 @@ import { ContentService } from '../content.service';
     selector: 'csbc-content-shell',
     template: `<section class="container-fluid">
     <h2>{{title}}</h2>
-    <router-outlet></router-outlet>
+    <router-outlet />
   </section>`,
     styleUrls: ['./content-shell.scss'],
     imports: [

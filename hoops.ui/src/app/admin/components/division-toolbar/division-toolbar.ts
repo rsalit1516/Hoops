@@ -28,7 +28,7 @@ import { DivisionService } from '@app/services/division.service';
       <button mat-raised-button type="button" (click)="addDivision()">New</button>
       </div>
     <div class="flex-1 pt-4">
-      <season-select></season-select>
+      <season-select />
     </div>
       </div>
   </mat-toolbar-row>

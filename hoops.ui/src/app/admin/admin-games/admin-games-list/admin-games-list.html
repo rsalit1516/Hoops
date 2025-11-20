@@ -80,13 +80,12 @@
           <td class="mat-cell" colspan="7">No data</td>
         </tr>
       </mat-table>
-      <mat-paginator
-        #gamesPaginator
+      <mat-paginator #gamesPaginator
         [pageSizeOptions]="pageSizeOptions"
         [pageSize]="pageSize"
         showFirstLastButtons
         aria-label="Select page of game"
-      ></mat-paginator>
+       />
       <!--
       <div class="table-wrapper" *ngIf="dataSource.data.length === 0">
         <div class="no-data">No data</div>

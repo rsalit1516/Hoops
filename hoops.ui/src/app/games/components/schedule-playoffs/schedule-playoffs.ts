@@ -9,8 +9,7 @@ import { PlayoffGameService } from '@app/services/playoff-game.service';
   template: `
 @for( data of dailyPlayoffSchedule(); track $index) {
       <div >
-        <csbc-daily-playoff-schedule [playoffGames]="data">
-        </csbc-daily-playoff-schedule>
+        <csbc-daily-playoff-schedule [playoffGames]="data" />
       </div>
 }
   `,

@@ -1,7 +1,7 @@
 <form action="" [formGroup]="personalInfoForm" (ngSubmit)="onSubmit()">
   <mat-card>
     <mat-card-header>
-      <mat-card-title></mat-card-title>
+      <mat-card-title />
     </mat-card-header>
     <mat-card-content>
       <mat-form-field
@@ -31,8 +31,8 @@
           formControlName="birthDate"
           required
           />
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
+          <mat-datepicker-toggle matSuffix [for]="picker" />
+          <mat-datepicker #picker />
         </mat-form-field>
 
         <mat-label>Birth Certificate</mat-label>

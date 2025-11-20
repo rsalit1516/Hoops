@@ -62,7 +62,7 @@
                   <span class="user-name">Hello {{ user()?.firstName }}</span>
                   <!-- Session timer - only show in development for debugging -->
                   @if (!env?.production) {
-                    <csbc-session-timer></csbc-session-timer>
+                    <csbc-session-timer />
                   }
                   <button mat-button (click)="logout()">Logout</button>
                 </div>

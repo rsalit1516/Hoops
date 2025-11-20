@@ -13,7 +13,7 @@ import { RouterModule } from '@angular/router';
     RouterModule],
   template: `<section class="container">
   <csbc-shell-title [title]="title"/>
-  <router-outlet></router-outlet>
+  <router-outlet />
 </section>`,
   styleUrls: ['./admin-people-shell.scss',
     '../../admin.scss',

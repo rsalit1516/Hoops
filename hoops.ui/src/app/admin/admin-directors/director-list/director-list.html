@@ -1,10 +1,8 @@
 <csbc-list-page-shell>
   <div filter>
-    <csbc-director-filters
-      [filters]="filters()"
+    <csbc-director-filters [filters]="filters()"
       (filterChange)="onFilterChange($event)"
-    >
-    </csbc-director-filters>
+     />
   </div>
 
   <div actions>
@@ -16,12 +14,10 @@
   </div>
 
   <div list>
-    <app-generic-mat-table
-      [columns]="columns"
+    <app-generic-mat-table [columns]="columns"
       [data]="filteredDirectors()"
       (rowClick)="onRowClick($event)"
-    >
-    </app-generic-mat-table>
+     />
   </div>
 </csbc-list-page-shell>
 

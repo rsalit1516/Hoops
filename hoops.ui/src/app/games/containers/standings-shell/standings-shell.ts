@@ -17,7 +17,7 @@ import { GameService } from '@app/services/game.service';
   template: `<div class="container mx-auto">
   <div>
     <h1>{{title}}</h1>
-    <csbc-standings [standings]="divisionStandings() ?? []"></csbc-standings>
+    <csbc-standings [standings]="divisionStandings() ?? []" />
   </div>
 </div>
 `,

@@ -23,10 +23,10 @@ import { toSignal } from '@angular/core/rxjs-interop';
   template: ` <div class="w-full mx-2 px-4 admin-container">
     <div class="flex flex-wrap -mx-2">
       <div class="w-2/12 px-2 nav-wrapper">
-        <app-admin-shell-sidebar class=""></app-admin-shell-sidebar>
+        <app-admin-shell-sidebar class="" />
       </div>
       <div class="w-10/12 px-2">
-        <router-outlet class=""></router-outlet>
+        <router-outlet class="" />
       </div>
     </div>
   </div>`,

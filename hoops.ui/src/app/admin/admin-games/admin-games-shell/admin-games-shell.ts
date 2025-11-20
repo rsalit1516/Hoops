@@ -39,10 +39,9 @@ import { AdminGamesState } from '../adminGamesState.service';
   selector: 'csbc-admin-games-shell',
   template: `<section class="container">
     <h2>{{ title }}</h2>
-    <csbc-admin-games-filter
-      (gameFilterChanged)="handlefilterUpdate($event)"
-    ></csbc-admin-games-filter>
-    <router-outlet></router-outlet>
+    <csbc-admin-games-filter (gameFilterChanged)="handlefilterUpdate($event)"
+     />
+    <router-outlet />
   </section>`,
 
   styleUrls: [

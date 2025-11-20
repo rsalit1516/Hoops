@@ -26,7 +26,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
   selector: 'csbc-admin-season-shell',
   template: `<section class="container-fluid">
     <h2>{{ title }}</h2>
-    <router-outlet></router-outlet>
+    <router-outlet />
   </section>`,
   styleUrls: [
     './admin-season-shell.scss',
