@@ -10,7 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { CommonModule } from '@angular/common';
+
 import { ContentService } from '../content.service';
 
 @Component({
@@ -19,12 +19,10 @@ import { ContentService } from '../content.service';
     styleUrls: ['./content-list-toolbar.scss',
         '../../admin.scss'],
   imports: [
-    CommonModule,
-    // MatFormFieldModule,
-    // ReactiveFormsModule,
     MatButtonModule,
     MatToolbarModule,
-    MatCheckboxModule]
+    MatCheckboxModule
+]
 })
 export class ContentListToolbar implements OnInit {
   readonly #contentService = inject(ContentService);

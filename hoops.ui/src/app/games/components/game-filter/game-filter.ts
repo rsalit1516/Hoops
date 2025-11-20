@@ -16,7 +16,7 @@ import { Team } from '@app/domain/team';
 import { GameService } from '@app/services/game.service';
 import { FormsModule } from '@angular/forms';
 import { MatOptionModule } from '@angular/material/core';
-import { NgFor, CommonModule } from '@angular/common';
+
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { LoggerService } from '@app/services/logger.service';
@@ -35,15 +35,13 @@ import { TeamSelect } from '../../shared/team-select/team-select';
     '../../../shared/scss/select.scss',
   ],
   imports: [
-    CommonModule,
     FormsModule,
     MatFormFieldModule,
     MatSelectModule,
-    NgFor,
     MatOptionModule,
     DivisionSelect,
-    TeamSelect,
-  ],
+    TeamSelect
+],
 })
 export class GameFilter implements OnInit {
   readonly #logger = inject(LoggerService);

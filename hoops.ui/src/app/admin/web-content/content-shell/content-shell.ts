@@ -2,7 +2,7 @@ import { Component, OnInit, makeEnvironmentProviders, inject } from '@angular/co
 import { Content } from '@app/domain/content';
 import { Router, RouterLinkWithHref, RouterOutlet } from '@angular/router';
 
-import { CommonModule } from '@angular/common';
+
 import { ContentList } from '../content-list/contentList';
 import { ContentEdit } from '../content-edit/content-edit';
 import { CONTENT_ROUTES } from '../content-routing';
@@ -16,12 +16,11 @@ import { ContentService } from '../content.service';
   </section>`,
     styleUrls: ['./content-shell.scss'],
     imports: [
-        CommonModule,
-        ContentList,
-        ContentEdit,
-        RouterOutlet,
-        RouterLinkWithHref
-    ]
+    ContentList,
+    ContentEdit,
+    RouterOutlet,
+    RouterLinkWithHref
+]
 })
 
 export class ContentShell implements OnInit {

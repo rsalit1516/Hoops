@@ -1,5 +1,5 @@
 import { Component, computed, inject, input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { PlayoffGame } from '@domain/playoffGame';
 import { DailyPlayoffSchedule } from '../daily-playoff-schedule/daily-playoff-schedule';
 import { PlayoffGameService } from '@app/services/playoff-game.service';
@@ -15,7 +15,7 @@ import { PlayoffGameService } from '@app/services/playoff-game.service';
 }
   `,
   styleUrls: ['./schedule-playoffs.scss'],
-  imports: [CommonModule, DailyPlayoffSchedule],
+  imports: [DailyPlayoffSchedule],
 })
 export class SchedulePlayoffs {
   readonly playoffGames = input.required<Array<PlayoffGame[]>>();

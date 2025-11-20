@@ -1,4 +1,4 @@
-import { DatePipe, NgFor, NgForOf, NgIf } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Component, computed, effect, inject, input, linkedSignal, OnInit, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';

@@ -19,7 +19,7 @@ import * as fromGames from '../games/state';
 import { SponsorList } from './components/sponsor-list/sponsor-list';
 import { CsbcAnnouncements } from './components/announcements/announcements';
 import { CsbcHomeSidebar } from './components/home-sidebar/home-sidebar';
-import { CommonModule, NgClass, NgIf } from '@angular/common';
+import { CommonModule, NgClass } from '@angular/common';
 import { HomeCenter } from './components/home-center/home-center';
 import { LoggerService } from '@app/services/logger.service';
 import { SeasonService } from '@app/services/season.service';
@@ -35,11 +35,10 @@ import { ContentService } from '@app/admin/web-content/content.service';
     CommonModule,
     HomeCenter,
     NgClass,
-    NgIf,
     CsbcHomeSidebar,
     CsbcAnnouncements,
-    SponsorList,
-  ],
+    SponsorList
+],
 })
 export class Home implements OnInit {
   logger = inject(LoggerService);

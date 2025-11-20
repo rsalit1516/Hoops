@@ -16,7 +16,7 @@ import {
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { AsyncPipe, CommonModule, NgFor } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { DivisionService } from '@app/services/division.service';
 
 @Component({
@@ -36,13 +36,11 @@ import { DivisionService } from '@app/services/division.service';
     './../../../shared/scss/forms.scss',
   ],
   imports: [
-    CommonModule,
     FormsModule,
     MatFormFieldModule,
     MatSelectModule,
-    NgFor,
-    MatOptionModule,
-  ],
+    MatOptionModule
+],
 })
 export class DivisionSelect implements OnInit {
   // readonly selectedDivision = output<Division>();

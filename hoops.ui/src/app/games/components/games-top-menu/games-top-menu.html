@@ -9,16 +9,20 @@
         routerLink="/games/schedule"
         routerLinkActive="/games/schedule"
         >Schedule</a
-      >
-      <div *ngIf="hasPlayoffs()">
-        <a class="btn" routerLink="/games/playoffs">Playoffs</a>
-      </div>
-      <div *ngIf="hasStandings()">
-        <a class="btn" routerLink="/games/standings">Standings</a>
-      </div>
-    </mat-toolbar-row>
-    <mat-toolbar-row>
-      <csbc-game-filter [display]="display()" class=""></csbc-game-filter>
-    </mat-toolbar-row>
-  </mat-toolbar>
-</div>
+        >
+        @if (hasPlayoffs()) {
+          <div>
+            <a class="btn" routerLink="/games/playoffs">Playoffs</a>
+          </div>
+        }
+        @if (hasStandings()) {
+          <div>
+            <a class="btn" routerLink="/games/standings">Standings</a>
+          </div>
+        }
+      </mat-toolbar-row>
+      <mat-toolbar-row>
+        <csbc-game-filter [display]="display()" class=""></csbc-game-filter>
+      </mat-toolbar-row>
+    </mat-toolbar>
+  </div>

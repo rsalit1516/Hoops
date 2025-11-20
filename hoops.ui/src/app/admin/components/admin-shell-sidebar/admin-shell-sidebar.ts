@@ -1,4 +1,4 @@
-import { CommonModule, NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, inject, Inject } from '@angular/core';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
@@ -14,9 +14,8 @@ import { FeatureFlagService } from '@app/shared/services/feature-flags';
     MatListModule,
     RouterLink,
     RouterLinkActive,
-    MatDividerModule,
-    NgIf,
-  ],
+    MatDividerModule
+],
   templateUrl: "./admin-shell-sidebar.html",
   styleUrls: ['./admin-shell-sidebar.scss',
     './../../containers/admin-shell/admin-shell.scss']

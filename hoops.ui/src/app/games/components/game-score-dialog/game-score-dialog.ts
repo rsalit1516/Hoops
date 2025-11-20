@@ -31,14 +31,13 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'game-score-dialog',
   templateUrl: './game-score-dialog.html',
   styleUrls: ['./game-score-dialog.scss', './../../../shared/scss/forms.scss'],
   imports: [
-    CommonModule,
     MatDialogTitle,
     MatDialogContent,
     FormsModule,
@@ -47,8 +46,8 @@ import { CommonModule } from '@angular/common';
     MatInputModule,
     MatDialogActions,
     MatButtonModule,
-    MatDialogClose,
-  ],
+    MatDialogClose
+],
 })
 export class GameScoreDialog implements OnDestroy {
   // Typed, non-nullable form for editable score fields only

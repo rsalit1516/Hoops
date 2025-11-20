@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { SchedulePlayoffs } from '@app/games/components/schedule-playoffs/schedule-playoffs';
 import { Store } from '@ngrx/store';
 import * as fromGames from '../../state';
@@ -8,7 +8,7 @@ import { PlayoffGameService } from '@app/services/playoff-game.service';
 
 @Component({
   selector: 'csbc-playoffs-shell',
-  imports: [CommonModule, SchedulePlayoffs],
+  imports: [SchedulePlayoffs],
   template: `
     <div class="row">
     <h1>Playoffs</h1>

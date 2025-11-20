@@ -5,7 +5,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -30,7 +30,6 @@ import { Location as GymLocation } from '@app/domain/location';
   ],
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
@@ -40,8 +39,8 @@ import { Location as GymLocation } from '@app/domain/location';
     MatTimepickerModule,
     MatNativeDateModule,
     RouterModule,
-    MatSnackBarModule,
-  ],
+    MatSnackBarModule
+],
 })
 export class AdminGamesPlayoffsDetail implements OnInit {
   readonly fb = inject(FormBuilder);

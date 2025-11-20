@@ -24,7 +24,7 @@ import * as contentActions from '@app/admin/state/admin.actions';
 
 import { WebContentType } from '@app/domain/webContentType';
 import { FloatLabelType } from '@angular/material/form-field';
-import { CommonModule } from '@angular/common';
+
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
@@ -56,7 +56,6 @@ import { LoggerService } from '@app/services/logger.service';
     '../../../shared/scss/cards.scss',
   ],
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     RouterModule,
     MatFormFieldModule,
@@ -67,8 +66,8 @@ import { LoggerService } from '@app/services/logger.service';
     MatOptionModule,
     MatButtonModule,
     MatSelectModule,
-    ConfirmDialog,
-  ],
+    ConfirmDialog
+],
   providers: [provideNativeDateAdapter()],
 })
 export class ContentEdit implements OnInit {

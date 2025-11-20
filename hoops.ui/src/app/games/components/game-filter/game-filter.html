@@ -3,6 +3,8 @@
     <division-select />
   </div>
   <div class="flex-1">
-    <team-select *ngIf="display() === 'schedule'" />
+    @if (display() === 'schedule') {
+      <team-select />
+    }
   </div>
 </div>

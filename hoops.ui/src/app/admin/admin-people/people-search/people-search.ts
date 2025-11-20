@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, inject, model, effect } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -12,13 +12,12 @@ import { LoggerService } from '@app/services/logger.service';
 @Component({
   selector: 'csbc-people-search',
   imports: [
-    CommonModule,
     MatFormFieldModule,
     MatInputModule,
     MatToolbarModule,
     MatButtonModule,
-    MatCheckboxModule,
-  ],
+    MatCheckboxModule
+],
   templateUrl: './people-search.html',
   styleUrls: [
     './people-search.scss',

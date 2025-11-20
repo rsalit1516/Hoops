@@ -1,17 +1,21 @@
 import { Component, inject }   from '@angular/core';
 import { Router }      from '@angular/router';
 import { AuthService } from '@app/services/auth.service';
-import { NgIf } from '@angular/common';
+
 
 @Component({
     template: `
     <h2>LOGIN</h2>
     <p>{{message}}</p>
     <p>
-      <button   *ngIf="!authService.isLoggedIn">Login</button>
-      <button (click)="logout()" *ngIf="authService.isLoggedIn">Logout</button>
+      @if (!authService.isLoggedIn) {
+        <button  >Login</button>
+      }
+      @if (authService.isLoggedIn) {
+        <button (click)="logout()">Logout</button>
+      }
     </p>`,
-    imports: [NgIf]
+    imports: []
 })
 export class Login {
 readonly authService = inject(AuthService);

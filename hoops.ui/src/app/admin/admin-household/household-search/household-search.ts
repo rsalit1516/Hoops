@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, EventEmitter, inject, Output, output, signal } from '@angular/core';
 import { FormBuilder, FormsModule, FormGroup, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -15,7 +15,6 @@ import { debounceTime, map } from 'rxjs';
 @Component({
   selector: 'csbc-household-search',
   imports: [
-    CommonModule,
     FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
@@ -24,7 +23,7 @@ import { debounceTime, map } from 'rxjs';
     MatIconModule,
     MatToolbarModule,
     SectionTitle
-  ],
+],
   templateUrl: "./household-search.html",
   styleUrls: [
     './household-search.scss',

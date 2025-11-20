@@ -1,22 +1,23 @@
 import { Component, computed, inject } from '@angular/core';
 import { AuthService } from '@app/services/auth.service';
-import { CommonModule } from '@angular/common';
+
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'csbc-session-timer',
   template: `
-    <div
-      class="session-timer"
-      [class.expiring-soon]="sessionInfo().isExpiringSoon"
-      [matTooltip]="tooltipText()"
-      *ngIf="authService.isLoggedIn()"
-    >
-      <mat-icon>access_time</mat-icon>
-      <span class="time">{{ sessionInfo().timeRemaining }}</span>
-    </div>
-  `,
+    @if (authService.isLoggedIn()) {
+      <div
+        class="session-timer"
+        [class.expiring-soon]="sessionInfo().isExpiringSoon"
+        [matTooltip]="tooltipText()"
+        >
+        <mat-icon>access_time</mat-icon>
+        <span class="time">{{ sessionInfo().timeRemaining }}</span>
+      </div>
+    }
+    `,
   styles: [
     `
       .session-timer {
@@ -61,7 +62,7 @@ import { MatIconModule } from '@angular/material/icon';
       }
     `,
   ],
-  imports: [CommonModule, MatTooltipModule, MatIconModule],
+  imports: [MatTooltipModule, MatIconModule],
 })
 export class SessionTimerComponent {
   authService = inject(AuthService);

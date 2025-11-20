@@ -7,17 +7,16 @@ import { Store } from '@ngrx/store';
 import * as fromHome from '../../state';
 import { WebContent } from '../../../domain/webContent';
 import { Meeting } from '../meeting/meeting';
-import { NgFor, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'csbc-home-sidebar',
   templateUrl: "./home-sidebar.html",
   styleUrls: ['./home-sidebar.scss'],
   imports: [
-    NgFor,
     Meeting,
-    AsyncPipe,
-  ]
+    AsyncPipe
+]
 })
 export class CsbcHomeSidebar implements OnInit {
   // content = input.required<WebContent[]>();

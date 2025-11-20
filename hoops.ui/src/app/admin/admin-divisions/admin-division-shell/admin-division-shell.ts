@@ -12,7 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Router, RouterOutlet, RouterLinkWithHref } from '@angular/router';
-import { CommonModule } from '@angular/common';
+
 import { Division } from '@app/domain/division';
 import { DivisionService } from '@app/services/division.service';
 import { NewDivisionSelector } from '../../admin-shared/new-division-selector/new-division-selector';
@@ -30,7 +30,6 @@ import { ShellTitle } from "../../../shared/components/shell-title/shell-title";
     './admin-division-shell.scss',
   ],
   imports: [
-    CommonModule,
     SeasonSelect,
     DivisionList,
     DivisionSelect,
@@ -43,7 +42,7 @@ import { ShellTitle } from "../../../shared/components/shell-title/shell-title";
     RouterOutlet,
     RouterLinkWithHref,
     ShellTitle
-  ],
+],
 })
 export class AdminDivisionShell implements OnInit {
   season = input(new Season());

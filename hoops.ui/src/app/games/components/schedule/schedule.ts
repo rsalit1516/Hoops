@@ -17,19 +17,21 @@ import { GameScoreDialog } from '../game-score-dialog/game-score-dialog';
 import { GameService } from '@app/services/game.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DailySchedule } from '../daily-schedule/daily-schedule';
-import { CommonModule, NgFor } from '@angular/common';
+
 import { AuthService } from '@app/services/auth.service';
 import { DivisionService } from '@app/services/division.service';
 
 @Component({
   selector: 'csbc-schedule',
   template: `
-    <div *ngFor="let data of dailySchedule()">
-      <csbc-daily-schedule [games]="data" />
-    </div>
-  `,
+    @for (data of dailySchedule(); track data) {
+      <div>
+        <csbc-daily-schedule [games]="data" />
+      </div>
+    }
+    `,
   styleUrls: ['./schedule.scss'],
-  imports: [CommonModule, DailySchedule],
+  imports: [DailySchedule],
 })
 export class Schedule implements OnInit {
   private gameService = inject(GameService);

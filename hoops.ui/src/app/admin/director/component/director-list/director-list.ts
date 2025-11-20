@@ -11,7 +11,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatButtonModule } from '@angular/material/button';
-import { CommonModule } from '@angular/common';
+
 import { Director } from '@app/domain/director';
 import { DirectorService } from '@app/services/director.service';
 import { Router } from '@angular/router';
@@ -21,12 +21,11 @@ import { Router } from '@angular/router';
   templateUrl: './director-list.html',
   styleUrls: ['./director-list.scss', '../../../../shared/scss/tables.scss'],
   imports: [
-    CommonModule,
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
-    MatButtonModule,
-  ],
+    MatButtonModule
+],
   providers: [MatSort, MatPaginator],
 })
 export class DirectorListOld implements OnInit, AfterViewInit {

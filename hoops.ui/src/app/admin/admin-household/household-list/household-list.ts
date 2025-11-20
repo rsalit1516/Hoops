@@ -1,4 +1,4 @@
-import { NgFor, NgForOf, NgIf } from '@angular/common';
+
 import { AfterViewInit, Component, effect, inject, input, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
@@ -17,14 +17,11 @@ import { HouseholdSearch } from "../household-search/household-search";
     MatCardModule,
     MatTableModule,
     MatListModule,
-    NgFor,
-    NgForOf,
-    NgIf,
     MatSortModule,
     MatPaginatorModule,
     SectionTitle,
     HouseholdSearch
-  ],
+],
   templateUrl: "./household-list.html",
   styleUrls: ['./household-list.scss',
     '../../admin.scss',

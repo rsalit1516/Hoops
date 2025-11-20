@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import {
   Component,
   OnInit,
@@ -37,12 +37,11 @@ import { Team } from '@app/domain/team';
     '../../../shared/scss/forms.scss',
   ],
   imports: [
-    CommonModule,
     FormsModule,
     MatFormFieldModule,
     MatSelectModule,
-    MatOptionModule,
-  ],
+    MatOptionModule
+],
 })
 export class TeamSelect implements OnInit {
   readonly teamService = inject(TeamService);

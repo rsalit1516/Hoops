@@ -12,7 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { NgIf, DatePipe, CommonModule } from '@angular/common';
+import { DatePipe, CommonModule } from '@angular/common';
 
 @Component({
   selector: 'csbc-scores',

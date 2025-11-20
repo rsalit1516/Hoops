@@ -6,14 +6,14 @@ import { Division } from '@app/domain/division';
 import { Store, select } from '@ngrx/store';
 
 import * as fromGames from '../../state';
-import { CommonModule } from '@angular/common';
+
 import { Standings } from '@app/games/components/standings/standings';
 import { GameService } from '@app/services/game.service';
 
 
 @Component({
   selector: 'csbc-standings-shell',
-  imports: [ CommonModule, Standings ],
+  imports: [Standings],
   template: `<div class="container mx-auto">
   <div>
     <h1>{{title}}</h1>

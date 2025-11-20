@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MatButtonModule } from '@angular/material/button';
 import { MatOptionModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -11,12 +11,7 @@ import { DivisionService } from '@app/services/division.service';
 @Component({
   selector: 'csbc-new-division-selector',
   templateUrl: "./new-division-selector.html",
-  imports: [CommonModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatInputModule,
-    MatOptionModule,
-    MatButtonModule],
+  imports: [MatFormFieldModule, MatSelectModule, MatInputModule, MatOptionModule, MatButtonModule],
   styleUrls: ['../../admin.scss',
     '../../../shared/scss/forms.scss',
     '../../../shared/scss/cards.scss',

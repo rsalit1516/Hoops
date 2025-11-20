@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, effect, inject, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -22,7 +22,6 @@ interface Item {
 @Component({
   selector: 'csbc-personal-info',
   imports: [
-    CommonModule,
     FormsModule,
     ReactiveFormsModule,
     ReactiveFormsModule,
@@ -35,7 +34,7 @@ interface Item {
     MatCheckboxModule,
     MatRadioModule,
     RouterModule
-  ],
+],
   templateUrl: "./personal-info.html",
   styleUrls: ['./personal-info.scss',
     '../../admin.scss',

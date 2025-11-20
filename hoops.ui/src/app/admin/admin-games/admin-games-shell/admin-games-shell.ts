@@ -17,7 +17,7 @@ import { RegularGame } from '@app/domain/regularGame';
 import { AdminGameDetail } from '../admin-game-detail/admin-game-detail';
 import { AdminGamesPlayoffsList } from '../admin-games-playoffs-list/admin-games-playoffs-list';
 import { AdminGamesList } from '../admin-games-list/admin-games-list';
-import { NgIf } from '@angular/common';
+
 import { DivisionSelect } from '../../admin-shared/division-select/division-select';
 import { GameTypeSelect } from '../../admin-shared/game-type-select/game-type-select';
 import { SeasonSelect } from '../../admin-shared/season-select/season-select';
@@ -52,9 +52,7 @@ import { AdminGamesState } from '../adminGamesState.service';
     '../../../shared/scss/cards.scss',
   ],
   imports: [
-    // MatToolbarModule,
     RouterOutlet,
-
     MatSidenavModule,
     MatExpansionModule,
     MatIconModule,
@@ -62,14 +60,13 @@ import { AdminGamesState } from '../adminGamesState.service';
     SeasonSelect,
     GameTypeSelect,
     DivisionSelect,
-    NgIf,
     AdminGamesList,
     AdminGamesPlayoffsList,
     AdminGameDetail,
     ShellTitle,
     AdminGamesPlayoffsDetail,
-    AdminGamesFilter,
-  ],
+    AdminGamesFilter
+],
 })
 export class AdminGamesShell implements OnInit {
   private logger = inject(LoggerService);

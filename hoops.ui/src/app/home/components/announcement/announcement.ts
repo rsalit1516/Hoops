@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, OnInit, input } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { WebContent } from '@app/domain/webContent';
@@ -10,7 +10,7 @@ import { WebContent } from '@app/domain/webContent';
     '../../home.scss',
     '../../../shared/scss/cards.scss',
   ],
-  imports: [CommonModule, MatCardModule]
+  imports: [MatCardModule]
 })
 export class Announcement implements OnInit {
   readonly info = input.required<WebContent>();

@@ -10,7 +10,7 @@ import {
 import { Season } from '@app/domain/season';
 import { UntypedFormControl, FormsModule } from '@angular/forms';
 import { AdminSeasonService } from '../services/season.service';
-import { AsyncPipe, CommonModule } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -37,12 +37,11 @@ import { SeasonService } from '@app/services/season.service';
     './../../../shared/scss/forms.scss',
   ],
   imports: [
-    CommonModule,
     FormsModule,
     MatFormFieldModule,
     MatSelectModule,
-    MatOptionModule,
-  ],
+    MatOptionModule
+],
 })
 export class SeasonSelect implements OnInit {
   readonly seasonService = inject(SeasonService);

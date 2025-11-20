@@ -3,7 +3,7 @@ import * as fromUser from '../../../user/state';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { User } from '@app/domain/user';
-import { NgIf } from '@angular/common';
+
 import { RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
@@ -13,7 +13,7 @@ import { AuthService } from '@app/services/auth.service';
   selector: 'csbc-sidenav-list',
   templateUrl: "./sidenav-list.html",
   styleUrls: ['./sidenav-list.css'],
-  imports: [MatListModule, MatIconModule, RouterLink, NgIf]
+  imports: [MatListModule, MatIconModule, RouterLink]
 })
 export class SidenavList implements OnInit {
   readonly #authService = inject(AuthService);

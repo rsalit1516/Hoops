@@ -12,7 +12,7 @@ import * as adminActions from '../state/admin.actions';
 import { RegularGame } from '@app/domain/regularGame';
 import { AdminGamesList } from '../admin-games/admin-games-list/admin-games-list';
 import { MatCardModule } from '@angular/material/card';
-import { NgFor, NgForOf } from '@angular/common';
+
 import { MatListModule } from '@angular/material/list';
 import { SeasonSelect } from '../admin-shared/season-select/season-select';
 import { SeasonService } from '@app/services/season.service';
@@ -34,13 +34,11 @@ import { DashboardGames } from '../components/dashboard-games/dashboard-games';
     SeasonSelect,
     MatCardModule,
     MatListModule,
-    NgFor,
-    NgForOf,
     AdminGamesList,
     DashboardDivisions,
     DashboardTeams,
     DashboardGames
-  ]
+]
 })
 export class AdminDashboard implements OnInit {
   private store = inject(Store<fromAdmin.State>);

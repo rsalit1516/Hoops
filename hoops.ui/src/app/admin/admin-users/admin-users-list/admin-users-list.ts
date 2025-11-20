@@ -8,7 +8,7 @@ import {
   model,
 } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { CommonModule } from '@angular/common';
+
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -23,15 +23,14 @@ import { LoggerService } from '@app/services/logger.service';
   selector: 'csbc-admin-users-list',
   standalone: true,
   imports: [
-    CommonModule,
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
     MatIconModule,
     MatButtonModule,
     RouterLink,
-    AlphabeticalSearch,
-  ],
+    AlphabeticalSearch
+],
   templateUrl: './admin-users-list.html',
   styleUrls: ['./admin-users-list.scss', '../../../shared/scss/tables.scss'],
 })

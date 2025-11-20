@@ -2,7 +2,7 @@ import { Component, OnInit, inject, input } from '@angular/core';
 import { TeamService } from '../../services/team.service';
 import { Team } from '../../domain/team';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { CommonModule } from '@angular/common';
+
 import { SeasonSelect } from '../admin-shared/season-select/season-select';
 import { DivisionSelect } from '../admin-shared/division-select/division-select';
 import { DailySchedule } from '../../games/components/daily-schedule/daily-schedule';
@@ -15,12 +15,11 @@ import * as adminActions from '@app/admin//state/admin.actions';
   selector: 'csbc-team-list',
   templateUrl: "./teamList.html",
   imports: [
-    CommonModule,
     MatTableModule,
     SeasonSelect,
     DivisionSelect,
-    DailySchedule,
-  ],
+    DailySchedule
+],
   styleUrls: [
     '../../shared/scss/tables.scss',
     './team.scss',

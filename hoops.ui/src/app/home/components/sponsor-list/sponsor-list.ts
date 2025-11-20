@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Sponsor } from '@app/domain/sponsor';
 import { Store } from '@ngrx/store';
 import * as fromHome from '../../state';
-import { NgFor } from '@angular/common';
+
 // import { NgbCarousel, NgbSlide } from '@ng-bootstrap/ng-bootstrap';
 
 
@@ -10,7 +10,7 @@ import { NgFor } from '@angular/common';
     selector: 'app-sponsor-list',
     templateUrl: "./sponsor-list.html",
     styleUrls: ['./sponsor-list.scss', '../../home.scss'],
-    imports: [ NgFor]
+    imports: []
 })
 export class SponsorList implements OnInit {
   sponsors: Sponsor[] | undefined;

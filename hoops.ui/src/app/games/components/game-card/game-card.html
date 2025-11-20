@@ -20,18 +20,20 @@
           <span>Home: </span>
           <span>{{ game().homeTeamName }}</span>
         </div>
-        <div
-          *ngIf="game().homeTeamScore != 0 && game().visitingTeamScore != 0"
-          class="col-sm-6 col-6 text-right"
-        >
-          Visitor: {{ game().visitingTeamScore }}
-        </div>
-        <div
-          *ngIf="game().homeTeamScore != 0 && game().visitingTeamScore != 0"
-          class="col-sm-6 col-6 text-right"
-        >
-          Home: {{ game().homeTeamScore }}
-        </div>
+        @if (game().homeTeamScore != 0 && game().visitingTeamScore != 0) {
+          <div
+            class="col-sm-6 col-6 text-right"
+            >
+            Visitor: {{ game().visitingTeamScore }}
+          </div>
+        }
+        @if (game().homeTeamScore != 0 && game().visitingTeamScore != 0) {
+          <div
+            class="col-sm-6 col-6 text-right"
+            >
+            Home: {{ game().homeTeamScore }}
+          </div>
+        }
       </div>
     </div>
   </div>

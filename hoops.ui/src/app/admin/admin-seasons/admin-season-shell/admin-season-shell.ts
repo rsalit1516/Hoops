@@ -11,7 +11,7 @@ import { Store } from '@ngrx/store';
 
 import * as fromAdmin from '../../state';
 import { AdminSeasonList } from '../admin-season-list/admin-season-list';
-import { CommonModule } from '@angular/common';
+
 import { RouterOutlet } from '@angular/router';
 import { SeasonService } from '@app/services/season.service';
 import { MatButtonModule } from '@angular/material/button';
@@ -36,7 +36,6 @@ import { SeasonsToolbar } from '@app/admin/components/seasons-toolbar/seasons-to
     '../../../shared/scss/sidenav.scss',
   ],
   imports: [
-    CommonModule,
     RouterOutlet,
     AdminSeasonList,
     MatSidenavModule,
@@ -44,8 +43,8 @@ import { SeasonsToolbar } from '@app/admin/components/seasons-toolbar/seasons-to
     MatIconModule,
     MatButtonModule,
     ShellTitle,
-    SeasonsToolbar,
-  ],
+    SeasonsToolbar
+],
 })
 export class AdminSeasonShell implements OnInit, AfterViewInit {
   private readonly seasonService = inject(SeasonService);

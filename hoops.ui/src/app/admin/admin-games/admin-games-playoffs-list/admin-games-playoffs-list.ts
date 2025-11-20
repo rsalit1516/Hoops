@@ -7,7 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { NgIf, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PlayoffGameService } from '@app/services/playoff-game.service';
 import { Router } from '@angular/router';
@@ -23,12 +23,11 @@ import { LoggerService } from '@app/services/logger.service';
   ],
   imports: [
     FormsModule,
-    NgIf,
     MatTableModule,
     MatButtonModule,
     MatIconModule,
-    DatePipe,
-  ],
+    DatePipe
+],
 })
 export class AdminGamesPlayoffsList implements OnInit {
   gameService = inject(PlayoffGameService);

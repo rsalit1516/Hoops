@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import {
   Component,
   computed,
@@ -34,7 +34,6 @@ import * as fromAdmin from '../../state';
 @Component({
   selector: 'csbc-admin-season-detail',
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     RouterModule,
     MatFormFieldModule,
@@ -45,8 +44,8 @@ import * as fromAdmin from '../../state';
     MatButtonModule,
     MatSelectModule,
     MatCheckboxModule,
-    MatSnackBarModule,
-  ],
+    MatSnackBarModule
+],
   providers: [provideNativeDateAdapter()],
   templateUrl: './admin-season-detail.html',
   styleUrls: [

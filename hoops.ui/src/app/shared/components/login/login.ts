@@ -9,7 +9,7 @@ import {
 import * as userActions from '../../../user/state/user.actions';
 import * as fromUser from '../../../user/state';
 import { Store } from '@ngrx/store';
-import { CommonModule } from '@angular/common';
+
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
@@ -23,15 +23,14 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./login.scss', '../../scss/cards.scss', '../../scss/forms.scss'],
   standalone: true,
   imports: [
-    CommonModule,
     FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
     MatButtonModule,
-    MatCardModule,
-  ],
+    MatCardModule
+],
 })
 export class Login implements OnInit {
   /* injected */

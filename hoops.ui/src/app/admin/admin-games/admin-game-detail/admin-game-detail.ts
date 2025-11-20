@@ -14,7 +14,7 @@ import {
   FormBuilder,
 } from '@angular/forms';
 import { Team } from '@app/domain/team';
-import { CommonModule } from '@angular/common';
+
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
@@ -50,7 +50,6 @@ export interface ScheduleTeam {
 @Component({
   selector: 'admin-game-detail',
   imports: [
-    CommonModule,
     FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
@@ -63,8 +62,8 @@ export interface ScheduleTeam {
     MatInputModule,
     MatFormFieldModule,
     MatButtonModule,
-    MatIconModule,
-  ],
+    MatIconModule
+],
   templateUrl: './admin-game-detail.html',
   styleUrls: [
     '../../../shared/scss/cards.scss',

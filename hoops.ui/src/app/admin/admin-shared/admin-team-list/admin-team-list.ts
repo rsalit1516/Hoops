@@ -6,7 +6,7 @@ import * as fromAdmin from '../../state';
 import * as adminActions from '../../state/admin.actions';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { NgIf } from '@angular/common';
+
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { FormsModule } from '@angular/forms';
@@ -25,10 +25,9 @@ import { TeamService } from '@app/services/team.service';
     FormsModule,
     MatCardModule,
     MatTableModule,
-    NgIf,
     MatButtonModule,
-    MatIconModule,
-  ]
+    MatIconModule
+]
 })
 export class AdminTeamList implements OnInit {
   readonly #teamService = inject(TeamService);

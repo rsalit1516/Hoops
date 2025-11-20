@@ -26,7 +26,7 @@ import { SchedulePlayoffs } from '@app/games/components/schedule-playoffs/schedu
 import { RouterOutlet } from '@angular/router';
 import { GamesTopMenu } from '../../components/games-top-menu/games-top-menu';
 import { AuthService } from '@app/services/auth.service';
-import { CommonModule } from '@angular/common';
+
 import { LoggerService } from '@app/services/logger.service';
 
 @Component({
@@ -34,7 +34,7 @@ import { LoggerService } from '@app/services/logger.service';
   standalone: true,
   templateUrl: './games-shell.html',
   styleUrls: ['./games-shell.scss'],
-  imports: [CommonModule, RouterOutlet, GamesTopMenu],
+  imports: [RouterOutlet, GamesTopMenu],
 })
 export class GamesShell implements OnInit {
   readonly seasonService = inject(SeasonService);

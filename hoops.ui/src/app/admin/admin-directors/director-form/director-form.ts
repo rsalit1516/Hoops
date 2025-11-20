@@ -9,7 +9,7 @@ import {
   signal,
   SimpleChanges,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -31,14 +31,13 @@ interface FormField {
 @Component({
   selector: 'csbc-director-form',
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
     MatCheckboxModule,
-    MatButtonModule,
-  ],
+    MatButtonModule
+],
   templateUrl: './director-form.html',
   styleUrls: [
     './director-form.scss',

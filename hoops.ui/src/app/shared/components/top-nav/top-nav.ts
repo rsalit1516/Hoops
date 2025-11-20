@@ -8,7 +8,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { CommonModule } from '@angular/common';
+
 import { AuthService } from '@app/services/auth.service';
 import { FeatureFlagService } from '../../services/feature-flags';
 import { LoggerService } from '@app/services/logger.service';
@@ -19,15 +19,14 @@ import { SessionTimerComponent } from '../session-timer/session-timer.component'
   templateUrl: './top-nav.html',
   styleUrls: ['./top-nav.scss', './../../../shared/scss/menu.scss'],
   imports: [
-    CommonModule,
     MatDialogModule,
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
     RouterModule,
     RouterLinkActive,
-    SessionTimerComponent,
-  ],
+    SessionTimerComponent
+],
 })
 export class TopNav implements OnInit {
   public readonly sidenavToggle = output();

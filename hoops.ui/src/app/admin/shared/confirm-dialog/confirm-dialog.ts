@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, Inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import {
@@ -10,7 +10,7 @@ import {
 @Component({
   selector: 'app-confirm-dialog',
   templateUrl: './confirm-dialog.html',
-  imports: [CommonModule, MatButtonModule, MatDialogModule],
+  imports: [MatButtonModule, MatDialogModule],
 })
 export class ConfirmDialog {
   constructor(

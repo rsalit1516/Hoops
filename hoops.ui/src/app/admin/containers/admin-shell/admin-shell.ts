@@ -6,7 +6,7 @@ import * as adminActions from '../../state/admin.actions';
 import * as contentActions from '../../state/admin.actions';
 import * as fromAdmin from '../../state';
 import { ColorService } from '@app/admin/admin-shared/services/color.service';
-import { CommonModule, NgIf } from '@angular/common';
+
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -32,15 +32,13 @@ import { toSignal } from '@angular/core/rxjs-interop';
   </div>`,
   styleUrls: ['./admin-shell.scss'],
   imports: [
-    CommonModule,
     AdminShellSidebar,
     MatListModule,
     RouterLink,
     RouterLinkActive,
     MatDividerModule,
-    NgIf,
-    RouterOutlet,
-  ],
+    RouterOutlet
+],
 })
 export class AdminShell implements OnInit {
   events: string[] = [];

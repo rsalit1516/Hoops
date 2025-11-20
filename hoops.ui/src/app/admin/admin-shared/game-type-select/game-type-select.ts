@@ -18,7 +18,7 @@ import * as fromAdmin from '../../state';
 import * as adminActions from '../../state/admin.actions';
 import { MatOptionModule } from '@angular/material/core';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { NgFor } from '@angular/common';
+
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { AdminGameService } from '@app/admin/admin-games/adminGame.service';
@@ -45,9 +45,8 @@ import { AdminGamesState } from '@app/admin/admin-games/adminGamesState.service'
     MatSelectModule,
     FormsModule,
     MatButtonToggleModule,
-    NgFor,
-    MatOptionModule,
-  ],
+    MatOptionModule
+],
 })
 export class GameTypeSelect implements OnInit {
   private gameService = inject(AdminGameService);

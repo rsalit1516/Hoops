@@ -22,7 +22,7 @@ import { User } from '@app/domain/user';
 import { DivisionService } from './../../../services/division.service';
 import { GameService } from '@app/services/game.service';
 import { Schedule } from '../../components/schedule/schedule';
-import { CommonModule } from '@angular/common';
+
 import { LoggerService } from '@app/services/logger.service';
 
 @Component({
@@ -36,7 +36,7 @@ import { LoggerService } from '@app/services/logger.service';
     </section>
   `,
   styleUrls: ['./schedule-shell.scss'],
-  imports: [CommonModule, Schedule],
+  imports: [Schedule],
 })
 export class ScheduleShell implements OnInit {
   readonly #gameService = inject(GameService);

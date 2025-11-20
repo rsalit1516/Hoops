@@ -4,13 +4,13 @@ import { Store, select } from '@ngrx/store';
 import * as fromGames from '../../state';
 import * as fromUser from '../../../user/state';
 import { GameCard } from '../game-card/game-card';
-import { NgFor } from '@angular/common';
+
 
 @Component({
   selector: 'csbc-schedule-card-view',
   templateUrl: "./schedule-card-view.html",
   styleUrls: ['./schedule-card-view.scss'],
-  imports: [NgFor, GameCard]
+  imports: [GameCard]
 })
 export class ScheduleCardView implements OnInit {
   errorMessage: string | undefined;

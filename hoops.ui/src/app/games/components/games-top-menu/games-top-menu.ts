@@ -28,7 +28,7 @@ import { Team } from '@app/domain/team';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { GameFilter } from '../game-filter/game-filter';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { CommonModule } from '@angular/common';
+
 import { PlayoffGameService } from '@app/services/playoff-game.service';
 
 @Component({
@@ -36,13 +36,12 @@ import { PlayoffGameService } from '@app/services/playoff-game.service';
   templateUrl: './games-top-menu.html',
   styleUrls: ['../../../shared/scss/select.scss', './games-top-menu.scss'],
   imports: [
-    CommonModule,
     RouterModule,
     RouterLinkActive,
     MatToolbarModule,
     MatTabsModule,
-    GameFilter,
-  ],
+    GameFilter
+],
 })
 export class GamesTopMenu implements OnInit, OnDestroy {
   private routeSub?: Subscription;
