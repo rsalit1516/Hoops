@@ -2,20 +2,20 @@ import { Component, OnInit, inject, input } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import * as fromAdmin from '../../state';
-import { DivisionList } from '../admin-division-list/divisionList';
-import { SeasonSelect } from '../../admin-shared/season-select/season-select';
-import { DivisionSelect } from '@app/admin/admin-shared/division-select/division-select';
+
+
+
 import { Season } from '@app/domain/season';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { Router, RouterOutlet, RouterLinkWithHref } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 
 import { Division } from '@app/domain/division';
 import { DivisionService } from '@app/services/division.service';
-import { NewDivisionSelector } from '../../admin-shared/new-division-selector/new-division-selector';
+
 import { ShellTitle } from "../../../shared/components/shell-title/shell-title";
 
 @Component({
@@ -30,17 +30,12 @@ import { ShellTitle } from "../../../shared/components/shell-title/shell-title";
     './admin-division-shell.scss',
   ],
   imports: [
-    SeasonSelect,
-    DivisionList,
-    DivisionSelect,
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
-    NewDivisionSelector,
     RouterOutlet,
-    RouterLinkWithHref,
     ShellTitle
 ],
 })

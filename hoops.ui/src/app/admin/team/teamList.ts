@@ -5,7 +5,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 
 import { SeasonSelect } from '../admin-shared/season-select/season-select';
 import { DivisionSelect } from '../admin-shared/division-select/division-select';
-import { DailySchedule } from '../../games/components/daily-schedule/daily-schedule';
+
 import { Store } from '@ngrx/store';
 
 import * as fromAdmin from '@app/admin/state';
@@ -18,8 +18,7 @@ import * as adminActions from '@app/admin//state/admin.actions';
     MatTableModule,
     SeasonSelect,
     DivisionSelect,
-    DailySchedule
-],
+    ],
   styleUrls: [
     '../../shared/scss/tables.scss',
     './team.scss',

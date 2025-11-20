@@ -17,8 +17,7 @@ import {
   MatDialogTitle,
   MatDialogContent,
   MatDialogActions,
-  MatDialogClose,
-  MAT_DIALOG_DATA,
+  MAT_DIALOG_DATA
 } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
@@ -38,8 +37,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatInputModule,
     MatDialogActions,
     MatButtonModule,
-    MatDialogClose
-],
+    ],
 })
 export class GameScoreDialog implements OnDestroy {
   dialogRef = inject<MatDialogRef<GameScoreDialog>>(MatDialogRef);

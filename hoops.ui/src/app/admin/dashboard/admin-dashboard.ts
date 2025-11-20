@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 import * as fromAdmin from '../state';
 import * as adminActions from '../state/admin.actions';
 import { RegularGame } from '@app/domain/regularGame';
-import { AdminGamesList } from '../admin-games/admin-games-list/admin-games-list';
+
 import { MatCardModule } from '@angular/material/card';
 
 import { MatListModule } from '@angular/material/list';
@@ -34,7 +34,6 @@ import { DashboardGames } from '../components/dashboard-games/dashboard-games';
     SeasonSelect,
     MatCardModule,
     MatListModule,
-    AdminGamesList,
     DashboardDivisions,
     DashboardTeams,
     DashboardGames

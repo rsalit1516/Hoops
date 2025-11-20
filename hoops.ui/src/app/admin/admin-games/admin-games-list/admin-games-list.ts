@@ -22,8 +22,8 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { AdminGameService } from '../adminGame.service';
 import { GameService } from '@app/services/game.service';
-import { ShellTitle } from '@app/shared/components/shell-title/shell-title';
-import { AdminGamesFilter } from '../admin-games-filter/admin-games-filter';
+
+
 import { LoggerService } from '@app/services/logger.service';
 import { Router } from '@angular/router';
 @Component({
@@ -33,10 +33,8 @@ import { Router } from '@angular/router';
     MatIconModule,
     MatTableModule,
     MatPaginatorModule,
-    MatIconModule,
-    ShellTitle,
-    AdminGamesFilter,
-  ],
+    MatIconModule
+    ],
   templateUrl: './admin-games-list.html',
   styleUrls: [
     '../../../shared/scss/tables.scss',

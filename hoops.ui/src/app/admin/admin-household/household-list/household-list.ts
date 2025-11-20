@@ -8,7 +8,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Household } from '@app/domain/household';
 import { HouseholdService } from '@app/services/household.service';
-import { SectionTitle } from '@app/shared/components/section-title/section-title';
+
 import { HouseholdSearch } from "../household-search/household-search";
 
 @Component({
@@ -19,7 +19,6 @@ import { HouseholdSearch } from "../household-search/household-search";
     MatListModule,
     MatSortModule,
     MatPaginatorModule,
-    SectionTitle,
     HouseholdSearch
 ],
   templateUrl: "./household-list.html",

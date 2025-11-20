@@ -66,8 +66,7 @@ import { LoggerService } from '@app/services/logger.service';
     MatOptionModule,
     MatButtonModule,
     MatSelectModule,
-    ConfirmDialog
-],
+    ],
   providers: [provideNativeDateAdapter()],
 })
 export class ContentEdit implements OnInit {

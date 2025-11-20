@@ -7,7 +7,7 @@ import {
   inject,
   model,
 } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
@@ -16,7 +16,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { User } from '@app/domain/user';
 import { AdminUsersService } from '../admin-users.service';
-import { AlphabeticalSearch } from '@app/admin/admin-shared/alphabetical-search/alphabetical-search';
+
 import { LoggerService } from '@app/services/logger.service';
 
 @Component({
@@ -28,9 +28,7 @@ import { LoggerService } from '@app/services/logger.service';
     MatSortModule,
     MatIconModule,
     MatButtonModule,
-    RouterLink,
-    AlphabeticalSearch
-],
+    ],
   templateUrl: './admin-users-list.html',
   styleUrls: ['./admin-users-list.scss', '../../../shared/scss/tables.scss'],
 })

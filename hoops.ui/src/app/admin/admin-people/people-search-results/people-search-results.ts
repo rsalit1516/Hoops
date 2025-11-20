@@ -15,11 +15,11 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Person } from '@app/domain/person';
 import { PeopleService } from '@app/services/people.service';
-import { SectionTitle } from '@app/shared/components/section-title/section-title';
-import { PeopleSearch } from '../people-search/people-search';
+
+
 import { Router } from '@angular/router';
 import { HouseholdService } from '@app/services/household.service';
-import { AlphabeticalSearch } from '../../admin-shared/alphabetical-search/alphabetical-search';
+
 import { LoggerService } from '@app/services/logger.service';
 
 @Component({
@@ -29,11 +29,8 @@ import { LoggerService } from '@app/services/logger.service';
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
-    DatePipe,
-    SectionTitle,
-    PeopleSearch,
-    AlphabeticalSearch,
-  ],
+    DatePipe
+    ],
   templateUrl: './people-search-results.html',
   styleUrls: [
     './people-search-results.scss',

@@ -15,7 +15,7 @@ import { Team } from '@app/domain/team';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatOptionModule } from '@angular/material/core';
-import { AsyncPipe } from '@angular/common';
+
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -44,8 +44,7 @@ import { LocationService } from '../services/location.service';
     MatSelectModule,
     MatOptionModule,
     MatButtonModule,
-    AsyncPipe
-],
+    ],
 })
 export class AdminTeamDetail implements OnInit {
   private readonly authService = inject(AuthService);

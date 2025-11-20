@@ -7,7 +7,7 @@ import { Store } from '@ngrx/store';
 import * as fromHome from '../../state';
 import { WebContent } from '../../../domain/webContent';
 import { Meeting } from '../meeting/meeting';
-import { AsyncPipe } from '@angular/common';
+
 
 @Component({
   selector: 'csbc-home-sidebar',
@@ -15,8 +15,7 @@ import { AsyncPipe } from '@angular/common';
   styleUrls: ['./home-sidebar.scss'],
   imports: [
     Meeting,
-    AsyncPipe
-]
+    ]
 })
 export class CsbcHomeSidebar implements OnInit {
   private _webContentService = inject(ContentService);

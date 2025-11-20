@@ -14,21 +14,21 @@ import * as fromAdmin from '../../state';
 // import { GameService } from '@app/services/game.service';
 import { Season } from '@app/domain/season';
 import { RegularGame } from '@app/domain/regularGame';
-import { AdminGameDetail } from '../admin-game-detail/admin-game-detail';
-import { AdminGamesPlayoffsList } from '../admin-games-playoffs-list/admin-games-playoffs-list';
-import { AdminGamesList } from '../admin-games-list/admin-games-list';
 
-import { DivisionSelect } from '../../admin-shared/division-select/division-select';
-import { GameTypeSelect } from '../../admin-shared/game-type-select/game-type-select';
-import { SeasonSelect } from '../../admin-shared/season-select/season-select';
-import { ShellTitle } from '@app/shared/components/shell-title/shell-title';
+
+
+
+
+
+
+
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import {
   MatExpansionModule,
   MatExpansionPanel,
 } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
-import { AdminGamesPlayoffsDetail } from '../admin-games-playoffs-detail/admin-games-playoffs-detail';
+
 import { MatButtonModule } from '@angular/material/button';
 import { AdminGamesFilter } from '../admin-games-filter/admin-games-filter';
 import { AdminGameService } from '../adminGame.service';
@@ -57,14 +57,6 @@ import { AdminGamesState } from '../adminGamesState.service';
     MatExpansionModule,
     MatIconModule,
     MatButtonModule,
-    SeasonSelect,
-    GameTypeSelect,
-    DivisionSelect,
-    AdminGamesList,
-    AdminGamesPlayoffsList,
-    AdminGameDetail,
-    ShellTitle,
-    AdminGamesPlayoffsDetail,
     AdminGamesFilter
 ],
 })

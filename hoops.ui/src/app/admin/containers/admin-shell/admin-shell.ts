@@ -1,6 +1,6 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
 
 import * as adminActions from '../../state/admin.actions';
 import * as contentActions from '../../state/admin.actions';
@@ -34,8 +34,6 @@ import { toSignal } from '@angular/core/rxjs-interop';
   imports: [
     AdminShellSidebar,
     MatListModule,
-    RouterLink,
-    RouterLinkActive,
     MatDividerModule,
     RouterOutlet
 ],

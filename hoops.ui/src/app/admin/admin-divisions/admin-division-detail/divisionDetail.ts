@@ -24,7 +24,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { CommonModule, formatDate } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
-import { NewDivisionSelector } from '@app/admin/admin-shared/new-division-selector/new-division-selector';
+
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { ConfirmDialog } from '@app/admin/shared/confirm-dialog/confirm-dialog';
@@ -59,10 +59,8 @@ import { LoggerService } from '@app/services/logger.service';
     MatOptionModule,
     MatDialogModule,
     MatButtonModule,
-    MatSnackBarModule,
-    NewDivisionSelector,
-    ConfirmDialog,
-  ],
+    MatSnackBarModule
+    ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   // providers: [DivisionService, PeopleService],
 })

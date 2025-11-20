@@ -10,7 +10,7 @@ import { Season } from '@app/domain/season';
 import { Store } from '@ngrx/store';
 
 import * as fromAdmin from '../../state';
-import { AdminSeasonList } from '../admin-season-list/admin-season-list';
+
 
 import { RouterOutlet } from '@angular/router';
 import { SeasonService } from '@app/services/season.service';
@@ -18,8 +18,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { ShellTitle } from '@app/shared/components/shell-title/shell-title';
-import { SeasonsToolbar } from '@app/admin/components/seasons-toolbar/seasons-toolbar';
+
+
 // import { SeasonAddEdit } from '@app/admin/components/season-add-edit/season-add-edit';
 
 @Component({
@@ -37,14 +37,11 @@ import { SeasonsToolbar } from '@app/admin/components/seasons-toolbar/seasons-to
   ],
   imports: [
     RouterOutlet,
-    AdminSeasonList,
     MatSidenavModule,
     MatExpansionModule,
     MatIconModule,
     MatButtonModule,
-    ShellTitle,
-    SeasonsToolbar
-],
+    ],
 })
 export class AdminSeasonShell implements OnInit, AfterViewInit {
   private store = inject<Store<fromAdmin.State>>(Store);

@@ -7,7 +7,7 @@ import {
   signal,
 } from '@angular/core';
 import { DirectorService } from '@app/services/director.service';
-import { AsyncPipe, TitleCasePipe } from '@angular/common';
+import { TitleCasePipe } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Director } from '@app/domain/director';
@@ -22,7 +22,7 @@ import { LoggerService } from '@app/services/logger.service';
     '../shared/scss/cards.scss',
     '../shared/scss/tables.scss',
   ],
-  imports: [MatCardModule, MatTableModule, AsyncPipe, TitleCasePipe],
+  imports: [MatCardModule, MatTableModule, TitleCasePipe],
 })
 export class Contacts implements OnInit {
   private directorService = inject(DirectorService);

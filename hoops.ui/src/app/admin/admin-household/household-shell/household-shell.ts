@@ -1,8 +1,8 @@
 import { Component, inject, signal } from '@angular/core';
-import { HouseholdDetail } from '@app/admin/admin-household/household-detail/household-detail';
 
-import { HouseholdSearch } from '@app/admin/admin-household/household-search/household-search';
-import { HouseholdList } from '@app/admin/admin-household/household-list/household-list';
+
+
+
 import { householdSearchCriteria, HouseholdService } from '@app/services/household.service';
 import { Household } from '@app/domain/household';
 import { ShellTitle } from '@app/shared/components/shell-title/shell-title';
@@ -13,7 +13,7 @@ import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'csbc-household-shell',
-  imports: [RouterModule, MatSidenavModule, MatExpansionModule, MatIconModule, HouseholdDetail, HouseholdSearch, HouseholdList, ShellTitle],
+  imports: [RouterModule, MatSidenavModule, MatExpansionModule, MatIconModule, ShellTitle],
   template: `<section class="container">
   <csbc-shell-title [title]="title"/>
   <router-outlet></router-outlet>
