@@ -1,4 +1,4 @@
-<csbc-list-page-shell>
+<csbc-list-page-shell [title]="'Households'" [count]="filteredHouseholds().length">
   <div filter>
     <csbc-household-filters
       [filters]="filters()"
@@ -7,10 +7,9 @@
   </div>
 
   <div actions>
-    <h2>Households ({{ filteredHouseholds().length }})</h2>
     <button mat-raised-button color="primary" (click)="navigateToNew()">
       <mat-icon>add</mat-icon>
-      New Household
+      New
     </button>
   </div>
 

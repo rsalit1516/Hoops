@@ -1,4 +1,4 @@
-<csbc-list-page-shell>
+<csbc-list-page-shell [title]="'Directors'" [count]="filteredDirectors().length">
   <div filter>
     <csbc-director-filters [filters]="filters()"
       (filterChange)="onFilterChange($event)"
@@ -6,10 +6,9 @@
   </div>
 
   <div actions>
-    <h2>Director ({{ filteredDirectors().length }})</h2>
     <button mat-raised-button color="primary" (click)="navigateToNew()">
       <mat-icon>add</mat-icon>
-      New Director
+      New
     </button>
   </div>
 

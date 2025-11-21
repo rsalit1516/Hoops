@@ -6,12 +6,20 @@
 
   <!-- Action Bar (optional - for add buttons, etc) -->
   <div class="action-bar">
+    @if (title()) {
+      <h2>{{ title() }}@if (count() > 0) { ({{ count() }})} </h2>
+    }
     <ng-content select="[actions]" />
   </div>
 
   <!-- List/Table Section -->
   <div class="list-section">
     <mat-card>
+      @if (title()) {
+        <mat-card-header>
+          <mat-card-title>{{ title() }}@if (count() > 0) { ({{ count() }})} </mat-card-title>
+        </mat-card-header>
+      }
       <mat-card-content>
         <ng-content select="[list]" />
       </mat-card-content>

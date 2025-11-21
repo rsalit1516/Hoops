@@ -39,7 +39,11 @@ export interface HouseholdFilterCriteria {
     AlphabeticalSearch,
   ],
   templateUrl: './household-filters.html',
-  styleUrl: './household-filters.scss',
+  styleUrls: [
+    './household-filters.scss',
+    '../../../shared/scss/cards.scss',
+    '../../../shared/scss/forms.scss',
+  ],
 })
 export class HouseholdFilters implements OnInit, OnChanges {
   private fb = inject(FormBuilder);
@@ -122,6 +126,11 @@ export class HouseholdFilters implements OnInit, OnChanges {
   get hasActiveFilters(): boolean {
     const value = this.filterForm.value;
     const letter = this.selectedLetter();
-    return !!(value.searchText || value.email || value.phone || (letter && letter !== 'A'));
+    return !!(
+      value.searchText ||
+      value.email ||
+      value.phone ||
+      (letter && letter !== 'A')
+    );
   }
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 
 // list-page-shell.component.ts
@@ -13,5 +13,6 @@ import { MatCardModule } from '@angular/material/card';
   ],
 })
 export class ListPageShellComponent {
-  // Content projection is handled by ng-content in the template
+  title = input<string>(''); // Title to display in the card header
+  count = input<number>(0); // Count of items to display
 }
