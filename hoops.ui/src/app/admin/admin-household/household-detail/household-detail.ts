@@ -11,6 +11,7 @@ import { MatCardModule } from '@angular/material/card';
 import { Household } from '@app/domain/household';
 import { ActivatedRoute, Router, RouterLink, RouterModule } from '@angular/router';
 import { HouseholdMembers } from '@app/admin/admin-people/household-members/household-members';
+import { LoggerService } from '@app/services/logger.service';
 
 @Component({
   selector: 'csbc-household-detail',
@@ -37,6 +38,7 @@ export class HouseholdDetail implements OnInit, OnChanges {
   #householdService = inject(HouseholdService);
   #router = inject(Router);
   #route = inject(ActivatedRoute);
+  #logger = inject(LoggerService);
   fb = inject(FormBuilder);
 
   // householdDetailForm: FormGroup;
@@ -62,11 +64,11 @@ export class HouseholdDetail implements OnInit, OnChanges {
   constructor () {
     effect(() => {
       const record = this.#householdService.selectedRecordSignal();
-      console.log(record);
+      this.#logger.debug('Selected record:', record);
       if (record !== null) {
         // this.loadRecordDetails(recordId);
         this.household.set(record);
-        console.log(record);
+        this.#logger.debug('Household set:', record);
         this.updateForm();
       }
     });
@@ -164,7 +166,7 @@ export class HouseholdDetail implements OnInit, OnChanges {
         if (typeof email === 'string') {
           household.email = email;
         }
-        // console.log(household);
+        this.#logger.info('Saving household:', household);
         this.#householdService.saveHousehold(household);
         this.householdDetailForm.reset();
         this.#householdService.householdSaved.set(true);

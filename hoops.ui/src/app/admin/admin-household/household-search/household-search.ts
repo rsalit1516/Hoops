@@ -9,6 +9,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router } from '@angular/router';
 import { Household } from '@app/domain/household';
 import { householdSearchCriteria, HouseholdService } from '@app/services/household.service';
+import { LoggerService } from '@app/services/logger.service';
 
 import { debounceTime, map } from 'rxjs';
 
@@ -33,6 +34,7 @@ import { debounceTime, map } from 'rxjs';
 })
 export class HouseholdSearch {
   private householdService = inject(HouseholdService);
+  private logger = inject(LoggerService);
   fb = inject(FormBuilder);
   #router = inject(Router);
 
@@ -58,8 +60,7 @@ export class HouseholdSearch {
       phone: this.searchForm.value.phone ?? '',
       email: this.searchForm.value.email ?? '',
     };
-    console.log('Search submitted');
-    console.log(selectedCriteria);
+    this.logger.info('Search submitted:', selectedCriteria);
     this.search.emit(selectedCriteria);
   }
 
@@ -116,8 +117,7 @@ export class HouseholdSearch {
   }
 
   search1 () {
-    console.log('Search submitted');
-    console.log(this.searchForm.value);
+    this.logger.info('Search submitted:', this.searchForm.value);
     const selectedCriteria = {
       householdName: this.searchForm.value.householdName ?? '',
       address: this.searchForm.value.address ?? '',
@@ -140,7 +140,7 @@ export class HouseholdSearch {
   }
 
   newHousehold () {
-    console.log('New Household');
+    this.logger.info('Creating new household');
     this.householdService.newHousehold();
     this.#router.navigate(['/admin/people/list']);
 

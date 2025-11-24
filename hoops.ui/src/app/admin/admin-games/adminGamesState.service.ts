@@ -3,6 +3,7 @@ import { PlayoffGameService } from '@app/services/playoff-game.service';
 import { RegularGame } from '@app/domain/regularGame';
 import { PlayoffGame } from '@app/domain/playoffGame';
 import { AdminGameService } from './adminGame.service';
+import { LoggerService } from '@app/services/logger.service';
 
 export type GameType = 'regular' | 'playoff';
 
@@ -10,6 +11,7 @@ export type GameType = 'regular' | 'playoff';
 export class AdminGamesState {
   private readonly admin = inject(AdminGameService);
   private readonly playoff = inject(PlayoffGameService);
+  private readonly logger = inject(LoggerService);
 
   // persist across reloads
   private loadType(): GameType {
@@ -33,7 +35,7 @@ export class AdminGamesState {
   setGameType(type: GameType) {
     if (type !== this.gameType()) {
       this.gameType.set(type);
-      console.log(this.gameType());
+      this.logger.debug('Game type changed to:', this.gameType());
     }
   }
 
