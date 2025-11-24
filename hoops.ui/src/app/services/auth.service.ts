@@ -1,4 +1,4 @@
-import { effect, inject, Injectable, signal, computed } from '@angular/core';
+import { effect, inject, Injectable, signal, computed, untracked } from '@angular/core';
 import { tap, catchError } from 'rxjs/operators';
 
 import { Observable, of } from 'rxjs';
@@ -57,11 +57,13 @@ export class AuthService {
     this.initializeAuth();
 
     // Effect to save user session when currentUser changes
+    // Use untracked() to prevent tracking signals read inside saveUserSession()
     effect(() => {
       const user = this.currentUser();
       if (user) {
-        this.userActivityService.saveUserSession(user);
-        this.logger.info('👤 User session saved for:', user.userName);
+        untracked(() => {
+          this.userActivityService.saveUserSession(user);
+        });
       }
     });
   }
