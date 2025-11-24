@@ -141,6 +141,6 @@ export class PeopleList extends BaseList<PersonWithId> implements OnInit {
     // Pass the full Person object to the service (PersonWithId is a Person with extra id property)
     this.peopleService.updateSelectedPerson(person);
     this.householdService.selectedHouseholdByHouseId(person.houseId);
-    this.router.navigate(['detail'], { relativeTo: this.route });
+    this.router.navigate(['..', 'detail'], { relativeTo: this.route });
   }
 }

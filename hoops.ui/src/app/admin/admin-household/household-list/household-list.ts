@@ -125,6 +125,6 @@ export class HouseholdList extends BaseList<HouseholdListItem> implements OnInit
     household.email = item.email;
 
     this.householdService.updateSelectedHousehold(household);
-    this.router.navigate(['detail'], { relativeTo: this.route });
+    this.router.navigate(['..', 'detail'], { relativeTo: this.route });
   }
 }
