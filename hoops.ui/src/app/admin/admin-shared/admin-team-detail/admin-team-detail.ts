@@ -26,6 +26,7 @@ import { SeasonService } from '@app/services/season.service';
 import { TeamService } from '@app/services/team.service';
 import { ColorService } from '../services/color.service';
 import { LocationService } from '../services/location.service';
+import { LoggerService } from '@app/services/logger.service';
 @Component({
   selector: 'app-admin-team-detail',
   templateUrl: './admin-team-detail.html',
@@ -53,6 +54,7 @@ export class AdminTeamDetail implements OnInit {
   private readonly seasonService = inject(SeasonService);
   readonly colorService = inject(ColorService);
   readonly locationService = inject(LocationService);
+  private logger = inject(LoggerService);
   // private store = inject(Store<fromAdmin.State>);
   private fb = inject(UntypedFormBuilder);
 
@@ -84,7 +86,7 @@ export class AdminTeamDetail implements OnInit {
 
   ngOnInit(): void {}
   patchTeamForm(team: Team) {
-    console.log(team);
+    this.logger.debug('Patching team form:', team);
     if (team) {
       this.editTeamForm.patchValue({
         teamNo: team.teamNumber,
@@ -109,7 +111,7 @@ export class AdminTeamDetail implements OnInit {
   }
   save() {
     let team: Team;
-    console.log(this.team);
+    this.logger.info('Saving team:', this.team);
     const div = this.selectedDivision()?.divisionId ?? 0;
 
     team = {

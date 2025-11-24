@@ -12,6 +12,7 @@ import { rxResource } from '@angular/core/rxjs-interop';
 import { setErrorMessage } from '@app/shared/error-message';
 import { Division } from '@app/domain/division';
 import { AuthService } from '@app/services/auth.service';
+import { LoggerService } from '@app/services/logger.service';
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +24,7 @@ export class AdminGameService {
   private http = inject(HttpClient);
   private dataService = inject(DataService);
   private authService = inject(AuthService);
+  private logger = inject(LoggerService);
   allGames: RegularGame[] | undefined;
   selectedDivision = signal<Division | null>(null);
   selectedTeam = signal<number | undefined>(0);
@@ -117,7 +119,7 @@ export class AdminGameService {
   }
 
   setCanEdit(division: number) {
-    console.log(this.currentUser());
+    this.logger.debug('Setting edit permission for user:', this.currentUser());
     let canEdit = this.getCanEdit(this.currentUser(), division);
   }
   getCanEdit(user: User | undefined, divisionId: number): boolean {

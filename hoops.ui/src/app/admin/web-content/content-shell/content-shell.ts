@@ -7,6 +7,7 @@ import { Router, RouterOutlet } from '@angular/router';
 
 import { CONTENT_ROUTES } from '../content-routing';
 import { ContentService } from '../content.service';
+import { LoggerService } from '@app/services/logger.service';
 
 @Component({
     selector: 'csbc-content-shell',
@@ -23,6 +24,7 @@ import { ContentService } from '../content.service';
 export class ContentShell implements OnInit {
   router = inject(Router);
   #contentService = inject(ContentService);
+  #logger = inject(LoggerService);
   content!: Content;
 
   title = 'Web Site Notifications';
@@ -35,7 +37,7 @@ export class ContentShell implements OnInit {
   }
 
   selectedContent() {
-    console.log('call back to shell');
+    this.#logger.debug('Selected content callback');
     this.router.navigate(['edit']);
   }
 }

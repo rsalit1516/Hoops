@@ -10,6 +10,7 @@ import { Store } from '@ngrx/store';
 
 import * as fromAdmin from '@app/admin/state';
 import * as adminActions from '@app/admin//state/admin.actions';
+import { LoggerService } from '@app/services/logger.service';
 
 @Component({
   selector: 'csbc-team-list',
@@ -28,6 +29,7 @@ import * as adminActions from '@app/admin//state/admin.actions';
 export class TeamList implements OnInit {
   readonly teams = input<Team[]>([]);
   #store = inject(Store<fromAdmin.State>);
+  #logger = inject(LoggerService);
   errorMessage: string | undefined;
   selectedTeam: Team | undefined;
   #teamService = inject(TeamService);
@@ -41,7 +43,7 @@ export class TeamList implements OnInit {
     //     (error: any) => this.errorMessage = <any> error);
     this.#store.select(fromAdmin.getDivisionTeams).subscribe((teams) => {
       this.dataSource = new MatTableDataSource(teams);
-      console.log(teams);
+      this.#logger.debug('Division teams loaded:', teams);
     });
   }
 
@@ -59,7 +61,7 @@ export class TeamList implements OnInit {
         teams.push(team);
       }
     }
-    console.log(teams);
+    this.#logger.debug('Processed teams:', teams);
     return teams;
   }
   addTeam() {

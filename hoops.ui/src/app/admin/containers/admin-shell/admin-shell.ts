@@ -17,6 +17,7 @@ import { DivisionService } from '@app/services/division.service';
 import { Observable } from 'rxjs';
 import { Season } from '@app/domain/season';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { LoggerService } from '@app/services/logger.service';
 
 @Component({
   selector: 'csbc-admin-shell',
@@ -49,6 +50,7 @@ export class AdminShell implements OnInit {
   shouldRun = true;
   private seasonService = inject(SeasonService);
   private colorService = inject(ColorService);
+  private logger = inject(LoggerService);
   locationService = inject(LocationService);
   store = inject(Store<fromAdmin.State>);
   divisionService = inject(DivisionService);
@@ -62,12 +64,12 @@ export class AdminShell implements OnInit {
   }
 
   ngOnInit() {
-    console.log('AdminShell ngOnInit');
+    this.logger.debug('AdminShell ngOnInit');
     this.seasonService.fetchSeasons();
 
     this.seasonService.getCurrentSeason().subscribe((season) => {
       this.seasonService.updateSelectedSeason(season!);
-      console.log(this.seasonService.selectedSeason);
+      this.logger.debug('Selected season:', this.seasonService.selectedSeason);
     });
     this.colorService.fetchColors();
     this.locationService.fetchLocations();
