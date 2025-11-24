@@ -11,25 +11,27 @@
         <div class="filter-row">
           <mat-form-field appearance="outline" class="filter-field">
             <mat-label>Search by Name</mat-label>
-            <input matInput formControlName="searchText" placeholder="Enter household name">
+            <input matInput formControlName="searchText" />
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="filter-field">
             <mat-label>Email</mat-label>
-            <input matInput formControlName="email" placeholder="Enter email">
+            <input matInput formControlName="email" />
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="filter-field">
             <mat-label>Phone</mat-label>
-            <input matInput formControlName="phone" placeholder="Enter phone">
+            <input matInput formControlName="phone" />
           </mat-form-field>
 
           <button
+            type="button"
             mat-raised-button
             color="accent"
             (click)="clearFilters()"
             [disabled]="!hasActiveFilters"
-            class="clear-button">
+            class="clear-button"
+          >
             Clear Filters
           </button>
         </div>

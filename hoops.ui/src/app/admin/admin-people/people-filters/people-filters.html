@@ -11,7 +11,7 @@
         <div class="filter-row">
           <mat-form-field appearance="outline" class="filter-field">
             <mat-label>First Name</mat-label>
-            <input matInput formControlName="firstName" placeholder="Enter first name">
+            <input matInput formControlName="firstName" />
           </mat-form-field>
 
           <div class="checkbox-field">
@@ -21,11 +21,13 @@
           </div>
 
           <button
+            type="button"
             mat-raised-button
             color="accent"
             (click)="clearFilters()"
             [disabled]="!hasActiveFilters"
-            class="clear-button">
+            class="clear-button"
+          >
             Clear Filters
           </button>
         </div>
