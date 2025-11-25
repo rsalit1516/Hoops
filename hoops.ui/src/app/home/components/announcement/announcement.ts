@@ -1,7 +1,8 @@
 
-import { Component, OnInit, input } from '@angular/core';
+import { Component, OnInit, input, inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { WebContent } from '@app/domain/webContent';
+import { LoggerService } from '@app/services/logger.service';
 
 @Component({
   selector: 'csbc-announcement',
@@ -14,13 +15,13 @@ import { WebContent } from '@app/domain/webContent';
 })
 export class Announcement implements OnInit {
   readonly info = input.required<WebContent>();
+  private logger = inject(LoggerService);
   bodyText = '';
   constructor () {
-    // console.log(this.info());
   }
 
   ngOnInit (): void {
-    console.log(this.info());
+    this.logger.debug('Announcement info:', this.info());
     this.formattedText();
   }
 

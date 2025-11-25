@@ -6,6 +6,7 @@ using Hoops.Core.Interface;
 using Hoops.Infrastructure.Repository;
 using Hoops.Infrastructure.Data;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace Hoops.Data.Seeders
 {
@@ -13,20 +14,22 @@ namespace Hoops.Data.Seeders
     {
         public hoopsContext context { get; private set; }
         private readonly ISeasonRepository _seasonRepo;
+        private readonly ILogger<SeasonSeeder> _logger;
 
-        public SeasonSeeder(ISeasonRepository seasonRepo, hoopsContext context)
+        public SeasonSeeder(ISeasonRepository seasonRepo, hoopsContext context, ILogger<SeasonSeeder> logger)
         {
             this.context = context;
             _seasonRepo = seasonRepo;
+            _logger = logger;
         }
 
         public async Task DeleteAllAsync()
         {
             var records = await _seasonRepo.GetAllAsync();
-            Console.WriteLine($"[DEBUG] Found {records.Count()} seasons to delete");
+            _logger.LogDebug("Found {Count} seasons to delete", records.Count());
             foreach (var record in records)
             {
-                Console.WriteLine($"[DEBUG] Attempting to delete Person ID: {record.SeasonId}, Name: {record.Description}");
+                _logger.LogDebug("Attempting to delete Season ID: {SeasonId}, Name: {Description}", record.SeasonId, record.Description);
                 await _seasonRepo.DeleteAsync(record.SeasonId);
             }
         }

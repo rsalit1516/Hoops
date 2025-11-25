@@ -106,7 +106,7 @@ export class DirectorService {
   delete(id: number): Observable<Director> {
     return this.http.delete<Director>(`${this.url}/${id}`).pipe(
       tap((data) => {
-        console.log('Deleted Director: ' + JSON.stringify(data));
+        this.logger.info('Deleted Director:', data);
         this.fetchDirectors(); // Refresh the list after delete
       }),
       catchError(this.dataService.handleError<Director>('deleteDirector'))

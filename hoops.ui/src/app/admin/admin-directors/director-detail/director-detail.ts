@@ -54,8 +54,8 @@ export class DirectorDetail extends BaseDetail<Director> {
   }
 
   protected override saveItem(item: Director): Observable<Director> {
-    console.log('DirectorDetail.saveItem called with:', item);
-    console.log('Is update?', item.directorId > 0);
+    this.logger.debug('DirectorDetail.saveItem called with:', item);
+    this.logger.debug('Is update?', item.directorId > 0);
 
     return item.directorId && item.directorId > 0
       ? this.directorService.update(item)
@@ -63,7 +63,7 @@ export class DirectorDetail extends BaseDetail<Director> {
   }
 
   protected override deleteItem(item: Director): Observable<Director> {
-    console.log('DirectorDetail.deleteItem called with:', item);
+    this.logger.debug('DirectorDetail.deleteItem called with:', item);
     return this.directorService.delete(item.directorId);
   }
 

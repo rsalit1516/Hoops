@@ -5,6 +5,7 @@ using Hoops.Core.Models;
 using Hoops.Core.Interface;
 using Hoops.Infrastructure.Data;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace Hoops.Data.Seeders
 {
@@ -12,20 +13,22 @@ namespace Hoops.Data.Seeders
     {
         public hoopsContext context { get; private set; }
         private readonly IColorRepository _colorRepo;
+        private readonly ILogger<ColorSeeder> _logger;
 
-        public ColorSeeder(IColorRepository colorRepo, hoopsContext context)
+        public ColorSeeder(IColorRepository colorRepo, hoopsContext context, ILogger<ColorSeeder> logger)
         {
             this.context = context;
             _colorRepo = colorRepo;
+            _logger = logger;
         }
 
         public async Task DeleteAllAsync()
         {
             var records = await _colorRepo.GetAllAsync();
-            Console.WriteLine($"[DEBUG] Found {records.Count()} colors to delete");
+            _logger.LogDebug("Found {Count} colors to delete", records.Count());
             foreach (var record in records)
             {
-                Console.WriteLine($"[DEBUG] Attempting to delete Person ID: {record.ColorId}, Name: {record.ColorName}");
+                _logger.LogDebug("Attempting to delete Color ID: {ColorId}, Name: {ColorName}", record.ColorId, record.ColorName);
                 await _colorRepo.DeleteAsync(record.ColorId);
             }
         }

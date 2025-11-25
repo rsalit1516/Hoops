@@ -12,6 +12,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
 import { ContentService } from '../content.service';
+import { LoggerService } from '@app/services/logger.service';
 
 @Component({
     selector: 'content-list-toolbar',
@@ -27,6 +28,7 @@ import { ContentService } from '../content.service';
 export class ContentListToolbar implements OnInit {
   private router = inject(Router);
   private store = inject<Store<fromContent.State>>(Store);
+  private logger = inject(LoggerService);
 
   readonly #contentService = inject(ContentService);
   checked = true;
@@ -59,8 +61,8 @@ export class ContentListToolbar implements OnInit {
   filterContent(checked: boolean) {
     // const isActive = this.filterForm.value.activeContent === true;
     this.isActive.set(checked);
-    console.log(checked);
-this.#contentService.isActiveContent.set(checked);
+    this.logger.debug('Filter content active only:', checked);
+    this.#contentService.isActiveContent.set(checked);
     // this.store.dispatch(new contentActions.SetIsActiveOnly(checked));
   }
 }

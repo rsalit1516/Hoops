@@ -30,6 +30,7 @@ import { Season } from '@app/domain/season';
 import { SeasonService } from '@app/services/season.service';
 import { Store } from '@ngrx/store';
 import * as fromAdmin from '../../state';
+import { LoggerService } from '@app/services/logger.service';
 
 @Component({
   selector: 'csbc-admin-season-detail',
@@ -59,6 +60,7 @@ export class AdminSeasonDetail implements OnInit {
   private fb = inject(UntypedFormBuilder);
   readonly router = inject(Router);
   private snackBar = inject(MatSnackBar);
+  private logger = inject(LoggerService);
   store = inject(Store<fromAdmin.State>);
   startDatePicker!: MatDatepickerPanel<MatDatepickerControl<any>, any, any>;
 
@@ -88,7 +90,7 @@ export class AdminSeasonDetail implements OnInit {
     });
   }
   ngOnInit(): void {
-    console.log(this.selectedSeason());
+    this.logger.debug('Selected season:', this.selectedSeason());
     if (this.selectedSeason()?.seasonId !== undefined) {
       this.patchSeason();
     } else {
@@ -118,14 +120,14 @@ export class AdminSeasonDetail implements OnInit {
   }
   onSubmit() {
     if (this.form.valid) {
-      console.log('Form Submitted!', this.form.value);
+      this.logger.info('Season form submitted:', this.form.value);
       this.save(this.form.value);
     } else {
-      console.log('Form is invalid');
+      this.logger.warn('Season form is invalid');
     }
   }
   save(value: any) {
-    console.log(value);
+    this.logger.debug('Saving season with values:', value);
     // convert to Season
     // this.seasonService.season = signal(new Season());
     let _season = new Season();
@@ -149,12 +151,12 @@ export class AdminSeasonDetail implements OnInit {
     _season.onlineRegistration =
       value.onlineRegistration !== undefined ? value.onlineRegistration : false;
     this.seasonService.season = signal(_season);
-    console.log(_season);
+    this.logger.debug('Season object:', _season);
     if (_season.seasonId === 0) {
-      console.log('postSeason');
+      this.logger.info('Creating new season');
       this.seasonService.postSeason(_season).subscribe({
         next: (created) => {
-          console.log('Season created', created);
+          this.logger.info('Season created:', created);
           this.seasonService.seasonSaved.set(true);
           // Refresh seasons so the list reflects the new item
           this.seasonService.fetchSeasons();
@@ -162,13 +164,13 @@ export class AdminSeasonDetail implements OnInit {
           this.snackBar.open('Season created', 'OK', { duration: 2500 });
           this.router.navigate(['/admin/seasons/list']);
         },
-        error: (err) => console.error('Failed to create season', err),
+        error: (err) => this.logger.error('Failed to create season', err),
       });
     } else {
-      console.log('put Season');
+      this.logger.info('Updating existing season');
       this.seasonService.putSeason(_season).subscribe({
         next: (updated) => {
-          console.log('Season updated', updated);
+          this.logger.info('Season updated:', updated);
           this.seasonService.seasonSaved.set(true);
           // Refresh seasons so the list reflects the update
           this.seasonService.fetchSeasons();
@@ -176,7 +178,7 @@ export class AdminSeasonDetail implements OnInit {
           this.snackBar.open('Season updated', 'OK', { duration: 2500 });
           this.router.navigate(['/admin/seasons/list']);
         },
-        error: (err) => console.error('Failed to update season', err),
+        error: (err) => this.logger.error('Failed to update season', err),
       });
     }
   }

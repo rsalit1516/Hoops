@@ -13,6 +13,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { Router, RouterLink, RouterModule } from '@angular/router';
 import { PeopleService } from '@app/services/people.service';
 import { FormSettings } from '@app/shared/constants';
+import { LoggerService } from '@app/services/logger.service';
 
 interface Item {
   id: number;
@@ -49,6 +50,7 @@ export class PersonalInfo implements OnInit {
   fb = inject(FormBuilder);
   readonly router = inject(Router);
   readonly #peopleService = inject(PeopleService);
+  private logger = inject(LoggerService);
   pageTitle = 'Personal Information';
   inputStyle = FormSettings.inputStyle;
   volunteers = [
@@ -138,14 +140,14 @@ export class PersonalInfo implements OnInit {
   //   });
   // }
   onSubmit () {
-    console.log(this.personalInfoForm.value);
+    this.logger.info('Submitting personal info form:', this.personalInfoForm.value);
     const selectedValues = this.personalInfoForm.value.checkboxes
       .map((checked: boolean, index: number) =>
         checked ? this.volunteers[index].name : null
       )
       .filter((value: string | null) => value !== null);
 
-    console.log('Selected Values:', selectedValues);
+    this.logger.debug('Selected volunteer values:', selectedValues);
   }
 
   onReset () {

@@ -1,12 +1,14 @@
 import { Directive, inject, signal } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable, firstValueFrom } from 'rxjs';
+import { LoggerService } from '@app/services/logger.service';
 
 // base-detail.component.ts
 @Directive()
 export abstract class BaseDetail<T> {
   protected router = inject(Router);
   protected route = inject(ActivatedRoute);
+  protected logger = inject(LoggerService);
 
   item = signal<T | undefined>(undefined);
   mode = signal<'create' | 'edit'>('edit');
@@ -30,14 +32,14 @@ export abstract class BaseDetail<T> {
   }
 
   async onSave(item: T): Promise<void> {
-    console.log('BaseDetail.onSave called with:', item);
+    this.logger.debug('BaseDetail.onSave called with:', item);
     try {
-      console.log('Calling saveItem...');
+      this.logger.debug('Calling saveItem...');
       const saved = await firstValueFrom(this.saveItem(item));
-      console.log('Save successful:', saved);
+      this.logger.info('Save successful:', saved);
       this.navigateToList();
     } catch (error) {
-      console.error('Save failed:', error);
+      this.logger.error('Save failed:', error);
       // Handle error
     }
   }
@@ -51,7 +53,7 @@ export abstract class BaseDetail<T> {
   }
 
   async onDelete(item: T): Promise<void> {
-    console.log('BaseDetail.onDelete called with:', item);
+    this.logger.debug('BaseDetail.onDelete called with:', item);
 
     // Confirm deletion
     if (!confirm('Are you sure you want to delete this record?')) {
@@ -59,12 +61,12 @@ export abstract class BaseDetail<T> {
     }
 
     try {
-      console.log('Calling deleteItem...');
+      this.logger.debug('Calling deleteItem...');
       await firstValueFrom(this.deleteItem(item));
-      console.log('Delete successful');
+      this.logger.info('Delete successful');
       this.navigateToList();
     } catch (error) {
-      console.error('Delete failed:', error);
+      this.logger.error('Delete failed:', error);
       // Handle error
     }
   }

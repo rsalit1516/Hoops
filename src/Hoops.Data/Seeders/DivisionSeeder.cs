@@ -7,6 +7,7 @@ using Hoops.Infrastructure.Repository;
 using Hoops.Infrastructure.Data;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Hoops.Data.Seeders
 {
@@ -14,20 +15,22 @@ namespace Hoops.Data.Seeders
     {
         public hoopsContext context { get; private set; }
         private readonly IDivisionRepository _divisionRepo;
+        private readonly ILogger<DivisionSeeder> _logger;
 
-        public DivisionSeeder(IDivisionRepository divisionRepo, hoopsContext context)
+        public DivisionSeeder(IDivisionRepository divisionRepo, hoopsContext context, ILogger<DivisionSeeder> logger)
         {
             this.context = context;
             _divisionRepo = divisionRepo;
+            _logger = logger;
         }
 
         public async Task DeleteAllAsync()
         {
             var records = await _divisionRepo.GetAllAsync();
-            Console.WriteLine($"[DEBUG] Found {records.Count()} divisions to delete");
+            _logger.LogDebug("Found {Count} divisions to delete", records.Count());
             foreach (var record in records)
             {
-                Console.WriteLine($"[DEBUG] Attempting to delete Person ID: {record.DivisionId}, Name: {record.DivisionDescription}");
+                _logger.LogDebug("Attempting to delete Division ID: {DivisionId}, Name: {DivisionDescription}", record.DivisionId, record.DivisionDescription);
                 await _divisionRepo.DeleteAsync(record.DivisionId);
             }
         }
@@ -35,18 +38,18 @@ namespace Hoops.Data.Seeders
         {
             int maxDivisionId = context.Divisions.Any() ? context.Divisions.Max(c => c.DivisionId) : 0;
             var seasons = await context.Seasons.ToListAsync();
-            Console.WriteLine($"[DEBUG] Found {seasons.Count()} seasons to initialize divisions for.");
+            _logger.LogDebug("Found {Count} seasons to initialize divisions for", seasons.Count());
             if (seasons.Count() == 0)
             {
-                Console.WriteLine("[DEBUG] No seasons found, skipping division initialization.");
+                _logger.LogDebug("No seasons found, skipping division initialization");
                 return;
             }
-            Console.WriteLine($"[DEBUG] divisionRepo is null: {_divisionRepo == null}");
+            _logger.LogDebug("divisionRepo is null: {IsNull}", _divisionRepo == null);
 
-            Console.WriteLine($"[DEBUG] seasons is null: {seasons == null}");
+            _logger.LogDebug("seasons is null: {IsNull}", seasons == null);
             foreach (var season in seasons)
             {
-                Console.WriteLine($"[DEBUG] Initializing divisions for season: {season.SeasonId}");
+                _logger.LogDebug("Initializing divisions for season: {SeasonId}", season.SeasonId);
                 var seasonYear = season.FromDate.HasValue ? season.FromDate.Value.Year : 2024;
                 var divisions = new List<Division>
                 {

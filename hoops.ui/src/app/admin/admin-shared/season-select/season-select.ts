@@ -15,6 +15,7 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { SeasonService } from '@app/services/season.service';
+import { LoggerService } from '@app/services/logger.service';
 
 @Component({
   selector: 'season-select',
@@ -45,6 +46,7 @@ import { SeasonService } from '@app/services/season.service';
 })
 export class SeasonSelect implements OnInit {
   readonly seasonService = inject(SeasonService);
+  private logger = inject(LoggerService);
   title = 'Select Season';
   // seasonComponent: UntypedFormControl | null | undefined;
   defaultSeason: Season | undefined;
@@ -73,7 +75,7 @@ export class SeasonSelect implements OnInit {
     }
   }
   changeSeason(season: Season) {
-    console.log('Season from changeSeason = ', season);
+    this.logger.info('Season changed to:', season);
     this.seasonService.updateSelectedSeason(season);
   }
 

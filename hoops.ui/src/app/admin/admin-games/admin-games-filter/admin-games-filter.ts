@@ -153,9 +153,5 @@ export class AdminGamesFilter {
       gameType,
       division: this.selectedDivision(),
     });
-    // } else {
-    //   console.error('Season or Division is undefined');
-    // }
-    // Handle the selected season
   }
 }

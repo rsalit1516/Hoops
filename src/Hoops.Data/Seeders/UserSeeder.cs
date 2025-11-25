@@ -7,6 +7,7 @@ using Hoops.Core.Interface;
 using Hoops.Infrastructure.Data;
 using Hoops.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Hoops.Data.Seeders
 {
@@ -19,26 +20,27 @@ namespace Hoops.Data.Seeders
         public hoopsContext context { get; private set; }
         private readonly IUserRepository _userRepo;
         private readonly IPersonRepository _personRepo;
+        private readonly ILogger<UserSeeder> _logger;
 
-        public UserSeeder(IUserRepository userRepo, IPersonRepository personRepo, hoopsContext context)
+        public UserSeeder(IUserRepository userRepo, IPersonRepository personRepo, hoopsContext context, ILogger<UserSeeder> logger)
         {
             this.context = context;
             _userRepo = userRepo;
             _personRepo = personRepo;
+            _logger = logger;
         }
 
         public async Task DeleteAllAsync()
         {
             try
             {
-                Console.WriteLine("[DEBUG] Attempting to delete all users using raw SQL");
+                _logger.LogDebug("Attempting to delete all users using raw SQL");
                 var deletedCount = await context.Database.ExecuteSqlRawAsync("DELETE FROM Users");
-                Console.WriteLine($"[DEBUG] Successfully deleted users using raw SQL");
+                _logger.LogDebug("Successfully deleted users using raw SQL");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[ERROR] Error deleting users: {ex.Message}");
-                Console.WriteLine($"[ERROR] Stack trace: {ex.StackTrace}");
+                _logger.LogError(ex, "Error deleting users: {Message}", ex.Message);
                 throw;
             }
         }
@@ -55,7 +57,7 @@ namespace Hoops.Data.Seeders
 
             if (parentAdPeople.Count < 8)
             {
-                Console.WriteLine($"[WARNING] Expected at least 8 parent/AD people records, found {parentAdPeople.Count}");
+                _logger.LogWarning("Expected at least 8 parent/AD people records, found {Count}", parentAdPeople.Count);
                 return;
             }
 
@@ -83,7 +85,7 @@ namespace Hoops.Data.Seeders
                 };
 
                 await _userRepo.InsertAsync(user);
-                Console.WriteLine($"[DEBUG] Created admin user: {user.UserName} (UserType = 3)");
+                _logger.LogDebug("Created admin user: {UserName} (UserType = 3)", user.UserName);
             }
 
             // Create 5 AD users (UserType = 2) 
@@ -107,12 +109,12 @@ namespace Hoops.Data.Seeders
                 };
 
                 await _userRepo.InsertAsync(user);
-                Console.WriteLine($"[DEBUG] Created AD user: {user.UserName} (UserType = 2)");
+                _logger.LogDebug("Created AD user: {UserName} (UserType = 2)", user.UserName);
             }
 
             await context.SaveChangesAsync();
-            Console.WriteLine($"[DEBUG] Created {adminPeople.Count} admin users and {adPeople.Count} AD users");
-            Console.WriteLine($"[DEBUG] All users created with default password (encrypted): {defaultPassword}");
+            _logger.LogDebug("Created {AdminCount} admin users and {AdCount} AD users", adminPeople.Count, adPeople.Count);
+            _logger.LogDebug("All users created with default password (encrypted): {Password}", defaultPassword);
         }
 
         /// <summary>

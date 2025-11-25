@@ -18,6 +18,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { AsyncPipe } from '@angular/common';
 import { DivisionService } from '@app/services/division.service';
+import { LoggerService } from '@app/services/logger.service';
 
 @Component({
   selector: 'division-select',
@@ -46,6 +47,7 @@ export class DivisionSelect implements OnInit {
   // readonly selectedDivision = output<Division>();
   @Output() divisionChanged = new EventEmitter<Division>();
   readonly divisionService = inject(DivisionService);
+  private logger = inject(LoggerService);
   title = 'Division';
   divisionComponent: UntypedFormControl | null | undefined;
   selectedDivision = computed(() => this.divisionService.selectedDivision());
@@ -57,7 +59,7 @@ export class DivisionSelect implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.divisionService.seasonDivisions());
+    this.logger.debug('Season divisions:', this.divisionService.seasonDivisions());
   }
   changeDivision(division: Division | null) {
     this.divisionService.updateSelectedDivision(division!);

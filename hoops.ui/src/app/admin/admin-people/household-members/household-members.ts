@@ -12,6 +12,7 @@ import { Person } from '@app/domain/person';
 import { HouseholdService } from '@app/services/household.service';
 import { PeopleService } from '@app/services/people.service';
 import { SectionTitle } from '@app/shared/components/section-title/section-title';
+import { LoggerService } from '@app/services/logger.service';
 
 @Component({
   selector: 'csbc-household-members',
@@ -39,6 +40,7 @@ export class HouseholdMembers implements OnInit {
   #peopleService = inject(PeopleService);
   #HouseholdService = inject(HouseholdService);
   #router = inject(Router);
+  #logger = inject(LoggerService);
 
   results = input<Household[]>();
 
@@ -76,11 +78,11 @@ export class HouseholdMembers implements OnInit {
   }
 
   getRecord (row: any) {
-    console.log(row);
+    this.#logger.debug('Selected record:', row);
     //  this.#householdService.selectedRecordSignal.set(row);
   }
   addHouseHoldMember () {
-    console.log('results', 'adding household member');
+    this.#logger.info('Adding household member');
     var newPerson = new Person();
     newPerson.houseId = this.#HouseholdService.selectedHouseholdSignal()?.houseId ?? 0;
     this.#peopleService.updateSelectedPerson(newPerson);
