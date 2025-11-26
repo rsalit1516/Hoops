@@ -60,6 +60,7 @@ export class PeopleFilters implements OnInit, OnChanges {
 
   filterForm = this.fb.group({
     firstName: [''],
+    lastName: [''],
     playerOnly: [false],
   });
 
@@ -109,7 +110,7 @@ export class PeopleFilters implements OnInit, OnChanges {
     const letter = this.selectedLetter();
 
     const filters: PeopleFilterCriteria = {
-      lastName: letter || '',
+      lastName: formValue.lastName || '',
       firstName: formValue.firstName || '',
       playerOnly: formValue.playerOnly || false,
       letter: letter,
@@ -122,6 +123,7 @@ export class PeopleFilters implements OnInit, OnChanges {
   clearFilters() {
     this.filterForm.reset({
       firstName: '',
+      lastName: '',
       playerOnly: false,
     });
     this.selectedLetter.set('A');
