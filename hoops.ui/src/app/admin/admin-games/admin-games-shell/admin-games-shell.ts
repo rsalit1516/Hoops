@@ -15,13 +15,6 @@ import * as fromAdmin from '../../state';
 import { Season } from '@app/domain/season';
 import { RegularGame } from '@app/domain/regularGame';
 
-
-
-
-
-
-
-
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import {
   MatExpansionModule,
@@ -39,8 +32,7 @@ import { AdminGamesState } from '../adminGamesState.service';
   selector: 'csbc-admin-games-shell',
   template: `<section class="container">
     <h2>{{ title }}</h2>
-    <csbc-admin-games-filter (gameFilterChanged)="handlefilterUpdate($event)"
-     />
+    <csbc-admin-games-filter (gameFilterChanged)="handlefilterUpdate($event)" />
     <router-outlet />
   </section>`,
 
@@ -56,8 +48,8 @@ import { AdminGamesState } from '../adminGamesState.service';
     MatExpansionModule,
     MatIconModule,
     MatButtonModule,
-    AdminGamesFilter
-],
+    AdminGamesFilter,
+  ],
 })
 export class AdminGamesShell implements OnInit {
   private logger = inject(LoggerService);
@@ -118,19 +110,8 @@ export class AdminGamesShell implements OnInit {
       'Filtered games signal',
       this.gameService.filteredGames()
     );
-    // console.log((gameType === 'Regular Season'));
-    // this.showPlayoffs = (gameType === 'Playoffs');
-    // this.showRegularSeason = (gameType === 'Regular Season');
-    // if (gameType !== undefined) {
-    //   console.log('Calling filtered games');
-    //   this.#store.dispatch(new adminActions.LoadDivisionGames());
-    //   this.#store.dispatch(new adminActions.LoadDivisionTeams());
-    //   this.#store.dispatch(new adminActions.LoadPlayoffGames());
-    // }
   }
-  selectedSeason(season: Season) {
-    // this.store.dispatch(new adminActions.SetCurrentSeason(season));
-  }
+  selectedSeason(season: Season) {}
   clickedDivision(division: MouseEvent) {
     // TODO: need to change the parameter
     this.logger.debug('Clicked division', division);
@@ -139,17 +120,5 @@ export class AdminGamesShell implements OnInit {
   closeSidenav() {
     this.isSidenavOpen = false;
   }
-  handlefilterUpdate($event: any) {
-    // console.log($event);
-    // console.log($event.division);
-    // console.log($event.season);
-    // this.logger.log($event.gametType);
-    // if ($event.gameType === 'Playoffs') {
-    //   this.showPlayoffs = true;
-    //   this.showRegularSeason = false;
-    // } else {
-    //   this.showPlayoffs = false;
-    //   this.showRegularSeason = true;
-    // }
-  }
+  handlefilterUpdate($event: any) {}
 }

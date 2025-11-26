@@ -6,6 +6,7 @@ using Hoops.Core.Interface;
 using Hoops.Infrastructure.Data;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Hoops.Data.Seeders
 {
@@ -21,6 +22,7 @@ namespace Hoops.Data.Seeders
         private readonly IDivisionRepository _divisionRepo;
         private readonly ILocationRepository _locationRepo;
         private readonly IScheduleGameRepository _scheduleGameRepo;
+        private readonly ILogger<SchedulePlayoffSeeder> _logger;
 
         public SchedulePlayoffSeeder(
             ISchedulePlayoffRepository schedulePlayoffRepo,
@@ -28,7 +30,8 @@ namespace Hoops.Data.Seeders
             IDivisionRepository divisionRepo,
             ILocationRepository locationRepo,
             IScheduleGameRepository scheduleGameRepo,
-            hoopsContext context)
+            hoopsContext context,
+            ILogger<SchedulePlayoffSeeder> logger)
         {
             this.context = context;
             _schedulePlayoffRepo = schedulePlayoffRepo;
@@ -36,13 +39,14 @@ namespace Hoops.Data.Seeders
             _divisionRepo = divisionRepo;
             _locationRepo = locationRepo;
             _scheduleGameRepo = scheduleGameRepo;
+            _logger = logger;
         }
 
         public async Task DeleteAllAsync()
         {
             try
             {
-                Console.WriteLine("[DEBUG] Attempting to delete all schedule playoff games");
+                _logger.LogDebug("Attempting to delete all schedule playoff games");
 
                 // Check if using in-memory database (for tests)
                 var isInMemory = context.Database.ProviderName == "Microsoft.EntityFrameworkCore.InMemory";
@@ -53,29 +57,28 @@ namespace Hoops.Data.Seeders
                     var existingGames = context.SchedulePlayoffs.ToList();
                     context.SchedulePlayoffs.RemoveRange(existingGames);
                     await context.SaveChangesAsync();
-                    Console.WriteLine($"[DEBUG] Successfully deleted {existingGames.Count} schedule playoff games using EF");
+                    _logger.LogDebug("Successfully deleted {Count} schedule playoff games using EF", existingGames.Count);
                 }
                 else
                 {
                     // For SQL database, use raw SQL for better performance
                     var deletedCount = await context.Database.ExecuteSqlRawAsync("DELETE FROM SchedulePlayoffs");
-                    Console.WriteLine($"[DEBUG] Successfully deleted schedule playoff games using raw SQL");
+                    _logger.LogDebug("Successfully deleted schedule playoff games using raw SQL");
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[ERROR] Error deleting schedule playoff games: {ex.Message}");
-                Console.WriteLine($"[ERROR] Stack trace: {ex.StackTrace}");
+                _logger.LogError(ex, "Error deleting schedule playoff games: {Message}", ex.Message);
                 throw;
             }
         }
 
         public async Task SeedAsync()
         {
-            Console.WriteLine("=============================================================");
-            Console.WriteLine("               PLAYOFF SEEDER STARTING");
-            Console.WriteLine("=============================================================");
-            Console.WriteLine("[DEBUG] Starting playoff seeding process");
+            _logger.LogInformation("=============================================================");
+            _logger.LogInformation("               PLAYOFF SEEDER STARTING");
+            _logger.LogInformation("=============================================================");
+            _logger.LogDebug("Starting playoff seeding process");
 
             var seasons = await _seasonRepo.GetAllAsync();
             var divisions = await _divisionRepo.GetAllAsync();
@@ -83,10 +86,10 @@ namespace Hoops.Data.Seeders
             var locationsList = locations.ToList();
             var scheduleGames = await _scheduleGameRepo.GetAllAsync();
 
-            Console.WriteLine($"[DEBUG] Found {locationsList.Count} locations");
+            _logger.LogDebug("Found {LocationCount} locations", locationsList.Count);
             if (!locationsList.Any())
             {
-                Console.WriteLine("[DEBUG] No locations found, skipping playoff game scheduling.");
+                _logger.LogDebug("No locations found, skipping playoff game scheduling.");
                 return;
             }
 
@@ -95,7 +98,7 @@ namespace Hoops.Data.Seeders
 
             foreach (var season in seasons)
             {
-                Console.WriteLine($"[DEBUG] Processing season: {season.Description}");
+                _logger.LogDebug("Processing season: {SeasonDescription}", season.Description);
 
                 // Get divisions for this season
                 var seasonDivisions = divisions.Where(d => d.SeasonId == season.SeasonId).ToList();
@@ -105,7 +108,7 @@ namespace Hoops.Data.Seeders
                     // Skip T2 divisions - they don't have playoffs
                     if (division.DivisionDescription?.Contains("T2", StringComparison.OrdinalIgnoreCase) == true)
                     {
-                        Console.WriteLine($"[DEBUG] Skipping playoff generation for T2 division {division.DivisionId}: {division.DivisionDescription}");
+                        _logger.LogDebug("Skipping playoff generation for T2 division {DivisionId}: {DivisionDescription}", division.DivisionId, division.DivisionDescription);
                         continue;
                     }
 
@@ -113,7 +116,7 @@ namespace Hoops.Data.Seeders
                     var existingPlayoffs = await GetPlayoffsByDivisionAsync(division.DivisionId);
                     if (existingPlayoffs.Any())
                     {
-                        Console.WriteLine($"[DEBUG] Playoffs already exist for division {division.DivisionId}. Skipping.");
+                        _logger.LogDebug("Playoffs already exist for division {DivisionId}. Skipping.", division.DivisionId);
                         continue;
                     }
 
@@ -122,13 +125,13 @@ namespace Hoops.Data.Seeders
 
                     if (divisionInfo.TeamCount < 4)
                     {
-                        Console.WriteLine($"[DEBUG] Division {division.DivisionId} has {divisionInfo.TeamCount} teams. Minimum 4 required for playoffs. Skipping.");
+                        _logger.LogDebug("Division {DivisionId} has {TeamCount} teams. Minimum 4 required for playoffs. Skipping.", division.DivisionId, divisionInfo.TeamCount);
                         continue;
                     }
 
                     if (!divisionInfo.LastGameDate.HasValue)
                     {
-                        Console.WriteLine($"[DEBUG] No games found for division {division.DivisionId}. Skipping playoff generation.");
+                        _logger.LogDebug("No games found for division {DivisionId}. Skipping playoff generation.", division.DivisionId);
                         continue;
                     }
 
@@ -136,13 +139,13 @@ namespace Hoops.Data.Seeders
                     var playoffScheduleNumber = GenerateUniquePlayoffScheduleNumber(division.DivisionId, usedPlayoffScheduleNumbers);
                     usedPlayoffScheduleNumbers.Add(playoffScheduleNumber);
 
-                    Console.WriteLine($"[DEBUG] Generating playoffs for Division {division.DivisionId} ({division.DivisionDescription}) with {divisionInfo.TeamCount} teams");
+                    _logger.LogDebug("Generating playoffs for Division {DivisionId} ({DivisionDescription}) with {TeamCount} teams", division.DivisionId, division.DivisionDescription, divisionInfo.TeamCount);
 
                     await GeneratePlayoffsForDivisionAsync(division, divisionInfo, playoffScheduleNumber, locationsList);
                 }
             }
 
-            Console.WriteLine("[DEBUG] Playoff seeding completed");
+            _logger.LogDebug("Playoff seeding completed");
         }
 
         private async Task<List<SchedulePlayoff>> GetPlayoffsByDivisionAsync(int divisionId)
@@ -154,16 +157,16 @@ namespace Hoops.Data.Seeders
 
         private async Task<DivisionPlayoffInfo> GetDivisionPlayoffInfoAsync(int divisionId, int seasonId)
         {
-            Console.WriteLine($"[DEBUG] Getting playoff info for Division {divisionId}, Season {seasonId}");
+            _logger.LogDebug("Getting playoff info for Division {DivisionId}, Season {SeasonId}", divisionId, seasonId);
 
             // Try querying directly from context instead of repository
             var totalGames = await context.ScheduleGames.CountAsync();
-            Console.WriteLine($"[DEBUG] Total games in ScheduleGames table (direct context): {totalGames}");
+            _logger.LogDebug("Total games in ScheduleGames table (direct context): {TotalGames}", totalGames);
 
             // Also try the repository approach
             var scheduleGames = await _scheduleGameRepo.GetAllAsync();
             var totalGamesRepo = scheduleGames.Count();
-            Console.WriteLine($"[DEBUG] Total games via repository: {totalGamesRepo}");
+            _logger.LogDebug("Total games via repository: {TotalGames}", totalGamesRepo);
 
             // Let's also check what DivisionIds exist in ScheduleGames (direct context)
             var divisionIds = await context.ScheduleGames
@@ -171,18 +174,18 @@ namespace Hoops.Data.Seeders
                 .Distinct()
                 .OrderBy(id => id)
                 .ToListAsync();
-            Console.WriteLine($"[DEBUG] DivisionIds in ScheduleGames (direct): {string.Join(", ", divisionIds)}");
+            _logger.LogDebug("DivisionIds in ScheduleGames (direct): {DivisionIds}", string.Join(", ", divisionIds));
 
             // Get all schedule games for this division (using direct context)
             var divisionGames = await context.ScheduleGames
                 .Where(sg => sg.DivisionId.HasValue && sg.DivisionId.Value == divisionId)
                 .ToListAsync();
 
-            Console.WriteLine($"[DEBUG] Found {divisionGames.Count} games for Division {divisionId}");
+            _logger.LogDebug("Found {GameCount} games for Division {DivisionId}", divisionGames.Count, divisionId);
 
             if (!divisionGames.Any())
             {
-                Console.WriteLine($"[DEBUG] No games found for Division {divisionId}");
+                _logger.LogDebug("No games found for Division {DivisionId}", divisionId);
                 return new DivisionPlayoffInfo { TeamCount = 0, LastGameDate = null };
             }
 
@@ -193,20 +196,20 @@ namespace Hoops.Data.Seeders
                 if (game.VisitingTeamNumber.HasValue)
                 {
                     allTeams.Add(game.VisitingTeamNumber.Value);
-                    Console.WriteLine($"[DEBUG] Added visiting team: {game.VisitingTeamNumber.Value}");
+                    _logger.LogDebug("Added visiting team: {TeamNumber}", game.VisitingTeamNumber.Value);
                 }
                 if (game.HomeTeamNumber.HasValue)
                 {
                     allTeams.Add(game.HomeTeamNumber.Value);
-                    Console.WriteLine($"[DEBUG] Added home team: {game.HomeTeamNumber.Value}");
+                    _logger.LogDebug("Added home team: {TeamNumber}", game.HomeTeamNumber.Value);
                 }
             }
 
-            Console.WriteLine($"[DEBUG] Total unique teams found: {allTeams.Count}");
+            _logger.LogDebug("Total unique teams found: {TeamCount}", allTeams.Count);
 
             // Get latest game date
             var lastGameDate = divisionGames.Max(g => g.GameDate);
-            Console.WriteLine($"[DEBUG] Last game date: {lastGameDate}");
+            _logger.LogDebug("Last game date: {LastGameDate}", lastGameDate);
 
             return new DivisionPlayoffInfo
             {
@@ -217,7 +220,7 @@ namespace Hoops.Data.Seeders
 
         private async Task GeneratePlayoffsForDivisionAsync(Division division, DivisionPlayoffInfo divisionInfo, int playoffScheduleNumber, List<Location> locations)
         {
-            Console.WriteLine("[DEBUG] Playoff generation started for division: " + division.DivisionId);
+            _logger.LogDebug("Playoff generation started for division: {DivisionId}", division.DivisionId);
             var startDate = divisionInfo.LastGameDate!.Value.AddDays(1); // Start at least one day after last regular season game
             var gameNumber = 1;
 
@@ -229,7 +232,7 @@ namespace Hoops.Data.Seeders
             // Schedule games with proper timing and locations
             await SchedulePlayoffGamesAsync(playoffGames, locations, isWeekendDivision);
 
-            Console.WriteLine($"[DEBUG] Generated {playoffGames.Count} playoff games for division {division.DivisionId}");
+            _logger.LogDebug("Generated {GameCount} playoff games for division {DivisionId}", playoffGames.Count, division.DivisionId);
         }
 
         private List<PlayoffGameInfo> GeneratePlayoffBracket(Division division, int teamCount, DateTime startDate, bool isWeekendDivision, int scheduleNumber, ref int gameNumber)
@@ -278,7 +281,7 @@ namespace Hoops.Data.Seeders
 
         private List<PlayoffGameInfo> GenerateQuarterfinals(int divisionId, int scheduleNumber, DateTime gameDate, bool isWeekendDivision, ref int gameNumber)
         {
-            Console.WriteLine("[DEBUG] Generating quarterfinals for division: " + divisionId);
+            _logger.LogDebug("Generating quarterfinals for division: {DivisionId}", divisionId);
             var games = new List<PlayoffGameInfo>();
             var gameTime = isWeekendDivision ? TimeSpan.FromHours(9) : TimeSpan.FromHours(18); // 9 AM weekends, 6 PM weeknights
 
@@ -307,7 +310,7 @@ namespace Hoops.Data.Seeders
 
         private List<PlayoffGameInfo> GenerateSemifinals(int divisionId, int scheduleNumber, DateTime gameDate, bool isWeekendDivision, int teamCount, ref int gameNumber)
         {
-            Console.WriteLine("[DEBUG] Generating semifinals for division: " + divisionId);
+            _logger.LogDebug("Generating semifinals for division: {DivisionId}", divisionId);
             var games = new List<PlayoffGameInfo>();
             var gameTime = isWeekendDivision ? TimeSpan.FromHours(9) : TimeSpan.FromHours(18);
 
@@ -371,7 +374,7 @@ namespace Hoops.Data.Seeders
 
         private List<PlayoffGameInfo> GenerateChampionship(int divisionId, int scheduleNumber, DateTime gameDate, bool isWeekendDivision, ref int gameNumber)
         {
-            Console.WriteLine("[DEBUG] Generating championship for division: " + divisionId);
+            _logger.LogDebug("Generating championship for division: {DivisionId}", divisionId);
             var games = new List<PlayoffGameInfo>();
             var gameTime = isWeekendDivision ? TimeSpan.FromHours(10, 30) : TimeSpan.FromHours(18); // 10:30 AM championship on weekends
 
@@ -392,8 +395,8 @@ namespace Hoops.Data.Seeders
 
         private async Task SchedulePlayoffGamesAsync(List<PlayoffGameInfo> playoffGames, List<Location> locations, bool isWeekendDivision)
         {
-            Console.WriteLine("[DEBUG] Generating schedule playoffs game");
-            Console.WriteLine("[DEBUG] locations: " + locations.Count);
+            _logger.LogDebug("Generating schedule playoffs game");
+            _logger.LogDebug("locations: {LocationCount}", locations.Count);
             var gameCounter = 0;
 
             foreach (var playoffGame in playoffGames)
@@ -428,7 +431,7 @@ namespace Hoops.Data.Seeders
                 await _schedulePlayoffRepo.InsertAsync(game);
                 await context.SaveChangesAsync();
 
-                Console.WriteLine($"[DEBUG] Playoff Game #{gameCounter}: {playoffGame.HomeTeam} vs {playoffGame.VisitingTeam} - {playoffGame.Description} on {playoffGame.GameDate:MMM dd} at {playoffGame.GameTime}");
+                _logger.LogDebug("Playoff Game #{GameCounter}: {HomeTeam} vs {VisitingTeam} - {Description} on {GameDate:MMM dd} at {GameTime}", gameCounter, playoffGame.HomeTeam, playoffGame.VisitingTeam, playoffGame.Description, playoffGame.GameDate, playoffGame.GameTime);
             }
         }
 

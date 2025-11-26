@@ -6,6 +6,7 @@ using Hoops.Core.Interface;
 using Hoops.Infrastructure.Data;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Hoops.Data.Seeders
 {
@@ -17,6 +18,7 @@ namespace Hoops.Data.Seeders
         private readonly IDivisionRepository _divisionRepo;
         private readonly IScheduleDivTeamsRepository _scheduleDivTeamsRepo;
         private readonly ILocationRepository _locationRepo;
+        private readonly ILogger<ScheduleGameSeeder> _logger;
 
         public ScheduleGameSeeder(
             IScheduleGameRepository scheduleGameRepo,
@@ -24,7 +26,8 @@ namespace Hoops.Data.Seeders
             IDivisionRepository divisionRepo,
             IScheduleDivTeamsRepository scheduleDivTeamsRepo,
             ILocationRepository locationRepo,
-            hoopsContext context)
+            hoopsContext context,
+            ILogger<ScheduleGameSeeder> logger)
         {
             this.context = context;
             _scheduleGameRepo = scheduleGameRepo;
@@ -32,20 +35,20 @@ namespace Hoops.Data.Seeders
             _divisionRepo = divisionRepo;
             _scheduleDivTeamsRepo = scheduleDivTeamsRepo;
             _locationRepo = locationRepo;
+            _logger = logger;
         }
 
         public async Task DeleteAllAsync()
         {
             try
             {
-                Console.WriteLine("[DEBUG] Attempting to delete all schedule games using raw SQL");
+                _logger.LogDebug("Attempting to delete all schedule games using raw SQL");
                 var deletedCount = await context.Database.ExecuteSqlRawAsync("DELETE FROM ScheduleGames");
-                Console.WriteLine($"[DEBUG] Successfully deleted schedule games using raw SQL");
+                _logger.LogDebug("Successfully deleted schedule games using raw SQL");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[ERROR] Error deleting schedule games: {ex.Message}");
-                Console.WriteLine($"[ERROR] Stack trace: {ex.StackTrace}");
+                _logger.LogError(ex, "Error deleting schedule games: {Message}", ex.Message);
                 throw;
             }
         }
@@ -58,7 +61,7 @@ namespace Hoops.Data.Seeders
 
             if (!locationsList.Any())
             {
-                Console.WriteLine("[DEBUG] No locations found, skipping game scheduling.");
+                _logger.LogDebug("No locations found, skipping game scheduling.");
                 return;
             }
 
@@ -75,18 +78,18 @@ namespace Hoops.Data.Seeders
                         .Where(sdt => sdt.SeasonId == season.SeasonId && sdt.ScheduleNumber == externalScheduleNumber)
                         .ToListAsync();
 
-                    Console.WriteLine($"[DEBUG] Found {scheduleDivTeams.Count} ScheduleDivTeams for Season {season.SeasonId}, Schedule {externalScheduleNumber}");
+                    _logger.LogDebug("Found {Count} ScheduleDivTeams for Season {SeasonId}, Schedule {ScheduleNumber}", scheduleDivTeams.Count, season.SeasonId, externalScheduleNumber);
 
                     if (scheduleDivTeams.Count >= 2)
                     {
-                        Console.WriteLine($"[DEBUG] Generating schedule for External Schedule #{externalScheduleNumber} (Division: {division.DivisionDescription}) with {scheduleDivTeams.Count} teams");
+                        _logger.LogDebug("Generating schedule for External Schedule #{ScheduleNumber} (Division: {DivisionDescription}) with {TeamCount} teams", externalScheduleNumber, division.DivisionDescription, scheduleDivTeams.Count);
 
                         // Validate all team mappings exist before proceeding
                         var validationResult = await ValidateTeamMappings(scheduleDivTeams, season.SeasonId, externalScheduleNumber);
                         if (!validationResult.IsValid)
                         {
-                            Console.WriteLine($"[ERROR] Team mapping validation failed for Schedule #{externalScheduleNumber}: {validationResult.ErrorMessage}");
-                            Console.WriteLine($"[ERROR] Skipping schedule generation for this division to prevent data corruption");
+                            _logger.LogError("Team mapping validation failed for Schedule #{ScheduleNumber}: {ErrorMessage}", externalScheduleNumber, validationResult.ErrorMessage);
+                            _logger.LogError("Skipping schedule generation for this division to prevent data corruption");
                             continue;
                         }
 
@@ -94,7 +97,7 @@ namespace Hoops.Data.Seeders
                     }
                     else
                     {
-                        Console.WriteLine($"[WARNING] Skipping External Schedule #{externalScheduleNumber} (Division: {division.DivisionDescription}) - not enough teams ({scheduleDivTeams.Count})");
+                        _logger.LogWarning("Skipping External Schedule #{ScheduleNumber} (Division: {DivisionDescription}) - not enough teams ({TeamCount})", externalScheduleNumber, division.DivisionDescription, scheduleDivTeams.Count);
                     }
 
                     externalScheduleNumber++; // Increment for next external schedule group
@@ -103,7 +106,7 @@ namespace Hoops.Data.Seeders
 
             // Save all changes to database before playoff seeder runs
             await context.SaveChangesAsync();
-            Console.WriteLine("[DEBUG] All schedule games saved to database");
+            _logger.LogDebug("All schedule games saved to database");
         }
 
         private async Task GenerateScheduleForDivision(Season season, Division division, List<ScheduleDivTeam> scheduleDivTeams, List<Location> locations, int scheduleNumber)
@@ -113,11 +116,11 @@ namespace Hoops.Data.Seeders
 
             if (scheduleDivTeams.Count < 2)
             {
-                Console.WriteLine($"[DEBUG] Not enough teams in ScheduleDivTeams for Division: {division.DivisionDescription} ({scheduleDivTeams.Count} teams)");
+                _logger.LogDebug("Not enough teams in ScheduleDivTeams for Division: {DivisionDescription} ({TeamCount} teams)", division.DivisionDescription, scheduleDivTeams.Count);
                 return;
             }
 
-            Console.WriteLine($"[DEBUG] Using {scheduleDivTeams.Count} ScheduleDivTeams for Division: {division.DivisionDescription}");
+            _logger.LogDebug("Using {TeamCount} ScheduleDivTeams for Division: {DivisionDescription}", scheduleDivTeams.Count, division.DivisionDescription);
 
             // Generate multiple rounds for a full season (each team plays each other multiple times)
             var totalRounds = (scheduleDivTeams.Count - 1) * 2; // Double round-robin for more games
@@ -144,7 +147,7 @@ namespace Hoops.Data.Seeders
                 allRoundPairings.AddRange(roundGames);
             }
 
-            Console.WriteLine($"[DEBUG] Generated {allRoundPairings.Count} total game pairings for the season");
+            _logger.LogDebug("Generated {Count} total game pairings for the season", allRoundPairings.Count);
 
             // Now schedule games to achieve 2-3 games per team per week
             var gameCounter = 0;
@@ -156,7 +159,7 @@ namespace Hoops.Data.Seeders
             {
                 if (homeTeam == null || visitingTeam == null)
                 {
-                    Console.WriteLine($"[WARNING] Null team in round robin pairing");
+                    _logger.LogWarning("Null team in round robin pairing");
                     continue;
                 }
 
@@ -166,7 +169,7 @@ namespace Hoops.Data.Seeders
                     weekStartDate = weekStartDate.AddDays(7);
                     currentDate = weekStartDate;
                     gamesScheduledThisWeek = 0;
-                    Console.WriteLine($"[DEBUG] Moving to new week starting {weekStartDate:MMM dd}");
+                    _logger.LogDebug("Moving to new week starting {WeekStartDate:MMM dd}", weekStartDate);
                 }
 
                 // Find best date this week considering team rest and available slots
@@ -211,7 +214,7 @@ namespace Hoops.Data.Seeders
                 // Validate team numbers before creating the game
                 if (homeTeam.TeamNumber <= 0 || visitingTeam.TeamNumber <= 0)
                 {
-                    Console.WriteLine($"[ERROR] Invalid team numbers for game {gameId}: Home={homeTeam.TeamNumber}, Visiting={visitingTeam.TeamNumber}. Skipping game.");
+                    _logger.LogError("Invalid team numbers for game {GameId}: Home={HomeTeamNumber}, Visiting={VisitingTeamNumber}. Skipping game.", gameId, homeTeam.TeamNumber, visitingTeam.TeamNumber);
                     continue;
                 }
 
@@ -221,13 +224,13 @@ namespace Hoops.Data.Seeders
 
                 if (homeTeamValidation != homeTeam.TeamNumber)
                 {
-                    Console.WriteLine($"[ERROR] Home team mapping validation failed for game {gameId}: Expected {homeTeam.TeamNumber}, got {homeTeamValidation}. Skipping game.");
+                    _logger.LogError("Home team mapping validation failed for game {GameId}: Expected {Expected}, got {Actual}. Skipping game.", gameId, homeTeam.TeamNumber, homeTeamValidation);
                     continue;
                 }
 
                 if (visitingTeamValidation != visitingTeam.TeamNumber)
                 {
-                    Console.WriteLine($"[ERROR] Visiting team mapping validation failed for game {gameId}: Expected {visitingTeam.TeamNumber}, got {visitingTeamValidation}. Skipping game.");
+                    _logger.LogError("Visiting team mapping validation failed for game {GameId}: Expected {Expected}, got {Actual}. Skipping game.", gameId, visitingTeam.TeamNumber, visitingTeamValidation);
                     continue;
                 }
 
@@ -260,11 +263,11 @@ namespace Hoops.Data.Seeders
                 // Log scheduling info for debugging
                 if (gameCounter <= 10 || gameCounter % 20 == 0) // Log first 10 and every 20th game
                 {
-                    Console.WriteLine($"[DEBUG] Game #{gameCounter}: Team {homeTeam.TeamNumber} vs {visitingTeam.TeamNumber} on {gameDate:MMM dd} at {timeSlotInfo.timeString} (Location {selectedLocation.LocationNumber})");
+                    _logger.LogDebug("Game #{GameCounter}: Team {HomeTeam} vs {VisitingTeam} on {GameDate:MMM dd} at {TimeString} (Location {LocationNumber})", gameCounter, homeTeam.TeamNumber, visitingTeam.TeamNumber, gameDate, timeSlotInfo.timeString, selectedLocation.LocationNumber);
                 }
             }
 
-            Console.WriteLine($"[DEBUG] Scheduled {gameCounter} games for Division {division.DivisionDescription}");
+            _logger.LogDebug("Scheduled {GameCount} games for Division {DivisionDescription}", gameCounter, division.DivisionDescription);
         }
 
         private DateTime GetStartOfWeek(DateTime date)
@@ -661,7 +664,7 @@ namespace Hoops.Data.Seeders
                 });
             }
 
-            Console.WriteLine($"[DEBUG] Team mapping validation passed for {scheduleDivTeams.Count} teams in schedule {scheduleNumber}");
+            _logger.LogDebug("Team mapping validation passed for {TeamCount} teams in schedule {ScheduleNumber}", scheduleDivTeams.Count, scheduleNumber);
             return Task.FromResult(new ValidationResult { IsValid = true });
         }
 

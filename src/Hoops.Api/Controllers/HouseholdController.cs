@@ -53,18 +53,17 @@ namespace Hoops.Controllers
 
         // PUT: api/Household/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutHousehold(int id, Household household)
+        public IActionResult PutHousehold(int id, Household household)
         {
             if (id != household.HouseId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(household).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                var updatedHousehold = _repository.Update(household);
+                return Ok(updatedHousehold);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -77,8 +76,6 @@ namespace Hoops.Controllers
                     throw;
                 }
             }
-
-            return NoContent();
         }
 
         // POST: api/Household

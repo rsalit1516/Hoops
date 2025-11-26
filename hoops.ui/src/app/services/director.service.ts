@@ -14,6 +14,7 @@ import { Constants } from '@app/shared/constants';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { fromFetch } from 'rxjs/fetch';
 import { switchMap } from 'rxjs/operators';
+import { LoggerService } from './logger.service';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +23,7 @@ export class DirectorService {
   url = Constants.GET_DIRECTOR_URL;
   private dataService = inject(DataService);
   private http = inject(HttpClient);
+  private logger = inject(LoggerService);
   //  directors: Director[] = [];
   directorsSignal = signal<Director[] | null>(null);
   //directors = signal<Director[] | null>(null);
@@ -31,12 +33,12 @@ export class DirectorService {
 
   directors = computed(() => {
     const value = this.directorsResource.value();
-    console.log('Directors Resource Value:', value); // Log the value here
+    this.logger.debug('Directors Resource Value:', value);
     return value;
   });
   error = computed(() => {
     const errorValue = this.directorsResource.error() as HttpErrorResponse;
-    console.log('Directors Resource Error:', errorValue); // Log the error here
+    this.logger.error('Directors Resource Error:', errorValue);
     return errorValue;
   });
   // errorMessage = computed(() => setErrorMessage(this.error(), 'Vehicle'));
@@ -53,7 +55,7 @@ export class DirectorService {
         this.directorsSignal.update(() => directors);
       },
       (error) => {
-        console.error('Failed to load directors', error);
+        this.logger.error('Failed to load directors', error);
       }
     );
     this.directorsResource.reload();
@@ -62,7 +64,7 @@ export class DirectorService {
   update(item: Director) {
     return this.http.put<Director>(`${this.url}/${item.directorId}`, item).pipe(
       tap((data) => {
-        console.log('Updated Director: ' + JSON.stringify(data));
+        this.logger.info('Updated Director:', data);
         this.fetchDirectors(); // Refresh the list after update
       }),
       catchError(this.dataService.handleError<Director>('updateDirector'))
@@ -72,7 +74,7 @@ export class DirectorService {
   create(item: Director) {
     return this.http.post<Director>(`${this.url}`, item).pipe(
       tap((data) => {
-        console.log('Created Director: ' + JSON.stringify(data));
+        this.logger.info('Created Director:', data);
         this.fetchDirectors(); // Refresh the list after create
       }),
       catchError(this.dataService.handleError<Director>('createDirector'))
@@ -96,7 +98,7 @@ export class DirectorService {
 
   getDirectorVolunteers(): Observable<Director[]> {
     return this.http.get<Director[]>(`${this.url}/volunteers`).pipe(
-      tap(data => console.log('Director Volunteers: ' + JSON.stringify(data))),
+      tap(data => this.logger.debug('Director Volunteers:', data)),
       catchError(this.dataService.handleError<Director[]>('getDirectorVolunteers', []))
     );
   }
@@ -104,7 +106,7 @@ export class DirectorService {
   delete(id: number): Observable<Director> {
     return this.http.delete<Director>(`${this.url}/${id}`).pipe(
       tap((data) => {
-        console.log('Deleted Director: ' + JSON.stringify(data));
+        this.logger.info('Deleted Director:', data);
         this.fetchDirectors(); // Refresh the list after delete
       }),
       catchError(this.dataService.handleError<Director>('deleteDirector'))

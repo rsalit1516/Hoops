@@ -6,6 +6,7 @@ import * as fromGames from '../../state';
 import { PlayoffGameService } from '@app/services/playoff-game.service';
 import { PlayoffGame } from '@app/domain/playoffGame';
 import { SeasonService } from '@app/services/season.service';
+import { LoggerService } from '@app/services/logger.service';
 
 @Component({
   selector: 'csbc-playoffs-shell',
@@ -24,6 +25,7 @@ export class PlayoffsShell implements OnInit {
   readonly #gameService = inject(PlayoffGameService);
   readonly #seasonService = inject(SeasonService);
   readonly #store = inject(Store<fromGames.State>);
+  private readonly logger = inject(LoggerService);
   title = 'Playoff Schedule';
   dailyPlayoffSchedule!: Array<PlayoffGame[]>;
   playoffGames = computed(() => this.#gameService.divisionPlayoffGames());
@@ -38,11 +40,10 @@ export class PlayoffsShell implements OnInit {
     //     .select(fromGames.getDivisionPlayoffGames)
     //     .subscribe((playoffGames) => {
     // this.dailyPlayoffSchedule = playoffGames;
-    // console.log(playoffGames);
     this.dailyPlayoffSchedule = [];
     this.dailyPlayoffSchedule = this.#gameService
       .groupPlayoffGamesByDate(this.playoffGames()!);
-    console.log(this.dailyPlayoffSchedule);
+    this.logger.debug('Daily playoff schedule:', this.dailyPlayoffSchedule);
     // .subscribe(games => {
     //   this.dailyPlayoffSchedule.push(games);
     //   console.log(this.dailyPlayoffSchedule);

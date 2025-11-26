@@ -11,6 +11,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { FormsModule } from '@angular/forms';
 import { TeamService } from '@app/services/team.service';
+import { LoggerService } from '@app/services/logger.service';
 
 @Component({
   selector: 'csbc-admin-team-list',
@@ -32,6 +33,7 @@ import { TeamService } from '@app/services/team.service';
 export class AdminTeamList implements OnInit {
   readonly #teamService = inject(TeamService);
   private store = inject(Store<fromAdmin.State>);
+  private logger = inject(LoggerService);
   title = 'Team List';
   teams = computed(() => this.#teamService.divisionTeams);
   dataSource!: Team[];
@@ -53,7 +55,7 @@ export class AdminTeamList implements OnInit {
   }
 
   selectRow(row: any) {
-    console.log(row);
+    this.logger.debug('Team row selected:', row);
     this.#teamService.updateSelectedTeam(row);
     // this.store.dispatch(new adminActions.SetSelectedTeam(row));
   }

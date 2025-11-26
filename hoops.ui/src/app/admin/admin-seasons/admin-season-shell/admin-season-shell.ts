@@ -18,6 +18,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { LoggerService } from '@app/services/logger.service';
 
 
 // import { SeasonAddEdit } from '@app/admin/components/season-add-edit/season-add-edit';
@@ -45,6 +46,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 })
 export class AdminSeasonShell implements OnInit, AfterViewInit {
   private store = inject<Store<fromAdmin.State>>(Store);
+  private readonly logger = inject(LoggerService);
 
   private readonly seasonService = inject(SeasonService);
   pageTitle = 'Season Management';
@@ -58,14 +60,14 @@ export class AdminSeasonShell implements OnInit, AfterViewInit {
   constructor() {
     effect(() => {
       const record = this.seasonService.selectedSeason();
-      console.log('Selected record changed:', record);
+      this.logger.debug('Selected record changed:', record);
       if (record) {
-        console.log(`Record updated: ${record.description}`);
+        this.logger.debug(`Record updated: ${record.description}`);
       }
     });
     effect(() => {
       const saved = this.seasonService.seasonSaved();
-      console.log(saved);
+      this.logger.debug('Season saved:', saved);
       if (saved) {
         // this.isSidenavOpen = false;
         this.seasonService.seasonSaved.set(false);

@@ -23,6 +23,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { AdminGameService } from '@app/admin/admin-games/adminGame.service';
 import { AdminGamesState } from '@app/admin/admin-games/adminGamesState.service';
+import { LoggerService } from '@app/services/logger.service';
 
 @Component({
   selector: 'game-type-select',
@@ -51,6 +52,7 @@ import { AdminGamesState } from '@app/admin/admin-games/adminGamesState.service'
 export class GameTypeSelect implements OnInit {
   private gameService = inject(AdminGameService);
   state = inject(AdminGamesState);
+  private logger = inject(LoggerService);
   gameTypes = ['Regular Season', 'Playoffs'];
   gameTypeComponent = new UntypedFormControl();
   selected = this.gameTypes[0];
@@ -75,16 +77,15 @@ export class GameTypeSelect implements OnInit {
   }
 
   changeGameType(value: string) {
-    console.log(value);
+    this.logger.debug('Game type changed:', value);
   }
 
   compareFn(c1: string, c2: string): boolean {
-    console.log(c1);
-    console.log(c2);
+    this.logger.debug('Comparing game types:', c1, c2);
     return c1 && c2 ? c1 === c2 : c1 === c2;
   }
   onChange(gameType: string) {
-    console.log(gameType);
+    this.logger.info('Game type changed:', gameType);
     this.gameTypeChanged.emit(gameType);
     // this.gameService.setGameType(gameType);
   }

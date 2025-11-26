@@ -18,6 +18,7 @@ import { Observable } from 'rxjs';
 import { Constants } from '@app/shared/constants';
 import { DivisionService } from './division.service';
 import { SeasonService } from './season.service';
+import { LoggerService } from './logger.service';
 
 @Injectable({
   providedIn: 'root',
@@ -27,6 +28,7 @@ export class TeamService {
   private readonly dataService = inject(DataService);
   private readonly divisionService = inject(DivisionService);
   private readonly seasonService = inject(SeasonService);
+  private readonly logger = inject(LoggerService);
   seasonId: number | undefined; // = 2192; // TO DO make this is passed in!
   selectedSeason = computed(() => this.seasonService.selectedSeason);
   selectedDivision = computed(() => this.divisionService.selectedDivision());
@@ -113,7 +115,7 @@ export class TeamService {
     const sel = this.seasonService.selectedSeason();
     if (!sel || !sel.seasonId) return;
     const url = this.teamUrl + sel.seasonId;
-    console.log(url);
+    this.logger.debug('Fetching season teams from:', url);
     this.http.get<Team[]>(url).subscribe((teams) => {
       this.seasonTeams.set(teams ?? []);
       // Do not set selectedTeam here to avoid race conditions; handled in effect above
@@ -151,11 +153,11 @@ export class TeamService {
   //         );
   // }
   saveTeam(team: Team): void {
-    console.log(team);
+    this.logger.info('Saving team:', team);
 
     if (team.teamId === 0) {
       this.addTeam(team).subscribe((team) => {
-        console.log(team);
+        this.logger.info('Team created:', team);
         //this.store.dispatch(new adminActions.LoadSeasonTeams());
       });
     } else {
@@ -165,7 +167,7 @@ export class TeamService {
     }
   }
   addTeam(team: Team): Observable<Team | ArrayBuffer> {
-    console.log(this.dataService.teamPostUrl);
+    this.logger.debug('Adding team to URL:', this.dataService.teamPostUrl);
     return this.http
       .post<Team>(
         this.dataService.teamPostUrl,

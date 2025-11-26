@@ -82,7 +82,7 @@ export class DirectorList extends BaseList<DirectorListItem> {
   }
 
   onRowClick(item: DirectorListItem): void {
-    console.log('Row clicked:', item);
+    // this.logger.debug('Director row clicked:', item);
     this.router.navigate([item.directorId], { relativeTo: this.route });
   }
 }

@@ -120,7 +120,6 @@ export class UserActivityService {
       };
 
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(sessionData));
-      this.logger.info('💾 User session saved to localStorage');
     } catch (error) {
       this.logger.error('❌ Failed to save user session:', error);
     }

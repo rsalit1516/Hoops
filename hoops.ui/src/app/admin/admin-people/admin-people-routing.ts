@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { PageNotFound } from '@app/app.not-found';
 import { AuthGuard } from '@app/auth/auth.guard';
 import { AdminPeopleShell } from './admin-people-shell/admin-people-shell';
-import { PeopleSearchResults } from './people-search-results/people-search-results';
 import { AdminPeopleDetail } from './admin-people-detail/admin-people-detail';
 import { PeopleList } from './people-list/people-list';
 

@@ -5,6 +5,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { FeatureFlagService } from '@app/shared/services/feature-flags';
+import { LoggerService } from '@app/services/logger.service';
 
 @Component({
   selector: 'app-admin-shell-sidebar',
@@ -22,6 +23,7 @@ import { FeatureFlagService } from '@app/shared/services/feature-flags';
 export class AdminShellSidebar {
   readonly #featureFlagService = inject(FeatureFlagService);
   readonly #router = inject(Router);
+  readonly #logger = inject(LoggerService);
   showDirectors = this.#featureFlagService.isEnabled('adminDirectors');
   showHouseholds = this.#featureFlagService.isEnabled('adminHouseholds');
   showPeople = this.#featureFlagService.isEnabled('adminPeople');
@@ -63,7 +65,7 @@ export class AdminShellSidebar {
   }
 
   navigate(item: nav) {
-    console.log('Navigating to:', item.route);
+    this.#logger.info('Navigating to:', item.route);
     this.seasonSetupItems.forEach(i => {
       if (i.name === item.name) {
         i.isSelected = true;

@@ -16,6 +16,7 @@ import { Router } from '@angular/router';
 import { SeasonService } from '@app/services/season.service';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { LoggerService } from '@app/services/logger.service';
 
 @Component({
   selector: 'csbc-admin-season-list',
@@ -37,6 +38,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 export class AdminSeasonList implements OnInit, AfterViewInit {
   readonly #seasonService = inject(SeasonService);
   readonly #router = inject(Router);
+  private readonly logger = inject(LoggerService);
   readonly paginator = viewChild<MatPaginator>('seasonPaginator');
   readonly sort = viewChild(MatSort);
   showFirstLastButtons = true;
@@ -65,7 +67,7 @@ export class AdminSeasonList implements OnInit, AfterViewInit {
   }
   edit(row: Season) {
     this.#seasonService.updateSelectedSeason(row);
-    console.log(row);
+    this.logger.debug('Editing season:', row);
     // this.#store.dispatch(new adminActions.SetSelectedSeason(row));
     this.#router.navigate(['/admin/seasons/detail']);
   }

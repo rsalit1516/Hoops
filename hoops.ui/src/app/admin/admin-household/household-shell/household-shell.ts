@@ -10,6 +10,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
+import { LoggerService } from '@app/services/logger.service';
 
 @Component({
   selector: 'csbc-household-shell',
@@ -28,6 +29,7 @@ export class HouseholdShell {
   title = 'Household Management';
   isSidenavOpen = false;
   householdService = inject(HouseholdService);
+  logger = inject(LoggerService);
   selectedRecord = this.householdService.selectedRecordSignal();
 
   private searchCriteria = signal<householdSearchCriteria | null>(null); // Signal for search criteria
@@ -37,10 +39,10 @@ export class HouseholdShell {
   }
 
   onSearch (criteria: householdSearchCriteria) {
-    console.log(criteria);
+    this.logger.info('Search criteria:', criteria);
     this.searchCriteria.set(criteria);
     this.householdService.getResults(criteria).subscribe(data => {
-      // console.log('Results', data);
+      this.logger.debug('Search results:', data);
       this.results.update(() => data);
     });
   }

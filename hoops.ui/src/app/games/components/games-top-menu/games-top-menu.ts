@@ -30,6 +30,7 @@ import { GameFilter } from '../game-filter/game-filter';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { PlayoffGameService } from '@app/services/playoff-game.service';
+import { LoggerService } from '@app/services/logger.service';
 
 @Component({
   selector: 'csbc-games-top-menu',
@@ -47,6 +48,7 @@ export class GamesTopMenu implements OnInit, OnDestroy {
   private routeSub?: Subscription;
   private router = inject(Router);
   private store = inject(Store<fromGames.State>);
+  private logger = inject(LoggerService);
 
   divisions = input.required<Division[]>();
   // Team list now comes from TeamService; no direct input needed here.
@@ -122,7 +124,7 @@ export class GamesTopMenu implements OnInit, OnDestroy {
   }
 
   onTabChanged(event: MatTabChangeEvent): void {
-    console.log(event.tab.textLabel);
+    this.logger.debug('Tab changed to:', event.tab.textLabel);
     switch (event.tab.textLabel) {
       case 'Schedule': // index of the tab
         // this is our stub tab for link

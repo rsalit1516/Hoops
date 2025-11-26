@@ -18,6 +18,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { Director } from '@app/domain/director';
 import { DirectorService } from '@app/services/director.service';
+import { LoggerService } from '@app/services/logger.service';
 
 // Interface for form field definitions
 interface FormField {
@@ -48,6 +49,7 @@ interface FormField {
 export class DirectorForm implements OnInit, OnChanges {
   private fb = inject(FormBuilder);
   private directorService = inject(DirectorService);
+  private logger = inject(LoggerService);
 
   @Input() director?: Director | null;
   @Output() save = new EventEmitter<Director>();
@@ -86,7 +88,7 @@ export class DirectorForm implements OnInit, OnChanges {
         this.volunteers.set(volunteers);
       },
       error: (error) => {
-        console.error('Failed to load director volunteers', error);
+        this.logger.error('Failed to load director volunteers', error);
       }
     });
 
@@ -112,21 +114,20 @@ export class DirectorForm implements OnInit, OnChanges {
   }
 
   onSubmit() {
-    console.log('DirectorForm.onSubmit called');
-    console.log('Form valid:', this.form.valid);
-    console.log('Form value:', this.form.value);
-    console.log('Form errors:', this.form.errors);
+    this.logger.debug('DirectorForm.onSubmit called');
+    this.logger.debug('Form valid:', this.form.valid);
+    this.logger.debug('Form value:', this.form.value);
 
     if (this.form.valid) {
-      console.log('Emitting save event with:', this.form.value);
+      this.logger.info('Emitting save event with:', this.form.value);
       this.save.emit(this.form.value as Director);
     } else {
-      console.error('Form is invalid!', this.form.value);
+      this.logger.error('Form is invalid!', this.form.value);
       // Log which fields are invalid
       Object.keys(this.form.controls).forEach(key => {
         const control = this.form.get(key);
         if (control && control.invalid) {
-          console.error(`Field '${key}' is invalid:`, control.errors);
+          this.logger.error(`Field '${key}' is invalid:`, control.errors);
         }
       });
     }

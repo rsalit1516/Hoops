@@ -23,6 +23,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { AuthService } from '@app/services/auth.service';
 import { GameService } from '@app/services/game.service';
+import { LoggerService } from '@app/services/logger.service';
 
 @Component({
   selector: 'csbc-daily-schedule',
@@ -33,6 +34,7 @@ import { GameService } from '@app/services/game.service';
 export class DailySchedule implements OnInit {
   private store = inject<Store<fromGames.State>>(Store);
   dialog = inject(MatDialog);
+  private logger = inject(LoggerService);
 
   readonly games = input.required<RegularGame[]>();
   // @Input() canEdit!: boolean;
@@ -111,7 +113,7 @@ export class DailySchedule implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
+      this.logger.debug('Game score dialog closed');
     });
   }
 }

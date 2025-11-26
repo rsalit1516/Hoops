@@ -5,6 +5,7 @@ import { WebContent } from '../../../domain/webContent';
 import { NgClass } from '@angular/common';
 import { Announcement } from '../announcement/announcement';
 import { map } from 'rxjs';
+import { LoggerService } from '@app/services/logger.service';
 
 @Component({
   selector: 'csbc-announcements',
@@ -16,6 +17,7 @@ import { map } from 'rxjs';
 export class CsbcAnnouncements implements OnInit {
 
   readonly contentService = inject(ContentService);
+  private readonly logger = inject(LoggerService);
   // readonly #store = inject(Store<fromHome.State>);
 
   activeWebContent = computed(() => this.contentService.activeWebContent ?? [] as WebContent[]);
@@ -38,25 +40,16 @@ export class CsbcAnnouncements implements OnInit {
 
   constructor () {
     effect(() => {
-      console.log(this.contentService.activeWebContent);
-      // console.log(test);
-      // this.content.update(() => test.value() as WebContent[]);
-      // console.log(test.value());
-      // console.log(test.value()?.next);
+      this.logger.debug('Active web content:', this.contentService.activeWebContent);
       this.webContent.update(() => this.contentService.contents());
-      console.log(this.webContent());
+      this.logger.debug('Web content updated:', this.webContent());
 
     });
   }
   ngOnInit (): void {
     this.getActiveContent();
     this.contentService.fetchActiveContents();
-    // this.contentService.getActiveContent()
-    //   .subscribe((data) => {
-    //     console.log(data);
-    //     this.webContent.update(() => data);
-    //   });
-    console.log(this.contents);
+    this.logger.debug('Contents:', this.contents);
   }
   sortByContentSequence (a: { contentSequence: number; }, b: { contentSequence: number; }) {
     if (a.contentSequence < b.contentSequence)

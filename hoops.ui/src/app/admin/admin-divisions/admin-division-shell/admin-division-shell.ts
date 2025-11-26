@@ -15,6 +15,7 @@ import { Router, RouterOutlet } from '@angular/router';
 
 import { Division } from '@app/domain/division';
 import { DivisionService } from '@app/services/division.service';
+import { LoggerService } from '@app/services/logger.service';
 
 import { ShellTitle } from "../../../shared/components/shell-title/shell-title";
 
@@ -41,6 +42,7 @@ import { ShellTitle } from "../../../shared/components/shell-title/shell-title";
 })
 export class AdminDivisionShell implements OnInit {
   private store = inject<Store<fromAdmin.State>>(Store);
+  private logger = inject(LoggerService);
 
   season = input(new Season());
   router = inject(Router);
@@ -56,7 +58,7 @@ export class AdminDivisionShell implements OnInit {
     //this.store.dispatch(new adminActions.LoadLocations());
   }
   addDivision () {
-    console.log('Add Division');
+    this.logger.info('Adding new division');
     let division = new Division();
     this._divisionService.updateSelectedDivision(division);
     // this.store.dispatch(new adminActions.SetSelectedDivision(division));

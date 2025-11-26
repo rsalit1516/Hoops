@@ -6,6 +6,7 @@ using Hoops.Core.Interface;
 using Hoops.Infrastructure.Data;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Hoops.Data.Seeders
 {
@@ -15,31 +16,33 @@ namespace Hoops.Data.Seeders
         private readonly IScheduleDivTeamsRepository _scheduleDivTeamsRepo;
         private readonly ISeasonRepository _seasonRepo;
         private readonly IDivisionRepository _divisionRepo;
+        private readonly ILogger<ScheduleDivTeamsSeeder> _logger;
 
         public ScheduleDivTeamsSeeder(
             IScheduleDivTeamsRepository scheduleDivTeamsRepo,
             ISeasonRepository seasonRepo,
             IDivisionRepository divisionRepo,
-            hoopsContext context)
+            hoopsContext context,
+            ILogger<ScheduleDivTeamsSeeder> logger)
         {
             this.context = context;
             _scheduleDivTeamsRepo = scheduleDivTeamsRepo;
             _seasonRepo = seasonRepo;
             _divisionRepo = divisionRepo;
+            _logger = logger;
         }
 
         public async Task DeleteAllAsync()
         {
             try
             {
-                Console.WriteLine("[DEBUG] Attempting to delete all schedule div teams using raw SQL");
+                _logger.LogDebug("Attempting to delete all schedule div teams using raw SQL");
                 var deletedCount = await context.Database.ExecuteSqlRawAsync("DELETE FROM ScheduleDivTeams");
-                Console.WriteLine($"[DEBUG] Successfully deleted schedule div teams using raw SQL");
+                _logger.LogDebug("Successfully deleted schedule div teams using raw SQL");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[ERROR] Error deleting schedule div teams: {ex.Message}");
-                Console.WriteLine($"[ERROR] Stack trace: {ex.StackTrace}");
+                _logger.LogError(ex, "Error deleting schedule div teams: {Message}", ex.Message);
                 throw;
             }
         }
@@ -48,13 +51,13 @@ namespace Hoops.Data.Seeders
         {
             try
             {
-                Console.WriteLine("[DEBUG] Starting ScheduleDivTeams seeding");
+                _logger.LogDebug("Starting ScheduleDivTeams seeding");
 
                 var seasons = await _seasonRepo.GetAllAsync();
 
                 foreach (var season in seasons)
                 {
-                    Console.WriteLine($"[DEBUG] Seeding ScheduleDivTeams for Season: {season.Description}");
+                    _logger.LogDebug("Seeding ScheduleDivTeams for Season: {SeasonDescription}", season.Description);
 
                     var divisions = await context.Divisions
                         .Where(d => d.SeasonId == season.SeasonId)
@@ -74,7 +77,7 @@ namespace Hoops.Data.Seeders
                         // var numberOfTeams = random.Next(4, 15);
                         // changed to get what was created - assumes teams is done first.
                         var numberOfTeams = context.Teams.Count(t => t.DivisionId == division.DivisionId);
-                        Console.WriteLine($"[DEBUG] Creating {numberOfTeams} teams for External Schedule #{externalScheduleNumber} (Division: {division.DivisionDescription})");
+                        _logger.LogDebug("Creating {TeamCount} teams for External Schedule #{ScheduleNumber} (Division: {DivisionDescription})", numberOfTeams, externalScheduleNumber, division.DivisionDescription);
 
                         // Simulate external program logic:
                         // - ScheduleNumber: External program's schedule grouping (1, 2, 3, ...)
@@ -98,7 +101,7 @@ namespace Hoops.Data.Seeders
                             await _scheduleDivTeamsRepo.InsertAsync(scheduleDivTeam);
 
                             // Debug logging for team mapping
-                            Console.WriteLine($"[DEBUG] Created ScheduleDivTeam: SeasonId={season.SeasonId}, ScheduleNumber={scheduleNumber}, ScheduleTeamNumber={teamIndex}, TeamNumber={seasonTeamNumber}");
+                            _logger.LogDebug("Created ScheduleDivTeam: SeasonId={SeasonId}, ScheduleNumber={ScheduleNumber}, ScheduleTeamNumber={ScheduleTeamNumber}, TeamNumber={TeamNumber}", season.SeasonId, scheduleNumber, teamIndex, seasonTeamNumber);
 
                             seasonTeamNumber++; // Increment for next team in season
                         }
@@ -107,18 +110,18 @@ namespace Hoops.Data.Seeders
                     }
 
                     await context.SaveChangesAsync();
-                    Console.WriteLine($"[DEBUG] Completed ScheduleDivTeams seeding for Season: {season.Description}");
+                    _logger.LogDebug("Completed ScheduleDivTeams seeding for Season: {SeasonDescription}", season.Description);
                 }
 
-                Console.WriteLine("[DEBUG] ScheduleDivTeams seeding completed successfully");
+                _logger.LogDebug("ScheduleDivTeams seeding completed successfully");
 
                 // Log summary of team mappings created
                 var teamMappingsCount = await _scheduleDivTeamsRepo.GetAllAsync();
-                Console.WriteLine($"[SUMMARY] Created {teamMappingsCount.Count()} ScheduleDivTeam mappings");
+                _logger.LogInformation("Created {Count} ScheduleDivTeam mappings", teamMappingsCount.Count());
 
                 foreach (var mapping in teamMappingsCount.OrderBy(x => x.SeasonId).ThenBy(x => x.ScheduleNumber).ThenBy(x => x.ScheduleTeamNumber))
                 {
-                    Console.WriteLine($"  SeasonId={mapping.SeasonId}, Schedule={mapping.ScheduleNumber}, ScheduleTeam={mapping.ScheduleTeamNumber}, TeamNumber={mapping.TeamNumber}");
+                    _logger.LogDebug("SeasonId={SeasonId}, Schedule={ScheduleNumber}, ScheduleTeam={ScheduleTeamNumber}, TeamNumber={TeamNumber}", mapping.SeasonId, mapping.ScheduleNumber, mapping.ScheduleTeamNumber, mapping.TeamNumber);
                 }
 
                 // Validate the mappings we just created
@@ -126,15 +129,14 @@ namespace Hoops.Data.Seeders
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[ERROR] Error seeding ScheduleDivTeams: {ex.Message}");
-                Console.WriteLine($"[ERROR] Stack trace: {ex.StackTrace}");
+                _logger.LogError(ex, "Error seeding ScheduleDivTeams: {Message}", ex.Message);
                 throw;
             }
         }
 
         private Task ValidateTeamMappings(IEnumerable<ScheduleDivTeam> teamMappings)
         {
-            Console.WriteLine("[VALIDATION] Starting ScheduleDivTeam validation...");
+            _logger.LogInformation("Starting ScheduleDivTeam validation...");
 
             var mappingsList = teamMappings.ToList();
             var validationErrors = new List<string>();
@@ -177,16 +179,16 @@ namespace Hoops.Data.Seeders
 
             if (validationErrors.Any())
             {
-                Console.WriteLine($"[VALIDATION ERROR] Found {validationErrors.Count} validation errors:");
+                _logger.LogError("Found {ErrorCount} validation errors", validationErrors.Count);
                 foreach (var error in validationErrors)
                 {
-                    Console.WriteLine($"  - {error}");
+                    _logger.LogError("  - {Error}", error);
                 }
                 throw new InvalidOperationException($"ScheduleDivTeam validation failed with {validationErrors.Count} errors");
             }
             else
             {
-                Console.WriteLine("[VALIDATION SUCCESS] All ScheduleDivTeam mappings are valid");
+                _logger.LogInformation("All ScheduleDivTeam mappings are valid");
             }
 
             return Task.CompletedTask;

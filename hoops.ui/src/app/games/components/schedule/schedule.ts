@@ -20,6 +20,7 @@ import { DailySchedule } from '../daily-schedule/daily-schedule';
 
 import { AuthService } from '@app/services/auth.service';
 import { DivisionService } from '@app/services/division.service';
+import { LoggerService } from '@app/services/logger.service';
 
 @Component({
   selector: 'csbc-schedule',
@@ -36,6 +37,7 @@ import { DivisionService } from '@app/services/division.service';
 export class Schedule implements OnInit {
   private store = inject<Store<fromGames.State>>(Store);
   dialog = inject(MatDialog);
+  private logger = inject(LoggerService);
 
   private gameService = inject(GameService);
   private divisionService = inject(DivisionService);
@@ -92,7 +94,7 @@ export class Schedule implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
+      this.logger.debug('Game score dialog closed');
     });
   }
 }

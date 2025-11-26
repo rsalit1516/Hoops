@@ -2,6 +2,7 @@ import { Component, OnInit, Input, input, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
 import { AuthService } from '@app/services/auth.service';
+import { LoggerService } from '@app/services/logger.service';
 
 import * as fromGames from '../../state';
 import * as fromUser from '../../../user/state';
@@ -31,6 +32,7 @@ export class Scores implements OnInit {
   private store = inject<Store<fromGames.State>>(Store);
   private userStore = inject<Store<fromUser.State>>(Store);
   dialog = inject(MatDialog);
+  private logger = inject(LoggerService);
 
   readonly authService = inject(AuthService);
   dataSource!: MatTableDataSource<RegularGame>;
@@ -75,7 +77,7 @@ export class Scores implements OnInit {
   ngOnInit() {
     this.userStore.pipe(select(fromUser.getCurrentUser)).subscribe((user) => {
       this.user = user;
-      console.log(this.user);
+      this.logger.debug('Current user:', this.user);
     });
     this.store
       .pipe(select(fromGames.getCurrentDivision))

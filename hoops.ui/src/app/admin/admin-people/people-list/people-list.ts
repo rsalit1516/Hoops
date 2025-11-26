@@ -17,6 +17,9 @@ import { ListPageShellComponent } from '@app/admin/shared/list-page-shell/ListPa
 import { LoggerService } from '@app/services/logger.service';
 import { HouseholdService } from '@app/services/household.service';
 
+// Type for Person with id property for BaseList compatibility
+type PersonWithId = Person & { id: number };
+
 @Component({
   selector: 'csbc-people-list',
   imports: [
@@ -30,7 +33,7 @@ import { HouseholdService } from '@app/services/household.service';
   templateUrl: './people-list.html',
   styleUrls: ['./people-list.scss'],
 })
-export class PeopleList extends BaseList<PersonListItem> implements OnInit {
+export class PeopleList extends BaseList<PersonWithId> implements OnInit {
   private peopleService = inject(PeopleService);
   private householdService = inject(HouseholdService);
   private logger = inject(LoggerService);
@@ -39,7 +42,7 @@ export class PeopleList extends BaseList<PersonListItem> implements OnInit {
     return '/admin/people';
   }
 
-  columns: TableColumn<PersonListItem>[] = [
+  columns: TableColumn<PersonWithId>[] = [
     { key: 'houseId', header: 'Household', field: 'houseId' },
     { key: 'lastName', header: 'Last Name', field: 'lastName' },
     { key: 'firstName', header: 'First Name', field: 'firstName' },
@@ -95,23 +98,16 @@ export class PeopleList extends BaseList<PersonListItem> implements OnInit {
     }
   }
 
-  // Computed signal to convert People to PersonListItems
-  people = computed(() => {
+  // Computed signal to get people from service
+  people = computed((): PersonWithId[] => {
     const peopleData = this.peopleService.results();
     if (!peopleData) return [];
 
-    return peopleData.map(
-      (person) =>
-        ({
-          id: person.personId, // For BaseList compatibility
-          personId: person.personId,
-          houseId: person.houseId,
-          lastName: person.lastName,
-          firstName: person.firstName,
-          birthDate: person.birthDate,
-          gender: person.gender,
-        } as PersonListItem)
-    );
+    // Map to ensure 'id' property exists for BaseList compatibility
+    return peopleData.map(person => ({
+      ...person,
+      id: person.personId
+    } as PersonWithId));
   });
 
   // Computed signal for filtered people
@@ -140,19 +136,11 @@ export class PeopleList extends BaseList<PersonListItem> implements OnInit {
     });
   }
 
-  onRowClick(item: PersonListItem): void {
-    this.logger.info('Row clicked:', item);
-    // Convert back to full Person for service
-    const person = new Person();
-    person.personId = item.personId;
-    person.houseId = item.houseId;
-    person.lastName = item.lastName;
-    person.firstName = item.firstName;
-    person.birthDate = item.birthDate;
-    person.gender = item.gender;
-
+  onRowClick(person: PersonWithId): void {
+    this.logger.info('Row clicked:', person);
+    // Pass the full Person object to the service (PersonWithId is a Person with extra id property)
     this.peopleService.updateSelectedPerson(person);
-    this.householdService.selectedHouseholdByHouseId(item.houseId);
-    this.router.navigate(['detail'], { relativeTo: this.route });
+    this.householdService.selectedHouseholdByHouseId(person.houseId);
+    this.router.navigate(['..', 'detail'], { relativeTo: this.route });
   }
 }

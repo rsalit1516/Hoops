@@ -126,16 +126,6 @@ export class AdminGameDetail implements OnInit {
   }
   scheduleGamesId = this.selectedRecord()?.scheduleGamesId ?? 0;
   gameTime = computed(() => this.getTime(this.selectedRecord()?.gameTime));
-
-  // console.log(time);
-  // this.gameTime = time;new Date(this.selectedRecord()?.gameTime ?? ''));
-  //     gameTime.toLocaleTimeString([], {
-  //       hour: '2-digit',
-  //       minute: '2-digit',
-  //     }) ?? '';
-  // console.log(time);
-  // this.gameTime = time;
-
   divisionTeams = this.#teamService.divisionTeams;
   scheduleTeams = signal<ScheduleTeam[]>([]);
   locations = this.locationService.locations();

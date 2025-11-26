@@ -7,6 +7,7 @@ using Hoops.Core.Interface;
 using Hoops.Infrastructure.Repository;
 using Hoops.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Hoops.Data.Seeders
 {
@@ -15,35 +16,36 @@ namespace Hoops.Data.Seeders
         public hoopsContext context { get; private set; }
         private readonly IHouseholdRepository _householdRepo;
         private readonly IPersonRepository _personRepo;
+        private readonly ILogger<HouseholdAndPeopleSeeder> _logger;
 
-        public HouseholdAndPeopleSeeder(IHouseholdRepository householdRepo, IPersonRepository personRep, hoopsContext context)
+        public HouseholdAndPeopleSeeder(IHouseholdRepository householdRepo, IPersonRepository personRep, hoopsContext context, ILogger<HouseholdAndPeopleSeeder> logger)
         {
             this.context = context;
             _householdRepo = householdRepo;
             _personRepo = personRep;
+            _logger = logger;
         }
         public async Task DeleteAllAsync()
         {
             try
             {
-                Console.WriteLine("[DEBUG] Starting DeleteAllAsync() with raw SQL");
-                
+                _logger.LogDebug("Starting DeleteAllAsync() with raw SQL");
+
                 // Delete People first (they have foreign key to Households)
-                Console.WriteLine("[DEBUG] Attempting to delete all people using raw SQL");
+                _logger.LogDebug("Attempting to delete all people using raw SQL");
                 var deletedPeopleCount = await context.Database.ExecuteSqlRawAsync("DELETE FROM People");
-                Console.WriteLine($"[DEBUG] Successfully deleted people using raw SQL");
+                _logger.LogDebug("Successfully deleted people using raw SQL");
 
                 // Then delete Households
-                Console.WriteLine("[DEBUG] Attempting to delete all households using raw SQL");
+                _logger.LogDebug("Attempting to delete all households using raw SQL");
                 var deletedHouseholdsCount = await context.Database.ExecuteSqlRawAsync("DELETE FROM Households");
-                Console.WriteLine($"[DEBUG] Successfully deleted households using raw SQL");
+                _logger.LogDebug("Successfully deleted households using raw SQL");
 
-                Console.WriteLine("[DEBUG] Successfully completed DeleteAllAsync()");
+                _logger.LogDebug("Successfully completed DeleteAllAsync()");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[ERROR] Error deleting households and people: {ex.Message}");
-                Console.WriteLine($"[ERROR] Stack trace: {ex.StackTrace}");
+                _logger.LogError(ex, "Error deleting households and people: {Message}", ex.Message);
                 throw;
             }
         }
@@ -150,7 +152,7 @@ namespace Hoops.Data.Seeders
             }
 
             await context.SaveChangesAsync();
-            Console.WriteLine($"[DEBUG] Created {parentAdNames.Length} parent/AD records for user accounts");
+            _logger.LogDebug("Created {Count} parent/AD records for user accounts", parentAdNames.Length);
         }
         public static int? CalculateGrade(DateTime birthDate, DateTime? asOf = null)
         {

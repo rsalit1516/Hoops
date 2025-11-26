@@ -15,6 +15,7 @@ import { WebContent } from '../../domain/webContent';
 import { Observable, of } from 'rxjs';
 import { Constants } from '@app/shared/constants';
 import { DateTime } from 'luxon';
+import { LoggerService } from '@app/services/logger.service';
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +24,7 @@ export class ContentService {
   private readonly http = inject(HttpClient);
   readonly data = inject(DataService);
   readonly store = inject(Store<fromContent.State>);
+  private readonly logger = inject(LoggerService);
 
   // private _selectedContent: any;
   selectedContent$!: Observable<any>;
@@ -56,15 +58,15 @@ export class ContentService {
   }
   fetchActiveContents() {
     this.getActiveContent().subscribe((data) => {
-      console.log('fetchActiveContents: ' + JSON.stringify(data));
+      this.logger.debug('Fetched active contents:', data);
       this.updateActiveWebContent(data);
-      console.log(this._activeWebContent());
+      this.logger.debug('Active web content updated:', this._activeWebContent());
     });
   }
 
   getAllContents(): Observable<WebContent[]> {
     let filteredContent: WebContent[] = [];
-    console.log(filteredContent);
+    this.logger.debug('Getting all contents');
     this.store.select(fromContent.getContentList).subscribe((contents) => {
       if (contents !== undefined) {
         for (let i = 0; i < contents.length; i++) {
@@ -72,12 +74,12 @@ export class ContentService {
         }
       }
     });
-    console.log(filteredContent);
+    this.logger.debug('Filtered content:', filteredContent);
     return of(filteredContent);
   }
 
   getContent(webContentId: number) {
-    console.log(webContentId);
+    this.logger.debug('Getting content with ID:', webContentId);
     if (webContentId === 0) {
       return of(this.initializeContent());
     }
@@ -85,7 +87,7 @@ export class ContentService {
       tap((data) => {
         // this.store.dispatch(new contentActions.SetAllContent());
         // this.store.dispatch(new contentActions.SetActiveContent());
-        console.log('getContent: ' + JSON.stringify(data));
+        this.logger.debug('getContent result:', data);
       }),
       catchError(this.data.handleError('getContent', []))
     );
@@ -98,7 +100,7 @@ export class ContentService {
     () => this.webContentResource.value() as WebContent[]
   );
   deleteContent(webContentId: number | null) {
-    console.log('Deleting content');
+    this.logger.info('Deleting content with ID:', webContentId);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     // To Do: add this back
     let options = { params: new HttpParams() };
@@ -140,9 +142,8 @@ export class ContentService {
   }
 
   private createContent(content: WebContent): Observable<void | WebContent> {
-    console.log(content);
+    this.logger.info('Creating content:', content);
     return this.data.post(this.data.postContentUrl, content).pipe(
-      // tap((data) => console.log('createContent: ' + JSON.stringify(data))),
       map((data) => this.store.dispatch(new contentActions.LoadAdminContent())),
       catchError(this.data.handleError('createContent', content))
     );
@@ -150,15 +151,14 @@ export class ContentService {
 
   private updateContent(content: WebContent): Observable<WebContent> {
     let url = Constants.PUT_CONTENT_URL + content.webContentId;
-    console.log(url);
+    this.logger.debug('Updating content at URL:', url);
     // const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.put<WebContent>(url, content);
   }
 
   private extractData(response: Response) {
     let body = ''; // response.json();
-    console.log(response);
-    // console.log(body);
+    this.logger.debug('Extracting data from response:', response);
     return body || {};
   }
 

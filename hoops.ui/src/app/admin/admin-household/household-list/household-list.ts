@@ -114,6 +114,11 @@ export class HouseholdList extends BaseList<HouseholdListItem> implements OnInit
     this.householdService.executeSearch();
   }
 
+  // Override navigateToNew to handle nested routing
+  override navigateToNew(): void {
+    this.router.navigate(['..', 'new'], { relativeTo: this.route });
+  }
+
   onRowClick(item: HouseholdListItem): void {
     this.logger.info('Row clicked:', item);
     // Convert back to full Household for service
@@ -125,6 +130,6 @@ export class HouseholdList extends BaseList<HouseholdListItem> implements OnInit
     household.email = item.email;
 
     this.householdService.updateSelectedHousehold(household);
-    this.router.navigate(['detail'], { relativeTo: this.route });
+    this.router.navigate(['..', 'detail'], { relativeTo: this.route });
   }
 }

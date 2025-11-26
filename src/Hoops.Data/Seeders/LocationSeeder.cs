@@ -6,6 +6,7 @@ using Hoops.Core.Interface;
 using Hoops.Infrastructure.Repository;
 using Hoops.Infrastructure.Data;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace Hoops.Data.Seeders
 {
@@ -13,20 +14,22 @@ namespace Hoops.Data.Seeders
     {
         public hoopsContext context { get; private set; }
         private readonly ILocationRepository _locationRepo;
+        private readonly ILogger<LocationSeeder> _logger;
 
-        public LocationSeeder(ILocationRepository locationRepo, hoopsContext context)
+        public LocationSeeder(ILocationRepository locationRepo, hoopsContext context, ILogger<LocationSeeder> logger)
         {
             this.context = context;
             _locationRepo = locationRepo;
+            _logger = logger;
         }
 
         public async Task DeleteAllAsync()
         {
             var records = await _locationRepo.GetAllAsync();
-            Console.WriteLine($"[DEBUG] Found {records.Count()} locations to delete");
+            _logger.LogDebug("Found {Count} locations to delete", records.Count());
             foreach (var record in records)
             {
-                Console.WriteLine($"[DEBUG] Attempting to delete Person ID: {record.LocationNumber}, Name: {record.LocationName}");
+                _logger.LogDebug("Attempting to delete Location ID: {LocationNumber}, Name: {LocationName}", record.LocationNumber, record.LocationName);
                 await _locationRepo.DeleteAsync(record.LocationNumber);
             }
         }

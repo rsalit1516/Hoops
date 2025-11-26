@@ -11,6 +11,7 @@ import * as fromAdmin from '../../state';
 import * as adminActions from '../../state/admin.actions';
 import { Season } from '@app/domain/season';
 import { SeasonService } from '@app/services/season.service';
+import { LoggerService } from '@app/services/logger.service';
 
 @Component({
   selector: 'csbc-seasons-toolbar',
@@ -36,6 +37,7 @@ export class SeasonsToolbar implements OnInit {
   private router = inject(Router);
   private fb = inject(UntypedFormBuilder);
   private store = inject<Store<fromAdmin.State>>(Store);
+  private logger = inject(LoggerService);
 
   readonly #seasonService = inject(SeasonService);
   checked = true;
@@ -58,7 +60,7 @@ export class SeasonsToolbar implements OnInit {
     season.seasonId = 0;
     this.#seasonService.updateSelectedSeason(season);
 
-    console.log(season);
+    this.logger.info('Adding new season:', season);
 
     //this.store.dispatch(new adminActions.SetSelectedSeason(season));
     this.router.navigate(['/admin/seasons/detail']);
