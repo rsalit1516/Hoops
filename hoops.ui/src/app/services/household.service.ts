@@ -152,20 +152,29 @@ export class HouseholdService {
     // add additional criteria as needed
     // https://localhost:5001/api/Household/search?name=salit&email=richard.salit%40gmail.com
   }
-  saveHousehold(household: Household): void {
+  saveHousehold(household: Household): Observable<Household> {
+    // Ensure CompanyId is set
+    if (!household.companyId) {
+      household.companyId = 1;
+    }
+
     if (household.houseId !== 0) {
       const url = Constants.SAVE_HOUSEHOLD_URL + household.houseId;
-      console.log('URL: ', url);
-      this.http.put<Household>(url, household).subscribe((response) => {
-        console.log('Household updated:', response);
-      });
+      console.log('Updating household at URL: ', url);
+      return this.http.put<Household>(url, household).pipe(
+        tap((response) => {
+          console.log('Household updated:', response);
+        })
+      );
     } else {
-      console.log('New household');
-      this.http
+      console.log('Creating new household');
+      return this.http
         .post<Household>(Constants.SAVE_HOUSEHOLD_URL, household)
-        .subscribe((response) => {
-          console.log('Household created:', response);
-        });
+        .pipe(
+          tap((response) => {
+            console.log('Household created:', response);
+          })
+        );
     }
   }
   newHousehold() {

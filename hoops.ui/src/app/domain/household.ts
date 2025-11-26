@@ -8,6 +8,7 @@ export class Household {
   public zip?: string;
   public email?: string;
   public phone?: string;
+  public companyId?: number = 1;
 }
 
 // Interface for household list display

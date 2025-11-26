@@ -167,10 +167,20 @@ export class HouseholdDetail implements OnInit, OnChanges {
           household.email = email;
         }
         this.#logger.info('Saving household:', household);
-        this.#householdService.saveHousehold(household);
-        this.householdDetailForm.reset();
-        this.#householdService.householdSaved.set(true);
-        this.#router.navigate(['/admin/households/list']);
+
+        this.#householdService.saveHousehold(household).subscribe({
+          next: (response) => {
+            this.#logger.info('Household saved successfully:', response);
+            this.householdDetailForm.reset();
+            this.#householdService.householdSaved.set(true);
+            this.#router.navigate(['/admin/households/list']);
+          },
+          error: (error) => {
+            this.#logger.error('Error saving household:', error);
+            // You might want to show a user-friendly error message here
+            alert('Error saving household. Please check the console for details.');
+          }
+        });
       }
     };
   }

@@ -114,6 +114,18 @@ namespace Hoops.Infrastructure.Repository
         public override Household Update(Household entity)
         {
             var household = GetById(entity.HouseId);
+
+            // Update properties from the incoming entity
+            household.Name = entity.Name;
+            household.Address1 = entity.Address1;
+            household.Address2 = entity.Address2;
+            household.City = entity.City;
+            household.State = entity.State;
+            household.Zip = entity.Zip;
+            household.Phone = entity.Phone;
+            household.Email = entity.Email;
+            household.CompanyId = entity.CompanyId;
+
             context.Entry(household).State = EntityState.Modified;
             context.SaveChanges();
             return household;
