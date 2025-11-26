@@ -442,3 +442,7 @@ button[mat-raised-button][disabled] {
 .mat-mdc-text-field-wrapper {
   background-color: v.$admin-background-color !important;
 }
+
+.mat-internal-form-field > label {
+  color: v.$admin-font-color !important;
+}
