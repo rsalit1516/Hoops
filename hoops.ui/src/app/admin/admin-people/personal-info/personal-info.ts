@@ -98,31 +98,50 @@ export class PersonalInfo implements OnInit {
       currentBM: [false],
       playsUp: [false],
       volunteerCheckboxes: this.fb.array([]),
-      Comments: [''],
+      comments: [''],
     });
 
     this.addVolunteerCheckboxes(); // Initialize volunteer checkboxes
 
   }
   patchValue () {
-    this.personalInfoForm.patchValue({
-      firstName: this.person()?.firstName ?? '',
-      lastName: this.person()?.lastName ?? '',
-      birthDate: this.person()?.birthDate ?? '',
-      birthCertificate: this.person()?.bc ?? false,
-      gender: this.person()?.gender ?? 'male',
-      cellPhone: this.person()?.cellphone ?? '',
-      workPhone: this.person()?.workphone ?? '',
-      grade: this.person()?.grade ?? 0,
-      schoolName: this.person()?.schoolName ?? '',
-      parent: this.person()?.parent ?? false,
-      coach: this.person()?.coach ?? false,
-      player: this.person()?.player ?? false,
-      currentBM: this.person()?.boardMember ?? false,
-      playsUp: this.person()?.giftedLevelsUp ?? 0,
+    const person = this.person();
 
-      // comments: this.person()?.comments ?? '',
+    this.personalInfoForm.patchValue({
+      firstName: person?.firstName ?? '',
+      lastName: person?.lastName ?? '',
+      birthDate: person?.birthDate ?? '',
+      birthCertificate: person?.bc ?? false,
+      gender: person?.gender ?? 'male',
+      cellPhone: person?.cellphone ?? '',
+      workPhone: person?.workphone ?? '',
+      grade: person?.grade ?? 0,
+      schoolName: person?.schoolName ?? '',
+      parent: person?.parent ?? false,
+      coach: person?.coach ?? false,
+      player: person?.player ?? false,
+      currentBM: person?.boardMember ?? false,
+      playsUp: person?.giftedLevelsUp ?? 0,
+      comments: person?.comments ?? '',
     });
+
+    // Patch volunteer checkboxes
+    if (person) {
+      const checkboxesArray = this.personalInfoForm.get('volunteerCheckboxes') as FormArray;
+      checkboxesArray.setValue([
+        person.boardOfficer || false,
+        person.boardMember || false,
+        person.ad || false,
+        person.sponsor || false,
+        person.signUps || false,
+        person.tryOuts || false,
+        person.teeShirts || false,
+        person.printing || false,
+        person.equipment || false,
+        person.electrician || false,
+        person.asstCoach || false,
+      ]);
+    }
   }
 
   addVolunteerCheckboxes () {
@@ -141,13 +160,62 @@ export class PersonalInfo implements OnInit {
   // }
   onSubmit () {
     this.logger.info('Submitting personal info form:', this.personalInfoForm.value);
-    const selectedValues = this.personalInfoForm.value.checkboxes
-      .map((checked: boolean, index: number) =>
-        checked ? this.volunteers[index].name : null
-      )
-      .filter((value: string | null) => value !== null);
 
-    this.logger.debug('Selected volunteer values:', selectedValues);
+    const currentPerson = this.person();
+    if (!currentPerson) {
+      this.logger.error('No person selected');
+      return;
+    }
+
+    // Map form values to person object
+    const updatedPerson = {
+      ...currentPerson,
+      firstName: this.personalInfoForm.value.firstName,
+      lastName: this.personalInfoForm.value.lastName,
+      birthDate: this.personalInfoForm.value.birthDate,
+      bc: this.personalInfoForm.value.birthCertificate,
+      cellphone: this.personalInfoForm.value.cellPhone,
+      workphone: this.personalInfoForm.value.workPhone,
+      gender: this.personalInfoForm.value.gender,
+      grade: this.personalInfoForm.value.grade,
+      schoolName: this.personalInfoForm.value.schoolName,
+      parent: this.personalInfoForm.value.parent,
+      coach: this.personalInfoForm.value.coach,
+      player: this.personalInfoForm.value.player,
+      boardMember: this.personalInfoForm.value.currentBM,
+      giftedLevelsUp: this.personalInfoForm.value.playsUp ? 1 : 0,
+      comments: this.personalInfoForm.value.comments,
+    };
+
+    // Map volunteer checkboxes to person properties
+    const volunteerCheckboxes = this.personalInfoForm.value.volunteerCheckboxes;
+    if (volunteerCheckboxes) {
+      updatedPerson.boardOfficer = volunteerCheckboxes[0] || false;
+      updatedPerson.boardMember = volunteerCheckboxes[1] || false;
+      updatedPerson.ad = volunteerCheckboxes[2] || false;
+      updatedPerson.sponsor = volunteerCheckboxes[3] || false;
+      updatedPerson.signUps = volunteerCheckboxes[4] || false;
+      updatedPerson.tryOuts = volunteerCheckboxes[5] || false;
+      updatedPerson.teeShirts = volunteerCheckboxes[6] || false;
+      updatedPerson.printing = volunteerCheckboxes[7] || false;
+      updatedPerson.equipment = volunteerCheckboxes[8] || false;
+      updatedPerson.electrician = volunteerCheckboxes[9] || false;
+      updatedPerson.asstCoach = volunteerCheckboxes[10] || false;
+    }
+
+    this.logger.info('Saving person:', updatedPerson);
+
+    // Call the backend to save
+    this.#peopleService.savePerson(updatedPerson).subscribe({
+      next: (response) => {
+        this.logger.info('Person saved successfully:', response);
+        this.#peopleService.updateSelectedPerson(response);
+        this.personalInfoForm.markAsPristine();
+      },
+      error: (error) => {
+        this.logger.error('Error saving person:', error);
+      }
+    });
   }
 
   onReset () {

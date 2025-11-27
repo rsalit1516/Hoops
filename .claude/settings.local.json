@@ -12,7 +12,8 @@
       "Bash(dotnet build:*)",
       "Bash(npm start)",
       "Bash(timeout 30 cmd:*)",
-      "Bash(timeout 10 cmd:*)"
+      "Bash(timeout 10 cmd:*)",
+      "Bash(dotnet ef dbcontext script:*)"
     ],
     "deny": [],
     "ask": []

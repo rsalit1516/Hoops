@@ -116,6 +116,12 @@ export class PeopleService {
       this.updateResults(response!);
     });
   }
+
+  savePerson(person: Person): Observable<Person> {
+    const url = `${Constants.peopleUrl}/${person.personId}`;
+    this.logger.info('Saving person to URL: ', url);
+    return this.http.put<Person>(url, person);
+  }
 }
 export interface peopleSearchCriteria {
   lastName: string;
