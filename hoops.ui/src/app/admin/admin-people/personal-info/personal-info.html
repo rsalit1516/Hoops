@@ -59,7 +59,7 @@
 
           <mat-form-field [appearance]="inputStyle">
             <mat-label>Grade</mat-label>
-            <input matInput formControlName="grade" />
+            <input matInput type="number" formControlName="grade" />
           </mat-form-field>
 
           <mat-form-field [appearance]="inputStyle">
@@ -121,7 +121,7 @@
             >
             Save
           </button>
-          <button type="button" mat-raised-button color="primary">Delete</button>
+          <button type="button" mat-raised-button color="warn" (click)="onDelete()">Delete</button>
           <button
             type="button"
             mat-raised-button
@@ -133,15 +133,7 @@
           <button
             type="button"
             mat-raised-button
-            [routerLink]="['/admin/people']"
-            color="primary"
-            >
-            Add Household Member
-          </button>
-          <button
-            type="button"
-            mat-raised-button
-            [routerLink]="['/admin/people']"
+            (click)="onRegister()"
             color="primary"
             >
             Register

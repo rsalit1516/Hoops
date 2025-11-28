@@ -10,10 +10,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, RouterLink, RouterModule } from '@angular/router';
 import { PeopleService } from '@app/services/people.service';
 import { FormSettings } from '@app/shared/constants';
 import { LoggerService } from '@app/services/logger.service';
+import { ConfirmDialog } from '@app/admin/shared/confirm-dialog/confirm-dialog';
 
 interface Item {
   id: number;
@@ -35,7 +38,7 @@ interface Item {
     MatCheckboxModule,
     MatRadioModule,
     RouterModule
-],
+  ],
   templateUrl: "./personal-info.html",
   styleUrls: ['./personal-info.scss',
     '../../admin.scss',
@@ -51,6 +54,8 @@ export class PersonalInfo implements OnInit {
   readonly router = inject(Router);
   readonly #peopleService = inject(PeopleService);
   private logger = inject(LoggerService);
+  private dialog = inject(MatDialog);
+  private snackBar = inject(MatSnackBar);
   pageTitle = 'Personal Information';
   inputStyle = FormSettings.inputStyle;
   volunteers = [
@@ -103,6 +108,11 @@ export class PersonalInfo implements OnInit {
 
     this.addVolunteerCheckboxes(); // Initialize volunteer checkboxes
 
+    // Track form dirty state
+    this.personalInfoForm.statusChanges.subscribe(() => {
+      this.#peopleService.updateFormDirtyState(this.personalInfoForm.dirty);
+    });
+
   }
   patchValue () {
     const person = this.person();
@@ -142,6 +152,10 @@ export class PersonalInfo implements OnInit {
         person.asstCoach || false,
       ]);
     }
+
+    // Mark form as pristine after patching to reset dirty state
+    this.personalInfoForm.markAsPristine();
+    this.#peopleService.updateFormDirtyState(false);
   }
 
   addVolunteerCheckboxes () {
@@ -177,7 +191,7 @@ export class PersonalInfo implements OnInit {
       cellphone: this.personalInfoForm.value.cellPhone,
       workphone: this.personalInfoForm.value.workPhone,
       gender: this.personalInfoForm.value.gender,
-      grade: this.personalInfoForm.value.grade,
+      grade: this.personalInfoForm.value.grade ? Number(this.personalInfoForm.value.grade) : null,
       schoolName: this.personalInfoForm.value.schoolName,
       parent: this.personalInfoForm.value.parent,
       coach: this.personalInfoForm.value.coach,
@@ -211,6 +225,7 @@ export class PersonalInfo implements OnInit {
         this.logger.info('Person saved successfully:', response);
         this.#peopleService.updateSelectedPerson(response);
         this.personalInfoForm.markAsPristine();
+        this.#peopleService.updateFormDirtyState(false);
       },
       error: (error) => {
         this.logger.error('Error saving person:', error);
@@ -220,6 +235,47 @@ export class PersonalInfo implements OnInit {
 
   onReset () {
     this.personalInfoForm.reset();
+  }
+
+  onDelete () {
+    const currentPerson = this.person();
+    if (!currentPerson || !currentPerson.personId) {
+      this.logger.error('No person selected or person has no ID');
+      return;
+    }
+
+    // Show confirmation dialog
+    const dialogRef = this.dialog.open(ConfirmDialog, {
+      width: '400px',
+      data: {
+        title: 'Confirm Delete',
+        message: `Are you sure you want to delete ${currentPerson.firstName} ${currentPerson.lastName}? This action cannot be undone.`
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed && currentPerson.personId) {
+        this.logger.info('Deleting person:', currentPerson.personId);
+        this.#peopleService.deletePerson(currentPerson.personId).subscribe({
+          next: (response) => {
+            this.logger.info('Person deleted successfully:', response);
+            // Navigate back to people list
+            this.router.navigate(['/admin/people']);
+          },
+          error: (error) => {
+            this.logger.error('Error deleting person:', error);
+          }
+        });
+      }
+    });
+  }
+
+  onRegister () {
+    this.snackBar.open('Register feature has not been implemented yet.', 'OK', {
+      duration: 5000,
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+    });
   }
 
 }

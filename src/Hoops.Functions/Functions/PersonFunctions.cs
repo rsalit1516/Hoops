@@ -85,6 +85,41 @@ namespace Hoops.Functions.Functions
             return resp;
         }
 
+        [Function("PostPerson")]
+        public async Task<HttpResponseData> PostPerson(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Person")] HttpRequestData req)
+        {
+            try
+            {
+                PersonDto? dto;
+                using (var sr = new StreamReader(req.Body))
+                {
+                    var json = await sr.ReadToEndAsync();
+                    dto = JsonSerializer.Deserialize<PersonDto>(json, JsonOptions);
+                }
+                if (dto == null)
+                {
+                    return req.CreateResponse(HttpStatusCode.BadRequest);
+                }
+
+                // Map DTO to entity
+                var person = FromDto(dto);
+
+                var createdPerson = _repository.Insert(person);
+                await _repository.SaveChangesAsync();
+
+                var resp = req.CreateResponse(HttpStatusCode.Created);
+                await WriteJsonAsync(resp, ToDto(createdPerson), HttpStatusCode.Created);
+                return resp;
+            }
+            catch (Exception ex)
+            {
+                var errorResp = req.CreateResponse(HttpStatusCode.InternalServerError);
+                await errorResp.WriteStringAsync($"Error creating person: {ex.Message}\n{ex.StackTrace}");
+                return errorResp;
+            }
+        }
+
         [Function("PutPerson")]
         public async Task<HttpResponseData> PutPerson(
             [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "Person/{id:int}")] HttpRequestData req,
@@ -131,6 +166,33 @@ namespace Hoops.Functions.Functions
             {
                 var errorResp = req.CreateResponse(HttpStatusCode.InternalServerError);
                 await errorResp.WriteStringAsync($"Error updating person: {ex.Message}\n{ex.StackTrace}");
+                return errorResp;
+            }
+        }
+
+        [Function("DeletePerson")]
+        public async Task<HttpResponseData> DeletePerson(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "Person/{id:int}")] HttpRequestData req,
+            int id)
+        {
+            try
+            {
+                Person? entity = null;
+                try { entity = await _repository.FindByAsync(id); } catch { entity = null; }
+                if (entity == null)
+                {
+                    return req.CreateResponse(HttpStatusCode.NotFound);
+                }
+                _repository.Delete(entity);
+                await _repository.SaveChangesAsync();
+                var resp = req.CreateResponse();
+                await WriteJsonAsync(resp, ToDto(entity));
+                return resp;
+            }
+            catch (Exception ex)
+            {
+                var errorResp = req.CreateResponse(HttpStatusCode.InternalServerError);
+                await errorResp.WriteStringAsync($"Error deleting person: {ex.Message}\n{ex.StackTrace}");
                 return errorResp;
             }
         }

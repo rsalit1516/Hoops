@@ -41,6 +41,14 @@ export class PeopleService {
     this._selectedPerson.set(person);
   }
 
+  private _isFormDirty = signal<boolean>(false);
+  get isFormDirty() {
+    return this._isFormDirty.asReadonly();
+  }
+  updateFormDirtyState(isDirty: boolean) {
+    this._isFormDirty.set(isDirty);
+  }
+
   constructor() {
     effect(() => {
       this.logger.info('[People Service] ' + this.selectedCriteria);
@@ -118,9 +126,27 @@ export class PeopleService {
   }
 
   savePerson(person: Person): Observable<Person> {
-    const url = `${Constants.peopleUrl}/${person.personId}`;
-    this.logger.info('Saving person to URL: ', url);
-    return this.http.put<Person>(url, person);
+    // Ensure CompanyId is set
+    if (!person.companyId) {
+      person.companyId = 1;
+    }
+
+    if (person.personId && person.personId !== 0) {
+      // Update existing person (PUT)
+      const url = `${Constants.peopleUrl}/${person.personId}`;
+      this.logger.info('Updating person at URL: ', url);
+      return this.http.put<Person>(url, person);
+    } else {
+      // Create new person (POST)
+      this.logger.info('Creating new person at URL: ', Constants.peopleUrl);
+      return this.http.post<Person>(Constants.peopleUrl, person);
+    }
+  }
+
+  deletePerson(personId: number): Observable<Person> {
+    const url = `${Constants.peopleUrl}/${personId}`;
+    this.logger.info('Deleting person at URL: ', url);
+    return this.http.delete<Person>(url);
   }
 }
 export interface peopleSearchCriteria {

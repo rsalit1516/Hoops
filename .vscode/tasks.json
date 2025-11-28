@@ -243,7 +243,8 @@
       "type": "shell",
       "command": "func",
       "args": ["start"],
-      "isBackground": true
+      "isBackground": true,
+      "problemMatcher": ["$func-java-watch"]
     },
     {
       "label": "Build Functions (Debug)",
