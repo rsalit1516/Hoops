@@ -13,7 +13,9 @@
       "Bash(npm start)",
       "Bash(timeout 30 cmd:*)",
       "Bash(timeout 10 cmd:*)",
-      "Bash(dotnet ef dbcontext script:*)"
+      "Bash(dotnet ef dbcontext script:*)",
+      "WebFetch(domain:angular.dev)",
+      "Bash(npm install:*)"
     ],
     "deny": [],
     "ask": []

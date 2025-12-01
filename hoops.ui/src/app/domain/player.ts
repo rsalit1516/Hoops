@@ -1,0 +1,32 @@
+export class Player {
+  public playerId: number = 0;
+  public companyId: number = 1;
+  public seasonId: number | null = null;
+  public divisionId: number | null = null;
+  public teamId: number | null = null;
+  public personId: number = 0;
+  public draftId: string = '';
+  public draftNotes: string = '';
+  public rating: number | null = null;
+  public coach: number | null = null;
+  public coachId: number | null = null;
+  public sponsor: number | null = null;
+  public sponsorId: number | null = null;
+  public ad: boolean = false;
+  public scholarship: boolean = false;
+  public familyDisc: boolean = false;
+  public rollover: boolean = false;
+  public outOfTown: boolean = false;
+  public refundBatchId: number | null = null;
+  public paidDate: Date | null = null;
+  public paidAmount: number | null = null;
+  public balanceOwed: number | null = null;
+  public payType: string = '';
+  public noteDesc: string = '';
+  public checkMemo: string = '';
+  public createdDate: Date | null = null;
+  public createdUser: string = '';
+  public playsDown: boolean = false;
+  public playsUp: boolean = false;
+  public shoppingCartId: number | null = null;
+}

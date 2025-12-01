@@ -68,6 +68,7 @@ export class Constants {
   public static GET_HOUSEHOLD_BY_ID_URL = `${this.FUNCTIONS_BASE_URL}/api/Household`;
   public static SEARCH_PEOPLE_URL = `${this.FUNCTIONS_BASE_URL}/api/Person/search`;
   public static SAVE_HOUSEHOLD_URL = `${this.FUNCTIONS_BASE_URL}/api/Household/`;
+  public static PLAYER_URL = `${this.FUNCTIONS_BASE_URL}/api/Players`;
 }
 export const Literals = {
   BUTTONS: {

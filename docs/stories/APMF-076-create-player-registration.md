@@ -31,10 +31,10 @@ As an admin user, I want ot be able to create a registraion record for players s
     - [ ] a balance field with with 2 decimal places in Balance
     - [ ] a check # field stored in CheckMemo
     - [ ] a Date field stored in PaidDate (should have a calendar select)
-    - [ ] a Memo field stored in CheckMemo
+    - [ ] a Memo field stored in NoteDesc
   - [ ] a section for Draft Info with the following fields
     - [ ] Draft ID stored in DraftId
-    - [ ] Draft Note in NoteDesc
+    - [ ] Draft Note in DraftNotes
     - [ ] a Rating field field stored in Rating field as a select wit ht e values 1 - 10
     - [ ] a Change Division field as a select with the values (N/A, Plays Up, Plays Down)
       - [ ] if Plays Up is selected the PlaysUp field would be saved with a 1 (i.e. true)
@@ -42,7 +42,7 @@ As an admin user, I want ot be able to create a registraion record for players s
       - This needs to be sensitive to changes on an edit.
     - [ ] a "Fee Waived" field with checkboxes for the following labels and database fields:
       - [ ] Scholarship in Scholarship
-      - [ ] Rollover in ROllowver
+      - [ ] Rollover in Rollover
       - [ ] Family Discount in FamilyDisc
       - [ ] Athlectic Director in AD
       - [ ] Partial Refund in OutOfTown

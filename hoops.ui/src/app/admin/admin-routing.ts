@@ -52,6 +52,14 @@ export const ADMINROUTES: Routes = [
         title: 'People',
         children: ADMIN_PEOPLE_ROUTES,
       },
+      {
+        path: 'player-registration/:personId',
+        title: 'Player Registration',
+        loadComponent: () =>
+          import('./admin-player/player-registration/player-registration').then(
+            (m) => m.PlayerRegistration
+          ),
+      },
       { path: 'teams', component: TeamList },
       {
         path: 'games',

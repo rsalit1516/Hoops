@@ -271,11 +271,17 @@ export class PersonalInfo implements OnInit {
   }
 
   onRegister () {
-    this.snackBar.open('Register feature has not been implemented yet.', 'OK', {
-      duration: 5000,
-      horizontalPosition: 'center',
-      verticalPosition: 'top',
-    });
+    const currentPerson = this.person();
+    if (!currentPerson || !currentPerson.personId) {
+      this.logger.error('No person selected or person has no ID');
+      this.snackBar.open('Please select a person first.', 'OK', {
+        duration: 3000,
+      });
+      return;
+    }
+
+    // Navigate to player registration form
+    this.router.navigate(['/admin/player-registration', currentPerson.personId]);
   }
 
 }

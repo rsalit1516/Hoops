@@ -52,6 +52,7 @@ namespace Hoops.Api
 
             // Register SeasonService for DI
             services.AddScoped<ISeasonService, Hoops.Application.Services.SeasonService>();
+            services.AddScoped<IPlayerService, Hoops.Application.Services.PlayerService>();
 
             _ = services.AddCors(options =>
             {

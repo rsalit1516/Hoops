@@ -24,6 +24,7 @@ namespace Hoops.Infrastructure
             services.AddScoped<IHouseholdRepository, HouseholdRepository>();
             services.AddScoped<IScheduleDivTeamsRepository, ScheduleDivTeamsRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IPlayerRepository, PlayerRepository>();
             // services.AddScoped<ICommentRepository, CommentRepository>();
 
             return services;
