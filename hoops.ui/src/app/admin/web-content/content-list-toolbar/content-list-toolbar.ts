@@ -1,0 +1,68 @@
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+
+import { Content } from '../../../domain/content';
+
+import * as fromContent from '../../state';
+import * as contentActions from '../../state/admin.actions';
+import { MatButtonModule } from '@angular/material/button';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
+
+import { ContentService } from '../content.service';
+import { LoggerService } from '@app/services/logger.service';
+
+@Component({
+    selector: 'content-list-toolbar',
+    templateUrl: "./content-list-toolbar.html",
+    styleUrls: ['./content-list-toolbar.scss',
+        '../../admin.scss'],
+  imports: [
+    MatButtonModule,
+    MatToolbarModule,
+    MatCheckboxModule
+]
+})
+export class ContentListToolbar implements OnInit {
+  private router = inject(Router);
+  private store = inject<Store<fromContent.State>>(Store);
+  private logger = inject(LoggerService);
+
+  readonly #contentService = inject(ContentService);
+  checked = true;
+  isActiveContent$ = this.store.select(fromContent.getIsActiveOnly);
+  // filterForm = this.fb.group({
+  //   activeContent: true
+  // });
+  isActive = signal<boolean>(true);
+  activeLabel = 'Active Only';
+
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {
+
+  }
+
+  ngOnInit() {
+    // this.isActiveContent$.subscribe(isActiveContent => {
+    //   console.log(isActiveContent);
+    //   this.store.dispatch(new contentActions.SetActiveContent());
+    // });
+  }
+
+  addContent() {
+    const content = new Content();
+    this.store.dispatch(new contentActions.SetSelectedContent(content));
+    this.router.navigate(['./admin/content/edit']);
+  }
+  filterContent(checked: boolean) {
+    // const isActive = this.filterForm.value.activeContent === true;
+    this.isActive.set(checked);
+    this.logger.debug('Filter content active only:', checked);
+    this.#contentService.isActiveContent.set(checked);
+    // this.store.dispatch(new contentActions.SetIsActiveOnly(checked));
+  }
+}

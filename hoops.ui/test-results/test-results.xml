@@ -1,0 +1,320 @@
+<?xml version="1.0"?>
+<testsuite name="Chrome Headless 141.0.0.0 (Windows 10)" package="unit" timestamp="2025-10-27T15:30:46" id="0" hostname="Rich-Think" tests="60" errors="0" failures="24" time="1.282">
+  <properties>
+    <property name="browser.fullName" value="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/141.0.0.0 Safari/537.36"/>
+  </properties>
+  <testcase name="AdminListDetailShell Component Initialization should create the component" time="0.151" classname=".AdminListDetailShell Component Initialization"/>
+  <testcase name="AdminListDetailShell Component Initialization should have default input values" time="0.014" classname=".AdminListDetailShell Component Initialization"/>
+  <testcase name="AdminListDetailShell Component Initialization should accept custom configuration values" time="0.012" classname=".AdminListDetailShell Component Initialization"/>
+  <testcase name="AdminListDetailShell Component Initialization should initialize with loading state" time="0.038" classname=".AdminListDetailShell Component Initialization"/>
+  <testcase name="AdminListDetailShell Component Initialization should initialize with error state" time="0.029" classname=".AdminListDetailShell Component Initialization"/>
+  <testcase name="AdminListDetailShell Table Display should render the title" time="0.097" classname=".AdminListDetailShell Table Display"/>
+  <testcase name="AdminListDetailShell Table Display should render the add button when showAddButton is true" time="0.04" classname=".AdminListDetailShell Table Display"/>
+  <testcase name="AdminListDetailShell Table Display should not render the add button when showAddButton is false" time="0.051" classname=".AdminListDetailShell Table Display">
+    <failure type="">Expected &lt;button _ngcontent-a-c344620742 mat-raised-button color="primary" class="mdc-button mat-mdc-button-base add-button mdc-button--raised mat-mdc-raised-button mat-primary _mat-animation-noopable" mat-ripple-loader-uninitialized mat-ripple-loader-class-name="mat-mdc-button-ripple"&gt;...&lt;/button&gt; to be falsy.
+    at &lt;Jasmine&gt;
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:129:25)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Table Display should render custom add button text" time="0.025" classname=".AdminListDetailShell Table Display">
+    <failure type="">Expected 'add Add New ' to contain 'Create Director'.
+    at &lt;Jasmine&gt;
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:137:38)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Table Display should render table with correct columns" time="0.025" classname=".AdminListDetailShell Table Display">
+    <failure type="">Expected 0 to be 4.
+    at &lt;Jasmine&gt;
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:142:30)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+</failure>
+    <failure type="">TypeError: Cannot read properties of undefined (reading 'textContent')
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:144:25)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+    at ZoneImpl.run (node_modules/zone.js/fesm2015/zone.js:111:43)
+    at runInTestZone (node_modules/zone.js/fesm2015/zone-testing.js:216:38)
+    at UserContext.&lt;anonymous&gt; (node_modules/zone.js/fesm2015/zone-testing.js:234:32)
+    at &lt;Jasmine&gt;
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Table Display should render table rows with data" time="0.025" classname=".AdminListDetailShell Table Display">
+    <failure type="">Expected 0 to be 3.
+    at &lt;Jasmine&gt;
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:152:27)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Table Display should render table cells with correct data" time="0.022" classname=".AdminListDetailShell Table Display">
+    <failure type="">Expected undefined to be 4.
+    at &lt;Jasmine&gt;
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:159:29)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+</failure>
+    <failure type="">Expected undefined to be '1'.
+    at &lt;Jasmine&gt;
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:160:46)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+</failure>
+    <failure type="">Expected undefined to be 'John Doe'.
+    at &lt;Jasmine&gt;
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:161:46)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+</failure>
+    <failure type="">Expected undefined to be 'john@example.com'.
+    at &lt;Jasmine&gt;
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:162:46)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+</failure>
+    <failure type="">Expected undefined to be 'Active'.
+    at &lt;Jasmine&gt;
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:163:46)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Table Display should render actions column when showActionsColumn is true" time="0.02" classname=".AdminListDetailShell Table Display">
+    <failure type="">Expected null to be truthy.
+    at &lt;Jasmine&gt;
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:171:29)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Table Display should not render actions column when showActionsColumn is false" time="0.021" classname=".AdminListDetailShell Table Display"/>
+  <testcase name="AdminListDetailShell Computed Signals should compute displayedColumns correctly without actions" time="0.004" classname=".AdminListDetailShell Computed Signals"/>
+  <testcase name="AdminListDetailShell Computed Signals should compute displayedColumns correctly with actions" time="0.004" classname=".AdminListDetailShell Computed Signals"/>
+  <testcase name="AdminListDetailShell Computed Signals should filter out invisible columns" time="0.005" classname=".AdminListDetailShell Computed Signals"/>
+  <testcase name="AdminListDetailShell Computed Signals should compute hasFilterContent as false when no filter projected" time="0.005" classname=".AdminListDetailShell Computed Signals"/>
+  <testcase name="AdminListDetailShell Column Configuration should use valueGetter when provided" time="0.026" classname=".AdminListDetailShell Column Configuration">
+    <failure type="">Expected undefined to be 'JOHN DOE'.
+    at &lt;Jasmine&gt;
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:227:46)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Column Configuration should apply custom cellClass when provided" time="0.022" classname=".AdminListDetailShell Column Configuration"/>
+  <testcase name="AdminListDetailShell Column Configuration should apply custom headerClass when provided" time="0.023" classname=".AdminListDetailShell Column Configuration"/>
+  <testcase name="AdminListDetailShell Column Configuration should apply width styles when provided" time="0.024" classname=".AdminListDetailShell Column Configuration">
+    <failure type="">TypeError: Cannot read properties of null (reading 'style')
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:263:21)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+    at ZoneImpl.run (node_modules/zone.js/fesm2015/zone.js:111:43)
+    at runInTestZone (node_modules/zone.js/fesm2015/zone-testing.js:216:38)
+    at UserContext.&lt;anonymous&gt; (node_modules/zone.js/fesm2015/zone-testing.js:234:32)
+    at &lt;Jasmine&gt;
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Column Configuration should enable sorting for sortable columns" time="0.028" classname=".AdminListDetailShell Column Configuration">
+    <failure type="">Expected 0 to be 3.
+    at &lt;Jasmine&gt;
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:272:38)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Column Configuration should not enable sorting for non-sortable columns" time="0.022" classname=".AdminListDetailShell Column Configuration">
+    <failure type="">TypeError: Cannot read properties of undefined (reading 'querySelector')
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:280:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+    at ZoneImpl.run (node_modules/zone.js/fesm2015/zone.js:111:43)
+    at runInTestZone (node_modules/zone.js/fesm2015/zone-testing.js:216:38)
+    at UserContext.&lt;anonymous&gt; (node_modules/zone.js/fesm2015/zone-testing.js:234:32)
+    at &lt;Jasmine&gt;
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Event Emissions should emit addClick when add button is clicked" time="0.022" classname=".AdminListDetailShell Event Emissions"/>
+  <testcase name="AdminListDetailShell Event Emissions should emit rowClick when a row is clicked" time="0.018" classname=".AdminListDetailShell Event Emissions">
+    <failure type="">TypeError: Cannot read properties of null (reading 'click')
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:305:16)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+    at ZoneImpl.run (node_modules/zone.js/fesm2015/zone.js:111:43)
+    at runInTestZone (node_modules/zone.js/fesm2015/zone-testing.js:216:38)
+    at UserContext.&lt;anonymous&gt; (node_modules/zone.js/fesm2015/zone-testing.js:234:32)
+    at &lt;Jasmine&gt;
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Event Emissions should not emit rowClick when rowClickable is false" time="0.017" classname=".AdminListDetailShell Event Emissions">
+    <failure type="">TypeError: Cannot read properties of null (reading 'click')
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:316:16)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+    at ZoneImpl.run (node_modules/zone.js/fesm2015/zone.js:111:43)
+    at runInTestZone (node_modules/zone.js/fesm2015/zone-testing.js:216:38)
+    at UserContext.&lt;anonymous&gt; (node_modules/zone.js/fesm2015/zone-testing.js:234:32)
+    at &lt;Jasmine&gt;
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Event Emissions should call onRowClick method when row is clicked" time="0.017" classname=".AdminListDetailShell Event Emissions">
+    <failure type="">TypeError: Cannot read properties of null (reading 'click')
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:327:16)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+    at ZoneImpl.run (node_modules/zone.js/fesm2015/zone.js:111:43)
+    at runInTestZone (node_modules/zone.js/fesm2015/zone-testing.js:216:38)
+    at UserContext.&lt;anonymous&gt; (node_modules/zone.js/fesm2015/zone-testing.js:234:32)
+    at &lt;Jasmine&gt;
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Event Emissions should call onAdd method when add button is clicked" time="0.032" classname=".AdminListDetailShell Event Emissions"/>
+  <testcase name="AdminListDetailShell Loading State should show loading spinner when isLoading is true" time="0.006" classname=".AdminListDetailShell Loading State"/>
+  <testcase name="AdminListDetailShell Loading State should show loading text when isLoading is true" time="0.006" classname=".AdminListDetailShell Loading State"/>
+  <testcase name="AdminListDetailShell Loading State should hide table when isLoading is true" time="0.008" classname=".AdminListDetailShell Loading State"/>
+  <testcase name="AdminListDetailShell Loading State should show table when isLoading is false" time="0.015" classname=".AdminListDetailShell Loading State"/>
+  <testcase name="AdminListDetailShell Error State should show error message when errorMessage is set" time="0.005" classname=".AdminListDetailShell Error State"/>
+  <testcase name="AdminListDetailShell Error State should show error icon when errorMessage is set" time="0.005" classname=".AdminListDetailShell Error State"/>
+  <testcase name="AdminListDetailShell Error State should hide table when errorMessage is set" time="0.006" classname=".AdminListDetailShell Error State"/>
+  <testcase name="AdminListDetailShell Error State should not show error message when errorMessage is null" time="0.015" classname=".AdminListDetailShell Error State"/>
+  <testcase name="AdminListDetailShell Error State should have proper ARIA role for error message" time="0.005" classname=".AdminListDetailShell Error State"/>
+  <testcase name="AdminListDetailShell Empty State should show default empty state when no data" time="0.017" classname=".AdminListDetailShell Empty State"/>
+  <testcase name="AdminListDetailShell Empty State should show empty state icon" time="0.017" classname=".AdminListDetailShell Empty State"/>
+  <testcase name="AdminListDetailShell Empty State should show empty state message" time="0.014" classname=".AdminListDetailShell Empty State"/>
+  <testcase name="AdminListDetailShell Empty State should show empty state hint when showAddButton is true" time="0.013" classname=".AdminListDetailShell Empty State"/>
+  <testcase name="AdminListDetailShell Empty State should not show empty state hint when showAddButton is false" time="0.016" classname=".AdminListDetailShell Empty State">
+    <failure type="">Expected &lt;p _ngcontent-a-c344620742 class="empty-state-hint"&gt;...&lt;/p&gt; to be falsy.
+    at &lt;Jasmine&gt;
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:469:20)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Empty State should show custom add button text in empty state hint" time="0.016" classname=".AdminListDetailShell Empty State">
+    <failure type="">Expected ' Click "Add New" to get started. ' to contain 'Click "Create Director" to get started'.
+    at &lt;Jasmine&gt;
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:477:33)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Pagination should render paginator" time="0.017" classname=".AdminListDetailShell Pagination"/>
+  <testcase name="AdminListDetailShell Pagination should use custom page size options" time="0.016" classname=".AdminListDetailShell Pagination">
+    <failure type="">Expected $.length = 4 to equal 3.
+Expected $[0] = 10 to equal 5.
+Expected $[1] = 25 to equal 10.
+Expected $[2] = 50 to equal 20.
+Unexpected $[3] = 100 in array.
+    at &lt;Jasmine&gt;
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:497:51)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Pagination should use custom default page size" time="0.017" classname=".AdminListDetailShell Pagination">
+    <failure type="">Expected 25 to be 50.
+    at &lt;Jasmine&gt;
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:504:44)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Pagination should use custom aria label" time="0.016" classname=".AdminListDetailShell Pagination">
+    <failure type="">Expected 'Select page' to be 'Custom paginator'.
+    at &lt;Jasmine&gt;
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:512:53)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Pagination should show first/last buttons" time="0.014" classname=".AdminListDetailShell Pagination"/>
+  <testcase name="AdminListDetailShell Sorting and Pagination Integration should wire up sort to dataSource after view init" time="0.016" classname=".AdminListDetailShell Sorting and Pagination Integration"/>
+  <testcase name="AdminListDetailShell Sorting and Pagination Integration should wire up paginator to dataSource after view init" time="0.015" classname=".AdminListDetailShell Sorting and Pagination Integration"/>
+  <testcase name="AdminListDetailShell Sorting and Pagination Integration should handle null dataSource gracefully" time="0.015" classname=".AdminListDetailShell Sorting and Pagination Integration"/>
+  <testcase name="AdminListDetailShell Row Styling should apply clickable-row class when rowClickable is true" time="0.015" classname=".AdminListDetailShell Row Styling">
+    <failure type="">Expected undefined to be true.
+    at &lt;Jasmine&gt;
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:555:56)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Row Styling should not apply clickable-row class when rowClickable is false" time="0.017" classname=".AdminListDetailShell Row Styling">
+    <failure type="">Expected undefined to be false.
+    at &lt;Jasmine&gt;
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:563:56)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Content Projection should project filter content" time="0.024" classname=".AdminListDetailShell Content Projection">
+    <failure type="">Expected null to be truthy.
+    at &lt;Jasmine&gt;
+    at UserContext.&lt;anonymous&gt; (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:600:27)
+    at Generator.next (&lt;anonymous&gt;)
+    at asyncGeneratorStep (node_modules/@angular-devkit/build-angular/node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js:3:1)
+    at _next (node_modules/@angular-devkit/build-angular/node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js:17:1)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Content Projection should show filter section when filter content is projected" time="0.033" classname=".AdminListDetailShell Content Projection">
+    <failure type="">Expected null to be truthy.
+    at &lt;Jasmine&gt;
+    at UserContext.&lt;anonymous&gt; (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:609:29)
+    at Generator.next (&lt;anonymous&gt;)
+    at asyncGeneratorStep (node_modules/@angular-devkit/build-angular/node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js:3:1)
+    at _next (node_modules/@angular-devkit/build-angular/node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js:17:1)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Content Projection should project detail form content" time="0.017" classname=".AdminListDetailShell Content Projection"/>
+  <testcase name="AdminListDetailShell Accessibility should have proper ARIA label on paginator" time="0.016" classname=".AdminListDetailShell Accessibility"/>
+  <testcase name="AdminListDetailShell Accessibility should use custom ARIA label when provided" time="0.016" classname=".AdminListDetailShell Accessibility">
+    <failure type="">Expected 'Select page' to be 'Navigate directors pages'.
+    at &lt;Jasmine&gt;
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:639:53)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Accessibility should have role=&quot;alert&quot; on error message" time="0.015" classname=".AdminListDetailShell Accessibility">
+    <failure type="">Expected undefined to be 'alert'.
+    at &lt;Jasmine&gt;
+    at UserContext.apply (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:647:46)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:369:28)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2082:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:34)
+</failure>
+  </testcase>
+  <system-out>
+    <![CDATA[
+]]>
+  </system-out>
+  <system-err/>
+</testsuite>

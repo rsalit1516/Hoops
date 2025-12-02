@@ -15,8 +15,8 @@ namespace Hoops.Infrastructure.Tests
         public WebContentTypeTest()
         {
             var options = new DbContextOptionsBuilder<hoopsContext>()
-.UseInMemoryDatabase(databaseName: "hoops")
-.Options;
+                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+                .Options;
             _context = new hoopsContext(options);
             repo = new WebContentTypeRepository(_context);
             repoWebContent = new WebContentRepository(_context); // Initialize repoWebContent

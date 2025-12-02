@@ -15,7 +15,7 @@ interface FeatureFlags {
 @Injectable({
   providedIn: 'root'
 })
-export class FeatureFlagService {
+export class FeatureFlagService2 {
   private featureFlags: FeatureFlags = FEATURE_FLAGS
   isFeatureEnabled (feature: keyof FeatureFlags): boolean {
     return this.featureFlags[feature];

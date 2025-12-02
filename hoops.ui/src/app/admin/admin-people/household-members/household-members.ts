@@ -1,4 +1,4 @@
-import { DatePipe, NgFor, NgForOf, NgIf } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Component, computed, effect, inject, input, linkedSignal, OnInit, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -6,12 +6,15 @@ import { MatListModule } from '@angular/material/list';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Household } from '@app/domain/household';
 import { Person } from '@app/domain/person';
 import { HouseholdService } from '@app/services/household.service';
 import { PeopleService } from '@app/services/people.service';
-import { SectionTitleComponent } from '@app/shared/section-title/section-title.component';
+import { SectionTitle } from '@app/shared/components/section-title/section-title';
+import { LoggerService } from '@app/services/logger.service';
+import { ConfirmDialog } from '@app/admin/shared/confirm-dialog/confirm-dialog';
 
 @Component({
   selector: 'csbc-household-members',
@@ -23,11 +26,11 @@ import { SectionTitleComponent } from '@app/shared/section-title/section-title.c
     MatPaginatorModule,
     MatButtonModule,
     DatePipe,
-    SectionTitleComponent
+    SectionTitle
   ],
   templateUrl: './household-members.html',
   styleUrls: ['./household-members.scss',
-    '../../admin.component.scss',
+    '../../admin.scss',
     '../../../shared/scss/tables.scss',
     '../../../shared/scss/cards.scss',
   ],
@@ -39,6 +42,8 @@ export class HouseholdMembers implements OnInit {
   #peopleService = inject(PeopleService);
   #HouseholdService = inject(HouseholdService);
   #router = inject(Router);
+  #logger = inject(LoggerService);
+  #dialog = inject(MatDialog);
 
   results = input<Household[]>();
 
@@ -75,18 +80,44 @@ export class HouseholdMembers implements OnInit {
     // this.dataSource = new MatTableDataSource(this.people());
   }
 
-  getRecord (row: any) {
-    console.log(row);
-    //  this.#householdService.selectedRecordSignal.set(row);
+  getRecord (row: Person) {
+    this.#logger.debug('Selected record:', row);
+
+    // Check if the current form has unsaved changes
+    if (this.#peopleService.isFormDirty()) {
+      // Show confirmation dialog
+      const dialogRef = this.#dialog.open(ConfirmDialog, {
+        width: '400px',
+        data: {
+          title: 'Discard Changes?',
+          message: 'You have unsaved changes. Do you want to discard them and navigate to the selected person?'
+        }
+      });
+
+      dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+        if (confirmed) {
+          // User confirmed - navigate to the selected person
+          this.navigateToPerson(row);
+        }
+        // If not confirmed, do nothing (stay on current person)
+      });
+    } else {
+      // No unsaved changes - navigate directly
+      this.navigateToPerson(row);
+    }
+  }
+
+  private navigateToPerson(person: Person) {
+    this.#peopleService.updateSelectedPerson(person);
+    this.#router.navigate(['/admin/people/detail']);
   }
   addHouseHoldMember () {
-    console.log('results', 'adding household member');
+    this.#logger.info('Adding household member');
     var newPerson = new Person();
-    newPerson.houseId = this.#HouseholdService.selectedHouseholdSignal()?.houseId ?? 0;
+    // Use the correct signal to get the household ID
+    newPerson.houseId = this.#HouseholdService.selectedRecordSignal()?.houseId ?? 0;
+    this.#logger.info('Setting houseId to:', newPerson.houseId);
     this.#peopleService.updateSelectedPerson(newPerson);
-    // this.#peopleService.isEditing.set(false);
-    // this.#peopleService.isAdding.set(true);
-    // this.#peopleService.selectedHouseholdSignal.set(this.results());
     this.#router.navigate(['/admin/people/detail']);
   }
 

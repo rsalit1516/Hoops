@@ -1,20 +1,20 @@
 import { Routes } from '@angular/router';
-import { PageNotFoundStandAloneComponent } from '@app/app.not-found-standalone.component';
+import { PageNotFoundStandAlone } from '@app/app.not-found-standalone';
 
 export const CONTENT_ROUTES: Routes = [
   {
     path: 'edit',
-    //        component: ContentEditComponent,
+    //        component: ContentEdit,
     loadComponent: () =>
-      import('./content-edit/content-edit.component').then(
-        (mod) => mod.ContentEditComponent
+      import('./content-edit/content-edit').then(
+        (mod) => mod.ContentEdit
       ),
   },
   {
     path: 'list',
     loadComponent: () =>
-      import('./content-list/contentList.component').then(
-        (mod) => mod.ContentListComponent
+      import('./content-list/contentList').then(
+        (mod) => mod.ContentList
       ),
   },
 
@@ -24,6 +24,6 @@ export const CONTENT_ROUTES: Routes = [
     pathMatch: 'full',
   },
 
-  { path: '**', component: PageNotFoundStandAloneComponent },
+  { path: '**', component: PageNotFoundStandAlone },
 ];
 

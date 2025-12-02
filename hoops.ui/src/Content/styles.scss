@@ -14,6 +14,29 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Snack bar variants */
+.snack-success {
+  background: #2e7d32 !important;
+  color: #fff;
+}
+.snack-error {
+  background: #c62828 !important;
+  color: #fff;
+}
+.snack-info {
+  background: #1565c0 !important;
+  color: #fff;
+}
+.snack-warn {
+  background: #ed6c02 !important;
+  color: #000;
+}
+/* Dialog panel tweaks for login */
+.csbc-login-dialog-panel .mat-mdc-dialog-container .mdc-dialog__surface {
+  margin: 0 auto;
+  border-radius: 8px;
+}
+
 // @import '~ngular/material/prebuilt-themes/indigo-pink.css';
 // @import "bootstrap/dist/css/bootstrap.css";
 

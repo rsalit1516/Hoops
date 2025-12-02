@@ -61,5 +61,33 @@ namespace Hoops.Controllers
             return Ok(people);
 
         }
+
+        // PUT: api/Person/5
+        [HttpPut("{id}")]
+        public IActionResult PutPerson(int id, Person person)
+        {
+            if (id != person.PersonId)
+            {
+                return BadRequest("Person ID mismatch");
+            }
+
+            try
+            {
+                var updatedPerson = repository.Update(person);
+                repository.SaveChanges();
+                return Ok(updatedPerson);
+            }
+            catch (Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException)
+            {
+                if (repository.GetById(id) == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+        }
     }
 }

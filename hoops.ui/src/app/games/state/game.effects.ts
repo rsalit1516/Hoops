@@ -7,7 +7,7 @@ import { Store, Action, select } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { GameService } from '../../services/game.service';
 import { TeamService } from '@app/services/team.service';
-import { getCurrentDivision, getCurrentTeam } from './';
+import { getCurrentDivision, getCurrentTeam, getCurrentSeason } from './';
 import { SeasonService } from '@app/services/season.service';
 import { HttpClient } from '@angular/common/http';
 import { DataService } from '@app/services/data.service';
@@ -180,18 +180,26 @@ export class GameEffects {
     ofType(gameActions.GameActionTypes.LoadStandings),
     concatMap((action) =>
       of(action).pipe(
-        withLatestFrom(this.store.pipe(select(getCurrentDivision))),
-        tap(([, t]) => {
-          if (t) {
-            this.divisionId = t.divisionId;
+        withLatestFrom(
+          this.store.pipe(select(getCurrentDivision)),
+          this.store.pipe(select(getCurrentSeason))
+        ),
+        tap(([, division, season]) => {
+          if (division) {
+            this.divisionId = division.divisionId;
           } else {
             this.divisionId = 0;
+          }
+          if (season) {
+            this.seasonId = season.seasonId || 0;
+          } else {
+            this.seasonId = 0;
           }
         })
       )
     ),
     switchMap(() =>
-      this.gameService.getStandingsByDivision(this.divisionId).pipe(
+      this.gameService.getStandingsByDivision(this.divisionId, this.seasonId).pipe(
         map((standings) => new gameActions.LoadStandingsSuccess(standings)),
         tap(() => 'got Standings'),
         catchError((err) => of(new gameActions.LoadStandingsFail(err)))

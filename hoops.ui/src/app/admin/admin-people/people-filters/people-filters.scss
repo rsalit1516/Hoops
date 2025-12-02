@@ -1,0 +1,60 @@
+.people-filters-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.alphabetical-filter {
+  width: 100%;
+}
+
+.filter-card {
+  width: 100%;
+}
+
+.filter-form {
+  width: 100%;
+}
+
+.filter-row {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.filter-field {
+  flex: 1;
+  min-width: 200px;
+}
+
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  margin-top: -8px; // Align with input fields
+}
+
+.clear-button {
+  margin-top: 0;
+  align-self: flex-start;
+}
+
+@media (max-width: 768px) {
+  .filter-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-field {
+    width: 100%;
+  }
+
+  .checkbox-field {
+    margin-top: 0;
+  }
+
+  .clear-button {
+    width: 100%;
+  }
+}

@@ -1,89 +1,146 @@
-import { Component, effect, inject, OnInit, signal } from '@angular/core';
-import { PeopleSearch } from '../people-search/people-search';
-import { PeopleAlphabet } from '../people-alphabet/people-alphabet';
-import { PeopleSearchResults } from '../people-search-results/people-search-results';
-import { peopleSearchCriteria, PeopleService } from '@app/services/people.service';
+import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
+import { MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { BaseList } from '@app/admin/shared/BaseList';
+import {
+  TableColumn,
+  GenericMatTableComponent,
+} from '@app/admin/shared/generic-mat-table/generic-mat-table';
+import { Person, PersonListItem } from '@app/domain/person';
+import { PeopleService } from '@app/services/people.service';
+import {
+  PeopleFilterCriteria,
+  PeopleFilters,
+} from '../people-filters/people-filters';
+import { ListPageShellComponent } from '@app/admin/shared/list-page-shell/ListPageShell';
+import { LoggerService } from '@app/services/logger.service';
+import { HouseholdService } from '@app/services/household.service';
+
+// Type for Person with id property for BaseList compatibility
+type PersonWithId = Person & { id: number };
 
 @Component({
   selector: 'csbc-people-list',
-  imports: [PeopleSearch,
-    PeopleAlphabet,
-    PeopleSearchResults
+  imports: [
+    MatTableModule,
+    MatIconModule,
+    MatButtonModule,
+    GenericMatTableComponent,
+    ListPageShellComponent,
+    PeopleFilters,
   ],
-  template: `
-  <div class="row">
-  <csbc-people-search [(selectedFilter)] = "selectedCriteria"/>
-</div>
-<div class="row">
-  <csbc-people-alphabet [(selectedLetter)] = "selectedLetter" />
-</div>
-<div>
-  <csbc-people-search-results />
-</div>`,
-  styleUrl: './people-list.scss'
+  templateUrl: './people-list.html',
+  styleUrls: ['./people-list.scss'],
 })
-export class PeopleList implements OnInit {
-  #peopleService = inject(PeopleService);
-  selectedLetter = signal<string>('A');
-  selectedCriteria = signal<peopleSearchCriteria>({
-    lastName: 'A', firstName: '', playerOnly: false
-  });
+export class PeopleList extends BaseList<PersonWithId> implements OnInit {
+  private peopleService = inject(PeopleService);
+  private householdService = inject(HouseholdService);
+  private logger = inject(LoggerService);
 
-  constructor () {
-    effect(() => {
-      const letter = this.selectedLetter();
-      console.log('Selected letter changed:', letter);
-      this.handleLetterChange(letter); // reacts to changes
-    });
-    effect(() => {
-      const criteria = this.selectedCriteria();
-      console.log('Selected criteria changed:', criteria.lastName, criteria.firstName, criteria.playerOnly);
-      this.handleFilterChange(criteria); // reacts to changes
-    });
-
+  override get basePath(): string {
+    return '/admin/people';
   }
 
-  ngOnInit () {
+  columns: TableColumn<PersonWithId>[] = [
+    { key: 'houseId', header: 'Household', field: 'houseId' },
+    { key: 'lastName', header: 'Last Name', field: 'lastName' },
+    { key: 'firstName', header: 'First Name', field: 'firstName' },
+    { key: 'birthDate', header: 'Birth Date', field: 'birthDate' },
+    { key: 'gender', header: 'Gender', field: 'gender' },
+  ];
+
+  filters = signal<PeopleFilterCriteria>({
+    lastName: 'A',
+    firstName: '',
+    playerOnly: false,
+    letter: 'A',
+  });
+
+  constructor() {
+    super();
+    // Initialize with 'A' filter on construction
+    effect(() => {
+      const currentFilters = this.filters();
+      this.logger.info('People filters changed:', currentFilters);
+    });
+  }
+
+  ngOnInit() {
+    // Check for saved criteria in localStorage
     const saved = localStorage.getItem('peopleSearchCriteria');
-    console.log('Loading saved search criteria:', saved);
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        this.#peopleService.updateSelectedCriteria(parsed); // or signal.
-        // value = parsed if you're outside setup
-        switch (parsed.lastName.length) {
-          case 0:
-            this.selectedLetter.set('');
-            break;
+        this.logger.info('Loading saved search criteria:', parsed);
 
-          case 1:
-            this.selectedLetter.set(parsed.lastName.charAt(0).toUpperCase());
-            break;
-
-          default:
-            this.selectedLetter.set(''); // Default to A if no last name
-
+        // Determine the letter from saved criteria
+        let letter = 'A';
+        if (parsed.lastName && parsed.lastName.length === 1) {
+          letter = parsed.lastName.toUpperCase();
         }
+
+        this.onFilterChange({
+          lastName: parsed.lastName || letter,
+          firstName: parsed.firstName || '',
+          playerOnly: parsed.playerOnly || false,
+          letter: letter,
+        });
       } catch (e) {
-        console.error('Invalid search criteria in storage', e);
+        this.logger.info('Invalid search criteria in storage', e);
         localStorage.removeItem('peopleSearchCriteria');
+        // Load with default 'A' filter
+        this.onFilterChange({ lastName: 'A', firstName: '', playerOnly: false, letter: 'A' });
       }
+    } else {
+      // Load initial data with 'A' filter
+      this.onFilterChange({ lastName: 'A', firstName: '', playerOnly: false, letter: 'A' });
     }
   }
-  handleLetterChange (letter: string) {
-    // this.selectedLetter = letter;
-    this.#peopleService.updateSelectedCriteria({
-      lastName: letter,
-      firstName: '',
-      playerOnly: false
-    });
-  }
-  handleFilterChange (filter: peopleSearchCriteria) {
-    this.#peopleService.updateSelectedCriteria({
-      lastName: filter.lastName,
-      firstName: filter.firstName,
-      playerOnly: filter.playerOnly
+
+  // Computed signal to get people from service
+  people = computed((): PersonWithId[] => {
+    const peopleData = this.peopleService.results();
+    if (!peopleData) return [];
+
+    // Map to ensure 'id' property exists for BaseList compatibility
+    return peopleData.map(person => ({
+      ...person,
+      id: person.personId
+    } as PersonWithId));
+  });
+
+  // Computed signal for filtered people
+  filteredPeople = computed(() => {
+    const people = this.people();
+    const filterCriteria = this.filters();
+
+    if (!filterCriteria || Object.keys(filterCriteria).length === 0) {
+      return people;
+    }
+
+    // Filter logic is handled by the service/backend
+    // This computed just passes through the data
+    return people;
+  });
+
+  onFilterChange(filters: PeopleFilterCriteria): void {
+    this.logger.info('Filter change received:', filters);
+    this.filters.set(filters);
+
+    // Update service criteria and execute search
+    this.peopleService.updateSelectedCriteria({
+      lastName: filters.lastName || filters.letter || '',
+      firstName: filters.firstName || '',
+      playerOnly: filters.playerOnly || false,
     });
   }
 
+  onRowClick(person: PersonWithId): void {
+    this.logger.info('Row clicked:', person);
+    // Pass the full Person object to the service (PersonWithId is a Person with extra id property)
+    this.peopleService.updateSelectedPerson(person);
+    this.householdService.selectedHouseholdByHouseId(person.houseId);
+    this.router.navigate(['..', 'detail'], { relativeTo: this.route });
+  }
 }

@@ -15,7 +15,7 @@ namespace Hoops.Core.Interface
         Task<IEnumerable<ScheduleGame>> GetSeasonGamesAsync(int seasonId);
         // new int Update(ScheduleGame scheduleGame);
         new ScheduleGame Insert(ScheduleGame scheduleGame);
-        IEnumerable<ScheduleStandingsVM> GetStandings(int divisionId);
+        IEnumerable<ScheduleStandingsVM> GetStandings(int seasonId, int divisionId);
         List<vmGameSchedule> GetGames(int seasonId);
         void Add(ScheduleGame scheduleGame);
         Boolean Exists(int id);

@@ -1,0 +1,28 @@
+<div class="top-menu-wrapper">
+  <div class="seasonDescription">
+    <h2>{{ seasonDescription() }}</h2>
+  </div>
+  <mat-toolbar>
+    <mat-toolbar-row>
+      <a
+        class="btn"
+        routerLink="/games/schedule"
+        routerLinkActive="/games/schedule"
+        >Schedule</a
+        >
+        @if (hasPlayoffs()) {
+          <div>
+            <a class="btn" routerLink="/games/playoffs">Playoffs</a>
+          </div>
+        }
+        @if (hasStandings()) {
+          <div>
+            <a class="btn" routerLink="/games/standings">Standings</a>
+          </div>
+        }
+      </mat-toolbar-row>
+      <mat-toolbar-row>
+        <csbc-game-filter [display]="display()" class="" />
+      </mat-toolbar-row>
+    </mat-toolbar>
+  </div>

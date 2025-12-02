@@ -1,1 +1,23 @@
-<p>people-list works!</p>
+<csbc-list-page-shell [title]="'People'" [count]="filteredPeople().length">
+  <div filter>
+    <csbc-people-filters
+      [filters]="filters()"
+      (filterChange)="onFilterChange($event)"
+    />
+  </div>
+
+  <div actions>
+    <button mat-raised-button color="primary" (click)="navigateToNew()">
+      <mat-icon>add</mat-icon>
+      New
+    </button>
+  </div>
+
+  <div list>
+    <app-generic-mat-table
+      [columns]="columns"
+      [data]="filteredPeople()"
+      (rowClick)="onRowClick($event)"
+    />
+  </div>
+</csbc-list-page-shell>

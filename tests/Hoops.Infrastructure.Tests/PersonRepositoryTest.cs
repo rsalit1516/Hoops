@@ -7,81 +7,155 @@ using Moq;
 
 namespace Hoops.Infrastructure.Tests
 {
-    [Collection("TestDatabaseCollection")]
-    public class PersonRepositoryTest : IClassFixture<TestDatabaseFixture>
+    public class PersonRepositoryTest
     {
-        private readonly hoopsContext _context;
-        private readonly PersonRepository _repository;
-
-        // private readonly Mock<ILogger<PersonRepository>> _mockLogger;
-
-        private readonly ILogger<PersonRepository> _logger = new LoggerFactory().CreateLogger<PersonRepository>();
-
-        public PersonRepositoryTest(TestDatabaseFixture fixture)
+        private PersonRepository CreateRepositoryWithSeededContext(string? dbName = null)
         {
             var options = new DbContextOptionsBuilder<hoopsContext>()
- .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
- .Options;
-            _context = new hoopsContext(options);
-            // _context = fixture.Context ?? throw new ArgumentNullException(nameof(fixture.Context), "Context cannot be null");
-            _repository = new PersonRepository(_context, _logger);
-            SeedDatabase();
-        }
-
-        private void SeedDatabase()
-        {
-            var maxHouseId = 0;
-            var maxPersonId = 0;
-            // Add test data to the in-memory database
-            _context.People.AddRange(new List<Person>
+                .UseInMemoryDatabase(databaseName: dbName ?? Guid.NewGuid().ToString())
+                .Options;
+            var context = new hoopsContext(options);
+            var logger = new LoggerFactory().CreateLogger<PersonRepository>();
+            // Seed data
+            context.People.AddRange(new List<Person>
             {
-                new Person { PersonId = maxPersonId + 1, FirstName = "John", LastName = "Doe", Player = true },
-                new Person { PersonId = maxPersonId + 2, FirstName = "Jane", LastName = "Smith", Player = false },
-                new Person { PersonId = maxPersonId + 3, FirstName = "Felix", LastName = "Smith", Player = true },
-                new Person { PersonId = maxPersonId + 4, FirstName = "Minnie", LastName = "Johnson", Player = false },
-         new Person { PersonId = maxPersonId + 5, HouseId = maxHouseId, Parent = true, LastName = "Johnson", FirstName = "John" },
-                new Person { PersonId = maxPersonId + 6,HouseId = maxHouseId, Parent = true, LastName = "Johnson", FirstName = "Jane" }
-
+                new Person { PersonId = 1, FirstName = "John", LastName = "Doe", Player = true },
+                new Person { PersonId = 2, FirstName = "Jane", LastName = "Smith", Player = false },
+                new Person { PersonId = 3, FirstName = "Felix", LastName = "Smith", Player = true },
+                new Person { PersonId = 4, FirstName = "Minnie", LastName = "Johnson", Player = false },
+                new Person { PersonId = 5, HouseId = 1, Parent = true, LastName = "Johnson", FirstName = "John" },
+                new Person { PersonId = 6, HouseId = 1, Parent = true, LastName = "Johnson", FirstName = "Jane" }
             });
-
-            _context.SaveChanges();
+            context.SaveChanges();
+            return new PersonRepository(context, logger);
         }
+
         [Fact]
-        public void GetAll_ReturnPeopleByLastNameFirstNameAndPlayer()
+        public void GetAll_ReturnsAllPeople()
         {
             // Arrange
-
+            var repo = CreateRepositoryWithSeededContext();
             // Act
-            var result = _repository.FindPeopleByLastAndFirstName("Smith", "Jane", false);
+            var people = repo.GetAll();
+            // Assert
+            Assert.NotNull(people);
+            Assert.True(people.Any());
+        }
 
+        [Fact]
+        public void GetPlayers_ReturnsOnlyPlayers()
+        {
+            // Arrange
+            var repo = CreateRepositoryWithSeededContext();
+            // Act
+            var players = repo.GetPlayers(0); // companyId not used in seed
+            // Assert
+            Assert.All(players, p => Assert.True(p.Player));
+        }
+
+        [Fact]
+        public void SearchFor_ReturnsMatchingPeople()
+        {
+            // Arrange
+            var repo = CreateRepositoryWithSeededContext();
+            // Act
+            var result = repo.SearchFor(p => p.LastName == "Smith");
             // Assert
             Assert.NotNull(result);
-            Assert.Equal(1, result.Count());
+            Assert.True(result.Any());
         }
+
+        [Fact]
+        public void Insert_AddsPerson()
+        {
+            // Arrange
+            var repo = CreateRepositoryWithSeededContext();
+            var newPerson = new Person { PersonId = 7, FirstName = "Alice", LastName = "Wonder", Player = false };
+            // Act
+            repo.Insert(newPerson);
+            repo.SaveChanges();
+            // Assert
+            var found = repo.GetById(7);
+            Assert.NotNull(found);
+            Assert.Equal("Alice", found.FirstName);
+        }
+
+        [Fact]
+        public void Update_ChangesPerson()
+        {
+            // Arrange
+            var repo = CreateRepositoryWithSeededContext();
+            var person = repo.GetById(1);
+            person.FirstName = "Johnny";
+            repo.Update(person);
+            repo.SaveChanges();
+            // Assert
+            var updated = repo.GetById(1);
+            Assert.Equal("Johnny", updated.FirstName);
+        }
+
+        [Fact]
+        public void Delete_RemovesPerson()
+        {
+            // Arrange
+            var repo = CreateRepositoryWithSeededContext();
+            var person = repo.GetById(1);
+            repo.Delete(person);
+            repo.SaveChanges();
+            // Assert
+            var deleted = repo.GetById(1);
+            Assert.Null(deleted);
+        }
+
+        [Fact]
+        public void FindPeopleByLastAndFirstName_ReturnsCorrectPerson()
+        {
+            // Arrange
+            var repo = CreateRepositoryWithSeededContext();
+            // Act
+            var result = repo.FindPeopleByLastAndFirstName("Smith", "Jane", false);
+            // Assert
+            Assert.NotNull(result);
+            Assert.Single(result);
+            Assert.Equal("Jane", result.First().FirstName);
+        }
+
+        [Fact]
+        public async Task InsertAsync_AddsPerson()
+        {
+            // Arrange
+            var repo = CreateRepositoryWithSeededContext();
+            var person = new Person { PersonId = 8, FirstName = "Bob", LastName = "Builder", Player = false };
+            // Act
+            var result = await repo.InsertAsync(person);
+            repo.SaveChanges();
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal("Bob", result.FirstName);
+            Assert.Equal("Builder", result.LastName);
+        }
+
         [Fact]
         public void GetParents_ReturnsParents_WhenChildExists()
         {
             // Arrange
+            var repo = CreateRepositoryWithSeededContext();
             var personId = 5;
             // Act
-            var result = _repository.GetParents(personId);
-
+            var result = repo.GetParents(personId);
             // Assert
             Assert.NotNull(result);
             Assert.Equal(2, result.Count);
-            // Assert.Contains("Doe, John", result);
-            // Assert.Contains("Doe, Jane", result);
         }
 
         [Fact]
         public void GetParents_ReturnsEmptyList_WhenChildDoesNotExist()
         {
             // Arrange
+            var repo = CreateRepositoryWithSeededContext();
             var personId = 999999;
-
             // Act
-            var result = _repository.GetParents(personId);
-
+            var result = repo.GetParents(personId);
             // Assert
             Assert.NotNull(result);
             Assert.Empty(result);
@@ -91,62 +165,14 @@ namespace Hoops.Infrastructure.Tests
         public void GetParents_ReturnsEmptyList_WhenNoParentsExist()
         {
             // Arrange
-            var personId = _context.People.Max(p => p.PersonId) + 1;
-            // var houseId = _repository.GetAll().Max(p => p.HouseId) + 1; ;
-            // var child = new Person { PersonId = personId, HouseId = houseId };
-
+            var repo = CreateRepositoryWithSeededContext();
+            var personId = 1000;
             // Act
-            var result = _repository.GetParents(personId);
-
+            var result = repo.GetParents(personId);
             // Assert
             Assert.NotNull(result);
             Assert.Empty(result);
         }
-
-        // [Fact]
-        // public Task GetByHouseholdAsync_ReturnsHouseholdMembers_WhenHouseIdExists()
-        // {
-        //     // Arrange
-        //     // var houseId = 8945;
-        //     // var householdMembers = new Person[]
-        //     // {
-        //     //     new Person { HouseId = houseId, LastName = "Doe", FirstName = "John" },
-        //     //     new Person { HouseId = houseId, LastName = "Doe", FirstName = "Jane" }
-        //     // };
-
-        //     // _repository.Insert(householdMembers[0]);
-        //     // _repository.Insert(householdMembers[1]);
-        //     // _repository.SaveChanges();
-        //     // _mockDbSet.Setup(m => m.Where(It.IsAny<Expression<Func<Person, bool>>>())).Returns(householdMembers);
-
-        //     // Act
-        //     var result = _repository.GetByHousehold(4);
-
-        //     // Assert
-        //     Assert.NotNull(result);
-        //     Assert.Equal(2, result.Count);
-        //     Assert.Contains("Doe, John", result.Select(p => $"{p.LastName}, {p.FirstName}"));
-        //     Assert.Contains("Doe, Jane", result.Select(p => $"{p.LastName}, {p.FirstName}"));
-        //     return Task.CompletedTask;
-        // }
-        [Fact]
-        public async Task InsertAsyncTest()
-        {
-            // Arrange
-            var maxHouseId = 0;
-            var maxPersonId = 0;
-
-            var person = new Person { PersonId = maxPersonId + 6, HouseId = maxHouseId, Parent = true, LastName = "Johnson", FirstName = "Jane" };
-
-            // Act
-            var result = await _repository.InsertAsync(person);
-            _repository.SaveChanges();
-
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal("John", result.FirstName);
-            Assert.Equal("Doe", result.LastName);
-        }
+        // Additional custom method tests can be added here as needed.
     }
 }

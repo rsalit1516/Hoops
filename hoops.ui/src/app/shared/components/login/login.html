@@ -1,0 +1,78 @@
+<div class="login-page">
+  <div class="login-card">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Login</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <form
+          id="loginForm"
+          class="login-form"
+          [formGroup]="loginForm"
+          (ngSubmit)="onSubmitClick()"
+          >
+          @if (!isFormValid && attemptedSubmit) {
+            <mat-error class="error">
+              User Name or password is not valid
+            </mat-error>
+          }
+          <div>
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label for="userName">User Name</mat-label>
+              <input
+                matInput
+                type="text"
+                required
+                formControlName="userName"
+                autocomplete="username"
+                inputmode="email"
+                />
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field appearance="fill" class="full-width">
+                <mat-label for="password">Password</mat-label>
+                <input
+                  matInput
+                  [type]="hidePassword ? 'password' : 'text'"
+                  required
+                  formControlName="password"
+                  autocomplete="current-password"
+                  enterkeyhint="done"
+                  />
+                  <button
+                    mat-icon-button
+                    matSuffix
+                    type="button"
+                    (click)="hidePassword = !hidePassword"
+                    [attr.aria-label]="hidePassword ? 'Show password' : 'Hide password'"
+                    [attr.aria-pressed]="!hidePassword"
+                    >
+                    <mat-icon
+                      >{{ hidePassword ? 'visibility' : 'visibility_off'
+                      }}</mat-icon
+                      >
+                    </button>
+                  </mat-form-field>
+                </div>
+              </form>
+            </mat-card-content>
+            <mat-card-actions>
+              <button
+                mat-raised-button
+                type="submit"
+                form="loginForm"
+                cdkFocusInitial
+                color="primary"
+                [disabled]="saving"
+                >
+                {{ saving ? 'Signing in…' : 'Ok' }}
+              </button>
+
+              <button mat-raised-button color="primary" (click)="onCancelClick()">
+                Cancel
+              </button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      </div>

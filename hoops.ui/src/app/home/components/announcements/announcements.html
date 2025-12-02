@@ -1,0 +1,9 @@
+<div id="contentText" class="row contentText">
+  <div [ngClass]="setNewsClass()">
+    @for (info of contentService.activeWebContent(); track info) {
+    <div class="announcements">
+      <csbc-announcement [info]="info" />
+    </div>
+    }
+  </div>
+</div>

@@ -4,9 +4,9 @@ import { StoreModule } from '@ngrx/store';
 import { reducer } from './state/director.reducer';
 
 import { DirectorRoutingModule } from './director-routing.module';
-import { DirectorShellComponent } from './container/director-shell/director-shell.component';
-import { DirectorListComponent } from './component/director-list/director-list.component';
-import { DirectorEditComponent } from './component/director-edit/director-edit.component';
+import { DirectorShell } from './container/director-shell/director-shell';
+import { DirectorList } from './component/director-list/director-list';
+import { DirectorEdit } from './component/director-edit/director-edit';
 import { EffectsModule } from '@ngrx/effects';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -19,9 +19,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule,
     DirectorRoutingModule,
     StoreModule.forFeature('director', reducer),
-    DirectorShellComponent,
-    DirectorListComponent,
-    DirectorEditComponent
+    DirectorShell,
+    DirectorList,
+    DirectorEdit
 ]
 })
 export class DirectorModule {}

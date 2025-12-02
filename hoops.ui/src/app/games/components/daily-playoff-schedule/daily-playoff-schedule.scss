@@ -1,0 +1,90 @@
+@use "./../../../../Content/variables" as v;
+
+:root {
+  --color-primary: blue;
+  --background-color: blue;
+}
+
+.table-wrapper {
+  width: 100;
+}
+
+.gamedate {
+  color: v.$brand-color;
+  font-weight: 600;
+  font-size: 1.1em;
+  padding-left: 24px;
+  padding-top: 24px;
+  padding-bottom: 8px;
+}
+
+.mat-table {
+  background-color: red;
+  background-color: var(--background-color); //$background-color;
+  color: v.$color;
+  border-radius: 10px;
+}
+
+.mat-table tr {
+  color: v.$color;
+  color: v.$color;
+  font-weight: 400;
+  font-size: v.$table-font-size;
+  width: 100%;
+}
+
+.mat-table tr th {
+  color: v.$color;
+  font-weight: 700;
+  font-size: v.$table-font-size;
+  text-align: center;
+}
+.mat-header-cell {
+  text-align: center;
+}
+
+.mat-table .mat-header-row {
+  height: 32px;
+  border-collapse: collapse;
+  border-spacing: 2px;
+  background-color: v.$card-background-color;
+  position: static;
+}
+
+table .mat-mdc-header-cell {
+  text-align: center;
+}
+
+.mat-row {
+  height: 40px;
+  width: 100%;
+}
+
+.mat-column-gameTime,
+.mat-column-locationName,
+.mat-column-homeTeamScore,
+.mat-column-visitingTeamScore,
+.mat-column-actions {
+  word-wrap: break-word !important;
+  width: 15%;
+  text-align: center;
+}
+
+.mat-column-visitingTeam,
+.mat-column-homeTeam {
+  word-wrap: break-word !important;
+  width: 15% !important;
+  overflow-wrap: break-word;
+  text-align: center;
+}
+
+.gametime {
+  font-weight: 600;
+  min-width: 30px;
+}
+
+.gameDescription {
+  color: v.$brand-color;
+  width: 20%;
+  text-align: center;
+}

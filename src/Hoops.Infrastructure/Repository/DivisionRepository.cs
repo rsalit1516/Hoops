@@ -117,8 +117,9 @@ namespace Hoops.Infrastructure.Repository
         //}
         public int GetPlayerDivision(int companyId, int seasonId, int peopleId)
         {
-            ILogger<PersonRepository> _logger = LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<PersonRepository>();
-            var personRepo = new PersonRepository(context, _logger);
+            // Use NullLogger to avoid creating a console logger that bypasses configuration
+            var nullLogger = new Microsoft.Extensions.Logging.Abstractions.NullLogger<PersonRepository>();
+            var personRepo = new PersonRepository(context, nullLogger);
             var person = personRepo.GetById(peopleId);
             var seasonDivisions = GetDivisions(seasonId);
             var division = seasonDivisions

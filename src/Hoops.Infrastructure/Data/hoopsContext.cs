@@ -11,18 +11,24 @@ public partial class hoopsContext : DbContext
     {
     }
 
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
     public hoopsContext(DbContextOptions<hoopsContext> options)
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
         : base(options)
     {
     }
-
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        if (!optionsBuilder.IsConfigured)
+        {
+            // Use your actual connection string here
+            optionsBuilder.UseSqlServer("Server=localhost,1433;Database=csbchoops;Persist Security Info=False;User ID=sa;Password=@nKbr0407; Encrypt=True;TrustServerCertificate=true;MultipleActiveResultSets=False;Encrypt=True;Connection Timeout=30;")
+                .ConfigureWarnings(warnings => warnings.Ignore(Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.PendingModelChangesWarning));
+        }
+    }
     public virtual DbSet<Coach> Coaches { get; set; }
     public virtual DbSet<Color> Colors { get; set; }
     public virtual DbSet<Comment> Comments { get; set; }
     public virtual DbSet<Company> Companies { get; set; }
-    public virtual DbSet<Content> Content { get; set; }
+    // public virtual DbSet<Content> Content { get; set; }
     public virtual DbSet<Director> Directors { get; set; }
     public virtual DbSet<Division> Divisions { get; set; }
     public virtual DbSet<Household> Households { get; set; }
@@ -32,7 +38,7 @@ public partial class hoopsContext : DbContext
     public virtual DbSet<Role> Roles { get; set; }
     public virtual DbSet<ScheduleDivTeam> ScheduleDivTeams { get; set; }
     public virtual DbSet<ScheduleGame> ScheduleGames { get; set; }
-    public virtual DbSet<ScheduleLocation> ScheduleLocations { get; set; }
+    // public virtual DbSet<ScheduleLocation> ScheduleLocations { get; set; 
     public virtual DbSet<SchedulePlayoff> SchedulePlayoffs { get; set; }
     public virtual DbSet<Season> Seasons { get; set; }
     public virtual DbSet<SponsorFee> SponsorFees { get; set; }
@@ -41,7 +47,7 @@ public partial class hoopsContext : DbContext
     public virtual DbSet<Sponsor> Sponsors { get; set; }
     public virtual DbSet<Team> Teams { get; set; }
     public virtual DbSet<User> Users { get; set; }
-    public virtual DbSet<Version> Version { get; set; }
+    // public virtual DbSet<Version> Version { get; set; }
     public virtual DbSet<WebContent> WebContents { get; set; }
     public virtual DbSet<WebContentType> WebContentTypes { get; set; }
 
@@ -205,6 +211,25 @@ public partial class hoopsContext : DbContext
             entity.Property(e => e.MinDate2).HasColumnType("smalldatetime");
 
             entity.Property(e => e.SeasonId).HasColumnName("SeasonID");
+
+            // Relationships
+            entity.HasOne(d => d.Season)
+                .WithMany(p => p.Divisions)
+                .HasForeignKey(d => d.SeasonId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Divisions_Seasons");
+
+            entity.HasOne(d => d.Director)
+                .WithMany()
+                .HasForeignKey(d => d.DirectorId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Divisions_Directors");
+
+            entity.HasOne(d => d.CoDirector)
+                .WithMany()
+                .HasForeignKey(d => d.CoDirectorId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Divisions_CoDirectors");
         });
 
         // modelBuilder.Entity<Dtproperties>(entity =>
@@ -279,6 +304,28 @@ public partial class hoopsContext : DbContext
             entity.ToTable("People");
             entity.HasKey(e => e.PersonId);
 
+            // Column configurations
+            entity.Property(e => e.PersonId).HasColumnName("PeopleID");
+            entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
+            entity.Property(e => e.HouseId).HasColumnName("MainHouseID");
+            entity.Property(e => e.FirstName).HasMaxLength(50);
+            entity.Property(e => e.LastName).HasMaxLength(50);
+            entity.Property(e => e.Workphone).HasMaxLength(25);
+            entity.Property(e => e.Cellphone).HasMaxLength(15);
+            entity.Property(e => e.Email).HasMaxLength(50);
+            entity.Property(e => e.LatestSeason).HasMaxLength(15);
+            entity.Property(e => e.LatestShirtSize).HasMaxLength(20);
+            entity.Property(e => e.BirthDate).HasColumnType("datetime");
+            entity.Property(e => e.Bc).HasColumnName("BC");
+            entity.Property(e => e.Gender).HasMaxLength(1);
+            entity.Property(e => e.SchoolName).HasMaxLength(50);
+            entity.Property(e => e.GiftedLevelsUp).HasColumnName("GiftedLevelsUP");
+            entity.Property(e => e.Ad).HasColumnName("AD");
+            entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime").HasDefaultValue(DateTime.Now);
+            entity.Property(e => e.CreatedUser).HasMaxLength(20);
+            entity.Property(e => e.TempId).HasColumnName("TEMPID");
+
+            // Indexes
             entity.HasIndex(e => e.Coach)
                 .HasDatabaseName("idx_DCh_12521_12520_People");
 
@@ -288,6 +335,12 @@ public partial class hoopsContext : DbContext
             entity.HasIndex(e => new { e.FirstName, e.LastName })
                 .HasDatabaseName("idx_DCh_14287_14286_People");
 
+            // Relationships
+            entity.HasOne(d => d.Household)
+                .WithMany(p => p.People)
+                .HasForeignKey(d => d.HouseId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_People_Households");
         });
 
         modelBuilder.Entity<Player>(entity =>
@@ -392,17 +445,19 @@ public partial class hoopsContext : DbContext
 
         modelBuilder.Entity<Location>(entity =>
         {
-            entity.ToTable("Location")
-            .HasNoKey();
-            // TO DO: Add the following to the Location table:
-            // entity.HasKey(e => e.Id);
+            entity.ToTable("ScheduleLocations");
+            entity.HasKey(e => e.LocationNumber);
 
-            entity.Property(e => e.LocationNumber);
+            entity.Property(e => e.LocationNumber)
+                .HasColumnName("LocationNumber")
+                .ValueGeneratedOnAdd()
+                .UseIdentityColumn();
 
             entity.Property(e => e.LocationName)
-            .HasMaxLength(50);
+                .HasMaxLength(50);
 
-            // entity.Property(e => e.Notes).IsRequired();
+            entity.Property(e => e.Notes)
+                .HasMaxLength(100);
         });
 
         // modelBuilder.Entity<SchDivisions>(entity =>
@@ -470,7 +525,15 @@ public partial class hoopsContext : DbContext
         modelBuilder.Entity<ScheduleDivTeam>(entity =>
         {
             entity.ToTable("ScheduleDivTeams");
+
+            // Primary key is ScheduleDivTeamsId
             entity.HasKey(e => e.ScheduleDivTeamsId);
+
+            // Configure ScheduleDivTeamsId as identity column
+            entity.Property(e => e.ScheduleDivTeamsId)
+                .ValueGeneratedOnAdd();
+
+            // Configure the index
             entity.HasIndex(e => new { e.ScheduleNumber, e.TeamNumber })
                 .HasDatabaseName("IX_ScheduleDivTeams");
         });
@@ -479,8 +542,10 @@ public partial class hoopsContext : DbContext
         {
             entity.ToTable("ScheduleGames");
             entity.HasKey(e => e.ScheduleGamesId);
-            // entity.Property(e => e.ScheduleGamesId)
-            // .UseIdentityColumn(seed: 0, increment: 1); 
+
+            entity.Property(e => e.ScheduleGamesId)
+                .HasColumnName("ScheduleGamesID")
+                .ValueGeneratedOnAdd();
 
             entity.HasIndex(e => new { e.SeasonId, e.DivisionId, e.GameNumber })
                 .HasDatabaseName("IX_ScheduleGames");
@@ -492,8 +557,42 @@ public partial class hoopsContext : DbContext
                 .HasDatabaseName("idx_DCh_1924_1923_ScheduleGames");
 
             entity.Property(e => e.GameDate).HasColumnType("datetime");
-
             entity.Property(e => e.GameTime).HasMaxLength(20);
+            entity.Property(e => e.SeasonId).HasColumnName("SeasonID");
+            entity.Property(e => e.DivisionId).HasColumnName("DivisionID");
+
+            // Configure the visiting team relationship
+            entity.HasOne(d => d.VisitingTeam)
+                .WithMany(p => p.VisitingGames)
+                .HasForeignKey(d => d.VisitingTeamNumber)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ScheduleGames_VisitingTeam");
+
+            // Configure the home team relationship
+            entity.HasOne(d => d.HomeTeam)
+                .WithMany(p => p.HomeGames)
+                .HasForeignKey(d => d.HomeTeamNumber)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ScheduleGames_HomeTeam");
+
+            // Configure other relationships
+            entity.HasOne(d => d.Season)
+                .WithMany(p => p.ScheduleGames)
+                .HasForeignKey(d => d.SeasonId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ScheduleGames_Season");
+
+            entity.HasOne(d => d.Division)
+                .WithMany(p => p.ScheduleGames)
+                .HasForeignKey(d => d.DivisionId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ScheduleGames_Division");
+
+            entity.HasOne(d => d.Location)
+                .WithMany()
+                .HasForeignKey(d => d.LocationNumber)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ScheduleGames_Location");
         });
 
         // modelBuilder.Entity<ScheduleGamesStats>(entity =>
@@ -509,30 +608,34 @@ public partial class hoopsContext : DbContext
         //     entity.Property(e => e.SeasonId).HasColumnName("SeasonID");
         // });
 
-        modelBuilder.Entity<ScheduleLocation>(entity =>
-        {
-            entity.HasKey(e => e.LocationNumber);
-            entity.Property(e => e.LocationName).HasMaxLength(50);
-            entity.Property(e => e.Notes).HasMaxLength(100);
-        });
-
-
-        // modelBuilder.Entity<SchedulePlayoff>(entity =>
+        // modelBuilder.Entity<ScheduleLocation>(entity =>
         // {
-        //     entity.HasKey(e => e.ScheduleNumber);
-        //     entity.HasKey(e => e.GameNumber);
-        //     entity.Property(e => e.Descr).HasMaxLength(50);
-        //     entity.Property(e => e.GameDate).HasColumnType("datetime");
-        //     entity.Property(e => e.GameTime).HasMaxLength(20);
-        //     entity.Property(e => e.HomeTeam).HasMaxLength(10);
-        //     entity.Property(e => e.VisitingTeam).HasMaxLength(10);
+        //     entity.HasKey(e => e.LocationNumber);
+        //     entity.Property(e => e.LocationName).HasMaxLength(50);
+        //     entity.Property(e => e.Notes).HasMaxLength(100);
         // });
+
+        modelBuilder.Entity<SchedulePlayoff>(entity =>
+        {
+            entity.ToTable("SchedulePlayoffs");
+            entity.HasKey(e => e.SchedulePlayoffId);
+            entity.Property(e => e.SchedulePlayoffId).HasColumnName("SchedulePlayoffID");
+            entity.Property(e => e.DivisionId).HasColumnName("DivisionId");
+            entity.Property(e => e.GameDate).HasColumnType("datetime2");
+
+            // Add compound unique constraint on ScheduleNumber + GameNumber
+            entity.HasIndex(e => new { e.ScheduleNumber, e.GameNumber })
+                  .IsUnique()
+                  .HasDatabaseName("UQ_SchedulePlayoffs_Schedule_Game");
+        });
 
 
         modelBuilder.Entity<Season>(entity =>
         {
             entity.ToTable("Seasons");
             entity.HasKey(e => e.SeasonId);
+
+            // Column configurations
             entity.Property(e => e.SeasonId).HasColumnName("SeasonID");
             entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
             entity.Property(e => e.ConvenienceFee).HasColumnType("money");
@@ -542,15 +645,27 @@ public partial class hoopsContext : DbContext
             entity.Property(e => e.ParticipationFee).HasColumnType("money");
             entity.Property(e => e.Description)
                 .HasColumnName("Sea_Desc")
-                .HasMaxLength(50);
+                .HasMaxLength(50)
+                .IsRequired();
             entity.Property(e => e.SignUpsDate).HasColumnType("smalldatetime");
             entity.Property(e => e.SignUpsEnd)
                 .HasColumnName("SignUpsEND")
                 .HasColumnType("smalldatetime");
-
             entity.Property(e => e.SponsorFee).HasColumnType("money");
-
             entity.Property(e => e.ToDate).HasColumnType("smalldatetime");
+
+            // Indexes for performance
+            entity.HasIndex(e => e.CompanyId)
+                .HasDatabaseName("IX_Seasons_CompanyId");
+
+            entity.HasIndex(e => e.CurrentSeason)
+                .HasDatabaseName("IX_Seasons_CurrentSeason");
+
+            entity.HasIndex(e => new { e.FromDate, e.ToDate })
+                .HasDatabaseName("IX_Seasons_DateRange");
+
+            entity.HasIndex(e => new { e.SignUpsDate, e.SignUpsEnd })
+                .HasDatabaseName("IX_Seasons_SignUpDates");
         });
 
         modelBuilder.Entity<SponsorFee>(entity =>
@@ -814,7 +929,44 @@ public partial class hoopsContext : DbContext
 
             entity.Property(e => e.TeamName).HasMaxLength(50);
 
-            entity.Property(e => e.TeamNumber).HasMaxLength(2);
+            entity.Property(e => e.TeamNumber).HasMaxLength(4);
+
+            // Relationships
+            entity.HasOne(d => d.Season)
+                .WithMany(p => p.Teams)
+                .HasForeignKey(d => d.SeasonId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Teams_Seasons");
+
+            entity.HasOne(d => d.Division)
+                .WithMany(p => p.Teams)
+                .HasForeignKey(d => d.DivisionId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Teams_Divisions");
+
+            entity.HasOne(d => d.Coach)
+                .WithMany()
+                .HasForeignKey(d => d.CoachId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Teams_Coaches");
+
+            entity.HasOne(d => d.AssistantCoach)
+                .WithMany()
+                .HasForeignKey(d => d.AssCoachId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Teams_AssistantCoaches");
+
+            entity.HasOne(d => d.Sponsor)
+                .WithMany()
+                .HasForeignKey(d => d.SponsorId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Teams_Sponsors");
+
+            entity.HasOne(d => d.Color)
+                .WithMany()
+                .HasForeignKey(d => d.TeamColorId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Teams_Colors");
         });
 
         modelBuilder.Entity<WebContent>(entity =>
@@ -855,7 +1007,9 @@ public partial class hoopsContext : DbContext
             entity.HasIndex(e => e.UserName)
                 .HasDatabaseName("idx_DCh_4811_4810_Users");
 
-            entity.Property(e => e.UserId).HasColumnName("UserID");
+            entity.Property(e => e.UserId)
+                .HasColumnName("UserID")
+                .ValueGeneratedOnAdd();
 
             entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
 
@@ -879,14 +1033,14 @@ public partial class hoopsContext : DbContext
 
         });
 
-        modelBuilder.Entity<Version>(entity =>
-{
-    entity.HasNoKey();
+        // modelBuilder.Entity<Version>(entity =>
+        // {
+        //     entity.HasNoKey();
 
-    // entity.Property(e => e.CreateDate).HasColumnType("datetime");
+        //     // entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
-    // entity.Property(e => e.Version1).HasColumnName("Version");
-});
+        //     // entity.Property(e => e.Version1).HasColumnName("Version");
+        // });
 
         // modelBuilder.Entity<VwAllSponsors>(entity =>
         // {
@@ -2081,7 +2235,7 @@ public partial class hoopsContext : DbContext
         // });
 
 
-        modelBuilder.Entity<User>().HasData(new User { UserId = 1, UserName = "TestUser", UserType = 0 });
+
 
         OnModelCreatingPartial(modelBuilder);
     }

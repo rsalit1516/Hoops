@@ -1,0 +1,90 @@
+<h1 mat-dialog-title>Scores</h1>
+<div mat-dialog-content>
+  <form
+    id="gameScoreForm"
+    class="example-form"
+    [formGroup]="gameScoreForm"
+    (ngSubmit)="onSubmitClick()"
+    >
+    <div>
+      <div class="teamName">{{ game()?.homeTeamName }}:</div>
+      <mat-form-field appearance="fill">
+        <input
+          matInput
+          type="number"
+          formControlName="homeTeamScore"
+          min="0"
+          max="150"
+          step="1"
+          inputmode="numeric"
+          aria-label="Home team score"
+          />
+          @if (homeTeamScoreCtrl.hasError('required')) {
+            <mat-error
+              >Required</mat-error
+              >
+          }
+          @if (homeTeamScoreCtrl.hasError('min')) {
+            <mat-error>Min 0</mat-error>
+          }
+          @if (homeTeamScoreCtrl.hasError('max')) {
+            <mat-error>Max 150</mat-error>
+          }
+          @if (homeTeamScoreCtrl.hasError('integer')) {
+            <mat-error
+              >Whole number only</mat-error
+              >
+            }
+          </mat-form-field>
+        </div>
+
+        <div>
+          <div class="teamName">{{ game()?.visitingTeamName }}:</div>
+          <mat-form-field appearance="fill">
+            <input
+              matInput
+              type="number"
+              formControlName="visitorTeamScore"
+              min="0"
+              max="150"
+              step="1"
+              inputmode="numeric"
+              aria-label="Visiting team score"
+              />
+              @if (visitorTeamScoreCtrl.hasError('required')) {
+                <mat-error
+                  >Required</mat-error
+                  >
+              }
+              @if (visitorTeamScoreCtrl.hasError('min')) {
+                <mat-error
+                  >Min 0</mat-error
+                  >
+                }
+                @if (visitorTeamScoreCtrl.hasError('max')) {
+                  <mat-error
+                    >Max 150</mat-error
+                    >
+                  }
+                  @if (visitorTeamScoreCtrl.hasError('integer')) {
+                    <mat-error
+                      >Whole number only</mat-error
+                      >
+                    }
+                  </mat-form-field>
+                </div>
+              </form>
+            </div>
+            <!-- <div>{{game$ | async}}</div> -->
+            <div mat-dialog-actions>
+              <button
+                mat-raised-button
+                type="submit"
+                form="gameScoreForm"
+                [disabled]="!canSubmit"
+                cdkFocusInitial
+                >
+                Ok
+              </button>
+              <button mat-raised-button (click)="onCancelClick()">Cancel</button>
+            </div>

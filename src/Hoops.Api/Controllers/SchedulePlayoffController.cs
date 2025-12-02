@@ -82,18 +82,21 @@ namespace Hoops.Controllers
         }
 
 
-        // PUT: api/ScheduleGame/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
+        // PUT: api/SchedulePlayoff/{id}
+        // Updates an existing playoff game. "id" represents ScheduleNumber; GameNumber is taken from body.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutScheduleGame(int id, SchedulePlayoff schedulePlayoff)
+        public async Task<IActionResult> PutSchedulePlayoff(int id, SchedulePlayoff schedulePlayoff)
         {
             _logger.LogInformation("Retrieving division standings");
-            // TODO: Fix the put !!!
-            // if (id != schedulePlayoff.SchedulePlayoffId)
-            // {
-            //     return BadRequest();
-            // }
+            if (schedulePlayoff == null)
+            {
+                return BadRequest();
+            }
+            // Guard: route id should match body schedule number if provided
+            if (id != 0 && schedulePlayoff.ScheduleNumber != 0 && id != schedulePlayoff.ScheduleNumber)
+            {
+                return BadRequest("Route id and body ScheduleNumber must match.");
+            }
 
             repository.Update(schedulePlayoff);
 
@@ -116,37 +119,104 @@ namespace Hoops.Controllers
             return NoContent();
         }
 
-        // POST: api/ScheduleGame
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPost]
-        public async Task<ActionResult<ScheduleGame>> PostScheduleGame(ScheduleGame scheduleGame)
+        // PUT: api/SchedulePlayoff/{scheduleNumber}/{gameNumber}
+        // Updates an existing playoff game using composite keys
+        [HttpPut("{scheduleNumber:int}/{gameNumber:int}")]
+        public async Task<IActionResult> PutSchedulePlayoffByKeys(int scheduleNumber, int gameNumber, SchedulePlayoff schedulePlayoff)
         {
-            _context.ScheduleGames.Add(scheduleGame);
-            await _context.SaveChangesAsync();
+            if (schedulePlayoff == null)
+            {
+                return BadRequest();
+            }
 
-            return CreatedAtAction("GetScheduleGame", new { id = scheduleGame.ScheduleGamesId }, scheduleGame);
-        }
-
-        // DELETE: api/ScheduleGame/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<ScheduleGame>> DeleteScheduleGame(int id)
-        {
-            var scheduleGame = await _context.ScheduleGames.FindAsync(id);
-            if (scheduleGame == null)
+            // Load existing by composite keys to ensure we update the correct entity
+            var existing = repository.GetByScheduleAndGameNo(scheduleNumber, gameNumber);
+            if (existing == null)
             {
                 return NotFound();
             }
 
-            _context.ScheduleGames.Remove(scheduleGame);
-            await _context.SaveChangesAsync();
+            // Copy over updatable fields
+            existing.LocationNumber = schedulePlayoff.LocationNumber;
+            existing.GameDate = schedulePlayoff.GameDate;
+            existing.GameTime = schedulePlayoff.GameTime;
+            existing.VisitingTeam = schedulePlayoff.VisitingTeam;
+            existing.HomeTeam = schedulePlayoff.HomeTeam;
+            existing.Descr = schedulePlayoff.Descr;
+            existing.VisitingTeamScore = schedulePlayoff.VisitingTeamScore;
+            existing.HomeTeamScore = schedulePlayoff.HomeTeamScore;
+            existing.DivisionId = schedulePlayoff.DivisionId;
 
-            return scheduleGame;
+            // Save modifications on the tracked entity
+            await repository.SaveChangesAsync();
+            return NoContent();
+        }
+
+        // POST: api/SchedulePlayoff
+        // Creates a new playoff game. If GameNumber is 0, repository will assign next number for the ScheduleNumber.
+        [HttpPost]
+        public async Task<ActionResult<SchedulePlayoff>> PostSchedulePlayoff(SchedulePlayoff schedulePlayoff)
+        {
+            if (schedulePlayoff == null)
+            {
+                return BadRequest();
+            }
+            var created = repository.Insert(schedulePlayoff);
+            await repository.SaveChangesAsync();
+            // Return with a route pointing to season endpoint for convenience
+            return CreatedAtAction(nameof(GetScheduleGame), new { id = created.GameNumber }, created);
+        }
+
+        // DELETE: api/SchedulePlayoff/{scheduleNumber}/{gameNumber}
+        [HttpDelete("{scheduleNumber:int}/{gameNumber:int}")]
+        public ActionResult DeleteSchedulePlayoff(int scheduleNumber, int gameNumber)
+        {
+            var existing = repository.GetByScheduleAndGameNo(scheduleNumber, gameNumber);
+            if (existing == null)
+            {
+                return NotFound();
+            }
+            repository.Delete(existing);
+            repository.SaveChanges();
+            return NoContent();
+        }
+
+        // PUT: api/SchedulePlayoff/by-id/{schedulePlayoffId}
+        // Updates an existing playoff game using primary key
+        [HttpPut("by-id/{schedulePlayoffId:int}")]
+        public async Task<IActionResult> PutSchedulePlayoffById(int schedulePlayoffId, SchedulePlayoff schedulePlayoff)
+        {
+            if (schedulePlayoff == null)
+            {
+                return BadRequest();
+            }
+
+            var existing = await _context.SchedulePlayoffs.FirstOrDefaultAsync(x => x.SchedulePlayoffId == schedulePlayoffId);
+            if (existing == null)
+            {
+                return NotFound();
+            }
+
+            // Update fields
+            existing.ScheduleNumber = schedulePlayoff.ScheduleNumber;
+            existing.GameNumber = schedulePlayoff.GameNumber;
+            existing.LocationNumber = schedulePlayoff.LocationNumber;
+            existing.GameDate = schedulePlayoff.GameDate;
+            existing.GameTime = schedulePlayoff.GameTime;
+            existing.VisitingTeam = schedulePlayoff.VisitingTeam;
+            existing.HomeTeam = schedulePlayoff.HomeTeam;
+            existing.Descr = schedulePlayoff.Descr;
+            existing.VisitingTeamScore = schedulePlayoff.VisitingTeamScore;
+            existing.HomeTeamScore = schedulePlayoff.HomeTeamScore;
+            existing.DivisionId = schedulePlayoff.DivisionId;
+
+            await _context.SaveChangesAsync();
+            return NoContent();
         }
 
         private bool ScheduleGameExists(int id)
         {
-            return _context.ScheduleGames.Any(e => e.ScheduleGamesId == id);
+            return _context.SchedulePlayoffs.Any(e => e.GameNumber == id);
         }
 
 

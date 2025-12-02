@@ -3,6 +3,8 @@ using Hoops.Core.Interface;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Hoops.Application.Services;
+using System.Linq;
+using System;
 
 namespace Hoops.Controllers
 {
@@ -12,8 +14,8 @@ namespace Hoops.Controllers
     {
         private readonly ISeasonRepository repository;
         public ISeasonRepository Seasons { get; set; }
-        private readonly SeasonService _seasonService;
-        public SeasonController(ISeasonRepository repository, SeasonService seasonService)
+        private readonly ISeasonService _seasonService;
+        public SeasonController(ISeasonRepository repository, ISeasonService seasonService)
         {
             this.repository = repository;
             this._seasonService = seasonService;
@@ -26,8 +28,11 @@ namespace Hoops.Controllers
         [HttpGet]
         public async Task<IActionResult> GetSeason()
         {
-            // return Ok(await repository.GetAllAsync(1));
             var seasons = await _seasonService.GetAllSeasonsAsync();
+            if (seasons == null || !seasons.Any())
+            {
+                return NotFound();
+            }
             return Ok(seasons);
         }
 
@@ -40,13 +45,15 @@ namespace Hoops.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCurrentSeason(int id)
         {
-            var season = repository.GetCurrentSeason(1);
-            if (season == null)
+            try
+            {
+                var season = await _seasonService.GetCurrentSeasonAsync(1);
+                return Ok(season);
+            }
+            catch (InvalidOperationException)
             {
                 return NotFound();
             }
-
-            return Ok(await season);
         }
 
         /// <summary>
@@ -78,6 +85,7 @@ namespace Hoops.Controllers
                 return BadRequest();
             }
             var newSeason = repository.Update(season);
+            repository.SaveChanges();
 
             return Ok(newSeason);
         }
@@ -88,7 +96,9 @@ namespace Hoops.Controllers
         [HttpPost]
         public ActionResult<Season> PostSeason(Season season)
         {
-            return Ok(repository.Insert(season));
+            var created = repository.Insert(season);
+            repository.SaveChanges();
+            return Ok(created);
         }
 
         // DELETE: api/Season/5

@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rm:*)",
+      "Bash(test:*)",
+      "mcp__ide__getDiagnostics",
+      "Bash(dotnet test:*)",
+      "Bash(curl:*)",
+      "Bash(npm run lint:*)",
+      "Bash(npx ng build:*)",
+      "Bash(npm run build:*)",
+      "Bash(dotnet build:*)",
+      "Bash(npm start)",
+      "Bash(timeout 30 cmd:*)",
+      "Bash(timeout 10 cmd:*)",
+      "Bash(dotnet ef dbcontext script:*)",
+      "WebFetch(domain:angular.dev)",
+      "Bash(npm install:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

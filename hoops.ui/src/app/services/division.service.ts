@@ -3,17 +3,22 @@ import { Division } from '../domain/division';
 import { Season } from '../domain/season';
 import { DataService } from './data.service';
 import { SeasonService } from './season.service';
-import { HttpClient, HttpErrorResponse, httpResource } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import {
-  Injectable, WritableSignal, computed, effect, inject, signal,
+  Injectable,
+  WritableSignal,
+  computed,
+  effect,
+  inject,
+  signal,
 } from '@angular/core';
 import { of, Subject } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 
 import * as fromAdmin from '../admin/state';
 import { Constants } from '@app/shared/constants';
-import { setErrorMessage } from '@app/shared/error-message';
-import { LoggerService } from './logging.service';
+// import { setErrorMessage } from '@app/shared/error-message';
+import { LoggerService } from './logger.service';
 
 @Injectable({
   providedIn: 'root',
@@ -23,42 +28,55 @@ export class DivisionService {
   // private constants = inject(Constants);
   #http = inject(HttpClient);
   #dataService = inject(DataService);
-  #seasonService = inject(SeasonService);
+  private readonly seasonService = inject(SeasonService);
   #store = inject(Store<fromAdmin.State>);
-  #logger = inject(LoggerService);
-  selectedSeason = computed(() => this.#seasonService.selectedSeason);
-  _selectedDivision = signal<Division | undefined>(undefined);
-  get selectedDivision () {
-    return this._selectedDivision();
-  }
+  private readonly logger = inject(LoggerService);
+  selectedSeason = computed(() => this.seasonService.selectedSeason);
 
-  updateSelectedDivision (division: Division) {
-    this._selectedDivision.update(() => division);
+  selectedDivision = signal<Division | undefined>(undefined);
+
+  updateSelectedDivision(division: Division) {
+    this.logger.debug('Selected division updated', division);
+    this.selectedDivision.set(division);
+    // Keep currentDivision in sync with the selected one
+    this.setCurrent(division);
+    // Persist last selected division for this season (client-side only)
+    try {
+      const seasonId = division.seasonId || this.seasonId || 0;
+      if (seasonId) {
+        localStorage.setItem(
+          `games:lastDivision:${seasonId}`,
+          String(division.divisionId ?? 0)
+        );
+      }
+    } catch {}
   }
 
   _seasonDivisions: WritableSignal<Division[]> = signal([]);
-  get seasonDivisions () {
-    return this._seasonDivisions.asReadonly();
-  }
-  updateSeasonDivisions (seasonDivisions: Division[]) {
-    this._seasonDivisions.set(seasonDivisions);
+  seasonDivisions = signal<Division[] | undefined>(undefined);
+  updateSeasonDivisions(seasonDivisions: Division[]) {
+    this.seasonDivisions.set(seasonDivisions);
   }
   // seasonDivisions = signal<Division[] | undefined>(undefined);
   _division = signal<Division>(new Division());
-  get division () {
+  get division() {
     return this._division;
   }
 
-  updateDivision (division: Division) {
+  updateDivision(division: Division) {
     this._division.set(division);
   }
 
-  createTemporaryDivision (divisionName: string) {
+  createTemporaryDivision(divisionName: string) {
     const division = this.getDefaultDivision(divisionName);
-    console.log(division);
+    this.logger.debug(
+      'Creating temporary division from name',
+      divisionName,
+      division
+    );
     // this.division.set(division);
     this.updateDivision(division);
-    console.log(this.division());
+    this.logger.debug('Division signal value', this.division());
     this.currentDivision;
   }
 
@@ -70,15 +88,13 @@ export class DivisionService {
     seasonDivisions: [],
     error: null,
   });
-  seasonR = computed(() => this.#seasonService.season1);
+  seasonR = computed(() => this.seasonService.season1);
   private divisionUrl = Constants.SEASON_DIVISIONS_URL;
-
-  private divisionResource = httpResource<DivisionResponse>(() =>
-    `${ this.divisionUrl + this.selectedSeason()?.seasonId }`);
-
-  divisions = computed(() => this.divisionResource.value()?.results ?? [] as Division[]);
-  error = computed(() => this.divisionResource.error() as HttpErrorResponse);
-  errorMessage = computed(() => setErrorMessage(this.error(), 'Vehicle'));
+  // Expose a simple error signal so components can bind to it
+  private _error = signal<HttpErrorResponse | null>(null);
+  error = computed(() => this._error());
+  // Removed eager httpResource to avoid requests with seasonId undefined (400s).
+  // We fetch explicitly in effect() once a valid seasonId is available.
   //  isLoading = this.divisionResource.isLoading;
   // selectors
   isLoading = computed(() => this.state().isLoading);
@@ -90,18 +106,18 @@ export class DivisionService {
   private selectedIdSubject = new Subject<Division>();
 
   private _season: Season | undefined;
-  set season (value: Season | undefined) {
+  set season(value: Season | undefined) {
     this._season = value;
   }
-  get season () {
+  get season() {
     return this._season;
   }
 
   private _seasonId!: number;
-  get seasonId () {
+  get seasonId() {
     return this._seasonId;
   }
-  set seasonId (seasonId: number) {
+  set seasonId(seasonId: number) {
     this._seasonId = seasonId;
   }
   // divisions: Division[];
@@ -120,23 +136,32 @@ export class DivisionService {
     gender2: 'M',
     seasonId: 0,
     companyId: 1,
-    directorId: 0,
+    directorId: null,
   });
 
   // divisions: WritableSignal<Division[] | undefined> = signal<
   //   Division[] | undefined
   // >(undefined);
 
-
-  constructor () {
+  constructor() {
     effect(() => {
-      const season = this.#seasonService.selectedSeason;
-      if (season !== null) {
-        this.getSeasonDivisions(season.seasonId ?? 0);
-        this.#logger.log(season);
-        //     console.log(this.seasonDivisions());
+      const season = this.seasonService.selectedSeason();
+      this.logger.info('Season changed in division service', season);
+      this.logger.debug(
+        'SeasonId changed in division service',
+        this.seasonService.selectedSeason()?.seasonId
+      );
+      const sid = season?.seasonId ?? 0;
+      this.logger.debug('Active seasonId', sid);
+
+      if (sid > 0) {
+        // Track the active season id for consumers that need it (e.g., editors on save)
+        this.seasonId = sid;
+        this.season = season;
+        this.getSeasonDivisions(sid);
+        this.logger.info(season);
       }
-    })
+    });
     // this.#store.pipe(select(fromAdmin.getSelectedSeason)).subscribe((season) => {
     //   this.season = season;
     // });
@@ -157,70 +182,105 @@ export class DivisionService {
   // setSeasonDivisions (seasonDivisions: Division[]): void {
   //   throw new Error('Method not implemented.');
   // }
-  setLoadingIndicator (isLoading: boolean): void {
-    this.state.update(state => ({
+  setLoadingIndicator(isLoading: boolean): void {
+    this.state.update((state) => ({
       ...state,
-      isLoading: isLoading
+      isLoading: isLoading,
     }));
   }
 
-  setCurrentDivision (id: number): void {
-    console.log(id);
+  setCurrentDivision(id: number): void {
+    this.logger.debug('Setting current division by id', id);
     const division = this.getCurrentDivisionById(id);
-    this.state.update(state => ({
+    this.state.update((state) => ({
       ...state,
-      currentDivision: division
+      currentDivision: division,
     }));
-    console.log(this.state());
+    this.logger.debug('Division state after setCurrentDivision', this.state());
   }
-  setCurrent (division: Division): void {
-    this.state.update(state => ({
+  setCurrent(division: Division): void {
+    this.state.update((state) => ({
       ...state,
-      currentDivision: division
+      currentDivision: division,
     }));
-    console.log(this.state);
+    this.logger.debug('Division state after setCurrent', this.state);
   }
 
-  getSeasonDivisions (id: number): void {
+  getSeasonDivisions(id: number): void {
     const url = Constants.SEASON_DIVISIONS_URL + id;
-    // this.#logger.log(url);
-    this.#http
-      .get<Division[]>(url)
-      .subscribe((data) => {
+    this.logger.info(url);
+    this.#http.get<Division[]>(url).subscribe(
+      (data) => {
         this.updateSeasonDivisions(data);
-        this.updateSelectedDivision(data[0]);
-        console.log(this.seasonDivisions());
+        this._error.set(null);
+        // Preserve existing selection if it exists in the latest payload
+        const existing = this.selectedDivision();
+        let toSelect: Division | undefined = undefined;
+        if (existing) {
+          toSelect = data.find((d) => d.divisionId === existing.divisionId);
+        }
+        // Otherwise, try restoring previously selected division for this season
+        if (!toSelect) {
+          try {
+            const stored = localStorage.getItem(`games:lastDivision:${id}`);
+            if (stored) {
+              const storedId = Number(stored);
+              if (Number.isFinite(storedId)) {
+                toSelect = data.find((d) => d.divisionId === storedId);
+              }
+            }
+          } catch {}
+        }
+        // Fallback to first item only when we have nothing else
+        const finalSelection = toSelect ?? data[0];
+        if (finalSelection) {
+          this.updateSelectedDivision(finalSelection);
+        }
+        this.logger.debug('Season divisions loaded', this.seasonDivisions());
       },
-        (error) => { catchError(() => of([])) }
-      );
+      (error) => {
+        try {
+          this._error.set(error as HttpErrorResponse);
+        } catch {}
+        this.updateSeasonDivisions([]);
+      }
+    );
   }
 
-  getDivision (division: Division) {
+  getDivision(division: Division) {
     this.selectedIdSubject.next(division);
   }
 
-  getCurrentDivisionById (id: number) {
+  getCurrentDivisionById(id: number) {
     let division = new Division();
-    console.log(this.seasonDivisions);
-    console.log(id);
-    for (const item of this.seasonDivisions()) {
-      if (item.divisionId === id) {
-        division = item;
-        console.log(division);
-        return item;
+    this.logger.debug(
+      'Get current division by id - divisions signal',
+      this.seasonDivisions
+    );
+    this.logger.debug('Get current division by id - id', id);
+    if (this.seasonDivisions) {
+      for (const item of this.seasonDivisions()!) {
+        if (item.divisionId === id) {
+          division = item;
+          this.logger.debug('Matched division', division);
+          return item;
+        }
       }
+      this.logger.warn('Division: Found nothing!');
+      return new Division();
+    } else {
+      return new Division();
     }
-    return division;
   }
 
   // getSeasonDivisions (id: number) {
   //   return toSignal(this.getSeasonDivisions(id));
   // }
 
-  getSelectedSeasonDivisions () {
+  getSelectedSeasonDivisions() {
     this.#http.get<Division[]>(Constants.SEASON_DIVISIONS_URL + this.seasonId);
   }
-  standardDivisions () {
+  standardDivisions() {
     return [
       Constants.TR2COED,
       Constants.TR4,
@@ -235,7 +295,7 @@ export class DivisionService {
     ];
   }
 
-  getDefaultDivision (name: string): Division {
+  getDefaultDivision(name: string): Division {
     let division = new Division();
     division.companyId = 1;
     division.seasonId = this.season?.seasonId ?? 0;
@@ -319,35 +379,43 @@ export class DivisionService {
     return division;
   }
 
-  getDivisionMinDate (years: number): Date {
+  getDivisionMinDate(years: number): Date {
     let year = new Date().getFullYear() - years;
     let date = new Date('09/01/' + year);
     // console.log(date);
     // date.setFullYear(date.getFullYear() - years);
     return date;
   }
-  getDivisionMaxDate (years: number): Date {
+  getDivisionMaxDate(years: number): Date {
     let year = new Date().getFullYear() - years;
     let date = new Date('08/31/' + year);
     return date;
   }
 
-  save (division: Division) {
-    console.log(division);
+  save(division: Division) {
+    this.logger.debug('Saving division', division);
     if (division.divisionId !== 0) {
-      console.log('update');
-      return this.#dataService.put<Division>(Constants.DIVISION_URL + '/' + division.divisionId, division);
+      this.logger.info('Updating division');
+      return this.#dataService.put<Division>(
+        Constants.DIVISION_URL + '/' + division.divisionId,
+        division
+      );
       // .put<Division>(Constants.DIVISION_URL + '/' + division.divisionId, division)
       // .pipe(catchError(this.#dataService.handleError('saveDivision', division)));
     } else {
-      console.log('post');
+      this.logger.info('Creating division');
       return this.#dataService.post<Division>(Constants.DIVISION_URL, division);
       // .post<Division>(Constants.DIVISION_URL, division)
       // .pipe(catchError(this.#dataService.handleError('saveDivision', division)));
     }
   }
 
-  getmatchingDivision (division: string): string {
+  delete(id: number) {
+    const url = `${Constants.DIVISION_URL}/${id}`;
+    return this.#dataService.delete(url);
+  }
+
+  getmatchingDivision(division: string): string {
     for (const item of this.standardDivisions()) {
       if (item.toLowerCase() === division.toLowerCase()) {
         return item;
@@ -368,5 +436,5 @@ export interface DivisionResponse {
   count: number;
   next: string;
   previous: string;
-  results: Division[]
+  results: Division[];
 }

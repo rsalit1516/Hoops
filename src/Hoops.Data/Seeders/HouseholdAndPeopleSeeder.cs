@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Hoops.Core.Models;
 using Hoops.Core.Interface;
 using Hoops.Infrastructure.Repository;
 using Hoops.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Hoops.Data.Seeders
 {
@@ -13,30 +16,45 @@ namespace Hoops.Data.Seeders
         public hoopsContext context { get; private set; }
         private readonly IHouseholdRepository _householdRepo;
         private readonly IPersonRepository _personRepo;
+        private readonly ILogger<HouseholdAndPeopleSeeder> _logger;
 
-        public HouseholdAndPeopleSeeder(IHouseholdRepository householdRepo, IPersonRepository personRep, hoopsContext context)
+        public HouseholdAndPeopleSeeder(IHouseholdRepository householdRepo, IPersonRepository personRep, hoopsContext context, ILogger<HouseholdAndPeopleSeeder> logger)
         {
             this.context = context;
             _householdRepo = householdRepo;
             _personRepo = personRep;
+            _logger = logger;
         }
-
         public async Task DeleteAllAsync()
         {
-            var records = await _personRepo.GetAllAsync();
-            foreach (var record in records)
-                await _personRepo.DeleteAsync(record.PersonId);
-            var hrecords = await _householdRepo.GetAllAsync();
-            foreach (var record in hrecords)
-                await _householdRepo.DeleteAsync(record.HouseId);
+            try
+            {
+                _logger.LogDebug("Starting DeleteAllAsync() with raw SQL");
 
+                // Delete People first (they have foreign key to Households)
+                _logger.LogDebug("Attempting to delete all people using raw SQL");
+                var deletedPeopleCount = await context.Database.ExecuteSqlRawAsync("DELETE FROM People");
+                _logger.LogDebug("Successfully deleted people using raw SQL");
+
+                // Then delete Households
+                _logger.LogDebug("Attempting to delete all households using raw SQL");
+                var deletedHouseholdsCount = await context.Database.ExecuteSqlRawAsync("DELETE FROM Households");
+                _logger.LogDebug("Successfully deleted households using raw SQL");
+
+                _logger.LogDebug("Successfully completed DeleteAllAsync()");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error deleting households and people: {Message}", ex.Message);
+                throw;
+            }
         }
 
         public async Task SeedAsync()
         {
             var random = new Random();
-            var householdNames = new[] { "Adams", "Boomers", "Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Rodriguez", "Martinez" };
-            var firstNames = new[] { "John", "Jane", "Alex", "Chris", "Pat", "Taylor", "Jordan", "Morgan", "Casey", "Sam", "Jamie", "Riley", "Cameron", "Avery", "Skyler", "Drew", "Bailey", "Peyton", "Reese", "Quinn", "Charlie", "Dakota", "Finley", "Harper", "Rowan", "Sage", "Tatum", "Emerson", "Kendall", "Parker", "Sydney", "Aidan", "Blake", "Carter", "Dylan", "Evan", "Gavin", "Hunter", "Isaac", "Jaxon", "Liam", "Mason", "Noah", "Owen", "Ryan" };
+            var householdNames = new[] { "Adams", "Boomers", "Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Rodriguez", "Martinez", "Lopez", "Gonzalez", "Wilson", "Anderson", "Thomas", "Taylor", "Moore", "Jackson", "Martin", "Lee", "Perez", "Thompson", "White", "Harris", "Sanchez", "Clark", "Ramirez", "Lewis" };
+            var firstNames = new[] { "John", "Jane", "Alex", "Chris", "Pat", "Taylor", "Jordan", "Morgan", "Casey", "Sam", "Jamie", "Riley", "Cameron", "Avery", "Skyler", "Drew", "Bailey", "Peyton", "Reese", "Quinn", "Charlie", "Dakota", "Finley", "Harper", "Rowan", "Sage", "Tatum", "Emerson", "Kendall", "Parker", "Sydney", "Aidan", "Blake", "Carter", "Dylan", "Evan", "Gavin", "Hunter", "Isaac", "Jaxon", "Liam", "Mason", "Noah", "Owen", "Ryan", "Tyler", "Zachary", "Aiden", "Brayden", "Caleb", "Ethan", "Logan", "Lucas", "Michael", "Nathan", "Samuel", "William" };
 
             // Insert 5 households
             for (int i = 0; i < householdNames.Length; i++)
@@ -78,6 +96,63 @@ namespace Hoops.Data.Seeders
                 }
                 context.SaveChanges();
             }
+
+            // Add additional parent/AD records for user accounts
+            await SeedParentAdRecords();
+        }
+
+        private async Task SeedParentAdRecords()
+        {
+            var random = new Random();
+            var parentAdNames = new[]
+            {
+                new { FirstName = "Robert", LastName = "Salit", Email = "rsalit@example.com" },
+                new { FirstName = "Jennifer", LastName = "Williams", Email = "jwilliams@example.com" },
+                new { FirstName = "Michael", LastName = "Johnson", Email = "mjohnson@example.com" },
+                new { FirstName = "Sarah", LastName = "Davis", Email = "sdavis@example.com" },
+                new { FirstName = "David", LastName = "Miller", Email = "dmiller@example.com" },
+                new { FirstName = "Lisa", LastName = "Anderson", Email = "landerson@example.com" },
+                new { FirstName = "James", LastName = "Wilson", Email = "jwilson@example.com" },
+                new { FirstName = "Maria", LastName = "Garcia", Email = "mgarcia@example.com" }
+            };
+
+            // Get some existing households to assign these parents to
+            var existingHouseholds = await _householdRepo.GetAllAsync();
+            var householdsList = existingHouseholds.Take(8).ToList(); // Use first 8 households
+
+            for (int i = 0; i < parentAdNames.Length; i++)
+            {
+                var parentAd = parentAdNames[i];
+                var household = householdsList[i % householdsList.Count]; // Distribute across households
+
+                // Create parent/AD person (25+ years old or null birth date for admins)
+                var isAdmin = i < 3; // First 3 will be admin users
+                var birthDate = isAdmin ? (DateTime?)null : DateTime.Now.AddYears(-random.Next(25, 45)).AddDays(random.Next(1, 365));
+
+                var person = new Person
+                {
+                    FirstName = parentAd.FirstName,
+                    LastName = parentAd.LastName,
+                    HouseId = household.HouseId,
+                    CompanyId = 1,
+                    BirthDate = birthDate,
+                    Email = parentAd.Email,
+                    Gender = random.Next(2) == 0 ? "M" : "F",
+                    CreatedDate = DateTime.Now,
+                    CreatedUser = "Seed",
+                    Parent = true,          // All are parents
+                    Ad = true,              // All are ADs for user account creation
+                    Player = false,         // Parents are not players
+                    Bc = false,            // Parents are not BC (Birth Certificate required)
+                    Cellphone = "954" + random.Next(1000000, 9999999).ToString(),
+                    Suspended = false
+                };
+
+                await _personRepo.InsertAsync(person);
+            }
+
+            await context.SaveChangesAsync();
+            _logger.LogDebug("Created {Count} parent/AD records for user accounts", parentAdNames.Length);
         }
         public static int? CalculateGrade(DateTime birthDate, DateTime? asOf = null)
         {

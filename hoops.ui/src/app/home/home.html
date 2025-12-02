@@ -1,0 +1,34 @@
+<div class="container mx-auto max-w-screen-lg">
+  <div>
+    <div class="mx-auto center-top">
+      <div id="header" class="">
+        <div id="logo" class="">
+          <a href="index.html" class="">
+            <img [src]="topImage" alt="Main image" class="img-responsive" />
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="mx-auto">
+      <csbc-home-center class="sm:w-6/12 w-full px-2" />
+    </div>
+    <div>
+      <div [ngClass]="meetingNoticeClass" [hidden]="!showSidebar" class="">
+        <csbc-home-sidebar class="" />
+      </div>
+      <div [ngClass]="imageClass" class="mx-auto">
+        <csbc-announcements class="announcements" />
+      </div>
+    </div>
+    <div class="justify-end">
+      <!-- <div class="sm:w-6/12 px-2 w-full"> -->
+      <div class="manny">Manny Rosa - forever in our hearts at CSBC</div>
+    <!-- </div> -->
+  </div>
+  @if (showSponsors) {
+    <div class="sponsor">
+      <app-sponsor-list class="" />
+    </div>
+  }
+</div>
+</div>

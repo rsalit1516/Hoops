@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, inject } from '@angular/core';
 import { Location } from '@app/domain/location';
 import { DataService } from '@app/services/data.service';
 import { catchError, map, tap } from 'rxjs/operators';
@@ -8,9 +8,15 @@ import { catchError, map, tap } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class LocationService {
+  private _http = inject(HttpClient);
+  dataService = inject(DataService);
+
   locations = signal<Location[]>([]);
 
-  constructor(private _http: HttpClient, public dataService: DataService) {}
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {}
 
   get() {
     return this._http.get<Location[]>(this.dataService.getLocationUrl).pipe(

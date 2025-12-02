@@ -164,5 +164,38 @@ namespace Hoops.Infrastructure.Tests
             Assert.NotNull(gamesVm);
             // Assert.IsType<List<PlayoffGameVm>>(gamesVm);
         }
+
+        [Fact]
+        public void GetByDate_ReturnsGamesOnDate()
+        {
+            // Arrange
+            var date = new DateTime(2020, 6, 15);
+            var divisionId = _context.Divisions.First().DivisionId;
+            _context.SchedulePlayoffs.Add(new SchedulePlayoff { GameDate = date, ScheduleNumber = 10, GameNumber = 1, DivisionId = divisionId });
+            _context.SaveChanges();
+            // Act
+            var games = _repository.GetByDate(date).ToList();
+            // Assert
+            Assert.NotEmpty(games);
+            Assert.Equal(date, games[0].GameDate);
+        }
+
+        [Fact]
+        public void GetByScheduleAndGameNo_ReturnsCorrectGame()
+        {
+            // Arrange
+            var scheduleNo = 10;
+            var gameNo = 1;
+            var divisionId = _context.Divisions.First().DivisionId;
+            var playoff = new SchedulePlayoff { GameDate = new DateTime(2020, 6, 16), ScheduleNumber = scheduleNo, GameNumber = gameNo, DivisionId = divisionId };
+            _context.SchedulePlayoffs.Add(playoff);
+            _context.SaveChanges();
+            // Act
+            var game = _repository.GetByScheduleAndGameNo(scheduleNo, gameNo);
+            // Assert
+            Assert.NotNull(game);
+            Assert.Equal(scheduleNo, game.ScheduleNumber);
+            Assert.Equal(gameNo, game.GameNumber);
+        }
     }
 }

@@ -1,22 +1,152 @@
-# Node.js with Angular
-# Build a Node.js project that uses Angular.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
-
 trigger:
-- master
+  branches:
+    include:
+      - develop
+      - master
+      - main
 
-pool:
-  vmImage: ubuntu-latest
+variables:
+  # Agent/Tooling
+  vmImage: "ubuntu-latest"
+  nodeVersion: "20.x"
+  dotnetVersion: "9.0.x"
 
-steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '10.x'
-  displayName: 'Install Node.js'
+  # Solution/Projects
+  solution: "Hoops.sln"
+  functionsProject: "src/Hoops.Functions/Hoops.Functions.csproj"
 
-- script: |
-    npm install -g @angular/cli
-    npm install
-    ng build --prod
-  displayName: 'npm install and build'
+  # Artifact paths
+  publishDir: "$(Build.ArtifactStagingDirectory)/publish"
+  functionsPackage: "$(Build.ArtifactStagingDirectory)/functions.zip"
+
+  # Azure deployment (replace with your values in the pipeline UI or variable group)
+  azureServiceConnection: "YOUR-AZURE-SVC-CONN" # e.g., Hoops-Dev-Connection
+  appType: "functionAppLinux" # change to 'functionApp' if Windows
+
+  # Branch-based environment mapping
+  ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/develop') }}:
+    functionAppName: "hoops-functions-dev-djeqhegwahbua7eq"
+    environmentName: "dev"
+  ${{ if or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master')) }}:
+    functionAppName: "hoops-functions-prod"
+    environmentName: "prod"
+
+stages:
+  - stage: Build_Test
+    displayName: Build and Test
+    jobs:
+      - job: Build
+        displayName: Build .NET and Angular
+        pool:
+          vmImage: $(vmImage)
+        steps:
+          - task: UseDotNet@2
+            displayName: "Install .NET SDK $(dotnetVersion)"
+            inputs:
+              packageType: "sdk"
+              version: "$(dotnetVersion)"
+
+          - task: NodeTool@0
+            displayName: "Install Node.js $(nodeVersion)"
+            inputs:
+              versionSpec: "$(nodeVersion)"
+
+          - task: DotNetCoreCLI@2
+            displayName: "Restore solution"
+            inputs:
+              command: "restore"
+              projects: "$(solution)"
+
+          - task: DotNetCoreCLI@2
+            displayName: "Build solution (Release)"
+            inputs:
+              command: "build"
+              projects: "$(solution)"
+              arguments: "-c Release /nologo"
+
+          - task: DotNetCoreCLI@2
+            displayName: "Test solution (fast)"
+            inputs:
+              command: "test"
+              projects: "$(solution)"
+              arguments: "--filter TestCategory!=Slow --nologo -c Release"
+
+          # Frontend build and test
+          - script: |
+              cd hoops.ui
+              npm ci
+              npm run build
+            displayName: "Build Angular app"
+
+          - script: |
+              cd hoops.ui
+              npm run test:ci
+            displayName: "Test Angular app"
+
+          - task: PublishTestResults@2
+            displayName: "Publish Angular test results"
+            condition: succeededOrFailed()
+            inputs:
+              testResultsFormat: "JUnit"
+              testResultsFiles: "hoops.ui/test-results.xml"
+              failTaskOnFailedTests: true
+
+          - task: PublishCodeCoverageResults@2
+            displayName: "Publish Angular code coverage"
+            condition: succeededOrFailed()
+            inputs:
+              summaryFileLocation: "hoops.ui/coverage/lcov.info"
+              pathToSources: "hoops.ui/src"
+              reportDirectory: "hoops.ui/coverage"
+
+          - task: DotNetCoreCLI@2
+            displayName: "Publish Functions project"
+            inputs:
+              command: "publish"
+              publishWebProjects: false
+              projects: "$(functionsProject)"
+              arguments: "-c Release -o $(publishDir) /nologo"
+              zipAfterPublish: false
+
+          - task: ArchiveFiles@2
+            displayName: "Archive Functions for deployment"
+            inputs:
+              rootFolderOrFile: "$(publishDir)"
+              includeRootFolder: false
+              archiveType: "zip"
+              archiveFile: "$(functionsPackage)"
+              replaceExistingArchive: true
+
+          - task: PublishBuildArtifacts@1
+            displayName: "Publish artifact: functions"
+            inputs:
+              PathtoPublish: "$(functionsPackage)"
+              ArtifactName: "functions"
+
+  - stage: Deploy_Functions
+    displayName: Deploy Azure Functions
+    dependsOn: Build_Test
+    condition: succeeded()
+    jobs:
+      - deployment: Deploy
+        displayName: "Deploy to Azure Functions"
+        environment: "$(environmentName)"
+        pool:
+          vmImage: $(vmImage)
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - download: current
+                  artifact: functions
+
+                - task: AzureFunctionApp@1
+                  displayName: "Deploy Functions package"
+                  inputs:
+                    azureSubscription: "$(azureServiceConnection)"
+                    appType: "$(appType)"
+                    appName: "$(functionAppName)"
+                    package: "$(Pipeline.Workspace)/functions/functions.zip"
+                    deploymentMethod: "zipDeploy"
+
+                # Optionally add slot swap or app settings tasks here

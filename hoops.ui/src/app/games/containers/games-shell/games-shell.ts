@@ -1,0 +1,218 @@
+import {
+  Component,
+  OnInit,
+  computed,
+  effect,
+  inject,
+  input,
+} from '@angular/core';
+import { SeasonService } from '@app/services/season.service';
+import { DivisionService } from '@app/services/division.service';
+import { TeamService } from '@app/services/team.service';
+import { GameService } from '@app/services/game.service';
+import { Store, select } from '@ngrx/store';
+
+import * as fromGames from '../../state';
+import * as fromUser from '../../../user/state';
+
+import * as gameActions from '../../state/games.actions';
+import { RegularGame } from '@app/domain/regularGame';
+import { Team } from '@app/domain/team';
+import { Division } from '@app/domain/division';
+import { Observable, from, zip, of } from 'rxjs';
+import { Standing } from '@app/domain/standing';
+import { User } from '@app/domain/user';
+import { SchedulePlayoffs } from '@app/games/components/schedule-playoffs/schedule-playoffs';
+import { RouterOutlet } from '@angular/router';
+import { GamesTopMenu } from '../../components/games-top-menu/games-top-menu';
+import { AuthService } from '@app/services/auth.service';
+
+import { LoggerService } from '@app/services/logger.service';
+
+@Component({
+  selector: 'csbc-games-shell',
+  standalone: true,
+  templateUrl: './games-shell.html',
+  styleUrls: ['./games-shell.scss'],
+  imports: [RouterOutlet, GamesTopMenu],
+})
+export class GamesShell implements OnInit {
+  readonly seasonService = inject(SeasonService);
+  private readonly divisionService = inject(DivisionService);
+  readonly #teamService = inject(TeamService);
+  readonly #gameService = inject(GameService);
+  private store = inject(Store<fromGames.State>);
+  private userStore = inject(Store<fromUser.State>);
+  readonly #authService = inject(AuthService);
+  private readonly logger = inject(LoggerService);
+  readonly showAllTeams = input<boolean>();
+  readonly currentTeam = input<string>();
+  teamList: any[] | undefined;
+  filteredGames$: Observable<RegularGame[]> | undefined;
+  standings$: Observable<Standing[]> | undefined;
+  teams: any;
+  // user$ = this.userStore
+  //   .pipe(select(fromUser.getCurrentUser))
+  //   .subscribe((user) => (this.user.update(() => user)));
+  allGames$: Observable<RegularGame[]> | undefined;
+  errorMessage: any;
+  selectedDivisionId$: Observable<number> | undefined;
+  teams$: Observable<Team[]> | undefined;
+  selectedTeam$: Observable<Team> | undefined;
+  errorMessage$: Observable<string> | undefined;
+  selectedDivision$: Observable<any> | undefined;
+  standings: RegularGame[] | undefined;
+
+  // Access canEdit from AuthService computed signal
+  get canEdit(): boolean {
+    return this.#authService.canEditGames();
+  }
+
+  // user: User | undefined;
+  games: RegularGame[] | undefined;
+  currentSeason$: Observable<any> | undefined; // = this.seasonService.currentSeason$.subscribe(season => this.seasonDescription = season.description);
+  seasonDescription: string | undefined;
+  // divisions$ = this.divisionService.divisions();
+  games$ = this.#gameService.seasonGames$;
+
+  // TODO: this is a bug that needs to be fixed!
+  // gameDivisionFilter$ = this._gameService.games$
+  // .pipe(
+  //   map(games =>
+  //     games.filter(game =>
+  //       this.selectedDivisionId ? game.DivisionID === this.selectedDivisionId  : true)
+  // ) as Game[]);
+  divisionId: any;
+  divisionId$!: Observable<number> | undefined;
+  selectedDivisionId: number = 1;
+
+  // currentDivision: Division | undefined;
+  // filteredTeams!: Team[];
+  filteredGames!: RegularGame[];
+  filteredGamesByDate!: Observable<RegularGame[]>;
+
+  // Signals for reactive state
+  divisions = computed(() => this.divisionService.seasonDivisions()!);
+  currentDivision = computed(() => this.divisionService.currentDivision());
+  filteredTeams = computed(() => this.#teamService.divisionTeams());
+
+  user = computed(() => this.#authService.currentUser());
+  test = this.seasonService.season1();
+  constructor() {
+    // Effect to handle side effects when the current division changes
+    effect(() => {
+      const division = this.divisionService.currentDivision();
+      this.logger.info('Division changed in shell', division);
+      if (division) {
+        // this.store.dispatch(new gameActions.LoadFilteredTeams());
+        // this.store.dispatch(new gameActions.LoadFilteredGames());
+        // this.store.dispatch(new gameActions.LoadDivisionPlayoffGames());
+      }
+    });
+  }
+
+  ngOnInit() {
+    this.setStateSubscriptions();
+  }
+  setStateSubscriptions() {
+    // this.store.select(fromGames.getDivisions).subscribe((divisions) => {
+    //   // Update the divisions signal with the new value
+    //   this.store.dispatch(new gameActions.SetDivisions(divisions));
+    // });
+    // this.divisionId$ = this.store.pipe(
+    //   select(fromGames.getCurrentDivisionId)
+    // ) as Observable<number>;
+    // this.filteredGames$ = this.store.pipe(select(fromGames.getFilteredGames));
+    // this.standings$ = this.store.pipe(select(fromGames.getStandings));
+    // this.store.select(fromGames.getDivisions).subscribe((divisions) => {
+    //   if (divisions[0]) {
+    //     this.store.dispatch(new gameActions.SetCurrentDivision(divisions[0]));
+    //   }
+    // });
+    // this.store.pipe(select(fromUser.getCurrentUser)).subscribe((user) => {
+    //   this.user = user;
+    // });
+    // this.store.select(fromGames.getCurrentDivision).subscribe((division) => {
+    //   this.currentDivision = division;
+    //   const divId = division?.divisionId as number;
+    //   // console.log(division);
+    //   if (division) {
+    //     this.store.dispatch(new gameActions.LoadFilteredTeams());
+    //     this.store.dispatch(new gameActions.LoadFilteredGames());
+    //     this.store.dispatch(new gameActions.LoadDivisionPlayoffGames());
+    //     this.store.select(fromGames.getFilteredTeams).subscribe((teams) => {
+    //       this.filteredTeams = teams;
+    //     });
+    //   }
+    // });
+    // this.store.select(fromGames.getFilteredGames).subscribe(games => {
+    //   this.filteredGames = games;
+    //   this.filteredGamesByDate = this._gameService.groupByDate(games);
+    //   console.log(this.filteredGames);
+    // })
+  }
+  public filterByDivision(divisionId: number): void {
+    this.logger.debug('Filter by division', divisionId);
+    this.teamList = [];
+  }
+
+  divisionSelected(division: Division): void {
+    this.store.dispatch(new gameActions.SetCurrentDivision(division));
+    // console.log(this.user$);
+    if (division !== undefined) {
+      // this.store.dispatch(
+      // new gameActions.SetCanEdit(
+      //   this.#gameService.getCanEdit(this.user, division.divisionId)
+      // )
+      // );
+    }
+  }
+  teamSelected(team: Team): void {
+    this.store.dispatch(new gameActions.SetCurrentTeam(team));
+  }
+
+  // getCanEdit method removed - now handled by AuthService.canEditGames() computed signal
+
+  setDivisionData(data: any[]): Division[] {
+    let divisions: Division[] = [];
+    // console.log(data);
+    for (let i = 0; i <= data.length; i++) {
+      // console.log(data[i]);
+      if (data[i] !== undefined) {
+        let division: Division = {
+          companyId: 1,
+          seasonId: data[i].seasonId,
+          divisionId: data[i].divisionId,
+          divisionDescription: data[i].divisionDescription,
+          minDate: data[i].minDate,
+          maxDate: data[i].maxDate,
+          gender: data[i].gender,
+          minDate2: data[i].minDate2,
+          maxDate2: data[i].maxDate2,
+          gender2: data[i].gender2,
+          directorId: data[i].directorId,
+        };
+        divisions.push(division);
+      }
+    }
+    return divisions;
+  }
+  setTeamData(data: any[]): Team[] {
+    let teams: Team[] = [];
+    for (let i = 0; i <= data.length; i++) {
+      if (data[i] !== undefined) {
+        let team: Team = new Team();
+        team.teamId = data[i].teamID;
+        team.name = data[i].teamNumber;
+        team.teamColorId = data[i].colorID;
+        team.divisionId = data[i].divisionId;
+        teams.push(team);
+      }
+      this.logger.debug('Aggregated teams', teams);
+    }
+    return teams;
+  }
+  handlefilterUpdate($event: any) {
+    this.logger.debug('Filter updated', $event);
+  }
+}

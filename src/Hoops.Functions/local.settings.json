@@ -1,0 +1,17 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+    "USE_PROD_DATA": "false",
+    "SQL_CONNECTION_DEV": ""
+  },
+  "Host": {
+    "CORS": "http://localhost:4200,https://localhost:4200,https://thankful-pond-090ec730f.4.azurestaticapps.net",
+    "CORSCredentials": true
+  },
+  "ConnectionStrings": {
+    "hoopsContext": "Server=localhost,1433;Database=csbchoops;Persist Security Info=False;User ID=sa;Password=@nKbr0407;Encrypt=True;TrustServerCertificate=true;MultipleActiveResultSets=False;Connection Timeout=30;",
+    "hoopsContextProdRO": "Server=tcp:richardsalit.database.windows.net,1433;Initial Catalog=csbchoops3;Persist Security Info=False;User ID=rsalit;Password=w@Ker1516;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+  }
+}
