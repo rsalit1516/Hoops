@@ -1,3 +1,5 @@
 {
-  "dependencies": {}
+  "dependencies": {
+    "mcp-server": "^0.0.9"
+  }
 }
