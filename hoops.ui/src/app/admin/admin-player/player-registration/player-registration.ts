@@ -358,6 +358,14 @@ export class PlayerRegistration implements OnInit {
         this.playerService.updateSelectedPlayer(response);
         this.playerService.updateFormDirtyState(false);
 
+        // IMPORTANT: Update the form model with the response (especially playerId)
+        // so that subsequent saves will UPDATE instead of CREATE
+        const currentModel = this.playerFormModel();
+        this.playerFormModel.set({
+          ...currentModel,
+          playerId: response.playerId
+        });
+
         this.snackBar.open('Player registration saved successfully', 'OK', {
           duration: 3000,
         });

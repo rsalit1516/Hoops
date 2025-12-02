@@ -1,30 +1,31 @@
-using Hoops.Controllers;
+using Hoops.Application.Services;
 using Hoops.Core.Interface;
 using Hoops.Core.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Moq;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace Hoops.Api.Tests
 {
-    public class PlayersControllerTest
+    public class PlayersServiceTest
     {
         private readonly Mock<IPlayerRepository> _mockPlayerRepository;
-        private readonly Mock<IPlayerService> _mockPlayerService;
-        private readonly Mock<ILogger<PlayersController>> _mockLogger;
-        private readonly PlayersController _controller;
+        private readonly Mock<IPersonRepository> _mockPersonRepository;
+        private readonly Mock<ISeasonRepository> _mockSeasonRepository;
+        private readonly Mock<IDivisionRepository> _mockDivisionRepository;
+        private readonly PlayerService _service;
 
-        public PlayersControllerTest()
+        public PlayersServiceTest()
         {
             _mockPlayerRepository = new Mock<IPlayerRepository>();
-            _mockPlayerService = new Mock<IPlayerService>();
-            _mockLogger = new Mock<ILogger<PlayersController>>();
-            _controller = new PlayersController(
+            _mockPersonRepository = new Mock<IPersonRepository>();
+            _mockSeasonRepository = new Mock<ISeasonRepository>();
+            _mockDivisionRepository = new Mock<IDivisionRepository>();
+            _service = new PlayerService(
                 _mockPlayerRepository.Object,
-                _mockPlayerService.Object,
-                _mockLogger.Object);
+                _mockPersonRepository.Object,
+                _mockSeasonRepository.Object,
+                _mockDivisionRepository.Object);
         }
 
         [Fact]
