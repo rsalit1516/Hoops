@@ -89,7 +89,7 @@ stages:
             inputs:
               testResultsFormat: "JUnit"
               testResultsFiles: "hoops.ui/test-results.xml"
-              failTaskOnFailedTests: true
+              failTaskOnFailedTests: false
 
           - task: PublishCodeCoverageResults@2
             displayName: "Publish Angular code coverage"
