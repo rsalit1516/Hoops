@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">2.17% </span>
+                <span class="strong">2.15% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>2/92</span>
+                <span class='fraction'>2/93</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">1.13% </span>
+                <span class="strong">1.12% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>1/88</span>
+                <span class='fraction'>1/89</span>
             </div>
         
             
@@ -297,10 +297,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -420,7 +422,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -436,7 +437,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -506,6 +506,7 @@ import { WebContent } from '../../domain/webContent';
 import { Observable, of } from 'rxjs';
 import { Constants } from '@app/shared/constants';
 import { DateTime } from 'luxon';
+import { LoggerService } from '@app/services/logger.service';
 &nbsp;
 @Injectable({
   providedIn: 'root',
@@ -514,6 +515,7 @@ export <span class="fstat-no" title="function not covered" >class C</span>ontent
   private readonly <span class="cstat-no" title="statement not covered" >http = inject(HttpClient);</span>
   readonly <span class="cstat-no" title="statement not covered" >data = inject(DataService);</span>
   readonly <span class="cstat-no" title="statement not covered" >store = inject(Store&lt;fromContent.State&gt;);</span>
+  private readonly <span class="cstat-no" title="statement not covered" >logger = inject(LoggerService);</span>
 &nbsp;
   // private _selectedContent: any;
   selectedContent$!: Observable&lt;any&gt;;
@@ -547,15 +549,15 @@ export <span class="fstat-no" title="function not covered" >class C</span>ontent
   }
 <span class="fstat-no" title="function not covered" >  fetchActiveContents(</span>) {
 <span class="cstat-no" title="statement not covered" >    this.getActiveContent().subscribe(<span class="fstat-no" title="function not covered" >(d</span>ata) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      console.log('fetchActiveContents: ' + JSON.stringify(data));</span>
+<span class="cstat-no" title="statement not covered" >      this.logger.debug('Fetched active contents:', data);</span>
 <span class="cstat-no" title="statement not covered" >      this.updateActiveWebContent(data);</span>
-<span class="cstat-no" title="statement not covered" >      console.log(this._activeWebContent());</span>
+<span class="cstat-no" title="statement not covered" >      this.logger.debug('Active web content updated:', this._activeWebContent());</span>
     });
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  getAllContents(</span>): Observable&lt;WebContent[]&gt; {
     let filteredContent: WebContent[] = <span class="cstat-no" title="statement not covered" >[];</span>
-<span class="cstat-no" title="statement not covered" >    console.log(filteredContent);</span>
+<span class="cstat-no" title="statement not covered" >    this.logger.debug('Getting all contents');</span>
 <span class="cstat-no" title="statement not covered" >    this.store.select(fromContent.getContentList).subscribe(<span class="fstat-no" title="function not covered" >(c</span>ontents) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (contents !== undefined) {</span>
 <span class="cstat-no" title="statement not covered" >        for (let i = <span class="cstat-no" title="statement not covered" >0;</span> i &lt; contents.length; i++) {</span>
@@ -563,12 +565,12 @@ export <span class="fstat-no" title="function not covered" >class C</span>ontent
         }
       }
     });
-<span class="cstat-no" title="statement not covered" >    console.log(filteredContent);</span>
+<span class="cstat-no" title="statement not covered" >    this.logger.debug('Filtered content:', filteredContent);</span>
 <span class="cstat-no" title="statement not covered" >    return of(filteredContent);</span>
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  getContent(</span>webContentId: number) {
-<span class="cstat-no" title="statement not covered" >    console.log(webContentId);</span>
+<span class="cstat-no" title="statement not covered" >    this.logger.debug('Getting content with ID:', webContentId);</span>
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (webContentId === 0) {</span>
 <span class="cstat-no" title="statement not covered" >      return of(this.initializeContent());</span>
     }
@@ -576,7 +578,7 @@ export <span class="fstat-no" title="function not covered" >class C</span>ontent
       tap(<span class="fstat-no" title="function not covered" >(d</span>ata) =&gt; {
         // this.store.dispatch(new contentActions.SetAllContent());
         // this.store.dispatch(new contentActions.SetActiveContent());
-<span class="cstat-no" title="statement not covered" >        console.log('getContent: ' + JSON.stringify(data));</span>
+<span class="cstat-no" title="statement not covered" >        this.logger.debug('getContent result:', data);</span>
       }),
       catchError(this.data.handleError('getContent', []))
     );
@@ -589,7 +591,7 @@ export <span class="fstat-no" title="function not covered" >class C</span>ontent
 <span class="fstat-no" title="function not covered" >    () =</span>&gt; <span class="cstat-no" title="statement not covered" >this.webContentResource.value() as WebContent[]</span>
   );
 <span class="fstat-no" title="function not covered" >  deleteContent(</span>webContentId: number | null) {
-<span class="cstat-no" title="statement not covered" >    console.log('Deleting content');</span>
+<span class="cstat-no" title="statement not covered" >    this.logger.info('Deleting content with ID:', webContentId);</span>
     let headers = <span class="cstat-no" title="statement not covered" >new Headers({ 'Content-Type': 'application/json' });</span>
     // To Do: add this back
     let options = <span class="cstat-no" title="statement not covered" >{ params: new HttpParams() };</span>
@@ -631,9 +633,8 @@ export <span class="fstat-no" title="function not covered" >class C</span>ontent
   }
 &nbsp;
   private <span class="fstat-no" title="function not covered" >createContent(</span>content: WebContent): Observable&lt;void | WebContent&gt; {
-<span class="cstat-no" title="statement not covered" >    console.log(content);</span>
+<span class="cstat-no" title="statement not covered" >    this.logger.info('Creating content:', content);</span>
 <span class="cstat-no" title="statement not covered" >    return this.data.post(this.data.postContentUrl, content).pipe(</span>
-      // tap((data) =&gt; console.log('createContent: ' + JSON.stringify(data))),
       map(<span class="fstat-no" title="function not covered" >(d</span>ata) =&gt; <span class="cstat-no" title="statement not covered" >this.store.dispatch(new contentActions.LoadAdminContent()))</span>,
       catchError(this.data.handleError('createContent', content))
     );
@@ -641,15 +642,14 @@ export <span class="fstat-no" title="function not covered" >class C</span>ontent
 &nbsp;
   private <span class="fstat-no" title="function not covered" >updateContent(</span>content: WebContent): Observable&lt;WebContent&gt; {
     let url = <span class="cstat-no" title="statement not covered" >Constants.PUT_CONTENT_URL + content.webContentId;</span>
-<span class="cstat-no" title="statement not covered" >    console.log(url);</span>
+<span class="cstat-no" title="statement not covered" >    this.logger.debug('Updating content at URL:', url);</span>
     // const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 <span class="cstat-no" title="statement not covered" >    return this.http.put&lt;WebContent&gt;(url, content);</span>
   }
 &nbsp;
   private <span class="fstat-no" title="function not covered" >extractData(</span>response: Response) {
     let body = <span class="cstat-no" title="statement not covered" >'';</span> // response.json();
-<span class="cstat-no" title="statement not covered" >    console.log(response);</span>
-    // console.log(body);
+<span class="cstat-no" title="statement not covered" >    this.logger.debug('Extracting data from response:', response);</span>
 <span class="cstat-no" title="statement not covered" >    return body || {};</span>
   }
 &nbsp;
@@ -709,7 +709,7 @@ export interface ContentResponse {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-09-22T18:04:26.591Z
+                at 2025-12-04T16:50:42.607Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

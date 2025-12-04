@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">25.86% </span>
+                <span class="strong">27.11% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>15/58</span>
+                <span class='fraction'>16/59</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">24.56% </span>
+                <span class="strong">25.86% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>14/57</span>
+                <span class='fraction'>15/58</span>
             </div>
         
             
@@ -252,7 +252,8 @@
 <a name='L187'></a><a href='#L187'>187</a>
 <a name='L188'></a><a href='#L188'>188</a>
 <a name='L189'></a><a href='#L189'>189</a>
-<a name='L190'></a><a href='#L190'>190</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L190'></a><a href='#L190'>190</a>
+<a name='L191'></a><a href='#L191'>191</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -315,6 +316,7 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -441,7 +443,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { CommonModule } from '@angular/common';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&nbsp;
 import {
   Component,
   computed,
@@ -473,11 +475,11 @@ import { Season } from '@app/domain/season';
 import { SeasonService } from '@app/services/season.service';
 import { Store } from '@ngrx/store';
 import * as fromAdmin from '../../state';
+import { LoggerService } from '@app/services/logger.service';
 &nbsp;
 @Component({
   selector: 'csbc-admin-season-detail',
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     RouterModule,
     MatFormFieldModule,
@@ -488,8 +490,8 @@ import * as fromAdmin from '../../state';
     MatButtonModule,
     MatSelectModule,
     MatCheckboxModule,
-    MatSnackBarModule,
-  ],
+    MatSnackBarModule
+],
   providers: [provideNativeDateAdapter()],
   templateUrl: './admin-season-detail.html',
   styleUrls: [
@@ -503,6 +505,7 @@ export class AdminSeasonDetail implements OnInit {
   private fb = inject(UntypedFormBuilder);
   readonly router = inject(Router);
   private snackBar = inject(MatSnackBar);
+  private logger = inject(LoggerService);
   store = inject(Store&lt;fromAdmin.State&gt;);
   startDatePicker!: MatDatepickerPanel&lt;MatDatepickerControl&lt;any&gt;, any, any&gt;;
 &nbsp;
@@ -532,7 +535,7 @@ export class AdminSeasonDetail implements OnInit {
     });
   }
   ngOnInit(): void {
-    console.log(this.selectedSeason());
+    this.logger.debug('Selected season:', this.selectedSeason());
     <span class="missing-if-branch" title="if path not taken" >I</span>if (this.selectedSeason()?.seasonId !== undefined) {
 <span class="cstat-no" title="statement not covered" >      this.patchSeason();</span>
     } else {
@@ -562,14 +565,14 @@ export class AdminSeasonDetail implements OnInit {
   }
 <span class="fstat-no" title="function not covered" >  onSubmit(</span>) {
 <span class="cstat-no" title="statement not covered" >    if (this.form.valid) {</span>
-<span class="cstat-no" title="statement not covered" >      console.log('Form Submitted!', this.form.value);</span>
+<span class="cstat-no" title="statement not covered" >      this.logger.info('Season form submitted:', this.form.value);</span>
 <span class="cstat-no" title="statement not covered" >      this.save(this.form.value);</span>
     } else {
-<span class="cstat-no" title="statement not covered" >      console.log('Form is invalid');</span>
+<span class="cstat-no" title="statement not covered" >      this.logger.warn('Season form is invalid');</span>
     }
   }
 <span class="fstat-no" title="function not covered" >  save(</span>value: any) {
-<span class="cstat-no" title="statement not covered" >    console.log(value);</span>
+<span class="cstat-no" title="statement not covered" >    this.logger.debug('Saving season with values:', value);</span>
     // convert to Season
     // this.seasonService.season = signal(new Season());
     let _season = <span class="cstat-no" title="statement not covered" >new Season();</span>
@@ -593,12 +596,12 @@ export class AdminSeasonDetail implements OnInit {
 <span class="cstat-no" title="statement not covered" >    _season.onlineRegistration =</span>
       value.onlineRegistration !== undefined ? value.onlineRegistration : false;
 <span class="cstat-no" title="statement not covered" >    this.seasonService.season = signal(_season);</span>
-<span class="cstat-no" title="statement not covered" >    console.log(_season);</span>
+<span class="cstat-no" title="statement not covered" >    this.logger.debug('Season object:', _season);</span>
 <span class="cstat-no" title="statement not covered" >    if (_season.seasonId === 0) {</span>
-<span class="cstat-no" title="statement not covered" >      console.log('postSeason');</span>
+<span class="cstat-no" title="statement not covered" >      this.logger.info('Creating new season');</span>
 <span class="cstat-no" title="statement not covered" >      this.seasonService.postSeason(_season).subscribe({</span>
         next: <span class="fstat-no" title="function not covered" >(c</span>reated) =&gt; {
-<span class="cstat-no" title="statement not covered" >          console.log('Season created', created);</span>
+<span class="cstat-no" title="statement not covered" >          this.logger.info('Season created:', created);</span>
 <span class="cstat-no" title="statement not covered" >          this.seasonService.seasonSaved.set(true);</span>
           // Refresh seasons so the list reflects the new item
 <span class="cstat-no" title="statement not covered" >          this.seasonService.fetchSeasons();</span>
@@ -606,13 +609,13 @@ export class AdminSeasonDetail implements OnInit {
 <span class="cstat-no" title="statement not covered" >          this.snackBar.open('Season created', 'OK', { duration: 2500 });</span>
 <span class="cstat-no" title="statement not covered" >          this.router.navigate(['/admin/seasons/list']);</span>
         },
-        error: <span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; <span class="cstat-no" title="statement not covered" >console.error('Failed to create season', err),</span>
+        error: <span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; <span class="cstat-no" title="statement not covered" >this.logger.error('Failed to create season', err),</span>
       });
     } else {
-<span class="cstat-no" title="statement not covered" >      console.log('put Season');</span>
+<span class="cstat-no" title="statement not covered" >      this.logger.info('Updating existing season');</span>
 <span class="cstat-no" title="statement not covered" >      this.seasonService.putSeason(_season).subscribe({</span>
         next: <span class="fstat-no" title="function not covered" >(u</span>pdated) =&gt; {
-<span class="cstat-no" title="statement not covered" >          console.log('Season updated', updated);</span>
+<span class="cstat-no" title="statement not covered" >          this.logger.info('Season updated:', updated);</span>
 <span class="cstat-no" title="statement not covered" >          this.seasonService.seasonSaved.set(true);</span>
           // Refresh seasons so the list reflects the update
 <span class="cstat-no" title="statement not covered" >          this.seasonService.fetchSeasons();</span>
@@ -620,7 +623,7 @@ export class AdminSeasonDetail implements OnInit {
 <span class="cstat-no" title="statement not covered" >          this.snackBar.open('Season updated', 'OK', { duration: 2500 });</span>
 <span class="cstat-no" title="statement not covered" >          this.router.navigate(['/admin/seasons/list']);</span>
         },
-        error: <span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; <span class="cstat-no" title="statement not covered" >console.error('Failed to update season', err),</span>
+        error: <span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; <span class="cstat-no" title="statement not covered" >this.logger.error('Failed to update season', err),</span>
       });
     }
   }
@@ -637,7 +640,7 @@ export class AdminSeasonDetail implements OnInit {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-09-22T18:04:26.604Z
+                at 2025-12-04T16:50:42.693Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

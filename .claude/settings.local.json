@@ -15,7 +15,13 @@
       "Bash(timeout 10 cmd:*)",
       "Bash(dotnet ef dbcontext script:*)",
       "WebFetch(domain:angular.dev)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(gh run list:*)",
+      "Bash(npm run test:ci:*)",
+      "Bash(git add:*)",
+      "Bash(git reset:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": []
