@@ -18,7 +18,21 @@ namespace Hoops.Infrastructure.Tests
                 .Options;
             var context = new hoopsContext(options);
 
-            // Add some test data
+            // Add Households (required for Director GetAll join)
+            context.Households.AddRange(new List<Household>
+            {
+                new Household { HouseId = 1, Name = "Test Household 1" },
+                new Household { HouseId = 2, Name = "Test Household 2" }
+            });
+
+            // Add People (required for Director GetAll join)
+            context.People.AddRange(new List<Person>
+            {
+                new Person { PersonId = 101, FirstName = "John", LastName = "Doe", HouseId = 1 },
+                new Person { PersonId = 102, FirstName = "Jane", LastName = "Smith", HouseId = 2 }
+            });
+
+            // Add Directors
             context.Directors.AddRange(new List<Director>
             {
                 new Director

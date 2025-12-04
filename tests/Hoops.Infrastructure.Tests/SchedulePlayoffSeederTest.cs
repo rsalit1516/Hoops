@@ -36,7 +36,8 @@ namespace Hoops.Infrastructure.Tests
                 divisionRepo,
                 locationRepo,
                 scheduleGameRepo,
-                _fixture.Context!
+                _fixture.Context!,
+                NullLogger<SchedulePlayoffSeeder>.Instance
             );
             
             // Assert
@@ -59,7 +60,8 @@ namespace Hoops.Infrastructure.Tests
                 divisionRepo,
                 locationRepo,
                 scheduleGameRepo,
-                _fixture.Context!
+                _fixture.Context!,
+                NullLogger<SchedulePlayoffSeeder>.Instance
             );
             
             // Act & Assert - Should not throw
@@ -82,7 +84,8 @@ namespace Hoops.Infrastructure.Tests
                 divisionRepo,
                 locationRepo,
                 scheduleGameRepo,
-                _fixture.Context!
+                _fixture.Context!,
+                NullLogger<SchedulePlayoffSeeder>.Instance
             );
             
             // Act & Assert - Should not throw
