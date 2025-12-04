@@ -38,7 +38,7 @@ namespace Hoops.Core.Models
         /// Gets or sets the household name
         /// </summary>
         [StringLength(50)]
-        public required string Name { get; set; }
+        public string? Name { get; set; }
 
         /// <summary>
         /// Gets or sets the primary phone number for the household
