@@ -15,9 +15,6 @@
       "Bash(timeout 10 cmd:*)",
       "Bash(dotnet ef dbcontext script:*)",
       "WebFetch(domain:angular.dev)",
-<<<<<<< Updated upstream
-      "Bash(npm install:*)"
-=======
       "Bash(npm install:*)",
       "Bash(gh run list:*)",
       "Bash(npm run test:ci:*)",
@@ -27,7 +24,6 @@
       "Bash(git push:*)",
       "Bash(az webapp log tail:*)",
       "Bash(az monitor app-insights query:*)"
->>>>>>> Stashed changes
     ],
     "deny": [],
     "ask": []
