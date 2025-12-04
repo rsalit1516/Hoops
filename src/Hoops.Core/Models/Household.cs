@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+#nullable enable
+
 namespace Hoops.Core.Models
 {
     /// <summary>
@@ -35,53 +37,52 @@ namespace Hoops.Core.Models
         /// <summary>
         /// Gets or sets the household name
         /// </summary>
-        [Required]
         [StringLength(50)]
-        public string Name { get; set; } = string.Empty;
+        public required string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the primary phone number for the household
         /// </summary>
         [StringLength(25)]
         [Phone]
-        public string Phone { get; set; }
+        public string? Phone { get; set; }
 
         /// <summary>
         /// Gets or sets the primary address line 1
         /// </summary>
         [StringLength(50)]
-        public string Address1 { get; set; }
+        public string? Address1 { get; set; }
 
         /// <summary>
         /// Gets or sets the secondary address line 2
         /// </summary>
         [StringLength(50)]
-        public string Address2 { get; set; }
+        public string? Address2 { get; set; }
 
         /// <summary>
         /// Gets or sets the city
         /// </summary>
         [StringLength(50)]
-        public string City { get; set; }
+        public string? City { get; set; }
 
         /// <summary>
         /// Gets or sets the state (2 character state code)
         /// </summary>
         [StringLength(2)]
-        public string State { get; set; }
+        public string? State { get; set; }
 
         /// <summary>
         /// Gets or sets the zip code
         /// </summary>
         [StringLength(20)]
-        public string Zip { get; set; }
+        public string? Zip { get; set; }
 
         /// <summary>
         /// Gets or sets the primary email address for the household
         /// </summary>
         [StringLength(50)]
         [EmailAddress]
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the household is subscribed to email lists
@@ -92,7 +93,7 @@ namespace Hoops.Core.Models
         /// Gets or sets the sports card information
         /// </summary>
         [StringLength(15)]
-        public string SportsCard { get; set; }
+        public string? SportsCard { get; set; }
 
         /// <summary>
         /// Gets or sets the guardian person identifier
@@ -115,7 +116,7 @@ namespace Hoops.Core.Models
         /// </summary>
         [StringLength(20)]
         [Display(Name = "Created By")]
-        public string CreatedUser { get; set; }
+        public string? CreatedUser { get; set; }
 
         /// <summary>
         /// Gets or sets the team identifier associated with the household

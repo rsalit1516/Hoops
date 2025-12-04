@@ -84,7 +84,7 @@ namespace Hoops.Controllers
         [HttpPost]
         public ActionResult<Household> PostHousehold(Household household)
         {
-            var house = new Household();
+            Household house;
             try
             {
                 house = _repository.Insert(household);

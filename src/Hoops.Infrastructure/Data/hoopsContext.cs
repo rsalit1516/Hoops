@@ -270,33 +270,19 @@ public partial class hoopsContext : DbContext
             entity.ToTable("Households");
             entity.HasKey(e => e.HouseId);
 
+            // Column name mappings
+            entity.Property(e => e.HouseId).HasColumnName("HouseID");
+            entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
+            entity.Property(e => e.TeamId).HasColumnName("TEMID");
+
+            // Indexes
             entity.HasIndex(e => new { e.Phone, e.Email, e.HouseId })
                 .HasDatabaseName("idx_DCh_2775_2774_Household");
 
-            entity.Property(e => e.Address1).HasMaxLength(50);
-            entity.Property(e => e.Address2).HasMaxLength(50);
-
-            entity.Property(e => e.City).HasMaxLength(50);
-
-            entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
-
-            entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime").HasDefaultValue(DateTime.Now);
-
-            entity.Property(e => e.CreatedUser).HasMaxLength(20);
-
-            entity.Property(e => e.Email).HasMaxLength(50);
-
-            entity.Property(e => e.Name).HasMaxLength(50);
-
-            entity.Property(e => e.Phone).HasMaxLength(25);
-
-            entity.Property(e => e.SportsCard).HasMaxLength(15);
-
-            entity.Property(e => e.State).HasMaxLength(2);
-
-            entity.Property(e => e.TeamId).HasColumnName("TEMID");
-
-            entity.Property(e => e.Zip).HasMaxLength(20);
+            // Column types and default values
+            entity.Property(e => e.CreatedDate)
+                .HasColumnType("smalldatetime")
+                .HasDefaultValue(DateTime.Now);
         });
 
         modelBuilder.Entity<Person>(entity =>

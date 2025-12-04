@@ -27,13 +27,13 @@ namespace Hoops.Infrastructure.Repository
             if (!String.IsNullOrEmpty(address))
                 result =
                     from h in result
-                    where h.Address1.Contains(address)
+                    where h.Address1 != null && h.Address1.Contains(address)
                     orderby h.Address1
                     select h;
             if (!String.IsNullOrEmpty(phone))
-                result = from h in result where h.Phone.Contains(phone) orderby h.Phone select h;
+                result = from h in result where h.Phone != null && h.Phone.Contains(phone) orderby h.Phone select h;
             if (!String.IsNullOrEmpty(email))
-                result = from h in result where h.Email.Contains(email) orderby h.Email select h;
+                result = from h in result where h.Email != null && h.Email.Contains(email) orderby h.Email select h;
             return result;
         }
 
@@ -144,11 +144,11 @@ namespace Hoops.Infrastructure.Repository
                     query = query.Where(p => p.Name.Contains(criteria.Name));
             }
             if (!string.IsNullOrEmpty(criteria.Address))
-                query = query.Where(p => p.Address1.Contains(criteria.Address));
+                query = query.Where(p => p.Address1 != null && p.Address1.Contains(criteria.Address));
             if (!string.IsNullOrEmpty(criteria.Email))
-                query = query.Where(p => p.Email.Contains(criteria.Email));
+                query = query.Where(p => p.Email != null && p.Email.Contains(criteria.Email));
             if (!string.IsNullOrEmpty(criteria.Phone))
-                query = query.Where(p => p.Phone.Contains(criteria.Phone));
+                query = query.Where(p => p.Phone != null && p.Phone.Contains(criteria.Phone));
 
             // Order by name for consistent results
             query = query.OrderBy(p => p.Name);
