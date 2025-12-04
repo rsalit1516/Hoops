@@ -18,6 +18,7 @@ import { ADMIN_PEOPLE_ROUTES } from './admin-people/admin-people-routing';
 import { ADMIN_SEASONS_ROUTES } from './admin-seasons/admin-seasons-routing';
 import { PendingChangesGuard } from './admin-games/pending-changes.guard';
 import { ADMIN_DIRECTORS_ROUTES } from './admin-directors/admin-directors-routing';
+import { ADMIN_REPORTS_ROUTES } from './admin-reports/admin-reports-routing';
 
 export const ADMINROUTES: Routes = [
   {
@@ -101,6 +102,11 @@ export const ADMINROUTES: Routes = [
             canDeactivate: [PendingChangesGuard],
           },
         ],
+      },
+      {
+        path: 'reports',
+        title: 'Reports',
+        children: ADMIN_REPORTS_ROUTES,
       },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: '**', component: PageNotFound },

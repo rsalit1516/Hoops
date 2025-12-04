@@ -53,6 +53,12 @@ export class AdminShellSidebar {
     { name: 'Uniform Colors', route: '/admin/colors', isSelected: false },
   ];
 
+  ReportsSection = 'Reports';
+  reportsItems = [
+    { name: 'Draft List', route: '/admin/reports/draft-list', isSelected: false },
+  ];
+  showReports = true;
+
   constructor () { }
 
   selectedItem: nav | undefined;

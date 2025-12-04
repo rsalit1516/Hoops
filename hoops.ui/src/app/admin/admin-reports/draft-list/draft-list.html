@@ -1,0 +1,67 @@
+<mat-card class="draft-list-card">
+  <mat-card-header>
+    <mat-card-title>Draft List Report</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <div class="filters-container">
+      <mat-form-field appearance="outline" class="season-selector">
+        <mat-label>Season</mat-label>
+        <mat-select
+          [(value)]="selectedSeason"
+          (selectionChange)="onSeasonChange($event.value)"
+        >
+          @for (season of seasons(); track season.seasonId) {
+          <mat-option [value]="season">
+            {{ season.description }}
+          </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="division-selector">
+        <mat-label>Division</mat-label>
+        <mat-select
+          [(value)]="selectedDivision"
+          (selectionChange)="onDivisionChange($event.value)"
+          [disabled]="!selectedSeason()"
+        >
+          @for (division of divisions(); track division.divisionId) {
+          <mat-option [value]="division">
+            {{ division.divisionDescription }}
+          </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="downloadCSV()"
+        [disabled]="!selectedDivision() || players().length === 0"
+        class="download-button"
+      >
+        <mat-icon>download</mat-icon>
+        Download CSV
+      </button>
+    </div>
+
+    @if (isLoading()) {
+    <div class="loading-container">
+      <mat-spinner></mat-spinner>
+    </div>
+    } @if (showNoSelection) {
+    <div class="no-selection-message">
+      <p>No division selected. Please select a division to view the draft list.</p>
+    </div>
+    } @if (showTable && players().length > 0) {
+    <div class="table-container">
+      <app-generic-mat-table [columns]="columns" [data]="players()" />
+    </div>
+    } @if (showTable && players().length === 0) {
+    <div class="no-data-message">
+      <p>No players found for the selected division.</p>
+    </div>
+    }
+  </mat-card-content>
+</mat-card>

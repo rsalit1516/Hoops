@@ -576,5 +576,31 @@ namespace Hoops.Infrastructure.Repository
         {
             throw new NotImplementedException();
         }
+
+        public List<DraftListPlayer> GetDraftListPlayers(int seasonId, int? divisionId)
+        {
+            var query = from p in context.Set<Person>()
+                        join pl in context.Set<Player>() on p.PersonId equals pl.PersonId
+                        join h in context.Set<Household>() on p.HouseId equals h.HouseId
+                        join d in context.Set<Division>() on pl.DivisionId equals d.DivisionId
+                        join s in context.Set<Season>() on d.SeasonId equals s.SeasonId
+                        where s.SeasonId == seasonId
+                        where !divisionId.HasValue || pl.DivisionId == divisionId
+                        orderby d.DivisionDescription, p.LastName, p.FirstName
+                        select new DraftListPlayer
+                        {
+                            Division = d.DivisionDescription ?? string.Empty,
+                            DraftId = pl.DraftId,
+                            LastName = p.LastName ?? string.Empty,
+                            FirstName = p.FirstName ?? string.Empty,
+                            DOB = p.BirthDate.HasValue ? p.BirthDate.Value.Date : (DateTime?)null,
+                            Grade = p.Grade,
+                            Address1 = h.Address1,
+                            City = h.City,
+                            Zip = h.Zip
+                        };
+
+            return query.ToList();
+        }
     }
 }
