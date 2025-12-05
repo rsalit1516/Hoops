@@ -138,6 +138,14 @@
             >
             Register
           </button>
+          <button
+            type="button"
+            mat-raised-button
+            (click)="onCreateUser()"
+            color="accent"
+            >
+            {{ userButtonText() }}
+          </button>
         </mat-card-actions>
       </mat-card>
     </form>

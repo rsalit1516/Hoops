@@ -21,7 +21,9 @@
       "Bash(git add:*)",
       "Bash(git reset:*)",
       "Bash(git commit:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(az webapp log tail:*)",
+      "Bash(az monitor app-insights query:*)"
     ],
     "deny": [],
     "ask": []
