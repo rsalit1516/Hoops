@@ -1,5 +1,6 @@
 import { NgClass } from '@angular/common';
-import { Component, OnInit, effect, inject, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, OnInit, computed, effect, inject, signal } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -12,6 +13,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { AdminUsersService } from '../admin-users.service';
 import { User } from '@app/domain/user';
 import { LoggerService } from '@app/services/logging.service';
@@ -21,6 +23,7 @@ import { HouseholdService } from '@app/services/household.service';
 import { PeopleService } from '@app/services/people.service';
 import { Household } from '@app/domain/household';
 import { Person } from '@app/domain/person';
+import { Constants } from '@app/shared/constants';
 
 @Component({
   selector: 'app-admin-user-detail',
@@ -41,6 +44,7 @@ export class AdminUserDetail extends BaseFormComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private fb = inject(FormBuilder);
+  private http = inject(HttpClient);
   private usersService = inject(AdminUsersService);
   private householdService = inject(HouseholdService);
   private peopleService = inject(PeopleService);
@@ -50,8 +54,12 @@ export class AdminUserDetail extends BaseFormComponent implements OnInit {
   form!: FormGroup;
   userId!: number;
   isSaving = signal(false);
-  isFromPersonDetail = signal(false);
   householdName = signal<string>('');
+
+  // Show dropdown only when creating a brand new user (not from person detail)
+  showHouseholdDropdown = computed(() => {
+    return this.userId === 0 && !this.householdName();
+  });
 
   userTypeOptions = [
     { value: 1, label: 'User' },
@@ -76,10 +84,24 @@ export class AdminUserDetail extends BaseFormComponent implements OnInit {
       if (!this.form) return;
 
       if (u) {
-        // Existing user - populate form
+        // Existing user - populate form and load household name
         this.form.patchValue(u);
         this.form.markAsPristine();
         this.userId = u.userId;
+
+        // Load household name for existing user
+        if (u.houseId) {
+          this.getHouseholdById(u.houseId).subscribe({
+            next: (household) => {
+              this.householdName.set(household.name);
+            },
+            error: (error) => {
+              this.logger.error('Failed to load household', error);
+            }
+          });
+          // Also load people for this household
+          this.loadPeopleForHousehold(u.houseId);
+        }
       } else {
         // New user - reset form to defaults
         this.form.reset({
@@ -92,6 +114,7 @@ export class AdminUserDetail extends BaseFormComponent implements OnInit {
         });
         this.peopleOptions.set([]);
         this.userId = 0;
+        this.householdName.set(''); // Clear household name
       }
     });
   }
@@ -106,40 +129,44 @@ export class AdminUserDetail extends BaseFormComponent implements OnInit {
       pword: [''],
     });
 
-    // Check query parameters first to determine flow
+    // Check query parameters to see if coming from person detail
     this.route.queryParams.subscribe((params) => {
       if (params['houseId'] && params['personId']) {
-        // Coming from person detail - load specific household only
-        this.isFromPersonDetail.set(true);
-
+        // Coming from person detail - pre-populate and load household name
         const houseId = Number(params['houseId']);
         const personId = Number(params['personId']);
         const name = params['name'] || '';
 
-        // Get the specific household
-        this.householdService.selectedHouseholdByHouseId(houseId);
-
-        // Subscribe to the household signal to get the name
-        const householdEffect = effect(() => {
-          const household = this.householdService.selectedRecordSignal();
-          if (household && household.houseId === houseId) {
+        // Load household name first
+        this.getHouseholdById(houseId).subscribe({
+          next: (household) => {
             this.householdName.set(household.name);
 
             // Pre-populate the form
             this.form.patchValue({
               houseId: houseId,
-              peopleId: personId,
               name: name
             });
-
-            // Load people for this household
-            this.loadPeopleForHousehold(houseId);
+          },
+          error: (error) => {
+            this.logger.error('Failed to load household', error);
+            this.snack.open('Failed to load household', 'Close', {
+              duration: 3000,
+            });
           }
         });
-      } else {
-        // Normal user creation flow - load all households
-        this.isFromPersonDetail.set(false);
 
+        // Load people for this household, then set the selected person
+        this.loadPeopleForHousehold(houseId);
+
+        // Set peopleId after a short delay to ensure people are loaded
+        setTimeout(() => {
+          this.form.patchValue({ peopleId: personId });
+        }, 100);
+
+      } else if (this.userId === 0) {
+        // Brand new user creation (not from person detail, not editing existing)
+        // Load all households for dropdown
         this.householdService.getAllHouseholds().subscribe({
           next: (households) => {
             this.householdOptions.set(households);
@@ -157,13 +184,18 @@ export class AdminUserDetail extends BaseFormComponent implements OnInit {
           if (houseId) {
             this.loadPeopleForHousehold(houseId);
           } else {
-            // Clear people options and disable people dropdown when no household selected
+            // Clear people options when no household selected
             this.peopleOptions.set([]);
             this.form.get('peopleId')?.setValue('');
           }
         });
       }
+      // Note: If userId > 0 (editing existing user), the constructor effect handles it
     });
+  }
+
+  private getHouseholdById(houseId: number): Observable<Household> {
+    return this.http.get<Household>(`${Constants.GET_HOUSEHOLD_BY_ID_URL}/${houseId}`);
   }
 
   private loadPeopleForHousehold(houseId: number): void {
