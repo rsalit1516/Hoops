@@ -50,7 +50,8 @@ export class AdminUserDetail extends BaseFormComponent implements OnInit {
   form!: FormGroup;
   userId!: number;
   isSaving = signal(false);
-  isHouseholdReadonly = signal(false);
+  isFromPersonDetail = signal(false);
+  householdName = signal<string>('');
 
   userTypeOptions = [
     { value: 1, label: 'User' },
@@ -105,50 +106,62 @@ export class AdminUserDetail extends BaseFormComponent implements OnInit {
       pword: [''],
     });
 
-    // Load household options
-    this.householdService.getAllHouseholds().subscribe({
-      next: (households) => {
-        this.householdOptions.set(households);
+    // Check query parameters first to determine flow
+    this.route.queryParams.subscribe((params) => {
+      if (params['houseId'] && params['personId']) {
+        // Coming from person detail - load specific household only
+        this.isFromPersonDetail.set(true);
 
-        // After loading households, check for query parameters
-        this.route.queryParams.subscribe((params) => {
-          if (params['houseId'] && params['personId']) {
-            const houseId = Number(params['houseId']);
-            const personId = Number(params['personId']);
-            const name = params['name'] || '';
+        const houseId = Number(params['houseId']);
+        const personId = Number(params['personId']);
+        const name = params['name'] || '';
 
-            // Pre-populate the household, person, and name
+        // Get the specific household
+        this.householdService.selectedHouseholdByHouseId(houseId);
+
+        // Subscribe to the household signal to get the name
+        const householdEffect = effect(() => {
+          const household = this.householdService.selectedRecordSignal();
+          if (household && household.houseId === houseId) {
+            this.householdName.set(household.name);
+
+            // Pre-populate the form
             this.form.patchValue({
               houseId: houseId,
               peopleId: personId,
               name: name
             });
 
-            // Make household field readonly when coming from person detail
-            this.isHouseholdReadonly.set(true);
-            this.form.get('houseId')?.disable();
-
             // Load people for this household
             this.loadPeopleForHousehold(houseId);
           }
         });
-      },
-      error: (error) => {
-        this.logger.error('Failed to load households', error);
-        this.snack.open('Failed to load households', 'Close', {
-          duration: 3000,
-        });
-      },
-    });
-
-    // Watch for household changes and load people accordingly
-    this.form.get('houseId')?.valueChanges.subscribe((houseId) => {
-      if (houseId) {
-        this.loadPeopleForHousehold(houseId);
       } else {
-        // Clear people options and disable people dropdown when no household selected
-        this.peopleOptions.set([]);
-        this.form.get('peopleId')?.setValue('');
+        // Normal user creation flow - load all households
+        this.isFromPersonDetail.set(false);
+
+        this.householdService.getAllHouseholds().subscribe({
+          next: (households) => {
+            this.householdOptions.set(households);
+          },
+          error: (error) => {
+            this.logger.error('Failed to load households', error);
+            this.snack.open('Failed to load households', 'Close', {
+              duration: 3000,
+            });
+          },
+        });
+
+        // Watch for household changes and load people accordingly
+        this.form.get('houseId')?.valueChanges.subscribe((houseId) => {
+          if (houseId) {
+            this.loadPeopleForHousehold(houseId);
+          } else {
+            // Clear people options and disable people dropdown when no household selected
+            this.peopleOptions.set([]);
+            this.form.get('peopleId')?.setValue('');
+          }
+        });
       }
     });
   }

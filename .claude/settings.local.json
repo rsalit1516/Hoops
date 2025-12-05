@@ -23,7 +23,9 @@
       "Bash(git commit:*)",
       "Bash(git push:*)",
       "Bash(az webapp log tail:*)",
-      "Bash(az monitor app-insights query:*)"
+      "Bash(az monitor app-insights query:*)",
+      "Bash(ls:*)",
+      "Bash(bash scripts/generate-story-id.sh:*)"
     ],
     "deny": [],
     "ask": []

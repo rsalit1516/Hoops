@@ -17,7 +17,7 @@
 
 | Story ID | Title | Epic | Type | Points | Assignee | Completion Date | Notes |
 | -------- | ----- | ---- | ---- | ------ | -------- | --------------- | ----- |
-| -        | -     | -    | -    | -      | -        | -               | -     |
+| APMF-060 | Create User Account from Person Detail | APM-045 | Feature | 5 | - | 2025-12-05 | Includes smart button behavior, data pre-population, and password field |
 
 ## Next Available Story IDs by Epic
 
@@ -102,5 +102,5 @@
 
 ---
 
-_Last Updated: 2025-10-11_
-_Recent Changes: Added first 3 APM stories (APMF-001 through APMF-003)_
+_Last Updated: 2025-12-05_
+_Recent Changes: Added completed story APMF-060 - Create User Account from Person Detail_
