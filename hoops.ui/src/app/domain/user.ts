@@ -11,6 +11,7 @@ export class User {
   houseId: number | undefined;
   peopleId?: number | undefined;
   userType: number | undefined;
+  pword: string | undefined;
   screens: string[] | undefined;
   divisions: Division[] | undefined;
 

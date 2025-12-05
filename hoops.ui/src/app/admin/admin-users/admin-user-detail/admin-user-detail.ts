@@ -50,6 +50,7 @@ export class AdminUserDetail extends BaseFormComponent implements OnInit {
   form!: FormGroup;
   userId!: number;
   isSaving = signal(false);
+  isHouseholdReadonly = signal(false);
 
   userTypeOptions = [
     { value: 1, label: 'User' },
@@ -101,12 +102,36 @@ export class AdminUserDetail extends BaseFormComponent implements OnInit {
       userType: [1, Validators.required],
       houseId: [''],
       peopleId: [''],
+      pword: [''],
     });
 
     // Load household options
     this.householdService.getAllHouseholds().subscribe({
       next: (households) => {
         this.householdOptions.set(households);
+
+        // After loading households, check for query parameters
+        this.route.queryParams.subscribe((params) => {
+          if (params['houseId'] && params['personId']) {
+            const houseId = Number(params['houseId']);
+            const personId = Number(params['personId']);
+            const name = params['name'] || '';
+
+            // Pre-populate the household, person, and name
+            this.form.patchValue({
+              houseId: houseId,
+              peopleId: personId,
+              name: name
+            });
+
+            // Make household field readonly when coming from person detail
+            this.isHouseholdReadonly.set(true);
+            this.form.get('houseId')?.disable();
+
+            // Load people for this household
+            this.loadPeopleForHousehold(houseId);
+          }
+        });
       },
       error: (error) => {
         this.logger.error('Failed to load households', error);

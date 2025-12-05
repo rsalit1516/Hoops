@@ -1,5 +1,5 @@
 
-import { Component, effect, inject, OnInit } from '@angular/core';
+import { Component, computed, effect, inject, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -17,6 +17,7 @@ import { PeopleService } from '@app/services/people.service';
 import { FormSettings } from '@app/shared/constants';
 import { LoggerService } from '@app/services/logger.service';
 import { ConfirmDialog } from '@app/admin/shared/confirm-dialog/confirm-dialog';
+import { AdminUsersService } from '@app/admin/admin-users/admin-users.service';
 
 interface Item {
   id: number;
@@ -53,6 +54,7 @@ export class PersonalInfo implements OnInit {
   fb = inject(FormBuilder);
   readonly router = inject(Router);
   readonly #peopleService = inject(PeopleService);
+  readonly #usersService = inject(AdminUsersService);
   private logger = inject(LoggerService);
   private dialog = inject(MatDialog);
   private snackBar = inject(MatSnackBar);
@@ -74,11 +76,24 @@ export class PersonalInfo implements OnInit {
   person = this.#peopleService.selectedPerson;
   personalInfoForm!: FormGroup;
 
+  // Check if a user exists for the current person
+  existingUser = computed(() => {
+    const currentPerson = this.person();
+    const users = this.#usersService.users();
+    if (!currentPerson?.personId || !users?.length) return null;
+    return users.find(u => u.peopleId === currentPerson.personId) || null;
+  });
+
+  userButtonText = computed(() => this.existingUser() ? 'User' : 'Create User');
+
   get volunteerControls (): FormArray {
     return this.personalInfoForm.get('volunteerControls') as FormArray;
   }
 
   constructor () {
+    // Load users to check if user exists
+    this.#usersService.loadUsers();
+
     effect(() => {
       this.person = this.#peopleService.selectedPerson;
       this.patchValue();
@@ -282,6 +297,40 @@ export class PersonalInfo implements OnInit {
 
     // Navigate to player registration form
     this.router.navigate(['/admin/player-registration', currentPerson.personId]);
+  }
+
+  onCreateUser () {
+    const currentPerson = this.person();
+    if (!currentPerson || !currentPerson.personId || !currentPerson.houseId) {
+      this.logger.error('No person selected or person has no household');
+      this.snackBar.open('Please select a person with a household first.', 'OK', {
+        duration: 3000,
+      });
+      return;
+    }
+
+    const existingUserRecord = this.existingUser();
+
+    if (existingUserRecord) {
+      // User exists - navigate to edit that user
+      this.#usersService.loadUser(existingUserRecord.userId);
+      this.router.navigate(['/admin/users/detail']);
+    } else {
+      // No user exists - clear selectedUser and navigate to create new user
+      this.#usersService.selectedUser.set(null);
+
+      // Pre-populate name with person's full name
+      const personName = `${currentPerson.firstName} ${currentPerson.lastName}`;
+
+      // Navigate to user creation form with household, person, and name pre-populated
+      this.router.navigate(['/admin/users/detail'], {
+        queryParams: {
+          houseId: currentPerson.houseId,
+          personId: currentPerson.personId,
+          name: personName
+        }
+      });
+    }
   }
 
 }
