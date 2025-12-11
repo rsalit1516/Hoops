@@ -208,18 +208,9 @@ Azure Pipelines configuration in `azure-pipelines.yml`:
 
 ## Documentation & Project Management
 
-### Epic and Story Management
+### Work Item Management
 
-The project uses a structured epic/story tracking system in `docs/`:
-
-- **Epics**: Documented in `docs/epics/` with standardized IDs (e.g., `APM-045`, `AGM-001`)
-- **Stories**: Tracked in `docs/stories/` with type-based IDs (e.g., `APMF-001` for features, `APMB-001` for bugs)
-- **Registry**: `docs/registry/epics.md` maintains active, planned, and completed epics
-- **Automation**: Use scripts in `scripts/` to generate IDs and create documentation:
-  - `./scripts/generate-epic-id.sh APM` - Generate next epic ID
-  - `./scripts/create-epic.sh APL-001 "Title"` - Create epic with template
-  - `./scripts/generate-story-id.sh APM feature "Title"` - Generate story ID
-  - `./scripts/create-story.sh APMF-001 "Title"` - Create story with BDD template
+**Azure DevOps is the single source of truth** for epics, user stories, tasks, and backlog management. Work items follow a standardized ID structure:
 
 **Product Area Codes:**
 
@@ -233,14 +224,21 @@ The project uses a structured epic/story tracking system in `docs/`:
 - `SYS` - System Administration
 - `INF` - Infrastructure & DevOps
 
-### Documentation Structure
+**Work Item Types:**
+- Epics: `{AREA}-###` (e.g., `APM-045`, `AGM-001`)
+- Stories: `{AREA}{TYPE}-###` (e.g., `APMF-001` for features, `APMB-001` for bugs)
+
+**Working with Claude Code:**
+When assigning implementation tasks, copy the story content from Azure DevOps and provide it directly. Claude Code will automatically apply the architectural standards and coding patterns defined in this document.
+
+### Technical Documentation
+
+Repository documentation in `docs/` contains architectural and technical reference materials:
 
 - **Architecture**: `docs/architecture-overview.md` - System design and ER diagrams
-- **Features**: `docs/features/` - BDD feature files with Gherkin scenarios
-- **User Stories**: `docs/user-stories/` - Agile stories with acceptance criteria
 - **Testing**: `docs/testing/` - Test specifications and strategy
 - **Technical**: `docs/technical-requirements.md` - Functional and non-functional requirements
-- **Templates**: `docs/templates/` - Templates for epics, stories, and BDD features
+- **Templates**: `docs/templates/` - Templates for documentation and technical specifications
 
 ## Key Development Notes
 
