@@ -589,6 +589,7 @@ namespace Hoops.Infrastructure.Repository
                         orderby d.DivisionDescription, p.LastName, p.FirstName
                         select new DraftListPlayer
                         {
+                            PersonId = p.PersonId,
                             Division = d.DivisionDescription ?? string.Empty,
                             DraftId = pl.DraftId,
                             LastName = p.LastName ?? string.Empty,

@@ -54,6 +54,12 @@ export const ADMINROUTES: Routes = [
         children: ADMIN_PEOPLE_ROUTES,
       },
       {
+        path: 'players',
+        title: 'Players',
+        loadComponent: () =>
+          import('./player/player-list').then((m) => m.PlayerList),
+      },
+      {
         path: 'player-registration/:personId',
         title: 'Player Registration',
         loadComponent: () =>

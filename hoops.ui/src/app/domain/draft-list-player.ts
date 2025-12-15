@@ -1,4 +1,5 @@
 export class DraftListPlayer {
+  public personId: number = 0;
   public division: string = '';
   public draftId: string | null = null;
   public lastName: string = '';

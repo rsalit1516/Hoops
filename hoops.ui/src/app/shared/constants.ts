@@ -68,7 +68,8 @@ export class Constants {
   public static GET_HOUSEHOLD_BY_ID_URL = `${this.FUNCTIONS_BASE_URL}/api/Household`;
   public static SEARCH_PEOPLE_URL = `${this.FUNCTIONS_BASE_URL}/api/Person/search`;
   public static SAVE_HOUSEHOLD_URL = `${this.FUNCTIONS_BASE_URL}/api/Household/`;
-  public static PLAYER_URL = `${this.FUNCTIONS_BASE_URL}/api/Players`;
+  public static PLAYER_URL = `${this.FUNCTIONS_BASE_URL}/api/Player`;
+  public static GET_SEASON_PLAYERS_URL = `${this.FUNCTIONS_BASE_URL}/api/Player/season`;
   public static DRAFT_LIST_URL = `${this.FUNCTIONS_BASE_URL}/api/DraftList`;
 }
 export const Literals = {

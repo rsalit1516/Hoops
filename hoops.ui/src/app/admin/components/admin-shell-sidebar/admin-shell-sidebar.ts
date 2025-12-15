@@ -38,6 +38,7 @@ export class AdminShellSidebar {
     { name: 'Divisions', route: '/admin/division', isSelected: false },
     { name: 'Teams', route: '/admin/season-setup', isSelected: false },
     { name: 'Games', route: '/admin/games', isSelected: false },
+    { name: 'Players', route: '/admin/players', isSelected: false },
   ];
   CommunicationSection = 'Communication';
   communicationItems = [
