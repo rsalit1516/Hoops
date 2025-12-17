@@ -85,6 +85,7 @@ var host = new HostBuilder()
 
         // Application services
         services.AddScoped<ISeasonService, SeasonService>();
+        services.AddScoped<IPlayerService, PlayerService>();
 
         // Logging
         services.AddLogging(builder =>

@@ -377,7 +377,6 @@ namespace Hoops.Infrastructure.Repository
             if (playerold != null)
             {
                 context.Entry(playerold).CurrentValues.SetValues(player);
-                context.SaveChanges();
                 if (player.SeasonId != 0 && player.PersonId != 0 && player.CompanyId != 0)
                 {
                     if (player.SeasonId != 0 && player.PersonId != 0 && player.CompanyId != 0)
@@ -394,8 +393,9 @@ namespace Hoops.Infrastructure.Repository
                         }
                     }
                 }
+                return playerold;
             }
-            return player ?? new Player();
+            return new Player();
         }
 
         public void SetDivision(int seasonId, int personId, int companyId)

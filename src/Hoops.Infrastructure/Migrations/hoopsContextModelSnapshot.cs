@@ -638,8 +638,8 @@ namespace Hoops.Infrastructure.Migrations
                         .HasColumnType("smalldatetime");
 
                     b.Property<string>("PayType")
-                        .HasMaxLength(5)
-                        .HasColumnType("nvarchar(5)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<int?>("PeopleID")
                         .HasColumnType("int");
@@ -891,12 +891,11 @@ namespace Hoops.Infrastructure.Migrations
 
             modelBuilder.Entity("Hoops.Core.Models.SchedulePlayoff", b =>
                 {
-                    b.Property<int>("SchedulePlayoffId")
+                    b.Property<int>("ScheduleNumber")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("SchedulePlayoffID");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SchedulePlayoffId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ScheduleNumber"));
 
                     b.Property<string>("Descr")
                         .HasColumnType("nvarchar(max)");
@@ -922,20 +921,13 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<int?>("LocationNumber")
                         .HasColumnType("int");
 
-                    b.Property<int>("ScheduleNumber")
-                        .HasColumnType("int");
-
                     b.Property<string>("VisitingTeam")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("VisitingTeamScore")
                         .HasColumnType("int");
 
-                    b.HasKey("SchedulePlayoffId");
-
-                    b.HasIndex("ScheduleNumber", "GameNumber")
-                        .IsUnique()
-                        .HasDatabaseName("UQ_SchedulePlayoffs_Schedule_Game");
+                    b.HasKey("ScheduleNumber");
 
                     b.ToTable("SchedulePlayoffs", (string)null);
                 });

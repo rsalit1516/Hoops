@@ -66,17 +66,16 @@ interface PlayerFormData {
     MatCheckboxModule,
     MatRadioModule,
     MatSelectModule,
-    RouterModule
+    RouterModule,
   ],
   templateUrl: './player-registration.html',
-  styleUrls: ['./player-registration.scss',
+  styleUrls: [
+    './player-registration.scss',
     '../../admin.scss',
     '../../../shared/scss/forms.scss',
     '../../../shared/scss/cards.scss',
   ],
-  providers: [
-    provideNativeDateAdapter(),
-  ],
+  providers: [provideNativeDateAdapter()],
 })
 export class PlayerRegistration implements OnInit {
   readonly router = inject(Router);
@@ -137,13 +136,16 @@ export class PlayerRegistration implements OnInit {
   constructor() {
     effect(() => {
       const currentPerson = this.person();
-      this.logger.debug('Person changed in player registration:', currentPerson);
+      this.logger.debug(
+        'Person changed in player registration:',
+        currentPerson
+      );
     });
 
     effect(() => {
       const selectedSeason = this.seasonService.selectedSeason();
       this.logger.debug('Selected season changed:', selectedSeason);
-      if (selectedSeason) {
+      if (selectedSeason?.seasonId) {
         this.selectedSeason.set(selectedSeason);
         this.loadDivisionsForSeason(selectedSeason.seasonId);
       }
@@ -161,7 +163,7 @@ export class PlayerRegistration implements OnInit {
     effect(() => {
       const seasonId = this.playerFormModel().seasonId;
       if (seasonId) {
-        const season = this.seasons().find(s => s.seasonId === seasonId);
+        const season = this.seasons().find((s) => s.seasonId === seasonId);
         if (season) {
           this.selectedSeason.set(season);
           this.seasonService.updateSelectedSeason(season);
@@ -175,7 +177,7 @@ export class PlayerRegistration implements OnInit {
     this.loadSeasons();
 
     // Get personId from route params
-    this.route.params.subscribe(params => {
+    this.route.params.subscribe((params) => {
       const personId = params['personId'];
       if (personId) {
         this.loadPersonAndPlayer(personId);
@@ -193,7 +195,7 @@ export class PlayerRegistration implements OnInit {
       const currentModel = this.playerFormModel();
       this.playerFormModel.set({
         ...currentModel,
-        seasonId: currentSeason.seasonId
+        seasonId: currentSeason.seasonId ?? null,
       });
     }
   }
@@ -206,17 +208,19 @@ export class PlayerRegistration implements OnInit {
     // Check if we already have a player for this person and season
     const seasonId = this.playerFormModel().seasonId;
     if (seasonId) {
-      this.playerService.getPlayerByPersonAndSeason(personId, seasonId).subscribe({
-        next: (player) => {
-          this.logger.info('Existing player found:', player);
-          this.playerService.updateSelectedPlayer(player);
-          this.patchFormWithPlayer(player);
-        },
-        error: (error) => {
-          this.logger.info('No existing player, creating new registration');
-          this.createNewPlayerRegistration(personId);
-        }
-      });
+      this.playerService
+        .getPlayerByPersonAndSeason(personId, seasonId)
+        .subscribe({
+          next: (player) => {
+            this.logger.info('Existing player found:', player);
+            this.playerService.updateSelectedPlayer(player);
+            this.patchFormWithPlayer(player);
+          },
+          error: (error) => {
+            this.logger.info('No existing player, creating new registration');
+            this.createNewPlayerRegistration(personId);
+          },
+        });
     } else {
       this.createNewPlayerRegistration(personId);
     }
@@ -229,7 +233,8 @@ export class PlayerRegistration implements OnInit {
       return;
     }
 
-    const seasonId = this.playerFormModel().seasonId || this.selectedSeason()?.seasonId;
+    const seasonId =
+      this.playerFormModel().seasonId || this.selectedSeason()?.seasonId;
     if (!seasonId) {
       this.logger.error('No season selected');
       return;
@@ -239,7 +244,7 @@ export class PlayerRegistration implements OnInit {
     const newPlayer = this.playerService.createNewPlayer(personId, seasonId);
 
     // Set the paid amount to the season's participation fee
-    const season = this.seasons().find(s => s.seasonId === seasonId);
+    const season = this.seasons().find((s) => s.seasonId === seasonId);
     if (season && season.participationFee) {
       newPlayer.paidAmount = season.participationFee;
       newPlayer.balanceOwed = season.participationFee;
@@ -267,7 +272,9 @@ export class PlayerRegistration implements OnInit {
       companyId: player.companyId ?? 1,
       seasonId: player.seasonId,
       divisionId: player.divisionId,
-      playerName: currentPerson ? `${currentPerson.firstName} ${currentPerson.lastName}` : '',
+      playerName: currentPerson
+        ? `${currentPerson.firstName} ${currentPerson.lastName}`
+        : '',
 
       // Payment Info
       payType: player.payType ?? '',
@@ -363,7 +370,7 @@ export class PlayerRegistration implements OnInit {
         const currentModel = this.playerFormModel();
         this.playerFormModel.set({
           ...currentModel,
-          playerId: response.playerId
+          playerId: response.playerId,
         });
 
         this.snackBar.open('Player registration saved successfully', 'OK', {
@@ -378,7 +385,7 @@ export class PlayerRegistration implements OnInit {
       },
       complete: () => {
         this.playerService.updateLoadingState(false);
-      }
+      },
     });
   }
 

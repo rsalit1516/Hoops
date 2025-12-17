@@ -385,7 +385,7 @@ public partial class hoopsContext : DbContext
 
             entity.Property(e => e.PaidDate).HasColumnType("smalldatetime");
 
-            entity.Property(e => e.PayType).HasMaxLength(5);
+            entity.Property(e => e.PayType).HasMaxLength(20);
 
             entity.Property(e => e.PersonId).HasColumnName("PeopleID");
 

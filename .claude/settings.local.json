@@ -25,7 +25,13 @@
       "Bash(az webapp log tail:*)",
       "Bash(az monitor app-insights query:*)",
       "Bash(ls:*)",
-      "Bash(bash scripts/generate-story-id.sh:*)"
+      "Bash(bash scripts/generate-story-id.sh:*)",
+      "Bash(findstr:*)",
+      "Bash(grep:*)",
+      "Bash(dotnet ef migrations add:*)",
+      "Bash(dotnet ef migrations remove:*)",
+      "Bash(dotnet ef database update:*)",
+      "Bash(dotnet ef migrations script:*)"
     ],
     "deny": [],
     "ask": []

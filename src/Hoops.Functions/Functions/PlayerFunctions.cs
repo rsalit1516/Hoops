@@ -86,6 +86,26 @@ namespace Hoops.Functions.Functions
             return resp;
         }
 
+        [Function("GetPlayersBySeason")]
+        public HttpResponseData GetPlayersBySeason(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Player/season/{seasonId:int}")] HttpRequestData req,
+            int seasonId)
+        {
+            // Parse optional divisionId from query string
+            int? divisionId = null;
+            var query = System.Web.HttpUtility.ParseQueryString(req.Url.Query);
+            if (int.TryParse(query["divisionId"], out var divId))
+            {
+                divisionId = divId;
+            }
+
+            var players = _repository.GetDraftListPlayers(seasonId, divisionId);
+
+            var resp = req.CreateResponse();
+            WriteJsonAsync(resp, players).GetAwaiter().GetResult();
+            return resp;
+        }
+
         [Function("PostPlayer")]
         public async Task<HttpResponseData> PostPlayer(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Players")] HttpRequestData req)

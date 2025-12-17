@@ -1,4 +1,3 @@
-
 import { Component, inject, Inject } from '@angular/core';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
@@ -14,11 +13,13 @@ import { LoggerService } from '@app/services/logger.service';
     MatListModule,
     RouterLink,
     RouterLinkActive,
-    MatDividerModule
-],
-  templateUrl: "./admin-shell-sidebar.html",
-  styleUrls: ['./admin-shell-sidebar.scss',
-    './../../containers/admin-shell/admin-shell.scss']
+    MatDividerModule,
+  ],
+  templateUrl: './admin-shell-sidebar.html',
+  styleUrls: [
+    './admin-shell-sidebar.scss',
+    './../../containers/admin-shell/admin-shell.scss',
+  ],
 })
 export class AdminShellSidebar {
   readonly #featureFlagService = inject(FeatureFlagService);
@@ -36,9 +37,9 @@ export class AdminShellSidebar {
   seasonSetupItems = [
     { name: 'Seasons', route: '/admin/seasons', isSelected: false },
     { name: 'Divisions', route: '/admin/division', isSelected: false },
+    { name: 'Players', route: '/admin/players', isSelected: false },
     { name: 'Teams', route: '/admin/season-setup', isSelected: false },
     { name: 'Games', route: '/admin/games', isSelected: false },
-    { name: 'Players', route: '/admin/players', isSelected: false },
   ];
   CommunicationSection = 'Communication';
   communicationItems = [
@@ -56,24 +57,28 @@ export class AdminShellSidebar {
 
   ReportsSection = 'Reports';
   reportsItems = [
-    { name: 'Draft List', route: '/admin/reports/draft-list', isSelected: false },
+    {
+      name: 'Draft List',
+      route: '/admin/reports/draft-list',
+      isSelected: false,
+    },
   ];
   showReports = true;
 
-  constructor () { }
+  constructor() {}
 
   selectedItem: nav | undefined;
 
-  selectItem (item: nav) {
+  selectItem(item: nav) {
     this.selectedItem = item;
-
-  } isSelected (item: nav): boolean {
+  }
+  isSelected(item: nav): boolean {
     return item.isSelected;
   }
 
   navigate(item: nav) {
     this.#logger.info('Navigating to:', item.route);
-    this.seasonSetupItems.forEach(i => {
+    this.seasonSetupItems.forEach((i) => {
       if (i.name === item.name) {
         i.isSelected = true;
       } else {
