@@ -19,7 +19,8 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'csbc-player-list',
   templateUrl: './player-list.html',
-  styleUrls: ['./player.component.scss'],
+  styleUrls: ['./player.component.scss',
+    '../../shared/scss/tables.scss'],
   standalone: true,
   imports: [
     CommonModule,
