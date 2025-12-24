@@ -331,7 +331,7 @@ public partial class hoopsContext : DbContext
 
         modelBuilder.Entity<Player>(entity =>
         {
-            entity.ToTable("Player");
+            entity.ToTable("Players");
             entity.HasKey(e => e.PlayerId);
 
             entity.HasIndex(e => e.DivisionId)
