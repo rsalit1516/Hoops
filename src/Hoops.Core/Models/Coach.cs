@@ -22,7 +22,7 @@ namespace Hoops.Core.Models
         public DateTime? CreatedDate { get; set; }
         public string CreatedUser { get; set; }
 
-        [ForeignKey("PeopleID")]
+        [ForeignKey("PersonId")]
         public virtual Person Person { get; set; }
     }
 }

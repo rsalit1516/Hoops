@@ -50,13 +50,13 @@ namespace Hoops.Core.Models
         [Column("ShoppingCartID")]
         public int? ShoppingCartId { get; set; }
 
-        [ForeignKey("PeopleID")]
+        [ForeignKey("PersonId")]
         public virtual Person Person { get; set; }
-        [ForeignKey("DivisionID")]
+        [ForeignKey("DivisionId")]
         public virtual Division Division { get; set; }
-        [ForeignKey("TeamID")]
+        [ForeignKey("TeamId")]
         public virtual Team Team { get; set; }
-        [ForeignKey("SeasonID")]
+        [ForeignKey("SeasonId")]
         public virtual Season Season { get; set; }
     }
     // public partial class UndraftedPlayer

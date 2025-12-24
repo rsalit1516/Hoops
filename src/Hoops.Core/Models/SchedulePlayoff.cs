@@ -12,7 +12,6 @@ namespace Hoops.Core.Models
         
         public int ScheduleNumber { get; set; }
         public int GameNumber { get; set; }
-        [ForeignKey("Location")]
         public int? LocationNumber { get; set; }
         public DateTime? GameDate { get; set; }
         public string GameTime { get; set; }

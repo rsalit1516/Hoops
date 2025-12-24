@@ -24,7 +24,7 @@ namespace Hoops.Core.Models
         public DateTime? CreatedDate { get; set; }
         public string CreatedUser { get; set; }
 
-        [ForeignKey("SponsorProfileID")]
+        [ForeignKey("SponsorProfileId")]
         public virtual SponsorProfile SponsorProfile { get; set; }
     }
 }
