@@ -70,9 +70,18 @@ export class DirectorList extends BaseList<DirectorListItem> {
       return directors;
     }
 
-    // Apply filters here based on your filter criteria
     return directors.filter((director) => {
-      // Add your filtering logic based on filterCriteria
+      // Filter by search text (name)
+      if (filterCriteria.searchText) {
+        const searchLower = filterCriteria.searchText.toLowerCase();
+        const nameMatch = director.name?.toLowerCase().includes(searchLower);
+        const titleMatch = director.title?.toLowerCase().includes(searchLower);
+
+        if (!nameMatch && !titleMatch) {
+          return false;
+        }
+      }
+
       return true;
     });
   });

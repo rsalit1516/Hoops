@@ -8,22 +8,34 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { debounceTime } from 'rxjs';
 
 // Interface for filter data structure
 export interface DirectorFilterCriteria {
   searchText?: string;
-  active?: boolean | null;
-  role?: string;
 }
 
 @Component({
   selector: 'csbc-director-filters',
-  imports: [MatCardModule],
+  imports: [
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    ReactiveFormsModule,
+  ],
   templateUrl: './director-filters.html',
-  styleUrl: './director-filters.scss',
+  styleUrls: ['./director-filters.scss',
+      '../../../shared/scss/forms.scss',
+    '../../../shared/scss/cards.scss']
+
 })
 export class DirectorFilters implements OnInit, OnChanges {
   private fb = inject(FormBuilder);
@@ -33,23 +45,7 @@ export class DirectorFilters implements OnInit, OnChanges {
 
   filterForm = this.fb.group({
     searchText: [''],
-    active: [null as boolean | null],
-    role: [''],
   });
-
-  roles = [
-    { value: '', label: 'All Roles' },
-    { value: 'player', label: 'Player' },
-    { value: 'coach', label: 'Coach' },
-    { value: 'parent', label: 'Parent' },
-    { value: 'admin', label: 'Admin' },
-  ];
-
-  activeOptions = [
-    { value: null, label: 'All' },
-    { value: true, label: 'Active' },
-    { value: false, label: 'Inactive' },
-  ];
 
   ngOnInit() {
     // Apply initial filters
@@ -74,8 +70,6 @@ export class DirectorFilters implements OnInit, OnChanges {
     const formValue = this.filterForm.value;
 
     if (formValue.searchText) filters.searchText = formValue.searchText;
-    if (formValue.active !== null) filters.active = formValue.active!;
-    if (formValue.role) filters.role = formValue.role;
 
     this.filterChange.emit(filters);
   }
@@ -83,13 +77,11 @@ export class DirectorFilters implements OnInit, OnChanges {
   clearFilters() {
     this.filterForm.reset({
       searchText: '',
-      active: null,
-      role: '',
     });
   }
 
   get hasActiveFilters(): boolean {
     const value = this.filterForm.value;
-    return !!(value.searchText || value.active !== null || value.role);
+    return !!(value.searchText);
   }
 }
