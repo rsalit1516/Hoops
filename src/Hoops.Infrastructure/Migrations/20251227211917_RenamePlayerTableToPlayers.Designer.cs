@@ -4,6 +4,7 @@ using Hoops.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hoops.Infrastructure.Migrations
 {
     [DbContext(typeof(hoopsContext))]
-    partial class hoopsContextModelSnapshot : ModelSnapshot
+    [Migration("20251227211917_RenamePlayerTableToPlayers")]
+    partial class RenamePlayerTableToPlayers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
