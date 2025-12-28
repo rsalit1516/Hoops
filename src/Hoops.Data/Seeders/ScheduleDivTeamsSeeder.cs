@@ -64,20 +64,27 @@ namespace Hoops.Data.Seeders
                         .OrderBy(d => d.DivisionId)
                         .ToListAsync();
 
-                    var seasonTeamNumber = 1; // Team number unique per season (external program perspective)
-                    var random = new Random();
-
                     // Simulate external scheduling program: Create ScheduleNumber starting from 1
                     // This represents how the external program groups divisions for scheduling
                     var externalScheduleNumber = 1;
 
                     foreach (var division in divisions)
                     {
-                        // Randomize number of teams per division (4-14 teams)
-                        // var numberOfTeams = random.Next(4, 15);
-                        // changed to get what was created - assumes teams is done first.
-                        var numberOfTeams = context.Teams.Count(t => t.DivisionId == division.DivisionId);
-                        _logger.LogDebug("Creating {TeamCount} teams for External Schedule #{ScheduleNumber} (Division: {DivisionDescription})", numberOfTeams, externalScheduleNumber, division.DivisionDescription);
+                        // Get actual teams for this division (assumes teams are seeded first)
+                        var divisionTeams = await context.Teams
+                            .Where(t => t.DivisionId == division.DivisionId && t.SeasonId == season.SeasonId)
+                            .OrderBy(t => t.TeamId)
+                            .ToListAsync();
+
+                        var numberOfTeams = divisionTeams.Count;
+                        _logger.LogDebug("Creating {TeamCount} ScheduleDivTeam mappings for External Schedule #{ScheduleNumber} (Division: {DivisionDescription})", numberOfTeams, externalScheduleNumber, division.DivisionDescription);
+
+                        if (numberOfTeams == 0)
+                        {
+                            _logger.LogWarning("No teams found for Division {DivisionId} in Season {SeasonId}. Skipping.", division.DivisionId, season.SeasonId);
+                            externalScheduleNumber++;
+                            continue;
+                        }
 
                         // Simulate external program logic:
                         // - ScheduleNumber: External program's schedule grouping (1, 2, 3, ...)
@@ -85,12 +92,13 @@ namespace Hoops.Data.Seeders
                         var externalDivisionNumber = externalScheduleNumber; // External program's division ID
                         var scheduleNumber = externalScheduleNumber; // External program's schedule ID
 
-                        for (int teamIndex = 1; teamIndex <= numberOfTeams; teamIndex++)
+                        int teamIndex = 1;
+                        foreach (var team in divisionTeams)
                         {
                             var scheduleDivTeam = new ScheduleDivTeam
                             {
                                 DivisionNumber = externalDivisionNumber, // External program's division number
-                                TeamNumber = seasonTeamNumber, // Unique team number across entire season
+                                TeamNumber = team.TeamId, // IMPORTANT: Use actual Team.TeamId, not sequential number
                                 ScheduleNumber = scheduleNumber, // External program's schedule group identifier
                                 ScheduleTeamNumber = teamIndex, // Team number within this division (1, 2, 3, etc.)
                                 HomeLocation = 1, // Default location
@@ -101,9 +109,9 @@ namespace Hoops.Data.Seeders
                             await _scheduleDivTeamsRepo.InsertAsync(scheduleDivTeam);
 
                             // Debug logging for team mapping
-                            _logger.LogDebug("Created ScheduleDivTeam: SeasonId={SeasonId}, ScheduleNumber={ScheduleNumber}, ScheduleTeamNumber={ScheduleTeamNumber}, TeamNumber={TeamNumber}", season.SeasonId, scheduleNumber, teamIndex, seasonTeamNumber);
+                            _logger.LogDebug("Created ScheduleDivTeam: SeasonId={SeasonId}, ScheduleNumber={ScheduleNumber}, ScheduleTeamNumber={ScheduleTeamNumber}, TeamNumber={TeamNumber} (TeamId={TeamId})", season.SeasonId, scheduleNumber, teamIndex, team.TeamId, team.TeamId);
 
-                            seasonTeamNumber++; // Increment for next team in season
+                            teamIndex++;
                         }
 
                         externalScheduleNumber++; // Increment for next external schedule group

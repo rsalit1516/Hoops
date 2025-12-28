@@ -42,11 +42,14 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smalldatetime")
-                        .HasDefaultValue(new DateTime(2025, 12, 27, 16, 19, 16, 166, DateTimeKind.Local).AddTicks(2789));
+                        .HasDefaultValue(new DateTime(2025, 7, 25, 9, 32, 13, 630, DateTimeKind.Local).AddTicks(5464));
 
                     b.Property<string>("CreatedUser")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<int?>("PeopleID")
+                        .HasColumnType("int");
 
                     b.Property<int>("PersonId")
                         .HasColumnType("int")
@@ -66,11 +69,15 @@ namespace Hoops.Infrastructure.Migrations
 
                     b.HasKey("CoachId");
 
-                    b.HasIndex("PersonId");
+                    b.HasIndex("PeopleID");
 
                     b.HasIndex("SeasonId");
 
-                    b.ToTable("Coach", (string)null);
+                    b.ToTable("Coach", null, t =>
+                        {
+                            t.Property("PeopleID")
+                                .HasColumnName("PeopleID1");
+                        });
                 });
 
             modelBuilder.Entity("Hoops.Core.Models.Color", b =>
@@ -91,7 +98,7 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
-                        .HasDefaultValue(new DateTime(2025, 12, 27, 16, 19, 16, 175, DateTimeKind.Local).AddTicks(3477));
+                        .HasDefaultValue(new DateTime(2025, 7, 25, 9, 32, 13, 640, DateTimeKind.Local).AddTicks(7348));
 
                     b.Property<string>("CreatedUser")
                         .HasMaxLength(10)
@@ -141,7 +148,7 @@ namespace Hoops.Infrastructure.Migrations
 
                     b.HasIndex("LinkID");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("Hoops.Core.Models.Company", b =>
@@ -158,7 +165,7 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
-                        .HasDefaultValue(new DateTime(2025, 12, 27, 16, 19, 16, 176, DateTimeKind.Local).AddTicks(9146));
+                        .HasDefaultValue(new DateTime(2025, 7, 25, 9, 32, 13, 642, DateTimeKind.Local).AddTicks(3073));
 
                     b.Property<string>("CreatedUser")
                         .HasMaxLength(20)
@@ -196,7 +203,7 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smalldatetime")
-                        .HasDefaultValue(new DateTime(2025, 12, 27, 16, 19, 16, 178, DateTimeKind.Local).AddTicks(3017));
+                        .HasDefaultValue(new DateTime(2025, 7, 25, 9, 32, 13, 643, DateTimeKind.Local).AddTicks(7277));
 
                     b.Property<string>("CreatedUser")
                         .HasMaxLength(50)
@@ -248,7 +255,7 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smalldatetime")
-                        .HasDefaultValue(new DateTime(2025, 12, 27, 16, 19, 16, 180, DateTimeKind.Local).AddTicks(8400));
+                        .HasDefaultValue(new DateTime(2025, 7, 25, 9, 32, 13, 647, DateTimeKind.Local).AddTicks(647));
 
                     b.Property<string>("CreatedUser")
                         .HasMaxLength(50)
@@ -338,7 +345,7 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smalldatetime")
-                        .HasDefaultValue(new DateTime(2025, 12, 27, 16, 19, 16, 189, DateTimeKind.Local).AddTicks(4760));
+                        .HasDefaultValue(new DateTime(2025, 7, 25, 9, 32, 13, 660, DateTimeKind.Local).AddTicks(3155));
 
                     b.Property<string>("CreatedUser")
                         .HasMaxLength(20)
@@ -358,6 +365,7 @@ namespace Hoops.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -454,7 +462,7 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smalldatetime")
-                        .HasDefaultValue(new DateTime(2025, 12, 27, 16, 19, 16, 192, DateTimeKind.Local).AddTicks(6418));
+                        .HasDefaultValue(new DateTime(2025, 7, 25, 9, 32, 13, 664, DateTimeKind.Local).AddTicks(387));
 
                     b.Property<string>("CreatedUser")
                         .HasMaxLength(20)
@@ -591,11 +599,14 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smalldatetime")
-                        .HasDefaultValue(new DateTime(2025, 12, 27, 16, 19, 16, 197, DateTimeKind.Local).AddTicks(9757));
+                        .HasDefaultValue(new DateTime(2025, 7, 25, 9, 32, 13, 674, DateTimeKind.Local).AddTicks(541));
 
                     b.Property<string>("CreatedUser")
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
+
+                    b.Property<int?>("DivisionID")
+                        .HasColumnType("int");
 
                     b.Property<int?>("DivisionId")
                         .HasColumnType("int")
@@ -627,8 +638,11 @@ namespace Hoops.Infrastructure.Migrations
                         .HasColumnType("smalldatetime");
 
                     b.Property<string>("PayType")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
+
+                    b.Property<int?>("PeopleID")
+                        .HasColumnType("int");
 
                     b.Property<int>("PersonId")
                         .HasColumnType("int")
@@ -653,6 +667,9 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<bool?>("Scholarship")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("SeasonID")
+                        .HasColumnType("int");
+
                     b.Property<int?>("SeasonId")
                         .HasColumnType("int")
                         .HasColumnName("SeasonID");
@@ -668,20 +685,31 @@ namespace Hoops.Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasColumnName("SponsorID");
 
+                    b.Property<int?>("TeamID")
+                        .HasColumnType("int");
+
                     b.Property<int?>("TeamId")
                         .HasColumnType("int")
                         .HasColumnName("TeamID");
 
                     b.HasKey("PlayerId");
 
+                    b.HasIndex("DivisionID");
+
                     b.HasIndex("DivisionId")
                         .HasDatabaseName("idx_DCh_488836_488835_Players");
+
+                    b.HasIndex("PeopleID");
 
                     b.HasIndex("PersonId")
                         .HasDatabaseName("idx_DCh_75619_75618_Players");
 
                     b.HasIndex("PlayerId")
                         .HasDatabaseName("idx_DCh_2451_2450_Players");
+
+                    b.HasIndex("SeasonID");
+
+                    b.HasIndex("TeamID");
 
                     b.HasIndex("TeamId")
                         .HasDatabaseName("idx_DCh_12817_12816_Players");
@@ -695,7 +723,20 @@ namespace Hoops.Infrastructure.Migrations
                     b.HasIndex("PlayerId", "DivisionId", "Coach", "Sponsor", "SeasonId")
                         .HasDatabaseName("idx_DCh_25_24_Players");
 
-                    b.ToTable("Players", (string)null);
+                    b.ToTable("Player", null, t =>
+                        {
+                            t.Property("DivisionID")
+                                .HasColumnName("DivisionID1");
+
+                            t.Property("PeopleID")
+                                .HasColumnName("PeopleID1");
+
+                            t.Property("SeasonID")
+                                .HasColumnName("SeasonID1");
+
+                            t.Property("TeamID")
+                                .HasColumnName("TeamID1");
+                        });
                 });
 
             modelBuilder.Entity("Hoops.Core.Models.Role", b =>
@@ -716,7 +757,7 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
-                        .HasDefaultValue(new DateTime(2025, 12, 27, 16, 19, 16, 199, DateTimeKind.Local).AddTicks(3582));
+                        .HasDefaultValue(new DateTime(2025, 7, 25, 9, 32, 13, 675, DateTimeKind.Local).AddTicks(5900));
 
                     b.Property<string>("CreatedUser")
                         .HasMaxLength(10)
@@ -850,19 +891,17 @@ namespace Hoops.Infrastructure.Migrations
 
             modelBuilder.Entity("Hoops.Core.Models.SchedulePlayoff", b =>
                 {
-                    b.Property<int>("SchedulePlayoffId")
+                    b.Property<int>("ScheduleNumber")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("SchedulePlayoffID");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SchedulePlayoffId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ScheduleNumber"));
 
                     b.Property<string>("Descr")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("DivisionId")
-                        .HasColumnType("int")
-                        .HasColumnName("DivisionId");
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("GameDate")
                         .HasColumnType("datetime2");
@@ -882,20 +921,13 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<int?>("LocationNumber")
                         .HasColumnType("int");
 
-                    b.Property<int>("ScheduleNumber")
-                        .HasColumnType("int");
-
                     b.Property<string>("VisitingTeam")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("VisitingTeamScore")
                         .HasColumnType("int");
 
-                    b.HasKey("SchedulePlayoffId");
-
-                    b.HasIndex("ScheduleNumber", "GameNumber")
-                        .IsUnique()
-                        .HasDatabaseName("UQ_SchedulePlayoffs_Schedule_Game");
+                    b.HasKey("ScheduleNumber");
 
                     b.ToTable("SchedulePlayoffs", (string)null);
                 });
@@ -919,7 +951,7 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smalldatetime")
-                        .HasDefaultValue(new DateTime(2025, 12, 27, 16, 19, 16, 222, DateTimeKind.Local).AddTicks(633));
+                        .HasDefaultValue(new DateTime(2025, 7, 25, 9, 32, 13, 699, DateTimeKind.Local).AddTicks(2000));
 
                     b.Property<string>("CreatedUser")
                         .HasMaxLength(50)
@@ -1014,7 +1046,7 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smalldatetime")
-                        .HasDefaultValue(new DateTime(2025, 12, 27, 16, 19, 16, 229, DateTimeKind.Local).AddTicks(2830));
+                        .HasDefaultValue(new DateTime(2025, 7, 25, 9, 32, 13, 710, DateTimeKind.Local).AddTicks(3966));
 
                     b.Property<string>("CreatedUser")
                         .HasMaxLength(50)
@@ -1077,7 +1109,7 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smalldatetime")
-                        .HasDefaultValue(new DateTime(2025, 12, 27, 16, 19, 16, 223, DateTimeKind.Local).AddTicks(9371));
+                        .HasDefaultValue(new DateTime(2025, 7, 25, 9, 32, 13, 701, DateTimeKind.Local).AddTicks(1912));
 
                     b.Property<string>("CreatedUser")
                         .HasMaxLength(20)
@@ -1109,7 +1141,7 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smalldatetime")
-                        .HasDefaultValue(new DateTime(2025, 12, 27, 16, 19, 16, 225, DateTimeKind.Local).AddTicks(3875));
+                        .HasDefaultValue(new DateTime(2025, 7, 25, 9, 32, 13, 703, DateTimeKind.Local).AddTicks(2271));
 
                     b.Property<string>("CreatedUser")
                         .HasMaxLength(20)
@@ -1133,6 +1165,9 @@ namespace Hoops.Infrastructure.Migrations
                         .HasColumnType("varchar(50)")
                         .HasColumnName("ShoppingCartID");
 
+                    b.Property<int?>("SponsorProfileID")
+                        .HasColumnType("int");
+
                     b.Property<int>("SponsorProfileId")
                         .HasColumnType("int")
                         .HasColumnName("SponsorProfileID");
@@ -1147,9 +1182,13 @@ namespace Hoops.Infrastructure.Migrations
 
                     b.HasKey("PaymentId");
 
-                    b.HasIndex("SponsorProfileId");
+                    b.HasIndex("SponsorProfileID");
 
-                    b.ToTable("SponsorPayment", (string)null);
+                    b.ToTable("SponsorPayment", null, t =>
+                        {
+                            t.Property("SponsorProfileID")
+                                .HasColumnName("SponsorProfileID1");
+                        });
                 });
 
             modelBuilder.Entity("Hoops.Core.Models.SponsorProfile", b =>
@@ -1183,7 +1222,7 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smalldatetime")
-                        .HasDefaultValue(new DateTime(2025, 12, 27, 16, 19, 16, 227, DateTimeKind.Local).AddTicks(3840));
+                        .HasDefaultValue(new DateTime(2025, 7, 25, 9, 32, 13, 707, DateTimeKind.Local).AddTicks(1756));
 
                     b.Property<string>("CreatedUser")
                         .HasMaxLength(20)
@@ -1260,7 +1299,7 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smalldatetime")
-                        .HasDefaultValue(new DateTime(2025, 12, 27, 16, 19, 16, 232, DateTimeKind.Local).AddTicks(6279));
+                        .HasDefaultValue(new DateTime(2025, 7, 25, 9, 32, 13, 714, DateTimeKind.Local).AddTicks(4967));
 
                     b.Property<string>("CreatedUser")
                         .HasMaxLength(50)
@@ -1311,6 +1350,7 @@ namespace Hoops.Infrastructure.Migrations
                         .HasColumnName("TeamColorID");
 
                     b.Property<string>("TeamName")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -1345,11 +1385,8 @@ namespace Hoops.Infrastructure.Migrations
             modelBuilder.Entity("Hoops.Core.Models.User", b =>
                 {
                     b.Property<int>("UserId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("UserID");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
 
                     b.Property<int?>("CompanyId")
                         .HasColumnType("int")
@@ -1358,7 +1395,7 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smalldatetime")
-                        .HasDefaultValue(new DateTime(2025, 12, 27, 16, 19, 16, 244, DateTimeKind.Local).AddTicks(9017));
+                        .HasDefaultValue(new DateTime(2025, 7, 25, 9, 32, 13, 730, DateTimeKind.Local).AddTicks(4659));
 
                     b.Property<string>("CreatedUser")
                         .HasMaxLength(50)
@@ -1378,8 +1415,7 @@ namespace Hoops.Infrastructure.Migrations
 
                     b.Property<int?>("PersonId")
                         .HasColumnType("int")
-                        .HasColumnName("PeopleID")
-                        .HasAnnotation("Relational:JsonPropertyName", "peopleId");
+                        .HasColumnName("PeopleID");
 
                     b.Property<string>("Pword")
                         .HasMaxLength(50)
@@ -1405,6 +1441,15 @@ namespace Hoops.Infrastructure.Migrations
                         .HasDatabaseName("idx_DCh_4811_4810_Users");
 
                     b.ToTable("Users", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 1,
+                            HouseId = 0,
+                            UserName = "TestUser",
+                            UserType = 0
+                        });
                 });
 
             modelBuilder.Entity("Hoops.Core.Models.VwCoach", b =>
@@ -1453,7 +1498,7 @@ namespace Hoops.Infrastructure.Migrations
 
                     b.HasKey("CoachId");
 
-                    b.ToTable("VwCoaches");
+                    b.ToTable("VwCoaches", (string)null);
                 });
 
             modelBuilder.Entity("Hoops.Core.Models.VwDirector", b =>
@@ -1520,7 +1565,7 @@ namespace Hoops.Infrastructure.Migrations
 
                     b.HasKey("DirectorId");
 
-                    b.ToTable("VwDirectors");
+                    b.ToTable("VwDirectors", (string)null);
                 });
 
             modelBuilder.Entity("Hoops.Core.Models.WebContent", b =>
@@ -1554,7 +1599,7 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<DateTime?>("ModifiedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
-                        .HasDefaultValue(new DateTime(2025, 12, 27, 16, 19, 16, 243, DateTimeKind.Local).AddTicks(507));
+                        .HasDefaultValue(new DateTime(2025, 7, 25, 9, 32, 13, 728, DateTimeKind.Local).AddTicks(3171));
 
                     b.Property<int?>("ModifiedUser")
                         .HasColumnType("int");
@@ -1580,7 +1625,7 @@ namespace Hoops.Infrastructure.Migrations
 
                     b.HasKey("WebContentId");
 
-                    b.ToTable("WebContent");
+                    b.ToTable("WebContent", (string)null);
                 });
 
             modelBuilder.Entity("Hoops.Core.Models.WebContentType", b =>
@@ -1598,16 +1643,14 @@ namespace Hoops.Infrastructure.Migrations
 
                     b.HasKey("WebContentTypeId");
 
-                    b.ToTable("WebContentType");
+                    b.ToTable("WebContentType", (string)null);
                 });
 
             modelBuilder.Entity("Hoops.Core.Models.Coach", b =>
                 {
                     b.HasOne("Hoops.Core.Models.Person", "Person")
                         .WithMany()
-                        .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PeopleID");
 
                     b.HasOne("Hoops.Core.Models.Season", null)
                         .WithMany("Coaches")
@@ -1663,21 +1706,19 @@ namespace Hoops.Infrastructure.Migrations
                 {
                     b.HasOne("Hoops.Core.Models.Division", "Division")
                         .WithMany("Players")
-                        .HasForeignKey("DivisionId");
+                        .HasForeignKey("DivisionID");
 
                     b.HasOne("Hoops.Core.Models.Person", "Person")
                         .WithMany()
-                        .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PeopleID");
 
                     b.HasOne("Hoops.Core.Models.Season", "Season")
                         .WithMany("Players")
-                        .HasForeignKey("SeasonId");
+                        .HasForeignKey("SeasonID");
 
                     b.HasOne("Hoops.Core.Models.Team", "Team")
                         .WithMany("Players")
-                        .HasForeignKey("TeamId");
+                        .HasForeignKey("TeamID");
 
                     b.Navigation("Division");
 
@@ -1752,9 +1793,7 @@ namespace Hoops.Infrastructure.Migrations
                 {
                     b.HasOne("Hoops.Core.Models.SponsorProfile", "SponsorProfile")
                         .WithMany()
-                        .HasForeignKey("SponsorProfileId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SponsorProfileID");
 
                     b.Navigation("SponsorProfile");
                 });

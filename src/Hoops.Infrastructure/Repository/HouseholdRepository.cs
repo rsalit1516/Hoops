@@ -23,7 +23,7 @@ namespace Hoops.Infrastructure.Repository
         {
             var result = from h in context.Set<Household>() where h.CompanyId == CompanyId select h;
             if (!String.IsNullOrEmpty(name))
-                result = from h in result where h.Name.StartsWith(name) orderby h.Name select h;
+                result = from h in result where h.Name != null && h.Name.StartsWith(name) orderby h.Name select h;
             if (!String.IsNullOrEmpty(address))
                 result =
                     from h in result
@@ -107,7 +107,7 @@ namespace Hoops.Infrastructure.Repository
 
         public IQueryable<Household> GetByName(string name)
         {
-            var house = context.Set<Household>().Where(h => h.Name.ToUpper() == name.ToUpper());
+            var house = context.Set<Household>().Where(h => h.Name != null && h.Name.ToUpper() == name.ToUpper());
             return house;
         }
 
@@ -139,9 +139,9 @@ namespace Hoops.Infrastructure.Repository
                 // Use StartsWith for single letter (alphabetical filtering)
                 // Use Contains for longer strings (text search)
                 if (criteria.Name.Length == 1)
-                    query = query.Where(p => p.Name.StartsWith(criteria.Name));
+                    query = query.Where(p => p.Name != null && p.Name.StartsWith(criteria.Name));
                 else
-                    query = query.Where(p => p.Name.Contains(criteria.Name));
+                    query = query.Where(p => p.Name != null && p.Name.Contains(criteria.Name));
             }
             if (!string.IsNullOrEmpty(criteria.Address))
                 query = query.Where(p => p.Address1 != null && p.Address1.Contains(criteria.Address));
