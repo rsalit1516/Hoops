@@ -594,7 +594,7 @@ namespace Hoops.Infrastructure.Repository
                             DraftId = pl.DraftId,
                             LastName = p.LastName ?? string.Empty,
                             FirstName = p.FirstName ?? string.Empty,
-                            DOB = p.BirthDate.HasValue ? p.BirthDate.Value.Date : (DateTime?)null,
+                            DOB = p.BirthDate != null ? p.BirthDate.Value.Date : (DateTime?)null,
                             Grade = p.Grade,
                             Address1 = h.Address1,
                             City = h.City,
