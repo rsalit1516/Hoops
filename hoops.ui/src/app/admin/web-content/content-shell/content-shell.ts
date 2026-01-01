@@ -33,6 +33,7 @@ export class ContentShell implements OnInit {
     const environmentProviders = makeEnvironmentProviders([
       { provide: CONTENT_ROUTES, useValue: CONTENT_ROUTES  },
     ]);
+    // Fetch all contents once - active content is computed automatically
     this.#contentService.fetchAllContents();
   }
 

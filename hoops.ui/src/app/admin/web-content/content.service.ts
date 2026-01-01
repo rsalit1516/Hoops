@@ -1,7 +1,7 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { tap } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
-import { HttpClient, httpResource } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 import { Content } from '../../domain/content';
 import { DataService } from '../../services/data.service';
@@ -25,79 +25,57 @@ export class ContentService {
   readonly store = inject(Store<fromContent.State>);
   private readonly logger = inject(LoggerService);
 
-  // private _selectedContent: any;
   selectedContent$!: Observable<any>;
   standardNotice = 1;
-  private _activeWebContent = signal<WebContent[]>([]);
-  public get activeWebContent() {
-    return this._activeWebContent;
-  }
-  updateActiveWebContent(value: WebContent[]) {
-    this._activeWebContent.set(value);
-  }
+
+  // Single source of truth: all web content
   allWebContent = signal<WebContent[]>([]);
+
+  // Computed signal: filter active content from allWebContent
+  activeWebContent = computed(() => {
+    const today = DateTime.now().startOf('day');
+    return this.allWebContent().filter(content => {
+      const expirationDate = DateTime.fromISO(content.expirationDate.toString());
+      return expirationDate >= today;
+    });
+  });
+
+  // UI state for showing active only
   isActiveContent = signal<boolean>(true);
   selectedContent = signal<WebContent | undefined>(undefined);
-  contents = signal<WebContent[]>([]);
+
+  /**
+   * Fetches all web content from the API and updates the signal.
+   * Active content is automatically computed from this.
+   */
+  fetchAllContents() {
+    this.http.get<WebContent[]>(this.data.getContentUrl).subscribe((data) => {
+      this.allWebContent.set(data);
+      this.logger.debug('Fetched all contents:', data.length);
+    });
+  }
+
+  /**
+   * Returns an Observable of all web content.
+   * Use this for one-time fetches or when you need an Observable.
+   */
   getContents(): Observable<WebContent[]> {
     return this.http.get<WebContent[]>(this.data.getContentUrl);
   }
-  fetchAllContents() {
-    this.http.get<WebContent[]>(this.data.getContentUrl).subscribe((data) => {
-      this.allWebContent.update(() => data);
-      this.contents.set(data);
-    });
-  }
-  retrieveAllContents() {
-    return httpResource<ContentResponse>(() => `${Constants.getContentUrl}`);
-  }
 
-  getActiveContent() {
-    return this.http.get<WebContent[]>(`${Constants.getActiveWebContentUrl}`);
-  }
-  fetchActiveContents() {
-    this.getActiveContent().subscribe((data) => {
-      this.logger.debug('Fetched active contents:', data);
-      this.updateActiveWebContent(data);
-      this.logger.debug('Active web content updated:', this._activeWebContent());
-    });
-  }
-
-  getAllContents(): Observable<WebContent[]> {
-    let filteredContent: WebContent[] = [];
-    this.logger.debug('Getting all contents');
-    this.store.select(fromContent.getContentList).subscribe((contents) => {
-      if (contents !== undefined) {
-        for (let i = 0; i < contents.length; i++) {
-          filteredContent.push(contents[i]);
-        }
-      }
-    });
-    this.logger.debug('Filtered content:', filteredContent);
-    return of(filteredContent);
-  }
-
-  getContent(webContentId: number) {
+  /**
+   * Gets a single content item by ID, or returns an initialized empty content if ID is 0.
+   */
+  getContent(webContentId: number): Observable<Content> {
     this.logger.debug('Getting content with ID:', webContentId);
     if (webContentId === 0) {
       return of(this.initializeContent());
     }
-    return this.http.get(this.data.getContentUrl).pipe(
-      tap((data) => {
-        // this.store.dispatch(new contentActions.SetAllContent());
-        // this.store.dispatch(new contentActions.SetActiveContent());
-        this.logger.debug('getContent result:', data);
-      }),
-      catchError(this.data.handleError('getContent', []))
+    return this.http.get<Content>(`${this.data.getContentUrl}/${webContentId}`).pipe(
+      tap((data) => this.logger.debug('getContent result:', data)),
+      catchError(this.data.handleError('getContent', this.initializeContent()))
     );
   }
-  private webContentResource = httpResource(
-    () => `${Constants.getActiveWebContentUrl}`
-  );
-
-  activeWebContent2 = computed(
-    () => this.webContentResource.value() as WebContent[]
-  );
   deleteContent(webContentId: number | null): Observable<unknown> {
     this.logger.info('Deleting content with ID:', webContentId);
     const url = `${this.data.getContentUrl}/${webContentId}`;
@@ -186,11 +164,4 @@ export class ContentService {
     }
     return webContentType;
   }
-}
-
-export interface ContentResponse {
-  count: number;
-  next: string;
-  previous: string;
-  results: WebContent[];
 }

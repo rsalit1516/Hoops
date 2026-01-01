@@ -259,6 +259,7 @@ export class ContentEdit implements OnInit {
           this.logger.info('Content saved successfully:', response);
           this.store.dispatch(new contentActions.LoadAdminContent());
           this.contentForm.reset();
+          // Navigation will trigger content-shell ngOnInit which fetches fresh data
           this.router.navigate(['/admin/content']);
         },
         error: (error) => {
@@ -347,6 +348,7 @@ export class ContentEdit implements OnInit {
         next: (response) => {
           this.logger.info('Content deleted successfully:', response);
           this.store.dispatch(new contentActions.LoadAdminContent());
+          // Navigation will trigger content-shell ngOnInit which fetches fresh data
           this.router.navigate(['/admin/content']);
         },
         error: (error) => {

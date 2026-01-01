@@ -1,10 +1,9 @@
-import { Component, OnInit, computed, effect, inject, signal } from '@angular/core';
+import { Component, OnInit, computed, effect, inject } from '@angular/core';
 import { ContentService } from '../../../admin/web-content/content.service';
 
 import { WebContent } from '../../../domain/webContent';
 import { NgClass } from '@angular/common';
 import { Announcement } from '../announcement/announcement';
-import { map } from 'rxjs';
 import { LoggerService } from '@app/services/logger.service';
 
 @Component({
@@ -20,36 +19,33 @@ export class CsbcAnnouncements implements OnInit {
   private readonly logger = inject(LoggerService);
   // readonly #store = inject(Store<fromHome.State>);
 
-  activeWebContent = computed(() => this.contentService.activeWebContent ?? [] as WebContent[]);
+  // Computed signal with active content already filtered by expiration date
+  activeWebContent = computed(() => this.contentService.activeWebContent() ?? [] as WebContent[]);
+
+  // Computed signal to further filter for Season Info and Event types
+  webContent = computed(() => {
+    const active = this.contentService.activeWebContent();
+    return active.filter((c: WebContent) =>
+      c.webContentTypeDescription === 'Season Info' ||
+      c.webContentTypeDescription === 'Event'
+    );
+  });
+
   seasonInfoCount = 0 as number;
   latestNewsCount!: number;
   meetingNoticeCount!: number;
   errorMessage!: string;
 
-  webContent = signal<WebContent[]>([]);
-  contentResource = this.contentService.activeWebContent2;
-  contents = computed(() => this.contentService.contents);
-  // content = this.contentService.activeWebContent2;
-  x: WebContent[] = [];
-  getActiveContent () {
-
-    return this.contentService.getActiveContent().pipe(
-      map((result: WebContent[]) => result.filter((c: WebContent) => c.webContentTypeDescription === 'Season Info' || c.webContentTypeDescription === 'Event')),
-      map((result: WebContent[]) => { this.x = result; return result; }));
-  }
-
   constructor () {
     effect(() => {
-      this.logger.debug('Active web content:', this.contentService.activeWebContent);
-      this.webContent.update(() => this.contentService.contents());
-      this.logger.debug('Web content updated:', this.webContent());
-
+      this.logger.debug('Active web content:', this.contentService.activeWebContent());
+      this.logger.debug('Filtered web content:', this.webContent());
     });
   }
+
   ngOnInit (): void {
-    this.getActiveContent();
-    this.contentService.fetchActiveContents();
-    this.logger.debug('Contents:', this.contents);
+    // Fetch all contents - active content is computed automatically
+    this.contentService.fetchAllContents();
   }
   sortByContentSequence (a: { contentSequence: number; }, b: { contentSequence: number; }) {
     if (a.contentSequence < b.contentSequence)

@@ -90,9 +90,13 @@ export class ContentList implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.pageTitle = 'Web Site Messages';
+    // Fetch fresh data every time the list is displayed
+    // Active content is computed automatically from allWebContent
+    this.#contentService.fetchAllContents();
     this.refreshData();
     this.dataSource = new MatTableDataSource<WebContent>(this.data);
 
+    // Note: filterPredicate is no longer needed - filtering is done via computed signal
     this.dataSource.filterPredicate = (data: WebContent, filter: string) => {
       const today = DateTime.now().startOf('day').toJSDate();
       const expirationDateString = data.expirationDate.toString();
@@ -101,9 +105,6 @@ export class ContentList implements OnInit, AfterViewInit {
       // console.log(`Filtering ${data.expirationDate}: ${result}`);
       return result;
     };
-    // this.store.select(fromContent.getIsActiveOnly).subscribe((isActive) => {
-    //   isActive ? this.applyFilter() : this.clearFilter();
-    // });
   }
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
