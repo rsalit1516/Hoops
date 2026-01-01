@@ -30,11 +30,12 @@ describe('PlayerList', () => {
     description: 'Fall 2023',
     fromDate: new Date(),
     toDate: new Date(),
-    companyId: 1,
     participationFee: 100,
-    lateFee: 25,
-    lateAfter: new Date(),
-    isCurrent: true
+    currentSeason: true,
+    currentSchedule: false,
+    currentSignUps: false,
+    gameSchedules: false,
+    onlineRegistration: false
   };
 
   const mockDivision: Division = {
