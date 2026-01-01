@@ -6,7 +6,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { signal } from '@angular/core';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 
 import { ContentEdit } from './content-edit';
 import { ContentService } from '../content.service';
@@ -285,6 +285,8 @@ describe('ContentEdit', () => {
     beforeEach(() => {
       fixture.detectChanges();
       component.onContentRetrieved(mockWebContent);
+      // Default to successful save - individual tests can override
+      mockContentService.saveContent.and.returnValue(of(mockWebContent));
     });
 
     it('should save content when form is valid and dirty', () => {
@@ -359,12 +361,43 @@ describe('ContentEdit', () => {
       expect(savedContent.contentSequence).toBe(2);
       expect(savedContent.webContentTypeId).toBe(1);
     });
+
+    it('should handle save error and not navigate', () => {
+      // Mock the service to return an error
+      mockContentService.saveContent.and.returnValue(
+        throwError(() => new Error('Save failed'))
+      );
+
+      // Make form dirty and valid
+      component.contentForm.get('title')?.setValue('Updated Title');
+      component.contentForm.markAsDirty();
+
+      component.saveContent();
+
+      expect(mockContentService.saveContent).toHaveBeenCalled();
+      expect(mockLoggerService.error).toHaveBeenCalled();
+      expect(mockRouter.navigate).not.toHaveBeenCalled();
+      expect(component.errorMessage).toBe('Error saving content. Please try again.');
+    });
+
+    it('should reset form after successful save', () => {
+      // Make form dirty and valid
+      component.contentForm.get('title')?.setValue('Updated Title');
+      component.contentForm.markAsDirty();
+
+      component.saveContent();
+
+      // Form should be reset after successful save
+      expect(component.contentForm.pristine).toBe(true);
+    });
   });
 
   describe('Delete Functionality', () => {
     beforeEach(() => {
       fixture.detectChanges();
       component.onContentRetrieved(mockWebContent);
+      // Default to successful delete - individual tests can override
+      mockContentService.deleteContent.and.returnValue(of(mockWebContent));
     });
 
     it('should delete content when webContentId is not 0', () => {
@@ -373,6 +406,10 @@ describe('ContentEdit', () => {
       component.deleteRecord();
 
       expect(mockContentService.deleteContent).toHaveBeenCalledWith(1);
+      expect(mockStore.dispatch).toHaveBeenCalledWith(
+        jasmine.any(contentActions.LoadAdminContent)
+      );
+      expect(mockRouter.navigate).toHaveBeenCalledWith(['/admin/content']);
     });
 
     it('should not delete content when webContentId is 0', () => {
@@ -381,6 +418,22 @@ describe('ContentEdit', () => {
       component.deleteRecord();
 
       expect(mockContentService.deleteContent).not.toHaveBeenCalled();
+    });
+
+    it('should handle delete error and not navigate', () => {
+      // Mock the service to return an error
+      mockContentService.deleteContent.and.returnValue(
+        throwError(() => new Error('Delete failed'))
+      );
+
+      component.contentForm.get('webContentId')?.setValue(1);
+
+      component.deleteRecord();
+
+      expect(mockContentService.deleteContent).toHaveBeenCalledWith(1);
+      expect(mockLoggerService.error).toHaveBeenCalled();
+      expect(mockRouter.navigate).not.toHaveBeenCalled();
+      expect(component.errorMessage).toBe('Error deleting content. Please try again.');
     });
 
     // Skip dialog tests for now due to MatDialog complexity

@@ -14,6 +14,7 @@ describe('DraftListService', () => {
 
   const mockPlayers: DraftListPlayer[] = [
     {
+      personId: 1,
       division: 'U12 Boys',
       draftId: '001',
       lastName: 'Johnson',
@@ -25,6 +26,7 @@ describe('DraftListService', () => {
       zip: '12345',
     },
     {
+      personId: 2,
       division: 'U14 Girls',
       draftId: '002',
       lastName: 'Smith',

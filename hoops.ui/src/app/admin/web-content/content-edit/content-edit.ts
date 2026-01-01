@@ -242,30 +242,54 @@ export class ContentEdit implements OnInit {
     );
     this.selected = content.webContentType;
   }
-  saveContent() {
-    this.logger.info(this.contentForm.value);
+  /**
+   * Saves the content form data.
+   * Following the pattern from admin-household and admin-people modules:
+   * - Component subscribes to the Observable returned by the service
+   * - Handles success and error cases explicitly
+   * - Navigation only occurs after successful save
+   */
+  saveContent(): void {
+    this.logger.info('Form values:', this.contentForm.value);
     if (this.contentForm.valid && this.contentForm.dirty) {
-      let content = new WebContent();
-      const form = this.contentForm.value;
-      // content.webContentType = this.getWebContentType(
-      //   contentForm.webContentType.Web
-      // );
-      content.webContentTypeId = form.webContentTypeControl!;
-      content.webContentId = form.webContentId === null ? 0 : form.webContentId;
-      // console.log(content);
-      content.title = form.title!;
-      content.subTitle = form.subTitle!;
-      content.body = form.body!;
-      content.dateAndTime = form.dateAndTime!;
-      content.location = form.location!;
-      content.expirationDate = form.expirationDate!;
-      content.contentSequence = form.contentSequence!;
-      content.companyId = Constants.COMPANYID;
-      content.webContentTypeId = form.webContentTypeControl!;
-      this.contentService.saveContent(content);
-      this.store.dispatch(new contentActions.LoadAdminContent());
-      this.router.navigate(['/admin/content']);
+      const content = this.buildContentFromForm();
+
+      this.contentService.saveContent(content).subscribe({
+        next: (response) => {
+          this.logger.info('Content saved successfully:', response);
+          this.store.dispatch(new contentActions.LoadAdminContent());
+          this.contentForm.reset();
+          this.router.navigate(['/admin/content']);
+        },
+        error: (error) => {
+          this.logger.error('Error saving content:', error);
+          // TODO: Show user-friendly error message (e.g., MatSnackBar)
+          this.errorMessage = 'Error saving content. Please try again.';
+        }
+      });
     }
+  }
+
+  /**
+   * Builds a WebContent object from the form values.
+   * Extracted to a separate method for clarity and testability.
+   */
+  private buildContentFromForm(): WebContent {
+    const form = this.contentForm.value;
+    const content = new WebContent();
+
+    content.webContentId = form.webContentId ?? 0;
+    content.webContentTypeId = form.webContentTypeControl!;
+    content.title = form.title!;
+    content.subTitle = form.subTitle ?? '';
+    content.body = form.body ?? '';
+    content.dateAndTime = form.dateAndTime ?? '';
+    content.location = form.location ?? '';
+    content.expirationDate = form.expirationDate!;
+    content.contentSequence = form.contentSequence ?? 1;
+    content.companyId = Constants.COMPANYID;
+
+    return content;
   }
   getWebContentType(id: number): WebContentType {
     let webContentType = new WebContentType();
@@ -308,13 +332,28 @@ export class ContentEdit implements OnInit {
     if (val === null || val === undefined || val === '') return null;
     return typeof val === 'number' ? val : Number(val);
   }
+  /**
+   * Deletes the current content record.
+   * Following the pattern from admin-household and admin-people modules:
+   * - Component subscribes to the Observable returned by the service
+   * - Handles success and error cases explicitly
+   */
   deleteRecord(): void {
-    this.logger.info(this.contentForm.get('webContentId')!.value);
-    if (this.contentForm.get('webContentId')!.value !== 0) {
-      this.contentService.deleteContent(
-        this.contentForm.get('webContentId')!.value!
-      );
-      // this.onSaveComplete();
+    const webContentId = this.contentForm.get('webContentId')!.value;
+    this.logger.info('Deleting content with ID:', webContentId);
+
+    if (webContentId !== 0) {
+      this.contentService.deleteContent(webContentId).subscribe({
+        next: (response) => {
+          this.logger.info('Content deleted successfully:', response);
+          this.store.dispatch(new contentActions.LoadAdminContent());
+          this.router.navigate(['/admin/content']);
+        },
+        error: (error) => {
+          this.logger.error('Error deleting content:', error);
+          this.errorMessage = 'Error deleting content. Please try again.';
+        }
+      });
     }
   }
   openDialog(): void {

@@ -1,13 +1,12 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
-import { map, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
-import { HttpClient, HttpParams, httpResource } from '@angular/common/http';
+import { HttpClient, httpResource } from '@angular/common/http';
 
 import { Content } from '../../domain/content';
 import { DataService } from '../../services/data.service';
 
 import * as fromContent from '../state';
-import * as contentActions from '../state/admin.actions';
 
 import { Store } from '@ngrx/store';
 import { WebContentType } from '@app/domain/webContentType';
@@ -99,67 +98,51 @@ export class ContentService {
   activeWebContent2 = computed(
     () => this.webContentResource.value() as WebContent[]
   );
-  deleteContent(webContentId: number | null) {
+  deleteContent(webContentId: number | null): Observable<unknown> {
     this.logger.info('Deleting content with ID:', webContentId);
-    let headers = new Headers({ 'Content-Type': 'application/json' });
-    // To Do: add this back
-    let options = { params: new HttpParams() };
-
     const url = `${this.data.getContentUrl}/${webContentId}`;
     return this.data.delete(url);
   }
 
-  saveContent(data: WebContent) {
-    let content = new WebContent();
-    content.webContentId = data.webContentId === null ? 0 : data.webContentId;
-    content.companyId = Constants.COMPANYID;
-    content.page = '';
-    content.type = '';
-    content.title = data.title;
-    content.contentSequence = data.contentSequence;
-    content.subTitle = data.subTitle;
-    content.location = data.location;
-    content.dateAndTime = data.dateAndTime;
-    content.body = data.body;
-    content.expirationDate = data.expirationDate;
-    content.modifiedDate = DateTime.now().toJSDate();
-    content.modifiedUser = 121; // To Do: get this from the user
-    content.webContentTypeId =
-      data.webContentTypeId === undefined ? 1 : data.webContentTypeId;
-
-    // console.log(content);
-    if (data.webContentId === undefined) {
-      return this.createContent(content).subscribe((x) => {
-        // console.log(x)
-        this.store.dispatch(new contentActions.SetAllContent());
-      });
-    } else {
-      return this.updateContent(content).subscribe((x) => {
-        // console.log(x);
-        this.store.dispatch(new contentActions.SetAllContent());
-      });
+  /**
+   * Saves web content - creates new content (POST) or updates existing content (PUT).
+   * Following the pattern from admin-household and admin-people modules.
+   * @param content The web content to save
+   * @returns Observable<WebContent> - allows component to handle success/error
+   */
+  saveContent(content: WebContent): Observable<WebContent> {
+    // Ensure CompanyId is set
+    if (!content.companyId) {
+      content.companyId = Constants.COMPANYID;
     }
-  }
 
-  private createContent(content: WebContent): Observable<void | WebContent> {
-    this.logger.info('Creating content:', content);
-    return this.data.post(this.data.postContentUrl, content).pipe(
-      map((data) => this.store.dispatch(new contentActions.LoadAdminContent())),
-      catchError(this.data.handleError('createContent', content))
-    );
-  }
+    // Set modification metadata
+    content.modifiedDate = DateTime.now().toJSDate();
+    content.modifiedUser = 121; // TODO: get this from authenticated user
 
-  private updateContent(content: WebContent): Observable<WebContent> {
-    let url = Constants.PUT_CONTENT_URL + content.webContentId;
-    this.logger.debug('Updating content at URL:', url);
-    // const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.put<WebContent>(url, content);
-  }
+    // Ensure default values for optional fields
+    content.page = content.page ?? '';
+    content.type = content.type ?? '';
+    content.webContentTypeId = content.webContentTypeId ?? 1;
 
-  private extractData(response: Response) {
-    let body = ''; // response.json();
-    this.logger.debug('Extracting data from response:', response);
-    return body || {};
+    if (content.webContentId && content.webContentId !== 0) {
+      // Update existing content (PUT)
+      const url = `${Constants.PUT_CONTENT_URL}${content.webContentId}`;
+      this.logger.info('Updating content at URL:', url);
+      return this.http.put<WebContent>(url, content).pipe(
+        tap((response) => {
+          this.logger.info('Content updated:', response);
+        })
+      );
+    } else {
+      // Create new content (POST)
+      this.logger.info('Creating new content');
+      return this.http.post<WebContent>(this.data.postContentUrl, content).pipe(
+        tap((response) => {
+          this.logger.info('Content created:', response);
+        })
+      );
+    }
   }
 
   initializeContent(): Content {
