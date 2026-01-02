@@ -6,7 +6,7 @@ import {
   signal,
   WritableSignal,
 } from '@angular/core';
-import { catchError } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 
 import * as fromGames from '../games/state';
 import { Store } from '@ngrx/store';
@@ -88,6 +88,13 @@ export class TeamService {
       // from a previous division doesn't appear as "present" in the new division.
       const current = this._selectedTeam();
       const first = divisionTeams[0];
+
+      // Don't override if current team is a new team (teamId === 0)
+      // This allows the form to create new teams without being overridden
+      if (current && current.teamId === 0) {
+        return;
+      }
+
       const isCurrentPresent =
         !!current &&
         divisionTeams.some(
@@ -152,18 +159,21 @@ export class TeamService {
   //         map((content: Team[]) => content.find(p => p.id === id))
   //         );
   // }
-  saveTeam(team: Team): void {
+  saveTeam(team: Team): Observable<Team | ArrayBuffer> {
     this.logger.info('Saving team:', team);
 
     if (team.teamId === 0) {
-      this.addTeam(team).subscribe((team) => {
-        this.logger.info('Team created:', team);
-        //this.store.dispatch(new adminActions.LoadSeasonTeams());
-      });
+      return this.addTeam(team).pipe(
+        tap((savedTeam) => {
+          this.logger.info('Team created:', savedTeam);
+        })
+      );
     } else {
-      this.updateTeam(team).subscribe((team) => {
-        // this.store.dispatch(new adminActions.LoadSeasonTeams());
-      });
+      return this.updateTeam(team).pipe(
+        tap((savedTeam) => {
+          this.logger.info('Team updated:', savedTeam);
+        })
+      );
     }
   }
   addTeam(team: Team): Observable<Team | ArrayBuffer> {

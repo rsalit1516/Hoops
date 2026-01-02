@@ -5,12 +5,9 @@ import {
   inject,
   OnInit,
   signal,
+  untracked,
 } from '@angular/core';
-import {
-  UntypedFormBuilder,
-  FormsModule,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { form, Field } from '@angular/forms/signals';
 import { Team } from '@app/domain/team';
 
 import { MatButtonModule } from '@angular/material/button';
@@ -37,15 +34,14 @@ import { LoggerService } from '@app/services/logger.service';
     '../../admin.scss',
   ],
   imports: [
+    Field,
     MatCardModule,
-    FormsModule,
-    ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
     MatOptionModule,
     MatButtonModule,
-    ],
+  ],
 })
 export class AdminTeamDetail implements OnInit {
   private readonly authService = inject(AuthService);
@@ -55,79 +51,127 @@ export class AdminTeamDetail implements OnInit {
   readonly colorService = inject(ColorService);
   readonly locationService = inject(LocationService);
   private logger = inject(LoggerService);
-  // private store = inject(Store<fromAdmin.State>);
-  private fb = inject(UntypedFormBuilder);
 
   user = computed(() => this.authService.currentUser());
-  editTeamForm = this.fb.group({
-    teamNo: [''],
-    color: [''],
-    teamName: [''],
-    // coachName: [''],
-    // sponsor: [''],
+
+  // Signal Forms - Define the form data model
+  teamFormModel = signal({
+    teamNo: '',
+    color: null as number | null,
+    teamName: '',
   });
-  _team = signal<Team | undefined>(undefined);
-  get team() {
-    return this._team();
-  }
-  updateTeam(val: Team) {
-    this._team.set(val);
-  }
+
+  // Create signal form
+  editTeamForm = form(this.teamFormModel);
+
+  // Computed signals for form state
+  isFormValid = computed(() =>
+    this.editTeamForm.teamNo().valid() &&
+    this.editTeamForm.teamName().valid()
+  );
+  isFormDirty = computed(() =>
+    this.editTeamForm.teamNo().dirty() ||
+    this.editTeamForm.color().dirty() ||
+    this.editTeamForm.teamName().dirty()
+  );
+
   selectedSeason = computed(() => this.seasonService.selectedSeason);
   selectedDivision = computed(() => this.divisionService.selectedDivision());
 
   title = 'Team';
 
   constructor() {
+    // Effect to populate form when selected team changes
     effect(() => {
-      this.patchTeamForm(this.teamService.selectedTeam!); //
+      // Use the readonly signal to track changes
+      const team = this.teamService.selectedTeamSignal();
+      this.logger.debug('Selected team changed:', team);
+
+      if (team) {
+        // Use untracked() to prevent infinite loop when setting form values
+        untracked(() => {
+          this.logger.debug('Setting form values from team:', {
+            teamNo: team.teamNumber || '',
+            color: team.teamColorId ?? null,
+            teamName: team.teamName || ''
+          });
+
+          this.editTeamForm.teamNo().value.set(team.teamNumber || '');
+          this.editTeamForm.color().value.set(team.teamColorId ?? null);
+          this.editTeamForm.teamName().value.set(team.teamName || '');
+
+          this.logger.debug('Form values after setting:', {
+            teamNo: this.editTeamForm.teamNo().value(),
+            color: this.editTeamForm.color().value(),
+            teamName: this.editTeamForm.teamName().value()
+          });
+        });
+      }
     });
   }
 
   ngOnInit(): void {}
-  patchTeamForm(team: Team) {
-    this.logger.debug('Patching team form:', team);
-    if (team) {
-      this.editTeamForm.patchValue({
-        teamNo: team.teamNumber,
-        color: team.teamColorId,
-        teamName: team.teamName,
-        //  coach: team.coach.object
-      });
-    }
-  }
-  newTeam() {
-    this.editTeamForm = this.fb.group({
-      teamName: [''],
-      teamNo: [''],
-      color: [''],
-    });
-    let newTeam = new Team();
 
+  newTeam() {
+    this.logger.debug('Creating new team - clearing form');
+
+    // Create a completely new team object with all properties initialized
+    const newTeam = new Team();
     newTeam.teamId = 0;
     newTeam.teamName = '';
-    // this.store.dispatch(new adminActions.SetSelectedTeam(newTeam));
+    newTeam.teamNumber = '';
+    newTeam.teamColorId = null;
+    newTeam.divisionId = this.selectedDivision()?.divisionId ?? 0;
+
+    this.logger.debug('New team object created:', newTeam);
+
+    // Update selected team - this will trigger the effect which clears the form
     this.teamService.updateSelectedTeam(newTeam);
+
+    this.logger.debug('Selected team updated, effect should fire');
   }
   save() {
-    let team: Team;
-    this.logger.info('Saving team:', this.team);
-    const div = this.selectedDivision()?.divisionId ?? 0;
+    if (!this.isFormValid() || !this.isFormDirty()) {
+      return;
+    }
 
-    team = {
-      teamId: this.teamService.selectedTeam?.teamId as number,
+    // Get values from signal form
+    const formValue = {
+      teamNo: this.editTeamForm.teamNo().value(),
+      color: this.editTeamForm.color().value(),
+      teamName: this.editTeamForm.teamName().value(),
+    };
+
+    this.logger.info('Saving team with form values:', formValue);
+
+    const team: Team = {
+      teamId: this.teamService.selectedTeam?.teamId ?? 0,
       name: '',
-      divisionId: div,
-      teamNumber: this.editTeamForm.value.teamNo,
-      teamColorId: this.editTeamForm.value.color,
-      teamName: this.editTeamForm.value.teamName,
-      // To Do: add these back
-      createdUser: 'rsalit', //this.user()!.userName,
+      divisionId: this.selectedDivision()?.divisionId ?? 0,
+      teamNumber: formValue.teamNo,
+      teamColorId: formValue.color,
+      teamName: formValue.teamName,
+      createdUser: this.user()?.userName ?? 'system',
       createdDate: new Date(),
     };
-    this.teamService.saveTeam(team);
-    this.teamService.getSeasonTeams();
+
+    // Subscribe to save, then refresh list and reset form
+    this.teamService.saveTeam(team).subscribe({
+      next: (savedTeam) => {
+        this.logger.info('Team saved successfully:', savedTeam);
+        // Refresh the team list
+        this.teamService.getSeasonTeams();
+        // Reset form for new team entry
+        this.newTeam();
+      },
+      error: (error) => {
+        this.logger.error('Error saving team:', error);
+        // TODO: Show user-friendly error message
+      }
+    });
+  }
+
+  cancel() {
     this.newTeam();
   }
-  cancel() {}
 }
