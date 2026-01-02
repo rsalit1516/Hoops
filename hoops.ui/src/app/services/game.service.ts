@@ -127,6 +127,11 @@ export class GameService {
   dailySchedule = signal<RegularGame[][]>([]);
   selectedTeam = computed(() => this.teamService.selectedTeam);
   teamGames = signal<RegularGame[]>([]);
+  /**
+   * When true, derived lists like divisionGames ignore the currently selected team.
+   * This is used by admin views that do not yet expose a team selector.
+   */
+  readonly ignoreTeamFilter = signal<boolean>(false);
   constructor() {
     effect(() => {
       const record = this.selectedGame;
@@ -167,7 +172,7 @@ export class GameService {
     // Then, if a concrete team is selected (id != 0), filter by team
     const st = this.selectedTeam();
     const filtered =
-      st && st.teamId && st.teamId !== 0
+      !this.ignoreTeamFilter() && st && st.teamId && st.teamId !== 0
         ? base.filter(
             (g) => g.visitingTeamId === st.teamId || g.homeTeamId === st.teamId
           )

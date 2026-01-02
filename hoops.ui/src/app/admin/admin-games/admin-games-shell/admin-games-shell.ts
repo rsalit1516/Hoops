@@ -28,6 +28,7 @@ import { AdminGameService } from '../adminGame.service';
 import { LoggerService } from '@app/services/logger.service';
 import { Router, RouterOutlet } from '@angular/router';
 import { AdminGamesState } from '../adminGamesState.service';
+import { GameService } from '@app/services/game.service';
 @Component({
   selector: 'csbc-admin-games-shell',
   template: `<section class="container">
@@ -55,6 +56,7 @@ export class AdminGamesShell implements OnInit {
   private logger = inject(LoggerService);
   router = inject(Router);
   readonly gameService = inject(AdminGameService);
+  private readonly regularGameService = inject(GameService);
   private store = inject(Store<fromAdmin.State>);
   state = inject(AdminGamesState);
 
@@ -105,11 +107,18 @@ export class AdminGamesShell implements OnInit {
   }
 
   ngOnInit(): void {
+    // Admin games currently has no team selector; ensure we don't silently
+    // filter by whatever TeamService auto-selected (often teamId=1).
+    this.regularGameService.ignoreTeamFilter.set(true);
     this.gameService.filteredGames();
     this.logger.debug(
       'Filtered games signal',
       this.gameService.filteredGames()
     );
+  }
+
+  ngOnDestroy(): void {
+    this.regularGameService.ignoreTeamFilter.set(false);
   }
   selectedSeason(season: Season) {}
   clickedDivision(division: MouseEvent) {
