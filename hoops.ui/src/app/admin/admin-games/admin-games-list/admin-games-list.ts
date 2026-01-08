@@ -89,7 +89,8 @@ export class AdminGamesList implements OnInit, OnChanges, AfterViewInit {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
       this.paginator.pageSize = this.pageSize;
-      this.paginator.page.subscribe(() => this.refreshData());
+      // Note: Don't subscribe to paginator.page here - it's already handled in ngOnChanges
+      // Creating multiple subscriptions causes memory leaks and can trigger unwanted refreshes
     });
     //  this.store.select(fromAdmin.getFilteredGames).subscribe((games) => {
     // this.dataSource = new MatTableDataSource(this.filteredGames());

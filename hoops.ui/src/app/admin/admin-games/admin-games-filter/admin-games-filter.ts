@@ -83,6 +83,9 @@ export class AdminGamesFilter {
       return;
     }
     // regular
+    const divGames = this.regularService.divisionGames();
+    const scheduleNumber =
+      divGames && divGames.length > 0 ? divGames[0].scheduleNumber : 0;
     const blankReg: RegularGame = {
       gameDescription: null,
       seasonId: this.#seasonService.selectedSeason()?.seasonId ?? 0,
@@ -106,11 +109,12 @@ export class AdminGamesFilter {
       visitingTeamScore: 0,
       visitingTeamSeasonNumber: undefined,
       scheduleGamesId: 0,
-      scheduleNumber: 0,
+      scheduleNumber,
       gameNumber: 0,
       gameType: 0,
       gameDateOnly: undefined,
     } as RegularGame;
+    this.logger.info('Setting up new regular season game', blankReg);
     this.regularService.updateSelectedGame(blankReg);
     this.#router.navigate(['./admin/games/detail-regular']);
   }

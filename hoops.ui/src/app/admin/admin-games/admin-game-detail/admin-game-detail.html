@@ -1,4 +1,4 @@
-<form [formGroup]="gameEditForm" class="form-container" (ngSubmit)="onSave()">
+<form class="form-container" (ngSubmit)="onSave()">
   <mat-card>
     <mat-card-header>
       <mat-card-title>Game Details</mat-card-title>
@@ -18,12 +18,9 @@
             <input
               matInput
               [matDatepicker]="picker"
-              value="gameDate"
-              formControlName="gameDate"
+              [field]="$any(gameForm.gameDate)"
             />
-            <mat-datepicker-toggle matSuffix
-              [for]="picker"
-             />
+            <mat-datepicker-toggle matSuffix [for]="picker" />
             <mat-datepicker #picker />
           </mat-form-field>
         </div>
@@ -33,7 +30,7 @@
             <input
               matInput
               [matTimepicker]="minutesPicker"
-              formControlName="gameTime"
+              [field]="gameForm.gameTime"
             />
             <mat-timepicker-toggle matIconSuffix [for]="minutesPicker" />
             <mat-timepicker interval="5min" #minutesPicker />
@@ -45,8 +42,8 @@
         <div class="flex-1">
           <mat-form-field class="form-control" appearance="fill">
             <mat-label>Location</mat-label>
-            <mat-select formControlName="location" class="form-control">
-              @for(loc of locations; track loc) {
+            <mat-select [field]="gameForm.location" class="form-control">
+              @for(loc of locations(); track loc) {
               <mat-option [value]="loc"> {{ loc.locationName }} </mat-option>
               }
             </mat-select>
@@ -58,7 +55,7 @@
           <mat-form-field class="form-control" appearance="fill">
             <mat-label>Visitor Team</mat-label>
             <mat-select
-              formControlName="visitorTeam"
+              [field]="gameForm.visitorTeam"
               class="form-control"
               [compareWith]="scheduleTeamCompare"
             >
@@ -73,7 +70,7 @@
           <mat-form-field class="form-control" appearance="fill">
             <mat-label>HomeTeam</mat-label>
             <mat-select
-              formControlName="homeTeam"
+              [field]="gameForm.homeTeam"
               class="form-control"
               [compareWith]="scheduleTeamCompare"
             >
@@ -92,22 +89,14 @@
             <input
               matInput
               type="number"
-              min="0"
-              max="150"
-              formControlName="visitingTeamScore"
+              [field]="gameForm.visitingTeamScore"
             />
           </mat-form-field>
         </div>
         <div class="flex-1">
           <mat-form-field class="form-control" appearance="fill">
             <mat-label>Home Team Score</mat-label>
-            <input
-              matInput
-              type="number"
-              min="0"
-              max="150"
-              formControlName="homeTeamScore"
-            />
+            <input matInput type="number" [field]="gameForm.homeTeamScore" />
           </mat-form-field>
         </div>
       </div>
@@ -117,7 +106,7 @@
         mat-raised-button
         color="Primary"
         type="submit"
-        [disabled]="!gameEditForm.valid || !gameEditForm.dirty"
+        [disabled]="!canSave()"
       >
         Save
       </button>

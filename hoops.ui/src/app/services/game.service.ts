@@ -1,4 +1,4 @@
-import { computed, effect, inject, Injectable, signal } from '@angular/core';
+import { computed, effect, inject, Injectable, signal, untracked } from '@angular/core';
 import { delay, map, tap } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
 import {
@@ -149,20 +149,23 @@ export class GameService {
     });
 
     effect(() => {
-      // const selectedDivision = this.selectedDivision();
-      this.logger.debug(
-        'Selected division',
-        this.divisionService.selectedDivision()
-      );
-      if (this.divisionService.selectedDivision()!) {
-        this.recomputeDivisionDerived();
-        this.fetchStandingsByDivision();
+      // IMPORTANT: Only track selectedDivision to avoid infinite loops
+      const division = this.divisionService.selectedDivision();
+      this.logger.debug('Selected division', division);
+      if (division) {
+        // Use untracked to prevent tracking signals inside these methods
+        untracked(() => {
+          this.recomputeDivisionDerived();
+          this.fetchStandingsByDivision();
+        });
       }
     });
     effect(() => {
       // When the selected team changes, recompute derived lists
-      //      console.log(this.selectedTeam());
-      this.recomputeDivisionDerived();
+      // IMPORTANT: Only track selectedTeam to avoid infinite loops
+      const st = this.selectedTeam();
+      // Use untracked to read other signals without creating dependencies
+      untracked(() => this.recomputeDivisionDerived());
     });
   }
 

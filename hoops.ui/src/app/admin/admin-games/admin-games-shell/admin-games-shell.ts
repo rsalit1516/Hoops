@@ -4,6 +4,7 @@ import {
   inject,
   OnInit,
   signal,
+  untracked,
   ViewChild,
 } from '@angular/core';
 import { Store } from '@ngrx/store';
@@ -95,13 +96,26 @@ export class AdminGamesShell implements OnInit {
       if (this.state.gameType() === 'playoff') {
         this.showPlayoffs.set(true);
         this.showRegularSeason.set(false);
-        this.router.navigate(['admin/games/list-playoff']);
-        this.logger.info('Playoff games are shown');
+        // Only navigate to list-playoff if we're currently on the regular season list
+        // Don't interrupt detail/edit views
+        untracked(() => {
+          if (this.router.url.includes('/admin/games/list') &&
+              !this.router.url.includes('list-playoff')) {
+            this.router.navigate(['admin/games/list-playoff']);
+            this.logger.info('Playoff games are shown');
+          }
+        });
       } else {
         this.showPlayoffs.set(false);
         this.showRegularSeason.set(true);
-        this.router.navigate(['admin/games/list']);
-        this.logger.info('Regular season games are shown');
+        // Only navigate to list if we're currently on the playoff list
+        // Don't interrupt detail/edit views
+        untracked(() => {
+          if (this.router.url.includes('/admin/games/list-playoff')) {
+            this.router.navigate(['admin/games/list']);
+            this.logger.info('Regular season games are shown');
+          }
+        });
       }
     });
   }
