@@ -132,8 +132,12 @@ export class GameService {
    * This is used by admin views that do not yet expose a team selector.
    */
   readonly ignoreTeamFilter = signal<boolean>(false);
+  private effectCounter = { selectedGame: 0, selectedSeason: 0, selectedDivision: 0, selectedTeam: 0 };
+
   constructor() {
     effect(() => {
+      this.effectCounter.selectedGame++;
+      this.logger.debug(`[EFFECT-1] selectedGame effect run #${this.effectCounter.selectedGame}`);
       const record = this.selectedGame;
       if (record !== null) {
         this.logger.debug('Record updated', record.scheduleGamesId);
@@ -142,6 +146,8 @@ export class GameService {
     });
 
     effect(() => {
+      this.effectCounter.selectedSeason++;
+      this.logger.debug(`[EFFECT-2] selectedSeason effect run #${this.effectCounter.selectedSeason}`);
       const selectedSeason = this.seasonService.selectedSeason();
       if (selectedSeason?.seasonId) {
         this.fetchSeasonGames();
@@ -149,29 +155,39 @@ export class GameService {
     });
 
     effect(() => {
+      this.effectCounter.selectedDivision++;
+      this.logger.debug(`[EFFECT-3] selectedDivision effect run #${this.effectCounter.selectedDivision}`);
       // IMPORTANT: Only track selectedDivision to avoid infinite loops
       const division = this.divisionService.selectedDivision();
       this.logger.debug('Selected division', division);
       if (division) {
         // Use untracked to prevent tracking signals inside these methods
         untracked(() => {
+          this.logger.debug('[EFFECT-3] Calling recomputeDivisionDerived and fetchStandingsByDivision');
           this.recomputeDivisionDerived();
           this.fetchStandingsByDivision();
         });
       }
     });
     effect(() => {
+      this.effectCounter.selectedTeam++;
+      this.logger.debug(`[EFFECT-4] selectedTeam effect run #${this.effectCounter.selectedTeam}`);
       // When the selected team changes, recompute derived lists
       // IMPORTANT: Only track selectedTeam to avoid infinite loops
       const st = this.selectedTeam();
       // Use untracked to read other signals without creating dependencies
-      untracked(() => this.recomputeDivisionDerived());
+      untracked(() => {
+        this.logger.debug('[EFFECT-4] Calling recomputeDivisionDerived');
+        this.recomputeDivisionDerived();
+      });
     });
   }
 
   private recomputeDivisionDerived() {
+    this.logger.debug('[RECOMPUTE] recomputeDivisionDerived called');
     // First, filter by division
     const base = this.filterGamesByDivision();
+    this.logger.debug(`[RECOMPUTE] Base games count: ${base.length}`);
     // Then, if a concrete team is selected (id != 0), filter by team
     const st = this.selectedTeam();
     const filtered =
@@ -180,10 +196,12 @@ export class GameService {
             (g) => g.visitingTeamId === st.teamId || g.homeTeamId === st.teamId
           )
         : base;
+    this.logger.debug(`[RECOMPUTE] Filtered games count: ${filtered.length}`);
     // IMPORTANT: Don't read divisionGames() here after writing it, or the effect
     // that calls this will track divisionGames and retrigger on our own write.
     // Compute derived data from the local variable instead to avoid a feedback loop.
     const dailyGames = this.groupRegularGamesByDate(filtered);
+    this.logger.debug('[RECOMPUTE] Setting divisionGames and dailySchedule signals');
     this.divisionGames.set(filtered);
     this.dailySchedule.set(dailyGames);
   }
@@ -345,7 +363,7 @@ export class GameService {
   extractDate(date: string): Date {
     return DateTime.fromISO(date).toJSDate();
   }
-  saveExistingGame(game: RegularGameSaveObject) {
+  saveExistingGame(game: RegularGameSaveObject): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -355,7 +373,7 @@ export class GameService {
     this.logger.info('Saving existing game via', gameUrl);
     const gameJson = JSON.stringify(game);
     this.logger.debug('Existing game payload', gameJson);
-    let result = this.http
+    return this.http
       .put(gameUrl, gameJson, httpOptions)
       .pipe(
         tap((data) => {
@@ -364,11 +382,10 @@ export class GameService {
           this.fetchSeasonGames();
         }),
         catchError(this.dataService.handleError('saveExistingGame', []))
-      )
-      .subscribe();
+      );
     // this.gameStore.dispatch(new gameActions.UpdateGame(game));
   }
-  saveNewGame(game: RegularGameSaveObject) {
+  saveNewGame(game: RegularGameSaveObject): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -376,7 +393,7 @@ export class GameService {
     };
     const gameUrl = Constants.POST_SEASON_GAME_URL;
     this.logger.info('Creating new game via', gameUrl);
-    let result = this.http
+    return this.http
       .post(gameUrl, game, httpOptions)
       .pipe(
         tap((data) => {
@@ -385,8 +402,7 @@ export class GameService {
           this.fetchSeasonGames();
         }),
         catchError(this.dataService.handleError('saveNewGame', []))
-      )
-      .subscribe();
+      );
     // .pipe(
     //   tap(data => console.log(data)),
     //   catchError(this.dataService.handleError)

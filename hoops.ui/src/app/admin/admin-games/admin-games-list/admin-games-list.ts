@@ -78,14 +78,17 @@ export class AdminGamesList implements OnInit, OnChanges, AfterViewInit {
   ];
   showPlayoffs = false;
   showRegularSeason = true;
+  private listEffectCounter = 0;
+
   constructor() {
     this.setupTable();
 
     effect(() => {
-      this.logger.debug('Admin games list component effect triggered');
-      this.dataSource = new MatTableDataSource(
-        this.gameService.divisionGames()!
-      );
+      this.listEffectCounter++;
+      this.logger.debug(`[LIST-EFFECT] Admin games list effect run #${this.listEffectCounter}`);
+      const games = this.gameService.divisionGames();
+      this.logger.debug(`[LIST-EFFECT] divisionGames count: ${games?.length ?? 0}`);
+      this.dataSource = new MatTableDataSource(games!);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
       this.paginator.pageSize = this.pageSize;

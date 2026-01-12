@@ -166,26 +166,33 @@ export class AdminGameDetail {
 
   readonly canSave = computed(() => this.isDirty() && this.isValid());
 
+  private detailEffectCounter = { selectedRecord: 0, divisionTeams: 0, scheduleTeams: 0, recordData: 0 };
+
   constructor() {
     effect(() => {
+      this.detailEffectCounter.selectedRecord++;
       this.#logger.debug(
-        'Selected record signal',
+        `[DETAIL-EFFECT-1] selectedRecord effect run #${this.detailEffectCounter.selectedRecord}`,
         this.gameService.selectedRecordSignal()
       );
       this.scheduleGamesId =
         this.gameService.selectedRecordSignal()?.scheduleGamesId ?? 0;
     });
     effect(() => {
-      this.#logger.debug('Division teams updated', this.divisionTeams());
+      this.detailEffectCounter.divisionTeams++;
+      this.#logger.debug(`[DETAIL-EFFECT-2] divisionTeams effect run #${this.detailEffectCounter.divisionTeams}`, this.divisionTeams());
     });
     // Load schedule-specific teams when selected record changes
     effect(() => {
+      this.detailEffectCounter.scheduleTeams++;
+      this.#logger.debug(`[DETAIL-EFFECT-3] Load scheduleTeams effect run #${this.detailEffectCounter.scheduleTeams}`);
       const selectedRecord = this.selectedRecord();
       const seasonId = selectedRecord?.seasonId ?? 0;
       const scheduleNumber =
         selectedRecord?.scheduleNumber ??
         untracked(() => this.gameService.divisionGames())?.[0]?.scheduleNumber ??
         0;
+      this.#logger.debug(`[DETAIL-EFFECT-3] scheduleNumber: ${scheduleNumber}, seasonId: ${seasonId}`);
       if (scheduleNumber && seasonId) {
         this.loadScheduleTeams(scheduleNumber, seasonId);
       }
@@ -193,7 +200,9 @@ export class AdminGameDetail {
 
     // Once scheduleTeams are loaded, patch the selected visitor/home values
     effect(() => {
+      this.#logger.debug(`[DETAIL-EFFECT-4] Patch teams effect triggered`);
       const teams = this.scheduleTeams();
+      this.#logger.debug(`[DETAIL-EFFECT-4] scheduleTeams count: ${teams?.length ?? 0}`);
       if (!teams || teams.length === 0) return;
 
       // IMPORTANT: Use untracked to read form values and other data
@@ -210,6 +219,7 @@ export class AdminGameDetail {
         const needHome =
           !currentHome ||
           !teams.some((t) => this.scheduleTeamCompare(t, currentHome));
+        this.#logger.debug(`[DETAIL-EFFECT-4] needVisitor: ${needVisitor}, needHome: ${needHome}`);
         if (needVisitor || needHome) {
           this.gameForm.visitorTeam().value.set(visiting ?? null);
           this.gameForm.homeTeam().value.set(home ?? null);
@@ -220,22 +230,32 @@ export class AdminGameDetail {
     });
 
     effect(() => {
+      this.detailEffectCounter.recordData++;
+      this.#logger.debug(`[DETAIL-EFFECT-5] Populate form effect run #${this.detailEffectCounter.recordData}`);
       const record = this.selectedRecord();
-      if (!record) return;
+      if (!record) {
+        this.#logger.debug('[DETAIL-EFFECT-5] No record, skipping');
+        return;
+      }
 
-      const location = this.locationService.getLocationByName(
-        (record.locationName as string) ?? ''
-      ) as GymLocation;
+      // CRITICAL: Use untracked to prevent tracking form signals and initialSnapshot
+      // Otherwise updating form values and calling captureInitialSnapshot creates an infinite loop
+      untracked(() => {
+        this.#logger.debug('[DETAIL-EFFECT-5] Populating form with record data');
+        const location = this.locationService.getLocationByName(
+          (record.locationName as string) ?? ''
+        ) as GymLocation;
 
-      this.gameForm.gameDate().value.set((record.gameDate as Date) ?? null);
-      this.gameForm.gameTime().value.set((record.gameTime as Date) ?? null);
-      this.gameForm.location().value.set(location ?? null);
-      this.gameForm.homeTeamScore().value.set(record.homeTeamScore ?? 0);
-      this.gameForm
-        .visitingTeamScore()
-        .value.set(record.visitingTeamScore ?? 0);
+        this.gameForm.gameDate().value.set((record.gameDate as Date) ?? null);
+        this.gameForm.gameTime().value.set((record.gameTime as Date) ?? null);
+        this.gameForm.location().value.set(location ?? null);
+        this.gameForm.homeTeamScore().value.set(record.homeTeamScore ?? 0);
+        this.gameForm
+          .visitingTeamScore()
+          .value.set(record.visitingTeamScore ?? 0);
 
-      this.captureInitialSnapshot();
+        this.captureInitialSnapshot();
+      });
     });
   }
 
@@ -306,12 +326,19 @@ export class AdminGameDetail {
   }
 
   onSave() {
+    this.#logger.info('=== SAVE BUTTON CLICKED ===');
     const formValue = this.model();
     this.#logger.debug('Game edit form value', formValue);
+    this.#logger.info('scheduleGamesId:', this.scheduleGamesId);
 
     // Get team selections from form - now using ScheduleTeam
     const selectedVisitingTeam = formValue.visitorTeam;
     const selectedHomeTeam = formValue.homeTeam;
+
+    this.#logger.debug('Selected teams:', {
+      visiting: selectedVisitingTeam,
+      home: selectedHomeTeam
+    });
 
     // Per schema, ScheduleGames stores ScheduleDivTeams.TeamNumber
     // Use the selected ScheduleTeam.teamNumber when saving
@@ -335,17 +362,40 @@ export class AdminGameDetail {
       homeTeamNumber,
     });
 
-    if (this.scheduleGamesId === 0) {
-      this.#logger.info('Creating new game');
-      this.gameService.saveNewGame(saveObject);
-    } else {
-      this.#logger.info('Updating existing game');
-      this.gameService.saveExistingGame(saveObject);
-    }
+    this.#logger.info('Save object created:', saveObject);
 
-    // Reset dirty baseline and navigate back
-    this.initialSnapshot.set({ ...formValue });
-    this.#router.navigate(['./admin/games/list']);
+    // Subscribe to the save observable and navigate on success
+    const save$ = this.scheduleGamesId === 0
+      ? this.gameService.saveNewGame(saveObject)
+      : this.gameService.saveExistingGame(saveObject);
+
+    this.#logger.info('Subscribing to save observable...');
+
+    save$.subscribe({
+      next: (response) => {
+        this.#logger.info('✅ Save SUCCESS - Response:', response);
+        // Reset dirty baseline and navigate back
+        this.initialSnapshot.set({ ...formValue });
+        this.#logger.info('About to navigate to /admin/games/list');
+        // Use absolute path to navigate correctly
+        this.#router.navigate(['/admin/games/list']).then(
+          (success) => this.#logger.info('Navigation result:', success),
+          (error) => this.#logger.error('Navigation error:', error)
+        );
+      },
+      error: (error) => {
+        this.#logger.error('❌ Save ERROR:', error);
+        this.#logger.error('Error details:', {
+          message: error?.message,
+          status: error?.status,
+          statusText: error?.statusText,
+          error: error?.error
+        });
+      },
+      complete: () => {
+        this.#logger.info('Save observable completed');
+      }
+    });
   }
 
   /*

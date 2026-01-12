@@ -1,4 +1,4 @@
-<form class="form-container" (ngSubmit)="onSave()">
+<form class="form-container">
   <mat-card>
     <mat-card-header>
       <mat-card-title>Game Details</mat-card-title>
@@ -105,10 +105,11 @@
       <button
         mat-raised-button
         color="Primary"
-        type="submit"
+        type="button"
         [disabled]="!canSave()"
+        (click)="onSave()"
       >
-        Save
+        Save (canSave: {{ canSave() }}, isDirty: {{ isDirty() }}, isValid: {{ isValid() }})
       </button>
       <button
         mat-raised-button
