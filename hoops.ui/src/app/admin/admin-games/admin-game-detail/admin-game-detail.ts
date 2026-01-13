@@ -325,6 +325,17 @@ export class AdminGameDetail {
     // );
   }
 
+  // Helper to format a Date as local ISO string (without Z suffix)
+  private formatLocalDateTime(date: Date): string {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const seconds = date.getSeconds().toString().padStart(2, '0');
+    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+  }
+
   onSave() {
     this.#logger.info('=== SAVE BUTTON CLICKED ===');
     const formValue = this.model();
@@ -461,7 +472,7 @@ visitingTeamSeasonNumber:17
     game.gameNumber = this.selectedRecord()?.gameNumber ?? 0;
     game.locationNumber = gameEditForm.location?.locationNumber ?? 0;
 
-    // Combine date and time into gameDate for future consolidation
+    // Combine date and time into gameDate - store as local time (not UTC)
     if (gameEditForm.gameDate && gameEditForm.gameTime) {
       const gameDate =
         gameEditForm.gameDate instanceof Date
@@ -482,31 +493,53 @@ visitingTeamSeasonNumber:17
         gameTime.getSeconds()
       );
 
-      game.gameDate = combinedDateTime.toISOString();
+      // Format as local time ISO string (without Z suffix to avoid UTC conversion)
+      const year = combinedDateTime.getFullYear();
+      const month = (combinedDateTime.getMonth() + 1).toString().padStart(2, '0');
+      const day = combinedDateTime.getDate().toString().padStart(2, '0');
+      const hours = combinedDateTime.getHours().toString().padStart(2, '0');
+      const minutes = combinedDateTime.getMinutes().toString().padStart(2, '0');
+      const seconds = combinedDateTime.getSeconds().toString().padStart(2, '0');
+
+      game.gameDate = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
     } else {
       game.gameDate = gameEditForm.gameDate
-        ? new Date(gameEditForm.gameDate).toISOString()
+        ? this.formatLocalDateTime(new Date(gameEditForm.gameDate))
         : '';
     }
 
-    // Use full datetime format for gameTime to include both date and time
-    // Format: '1899-12-30 HH:mm:ss' - backend expects this format
-    if (gameEditForm.gameTime) {
+    // Sync gameTime with gameDate to keep both fields in sync
+    // Both fields should store the same date+time in local time (not UTC)
+    // Format: 'YYYY-MM-DD HH:mm:ss' using local time components
+    if (gameEditForm.gameDate && gameEditForm.gameTime) {
+      const gameDate =
+        gameEditForm.gameDate instanceof Date
+          ? gameEditForm.gameDate
+          : new Date(gameEditForm.gameDate);
       const gameTime =
         gameEditForm.gameTime instanceof Date
           ? gameEditForm.gameTime
           : new Date(gameEditForm.gameTime);
 
-      game.gameTime = `1899-12-30 ${gameTime
-        .getHours()
-        .toString()
-        .padStart(2, '0')}:${gameTime
-        .getMinutes()
-        .toString()
-        .padStart(2, '0')}:${gameTime
-        .getSeconds()
-        .toString()
-        .padStart(2, '0')}`;
+      // Combine date from gameDate with time from gameTime
+      const combinedDateTime = new Date(
+        gameDate.getFullYear(),
+        gameDate.getMonth(),
+        gameDate.getDate(),
+        gameTime.getHours(),
+        gameTime.getMinutes(),
+        gameTime.getSeconds()
+      );
+
+      // Format as "YYYY-MM-DD HH:mm:ss" using local time components
+      const year = combinedDateTime.getFullYear();
+      const month = (combinedDateTime.getMonth() + 1).toString().padStart(2, '0');
+      const day = combinedDateTime.getDate().toString().padStart(2, '0');
+      const hours = combinedDateTime.getHours().toString().padStart(2, '0');
+      const minutes = combinedDateTime.getMinutes().toString().padStart(2, '0');
+      const seconds = combinedDateTime.getSeconds().toString().padStart(2, '0');
+
+      game.gameTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     } else {
       game.gameTime = '';
     }
