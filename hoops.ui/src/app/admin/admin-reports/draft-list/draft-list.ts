@@ -1,16 +1,7 @@
-import {
-  Component,
-  computed,
-  effect,
-  inject,
-  OnInit,
-  signal,
-} from '@angular/core';
+import { Component, computed, effect, inject } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { MatSelectModule } from '@angular/material/select';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
@@ -19,15 +10,13 @@ import {
   TableColumn,
   GenericMatTableComponent,
 } from '@app/admin/shared/generic-mat-table/generic-mat-table';
+import { SeasonSelect } from '@app/admin/admin-shared/season-select/season-select';
+import { DivisionSelect } from '@app/admin/admin-shared/division-select/division-select';
 import { DraftListPlayer } from '@app/domain/draft-list-player';
 import { DraftListService } from '@app/services/draft-list.service';
 import { SeasonService } from '@app/services/season.service';
 import { DivisionService } from '@app/services/division.service';
-import { Season } from '@app/domain/season';
-import { Division } from '@app/domain/division';
 import { LoggerService } from '@app/services/logger.service';
-import { Constants } from '@app/shared/constants';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'csbc-draft-list',
@@ -36,29 +25,39 @@ import { HttpClient } from '@angular/common/http';
     MatTableModule,
     MatIconModule,
     MatButtonModule,
-    MatSelectModule,
-    MatFormFieldModule,
     MatProgressSpinnerModule,
     MatSnackBarModule,
     MatCardModule,
     GenericMatTableComponent,
+    SeasonSelect,
+    DivisionSelect,
   ],
   templateUrl: './draft-list.html',
-  styleUrls: ['./draft-list.scss'],
+  styleUrls: [
+    './draft-list.scss',
+    './../../../shared/scss/select.scss',
+    './../../../shared/scss/forms.scss',
+    './../../../shared/scss/cards.scss',
+    './../../../shared/scss/tables.scss',
+  ],
 })
-export class DraftList implements OnInit {
+export class DraftList {
   private draftListService = inject(DraftListService);
   private seasonService = inject(SeasonService);
   private divisionService = inject(DivisionService);
   private logger = inject(LoggerService);
   private snackBar = inject(MatSnackBar);
-  private http = inject(HttpClient);
 
   columns: TableColumn<DraftListPlayer>[] = [
     { key: 'division', header: 'Division', field: 'division', sortable: true },
     { key: 'draftId', header: 'Draft ID', field: 'draftId', sortable: true },
     { key: 'lastName', header: 'Last Name', field: 'lastName', sortable: true },
-    { key: 'firstName', header: 'First Name', field: 'firstName', sortable: true },
+    {
+      key: 'firstName',
+      header: 'First Name',
+      field: 'firstName',
+      sortable: true,
+    },
     { key: 'dob', header: 'DOB', field: 'dob', sortable: true },
     { key: 'grade', header: 'Grade', field: 'grade', sortable: true },
     { key: 'address1', header: 'Address', field: 'address1', sortable: true },
@@ -66,95 +65,23 @@ export class DraftList implements OnInit {
     { key: 'zip', header: 'Zip', field: 'zip', sortable: true },
   ];
 
-  seasons = signal<Season[]>([]);
-  divisions = signal<Division[]>([]);
-  selectedSeason = signal<Season | null>(null);
-  selectedDivision = signal<Division | null>(null);
+  selectedSeason = computed(() => this.seasonService.selectedSeason());
+  selectedDivision = computed(() => this.divisionService.selectedDivision());
 
   players = computed(() => this.draftListService.players());
   isLoading = computed(() => this.draftListService.isLoading());
 
   constructor() {
+    // Load draft list when division changes
     effect(() => {
       const season = this.selectedSeason();
-      if (season) {
-        this.loadDivisions(season.seasonId);
+      const division = this.selectedDivision();
+      if (season && division) {
+        const divisionId =
+          division.divisionId === 0 ? null : division.divisionId;
+        this.draftListService.getDraftList(season.seasonId, divisionId);
       }
     });
-  }
-
-  ngOnInit() {
-    this.loadSeasons();
-  }
-
-  private loadSeasons(): void {
-    this.seasonService.seasons$.subscribe({
-      next: (seasons) => {
-        // Sort by FromDate descending
-        const sortedSeasons = seasons.sort((a, b) => {
-          const dateA = a.fromDate ? new Date(a.fromDate).getTime() : 0;
-          const dateB = b.fromDate ? new Date(b.fromDate).getTime() : 0;
-          return dateB - dateA;
-        });
-        this.seasons.set(sortedSeasons);
-        // Set the first (latest) season as default
-        if (sortedSeasons.length > 0) {
-          this.selectedSeason.set(sortedSeasons[0]);
-        }
-      },
-      error: (error) => {
-        this.logger.error('Error loading seasons:', error);
-      },
-    });
-  }
-
-  private loadDivisions(seasonId: number): void {
-    const url = `${Constants.SEASON_DIVISIONS_URL}${seasonId}`;
-    this.http.get<Division[]>(url).subscribe({
-      next: (divisions) => {
-        // Sort by minDate2 or minDate descending
-        const sortedDivisions = divisions.sort((a, b) => {
-          const dateA = (a.minDate2 || a.minDate)
-            ? new Date(a.minDate2 || a.minDate!).getTime()
-            : 0;
-          const dateB = (b.minDate2 || b.minDate)
-            ? new Date(b.minDate2 || b.minDate!).getTime()
-            : 0;
-          return dateB - dateA;
-        });
-
-        // Add "All Divisions" option at the beginning
-        const allDivisionsOption: Division = {
-          divisionId: 0,
-          divisionDescription: 'All Divisions',
-          seasonId: seasonId,
-        } as Division;
-
-        this.divisions.set([allDivisionsOption, ...sortedDivisions]);
-        // Clear selected division when season changes
-        this.selectedDivision.set(null);
-        // Clear players when season changes
-        this.draftListService.clearPlayers();
-      },
-      error: (error) => {
-        this.logger.error('Error loading divisions:', error);
-      },
-    });
-  }
-
-  onSeasonChange(season: Season): void {
-    this.selectedSeason.set(season);
-  }
-
-  onDivisionChange(division: Division): void {
-    this.selectedDivision.set(division);
-    if (division && this.selectedSeason()) {
-      const divisionId = division.divisionId === 0 ? null : division.divisionId;
-      this.draftListService.getDraftList(
-        this.selectedSeason()!.seasonId,
-        divisionId
-      );
-    }
   }
 
   downloadCSV(): void {

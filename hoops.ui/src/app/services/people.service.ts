@@ -148,6 +148,12 @@ export class PeopleService {
     this.logger.info('Deleting person at URL: ', url);
     return this.http.delete<Person>(url);
   }
+
+  getPersonById(personId: number): Observable<Person> {
+    const url = `${Constants.peopleUrl}/${personId}`;
+    this.logger.info('Getting person by ID: ', personId);
+    return this.http.get<Person>(url);
+  }
 }
 export interface peopleSearchCriteria {
   lastName: string;

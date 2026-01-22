@@ -1,3 +1,5 @@
+@use "./../../../../Content/variables" as v;
+
 .draft-list-card {
   margin: 20px;
 }
@@ -8,11 +10,6 @@
   align-items: center;
   margin-bottom: 24px;
   flex-wrap: wrap;
-}
-
-.season-selector,
-.division-selector {
-  min-width: 250px;
 }
 
 .download-button {
@@ -31,7 +28,7 @@
 .no-data-message {
   text-align: center;
   padding: 40px;
-  color: #666;
+  color: v.$admin-font-color;
   font-size: 16px;
 }
 

@@ -3,7 +3,7 @@
 **Story ID:** APMF-077  
 **Feature:** [75](../../features/{{FEATURE_AREA}}/{{FEATURE_ID}}.md)  
 **Epic:** [APM-045](../../epics/APM-045.md)  
-**Azure Boards:** [Story #{{WORK_ITEM_ID}}](https://dev.azure.com/rsalit1516/Hoops/_workitems/edit/{{WORK_ITEM_ID}})
+**Azure Boards:** [Story #77](https://dev.azure.com/rsalit1516/Hoops/_workitems/edit/77)
 
 ## User Story
 
@@ -41,3 +41,7 @@ SELECT
   order by d.Div_desc, p.lastName, p.FirstName
 
 ```
+
+- use Angular Material components.
+- use existing Season and division select components
+- reference scss files in the app/shared/scss folder

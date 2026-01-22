@@ -5,34 +5,8 @@
 
   <mat-card-content>
     <div class="filters-container">
-      <mat-form-field appearance="outline" class="season-selector">
-        <mat-label>Season</mat-label>
-        <mat-select
-          [(value)]="selectedSeason"
-          (selectionChange)="onSeasonChange($event.value)"
-        >
-          @for (season of seasons(); track season.seasonId) {
-          <mat-option [value]="season">
-            {{ season.description }}
-          </mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="division-selector">
-        <mat-label>Division</mat-label>
-        <mat-select
-          [(value)]="selectedDivision"
-          (selectionChange)="onDivisionChange($event.value)"
-          [disabled]="!selectedSeason()"
-        >
-          @for (division of divisions(); track division.divisionId) {
-          <mat-option [value]="division">
-            {{ division.divisionDescription }}
-          </mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
+      <season-select></season-select>
+      <division-select></division-select>
 
       <button
         mat-raised-button

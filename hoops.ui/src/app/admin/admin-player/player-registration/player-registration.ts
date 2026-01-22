@@ -1,4 +1,5 @@
 import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import { Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -80,6 +81,7 @@ interface PlayerFormData {
 export class PlayerRegistration implements OnInit {
   readonly router = inject(Router);
   readonly route = inject(ActivatedRoute);
+  private readonly location = inject(Location);
   private readonly playerService = inject(PlayerService);
   private readonly peopleService = inject(PeopleService);
   private readonly seasonService = inject(SeasonService);
@@ -180,7 +182,7 @@ export class PlayerRegistration implements OnInit {
     this.route.params.subscribe((params) => {
       const personId = params['personId'];
       if (personId) {
-        this.loadPersonAndPlayer(personId);
+        this.loadPersonAndPlayer(+personId);  // Convert string to number
       }
     });
   }
@@ -205,6 +207,18 @@ export class PlayerRegistration implements OnInit {
   }
 
   loadPersonAndPlayer(personId: number): void {
+    // Get the player name from the already-selected person
+    const currentPerson = this.person();
+    const playerName = currentPerson
+      ? `${currentPerson.firstName} ${currentPerson.lastName}`
+      : '';
+
+    // Set personId in form model
+    this.updateFormField('personId', personId);
+    if (playerName) {
+      this.updateFormField('playerName', playerName);
+    }
+
     // Check if we already have a player for this person and season
     const seasonId = this.playerFormModel().seasonId;
     if (seasonId) {
@@ -214,25 +228,19 @@ export class PlayerRegistration implements OnInit {
           next: (player) => {
             this.logger.info('Existing player found:', player);
             this.playerService.updateSelectedPlayer(player);
-            this.patchFormWithPlayer(player);
+            this.patchFormWithPlayer(player, playerName);
           },
           error: (error) => {
             this.logger.info('No existing player, creating new registration');
-            this.createNewPlayerRegistration(personId);
+            this.createNewPlayerRegistration(personId, playerName);
           },
         });
     } else {
-      this.createNewPlayerRegistration(personId);
+      this.createNewPlayerRegistration(personId, playerName);
     }
   }
 
-  createNewPlayerRegistration(personId: number): void {
-    const currentPerson = this.person();
-    if (!currentPerson) {
-      this.logger.error('No person selected');
-      return;
-    }
-
+  createNewPlayerRegistration(personId: number, playerName: string): void {
     const seasonId =
       this.playerFormModel().seasonId || this.selectedSeason()?.seasonId;
     if (!seasonId) {
@@ -251,12 +259,11 @@ export class PlayerRegistration implements OnInit {
     }
 
     this.playerService.updateSelectedPlayer(newPlayer);
-    this.patchFormWithPlayer(newPlayer);
+    this.patchFormWithPlayer(newPlayer, playerName);
   }
 
-  patchFormWithPlayer(player: Player): void {
-    const currentPerson = this.person();
-
+  patchFormWithPlayer(player: Player, playerName: string): void {
+    console.log('DEBUG: patchFormWithPlayer called with player:', player, 'playerName:', playerName);
     // Determine change division value based on playsUp/playsDown
     let changeDivision = 'N/A';
     if (player.playsUp) {
@@ -272,9 +279,7 @@ export class PlayerRegistration implements OnInit {
       companyId: player.companyId ?? 1,
       seasonId: player.seasonId,
       divisionId: player.divisionId,
-      playerName: currentPerson
-        ? `${currentPerson.firstName} ${currentPerson.lastName}`
-        : '',
+      playerName: playerName,
 
       // Payment Info
       payType: player.payType ?? '',
@@ -316,9 +321,10 @@ export class PlayerRegistration implements OnInit {
       return;
     }
 
-    const currentPerson = this.person();
-    if (!currentPerson) {
+    // Check if personId is set in the form
+    if (!formValue.personId) {
       this.logger.error('No person selected');
+      this.snackBar.open('No person selected', 'OK', { duration: 3000 });
       return;
     }
 
@@ -326,7 +332,7 @@ export class PlayerRegistration implements OnInit {
     const player = new Player();
 
     player.playerId = formValue.playerId;
-    player.personId = currentPerson.personId;
+    player.personId = formValue.personId;
     player.companyId = formValue.companyId;
     player.seasonId = formValue.seasonId;
     player.divisionId = formValue.divisionId;
@@ -357,6 +363,7 @@ export class PlayerRegistration implements OnInit {
     player.outOfTown = formValue.outOfTown;
 
     this.logger.info('Saving player:', player);
+    console.log('DEBUG: Full player object being sent:', JSON.stringify(player, null, 2));
 
     // Call the backend to save
     this.playerService.savePlayer(player).subscribe({
@@ -365,20 +372,19 @@ export class PlayerRegistration implements OnInit {
         this.playerService.updateSelectedPlayer(response);
         this.playerService.updateFormDirtyState(false);
 
-        // IMPORTANT: Update the form model with the response (especially playerId)
-        // so that subsequent saves will UPDATE instead of CREATE
-        const currentModel = this.playerFormModel();
-        this.playerFormModel.set({
-          ...currentModel,
-          playerId: response.playerId,
-        });
-
         this.snackBar.open('Player registration saved successfully', 'OK', {
           duration: 3000,
         });
+
+        // Navigate back to the previous page
+        this.location.back();
       },
       error: (error) => {
         this.logger.error('Error saving player:', error);
+        console.log('DEBUG: Error details:', error);
+        if (error.error) {
+          console.log('DEBUG: Error body:', error.error);
+        }
         this.snackBar.open('Error saving player registration', 'OK', {
           duration: 5000,
         });
@@ -390,6 +396,21 @@ export class PlayerRegistration implements OnInit {
   }
 
   onCancel(): void {
-    this.router.navigate(['/admin/people']);
+    this.location.back();
+  }
+
+  /**
+   * Updates a single field in the form model.
+   * This ensures the signal is properly updated rather than just mutating the object.
+   */
+  updateFormField<K extends keyof PlayerFormData>(
+    field: K,
+    value: PlayerFormData[K]
+  ): void {
+    const currentModel = this.playerFormModel();
+    this.playerFormModel.set({
+      ...currentModel,
+      [field]: value,
+    });
   }
 }

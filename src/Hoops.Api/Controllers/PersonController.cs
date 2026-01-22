@@ -59,7 +59,19 @@ namespace Hoops.Controllers
             _logger.LogInformation("Searching for people");
             var people = repository.FindPeopleByLastAndFirstName(lastName, firstName, playerOnly);
             return Ok(people);
+        }
 
+        // GET: api/Person/5
+        [HttpGet("{id}")]
+        public ActionResult<Person> GetPerson(int id)
+        {
+            _logger.LogInformation("Getting person by ID: {id}", id);
+            var person = repository.GetById(id);
+            if (person == null)
+            {
+                return NotFound();
+            }
+            return Ok(person);
         }
 
         // PUT: api/Person/5

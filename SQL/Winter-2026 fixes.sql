@@ -90,3 +90,15 @@ from (
 ) as TeamGames
 group by divisionid, TeamNumber
 order by divisionid, TotalGames, TeamNumber
+
+
+/* move T2 games */
+/* Int Boys duplicated a team on one day */
+select * from schedulegames
+where divisionid = 4279 and gamedate = '2026-01-24'
+-- and scheduleGamesID = 36228
+
+-- update ScheduleGames
+-- set gamedate = '2026-02-21'
+-- where divisionid = 4279 and gamedate = '2026-01-24'
+-- and scheduleGamesID = 36228
