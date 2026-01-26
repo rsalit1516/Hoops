@@ -638,8 +638,8 @@ namespace Hoops.Infrastructure.Migrations
                         .HasColumnType("smalldatetime");
 
                     b.Property<string>("PayType")
-                        .HasMaxLength(5)
-                        .HasColumnType("nvarchar(5)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<int?>("PeopleID")
                         .HasColumnType("int");

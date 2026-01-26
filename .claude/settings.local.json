@@ -38,7 +38,8 @@
       "Bash(timeout 120 dotnet run:*)",
       "Bash(sqlcmd:*)",
       "Bash(dotnet run:*)",
-      "Bash(npx ng test:*)"
+      "Bash(npx ng test:*)",
+      "Bash(del \"src\\\\Hoops.Infrastructure\\\\Migrations\\\\20251216152000_IncreasePayTypeLength.cs\")"
     ],
     "deny": [],
     "ask": []

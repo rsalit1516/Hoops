@@ -207,7 +207,8 @@ namespace Hoops.Functions.Functions
             catch (Exception ex)
             {
                 var errorResp = req.CreateResponse(HttpStatusCode.InternalServerError);
-                await errorResp.WriteStringAsync($"Error updating player: {ex.Message}\n{ex.StackTrace}");
+                var innerException = ex.InnerException != null ? $"\nInner Exception: {ex.InnerException.Message}" : "";
+                await errorResp.WriteStringAsync($"Error updating player: {ex.Message}{innerException}\n{ex.StackTrace}");
                 return errorResp;
             }
         }
