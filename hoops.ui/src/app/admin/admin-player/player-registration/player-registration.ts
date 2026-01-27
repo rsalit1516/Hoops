@@ -158,6 +158,26 @@ export class PlayerRegistration implements OnInit {
       this.logger.debug('Divisions changed:', divs);
       if (divs) {
         this.divisions.set(divs);
+
+        // If this is a new registration (no divisionId yet), try to set default
+        const formModel = this.playerFormModel();
+        if (!formModel.divisionId && formModel.personId) {
+          const currentPerson = this.person();
+          if (currentPerson?.birthDate && currentPerson?.gender) {
+            const eligibleDivision = this.divisionService.findEligibleDivision(
+              currentPerson.birthDate,
+              currentPerson.gender,
+              divs
+            );
+            if (eligibleDivision) {
+              this.updateFormField('divisionId', eligibleDivision.divisionId);
+              this.logger.info(
+                'Auto-selected division on load:',
+                eligibleDivision.divisionDescription
+              );
+            }
+          }
+        }
       }
     });
 
@@ -256,6 +276,23 @@ export class PlayerRegistration implements OnInit {
     if (season && season.participationFee) {
       newPlayer.paidAmount = season.participationFee;
       newPlayer.balanceOwed = season.participationFee;
+    }
+
+    // Set default division based on person's birth date and gender
+    const currentPerson = this.person();
+    if (currentPerson?.birthDate && currentPerson?.gender) {
+      const eligibleDivision = this.divisionService.findEligibleDivision(
+        currentPerson.birthDate,
+        currentPerson.gender,
+        this.divisions()
+      );
+      if (eligibleDivision) {
+        newPlayer.divisionId = eligibleDivision.divisionId;
+        this.logger.info(
+          'Auto-selected division:',
+          eligibleDivision.divisionDescription
+        );
+      }
     }
 
     this.playerService.updateSelectedPlayer(newPlayer);

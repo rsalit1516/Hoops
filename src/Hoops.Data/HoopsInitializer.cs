@@ -385,8 +385,8 @@ namespace Hoops.Data
                         DivisionDescription = "T2_Coed",
                         DirectorId = (person).FirstOrDefault()?.PersonId ?? 0,
                         Gender = "M",
-                        MinDate = schoolYearStart.AddYears(-6),
-                        MaxDate = schoolYearStart.AddYears(-5).AddDays(-1),
+                        MinDate = schoolYearStart.AddYears(-6).AddDays(-1),
+                        MaxDate = schoolYearStart.AddYears(-5),
                         DraftDate = today.AddDays(12),
                         DraftTime = today.AddDays(12).ToShortTimeString()
                     });
@@ -415,8 +415,8 @@ namespace Hoops.Data
                        DivisionDescription = "T4_Coed",
                        DirectorId = (person).FirstOrDefault()?.PersonId ?? 0,
                        Gender = "M",
-                       MinDate = schoolYearStart.AddYears(-10),
-                       MaxDate = schoolYearStart.AddYears(-8).AddDays(-1),
+                       MinDate = schoolYearStart.AddYears(-8).AddDays(-1),
+                       MaxDate = schoolYearStart.AddYears(-10),
                        DraftDate = today.AddDays(12),
                        DraftTime = today.AddDays(12).ToShortTimeString()
                    });
@@ -429,8 +429,8 @@ namespace Hoops.Data
                        DivisionDescription = "SI_Boys",
                        DirectorId = (person).FirstOrDefault<Person>().PersonId,
                        Gender = "M",
-                       MinDate = schoolYearStart.AddYears(-12),
-                       MaxDate = schoolYearStart.AddYears(-10).AddDays(-1),
+                       MinDate = schoolYearStart.AddYears(-10).AddDays(-1),
+                       MaxDate = schoolYearStart.AddYears(-12),
                        DraftDate = today.AddDays(12),
                        DraftTime = today.AddDays(12).ToShortTimeString()
                    });
@@ -443,8 +443,8 @@ namespace Hoops.Data
                        DivisionDescription = "FJV_Boys",
                        DirectorId = (person).FirstOrDefault<Person>().PersonId,
                        Gender = "M",
-                       MinDate = schoolYearStart.AddYears(-14),
-                       MaxDate = schoolYearStart.AddYears(-12).AddDays(-1),
+                       MinDate = schoolYearStart.AddYears(-12),
+                       MaxDate = schoolYearStart.AddYears(-14).AddDays(-1),
                        DraftDate = today.AddDays(12),
                        DraftTime = today.AddDays(12).ToShortTimeString()
                    });
@@ -457,8 +457,8 @@ namespace Hoops.Data
                        DivisionDescription = "SJV_Boys",
                        DirectorId = (person).FirstOrDefault<Person>().PersonId,
                        Gender = "M",
-                       MinDate = schoolYearStart.AddYears(-16),
-                       MaxDate = schoolYearStart.AddYears(-14).AddDays(-1),
+                       MinDate = schoolYearStart.AddYears(-14),
+                       MaxDate = schoolYearStart.AddYears(-16).AddDays(-1),
                        DraftDate = today.AddDays(12),
                        DraftTime = today.AddDays(12).ToShortTimeString()
                    });
@@ -471,8 +471,8 @@ namespace Hoops.Data
                        DivisionDescription = "HS_Boys",
                        DirectorId = (person).FirstOrDefault<Person>().PersonId,
                        Gender = "M",
-                       MinDate = schoolYearStart.AddYears(-18),
-                       MaxDate = schoolYearStart.AddYears(-16).AddDays(-1),
+                       MinDate = schoolYearStart.AddYears(-16),
+                       MaxDate = schoolYearStart.AddYears(-18).AddDays(-1),
                        DraftDate = today.AddDays(12),
                        DraftTime = today.AddDays(12).ToShortTimeString()
                    });
@@ -485,8 +485,8 @@ namespace Hoops.Data
                         DivisionDescription = "JV_Girls",
                         DirectorId = (person).FirstOrDefault<Person>().PersonId,
                         Gender = "F",
-                        MinDate = schoolYearStart.AddYears(-17),
-                        MaxDate = schoolYearStart.AddYears(-14),
+                        MinDate = schoolYearStart.AddYears(-14),
+                        MaxDate = schoolYearStart.AddYears(-17),
                         DraftDate = today.AddDays(12),
                         DraftTime = today.AddDays(12).ToShortTimeString()
                     });

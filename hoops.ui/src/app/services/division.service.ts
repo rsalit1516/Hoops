@@ -423,6 +423,56 @@ export class DivisionService {
     }
     return 'Other';
   }
+
+  /**
+   * Finds the eligible division for a player based on birth date and gender.
+   * Matches against both primary (gender/minDate/maxDate) and secondary
+   * (gender2/minDate2/maxDate2) gender criteria for co-ed divisions.
+   */
+  findEligibleDivision(
+    birthDate: Date | undefined,
+    gender: string | undefined,
+    divisions: Division[]
+  ): Division | undefined {
+    if (!birthDate || !gender || !divisions?.length) {
+      return undefined;
+    }
+
+    const birthTime = new Date(birthDate).getTime();
+
+    return divisions.find((division) => {
+      // Check primary gender match
+      if (division.gender?.toUpperCase() === gender.toUpperCase()) {
+        if (this.isDateInRange(birthTime, division.minDate, division.maxDate)) {
+          return true;
+        }
+      }
+
+      // Check secondary gender match (for co-ed divisions)
+      if (division.gender2?.toUpperCase() === gender.toUpperCase()) {
+        if (
+          this.isDateInRange(birthTime, division.minDate2, division.maxDate2)
+        ) {
+          return true;
+        }
+      }
+
+      return false;
+    });
+  }
+
+  private isDateInRange(
+    birthTime: number,
+    minDate: Date | undefined,
+    maxDate: Date | undefined
+  ): boolean {
+    if (!minDate || !maxDate) {
+      return false;
+    }
+    const minTime = new Date(minDate).getTime();
+    const maxTime = new Date(maxDate).getTime();
+    return birthTime >= minTime && birthTime <= maxTime;
+  }
 }
 
 export interface DivisionState {
