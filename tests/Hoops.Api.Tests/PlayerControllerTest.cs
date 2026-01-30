@@ -140,7 +140,7 @@ namespace Hoops.Api.Tests
             // Arrange
             var playerId = 999;
             _mockPlayerRepository.Setup(r => r.GetById(playerId))
-                .Returns((Player)null);
+                .Returns((Player)null!);
 
             // Act
             var result = _controller.GetPlayer(playerId);
@@ -182,7 +182,7 @@ namespace Hoops.Api.Tests
             var personId = 999;
             var seasonId = 999;
             _mockPlayerRepository.Setup(r => r.GetPlayerByPersonAndSeasonId(personId, seasonId))
-                .Returns((Player)null);
+                .Returns((Player)null!);
 
             // Act
             var result = _controller.GetPlayerByPersonAndSeason(personId, seasonId);

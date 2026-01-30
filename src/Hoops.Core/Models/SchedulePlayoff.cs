@@ -20,6 +20,6 @@ namespace Hoops.Core.Models
         public string Descr { get; set; }
         public int? VisitingTeamScore { get; set; }
         public int? HomeTeamScore { get; set; }
-        public int DivisionId { get; set; }
+        public int? DivisionId { get; set; }
     }
 }

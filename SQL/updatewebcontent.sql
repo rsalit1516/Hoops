@@ -1094,9 +1094,13 @@ October  7 th at 7:15 pm. Veterans hall behind cs gym
 --   '2026-02-16', GetDate(), null
 --   )
 
+select * from [dbo].[WebContent]
+where webcontentId = 279
+order by webcontentID desc
 
-
-
+-- update [dbo].[WebContent]
+-- set body = 'Girls and Boys ages 6 and up thru high school & women and men 18+ are all encouraged to register. Season runs from March to June. Registration fee is $150.00 - cash or check only. (non-refundable late fee of 15.00 after this date). Non CS residents must pay an additional $60 for each registration. A copy of a birth certificate and proof of address is required at sign ups. Please print out the form (go to Documents -> Registration Form), fill out the form and bring to sign up to save time. Coaches and sponsors are needed. Refunds are board discretionary only. ALL COACHES ARE SUBJECT TO BACKGROUND CHECK.'
+-- where webcontentid = 279
 
 
 

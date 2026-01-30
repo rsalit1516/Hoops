@@ -58,7 +58,7 @@ public partial class hoopsContext : DbContext
     {
         modelBuilder.Entity<Coach>(entity =>
         {
-            entity.ToTable("Coach");
+            entity.ToTable("Coaches");
             entity.HasKey(e => e.CoachId);
 
             entity.Property(e => e.CoachId)
@@ -106,7 +106,7 @@ public partial class hoopsContext : DbContext
 
         modelBuilder.Entity<Company>(entity =>
         {
-            entity.ToTable("Company");
+            entity.ToTable("Companies");
             entity.HasKey(entity => entity.CompanyId);
 
             entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
@@ -670,7 +670,7 @@ public partial class hoopsContext : DbContext
 
         modelBuilder.Entity<SponsorPayment>(entity =>
         {
-            entity.ToTable("SponsorPayment");
+            entity.ToTable("SponsorPayments");
             entity.HasKey(e => e.PaymentId);
             entity.Property(e => e.Amount).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
@@ -2222,6 +2222,23 @@ public partial class hoopsContext : DbContext
 
 
 
+
+        // Configure VwCoach and VwDirector as views (not tables)
+        modelBuilder.Entity<VwCoach>(entity =>
+        {
+            entity.HasNoKey();
+            entity.ToView("VW_Coaches");
+        });
+
+        modelBuilder.Entity<VwDirector>(entity =>
+        {
+            entity.HasNoKey();
+            entity.ToView("vw_Directors");
+        });
+
+        // Exclude SponsorFee from migrations - table doesn't exist in production
+        // (SponsorFee objects are created in-memory by SponsorFeeRepository)
+        modelBuilder.Entity<SponsorFee>().ToTable("SponsorFee", t => t.ExcludeFromMigrations());
 
         OnModelCreatingPartial(modelBuilder);
     }

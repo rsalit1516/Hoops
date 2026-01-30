@@ -102,7 +102,7 @@ namespace Hoops.Api.Tests
         }
 
         [Fact]
-        public async Task GetUsers_ReturnsAllUsers()
+        public void GetUsers_ReturnsAllUsers()
         {
             // Act
             var result = _controller.GetUsers();

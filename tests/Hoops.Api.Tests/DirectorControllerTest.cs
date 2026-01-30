@@ -108,7 +108,7 @@ namespace Hoops.Api.Tests
             // Arrange
             var mockRepo = new Mock<IDirectorRepository>();
             mockRepo.Setup(r => r.GetById(999))
-                    .Returns((Director?)null);
+                    .Returns((Director)null!);
 
             var controller = new DirectorController(mockRepo.Object);
 
@@ -216,7 +216,7 @@ namespace Hoops.Api.Tests
             // Arrange
             var mockRepo = new Mock<IDirectorRepository>();
             mockRepo.Setup(r => r.GetById(999))
-                    .Returns((Director?)null);
+                    .Returns((Director)null!);
 
             var controller = new DirectorController(mockRepo.Object);
 
