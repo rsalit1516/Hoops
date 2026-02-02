@@ -50,7 +50,7 @@ where scheduleNumber = 15 and seasonid = 2222
 -- where scheduleGamesID = 36228
 
 select * from schedulegames
-where divisionid = 4281 and gamedate = '2026-01-05'
+where divisionid = 4279 and gamedate = '2026-01-05'
 and scheduleGamesID = 36221
 
 -- update ScheduleGames
@@ -102,3 +102,11 @@ where divisionid = 4279 and gamedate = '2026-01-24'
 -- set gamedate = '2026-02-21'
 -- where divisionid = 4279 and gamedate = '2026-01-24'
 -- and scheduleGamesID = 36228
+
+/* move games on 2/2 because of weather */
+select * from schedulegames
+where divisionid = 4279 and gamedate = '2026-02-02'
+
+-- update schedulegames
+-- set GameDate = '2026-02-18'
+-- where divisionid = 4279 and gamedate = '2026-02-02'
