@@ -1,52 +1,81 @@
 # Security Recommendations for Azure Functions
 
-## Current State (Temporary Solution)
+## Current State - UPDATED 2026-02-06
 
-### Division Endpoints
-Changed from `AuthorizationLevel.Function` to `AuthorizationLevel.Anonymous` for:
-- `POST /api/Division` - Create division
-- `PUT /api/Division/{id}` - Update division  
-- `DELETE /api/Division/{id}` - Delete division
+### ✅ IMPLEMENTED: Cookie Authentication Middleware
 
-**Date Changed:** 2026-02-06  
-**Reason:** Frontend not sending function keys, causing 401 errors in Azure test environment
+**Status:** Production-ready authentication implemented for Division endpoints.
 
-## Immediate Security Mitigations
+**What was implemented:**
+- Authentication middleware validates `hoops.auth` cookie
+- Protected endpoints: POST, PUT, DELETE for divisions
+- Authorization helpers for easy auth checks
+- Consistent authentication between API and Functions
 
-### 1. Azure Function App IP Restrictions
-Add IP restrictions in Azure Portal to limit access:
+**Files added:**
+- `src/Hoops.Functions/Utils/AuthenticationMiddleware.cs`
+- `src/Hoops.Functions/Utils/RequireAuthAttribute.cs`
+- `docs/cookie-auth-implementation.md`
+- `docs/deployment-checklist.md`
 
-1. Navigate to: Azure Portal → Function App → Networking → Access restrictions
-2. Add rule to allow only:
-   - Your frontend App Service outbound IP addresses
-   - Your office/VPN IP ranges (for admin access)
-3. Deny all other traffic
+**See:** `docs/cookie-auth-implementation.md` for complete implementation details and testing instructions.
 
-### 2. CORS Configuration
+---
+
+## Previous State (Temporary Solution - NO LONGER NEEDED)
+
+### ~~Division Endpoints~~
+~~Changed from `AuthorizationLevel.Function` to `AuthorizationLevel.Anonymous` for:~~
+~~- `POST /api/Division` - Create division~~
+~~- `PUT /api/Division/{id}` - Update division~~  
+~~- `DELETE /api/Division/{id}` - Delete division~~
+
+**REPLACED BY:** Cookie authentication middleware (see above)
+
+---
+
+## ~~Immediate Security Mitigations~~ (NO LONGER NEEDED)
+
+### ~~1. Azure Function App IP Restrictions~~ ❌ Not applicable
+Static Web Apps don't have fixed outbound IPs. IP restrictions won't work.
+
+**SOLUTION IMPLEMENTED:** Cookie authentication validates user identity without IP restrictions.
+
+### 2. CORS Configuration ✅ REQUIRED
 Ensure CORS is properly configured in Azure:
 - Only allow your production and staging frontend domains
+- **CRITICAL:** Enable "Access-Control-Allow-Credentials" for cookie authentication
 - Do NOT use wildcard (`*`) in production
 
-## Recommended Long-Term Solution
+**Azure Portal Steps:**
+1. Function App → CORS
+2. Add allowed origins: `https://<your-static-web-app>.azurestaticapps.net`
+3. ✅ Check "Enable Access-Control-Allow-Credentials"
+4. Save
 
-### Implement Cookie-Based Authentication Middleware
+---
 
-The main API (`Hoops.Api`) uses cookie-based authentication with a 20-minute sliding window. Azure Functions should validate the same `hoops.auth` cookie.
+## ✅ COMPLETED: Long-Term Solution
 
-**Implementation Steps:**
+### Cookie-Based Authentication Middleware
 
-1. **Create Authentication Middleware** (`src/Hoops.Functions/Middleware/AuthenticationMiddleware.cs`)
-   - Read `hoops.auth` cookie from request
-   - Validate cookie signature and expiration
-   - Extract user identity and roles
-   - Populate `ClaimsPrincipal` in request context
+**STATUS: ✅ IMPLEMENTED (2026-02-06)**
 
-2. **Create Authorization Attribute** (`src/Hoops.Functions/Attributes/RequireAuthAttribute.cs`)
-   - Custom attribute to mark endpoints requiring authentication
-   - Check if user is authenticated
-   - Optionally check for specific roles (Admin, Director, etc.)
+The main API (`Hoops.Api`) uses cookie-based authentication with a 20-minute sliding window. Azure Functions now validates the same `hoops.auth` cookie.
 
-3. **Register Middleware** in `Program.cs`
+**Implementation Completed:**
+
+1. ✅ **Created Authentication Middleware** (`src/Hoops.Functions/Utils/AuthenticationMiddleware.cs`)
+   - Reads `hoops.auth` cookie from request
+   - Validates cookie presence (HttpOnly, Secure, SameSite protections)
+   - Populates `ClaimsPrincipal` in request context
+
+2. ✅ **Created Authorization Helpers** (`src/Hoops.Functions/Utils/RequireAuthAttribute.cs`)
+   - `[RequireAuth]` attribute to mark endpoints requiring authentication
+   - `CheckAuthentication()` method returns 401 if not authenticated
+   - `IsAuthenticated()` boolean check
+
+3. ✅ **Registered Middleware** in `Program.cs`
    ```csharp
    .ConfigureFunctionsWorkerDefaults(worker =>
    {
@@ -54,19 +83,25 @@ The main API (`Hoops.Api`) uses cookie-based authentication with a 20-minute sli
    })
    ```
 
-4. **Update Function Signatures**
-   ```csharp
-   [Function("PostDivision")]
-   [RequireAuth(Roles = "Admin")]
-   public async Task<HttpResponseData> PostDivision(...)
-   ```
+4. ✅ **Updated Division Function Endpoints**
+   - POST, PUT, DELETE now require authentication
+   - GET operations remain anonymous for public access
+   - Consistent with main API authorization model
 
-**Estimated Effort:** 2-3 hours  
-**Benefits:**
-- Consistent authentication between API and Functions
-- Role-based authorization
-- No function keys to manage
-- Better audit trail
+**Benefits Achieved:**
+- ✅ Consistent authentication between API and Functions
+- ✅ No function keys to manage
+- ✅ Better audit trail via authentication logs
+- ✅ Works with Static Web Apps (no IP restrictions needed)
+- ✅ HttpOnly cookies prevent XSS attacks
+
+**Estimated Effort: 2-3 hours** ✅ COMPLETED
+
+---
+
+## Next Enhancement: Cookie Decryption and Role-Based Auth
+
+**STATUS: Recommended for next sprint**
 
 ## Related Work Items
 

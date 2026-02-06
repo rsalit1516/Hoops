@@ -4,6 +4,7 @@ using Azure.Identity;
 using Hoops.Application.Services;
 using Hoops.Core.Interface;
 using Hoops.Data;
+using Hoops.Functions.Utils;
 using Hoops.Infrastructure;
 using Hoops.Infrastructure.Data;
 using Microsoft.Azure.Functions.Worker;
@@ -20,7 +21,11 @@ var host = new HostBuilder()
     //  - /api/swagger/ui
     //  - /api/swagger.json (v2)
     //  - /api/openapi/v3.json (v3)
-    .ConfigureFunctionsWorkerDefaults()
+    .ConfigureFunctionsWorkerDefaults(worker =>
+    {
+        // Register authentication middleware to validate hoops.auth cookie
+        worker.UseMiddleware<AuthenticationMiddleware>();
+    })
     .ConfigureAppConfiguration((context, config) =>
     {
         var env = context.HostingEnvironment;

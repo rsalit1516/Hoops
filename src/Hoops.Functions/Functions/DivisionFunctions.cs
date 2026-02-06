@@ -7,8 +7,10 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Hoops.Core.Interface;
 using Hoops.Core.Models;
+using Hoops.Functions.Utils;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Extensions.Logging;
 
 namespace Hoops.Functions.Functions
 {
@@ -16,6 +18,7 @@ namespace Hoops.Functions.Functions
     {
         private readonly IDivisionRepository _repository;
         private readonly ISeasonService _seasonService;
+        private readonly ILogger<DivisionFunctions> _logger;
 
         private static readonly JsonSerializerOptions JsonOptions = new()
         {
@@ -24,10 +27,11 @@ namespace Hoops.Functions.Functions
             DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
         };
 
-        public DivisionFunctions(IDivisionRepository repository, ISeasonService seasonService)
+        public DivisionFunctions(IDivisionRepository repository, ISeasonService seasonService, ILogger<DivisionFunctions> logger)
         {
             _repository = repository;
             _seasonService = seasonService;
+            _logger = logger;
         }
 
         private static async Task WriteJsonAsync<T>(HttpResponseData resp, T payload, HttpStatusCode status = HttpStatusCode.OK)
@@ -64,10 +68,16 @@ namespace Hoops.Functions.Functions
         }
 
         [Function("PutDivision")]
+        [RequireAuth]
         public async Task<HttpResponseData> PutDivision(
             [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "Division/{id:int}")] HttpRequestData req,
-            int id)
+            int id,
+            FunctionContext context)
         {
+            // Check authentication
+            var authError = context.CheckAuthentication(req, _logger);
+            if (authError != null) return authError;
+
             Division? body;
             using (var sr = new StreamReader(req.Body))
             {
@@ -131,9 +141,15 @@ namespace Hoops.Functions.Functions
         }
 
         [Function("PostDivision")]
+        [RequireAuth]
         public async Task<HttpResponseData> PostDivision(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Division")] HttpRequestData req)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Division")] HttpRequestData req,
+            FunctionContext context)
         {
+            // Check authentication
+            var authError = context.CheckAuthentication(req, _logger);
+            if (authError != null) return authError;
+
             Division? body;
             using (var sr = new StreamReader(req.Body))
             {
@@ -163,10 +179,16 @@ namespace Hoops.Functions.Functions
         }
 
         [Function("DeleteDivision")]
+        [RequireAuth]
         public async Task<HttpResponseData> DeleteDivision(
             [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "Division/{id:int}")] HttpRequestData req,
-            int id)
+            int id,
+            FunctionContext context)
         {
+            // Check authentication
+            var authError = context.CheckAuthentication(req, _logger);
+            if (authError != null) return authError;
+
             // Verify existence
             try
             {
