@@ -23,7 +23,7 @@ namespace Hoops.Functions.Functions
 
         [Function("ReseedData")]
         public async Task<HttpResponseData> ReseedData(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "Debug/reseed")] HttpRequestData req)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Debug/reseed")] HttpRequestData req)
         {
             try
             {

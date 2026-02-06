@@ -86,7 +86,7 @@ namespace Hoops.Functions.Functions
 
         [Function("PutScheduleGame")]
         public async Task<HttpResponseData> PutScheduleGame(
-            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "ScheduleGame/{id:int}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "ScheduleGame/{id:int}")] HttpRequestData req,
             int id)
         {
             ScheduleGame? body;
@@ -138,7 +138,7 @@ namespace Hoops.Functions.Functions
 
         [Function("PutScheduleGameScores")]
         public async Task<HttpResponseData> PutScheduleGameScores(
-            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "ScheduleGame/{id:int}/scores")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "ScheduleGame/{id:int}/scores")] HttpRequestData req,
             int id)
         {
             UpdateGameScoresDto? dto;
@@ -183,7 +183,7 @@ namespace Hoops.Functions.Functions
 
         [Function("PostScheduleGame")]
         public async Task<HttpResponseData> PostScheduleGame(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "ScheduleGame")] HttpRequestData req)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "ScheduleGame")] HttpRequestData req)
         {
             ScheduleGame? body;
             using (var sr = new StreamReader(req.Body))
@@ -204,7 +204,7 @@ namespace Hoops.Functions.Functions
 
         [Function("DeleteScheduleGame")]
         public async Task<HttpResponseData> DeleteScheduleGame(
-            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "ScheduleGame/{id:int}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "ScheduleGame/{id:int}")] HttpRequestData req,
             int id)
         {
             var scheduleGame = await _repository.GetByIdAsync(id);

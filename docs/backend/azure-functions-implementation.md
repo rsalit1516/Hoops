@@ -72,6 +72,7 @@ All Team responses return DTOs (below) to eliminate EF navigation cycles.
 - POST /api/Household (AuthorizationLevel.Function)
 - PUT /api/Household/{id} (AuthorizationLevel.Function)
 - DELETE /api/Household/{id} (AuthorizationLevel.Function)
+- For now- these are all set to Anonymous until we have better authorization
 
 DTO: HouseholdDto with fields used by the UI: houseId, name, address1, address2, city, state, zip, email, phone. Navigation properties are not returned.
 

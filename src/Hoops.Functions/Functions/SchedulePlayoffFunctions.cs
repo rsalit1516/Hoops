@@ -67,7 +67,7 @@ namespace Hoops.Functions.Functions
 
         [Function("PostSchedulePlayoff")]
         public async Task<HttpResponseData> PostSchedulePlayoff(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "SchedulePlayoff")] HttpRequestData req)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "SchedulePlayoff")] HttpRequestData req)
         {
             SchedulePlayoff? body;
             using (var sr = new StreamReader(req.Body))
@@ -88,7 +88,7 @@ namespace Hoops.Functions.Functions
 
         [Function("PutSchedulePlayoffById")]
         public async Task<HttpResponseData> PutSchedulePlayoffById(
-            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "SchedulePlayoff/by-id/{schedulePlayoffId:int}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "SchedulePlayoff/by-id/{schedulePlayoffId:int}")] HttpRequestData req,
             int schedulePlayoffId)
         {
             SchedulePlayoff? body;
@@ -127,7 +127,7 @@ namespace Hoops.Functions.Functions
 
         [Function("PutSchedulePlayoffByKeys")]
         public async Task<HttpResponseData> PutSchedulePlayoffByKeys(
-            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "SchedulePlayoff/{scheduleNumber:int}/{gameNumber:int}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "SchedulePlayoff/{scheduleNumber:int}/{gameNumber:int}")] HttpRequestData req,
             int scheduleNumber, int gameNumber)
         {
             SchedulePlayoff? body;
@@ -163,7 +163,7 @@ namespace Hoops.Functions.Functions
 
         [Function("DeleteSchedulePlayoff")]
         public async Task<HttpResponseData> DeleteSchedulePlayoff(
-            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "SchedulePlayoff/{scheduleNumber:int}/{gameNumber:int}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "SchedulePlayoff/{scheduleNumber:int}/{gameNumber:int}")] HttpRequestData req,
             int scheduleNumber, int gameNumber)
         {
             var existing = _repository.GetByScheduleAndGameNo(scheduleNumber, gameNumber);

@@ -66,7 +66,7 @@ namespace Hoops.Functions.Functions
 
         [Function("PutTeam")]
         public async Task<HttpResponseData> PutTeam(
-            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "Team/{id:int}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "Team/{id:int}")] HttpRequestData req,
             int id)
         {
             Team? body;
@@ -103,7 +103,7 @@ namespace Hoops.Functions.Functions
 
         [Function("PostTeam")]
         public async Task<HttpResponseData> PostTeam(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "Team")] HttpRequestData req)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Team")] HttpRequestData req)
         {
             Team? body;
             using (var sr = new StreamReader(req.Body))
@@ -124,7 +124,7 @@ namespace Hoops.Functions.Functions
 
         [Function("DeleteTeam")]
         public async Task<HttpResponseData> DeleteTeam(
-            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "Team/{id:int}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "Team/{id:int}")] HttpRequestData req,
             int id)
         {
             var team = await _repository.GetByIdAsync(id);

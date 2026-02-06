@@ -33,7 +33,7 @@ namespace Hoops.Functions.Functions
 
         [Function("GetDraftList")]
         public async Task<HttpResponseData> GetDraftList(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "DraftList/{seasonId:int}/{divisionId:int?}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "DraftList/{seasonId:int}/{divisionId:int?}")] HttpRequestData req,
             int seasonId,
             int? divisionId = null)
         {

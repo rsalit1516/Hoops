@@ -72,7 +72,7 @@ namespace Hoops.Functions.Functions
 
         [Function("PutHousehold")]
         public async Task<HttpResponseData> PutHousehold(
-            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "Household/{id:int}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "Household/{id:int}")] HttpRequestData req,
             int id)
         {
             Household? body;
@@ -107,7 +107,7 @@ namespace Hoops.Functions.Functions
 
         [Function("PostHousehold")]
         public async Task<HttpResponseData> PostHousehold(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "Household")] HttpRequestData req)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Household")] HttpRequestData req)
         {
             Household? body;
             using (var sr = new StreamReader(req.Body))
@@ -130,7 +130,7 @@ namespace Hoops.Functions.Functions
 
         [Function("DeleteHousehold")]
         public async Task<HttpResponseData> DeleteHousehold(
-            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "Household/{id:int}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "Household/{id:int}")] HttpRequestData req,
             int id)
         {
             Household? entity = null;
