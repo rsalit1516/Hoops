@@ -3,14 +3,17 @@ using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Hoops.Core.Interface;
+using Hoops.Functions.Utils;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Extensions.Logging;
 
 namespace Hoops.Functions.Functions
 {
     public class DraftListFunctions
     {
         private readonly IPlayerRepository _playerRepository;
+        private readonly ILogger<DraftListFunctions> _logger;
 
         private static readonly JsonSerializerOptions JsonOptions = new()
         {
@@ -19,9 +22,10 @@ namespace Hoops.Functions.Functions
             DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
         };
 
-        public DraftListFunctions(IPlayerRepository playerRepository)
+        public DraftListFunctions(IPlayerRepository playerRepository, ILogger<DraftListFunctions> logger)
         {
             _playerRepository = playerRepository;
+            _logger = logger;
         }
 
         private static async Task WriteJsonAsync<T>(HttpResponseData resp, T payload, HttpStatusCode status = HttpStatusCode.OK)

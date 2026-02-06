@@ -8,8 +8,10 @@ using System.Threading.Tasks;
 using Hoops.Core.Interface;
 using Hoops.Core.Models;
 using Hoops.Functions.Models;
+using Hoops.Functions.Utils;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Extensions.Logging;
 
 namespace Hoops.Functions.Functions
 {
@@ -17,6 +19,7 @@ namespace Hoops.Functions.Functions
     {
         private readonly ITeamRepository _repository;
         private readonly IScheduleDivTeamsRepository _scheduleDivTeamsRepository;
+        private readonly ILogger<TeamFunctions> _logger;
 
         private static readonly JsonSerializerOptions JsonOptions = new()
         {
@@ -25,10 +28,11 @@ namespace Hoops.Functions.Functions
             DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
         };
 
-        public TeamFunctions(ITeamRepository repository, IScheduleDivTeamsRepository scheduleDivTeamsRepository)
+        public TeamFunctions(ITeamRepository repository, IScheduleDivTeamsRepository scheduleDivTeamsRepository, ILogger<TeamFunctions> logger)
         {
             _repository = repository;
             _scheduleDivTeamsRepository = scheduleDivTeamsRepository;
+            _logger = logger;
         }
 
         private static async Task WriteJsonAsync<T>(HttpResponseData resp, T payload, HttpStatusCode status = HttpStatusCode.OK)
@@ -65,10 +69,16 @@ namespace Hoops.Functions.Functions
         }
 
         [Function("PutTeam")]
+        [RequireAuth]
         public async Task<HttpResponseData> PutTeam(
             [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "Team/{id:int}")] HttpRequestData req,
-            int id)
+            int id,
+            FunctionContext context)
         {
+            // Check authentication
+            var authError = context.CheckAuthentication(req, _logger);
+            if (authError != null) return authError;
+
             Team? body;
             using (var sr = new StreamReader(req.Body))
             {
@@ -102,9 +112,15 @@ namespace Hoops.Functions.Functions
         }
 
         [Function("PostTeam")]
+        [RequireAuth]
         public async Task<HttpResponseData> PostTeam(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Team")] HttpRequestData req)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Team")] HttpRequestData req,
+            FunctionContext context)
         {
+            // Check authentication
+            var authError = context.CheckAuthentication(req, _logger);
+            if (authError != null) return authError;
+
             Team? body;
             using (var sr = new StreamReader(req.Body))
             {
@@ -123,10 +139,16 @@ namespace Hoops.Functions.Functions
         }
 
         [Function("DeleteTeam")]
+        [RequireAuth]
         public async Task<HttpResponseData> DeleteTeam(
             [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "Team/{id:int}")] HttpRequestData req,
-            int id)
+            int id,
+            FunctionContext context)
         {
+            // Check authentication
+            var authError = context.CheckAuthentication(req, _logger);
+            if (authError != null) return authError;
+
             var team = await _repository.GetByIdAsync(id);
             if (team == null)
             {

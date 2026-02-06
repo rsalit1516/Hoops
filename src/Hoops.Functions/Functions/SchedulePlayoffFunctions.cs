@@ -8,14 +8,17 @@ using System.Threading.Tasks;
 using Hoops.Core.Interface;
 using Hoops.Core.Models;
 using Hoops.Core.ViewModels;
+using Hoops.Functions.Utils;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Extensions.Logging;
 
 namespace Hoops.Functions.Functions
 {
     public class SchedulePlayoffFunctions
     {
         private readonly ISchedulePlayoffRepository _repository;
+        private readonly ILogger<SchedulePlayoffFunctions> _logger;
 
         private static readonly JsonSerializerOptions JsonOptions = new()
         {
@@ -24,9 +27,10 @@ namespace Hoops.Functions.Functions
             DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
         };
 
-        public SchedulePlayoffFunctions(ISchedulePlayoffRepository repository)
+        public SchedulePlayoffFunctions(ISchedulePlayoffRepository repository, ILogger<SchedulePlayoffFunctions> logger)
         {
             _repository = repository;
+            _logger = logger;
         }
 
         private static async Task WriteJsonAsync<T>(HttpResponseData resp, T payload, HttpStatusCode status = HttpStatusCode.OK)
@@ -66,9 +70,15 @@ namespace Hoops.Functions.Functions
         }
 
         [Function("PostSchedulePlayoff")]
+        [RequireAuth]
         public async Task<HttpResponseData> PostSchedulePlayoff(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "SchedulePlayoff")] HttpRequestData req)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "SchedulePlayoff")] HttpRequestData req,
+            FunctionContext context)
         {
+            // Check authentication
+            var authError = context.CheckAuthentication(req, _logger);
+            if (authError != null) return authError;
+
             SchedulePlayoff? body;
             using (var sr = new StreamReader(req.Body))
             {
@@ -87,10 +97,16 @@ namespace Hoops.Functions.Functions
         }
 
         [Function("PutSchedulePlayoffById")]
+        [RequireAuth]
         public async Task<HttpResponseData> PutSchedulePlayoffById(
             [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "SchedulePlayoff/by-id/{schedulePlayoffId:int}")] HttpRequestData req,
-            int schedulePlayoffId)
+            int schedulePlayoffId,
+            FunctionContext context)
         {
+            // Check authentication
+            var authError = context.CheckAuthentication(req, _logger);
+            if (authError != null) return authError;
+
             SchedulePlayoff? body;
             using (var sr = new StreamReader(req.Body))
             {
@@ -126,10 +142,16 @@ namespace Hoops.Functions.Functions
         }
 
         [Function("PutSchedulePlayoffByKeys")]
+        [RequireAuth]
         public async Task<HttpResponseData> PutSchedulePlayoffByKeys(
             [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "SchedulePlayoff/{scheduleNumber:int}/{gameNumber:int}")] HttpRequestData req,
-            int scheduleNumber, int gameNumber)
+            int scheduleNumber, int gameNumber,
+            FunctionContext context)
         {
+            // Check authentication
+            var authError = context.CheckAuthentication(req, _logger);
+            if (authError != null) return authError;
+
             SchedulePlayoff? body;
             using (var sr = new StreamReader(req.Body))
             {
@@ -162,10 +184,16 @@ namespace Hoops.Functions.Functions
         }
 
         [Function("DeleteSchedulePlayoff")]
+        [RequireAuth]
         public async Task<HttpResponseData> DeleteSchedulePlayoff(
             [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "SchedulePlayoff/{scheduleNumber:int}/{gameNumber:int}")] HttpRequestData req,
-            int scheduleNumber, int gameNumber)
+            int scheduleNumber, int gameNumber,
+            FunctionContext context)
         {
+            // Check authentication
+            var authError = context.CheckAuthentication(req, _logger);
+            if (authError != null) return authError;
+
             var existing = _repository.GetByScheduleAndGameNo(scheduleNumber, gameNumber);
             if (existing == null)
             {

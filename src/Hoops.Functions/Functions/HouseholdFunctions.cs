@@ -8,14 +8,17 @@ using Hoops.Core.Interface;
 using Hoops.Core.Models;
 using Hoops.Core.ViewModels;
 using Hoops.Functions.Models;
+using Hoops.Functions.Utils;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Extensions.Logging;
 
 namespace Hoops.Functions.Functions
 {
     public class HouseholdFunctions
     {
         private readonly IHouseholdRepository _repository;
+        private readonly ILogger<HouseholdFunctions> _logger;
 
         private static readonly JsonSerializerOptions JsonOptions = new()
         {
@@ -24,9 +27,10 @@ namespace Hoops.Functions.Functions
             DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
         };
 
-        public HouseholdFunctions(IHouseholdRepository repository)
+        public HouseholdFunctions(IHouseholdRepository repository, ILogger<HouseholdFunctions> logger)
         {
             _repository = repository;
+            _logger = logger;
         }
 
         private static async Task WriteJsonAsync<T>(HttpResponseData resp, T payload, HttpStatusCode status = HttpStatusCode.OK)
@@ -71,10 +75,16 @@ namespace Hoops.Functions.Functions
         }
 
         [Function("PutHousehold")]
+        [RequireAuth]
         public async Task<HttpResponseData> PutHousehold(
             [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "Household/{id:int}")] HttpRequestData req,
-            int id)
+            int id,
+            FunctionContext context)
         {
+            // Check authentication
+            var authError = context.CheckAuthentication(req, _logger);
+            if (authError != null) return authError;
+
             Household? body;
             using (var sr = new StreamReader(req.Body))
             {
@@ -106,9 +116,15 @@ namespace Hoops.Functions.Functions
         }
 
         [Function("PostHousehold")]
+        [RequireAuth]
         public async Task<HttpResponseData> PostHousehold(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Household")] HttpRequestData req)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Household")] HttpRequestData req,
+            FunctionContext context)
         {
+            // Check authentication
+            var authError = context.CheckAuthentication(req, _logger);
+            if (authError != null) return authError;
+
             Household? body;
             using (var sr = new StreamReader(req.Body))
             {
@@ -129,10 +145,16 @@ namespace Hoops.Functions.Functions
         }
 
         [Function("DeleteHousehold")]
+        [RequireAuth]
         public async Task<HttpResponseData> DeleteHousehold(
             [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "Household/{id:int}")] HttpRequestData req,
-            int id)
+            int id,
+            FunctionContext context)
         {
+            // Check authentication
+            var authError = context.CheckAuthentication(req, _logger);
+            if (authError != null) return authError;
+
             Household? entity = null;
             try { entity = await _repository.FindByAsync(id); } catch { entity = null; }
             if (entity == null)

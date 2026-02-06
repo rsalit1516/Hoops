@@ -9,15 +9,18 @@ using Hoops.Core.Interface;
 using Hoops.Core.Models;
 using Hoops.Core.ViewModels;
 using Hoops.Functions.Models;
+using Hoops.Functions.Utils;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Hoops.Functions.Functions
 {
     public class ScheduleGameFunctions
     {
         private readonly IScheduleGameRepository _repository;
+        private readonly ILogger<ScheduleGameFunctions> _logger;
 
         private static readonly JsonSerializerOptions JsonOptions = new()
         {
@@ -26,9 +29,10 @@ namespace Hoops.Functions.Functions
             DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
         };
 
-        public ScheduleGameFunctions(IScheduleGameRepository repository)
+        public ScheduleGameFunctions(IScheduleGameRepository repository, ILogger<ScheduleGameFunctions> logger)
         {
             _repository = repository;
+            _logger = logger;
         }
 
         private static async Task WriteJsonAsync<T>(HttpResponseData resp, T payload, HttpStatusCode status = HttpStatusCode.OK)
@@ -85,10 +89,16 @@ namespace Hoops.Functions.Functions
         }
 
         [Function("PutScheduleGame")]
+        [RequireAuth]
         public async Task<HttpResponseData> PutScheduleGame(
             [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "ScheduleGame/{id:int}")] HttpRequestData req,
-            int id)
+            int id,
+            FunctionContext context)
         {
+            // Check authentication
+            var authError = context.CheckAuthentication(req, _logger);
+            if (authError != null) return authError;
+
             ScheduleGame? body;
             using (var sr = new StreamReader(req.Body))
             {
@@ -137,10 +147,16 @@ namespace Hoops.Functions.Functions
         }
 
         [Function("PutScheduleGameScores")]
+        [RequireAuth]
         public async Task<HttpResponseData> PutScheduleGameScores(
             [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "ScheduleGame/{id:int}/scores")] HttpRequestData req,
-            int id)
+            int id,
+            FunctionContext context)
         {
+            // Check authentication
+            var authError = context.CheckAuthentication(req, _logger);
+            if (authError != null) return authError;
+
             UpdateGameScoresDto? dto;
             using (var sr = new StreamReader(req.Body))
             {
@@ -182,9 +198,15 @@ namespace Hoops.Functions.Functions
         }
 
         [Function("PostScheduleGame")]
+        [RequireAuth]
         public async Task<HttpResponseData> PostScheduleGame(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "ScheduleGame")] HttpRequestData req)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "ScheduleGame")] HttpRequestData req,
+            FunctionContext context)
         {
+            // Check authentication
+            var authError = context.CheckAuthentication(req, _logger);
+            if (authError != null) return authError;
+
             ScheduleGame? body;
             using (var sr = new StreamReader(req.Body))
             {
@@ -203,10 +225,16 @@ namespace Hoops.Functions.Functions
         }
 
         [Function("DeleteScheduleGame")]
+        [RequireAuth]
         public async Task<HttpResponseData> DeleteScheduleGame(
             [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "ScheduleGame/{id:int}")] HttpRequestData req,
-            int id)
+            int id,
+            FunctionContext context)
         {
+            // Check authentication
+            var authError = context.CheckAuthentication(req, _logger);
+            if (authError != null) return authError;
+
             var scheduleGame = await _repository.GetByIdAsync(id);
             if (scheduleGame == null)
             {
