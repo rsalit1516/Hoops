@@ -65,7 +65,7 @@ namespace Hoops.Functions.Functions
 
         [Function("PutDivision")]
         public async Task<HttpResponseData> PutDivision(
-            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "Division/{id:int}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "Division/{id:int}")] HttpRequestData req,
             int id)
         {
             Division? body;
@@ -132,7 +132,7 @@ namespace Hoops.Functions.Functions
 
         [Function("PostDivision")]
         public async Task<HttpResponseData> PostDivision(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "Division")] HttpRequestData req)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Division")] HttpRequestData req)
         {
             Division? body;
             using (var sr = new StreamReader(req.Body))
@@ -164,7 +164,7 @@ namespace Hoops.Functions.Functions
 
         [Function("DeleteDivision")]
         public async Task<HttpResponseData> DeleteDivision(
-            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "Division/{id:int}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "Division/{id:int}")] HttpRequestData req,
             int id)
         {
             // Verify existence
