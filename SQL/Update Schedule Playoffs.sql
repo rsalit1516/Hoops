@@ -25,3 +25,12 @@ order by gameDate
 -- Delete from SchedulePlayoffs
 -- where divisionId = 4282
 -- and GameNumber=163
+
+Select * from ScheduleGames
+where divisionId = 4287
+-- and GameDate > '2026-02-18'
+and ScheduleGamesId = 36525
+
+-- Update ScheduleGames
+-- set GameDate = '2026-02-18 20:30:00'
+-- where ScheduleGamesId = 36525
