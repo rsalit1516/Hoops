@@ -8,54 +8,43 @@
       </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
+      <mat-form-field appearance="fill" floatLabel="always">
+        <mat-label>Game Date</mat-label>
+        <input
+          matInput
+          [matDatepicker]="picker"
+          [formField]="$any(gameForm.gameDate)"
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker" />
+        <mat-datepicker #picker />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" floatLabel="always">
+        <mat-label>Game Time</mat-label>
+        <input
+          matInput
+          [matTimepicker]="minutesPicker"
+          [formField]="$any(gameForm.gameTime)"
+        />
+        <mat-timepicker-toggle matIconSuffix [for]="minutesPicker" />
+        <mat-timepicker interval="5min" #minutesPicker />
+        <!-- <input matInput value="gameTime" formControlName="gameTime" /> -->
+      </mat-form-field>
+
+      <mat-form-field class="form-control" appearance="fill" floatLabel="always">
+        <mat-label>Location</mat-label>
+        <mat-select [formField]="$any(gameForm.location)" class="form-control">
+          @for(loc of locations(); track loc) {
+          <mat-option [value]="loc"> {{ loc.locationName }} </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
       <div class="flex">
         <div class="flex-1">
-          <mat-form-field
-            class="form-control custom-background"
-            appearance="fill"
-          >
-            <mat-label>Game Date</mat-label>
-            <input
-              matInput
-              [matDatepicker]="picker"
-              [field]="$any(gameForm.gameDate)"
-            />
-            <mat-datepicker-toggle matSuffix [for]="picker" />
-            <mat-datepicker #picker />
-          </mat-form-field>
-        </div>
-        <div class="flex-1">
-          <mat-form-field class="form-control" appearance="fill">
-            <mat-label>Game Time</mat-label>
-            <input
-              matInput
-              [matTimepicker]="minutesPicker"
-              [field]="gameForm.gameTime"
-            />
-            <mat-timepicker-toggle matIconSuffix [for]="minutesPicker" />
-            <mat-timepicker interval="5min" #minutesPicker />
-            <!-- <input matInput value="gameTime" formControlName="gameTime" /> -->
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="flex">
-        <div class="flex-1">
-          <mat-form-field class="form-control" appearance="fill">
-            <mat-label>Location</mat-label>
-            <mat-select [field]="gameForm.location" class="form-control">
-              @for(loc of locations(); track loc) {
-              <mat-option [value]="loc"> {{ loc.locationName }} </mat-option>
-              }
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="flex">
-        <div class="flex-1">
-          <mat-form-field class="form-control" appearance="fill">
+          <mat-form-field class="form-control" appearance="fill" floatLabel="always">
             <mat-label>Visitor Team</mat-label>
             <mat-select
-              [field]="gameForm.visitorTeam"
+              [formField]="$any(gameForm.visitorTeam)"
               class="form-control"
               [compareWith]="scheduleTeamCompare"
             >
@@ -67,10 +56,10 @@
           </mat-form-field>
         </div>
         <div class="flex-1">
-          <mat-form-field class="form-control" appearance="fill">
-            <mat-label>HomeTeam</mat-label>
+          <mat-form-field class="form-control" appearance="fill" floatLabel="always">
+            <mat-label>Home Team</mat-label>
             <mat-select
-              [field]="gameForm.homeTeam"
+              [formField]="$any(gameForm.homeTeam)"
               class="form-control"
               [compareWith]="scheduleTeamCompare"
             >
@@ -84,19 +73,19 @@
       </div>
       <div class="flex">
         <div class="flex-1">
-          <mat-form-field class="form-control" appearance="fill">
+          <mat-form-field class="form-control" appearance="fill" floatLabel="always">
             <mat-label>Visiting Team Score</mat-label>
             <input
               matInput
               type="number"
-              [field]="gameForm.visitingTeamScore"
+              [formField]="$any(gameForm.visitingTeamScore)"
             />
           </mat-form-field>
         </div>
         <div class="flex-1">
-          <mat-form-field class="form-control" appearance="fill">
+          <mat-form-field class="form-control" appearance="fill" floatLabel="always">
             <mat-label>Home Team Score</mat-label>
-            <input matInput type="number" [field]="gameForm.homeTeamScore" />
+            <input matInput type="number" [formField]="$any(gameForm.homeTeamScore)" />
           </mat-form-field>
         </div>
       </div>
@@ -109,7 +98,8 @@
         [disabled]="!canSave()"
         (click)="onSave()"
       >
-        Save (canSave: {{ canSave() }}, isDirty: {{ isDirty() }}, isValid: {{ isValid() }})
+        Save (canSave: {{ canSave() }}, isDirty: {{ isDirty() }}, isValid: {{
+        isValid() }})
       </button>
       <button
         mat-raised-button

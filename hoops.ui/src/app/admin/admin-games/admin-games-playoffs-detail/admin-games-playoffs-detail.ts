@@ -20,13 +20,15 @@ import { LocationService } from '@app/services/location.service';
 import { Router, RouterModule } from '@angular/router';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Location as GymLocation } from '@app/domain/location';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'csbc-admin-games-playoffs-detail',
   templateUrl: './admin-games-playoffs-detail.html',
   styleUrls: [
-    './admin-games-playoffs-detail.scss',
+    // './admin-games-playoffs-detail.scss',
     '../../../shared/scss/forms.scss',
+    '../../../shared/scss/cards.scss',
   ],
   standalone: true,
   imports: [
@@ -38,9 +40,10 @@ import { Location as GymLocation } from '@app/domain/location';
     MatDatepickerModule,
     MatTimepickerModule,
     MatNativeDateModule,
+    MatCardModule,
     RouterModule,
-    MatSnackBarModule
-],
+    MatSnackBarModule,
+  ],
 })
 export class AdminGamesPlayoffsDetail implements OnInit {
   readonly fb = inject(FormBuilder);
@@ -125,7 +128,7 @@ export class AdminGamesPlayoffsDetail implements OnInit {
         dateOnly.getDate(),
         timeOnly.getHours(),
         timeOnly.getMinutes(),
-        timeOnly.getSeconds()
+        timeOnly.getSeconds(),
       );
     } else if (value.gameDate) {
       combinedDateTime = new Date(value.gameDate);
@@ -155,7 +158,7 @@ export class AdminGamesPlayoffsDetail implements OnInit {
       if (!id) {
         console.error(
           'Update requested but primary key (schedulePlayoffId) is missing.',
-          payload
+          payload,
         );
         this.snack.open('Cannot update: missing primary key.', 'Dismiss', {
           duration: 4000,

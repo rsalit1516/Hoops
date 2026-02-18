@@ -6,7 +6,7 @@ import {
   signal,
   untracked,
 } from '@angular/core';
-import { Field, form, max, min } from '@angular/forms/signals';
+import { form, FormField, max, min } from '@angular/forms/signals';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -51,8 +51,9 @@ interface AdminGameEditModel {
 
 @Component({
   selector: 'admin-game-detail',
+  standalone: true,
   imports: [
-    Field,
+    FormField,
     MatFormFieldModule,
     MatCardModule,
     MatSelectModule,
@@ -61,15 +62,14 @@ interface AdminGameEditModel {
     MatTimepickerModule,
     MatNativeDateModule,
     MatInputModule,
-    MatFormFieldModule,
     MatButtonModule,
     MatIconModule,
   ],
   templateUrl: './admin-game-detail.html',
   styleUrls: [
-    '../../../shared/scss/cards.scss',
     '../../../shared/scss/forms.scss',
-    '../../admin.scss',
+    '../../../shared/scss/cards.scss',
+    // '../../admin.scss',
   ],
   providers: [provideNativeDateAdapter()],
 })
@@ -81,7 +81,7 @@ export class AdminGameDetail {
   readonly gameService = inject(GameService);
   readonly #logger = inject(LoggerService);
   selectedRecord = computed(
-    () => this.gameService.selectedRecordSignal() as RegularGame | undefined
+    () => this.gameService.selectedRecordSignal() as RegularGame | undefined,
   );
 
   readonly model = signal<AdminGameEditModel>({
@@ -166,33 +166,46 @@ export class AdminGameDetail {
 
   readonly canSave = computed(() => this.isDirty() && this.isValid());
 
-  private detailEffectCounter = { selectedRecord: 0, divisionTeams: 0, scheduleTeams: 0, recordData: 0 };
+  private detailEffectCounter = {
+    selectedRecord: 0,
+    divisionTeams: 0,
+    scheduleTeams: 0,
+    recordData: 0,
+  };
 
   constructor() {
     effect(() => {
       this.detailEffectCounter.selectedRecord++;
       this.#logger.debug(
         `[DETAIL-EFFECT-1] selectedRecord effect run #${this.detailEffectCounter.selectedRecord}`,
-        this.gameService.selectedRecordSignal()
+        this.gameService.selectedRecordSignal(),
       );
       this.scheduleGamesId =
         this.gameService.selectedRecordSignal()?.scheduleGamesId ?? 0;
     });
     effect(() => {
       this.detailEffectCounter.divisionTeams++;
-      this.#logger.debug(`[DETAIL-EFFECT-2] divisionTeams effect run #${this.detailEffectCounter.divisionTeams}`, this.divisionTeams());
+      this.#logger.debug(
+        `[DETAIL-EFFECT-2] divisionTeams effect run #${this.detailEffectCounter.divisionTeams}`,
+        this.divisionTeams(),
+      );
     });
     // Load schedule-specific teams when selected record changes
     effect(() => {
       this.detailEffectCounter.scheduleTeams++;
-      this.#logger.debug(`[DETAIL-EFFECT-3] Load scheduleTeams effect run #${this.detailEffectCounter.scheduleTeams}`);
+      this.#logger.debug(
+        `[DETAIL-EFFECT-3] Load scheduleTeams effect run #${this.detailEffectCounter.scheduleTeams}`,
+      );
       const selectedRecord = this.selectedRecord();
       const seasonId = selectedRecord?.seasonId ?? 0;
       const scheduleNumber =
         selectedRecord?.scheduleNumber ??
-        untracked(() => this.gameService.divisionGames())?.[0]?.scheduleNumber ??
+        untracked(() => this.gameService.divisionGames())?.[0]
+          ?.scheduleNumber ??
         0;
-      this.#logger.debug(`[DETAIL-EFFECT-3] scheduleNumber: ${scheduleNumber}, seasonId: ${seasonId}`);
+      this.#logger.debug(
+        `[DETAIL-EFFECT-3] scheduleNumber: ${scheduleNumber}, seasonId: ${seasonId}`,
+      );
       if (scheduleNumber && seasonId) {
         this.loadScheduleTeams(scheduleNumber, seasonId);
       }
@@ -202,7 +215,9 @@ export class AdminGameDetail {
     effect(() => {
       this.#logger.debug(`[DETAIL-EFFECT-4] Patch teams effect triggered`);
       const teams = this.scheduleTeams();
-      this.#logger.debug(`[DETAIL-EFFECT-4] scheduleTeams count: ${teams?.length ?? 0}`);
+      this.#logger.debug(
+        `[DETAIL-EFFECT-4] scheduleTeams count: ${teams?.length ?? 0}`,
+      );
       if (!teams || teams.length === 0) return;
 
       // IMPORTANT: Use untracked to read form values and other data
@@ -219,7 +234,9 @@ export class AdminGameDetail {
         const needHome =
           !currentHome ||
           !teams.some((t) => this.scheduleTeamCompare(t, currentHome));
-        this.#logger.debug(`[DETAIL-EFFECT-4] needVisitor: ${needVisitor}, needHome: ${needHome}`);
+        this.#logger.debug(
+          `[DETAIL-EFFECT-4] needVisitor: ${needVisitor}, needHome: ${needHome}`,
+        );
         if (needVisitor || needHome) {
           this.gameForm.visitorTeam().value.set(visiting ?? null);
           this.gameForm.homeTeam().value.set(home ?? null);
@@ -231,7 +248,9 @@ export class AdminGameDetail {
 
     effect(() => {
       this.detailEffectCounter.recordData++;
-      this.#logger.debug(`[DETAIL-EFFECT-5] Populate form effect run #${this.detailEffectCounter.recordData}`);
+      this.#logger.debug(
+        `[DETAIL-EFFECT-5] Populate form effect run #${this.detailEffectCounter.recordData}`,
+      );
       const record = this.selectedRecord();
       if (!record) {
         this.#logger.debug('[DETAIL-EFFECT-5] No record, skipping');
@@ -241,9 +260,11 @@ export class AdminGameDetail {
       // CRITICAL: Use untracked to prevent tracking form signals and initialSnapshot
       // Otherwise updating form values and calling captureInitialSnapshot creates an infinite loop
       untracked(() => {
-        this.#logger.debug('[DETAIL-EFFECT-5] Populating form with record data');
+        this.#logger.debug(
+          '[DETAIL-EFFECT-5] Populating form with record data',
+        );
         const location = this.locationService.getLocationByName(
-          (record.locationName as string) ?? ''
+          (record.locationName as string) ?? '',
         ) as GymLocation;
 
         this.gameForm.gameDate().value.set((record.gameDate as Date) ?? null);
@@ -268,12 +289,12 @@ export class AdminGameDetail {
       (error) => {
         this.#logger.error('Error loading schedule teams', error);
         this.scheduleTeams.set([]);
-      }
+      },
     );
   }
 
   private findScheduleTeamByTeamNumber(
-    teamNumber: number
+    teamNumber: number,
   ): ScheduleTeam | undefined {
     return this.scheduleTeams().find((st) => st.teamNumber === teamNumber);
   }
@@ -284,7 +305,7 @@ export class AdminGameDetail {
     // Schema: ScheduleGames.VisitingTeamNumber stores ScheduleDivTeams.TeamNumber
     // Match by teamNumber, not scheduleTeamNumber
     return this.scheduleTeams().find(
-      (st) => st.teamNumber === currentGame.visitingTeamNumber
+      (st) => st.teamNumber === currentGame.visitingTeamNumber,
     );
   }
 
@@ -294,7 +315,7 @@ export class AdminGameDetail {
     // Schema: ScheduleGames.HomeTeamNumber stores ScheduleDivTeams.TeamNumber
     // Match by teamNumber, not scheduleTeamNumber
     return this.scheduleTeams().find(
-      (st) => st.teamNumber === currentGame.homeTeamNumber
+      (st) => st.teamNumber === currentGame.homeTeamNumber,
     );
   }
 
@@ -307,7 +328,7 @@ export class AdminGameDetail {
   // Compare function to make mat-select selection resilient across object instances
   scheduleTeamCompare = (
     a: ScheduleTeam | null | undefined,
-    b: ScheduleTeam | null | undefined
+    b: ScheduleTeam | null | undefined,
   ) => {
     if (!a || !b) return a === b;
     // Prefer comparison by teamNumber (the stored key in ScheduleGames)
@@ -348,7 +369,7 @@ export class AdminGameDetail {
 
     this.#logger.debug('Selected teams:', {
       visiting: selectedVisitingTeam,
-      home: selectedHomeTeam
+      home: selectedHomeTeam,
     });
 
     // Per schema, ScheduleGames stores ScheduleDivTeams.TeamNumber
@@ -376,9 +397,10 @@ export class AdminGameDetail {
     this.#logger.info('Save object created:', saveObject);
 
     // Subscribe to the save observable and navigate on success
-    const save$ = this.scheduleGamesId === 0
-      ? this.gameService.saveNewGame(saveObject)
-      : this.gameService.saveExistingGame(saveObject);
+    const save$ =
+      this.scheduleGamesId === 0
+        ? this.gameService.saveNewGame(saveObject)
+        : this.gameService.saveExistingGame(saveObject);
 
     this.#logger.info('Subscribing to save observable...');
 
@@ -391,7 +413,7 @@ export class AdminGameDetail {
         // Use absolute path to navigate correctly
         this.#router.navigate(['/admin/games/list']).then(
           (success) => this.#logger.info('Navigation result:', success),
-          (error) => this.#logger.error('Navigation error:', error)
+          (error) => this.#logger.error('Navigation error:', error),
         );
       },
       error: (error) => {
@@ -400,12 +422,12 @@ export class AdminGameDetail {
           message: error?.message,
           status: error?.status,
           statusText: error?.statusText,
-          error: error?.error
+          error: error?.error,
         });
       },
       complete: () => {
         this.#logger.info('Save observable completed');
-      }
+      },
     });
   }
 
@@ -461,7 +483,7 @@ visitingTeamSeasonNumber:17
     */
   converttoSaveFormat(
     gameEditForm: AdminGameEditModel,
-    teamNumbers?: { visitingTeamNumber: number; homeTeamNumber: number }
+    teamNumbers?: { visitingTeamNumber: number; homeTeamNumber: number },
   ): RegularGameSaveObject {
     let game = new RegularGameSaveObject();
     game.scheduleGamesId = this.scheduleGamesId;
@@ -490,12 +512,14 @@ visitingTeamSeasonNumber:17
         gameDate.getDate(),
         gameTime.getHours(),
         gameTime.getMinutes(),
-        gameTime.getSeconds()
+        gameTime.getSeconds(),
       );
 
       // Format as local time ISO string (without Z suffix to avoid UTC conversion)
       const year = combinedDateTime.getFullYear();
-      const month = (combinedDateTime.getMonth() + 1).toString().padStart(2, '0');
+      const month = (combinedDateTime.getMonth() + 1)
+        .toString()
+        .padStart(2, '0');
       const day = combinedDateTime.getDate().toString().padStart(2, '0');
       const hours = combinedDateTime.getHours().toString().padStart(2, '0');
       const minutes = combinedDateTime.getMinutes().toString().padStart(2, '0');
@@ -528,12 +552,14 @@ visitingTeamSeasonNumber:17
         gameDate.getDate(),
         gameTime.getHours(),
         gameTime.getMinutes(),
-        gameTime.getSeconds()
+        gameTime.getSeconds(),
       );
 
       // Format as "YYYY-MM-DD HH:mm:ss" using local time components
       const year = combinedDateTime.getFullYear();
-      const month = (combinedDateTime.getMonth() + 1).toString().padStart(2, '0');
+      const month = (combinedDateTime.getMonth() + 1)
+        .toString()
+        .padStart(2, '0');
       const day = combinedDateTime.getDate().toString().padStart(2, '0');
       const hours = combinedDateTime.getHours().toString().padStart(2, '0');
       const minutes = combinedDateTime.getMinutes().toString().padStart(2, '0');
@@ -548,7 +574,7 @@ visitingTeamSeasonNumber:17
     if (teamNumbers) {
       this.#logger.debug(
         'Using mapped team numbers from ScheduleDivTeams',
-        teamNumbers
+        teamNumbers,
       );
       game.visitingTeamNumber = teamNumbers.visitingTeamNumber;
       game.homeTeamNumber = teamNumbers.homeTeamNumber;

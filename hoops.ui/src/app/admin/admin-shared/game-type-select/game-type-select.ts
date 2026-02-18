@@ -5,6 +5,7 @@ import {
   Output,
   OnChanges,
   inject,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import {
   UntypedFormBuilder,
@@ -46,8 +47,9 @@ import { LoggerService } from '@app/services/logger.service';
     MatSelectModule,
     FormsModule,
     MatButtonToggleModule,
-    MatOptionModule
-],
+    MatOptionModule,
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameTypeSelect implements OnInit {
   private gameService = inject(AdminGameService);

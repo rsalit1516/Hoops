@@ -39,7 +39,14 @@
       "Bash(sqlcmd:*)",
       "Bash(dotnet run:*)",
       "Bash(npx ng test:*)",
-      "Bash(del \"src\\\\Hoops.Infrastructure\\\\Migrations\\\\20251216152000_IncreasePayTypeLength.cs\")"
+      "Bash(del \"src\\\\Hoops.Infrastructure\\\\Migrations\\\\20251216152000_IncreasePayTypeLength.cs\")",
+      "WebSearch",
+      "WebFetch(domain:material.angular.dev)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:angular.love)",
+      "WebFetch(domain:www.angulararchitects.io)",
+      "WebFetch(domain:blog.ninja-squad.com)",
+      "WebFetch(domain:briantree.se)"
     ],
     "deny": [],
     "ask": []
