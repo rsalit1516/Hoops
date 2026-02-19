@@ -46,7 +46,13 @@
       "WebFetch(domain:angular.love)",
       "WebFetch(domain:www.angulararchitects.io)",
       "WebFetch(domain:blog.ninja-squad.com)",
-      "WebFetch(domain:briantree.se)"
+      "WebFetch(domain:briantree.se)",
+      "Bash(dir:*)",
+      "Bash(cmd /c \"git show 8e5fb8f0 --name-only 2>&1\")",
+      "Bash(powershell -Command \"Set-Location ''C:\\\\Users\\\\rrsal\\\\repos\\\\hoops''; git show 491d0cf8:hoops.ui/src/app/admin/admin-games/admin-game-detail/admin-game-detail.ts\")",
+      "Bash(powershell -Command \"cd ''C:\\\\Users\\\\rrsal\\\\repos\\\\hoops''; git log --oneline -5\")",
+      "Bash(powershell -Command \"cd ''C:\\\\Users\\\\rrsal\\\\repos\\\\hoops''; git diff HEAD ''hoops.ui/src/app/admin/admin-games/admin-game-detail/admin-game-detail.ts''\")",
+      "Bash(powershell -Command:*)"
     ],
     "deny": [],
     "ask": []

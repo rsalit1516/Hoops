@@ -173,6 +173,15 @@ export class AdminGameDetail {
     recordData: 0,
   };
 
+  // Compare function for location mat-select to handle object identity across fetches
+  locationCompare = (
+    a: GymLocation | null | undefined,
+    b: GymLocation | null | undefined,
+  ) => {
+    if (!a || !b) return a === b;
+    return a.locationNumber === b.locationNumber;
+  };
+
   constructor() {
     effect(() => {
       this.detailEffectCounter.selectedRecord++;
@@ -276,6 +285,39 @@ export class AdminGameDetail {
           .value.set(record.visitingTeamScore ?? 0);
 
         this.captureInitialSnapshot();
+      });
+    });
+
+    // Resolve location once locations are loaded.
+    // Handles the race condition where locations hadn't arrived when DETAIL-EFFECT-5 first ran.
+    // Guards against overriding a location the user has already chosen.
+    effect(() => {
+      const locations = this.locations(); // Tracked: re-runs when locations signal changes
+      if (!locations?.length) return;
+
+      untracked(() => {
+        const currentLocation = this.gameForm.location().value();
+        if (currentLocation !== null) return; // Already set — do not override
+
+        const record = this.selectedRecord();
+        if (!record?.locationName) return;
+
+        const location = (this.locationService.getLocationByName(
+          (record.locationName as string) ?? '',
+        ) ?? null) as GymLocation | null;
+
+        if (location) {
+          this.#logger.debug(
+            '[DETAIL-EFFECT-6] Late-resolving location after locations loaded',
+            location,
+          );
+          this.gameForm.location().value.set(location);
+          // Re-capture snapshot so the resolved location is the clean baseline
+          const snap = this.initialSnapshot();
+          if (snap?.location === null) {
+            this.initialSnapshot.set({ ...this.model() });
+          }
+        }
       });
     });
   }

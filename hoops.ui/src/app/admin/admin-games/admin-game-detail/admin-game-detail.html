@@ -39,8 +39,10 @@
         >
           <label>Location</label>
           <mat-select
-            [formField]="$any(gameForm.location)"
+            [value]="gameForm.location().value()"
+            (valueChange)="gameForm.location().value.set($event)"
             class="form-control"
+            [compareWith]="locationCompare"
           >
             @for(loc of locations(); track loc) {
             <mat-option [value]="loc"> {{ loc.locationName }} </mat-option>
@@ -58,7 +60,8 @@
         >
           <label>Visitor Team</label>
           <mat-select
-            [formField]="$any(gameForm.visitorTeam)"
+            [value]="gameForm.visitorTeam().value()"
+            (valueChange)="gameForm.visitorTeam().value.set($event)"
             class="form-control"
             [compareWith]="scheduleTeamCompare"
           >
@@ -75,7 +78,8 @@
         >
           <label>Home Team</label>
           <mat-select
-            [formField]="$any(gameForm.homeTeam)"
+            [value]="gameForm.homeTeam().value()"
+            (valueChange)="gameForm.homeTeam().value.set($event)"
             class="form-control"
             [compareWith]="scheduleTeamCompare"
           >
