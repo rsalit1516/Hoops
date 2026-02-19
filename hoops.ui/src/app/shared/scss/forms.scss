@@ -52,6 +52,7 @@ label .mdc-floating-label {
   // padding-bottom: 12px;
   color: pink;
 }
+
 .field-label {
   color: v.$field-label !important;
   font-size: 1.1rem;
@@ -88,6 +89,7 @@ input {
 }
 
 .mat-label,
+label,
 .mdc-floating-label {
   color: v.$admin-font-color !important;
   font-size: 0.9rem;

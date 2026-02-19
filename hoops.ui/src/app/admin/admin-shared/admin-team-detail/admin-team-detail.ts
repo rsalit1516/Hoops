@@ -7,7 +7,7 @@ import {
   signal,
   untracked,
 } from '@angular/core';
-import { form, Field } from '@angular/forms/signals';
+import { form, FormField } from '@angular/forms/signals';
 import { Team } from '@app/domain/team';
 
 import { MatButtonModule } from '@angular/material/button';
@@ -34,7 +34,7 @@ import { LoggerService } from '@app/services/logger.service';
     '../../admin.scss',
   ],
   imports: [
-    Field,
+    FormField,
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
@@ -65,14 +65,16 @@ export class AdminTeamDetail implements OnInit {
   editTeamForm = form(this.teamFormModel);
 
   // Computed signals for form state
-  isFormValid = computed(() =>
-    this.editTeamForm.teamNo().valid() &&
-    this.editTeamForm.teamName().valid()
+  isFormValid = computed(
+    () =>
+      this.editTeamForm.teamNo().valid() &&
+      this.editTeamForm.teamName().valid(),
   );
-  isFormDirty = computed(() =>
-    this.editTeamForm.teamNo().dirty() ||
-    this.editTeamForm.color().dirty() ||
-    this.editTeamForm.teamName().dirty()
+  isFormDirty = computed(
+    () =>
+      this.editTeamForm.teamNo().dirty() ||
+      this.editTeamForm.color().dirty() ||
+      this.editTeamForm.teamName().dirty(),
   );
 
   selectedSeason = computed(() => this.seasonService.selectedSeason);
@@ -93,7 +95,7 @@ export class AdminTeamDetail implements OnInit {
           this.logger.debug('Setting form values from team:', {
             teamNo: team.teamNumber || '',
             color: team.teamColorId ?? null,
-            teamName: team.teamName || ''
+            teamName: team.teamName || '',
           });
 
           this.editTeamForm.teamNo().value.set(team.teamNumber || '');
@@ -103,7 +105,7 @@ export class AdminTeamDetail implements OnInit {
           this.logger.debug('Form values after setting:', {
             teamNo: this.editTeamForm.teamNo().value(),
             color: this.editTeamForm.color().value(),
-            teamName: this.editTeamForm.teamName().value()
+            teamName: this.editTeamForm.teamName().value(),
           });
         });
       }
@@ -120,7 +122,7 @@ export class AdminTeamDetail implements OnInit {
     newTeam.teamId = 0;
     newTeam.teamName = '';
     newTeam.teamNumber = '';
-    newTeam.teamColorId = null;
+    newTeam.teamColorId = undefined;
     newTeam.divisionId = this.selectedDivision()?.divisionId ?? 0;
 
     this.logger.debug('New team object created:', newTeam);
@@ -149,7 +151,7 @@ export class AdminTeamDetail implements OnInit {
       name: '',
       divisionId: this.selectedDivision()?.divisionId ?? 0,
       teamNumber: formValue.teamNo,
-      teamColorId: formValue.color,
+      teamColorId: formValue.color ?? undefined,
       teamName: formValue.teamName,
       createdUser: this.user()?.userName ?? 'system',
       createdDate: new Date(),
@@ -167,7 +169,7 @@ export class AdminTeamDetail implements OnInit {
       error: (error) => {
         this.logger.error('Error saving team:', error);
         // TODO: Show user-friendly error message
-      }
+      },
     });
   }
 

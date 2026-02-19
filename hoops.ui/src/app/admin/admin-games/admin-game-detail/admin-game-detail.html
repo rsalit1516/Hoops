@@ -8,86 +8,109 @@
       </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      <mat-form-field appearance="fill" floatLabel="always">
-        <mat-label>Game Date</mat-label>
-        <input
-          matInput
-          [matDatepicker]="picker"
-          [formField]="$any(gameForm.gameDate)"
-        />
-        <mat-datepicker-toggle matSuffix [for]="picker" />
-        <mat-datepicker #picker />
-      </mat-form-field>
+      <div class="grid grid-cols-3 gap-4">
+        <mat-form-field appearance="fill" floatLabel="always">
+          <label>Game Date</label>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            [formField]="$any(gameForm.gameDate)"
+          />
+          <mat-datepicker-toggle matSuffix [for]="picker" />
+          <mat-datepicker #picker />
+        </mat-form-field>
 
-      <mat-form-field appearance="fill" floatLabel="always">
-        <mat-label>Game Time</mat-label>
-        <input
-          matInput
-          [matTimepicker]="minutesPicker"
-          [formField]="$any(gameForm.gameTime)"
-        />
-        <mat-timepicker-toggle matIconSuffix [for]="minutesPicker" />
-        <mat-timepicker interval="5min" #minutesPicker />
-        <!-- <input matInput value="gameTime" formControlName="gameTime" /> -->
-      </mat-form-field>
+        <mat-form-field appearance="fill" floatLabel="always">
+          <label>Game Time</label>
+          <input
+            matInput
+            [matTimepicker]="minutesPicker"
+            [formField]="$any(gameForm.gameTime)"
+          />
+          <mat-timepicker-toggle matIconSuffix [for]="minutesPicker" />
+          <mat-timepicker interval="5min" #minutesPicker />
+          <!-- <input matInput value="gameTime" formControlName="gameTime" /> -->
+        </mat-form-field>
 
-      <mat-form-field class="form-control" appearance="fill" floatLabel="always">
-        <mat-label>Location</mat-label>
-        <mat-select [formField]="$any(gameForm.location)" class="form-control">
-          @for(loc of locations(); track loc) {
-          <mat-option [value]="loc"> {{ loc.locationName }} </mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-      <div class="flex">
-        <div class="flex-1">
-          <mat-form-field class="form-control" appearance="fill" floatLabel="always">
-            <mat-label>Visitor Team</mat-label>
-            <mat-select
-              [formField]="$any(gameForm.visitorTeam)"
-              class="form-control"
-              [compareWith]="scheduleTeamCompare"
-            >
-              @for(team of scheduleTeams(); track trackScheduleTeamBy($index,
-              team)) {
-              <mat-option [value]="team"> {{ team.displayName }} </mat-option>
-              }
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <div class="flex-1">
-          <mat-form-field class="form-control" appearance="fill" floatLabel="always">
-            <mat-label>Home Team</mat-label>
-            <mat-select
-              [formField]="$any(gameForm.homeTeam)"
-              class="form-control"
-              [compareWith]="scheduleTeamCompare"
-            >
-              @for(team of scheduleTeams(); track trackScheduleTeamBy($index,
-              team)) {
-              <mat-option [value]="team"> {{ team.displayName }} </mat-option>
-              }
-            </mat-select>
-          </mat-form-field>
-        </div>
+        <mat-form-field
+          class="form-control"
+          appearance="fill"
+          floatLabel="always"
+        >
+          <label>Location</label>
+          <mat-select
+            [formField]="$any(gameForm.location)"
+            class="form-control"
+          >
+            @for(loc of locations(); track loc) {
+            <mat-option [value]="loc"> {{ loc.locationName }} </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
       </div>
-      <div class="flex">
-        <div class="flex-1">
-          <mat-form-field class="form-control" appearance="fill" floatLabel="always">
-            <mat-label>Visiting Team Score</mat-label>
-            <input
-              matInput
-              type="number"
-              [formField]="$any(gameForm.visitingTeamScore)"
-            />
-          </mat-form-field>
-        </div>
-        <div class="flex-1">
-          <mat-form-field class="form-control" appearance="fill" floatLabel="always">
-            <mat-label>Home Team Score</mat-label>
-            <input matInput type="number" [formField]="$any(gameForm.homeTeamScore)" />
-          </mat-form-field>
-        </div>
+      <div class="basis-full"></div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <mat-form-field
+          class="form-control"
+          appearance="fill"
+          floatLabel="always"
+        >
+          <label>Visitor Team</label>
+          <mat-select
+            [formField]="$any(gameForm.visitorTeam)"
+            class="form-control"
+            [compareWith]="scheduleTeamCompare"
+          >
+            @for(team of scheduleTeams(); track trackScheduleTeamBy($index,
+            team)) {
+            <mat-option [value]="team"> {{ team.displayName }} </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field
+          class="form-control"
+          appearance="fill"
+          floatLabel="always"
+        >
+          <label>Home Team</label>
+          <mat-select
+            [formField]="$any(gameForm.homeTeam)"
+            class="form-control"
+            [compareWith]="scheduleTeamCompare"
+          >
+            @for(team of scheduleTeams(); track trackScheduleTeamBy($index,
+            team)) {
+            <mat-option [value]="team"> {{ team.displayName }} </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <div class="basis-full"></div>
+
+        <mat-form-field
+          class="form-control"
+          appearance="fill"
+          floatLabel="always"
+        >
+          <label>Visiting Team Score</label>
+          <input
+            matInput
+            type="number"
+            [formField]="$any(gameForm.visitingTeamScore)"
+          />
+        </mat-form-field>
+        <mat-form-field
+          class="form-control"
+          appearance="fill"
+          floatLabel="always"
+        >
+          <label>Home Team Score</label>
+          <input
+            matInput
+            type="number"
+            [formField]="$any(gameForm.homeTeamScore)"
+          />
+        </mat-form-field>
       </div>
     </mat-card-content>
     <mat-card-actions>

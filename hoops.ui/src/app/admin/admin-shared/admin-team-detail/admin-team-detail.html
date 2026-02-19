@@ -4,15 +4,11 @@
     <div class="flex flex-col gap-4 h-full px-3">
       <mat-form-field class="form-control w-full" appearance="fill">
         <mat-label>Team No</mat-label>
-        <input
-          matInput
-          placeholder=""
-          [field]="editTeamForm.teamNo"
-        />
+        <input matInput placeholder="" [formField]="editTeamForm.teamNo" />
       </mat-form-field>
       <mat-form-field class="form-control w-full" appearance="fill">
         <mat-label>Color</mat-label>
-        <mat-select [field]="editTeamForm.color" class="form-control">
+        <mat-select [formField]="editTeamForm.color" class="form-control">
           @for (color of colorService.colors(); track color.colorId) {
           <mat-option [value]="color.colorId">
             {{ color.colorName }}
@@ -22,7 +18,7 @@
       </mat-form-field>
       <mat-form-field class="form-control w-full" appearance="fill">
         <mat-label>Team Name</mat-label>
-        <input matInput [field]="editTeamForm.teamName" />
+        <input matInput [formField]="editTeamForm.teamName" />
         <mat-hint align="start"
           ><strong>(Optional) if you don't want (color - team number)</strong>
         </mat-hint>
