@@ -1102,7 +1102,37 @@ order by webcontentID desc
 -- set body = 'Girls and Boys ages 6 and up thru high school & women and men 18+ are all encouraged to register. Season runs from March to June. Registration fee is $150.00 - cash or check only. (non-refundable late fee of 15.00 after this date). Non CS residents must pay an additional $60 for each registration. A copy of a birth certificate and proof of address is required at sign ups. Please print out the form (go to Documents -> Registration Form), fill out the form and bring to sign up to save time. Coaches and sponsors are needed. Refunds are board discretionary only. ALL COACHES ARE SUBJECT TO BACKGROUND CHECK.'
 -- where webcontentid = 279
 
+/*
+Spring Season registrations is now closed.  
 
+Next season will be summer and will post registrations date in late March 
+Thank you from
+CSBC 
+*/
 
-
+/* spring registration closed 2026 */
+insert into [dbo].[WebContent]
+   (
+   [CompanyId]
+      ,[Page]
+      ,[WebContentTypeId]
+      ,[Type]
+      ,[Title]
+      ,[ContentSequence]
+      -- ,[SubTitle]
+      -- ,[Location]
+      -- ,[DateAndTime]
+      ,[Body]
+      ,[ExpirationDate]
+      ,[ModifiedDate]
+      ,[ModifiedUser])
+  values (
+  1, 1, 1, 1, 'Spring Season registrations is now closed', 1,
+  -- '',
+  -- '',
+  -- '',
+'Next season will be summer and will post registrations date in late March 
+ - Thank you from CSBC',
+  '2026-03-31', GetDate(), null
+  )
 
