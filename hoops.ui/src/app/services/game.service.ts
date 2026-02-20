@@ -368,6 +368,7 @@ export class GameService {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       }),
+      withCredentials: true,
     };
     const gameUrl = Constants.PUT_SEASON_GAME_URL + game.scheduleGamesId;
     this.logger.info('Saving existing game via', gameUrl);
@@ -390,6 +391,7 @@ export class GameService {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       }),
+      withCredentials: true,
     };
     const gameUrl = Constants.POST_SEASON_GAME_URL;
     this.logger.info('Creating new game via', gameUrl);
