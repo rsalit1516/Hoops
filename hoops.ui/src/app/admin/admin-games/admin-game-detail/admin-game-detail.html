@@ -39,8 +39,7 @@
         >
           <label>Location</label>
           <mat-select
-            [value]="gameForm.location().value()"
-            (valueChange)="gameForm.location().value.set($event)"
+            [formField]="$any(gameForm.location)"
             class="form-control"
             [compareWith]="locationCompare"
           >
@@ -60,8 +59,7 @@
         >
           <label>Visitor Team</label>
           <mat-select
-            [value]="gameForm.visitorTeam().value()"
-            (valueChange)="gameForm.visitorTeam().value.set($event)"
+            [formField]="$any(gameForm.visitorTeam)"
             class="form-control"
             [compareWith]="scheduleTeamCompare"
           >
@@ -78,8 +76,7 @@
         >
           <label>Home Team</label>
           <mat-select
-            [value]="gameForm.homeTeam().value()"
-            (valueChange)="gameForm.homeTeam().value.set($event)"
+            [formField]="$any(gameForm.homeTeam)"
             class="form-control"
             [compareWith]="scheduleTeamCompare"
           >
@@ -89,7 +86,7 @@
             }
           </mat-select>
         </mat-form-field>
-        <div class="basis-full"></div>
+        <!-- <div class="basis-full"></div> -->
 
         <mat-form-field
           class="form-control"
@@ -125,8 +122,7 @@
         [disabled]="!canSave()"
         (click)="onSave()"
       >
-        Save (canSave: {{ canSave() }}, isDirty: {{ isDirty() }}, isValid: {{
-        isValid() }})
+        Save
       </button>
       <button
         mat-raised-button

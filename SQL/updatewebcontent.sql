@@ -1110,29 +1110,30 @@ Thank you from
 CSBC 
 */
 
-/* spring registration closed 2026 */
-insert into [dbo].[WebContent]
-   (
-   [CompanyId]
-      ,[Page]
-      ,[WebContentTypeId]
-      ,[Type]
-      ,[Title]
-      ,[ContentSequence]
-      -- ,[SubTitle]
-      -- ,[Location]
-      -- ,[DateAndTime]
-      ,[Body]
-      ,[ExpirationDate]
-      ,[ModifiedDate]
-      ,[ModifiedUser])
-  values (
-  1, 1, 1, 1, 'Spring Season registrations is now closed', 1,
-  -- '',
-  -- '',
-  -- '',
-'Next season will be summer and will post registrations date in late March 
- - Thank you from CSBC',
-  '2026-03-31', GetDate(), null
-  )
+-- /* spring registration closed 2026 */
+-- insert into [dbo].[WebContent]
+--    (
+--    [CompanyId]
+--       ,[Page]
+--       ,[WebContentTypeId]
+--       ,[Type]
+--       ,[Title]
+--       ,[ContentSequence]
+--       ,[SubTitle]
+--       ,[Location]
+--       ,[DateAndTime]
+--       ,[Body]
+--       ,[ExpirationDate]
+--       ,[ModifiedDate]
+--       ,[ModifiedUser])
+--   values (
+--   1, 1, 1, 1, 'Spring Season registrations is now closed', 
+--   1,
+--   '',
+--   '',
+--   '',
+-- 'Next season will be summer and will post registrations date in late March 
+--  - Thank you from CSBC',
+--   '2026-03-31', GetDate(), null
+--   )
 

@@ -191,6 +191,9 @@ button {
 ::ng-deep .mdc-select__selected-text {
   color: #fff !important;
 }
+::ng-deep .mat-mdc-select-value {
+  background-color: v.$background-color !important;
+}
 
 /* Ensure selected option text appears with the same color */
 ::ng-deep .mat-mdc-option.mdc-list-item .mdc-list-item__primary-text {

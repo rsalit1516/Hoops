@@ -40,8 +40,8 @@ export interface ScheduleTeam {
 }
 
 interface AdminGameEditModel {
-  gameDate: Date | null;
-  gameTime: Date | null;
+  gameDate: Date | string | null;
+  gameTime: Date | string | null;
   location: GymLocation | null;
   visitorTeam: ScheduleTeam | null;
   homeTeam: ScheduleTeam | null;
@@ -130,11 +130,14 @@ export class AdminGameDetail {
     if (!initial) return false;
     const current = this.model();
 
-    const initialDate = initial.gameDate?.toISOString() ?? null;
-    const currentDate = current.gameDate?.toISOString() ?? null;
+    const toISO = (val: Date | string | null | undefined): string | null =>
+      val ? new Date(val).toISOString() : null;
 
-    const initialTime = initial.gameTime?.toISOString() ?? null;
-    const currentTime = current.gameTime?.toISOString() ?? null;
+    const initialDate = toISO(initial.gameDate);
+    const currentDate = toISO(current.gameDate);
+
+    const initialTime = toISO(initial.gameTime);
+    const currentTime = toISO(current.gameTime);
 
     const initialLocationNumber = initial.location?.locationNumber ?? null;
     const currentLocationNumber = current.location?.locationNumber ?? null;
