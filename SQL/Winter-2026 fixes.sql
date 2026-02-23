@@ -120,3 +120,11 @@ order by gameDate
 -- set GameDate='2026-03-02 20:15:00:00', GameTime='08:15 PM'
 -- where divisionid = 4287 and gameNumber = 32
 
+/* change HSBoys playoff date */
+select * from SchedulePlayoffs
+where divisionid = 4283 and gameNumber = 221
+order by gameDate 
+
+-- update SchedulePlayoffs
+-- set GameDate='2026-02-24 18:50:00', GameTime='06:50 PM'
+-- where divisionid = 4283 and gameNumber = 221
