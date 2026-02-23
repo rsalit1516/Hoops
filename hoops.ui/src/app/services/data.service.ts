@@ -28,9 +28,9 @@ export class DataService {
   getLocationUrl = `${Constants.FUNCTIONS_BASE_URL}/api/location`;
   teamPostUrl = Constants.teamPostUrl;
   teamPutUrl = Constants.teamPutUrl;
-  getContentUrl = `${Constants.BASE_URL}/api/webcontent`;
+  getContentUrl = `${Constants.FUNCTIONS_BASE_URL}/api/webcontent`;
   getActiveContentUrl = `${Constants.FUNCTIONS_BASE_URL}/api/webcontent/getActiveWebContent`;
-  postContentUrl = `${Constants.BASE_URL}/api/WebContent`;
+  postContentUrl = `${Constants.FUNCTIONS_BASE_URL}/api/webcontent`;
   getCurrentSponsors = `${Constants.FUNCTIONS_BASE_URL}/api/Sponsor/GetSeasonSponsors/`;
   getLocations = `${Constants.BASE_URL}/api/Locations/`;
   // seasonUrl = `${Constants.BASE_URL}/api/Season/`;

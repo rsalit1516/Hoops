@@ -92,6 +92,9 @@ var host = new HostBuilder()
         services.AddScoped<ISeasonService, SeasonService>();
         services.AddScoped<IPlayerService, PlayerService>();
 
+        // Auth context — carries authenticated userId from middleware to functions
+        services.AddScoped<AuthContext>();
+
         // Logging
         services.AddLogging(builder =>
         {

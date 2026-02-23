@@ -1,15 +1,15 @@
-using System.Net;
 using System.Security.Claims;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.Functions.Worker.Middleware;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Hoops.Functions.Utils;
 
 /// <summary>
 /// Middleware to validate the hoops.auth cookie and populate user claims.
-/// Extracts authentication from the same cookie used by Hoops.Api.
+/// The cookie value is the userId (set by AuthFunctions.Login).
 /// </summary>
 public class AuthenticationMiddleware : IFunctionsWorkerMiddleware
 {
@@ -24,23 +24,36 @@ public class AuthenticationMiddleware : IFunctionsWorkerMiddleware
     public async Task Invoke(FunctionContext context, FunctionExecutionDelegate next)
     {
         var requestData = await context.GetHttpRequestDataAsync();
-        
+
         if (requestData != null)
         {
-            // Extract cookie from request
-            var cookie = GetCookie(requestData, CookieName);
-            
-            if (!string.IsNullOrEmpty(cookie))
+            var cookieValue = GetCookie(requestData, CookieName);
+
+            if (!string.IsNullOrEmpty(cookieValue))
             {
                 try
                 {
-                    // Decode and validate the cookie
-                    var principal = ValidateCookie(cookie);
-                    if (principal != null)
+                    var userId = ParseUserIdFromCookie(cookieValue);
+                    if (userId.HasValue)
                     {
-                        // Store the principal in the context for downstream use
-                        context.Items["User"] = principal;
-                        _logger.LogInformation("User authenticated: {UserName}", principal.Identity?.Name);
+                        // Populate AuthContext so Auth_Me and other functions can identify the caller
+                        var authCtx = context.InstanceServices.GetRequiredService<AuthContext>();
+                        authCtx.UserId = userId;
+
+                        // Keep context.Items["User"] so CheckAuthentication() continues to work
+                        var claims = new List<Claim>
+                        {
+                            new Claim(ClaimTypes.Name, userId.Value.ToString()),
+                            new Claim("AuthenticationMethod", "Cookie")
+                        };
+                        var identity = new ClaimsIdentity(claims, "Cookie");
+                        context.Items["User"] = new ClaimsPrincipal(identity);
+
+                        _logger.LogInformation("User authenticated: userId={UserId}", userId.Value);
+                    }
+                    else
+                    {
+                        _logger.LogWarning("hoops.auth cookie present but could not parse userId from value");
                     }
                 }
                 catch (Exception ex)
@@ -53,14 +66,13 @@ public class AuthenticationMiddleware : IFunctionsWorkerMiddleware
         await next(context);
     }
 
-    private string? GetCookie(HttpRequestData request, string cookieName)
+    private static string? GetCookie(HttpRequestData request, string cookieName)
     {
         if (request.Headers.TryGetValues("Cookie", out var cookies))
         {
             foreach (var cookieHeader in cookies)
             {
-                var cookiePairs = cookieHeader.Split(';');
-                foreach (var pair in cookiePairs)
+                foreach (var pair in cookieHeader.Split(';'))
                 {
                     var trimmed = pair.Trim();
                     if (trimmed.StartsWith($"{cookieName}=", StringComparison.OrdinalIgnoreCase))
@@ -73,40 +85,6 @@ public class AuthenticationMiddleware : IFunctionsWorkerMiddleware
         return null;
     }
 
-    private ClaimsPrincipal? ValidateCookie(string cookieValue)
-    {
-        try
-        {
-            // ASP.NET Core cookie format uses Data Protection API for encryption
-            // For Azure Functions isolated worker, we need a simpler approach
-            
-            // Strategy: Cookie presence = authenticated
-            // This works because:
-            // 1. Cookies are HttpOnly (can't be set by JavaScript)
-            // 2. Cookies require HTTPS in production (SecurePolicy.Always)
-            // 3. Cookies use SameSite=None for cross-origin (but still secure)
-            // 4. Main API validates credentials and issues the cookie
-            
-            if (string.IsNullOrEmpty(cookieValue))
-            {
-                return null;
-            }
-
-            // The cookie exists and browser validated it came from same origin domain
-            // We trust that the API issued this cookie after authentication
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, "authenticated-user"),
-                new Claim("AuthenticationMethod", "Cookie")
-            };
-            
-            var identity = new ClaimsIdentity(claims, "Cookie");
-            return new ClaimsPrincipal(identity);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error validating cookie");
-            return null;
-        }
-    }
+    private static int? ParseUserIdFromCookie(string cookieValue) =>
+        int.TryParse(cookieValue, out var id) ? id : (int?)null;
 }

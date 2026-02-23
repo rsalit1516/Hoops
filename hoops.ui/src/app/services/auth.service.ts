@@ -83,10 +83,9 @@ export class AuthService {
     }
 
     // Fall back to server authentication (cookie-based)
-    // Use BASE_URL (API) instead of FUNCTIONS_BASE_URL because Azure Functions doesn't support cookie auth
     this.logger.info('🌐 Checking server authentication...');
     this.http
-      .get<User>(`${Constants.BASE_URL}/api/auth/me`, {
+      .get<User>(`${Constants.FUNCTIONS_BASE_URL}/api/auth/me`, {
         withCredentials: true,
       })
       .pipe(
@@ -107,10 +106,9 @@ export class AuthService {
   }
 
   login(userName: string, password: string): Observable<User> {
-    // Use BASE_URL (API) instead of FUNCTIONS_BASE_URL for cookie-based authentication
     return this.http
       .post<User>(
-        `${Constants.BASE_URL}/api/auth/login`,
+        `${Constants.FUNCTIONS_BASE_URL}/api/auth/login`,
         { userName, password },
         { withCredentials: true }
       )
@@ -139,10 +137,9 @@ export class AuthService {
   logout(): void {
     this.logger.info('🚪 Logging out user');
 
-    // Use BASE_URL (API) instead of FUNCTIONS_BASE_URL for cookie-based authentication
     this.http
       .post(
-        `${Constants.BASE_URL}/api/auth/logout`,
+        `${Constants.FUNCTIONS_BASE_URL}/api/auth/logout`,
         {},
         { withCredentials: true }
       )
