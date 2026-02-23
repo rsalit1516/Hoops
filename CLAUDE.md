@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Claude Code when working with the Hoops repository. For frontend-specific rules see `hoops.ui/CLAUDE.md`. For backend-specific rules see `src/CLAUDE.md`.
 
 ## Project Overview
 
@@ -8,186 +8,50 @@ Hoops is a youth basketball league management system with a .NET 9 backend API, 
 
 ## Technology Stack
 
-- **Backend**: .NET 9.0 (C#)
-- **Frontend**: Angular 20 with Material Design and Tailwind CSS
+- **Backend**: .NET 9.0 (C#) — see `src/CLAUDE.md`
+- **Frontend**: Angular 20 with Material Design and Tailwind CSS — see `hoops.ui/CLAUDE.md`
 - **Database**: SQL Server with Entity Framework Core 9.0
-- **State Management**: Transitioning from NgRx to Angular Signals
-- **Testing**: xUnit (backend), Jasmine/Karma (frontend)
 - **Cloud**: Azure (App Services, Functions, SQL Server)
 - **CI/CD**: Azure Pipelines
 
-## Architecture
+## Repository Structure
 
-### Backend Project Structure (Clean Architecture)
+```
+Hoops.sln               ← Solution file
+src/                    ← .NET backend (API, Functions, Core, Application, Infrastructure)
+tests/                  ← Backend test projects
+hoops.ui/               ← Angular frontend
+docs/                   ← Architecture and technical documentation
+SQL/                    ← Database scripts
+scripts/                ← Automation scripts
+azure-pipelines.yml     ← CI/CD pipeline definition
+```
 
-The solution follows a layered architecture pattern:
+## Core Domain Model
 
-- **Hoops.Core**: Domain entities, interfaces, and models (no dependencies)
-- **Hoops.Application**: Business logic and application services
-- **Hoops.Infrastructure**: EF Core repositories, data access (`hoopsContext`)
-- **Hoops.Data**: Data seeding and initialization
-- **Hoops.Api**: ASP.NET Core Web API controllers and startup configuration
-- **Hoops.Functions**: Azure Functions for background processing
-
-**Key Patterns:**
-
-- Repository pattern: All repositories implement interfaces from `Hoops.Core.Interface` (e.g., `ISeasonRepository`, `IPersonRepository`)
-- Dependency injection: Repositories registered in `ServiceCollectionExtensions.AddHoopsRepositories()`
-- Services: Application services in `Hoops.Application` (e.g., `ISeasonService`)
-
-### Frontend Structure (Angular)
-
-Located in `hoops.ui/src/app/`:
-
-- **Feature modules**: `admin/` (people, games), `games/`, `home/`, `user/`, `contacts/`, `photos/`, `club-docs/`
-- **Shared**: `shared/` (reusable components), `services/` (data services)
-- **State**: Transitioning from `reducers/` (NgRx) to signals-based state management
-- **Auth**: Cookie-based authentication with route guards
-
-### Core Domain Model
-
-Key entities and relationships:
+Key entities and relationships — understand these before making any cross-cutting changes:
 
 - `Person` ↔ `Household` (many-to-one)
 - `Season` → `Division` → `Team` → `Player`
 - `Division` → `Game` (schedule games and playoff games)
 - `Person` → `Player` (one-to-many, across seasons)
 
-## Common Development Commands
-
-### Backend (.NET)
-
-```bash
-# Build entire solution
-dotnet build Hoops.sln
-
-# Run tests (excluding slow tests)
-dotnet test --filter TestCategory!=Slow
-
-# Run all tests
-dotnet test Hoops.sln
-
-# Run specific test project
-dotnet test tests/Hoops.Api.Tests/Hoops.Api.Tests.csproj
-
-# Restore NuGet packages
-dotnet restore Hoops.sln
-
-# Run API locally (from src/Hoops.Api)
-cd src/Hoops.Api
-dotnet run
-
-# Publish Functions
-dotnet publish src/Hoops.Functions/Hoops.Functions.csproj -c Release
-```
-
-### Frontend (Angular)
-
-```bash
-cd hoops.ui
-
-# Install dependencies
-npm ci
-
-# Start local development server
-npm start
-# or
-npm run start  # Uses 'local' configuration (localhost:4200)
-
-# Build for production
-npm run build
-# or
-npm run build:prod
-
-# Build for staging
-npm run build:staging
-
-# Run tests
-npm test
-
-# Run tests in CI mode (headless)
-npm run test:ci
-
-# Lint TypeScript files
-npm run lint
-```
-
-### Database Migrations (EF Core)
-
-```bash
-# Add migration (from solution root or src/Hoops.Infrastructure)
-dotnet ef migrations add MigrationName --project src/Hoops.Infrastructure --startup-project src/Hoops.Api
-
-# Apply migrations to database
-dotnet ef database update --project src/Hoops.Infrastructure --startup-project src/Hoops.Api
-
-# Generate migration script
-dotnet ef migrations script --project src/Hoops.Infrastructure --startup-project src/Hoops.Api
-```
-
-## Testing Requirements
-
-### Backend Testing
-
-- **Framework**: xUnit
-- **Location**: `tests/` folder (e.g., `Hoops.Api.Tests`, `Hoops.Infrastructure.Tests`)
-- **Pattern**: Each repository has a `{RepositoryName}Test.cs` class
-- **Database**: Use EF Core in-memory database with `TestDatabaseFixture`
-- **Structure**: Follow Arrange-Act-Assert pattern
-- **Attributes**: `[Fact]` for single tests, `[Theory]` for parameterized tests
-- **Coverage**: All CRUD operations and custom repository methods must have tests
-- **CI Requirement**: At minimum, unit tests for all acceptance criteria must pass before merge
-
-### Frontend Testing
-
-- **Framework**: Jasmine with Karma
-- **Location**: Colocated `.spec.ts` files in `hoops.ui/src/app`
-- **Tools**: Angular TestBed for components/services
-- **Focus**: Test observable state changes and DOM updates, not internal implementation
-- **DOM**: Use `fixture.detectChanges()` after actions that affect the DOM
-- **Coverage**: All components, services, and pipes should have unit tests
-
-## Environment Configuration
-
-### Backend Environments
-
-Configuration files in `src/Hoops.Api/`:
-
-- `appsettings.json` - Base configuration
-- `appsettings.Development.json` - Dev environment
-- `appsettings.Local.json` - Local development
-- `appsettings.Production.json` - Production
-
-Connection strings and secrets loaded from Azure Key Vault in production.
-
-### Frontend Environments
-
-Environment files in `hoops.ui/src/environments/`:
-
-- `environment.ts` - Base
-- `environment.local.ts` - Local dev (default)
-- `environment.development.ts` - Dev/staging
-- `environment.prod.ts` - Production
-- `environment.staging.ts` - Staging
-- `environment.test.ts` - Testing
-
-Build configurations: `local` (default), `development`, `staging`, `production`
-
 ## Authentication & Authorization
 
-- **Backend**: Cookie-based authentication (20-minute sliding window)
-  - Cookie name: `hoops.auth`
-  - Configured in `Startup.cs` with `CookieAuthenticationDefaults`
-  - Policy-based authorization: `[Authorize(Roles = "Admin")]` on controllers
+- **Mechanism**: Cookie-based authentication (20-minute sliding window)
+- **Cookie name**: `hoops.auth`
+- **Backend**: Configured in `Startup.cs` with `CookieAuthenticationDefaults`
 - **Frontend**: Route guards for admin access control in feature modules
+- **Authorization**: Policy-based — `[Authorize(Roles = "Admin")]` on controllers
+- **NEVER** introduce JWT authentication — the system uses cookies only
 
-## API & Serialization
+## API Conventions
 
-- **JSON Serialization**: Uses Newtonsoft.Json (configured in `Startup.cs`)
-- **Reference Handling**: `ReferenceLoopHandling.Ignore` to prevent circular references
-- **Convention**: API uses camelCase for JSON properties
-- **Swagger**: Available at root (`/`) when running API locally
-- **CORS**: Configured for localhost:4200 and production domains
+- JSON serialization: Newtonsoft.Json (configured in `Startup.cs`)
+- Reference handling: `ReferenceLoopHandling.Ignore` to prevent circular references
+- JSON property convention: camelCase
+- Swagger available at root (`/`) when running API locally
+- CORS configured for `localhost:4200` and production domains
 
 ## CI/CD Pipeline
 
@@ -203,14 +67,18 @@ Azure Pipelines configuration in `azure-pipelines.yml`:
 
 **Deploy Stage:**
 
-- Publishes Azure Functions to dev/prod based on branch
 - Branch mapping: `develop` → dev environment, `master`/`main` → prod
+- Publishes Azure Functions on deploy
 
-## Documentation & Project Management
+**Main branch is `master`.** PRs should target `master`.
 
-### Work Item Management
+## Azure Best Practices
 
-**Azure DevOps is the single source of truth** for epics, user stories, tasks, and backlog management. Work items follow a standardized ID structure:
+When generating Azure-related code or running Azure terminal commands, always follow Azure best practices. Reference `.github/copilot-instructions.md` for specifics.
+
+## Work Item Management
+
+**Azure DevOps is the single source of truth** for epics, user stories, tasks, and backlog.
 
 **Product Area Codes:**
 
@@ -224,59 +92,16 @@ Azure Pipelines configuration in `azure-pipelines.yml`:
 - `SYS` - System Administration
 - `INF` - Infrastructure & DevOps
 
-**Work Item Types:**
+**Work Item ID Structure:**
+
 - Epics: `{AREA}-###` (e.g., `APM-045`, `AGM-001`)
 - Stories: `{AREA}{TYPE}-###` (e.g., `APMF-001` for features, `APMB-001` for bugs)
 
-**Working with Claude Code:**
-When assigning implementation tasks, copy the story content from Azure DevOps and provide it directly. Claude Code will automatically apply the architectural standards and coding patterns defined in this document.
+When working on a story, copy the story content from Azure DevOps and provide it directly. Claude Code will apply the architectural standards defined in this file and the relevant sub-CLAUDE.md files.
 
-### Technical Documentation
+## Technical Documentation
 
-Repository documentation in `docs/` contains architectural and technical reference materials:
-
-- **Architecture**: `docs/architecture-overview.md` - System design and ER diagrams
-- **Testing**: `docs/testing/` - Test specifications and strategy
-- **Technical**: `docs/technical-requirements.md` - Functional and non-functional requirements
-- **Templates**: `docs/templates/` - Templates for documentation and technical specifications
-
-## Key Development Notes
-
-### Database Context
-
-- Primary DbContext: `hoopsContext` (lowercase 'h') in `Hoops.Infrastructure.Data`
-- Connection string key: `"hoopsContext"`
-- Registered with retry logic (5 retries, 10-second delay)
-
-### Frontend State Management
-
-- **Current**: Mixture of NgRx (in `reducers/`) and newer signal-based services
-- **Direction**: Transitioning to Angular Signals for state management
-- When adding new features, prefer signals over NgRx
-
-### Angular Material & Styling
-
-- Use Angular Material components for UI elements
-- Use Tailwind CSS for layout and formatting
-- Styles in `hoops.ui/src/Content/styles.scss`
-- Style preprocessor includes `src/Content` path
-
-### Azure Best Practices
-
-Per `.github/copilot-instructions.md`: When generating Azure-related code or running Azure terminal commands, follow Azure best practices.
-
-## Main Branch
-
-- The main branch is `master`
-- PRs should typically target `master`
-- Current branch: `doc-updates` (documentation work in progress)
-
-## Important File Locations
-
-- Solution file: `Hoops.sln`
-- Backend: `src/`
-- Tests: `tests/`
-- Frontend: `hoops.ui/`
-- Database scripts: `SQL/`
-- Documentation: `docs/`
-- Automation scripts: `scripts/`
+- `docs/architecture-overview.md` — System design and ER diagrams
+- `docs/testing/` — Test specifications and strategy
+- `docs/technical-requirements.md` — Functional and non-functional requirements
+- `docs/templates/` — Templates for documentation and technical specifications
