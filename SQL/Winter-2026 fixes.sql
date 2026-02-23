@@ -110,3 +110,13 @@ where divisionid = 4279 and gamedate = '2026-02-02'
 -- update schedulegames
 -- set GameDate = '2026-02-18'
 -- where divisionid = 4279 and gamedate = '2026-02-02'
+
+/* change men 18+ playoff date */
+select * from SchedulePlayoffs
+where divisionid = 4287 and gameNumber = 32
+order by gameDate 
+
+-- update SchedulePlayoffs
+-- set GameDate='2026-03-02 20:15:00:00', GameTime='08:15 PM'
+-- where divisionid = 4287 and gameNumber = 32
+
