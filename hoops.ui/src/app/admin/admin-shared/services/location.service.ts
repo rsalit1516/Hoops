@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal, inject } from '@angular/core';
 import { Location } from '@app/domain/location';
+import { Constants } from '@app/shared/constants';
 import { DataService } from '@app/services/data.service';
 import { catchError, map, tap } from 'rxjs/operators';
 
@@ -19,7 +20,7 @@ export class LocationService {
   constructor() {}
 
   get() {
-    return this._http.get<Location[]>(this.dataService.getLocationUrl).pipe(
+    return this._http.get<Location[]>(Constants.GET_LOCATION_URL).pipe(
       tap((locations) => {
         // console.log('All: ' + JSON.stringify(locations))
         this.locations.set(locations);
@@ -29,7 +30,7 @@ export class LocationService {
     );
   }
 
-  locations$ = this._http.get<Location[]>(this.dataService.getLocationUrl).pipe(
+  locations$ = this._http.get<Location[]>(Constants.GET_LOCATION_URL).pipe(
     map((locations) => {
       locations.map((locations) => ({ ...locations } as Location)),
         this.locations.set(locations);

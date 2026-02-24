@@ -49,7 +49,7 @@ export class ContentService {
    * Active content is automatically computed from this.
    */
   fetchAllContents() {
-    this.http.get<WebContent[]>(this.data.getContentUrl).subscribe((data) => {
+    this.http.get<WebContent[]>(Constants.getContentUrl).subscribe((data) => {
       this.allWebContent.set(data);
       this.logger.debug('Fetched all contents:', data.length);
     });
@@ -60,7 +60,7 @@ export class ContentService {
    * Use this for one-time fetches or when you need an Observable.
    */
   getContents(): Observable<WebContent[]> {
-    return this.http.get<WebContent[]>(this.data.getContentUrl);
+    return this.http.get<WebContent[]>(Constants.getContentUrl);
   }
 
   /**
@@ -71,14 +71,14 @@ export class ContentService {
     if (webContentId === 0) {
       return of(this.initializeContent());
     }
-    return this.http.get<Content>(`${this.data.getContentUrl}/${webContentId}`).pipe(
+    return this.http.get<Content>(`${Constants.getContentUrl}/${webContentId}`).pipe(
       tap((data) => this.logger.debug('getContent result:', data)),
       catchError(this.data.handleError('getContent', this.initializeContent()))
     );
   }
   deleteContent(webContentId: number | null): Observable<unknown> {
     this.logger.info('Deleting content with ID:', webContentId);
-    const url = `${this.data.getContentUrl}/${webContentId}`;
+    const url = `${Constants.getContentUrl}/${webContentId}`;
     return this.data.delete(url);
   }
 
@@ -115,7 +115,7 @@ export class ContentService {
     } else {
       // Create new content (POST)
       this.logger.info('Creating new content');
-      return this.http.post<WebContent>(this.data.postContentUrl, content).pipe(
+      return this.http.post<WebContent>(Constants.postContentUrl, content).pipe(
         tap((response) => {
           this.logger.info('Content created:', response);
         })

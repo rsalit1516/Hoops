@@ -10,7 +10,6 @@ import { map, mergeMap, catchError, exhaustMap } from 'rxjs/operators';
 import { Store, Action } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 // import { ContentService } from '../../services/content.service';
-import { DataService } from '../../services/data.service';
 import { HttpClient } from '@angular/common/http';
 import { WebContent } from '@app/domain/webContent';
 import { Sponsor } from '@app/domain/sponsor';
@@ -21,7 +20,6 @@ import { SeasonService } from '@app/services/season.service';
 export class HomeEffects {
   readonly #seasonService = inject(SeasonService);
   readonly #http = inject(HttpClient);
-  readonly #dataService = inject(DataService);
 
   seasonId: number | undefined;
   gameUrl: string | undefined;
@@ -38,7 +36,7 @@ export class HomeEffects {
       ofType(homeActions.HomeActionTypes.LoadContent),
       mergeMap((action) =>
         this.#http
-          .get<WebContent[]>(this.#dataService.getActiveWebContentUrl)
+          .get<WebContent[]>(Constants.getActiveContentUrl)
           .pipe(
             map((content) => new homeActions.LoadContentSuccess(content)),
             // tap(content => console.log(content)),

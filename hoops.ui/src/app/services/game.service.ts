@@ -10,8 +10,6 @@ import {
 import { Observable, of } from 'rxjs';
 import { DateTime } from 'luxon';
 
-import { DataService } from './data.service';
-
 import { RegularGame } from '../domain/regularGame';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { Constants } from '@app/shared/constants';
@@ -32,8 +30,6 @@ import { RegularGameSaveObject } from '@app/domain/RegularGameSaveObject';
 export class GameService {
   // Injected services
   private http = inject(HttpClient);
-  //  gameStore = inject(Store<fromGames.State>);
-  private dataService = inject(DataService);
   private seasonService = inject(SeasonService);
   private divisionService = inject(DivisionService);
   private teamService = inject(TeamService);
@@ -61,8 +57,6 @@ export class GameService {
   set games(games: RegularGame[]) {
     this._games = games;
   }
-  standingsUrl = this.dataService.webUrl + '/api/gameStandings';
-
   teamId: number | undefined;
   compare(a: Date | string, b: Date | string, isAsc: boolean) {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);

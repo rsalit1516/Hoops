@@ -177,10 +177,10 @@ export class TeamService {
     }
   }
   addTeam(team: Team): Observable<Team | ArrayBuffer> {
-    this.logger.debug('Adding team to URL:', this.dataService.teamPostUrl);
+    this.logger.debug('Adding team to URL:', Constants.teamPostUrl);
     return this.http
       .post<Team>(
-        this.dataService.teamPostUrl,
+        Constants.teamPostUrl,
         team,
         this.dataService.httpOptions
       )
@@ -207,7 +207,7 @@ export class TeamService {
   updateTeam(team: Team) {
     return this.http
       .put<Team>(
-        this.dataService.teamPutUrl + team.teamId,
+        Constants.teamPutUrl + team.teamId,
         team,
         this.dataService.httpOptions
       )

@@ -1,9 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map, tap, catchError } from 'rxjs/operators';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { environment } from '../../environments/environment';
-import { Constants } from '@app/shared/constants';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { LoggerService } from './logger.service';
 
 @Injectable({
@@ -13,34 +11,12 @@ export class DataService {
   #http = inject(HttpClient);
   #logger = inject(LoggerService);
 
-  webUrl: string;
-  baseUrl = Constants.DEFAULTURL;
-  dotNetCoreUrl: string;
-  getActiveWebContentUrl: string;
-  // loginUrl = '${Constants.BASE_URL}/api/User/login';
-  directorUrl = `${Constants.FUNCTIONS_BASE_URL}/api/Director`;
-  seasonDivisionsUrl = Constants.SEASON_DIVISIONS_URL;
-  getSeasonTeamsUrl = Constants.GET_SEASON_TEAMS_URL;
-  getColorUrl = `${Constants.FUNCTIONS_BASE_URL}/api/color`;
-  getLocationUrl = `${Constants.FUNCTIONS_BASE_URL}/api/location`;
-  teamPostUrl = Constants.teamPostUrl;
-  teamPutUrl = Constants.teamPutUrl;
-  getContentUrl = `${Constants.FUNCTIONS_BASE_URL}/api/webcontent`;
-  getActiveContentUrl = `${Constants.FUNCTIONS_BASE_URL}/api/webcontent/getActiveWebContent`;
-  postContentUrl = `${Constants.FUNCTIONS_BASE_URL}/api/webcontent`;
-  getCurrentSponsors = `${Constants.FUNCTIONS_BASE_URL}/api/Sponsor/GetSeasonSponsors/`;
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
     }),
     withCredentials: true,
   };
-
-  constructor() {
-    this.webUrl = environment.apiUrl;
-    this.dotNetCoreUrl = environment.apiUrl;
-    this.getActiveWebContentUrl = `${Constants.FUNCTIONS_BASE_URL}/api/webcontent/getActiveWebContent`;
-  }
 
   get(url: string, data: string) {
     return this.#http.get(url, this.httpOptions).pipe(
