@@ -28,6 +28,7 @@ import { AdminGameService } from '../admin-games/adminGame.service';
 import { PlayoffGame } from '@app/domain/playoffGame';
 import { ContentService } from '../web-content/content.service';
 import { LocationService } from '../admin-shared/services/location.service';
+import { Constants } from '@app/shared/constants';
 
 @Injectable()
 export class AdminEffects {
@@ -42,9 +43,9 @@ export class AdminEffects {
   store = inject(Store<fromAdmin.State>);
 
   seasonId!: number;
-  gameUrl = this.dataService.seasonGamesUrl;
+  gameUrl = Constants.SEASON_GAMES_URL;
   seasonDivisionsUrl = this.dataService.seasonDivisionsUrl;
-  readonly #playoffGameUrl = this.dataService.playoffGameUrl;
+  readonly #playoffGameUrl = Constants.PLAYOFF_GAMES_URL;
   divisionId!: number;
   division!: Division | null;
   teamId!: number;

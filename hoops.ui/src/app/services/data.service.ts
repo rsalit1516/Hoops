@@ -19,10 +19,7 @@ export class DataService {
   getActiveWebContentUrl: string;
   // loginUrl = '${Constants.BASE_URL}/api/User/login';
   directorUrl = `${Constants.FUNCTIONS_BASE_URL}/api/Director`;
-  seasonGamesUrl = `${Constants.BASE_URL}/api/Schedulegame/getSeasonGames`;
   seasonDivisionsUrl = Constants.SEASON_DIVISIONS_URL;
-  playoffGameUrl = `${Constants.BASE_URL}/api/SchedulePlayoff/GetSeasonGames`;
-  getCurrentSeasonUrl = `${Constants.BASE_URL}/api/season/getCurrentSeason`;
   getSeasonTeamsUrl = Constants.GET_SEASON_TEAMS_URL;
   getColorUrl = `${Constants.FUNCTIONS_BASE_URL}/api/color`;
   getLocationUrl = `${Constants.FUNCTIONS_BASE_URL}/api/location`;
@@ -32,13 +29,6 @@ export class DataService {
   getActiveContentUrl = `${Constants.FUNCTIONS_BASE_URL}/api/webcontent/getActiveWebContent`;
   postContentUrl = `${Constants.FUNCTIONS_BASE_URL}/api/webcontent`;
   getCurrentSponsors = `${Constants.FUNCTIONS_BASE_URL}/api/Sponsor/GetSeasonSponsors/`;
-  getLocations = `${Constants.BASE_URL}/api/Locations/`;
-  // seasonUrl = `${Constants.BASE_URL}/api/Season/`;
-  currentSeasonUrl = `${Constants.BASE_URL}/api/Season/GetCurrentSeason`;
-  peopleUrl = `${Constants.BASE_URL}/api/People`;
-
-  standingsUrl = '${Constants.BASE_URL}/api/ScheduleGame/getStandings';
-
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
