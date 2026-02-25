@@ -17,6 +17,7 @@ import {
 import { Observable, of } from 'rxjs';
 import { DateTime } from 'luxon';
 
+import { DataService } from './data.service';
 import { RegularGame } from '../domain/regularGame';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { Constants } from '@app/shared/constants';
@@ -37,6 +38,7 @@ import { RegularGameSaveObject } from '@app/domain/RegularGameSaveObject';
 export class GameService {
   // Injected services
   private http = inject(HttpClient);
+  private dataService = inject(DataService);
   private seasonService = inject(SeasonService);
   private divisionService = inject(DivisionService);
   private teamService = inject(TeamService);
@@ -58,7 +60,6 @@ export class GameService {
   selectedDivision = computed(() => this.divisionService.selectedDivision());
   seasonGames$: Observable<RegularGame[] | null> = of(null);
   allGames: any;
-  dataService: any;
   get games() {
     return this._games;
   }
