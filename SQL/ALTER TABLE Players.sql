@@ -1,0 +1,2 @@
+  ALTER TABLE Players
+    ALTER COLUMN PayType NVARCHAR(20) NULL;
