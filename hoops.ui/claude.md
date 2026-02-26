@@ -4,7 +4,7 @@ This file provides Angular-specific guidance for the `hoops.ui/` directory. For 
 
 ## Technology
 
-- Angular 20
+- Angular 21
 - Angular Material (UI components)
 - Tailwind CSS (layout and formatting)
 - TypeScript (ES modules only)
