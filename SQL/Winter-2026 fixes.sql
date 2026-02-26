@@ -128,3 +128,12 @@ order by gameDate
 -- update SchedulePlayoffs
 -- set GameDate='2026-02-24 18:50:00', GameTime='06:50 PM'
 -- where divisionid = 4283 and gameNumber = 221
+
+/* change men 18+ playoff date - 3/2*/
+select * from SchedulePlayoffs
+where divisionid = 4287 and gameNumber = 32
+order by gameDate 
+
+-- update SchedulePlayoffs
+-- set GameDate='2026-03-02 20:00:00:00', GameTime='08:00 PM'
+-- where divisionid = 4287 and gameNumber = 32
