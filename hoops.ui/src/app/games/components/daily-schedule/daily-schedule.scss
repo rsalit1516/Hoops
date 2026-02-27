@@ -1,14 +1,9 @@
 @use "variables" as v;
 
-:root {
-  --color-primary: blue;
-  --background-color: blue;
-}
-
 .gamedate {
   color: v.$brand-color;
   font-weight: 700;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   padding-left: 16px;
   padding-top: 10px;
   padding-bottom: 8px;
@@ -16,77 +11,70 @@
   min-height: 24px;
 }
 
-.mat-table {
-  background-color: red;
-  background-color: var(--background-color); //$background-color;
-  color: v.$color;
-  // border-radius: 10px;
-  width: 100%;
+.games-list {
+  padding: 0 8px 8px;
 }
 
-.mat-table tr {
-  color: v.$color;
+.game-card {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 8px 8px;
+
+  &:last-child {
+    border-bottom: none;
+  }
 }
 
-.mat-table tr th {
-  color: v.$color;
-  font-weight: 600;
+.game-rows {
+  flex: 1;
+  min-width: 0;
+}
+
+.game-row {
+  display: grid;
+  grid-template-columns: 6.5rem 1fr 2.5rem;
+  align-items: center;
+  column-gap: 24px;
+  padding-left: 24px;
+  height: 28px;
+
+  @media (min-width: 768px) {
+    grid-template-columns: 5.5rem 240px 50px;
+    column-gap: 12px;
+    padding-left: 24px;
+  }
+}
+
+.col-meta {
+  color: v.$table-font-color;
   font-size: v.$table-font-size;
+  white-space: nowrap;
 }
 
-.mat-table .mat-header-row {
-  height: 32px;
-  border-collapse: collapse;
-  border-spacing: 2px;
-  background-color: v.$card-background-color;
-  position: static;
-  // line-height
+.col-location {
+  color: v.$table-font-color;
+  font-size: 0.9rem;
+  font-weight: 700;
 }
 
-.mat-row {
-  height: 40px;
+.col-team {
+  color: v.$table-font-color;
+  font-size: v.$table-font-size;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.mat-table tr td {
-  color: v.$color;
+.col-score {
+  color: v.$table-font-color;
+  font-size: v.$table-font-size;
   font-weight: 400;
-  font-size: v.$table-font-size;
+  text-align: right;
 }
 
-.mat-column-gameTime,
-.mat-column-locationName,
-.mat-column-homeTeamScore,
-.mat-column-visitingTeamScore,
-.mat-column-actions {
-  word-wrap: break-word !important;
-  flex: 0 0 28% !important;
-  width: 15% !important;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
-
-  -ms-hyphens: auto;
-  -moz-hyphens: auto;
-  -webkit-hyphens: auto;
-  hyphens: auto;
-  padding-right: 10px;
-}
-
-.mat-column-gameTime {
-  width: 10% !important;
-}
-
-.mat-column-visitingTeam,
-.mat-column-homeTeam {
-  word-wrap: break-word !important;
-  flex: 0 0 28% !important;
-  width: 20% !important;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
-
-  -ms-hyphens: auto;
-  -moz-hyphens: auto;
-  -webkit-hyphens: auto;
-  hyphens: auto;
+.game-actions {
+  flex-shrink: 0;
+  margin-left: 4px;
 }
