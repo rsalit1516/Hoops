@@ -6,12 +6,12 @@
   </mat-toolbar-row>
   <mat-toolbar-row class="top-nav-row">
     <!-- <div class="menu-spacer"></div> -->
-    <div class="d-block d-sm-none">
+    <div class="block md:hidden">
       <button mat-button (click)="onToggleSidenav()" class="menu-button">
         <mat-icon>menu</mat-icon>
       </button>
     </div>
-    <div class="flex justify-items-start">
+    <div class="hidden md:flex justify-items-start">
       <a routerLink="/home" routerLinkActive="activelink" mat-button>Home</a>
       <a
         routerLink="/games"
