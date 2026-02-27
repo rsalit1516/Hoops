@@ -94,13 +94,6 @@ export class CsbcAnnouncements implements OnInit {
     return 'col-8 offset-4 col-xs-12';
   }
 
-  setNewsClass (): string {
-    if (this.showSeasonInfo() || this.latestNewsCount > 0) {
-      return 'col-sm-10 offset-sm-1 col-xs-12';
-    } else {
-      return 'col-sm-10 offset-sm-1 col-xs-12';
-    }
-  }
   setSeasonListClass (): string {
     if (this.seasonInfoCount > 1) {
       return 'showMultiItemList';
