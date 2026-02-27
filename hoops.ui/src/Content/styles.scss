@@ -42,7 +42,7 @@ body {
   padding: 0 0px 0px 0px;
   margin: 0px;
   font: Roboto, Arial, Helvetica, sans-serif;
-  font-size: 1rem;
+  font-size: 100%;
   color: ghostwhite;
   background-color: v.$background-color;
 }
@@ -477,15 +477,6 @@ a {
 /*#region Responsive */
 
 @media (max-width: 979px) {
-  body {
-    font-size: 14px;
-  }
-
-  .mat-body,
-  .mat-typography {
-    font-size: 12px;
-  }
-
   .sidebar-filler {
     width: 200px;
   }
@@ -524,11 +515,7 @@ a {
   }
 
   body {
-    font-size: 12px;
-  }
-  .mat-body,
-  .mat-typography {
-    font-size: 12px;
+    font-size: 87.5%; // ~14px on default 16px root
   }
 
   .nav-collapse {
@@ -567,10 +554,6 @@ a {
   .today-datas li {
     padding: 1em 0.5em;
     line-height: 1em;
-  }
-
-  body {
-    font-size: 8px;
   }
 
   .today-datas li i {

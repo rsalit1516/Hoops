@@ -60,7 +60,7 @@ em {
   padding-right: auto;
 }
 .title {
-  font-size: 2rem !important;
+  font-size: 1.4rem !important;
   margin-left: auto;
   margin-right: auto;
   text-align: center;
@@ -71,7 +71,7 @@ em {
   margin-left: auto;
   margin-right: auto;
   font-weight: 600;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   padding-bottom: 8px;
 }
 .home-wrapper {
@@ -82,7 +82,7 @@ em {
 
 .infoLocation {
   background-color: $card-highlight;
-  font-size: 1.2rem;
+  font-size: 1 rem;
   margin-right: 4vw;
   margin-left: 4vw;
   margin-top: 2vh;
@@ -110,10 +110,15 @@ p {
 }
 .body-text {
   color: $brand-color;
-  font-size: 1.2rem;
+  font-size: 1 rem;
   font-weight: 400;
   padding-left: 24px;
   padding-right: 24px;
   padding-top: 12px;
   text-align: left;
+}
+
+.mat-mdc-card {
+  margin-left: 24px !important;
+  margin-right: 24px !important;
 }
