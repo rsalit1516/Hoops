@@ -29,7 +29,7 @@ import { LoggerService } from '@app/services/logger.service';
   selector: 'csbc-schedule-shell',
   template: `
     <section class="container mx-auto">
-      <h1>{{ title }}</h1>
+      <h2>{{ title }}</h2>
       <div class="row">
         <csbc-schedule />
       </div>
@@ -44,7 +44,7 @@ export class ScheduleShell implements OnInit {
   readonly #loggerService = inject(LoggerService);
   games: RegularGame[] | undefined | null;
   playoffGames!: PlayoffGame[];
-  title = 'Regular Season Schedule';
+  title = 'Season Schedule';
   filteredGames$: Observable<RegularGame[]> | undefined;
   currentSeason$: Observable<Season> | undefined;
   divisions$: Observable<Division[]> | undefined;
@@ -63,7 +63,7 @@ export class ScheduleShell implements OnInit {
     catchError((err) => {
       this.errorMessage$ = err;
       return EMPTY;
-    })
+    }),
   );
   divisionId: number | undefined;
   hasPlayoffs = false;
@@ -78,7 +78,7 @@ export class ScheduleShell implements OnInit {
       if (selectedDivision) {
         this.#loggerService.info(
           'Selected division in schedule-shell',
-          selectedDivision
+          selectedDivision,
         );
         //        this.#store.dispatch(new gameActions.// LoadDivisionGames(selectedDivision.divisionId));
         // this.gameService.currentDivision$

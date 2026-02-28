@@ -55,13 +55,13 @@
 .col-location {
   color: v.$table-font-color;
   font-size: 0.9rem;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .col-team {
   color: v.$table-font-color;
   font-size: v.$table-font-size;
-  font-weight: 700;
+  font-weight: 500;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -70,7 +70,7 @@
 .col-score {
   color: v.$table-font-color;
   font-size: v.$table-font-size;
-  font-weight: 400;
+  font-weight: 300;
   text-align: right;
 }
 
