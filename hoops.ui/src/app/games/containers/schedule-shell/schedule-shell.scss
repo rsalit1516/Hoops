@@ -1,6 +1,6 @@
 @use "variables" as v;
 h1 {
-  padding-top: 20px;
+  padding-top: 12px;
   color: v.$brand-color;
   text-align: center;
 }
@@ -8,4 +8,10 @@ h1 {
 .container {
   background-color: v.$table-background-color;
   border-radius: v.$border-radius;
+
+  @media (min-width: 768px) {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-bottom: 24px;
+  }
 }

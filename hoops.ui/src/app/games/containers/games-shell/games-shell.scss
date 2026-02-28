@@ -1,4 +1,14 @@
-@use 'variables' as v;
+@use "variables" as v;
+
+.container {
+  background-color: v.$background-color;
+
+  @media (min-width: 768px) {
+    background-color: v.$csbc-background-color;
+    min-height: 100vh;
+    padding: 16px;
+  }
+}
 
 .games-wrapper {
   background-color: v.$background-color;
@@ -6,8 +16,13 @@
   padding-top: 4px;
   padding-left: 2px;
   padding-right: 2px;
-  margin-left: auto;
-  margin-right: auto;
+
+  @media (min-width: 768px) {
+    max-width: 1200px;
+    margin: 0 auto;
+    border-radius: v.$border-radius;
+    padding: 0;
+  }
 }
 .season {
   color: white;
