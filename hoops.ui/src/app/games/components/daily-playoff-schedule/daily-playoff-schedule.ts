@@ -1,40 +1,26 @@
-import { Component, computed, inject, input } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { PlayoffGame } from '@app/domain/playoffGame';
-import { MatTableModule } from '@angular/material/table';
-import { PlayoffGameService } from '@app/services/playoff-game.service';
-
 
 @Component({
   selector: 'csbc-daily-playoff-schedule',
-  imports: [MatTableModule, DatePipe],
+  imports: [DatePipe],
   templateUrl: './daily-playoff-schedule.html',
-  styleUrls: [
-    // '../../../shared/scss/tables.scss',
-    './daily-playoff-schedule.scss',
-    '../../../../Content/styles.scss'
-  ]
+  styleUrls: ['./daily-playoff-schedule.scss'],
 })
 export class DailyPlayoffSchedule {
   readonly playoffGames = input.required<PlayoffGame[]>();
-  playoffGameService = inject(PlayoffGameService);
-  // playoffGames = computed(() => this.playoffGameService.dailyPlayoffSchedule());
-  gameDate!: Date;
-  displayedColumns = [
-    'gameTime',
-    'Descr',
-    'locationName',
-    'homeTeam',
-    'visitingTeam',
-  ];
-  data: PlayoffGame[] = []; // = this.games;
 
-  constructor () { }
+  gameDate = computed(() => {
+    const games = this.playoffGames();
+    return games.length > 0 ? new Date(games[0].gameDate) : null;
+  });
 
-  ngOnInit () {
-    this.data = this.playoffGames();
-    this.gameDate! = this.data[0].gameDate as Date;
-
-
-  }
+  sortedGames = computed(() =>
+    [...this.playoffGames()].sort((a, b) => {
+      const ta = a.gameTime ? new Date(a.gameTime).getTime() : 0;
+      const tb = b.gameTime ? new Date(b.gameTime).getTime() : 0;
+      return ta - tb;
+    }),
+  );
 }
