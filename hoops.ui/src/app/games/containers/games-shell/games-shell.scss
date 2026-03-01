@@ -2,16 +2,17 @@
 
 .container {
   background-color: v.$base-background-color;
+  margin: auto;
 
   @media (min-width: 768px) {
-    background-color: v.$csbc-background-color;
+    background-color: v.$base-background-color;
     min-height: 100vh;
     padding: 16px;
   }
 }
 
 .games-wrapper {
-  background-color: v.$base-background-color;
+  background-color: v.$card-background-color;
   width: 100%;
   padding-top: 4px;
   padding-left: 2px;

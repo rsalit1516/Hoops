@@ -7,7 +7,7 @@ h2 {
 }
 
 .container {
-  background-color: v.$table-background-color;
+  background-color: v.$card-background-color;
 
   @media (min-width: 768px) {
     max-width: 1200px;
