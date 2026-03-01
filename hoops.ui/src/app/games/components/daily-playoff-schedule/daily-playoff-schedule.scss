@@ -75,3 +75,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+section {
+  background-color: v.$card-background-color;
+}

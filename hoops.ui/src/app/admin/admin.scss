@@ -84,7 +84,7 @@ button {
 }
 
 nav.sidebar {
-  background-color: color.adjust(v.$background-color, $lightness: 12%);
+  background-color: color.adjust(v.$base-background-color, $lightness: 12%);
   color: white;
   border: 0;
   height: 100%;

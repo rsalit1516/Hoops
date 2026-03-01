@@ -9,7 +9,7 @@
 // body {
 //   font: 12px/18px Arial, Helvetica, sans-serif;
 //   color: $brand-color;
-//   background: $background-color;
+//   background: $base-background-color;
 // }
 
 div,
@@ -31,6 +31,14 @@ textarea {
 
 .container {
   display: flex; /* or inline-flex */
+}
+.container-fluid {
+  background-color: v.$base-background-color;
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 p {
@@ -385,7 +393,10 @@ th {
   text-align: center;
   color: #796a6a;
   padding: 20px 0 20px 0;
-  font: 14px/20px "Trebuchet MS", Times, serif;
+  font:
+    14px/20px "Trebuchet MS",
+    Times,
+    serif;
 }
 
 .footerLink {
@@ -464,7 +475,7 @@ th {
 }
 
 mat-side-container {
-  background-color: v.$background-color;
+  background-color: v.$base-background-color;
 }
 mat-side-container,
 mat-sidenav-content,
@@ -474,10 +485,10 @@ mat-sidenav {
 
 mat-sidenav {
   width: 250px;
-  background-color: v.$background-color;
+  background-color: v.$base-background-color;
 }
 .mat-drawer-container {
-  background-color: v.$background-color;
+  background-color: v.$base-background-color;
 }
 .mat-drawer-content {
   overflow: inherit;

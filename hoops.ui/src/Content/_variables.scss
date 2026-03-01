@@ -8,7 +8,7 @@ $default-lighten: 5%;
 $sidebar-background-color: #232323;
 $brand-color: #d17b00; //#ff5600
 $sidebar-color: #d17b00;
-$background-color: color.adjust($black, $lightness: $default-lighten);
+$base-background-color: $black;
 $sidebar-pill-background: $brand-color;
 $panel-default-heading-background: #000000;
 $basketball-color: #b86850;
@@ -26,7 +26,7 @@ $app-bar-background: #212121;
 $color: #d17b00;
 $card-sub-title-color: #d17b00;
 $default-lighten: 5%;
-$csbc-background-color: color.adjust($black, $lightness: 20%);
+$csbc-background-color: color.adjust($black, $lightness: 10%);
 
 $sidebar-background-color: #232323;
 $brand-color: #d17b00;

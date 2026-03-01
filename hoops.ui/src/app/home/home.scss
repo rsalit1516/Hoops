@@ -1,8 +1,13 @@
 @use "sass:color";
-@use "variables" as *;
+@use "variables" as v;
+
+.container {
+  background-color: v.$base-background-color;
+  margin: 0 auto;
+}
 
 h4 {
-  color: $brand-color;
+  color: v.$brand-color;
   font-size: 1.1rem;
   font-weight: 700;
 }
@@ -44,7 +49,7 @@ em {
   background-color: transparent;
   color: color.adjust(#ebf3c6, $lightness: -10%);
   text-align: right;
-  font-size: $card-body;
+  font-size: v.$card-body;
   font-weight: 400;
   font-style: italic;
   padding-top: 40px;
@@ -67,7 +72,7 @@ em {
 }
 .sub-title {
   text-align: center;
-  color: color.adjust($card-sub-title-color, $lightness: 10%);
+  color: color.adjust(v.$card-sub-title-color, $lightness: 10%);
   margin-left: auto;
   margin-right: auto;
   font-weight: 600;
@@ -75,13 +80,13 @@ em {
   padding-bottom: 8px;
 }
 .home-wrapper {
-  background-color: $black;
-  font-size: $wrapper-font-size;
+  background-color: v.$black;
+  font-size: v.$wrapper-font-size;
   height: 100%;
 }
 
 .infoLocation {
-  background-color: $card-highlight;
+  background-color: v.$card-highlight;
   font-size: 1rem;
   margin-right: 4vw;
   margin-left: 4vw;
@@ -97,7 +102,7 @@ div.sponsor {
   left: 0;
   bottom: 0%;
   width: 100%;
-  background-color: color.adjust($card-background-color, $lightness: -10%);
+  background-color: color.adjust(v.$card-background-color, $lightness: -10%);
   // opacity: 1;
   text-align: center;
 }
@@ -109,7 +114,7 @@ p {
   color: white;
 }
 .body-text {
-  color: $brand-color;
+  color: v.$brand-color;
   font-size: 1rem;
   font-weight: 400;
   padding-left: 24px;

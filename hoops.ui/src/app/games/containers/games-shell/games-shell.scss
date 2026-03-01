@@ -1,7 +1,7 @@
 @use "variables" as v;
 
 .container {
-  background-color: v.$background-color;
+  background-color: v.$base-background-color;
 
   @media (min-width: 768px) {
     background-color: v.$csbc-background-color;
@@ -11,7 +11,7 @@
 }
 
 .games-wrapper {
-  background-color: v.$background-color;
+  background-color: v.$base-background-color;
   width: 100%;
   padding-top: 4px;
   padding-left: 2px;
@@ -26,7 +26,7 @@
 }
 .season {
   color: white;
-  background-color: v.$background-color;
+  background-color: v.$base-background-color;
 }
 
 .table-striped > tbody > tr {

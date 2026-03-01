@@ -15,12 +15,12 @@
 }
 
 .mat-toolbar {
-  background-color: v.$background-color;
+  background-color: v.$base-background-color;
 }
 .mat-form-field {
   padding-bottom: 2px;
   padding-right: 12px;
-  background-color: v.$background-color;
+  background-color: v.$base-background-color;
   color: white;
   width: 240px;
   font-size: v.$button-font-size;
@@ -68,7 +68,7 @@ label {
 
 .mat-button-toggle {
   color: white;
-  background-color: v.$background-color;
+  background-color: v.$base-background-color;
   margin-left: 8px;
 }
 

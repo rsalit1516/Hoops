@@ -192,7 +192,7 @@ button {
   color: #fff !important;
 }
 ::ng-deep .mat-mdc-select-value {
-  background-color: v.$background-color !important;
+  background-color: v.$base-background-color !important;
 }
 
 /* Ensure selected option text appears with the same color */

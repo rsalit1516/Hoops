@@ -2,11 +2,11 @@
 @use "./../../../../Content/variables" as v;
 
 .mat-sidenav-container {
-  background-color: v.$background-color;
+  background-color: v.$base-background-color;
 }
 
 .mat-toolbar.top-nav-toolbar {
-  background-color: v.$background-color;
+  background-color: v.$base-background-color;
   color: v.$brand-color;
   text-align: right;
   border-bottom: 2px solid v.$brand-color;
