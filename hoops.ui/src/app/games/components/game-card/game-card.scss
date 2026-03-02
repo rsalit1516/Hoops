@@ -1,16 +1,6 @@
 @use 'sass:color';
 @use "variables" as v;
 
-.panel-primary .panel-body {
-  background-color: gray;
-  border-color: gray;
-  box-shadow: 2px gray;
-  color: white;
-}
-
-.gameTime {
-  color: white;
-}
 .data {
   font-weight: 700;
   color: v.$brand-color;

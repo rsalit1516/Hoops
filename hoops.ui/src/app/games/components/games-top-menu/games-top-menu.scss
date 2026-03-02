@@ -13,10 +13,6 @@
   width: 120px;
 }
 
-.top-nav-toolbar {
-  background-color: v.$card-background-color;
-}
-
 .mat-toolbar {
   padding-top: 4px;
   background-color: v.$card-background-color;
@@ -66,10 +62,6 @@ button:active {
 
 .games-button button:active {
   font-weight: 800;
-}
-
-.fill-space {
-  flex: 1 1 auto;
 }
 
 h2 {
