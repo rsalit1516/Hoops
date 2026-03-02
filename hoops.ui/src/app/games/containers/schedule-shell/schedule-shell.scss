@@ -1,10 +1,4 @@
 @use "variables" as v;
-h2 {
-  padding-top: 4px;
-  color: v.$brand-color;
-  text-align: center;
-  margin-bottom: 4px;
-}
 
 .container {
   background-color: v.$card-background-color;

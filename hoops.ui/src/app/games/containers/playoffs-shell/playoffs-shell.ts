@@ -12,14 +12,13 @@ import { LoggerService } from '@app/services/logger.service';
   selector: 'csbc-playoffs-shell',
   imports: [SchedulePlayoffs],
   providers: [PlayoffGameService, Store],
-  template: `
-    <section class="container mx-auto">
-    <h1>{{title}}</h1>
+  template: ` <section class="container mx-auto">
+    <h2>{{ title }}</h2>
     <div class="row">
       <csbc-schedule-playoffs [playoffGames]="dailyPlayoffSchedule" />
-      </div>
-      </section>`,
-  styleUrl: './playoffs-shell.scss'
+    </div>
+  </section>`,
+  styleUrl: './playoffs-shell.scss',
 })
 export class PlayoffsShell implements OnInit {
   readonly #gameService = inject(PlayoffGameService);
@@ -30,19 +29,18 @@ export class PlayoffsShell implements OnInit {
   dailyPlayoffSchedule!: Array<PlayoffGame[]>;
   playoffGames = computed(() => this.#gameService.divisionPlayoffGames());
 
-  constructor () { }
+  constructor() {}
 
-  ngOnInit () {
-
-
+  ngOnInit() {
     // this.#store.select(fromGames.getCurrentDivision).subscribe((division) => {
     //   this.#store
     //     .select(fromGames.getDivisionPlayoffGames)
     //     .subscribe((playoffGames) => {
     // this.dailyPlayoffSchedule = playoffGames;
     this.dailyPlayoffSchedule = [];
-    this.dailyPlayoffSchedule = this.#gameService
-      .groupPlayoffGamesByDate(this.playoffGames()!);
+    this.dailyPlayoffSchedule = this.#gameService.groupPlayoffGamesByDate(
+      this.playoffGames()!,
+    );
     this.logger.debug('Daily playoff schedule:', this.dailyPlayoffSchedule);
     // .subscribe(games => {
     //   this.dailyPlayoffSchedule.push(games);
@@ -51,5 +49,4 @@ export class PlayoffsShell implements OnInit {
     //     });
     // });
   }
-
 }

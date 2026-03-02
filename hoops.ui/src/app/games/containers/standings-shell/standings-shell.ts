@@ -10,26 +10,22 @@ import * as fromGames from '../../state';
 import { Standings } from '@app/games/components/standings/standings';
 import { GameService } from '@app/services/game.service';
 
-
 @Component({
   selector: 'csbc-standings-shell',
   imports: [Standings],
   template: `<div class="container mx-auto">
-  <div>
-    <h1>{{title}}</h1>
-    <csbc-standings [standings]="divisionStandings() ?? []" />
-  </div>
-</div>
-`,
+    <div>
+      <h2>{{ title }}</h2>
+      <csbc-standings [standings]="divisionStandings() ?? []" />
+    </div>
+  </div> `,
   styleUrls: [
-    './standings-shell.scss',
-    '../../../shared/scss/tables.scss',
-    '../../../../Content/styles.scss' ]
+    // '../../../../Content/styles.scss',
+  ],
 })
 export class StandingsShell {
   private gameService = inject(GameService);
 
   title = 'Standings';
   divisionStandings = this.gameService.divisionStandings;
-
 }

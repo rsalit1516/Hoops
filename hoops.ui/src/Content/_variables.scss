@@ -21,6 +21,7 @@ $sidebar-menu: color.adjust(black, $lightness: 10%);
 $card-background-color: color.adjust($black, $lightness: $default-lighten);
 $card-background-color-shadow: color.adjust(#3f3f3f, $lightness: -40%);
 $card-color: color.adjust(#d17b00, $lightness: 20%);
+$card-border-color: rgb(112, 111, 111);
 $status-bar-background: color.adjust(#000000, $lightness: 10%);
 $app-bar-background: #212121;
 $color: #d17b00;

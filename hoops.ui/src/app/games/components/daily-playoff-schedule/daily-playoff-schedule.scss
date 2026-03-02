@@ -1,23 +1,12 @@
 @use "./../../../../Content/variables" as v;
 
-.gamedate {
-  color: v.$brand-color;
-  font-weight: 700;
-  font-size: 1.2rem;
-  padding-left: 16px;
-  padding-top: 10px;
-  padding-bottom: 8px;
-  letter-spacing: 6px;
-  min-height: 24px;
-}
-
 .games-list {
   padding: 0 8px 8px;
 }
 
 .game-card {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 8px;
+  border-bottom: 1px solid v.$card-border-color;
+  padding: 8px 8px;
 
   &:last-child {
     border-bottom: none;
