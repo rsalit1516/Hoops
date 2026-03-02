@@ -1137,3 +1137,9 @@ CSBC
 --   '2026-03-31', GetDate(), null
 --   )
 
+select * from [dbo].[WebContent]
+where ExpirationDate > GetDate()
+
+-- update webcontent
+-- set body = 'Next season will be summer and will post registrations date in late March - NO SIGNUPS ON DAY OF TRYOUTS - Thank you from CSBC'
+-- where webcontentid = 280
