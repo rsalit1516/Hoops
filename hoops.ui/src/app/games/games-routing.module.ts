@@ -9,10 +9,8 @@ export const GAMES_ROUTES: Routes = [
     children: [
       {
         path: '',
-        loadComponent: () =>
-          import('./containers/schedule-shell/schedule-shell').then(
-            (m) => m.ScheduleShell
-          ),
+        redirectTo: 'schedule',
+        pathMatch: 'full',
       },
       {
         path: 'schedule',

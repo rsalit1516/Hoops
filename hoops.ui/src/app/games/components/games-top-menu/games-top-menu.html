@@ -7,16 +7,16 @@
       <a
         class="btn"
         routerLink="/games/schedule"
-        routerLinkActive="/games/schedule"
+        routerLinkActive="menu-active"
         >Schedule</a
       >
       @if (hasPlayoffs()) {
       <div>
-        <a class="btn" routerLink="/games/playoffs">Playoffs</a>
+        <a class="btn" routerLink="/games/playoffs" routerLinkActive="menu-active">Playoffs</a>
       </div>
       } @if (hasStandings()) {
       <div>
-        <a class="btn" routerLink="/games/standings">Standings</a>
+        <a class="btn" routerLink="/games/standings" routerLinkActive="menu-active">Standings</a>
       </div>
       }
     </mat-toolbar-row>
