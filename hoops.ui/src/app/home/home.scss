@@ -5,6 +5,23 @@
   background-color: v.$base-background-color;
   margin: 0 auto;
 }
+.mat-mdc-card-header {
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-bottom: 12px !important;
+}
+.mat-mdc-card-header-text {
+  width: 100%;
+  text-align: center;
+}
+.mat-mdc-card-title,
+.mat-mdc-card-subtitle {
+  text-align: center !important;
+  width: 100%;
+}
+.mat-mdc-card-content {
+  border-top: 1px solid color.adjust(v.$card-sub-title-color, $lightness: 10%) !important;
+}
 
 h4 {
   color: v.$brand-color;
@@ -66,15 +83,9 @@ em {
 }
 .title {
   font-size: 1.4rem !important;
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
 }
 .sub-title {
-  text-align: center;
   color: color.adjust(v.$card-sub-title-color, $lightness: 10%);
-  margin-left: auto;
-  margin-right: auto;
   font-weight: 600;
   font-size: 1.2rem;
   padding-bottom: 8px;
@@ -86,12 +97,16 @@ em {
 }
 
 .infoLocation {
-  background-color: v.$card-highlight;
+  // background-color: v.$card-highlight;
+  color: color.adjust(v.$card-sub-title-color, $lightness: 10%);
   font-size: 1rem;
   margin-right: 4vw;
   margin-left: 4vw;
   margin-top: 2vh;
   border-radius: 10px;
+  border-color: v.$card-highlight;
+  border-style: outset;
+  border-width: 1px;
   padding-top: 1vh;
   padding-bottom: 1vh;
 }
@@ -120,6 +135,8 @@ p {
   padding-left: 24px;
   padding-right: 24px;
   padding-top: 12px;
+  margin-right: 4vw;
+  margin-left: 4vw;
   text-align: left;
 }
 
