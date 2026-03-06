@@ -62,7 +62,7 @@ export class DirectorService {
   }
 
   update(item: Director) {
-    return this.http.put<Director>(`${this.url}/${item.directorId}`, item).pipe(
+    return this.http.put<Director>(`${this.url}/${item.directorId}`, item, { withCredentials: true }).pipe(
       tap((data) => {
         this.logger.info('Updated Director:', data);
         this.fetchDirectors(); // Refresh the list after update
@@ -72,7 +72,7 @@ export class DirectorService {
   }
 
   create(item: Director) {
-    return this.http.post<Director>(`${this.url}`, item).pipe(
+    return this.http.post<Director>(`${this.url}`, item, { withCredentials: true }).pipe(
       tap((data) => {
         this.logger.info('Created Director:', data);
         this.fetchDirectors(); // Refresh the list after create
@@ -104,7 +104,7 @@ export class DirectorService {
   }
 
   delete(id: number): Observable<Director> {
-    return this.http.delete<Director>(`${this.url}/${id}`).pipe(
+    return this.http.delete<Director>(`${this.url}/${id}`, { withCredentials: true }).pipe(
       tap((data) => {
         this.logger.info('Deleted Director:', data);
         this.fetchDirectors(); // Refresh the list after delete

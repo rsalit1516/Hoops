@@ -107,7 +107,7 @@ export class ContentService {
       // Update existing content (PUT)
       const url = `${Constants.PUT_CONTENT_URL}${content.webContentId}`;
       this.logger.info('Updating content at URL:', url);
-      return this.http.put<WebContent>(url, content).pipe(
+      return this.http.put<WebContent>(url, content, { withCredentials: true }).pipe(
         tap((response) => {
           this.logger.info('Content updated:', response);
         })
@@ -115,7 +115,7 @@ export class ContentService {
     } else {
       // Create new content (POST)
       this.logger.info('Creating new content');
-      return this.http.post<WebContent>(Constants.postContentUrl, content).pipe(
+      return this.http.post<WebContent>(Constants.postContentUrl, content, { withCredentials: true }).pipe(
         tap((response) => {
           this.logger.info('Content created:', response);
         })

@@ -439,6 +439,7 @@ export class GameService {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       }),
+      withCredentials: true,
     };
     // Build minimal payload to avoid model validation on unrelated fields (e.g., GameTime)
     const payload = {

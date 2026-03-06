@@ -161,7 +161,7 @@ export class HouseholdService {
     if (household.houseId !== 0) {
       const url = Constants.SAVE_HOUSEHOLD_URL + household.houseId;
       console.log('Updating household at URL: ', url);
-      return this.http.put<Household>(url, household).pipe(
+      return this.http.put<Household>(url, household, { withCredentials: true }).pipe(
         tap((response) => {
           console.log('Household updated:', response);
         })
@@ -169,7 +169,7 @@ export class HouseholdService {
     } else {
       console.log('Creating new household');
       return this.http
-        .post<Household>(Constants.SAVE_HOUSEHOLD_URL, household)
+        .post<Household>(Constants.SAVE_HOUSEHOLD_URL, household, { withCredentials: true })
         .pipe(
           tap((response) => {
             console.log('Household created:', response);

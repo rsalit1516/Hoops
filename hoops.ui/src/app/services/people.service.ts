@@ -135,18 +135,18 @@ export class PeopleService {
       // Update existing person (PUT)
       const url = `${Constants.peopleUrl}/${person.personId}`;
       this.logger.info('Updating person at URL: ', url);
-      return this.http.put<Person>(url, person);
+      return this.http.put<Person>(url, person, { withCredentials: true });
     } else {
       // Create new person (POST)
       this.logger.info('Creating new person at URL: ', Constants.peopleUrl);
-      return this.http.post<Person>(Constants.peopleUrl, person);
+      return this.http.post<Person>(Constants.peopleUrl, person, { withCredentials: true });
     }
   }
 
   deletePerson(personId: number): Observable<Person> {
     const url = `${Constants.peopleUrl}/${personId}`;
     this.logger.info('Deleting person at URL: ', url);
-    return this.http.delete<Person>(url);
+    return this.http.delete<Person>(url, { withCredentials: true });
   }
 
   getPersonById(personId: number): Observable<Person> {

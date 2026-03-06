@@ -78,7 +78,7 @@ export class PlayerService {
       player.companyId = 1;
     }
 
-    return this.http.post<Player>(Constants.PLAYER_URL, player);
+    return this.http.post<Player>(Constants.PLAYER_URL, player, { withCredentials: true });
   }
 
   /**
@@ -89,7 +89,7 @@ export class PlayerService {
     this.logger.info('Updating player at URL:', url);
     this.updateLoadingState(true);
 
-    return this.http.put<Player>(url, player);
+    return this.http.put<Player>(url, player, { withCredentials: true });
   }
 
   /**
@@ -109,7 +109,7 @@ export class PlayerService {
   deletePlayer(playerId: number): Observable<Player> {
     const url = `${Constants.PLAYER_URL}/${playerId}`;
     this.logger.info('Deleting player at URL:', url);
-    return this.http.delete<Player>(url);
+    return this.http.delete<Player>(url, { withCredentials: true });
   }
 
   /**

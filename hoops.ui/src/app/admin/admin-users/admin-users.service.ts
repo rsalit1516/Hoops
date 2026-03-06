@@ -26,11 +26,11 @@ export class AdminUsersService {
   }
 
   createUser(user: User): Observable<User> {
-    return this.http.post<User>(this.baseUrl, user);
+    return this.http.post<User>(this.baseUrl, user, { withCredentials: true });
   }
 
   updateUser(user: User): Observable<void> {
-    return this.http.put<void>(`${this.baseUrl}/${user.userId}`, user);
+    return this.http.put<void>(`${this.baseUrl}/${user.userId}`, user, { withCredentials: true });
   }
 
   // Signal-friendly methods
