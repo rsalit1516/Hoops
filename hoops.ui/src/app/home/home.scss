@@ -83,10 +83,11 @@ em {
 }
 .title {
   font-size: 1.4rem !important;
+  font-weight: 500;
 }
 .sub-title {
   color: color.adjust(v.$card-sub-title-color, $lightness: 10%);
-  font-weight: 600;
+  font-weight: 500;
   font-size: 1.2rem;
   padding-bottom: 8px;
 }
@@ -99,7 +100,7 @@ em {
 .infoLocation {
   // background-color: v.$card-highlight;
   color: color.adjust(v.$card-sub-title-color, $lightness: 10%);
-  font-size: 1rem;
+  font-size: 1.1rem;
   margin-right: 4vw;
   margin-left: 4vw;
   margin-top: 2vh;
@@ -130,10 +131,10 @@ p {
 }
 .body-text {
   color: v.$brand-color;
-  font-size: 1rem;
-  font-weight: 400;
-  padding-left: 24px;
-  padding-right: 24px;
+  font-size: 1.1rem;
+  font-weight: 300;
+  padding-left: 12px;
+  padding-right: 12px;
   padding-top: 12px;
   margin-right: 4vw;
   margin-left: 4vw;
