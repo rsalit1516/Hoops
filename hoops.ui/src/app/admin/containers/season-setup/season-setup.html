@@ -1,26 +1,19 @@
 <div class="container mx-auto">
   <div class="flex">
-<div class="flex-1">
-  <button mat-raised-button (click)="newTeam()">New</button>
-</div>
     <div class="flex-1">
       <season-select />
     </div>
     <div class="flex-1">
       <division-select />
     </div>
-    <div class="col-3">
-    <!-- <mat-toolbar>
-      <button mat-raised-button (click)="newTeam()">New</button>
-    </mat-toolbar> -->
-    </div>
+    <div class="col-3"></div>
   </div>
   <div class="flex flex-wrap -mx-2">
     <div class="w-2/4 px-2">
-      <csbc-admin-team-list/>
+      <csbc-admin-team-list />
     </div>
     <div class="w-2/4 px-2">
-      <app-admin-team-detail/>
+      <app-admin-team-detail />
     </div>
   </div>
 </div>
