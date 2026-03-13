@@ -1,36 +1,90 @@
 <?xml version="1.0"?>
-<testsuite name="Chrome Headless 143.0.0.0 (Windows 10)" package="unit" timestamp="2025-12-30T22:22:30" id="0" hostname="Rich-Think" tests="28" errors="0" failures="0" time="1.228">
+<testsuite name="Chrome Headless 145.0.0.0 (Windows 10)" package="unit" timestamp="2026-03-13T15:32:54" id="0" hostname="Rich-Think" tests="82" errors="0" failures="0" time="0.254">
   <properties>
-    <property name="browser.fullName" value="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/143.0.0.0 Safari/537.36"/>
+    <property name="browser.fullName" value="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/145.0.0.0 Safari/537.36"/>
   </properties>
-  <testcase name="ContentEdit Component Initialization should create" time="0.156" classname=".ContentEdit Component Initialization"/>
-  <testcase name="ContentEdit Component Initialization should initialize with correct default values" time="0.041" classname=".ContentEdit Component Initialization"/>
-  <testcase name="ContentEdit Component Initialization should initialize form with correct structure and validators" time="0.129" classname=".ContentEdit Component Initialization"/>
-  <testcase name="ContentEdit Form Validation should validate title field correctly" time="0.085" classname=".ContentEdit Form Validation"/>
-  <testcase name="ContentEdit Form Validation should validate subtitle field correctly" time="0.049" classname=".ContentEdit Form Validation"/>
-  <testcase name="ContentEdit Form Validation should validate expiration date field correctly" time="0.048" classname=".ContentEdit Form Validation"/>
-  <testcase name="ContentEdit Content Loading and Effects should populate form when content is retrieved" time="0.051" classname=".ContentEdit Content Loading and Effects"/>
-  <testcase name="ContentEdit Content Loading and Effects should set page title correctly for new content" time="0.041" classname=".ContentEdit Content Loading and Effects"/>
-  <testcase name="ContentEdit Content Loading and Effects should set page title correctly for existing content" time="0.042" classname=".ContentEdit Content Loading and Effects"/>
-  <testcase name="ContentEdit Content Loading and Effects should compute content types correctly" time="0.039" classname=".ContentEdit Content Loading and Effects"/>
-  <testcase name="ContentEdit Save Functionality should save content when form is valid and dirty" time="0.034" classname=".ContentEdit Save Functionality"/>
-  <testcase name="ContentEdit Save Functionality should not save content when form is invalid" time="0.033" classname=".ContentEdit Save Functionality"/>
-  <testcase name="ContentEdit Save Functionality should not save content when form is not dirty" time="0.028" classname=".ContentEdit Save Functionality"/>
-  <testcase name="ContentEdit Save Functionality should create WebContent object with correct values when saving" time="0.039" classname=".ContentEdit Save Functionality"/>
-  <testcase name="ContentEdit Save Functionality should handle save error and not navigate" time="0.034" classname=".ContentEdit Save Functionality"/>
-  <testcase name="ContentEdit Save Functionality should reset form after successful save" time="0.035" classname=".ContentEdit Save Functionality"/>
-  <testcase name="ContentEdit Delete Functionality should delete content when webContentId is not 0" time="0.028" classname=".ContentEdit Delete Functionality"/>
-  <testcase name="ContentEdit Delete Functionality should not delete content when webContentId is 0" time="0.029" classname=".ContentEdit Delete Functionality"/>
-  <testcase name="ContentEdit Delete Functionality should handle delete error and not navigate" time="0.028" classname=".ContentEdit Delete Functionality"/>
-  <testcase name="ContentEdit Helper Methods should format text correctly" time="0.031" classname=".ContentEdit Helper Methods"/>
-  <testcase name="ContentEdit Helper Methods should convert values to numbers correctly" time="0.038" classname=".ContentEdit Helper Methods"/>
-  <testcase name="ContentEdit Helper Methods should return correct float label value" time="0.025" classname=".ContentEdit Helper Methods"/>
-  <testcase name="ContentEdit Helper Methods should detect form dirty state correctly" time="0.029" classname=".ContentEdit Helper Methods"/>
-  <testcase name="ContentEdit Helper Methods should get web content type correctly" time="0.025" classname=".ContentEdit Helper Methods"/>
-  <testcase name="ContentEdit Helper Methods should handle input events" time="0.026" classname=".ContentEdit Helper Methods"/>
-  <testcase name="ContentEdit Update Method should update form with content values" time="0.027" classname=".ContentEdit Update Method"/>
-  <testcase name="ContentEdit Update Method should format text and log it" time="0.025" classname=".ContentEdit Update Method"/>
-  <testcase name="ContentEdit Error Handling should have hasError method that returns empty string" time="0.033" classname=".ContentEdit Error Handling"/>
+  <testcase name="AuthService when no stored session (HTTP path) should be created" time="0.026" classname=".AuthService when no stored session (HTTP path)"/>
+  <testcase name="AuthService when no stored session (HTTP path) isLoggedIn returns false when no user is set" time="0.004" classname=".AuthService when no stored session (HTTP path) isLoggedIn"/>
+  <testcase name="AuthService when no stored session (HTTP path) isLoggedIn returns true after a user is set" time="0.004" classname=".AuthService when no stored session (HTTP path) isLoggedIn"/>
+  <testcase name="AuthService when no stored session (HTTP path) isAdmin returns false when no user" time="0.005" classname=".AuthService when no stored session (HTTP path) isAdmin"/>
+  <testcase name="AuthService when no stored session (HTTP path) isAdmin returns false for userType 1 (regular user)" time="0.003" classname=".AuthService when no stored session (HTTP path) isAdmin"/>
+  <testcase name="AuthService when no stored session (HTTP path) isAdmin returns true for userType 2 (admin)" time="0.004" classname=".AuthService when no stored session (HTTP path) isAdmin"/>
+  <testcase name="AuthService when no stored session (HTTP path) isAdmin returns true for userType 3 (super-admin)" time="0.004" classname=".AuthService when no stored session (HTTP path) isAdmin"/>
+  <testcase name="AuthService when no stored session (HTTP path) canEditGames returns false when no user" time="0.002" classname=".AuthService when no stored session (HTTP path) canEditGames"/>
+  <testcase name="AuthService when no stored session (HTTP path) canEditGames returns false when no division selected" time="0.002" classname=".AuthService when no stored session (HTTP path) canEditGames"/>
+  <testcase name="AuthService when no stored session (HTTP path) canEditGames returns true for admin user regardless of division assignment" time="0.003" classname=".AuthService when no stored session (HTTP path) canEditGames"/>
+  <testcase name="AuthService when no stored session (HTTP path) canEditGames returns false for non-admin user without a matching division" time="0.002" classname=".AuthService when no stored session (HTTP path) canEditGames"/>
+  <testcase name="AuthService when no stored session (HTTP path) canEditGames returns true for non-admin user with a matching division" time="0.002" classname=".AuthService when no stored session (HTTP path) canEditGames"/>
+  <testcase name="AuthService when no stored session (HTTP path) initializeAuth (HTTP path) leaves currentUser undefined when server returns null" time="0.011" classname=".AuthService when no stored session (HTTP path) initializeAuth (HTTP path)"/>
+  <testcase name="AuthService when no stored session (HTTP path) setUserState sets currentUser and dispatches a store action" time="0.003" classname=".AuthService when no stored session (HTTP path) setUserState"/>
+  <testcase name="AuthService when no stored session (HTTP path) login POSTs credentials and sets user state on success" time="0.003" classname=".AuthService when no stored session (HTTP path) login"/>
+  <testcase name="AuthService when no stored session (HTTP path) login propagates error on failed login" time="0.002" classname=".AuthService when no stored session (HTTP path) login"/>
+  <testcase name="AuthService when no stored session (HTTP path) logout clears user session after successful logout response" time="0.003" classname=".AuthService when no stored session (HTTP path) logout"/>
+  <testcase name="AuthService when no stored session (HTTP path) logout clears user session even when logout request errors" time="0.002" classname=".AuthService when no stored session (HTTP path) logout"/>
+  <testcase name="AuthService when no stored session (HTTP path) logoutDueToInactivity clears the user session" time="0.002" classname=".AuthService when no stored session (HTTP path) logoutDueToInactivity"/>
+  <testcase name="AuthService when no stored session (HTTP path) getSessionInfo delegates to userActivityService" time="0.002" classname=".AuthService when no stored session (HTTP path) getSessionInfo"/>
+  <testcase name="AuthService when no stored session (HTTP path) hasValidSession delegates to userActivityService" time="0.001" classname=".AuthService when no stored session (HTTP path) hasValidSession"/>
+  <testcase name="AuthService when no stored session (HTTP path) recordActivity delegates to userActivityService" time="0.003" classname=".AuthService when no stored session (HTTP path) recordActivity"/>
+  <testcase name="AuthService when a stored session exists (localStorage path) restores user from localStorage without making an HTTP call" time="0.001" classname=".AuthService when a stored session exists (localStorage path)"/>
+  <testcase name="AuthService when a stored session exists (localStorage path) calls recordActivity to restart the inactivity timer" time="0.001" classname=".AuthService when a stored session exists (localStorage path)"/>
+  <testcase name="DivisionService should be created" time="0.003" classname=".DivisionService"/>
+  <testcase name="DivisionService updateSelectedDivision sets the selectedDivision signal" time="0.003" classname=".DivisionService updateSelectedDivision"/>
+  <testcase name="DivisionService updateSelectedDivision persists the divisionId to localStorage when seasonId is available" time="0.002" classname=".DivisionService updateSelectedDivision"/>
+  <testcase name="DivisionService updateSelectedDivision updates currentDivision state via setCurrent" time="0.002" classname=".DivisionService updateSelectedDivision"/>
+  <testcase name="DivisionService getSeasonDivisions GETs divisions and updates seasonDivisions signal" time="0.002" classname=".DivisionService getSeasonDivisions"/>
+  <testcase name="DivisionService getSeasonDivisions selects the first division as default when none previously selected" time="0.001" classname=".DivisionService getSeasonDivisions"/>
+  <testcase name="DivisionService getSeasonDivisions preserves an existing selection when it is present in the new data" time="0.002" classname=".DivisionService getSeasonDivisions"/>
+  <testcase name="DivisionService getSeasonDivisions restores selection from localStorage when no existing selection" time="0.003" classname=".DivisionService getSeasonDivisions"/>
+  <testcase name="DivisionService getSeasonDivisions sets seasonDivisions to empty array on HTTP error" time="0.002" classname=".DivisionService getSeasonDivisions"/>
+  <testcase name="DivisionService findEligibleDivision returns undefined when birthDate is missing" time="0.002" classname=".DivisionService findEligibleDivision"/>
+  <testcase name="DivisionService findEligibleDivision returns undefined when gender is missing" time="0.003" classname=".DivisionService findEligibleDivision"/>
+  <testcase name="DivisionService findEligibleDivision returns undefined when divisions array is empty" time="0.001" classname=".DivisionService findEligibleDivision"/>
+  <testcase name="DivisionService findEligibleDivision matches the primary gender and date range" time="0.003" classname=".DivisionService findEligibleDivision"/>
+  <testcase name="DivisionService findEligibleDivision returns undefined when gender does not match any division" time="0.002" classname=".DivisionService findEligibleDivision"/>
+  <testcase name="DivisionService findEligibleDivision returns undefined when birth date is out of range" time="0.001" classname=".DivisionService findEligibleDivision"/>
+  <testcase name="DivisionService findEligibleDivision matches the secondary gender in a co-ed division" time="0.002" classname=".DivisionService findEligibleDivision"/>
+  <testcase name="DivisionService getDivisionMinDate returns September 1st of (currentYear - years)" time="0.001" classname=".DivisionService getDivisionMinDate"/>
+  <testcase name="DivisionService getDivisionMaxDate returns August 31st of (currentYear - years)" time="0.002" classname=".DivisionService getDivisionMaxDate"/>
+  <testcase name="DivisionService getDefaultDivision returns TR2COED division with correct gender for Trainee 2 Coed" time="0.002" classname=".DivisionService getDefaultDivision"/>
+  <testcase name="DivisionService getDefaultDivision returns SI Boys division with male gender" time="0.002" classname=".DivisionService getDefaultDivision"/>
+  <testcase name="DivisionService getDefaultDivision returns Int Girls division with female gender" time="0.001" classname=".DivisionService getDefaultDivision"/>
+  <testcase name="DivisionService getDefaultDivision returns Women division with female gender" time="0.001" classname=".DivisionService getDefaultDivision"/>
+  <testcase name="DivisionService getDefaultDivision returns Men 18+ division with male gender" time="0.001" classname=".DivisionService getDefaultDivision"/>
+  <testcase name="DivisionService getDefaultDivision returns an empty division for an unknown name" time="0.002" classname=".DivisionService getDefaultDivision"/>
+  <testcase name="DivisionService save calls DataService.put when divisionId is not 0" time="0.003" classname=".DivisionService save"/>
+  <testcase name="DivisionService save calls DataService.post when divisionId is 0" time="0.003" classname=".DivisionService save"/>
+  <testcase name="DivisionService delete calls DataService.delete with the correct URL" time="0.002" classname=".DivisionService delete"/>
+  <testcase name="DivisionService getmatchingDivision returns the canonical name when there is a case-insensitive match" time="0.002" classname=".DivisionService getmatchingDivision"/>
+  <testcase name="DivisionService getmatchingDivision returns &quot;Other&quot; when there is no match" time="0.002" classname=".DivisionService getmatchingDivision"/>
+  <testcase name="DivisionService setLoadingIndicator updates the isLoading state signal" time="0.003" classname=".DivisionService setLoadingIndicator"/>
+  <testcase name="GameService should be created" time="0.003" classname=".GameService"/>
+  <testcase name="GameService validateScores returns true for two valid integer scores" time="0.002" classname=".GameService validateScores"/>
+  <testcase name="GameService validateScores returns true for boundary scores of 0 and 0" time="0.001" classname=".GameService validateScores"/>
+  <testcase name="GameService validateScores returns true for boundary scores of 150 and 150" time="0.003" classname=".GameService validateScores"/>
+  <testcase name="GameService validateScores returns false when home score exceeds 150" time="0.002" classname=".GameService validateScores"/>
+  <testcase name="GameService validateScores returns false when visitor score is negative" time="0.002" classname=".GameService validateScores"/>
+  <testcase name="GameService validateScores returns false for non-integer scores" time="0.002" classname=".GameService validateScores"/>
+  <testcase name="GameService validateScores returns false for NaN" time="0.002" classname=".GameService validateScores"/>
+  <testcase name="GameService validateScores returns false for Infinity" time="0.001" classname=".GameService validateScores"/>
+  <testcase name="GameService compare returns negative when a &lt; b ascending" time="0.002" classname=".GameService compare"/>
+  <testcase name="GameService compare returns positive when a > b ascending" time="0.002" classname=".GameService compare"/>
+  <testcase name="GameService compare returns positive when a &lt; b descending" time="0.002" classname=".GameService compare"/>
+  <testcase name="GameService extractDate converts an ISO date string to a JS Date" time="0.025" classname=".GameService extractDate"/>
+  <testcase name="GameService updateSelectedGame sets the selectedGame" time="0.003" classname=".GameService updateSelectedGame"/>
+  <testcase name="GameService clearSelectedGame resets selectedGame to null" time="0.002" classname=".GameService clearSelectedGame"/>
+  <testcase name="GameService updateSeasonGames stores the games in the internal signal" time="0.002" classname=".GameService updateSeasonGames"/>
+  <testcase name="GameService groupRegularGamesByDate groups games that share the same calendar date" time="0.004" classname=".GameService groupRegularGamesByDate"/>
+  <testcase name="GameService groupRegularGamesByDate returns an empty array for empty input" time="0.002" classname=".GameService groupRegularGamesByDate"/>
+  <testcase name="GameService groupRegularGamesByDate creates one group per unique date" time="0.003" classname=".GameService groupRegularGamesByDate"/>
+  <testcase name="GameService filterGamesByDivision returns only games matching the selected division" time="0.004" classname=".GameService filterGamesByDivision"/>
+  <testcase name="GameService filterGamesByDivision returns games sorted by gameDate ascending" time="0.003" classname=".GameService filterGamesByDivision"/>
+  <testcase name="GameService filterGamesByDivision returns empty array when no seasonGames are loaded" time="0.002" classname=".GameService filterGamesByDivision"/>
+  <testcase name="GameService filterGamesByTeam emits an empty array when no team is selected" time="0.008" classname=".GameService filterGamesByTeam"/>
+  <testcase name="GameService seasonGamesCount returns 0 when no games are loaded" time="0.002" classname=".GameService seasonGamesCount"/>
+  <testcase name="GameService seasonGamesCount returns the count of loaded season games" time="0.002" classname=".GameService seasonGamesCount"/>
+  <testcase name="GameService fetchSeasonGames does nothing when no season is selected" time="0.002" classname=".GameService fetchSeasonGames"/>
+  <testcase name="GameService fetchSeasonGames GETs season games and updates the signal" time="0.005" classname=".GameService fetchSeasonGames"/>
+  <testcase name="GameService saveGame PUTs to the scores endpoint and updates selected game optimistically" time="0.005" classname=".GameService saveGame"/>
   <system-out>
     <![CDATA[
 ]]>
