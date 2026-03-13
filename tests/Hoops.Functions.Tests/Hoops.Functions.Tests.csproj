@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Hoops.Functions\Hoops.Functions.csproj" />
+    <ProjectReference Include="..\..\src\Hoops.Infrastructure\Hoops.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
