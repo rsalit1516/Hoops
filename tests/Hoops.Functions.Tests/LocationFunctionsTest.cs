@@ -1,0 +1,63 @@
+using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Threading.Tasks;
+using Hoops.Core.Interface;
+using Hoops.Core.Models;
+using Hoops.Functions.Functions;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
+using Moq;
+using Xunit;
+
+namespace Hoops.Functions.Tests
+{
+    public class LocationFunctionsTest
+    {
+        private readonly Mock<ILocationRepository> _mockRepository;
+        private readonly LocationFunctions _functions;
+        private readonly Mock<FunctionContext> _mockContext;
+
+        public LocationFunctionsTest()
+        {
+            _mockRepository = new Mock<ILocationRepository>();
+            _functions = new LocationFunctions(_mockRepository.Object);
+            _mockContext = new Mock<FunctionContext>();
+        }
+
+        private HttpRequestData CreateMockRequest()
+        {
+            var mockRequest = new Mock<HttpRequestData>(_mockContext.Object);
+            mockRequest.Setup(r => r.Body).Returns(new MemoryStream());
+            mockRequest.Setup(r => r.CreateResponse()).Returns(() =>
+            {
+                var mockResponse = new Mock<HttpResponseData>(_mockContext.Object);
+                mockResponse.SetupProperty(r => r.StatusCode);
+                mockResponse.SetupProperty(r => r.Headers, new HttpHeadersCollection());
+                mockResponse.Setup(r => r.Body).Returns(new MemoryStream());
+                return mockResponse.Object;
+            });
+            return mockRequest.Object;
+        }
+
+        [Fact]
+        public async Task GetAll_ReturnsOkWithLocations()
+        {
+            // Arrange
+            var locations = new List<Location>
+            {
+                new Location { LocationNumber = 1, LocationName = "Gym A" },
+                new Location { LocationNumber = 2, LocationName = "Gym B" }
+            };
+            _mockRepository.Setup(r => r.GetAll()).Returns(Task.FromResult<IEnumerable<Location>>(locations));
+            var request = CreateMockRequest();
+
+            // Act
+            var response = await _functions.GetAll(request);
+
+            // Assert
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            _mockRepository.Verify(r => r.GetAll(), Times.Once);
+        }
+    }
+}
