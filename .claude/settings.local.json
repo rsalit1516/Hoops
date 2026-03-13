@@ -56,7 +56,8 @@
       "Bash(echo === Infrastructure Tests ===:*)",
       "Bash(echo === Application Tests ===:*)",
       "Bash(find:*)",
-      "Bash(cd:*)"
+      "Bash(cd:*)",
+      "Bash(dotnet nuget locals all --list)"
     ],
     "deny": [],
     "ask": []
