@@ -55,7 +55,8 @@
       "Bash(powershell -Command:*)",
       "Bash(echo === Infrastructure Tests ===:*)",
       "Bash(echo === Application Tests ===:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(cd:*)"
     ],
     "deny": [],
     "ask": []

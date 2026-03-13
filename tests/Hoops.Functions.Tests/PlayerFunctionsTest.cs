@@ -163,7 +163,7 @@ namespace Hoops.Functions.Tests
             _mockRepository.Setup(r => r.Insert(It.IsAny<Player>()))
                 .Returns(createdPlayer);
             _mockRepository.Setup(r => r.SaveChangesAsync())
-                .ReturnsAsync(1);
+                .Returns(Task.CompletedTask);
 
             var request = CreateMockRequest(playerJson);
 
@@ -232,7 +232,7 @@ namespace Hoops.Functions.Tests
             _mockRepository.Setup(r => r.Insert(It.IsAny<Player>()))
                 .Returns(createdPlayer);
             _mockRepository.Setup(r => r.SaveChangesAsync())
-                .ReturnsAsync(1);
+                .Returns(Task.CompletedTask);
 
             var request = CreateMockRequest(playerJson);
 
@@ -343,7 +343,7 @@ namespace Hoops.Functions.Tests
                 .Returns(player);
             _mockRepository.Setup(r => r.Delete(player));
             _mockRepository.Setup(r => r.SaveChangesAsync())
-                .ReturnsAsync(1);
+                .Returns(Task.CompletedTask);
 
             var request = CreateMockRequest();
 
