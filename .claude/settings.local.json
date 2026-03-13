@@ -52,7 +52,10 @@
       "Bash(powershell -Command \"Set-Location ''C:\\\\Users\\\\rrsal\\\\repos\\\\hoops''; git show 491d0cf8:hoops.ui/src/app/admin/admin-games/admin-game-detail/admin-game-detail.ts\")",
       "Bash(powershell -Command \"cd ''C:\\\\Users\\\\rrsal\\\\repos\\\\hoops''; git log --oneline -5\")",
       "Bash(powershell -Command \"cd ''C:\\\\Users\\\\rrsal\\\\repos\\\\hoops''; git diff HEAD ''hoops.ui/src/app/admin/admin-games/admin-game-detail/admin-game-detail.ts''\")",
-      "Bash(powershell -Command:*)"
+      "Bash(powershell -Command:*)",
+      "Bash(echo === Infrastructure Tests ===:*)",
+      "Bash(echo === Application Tests ===:*)",
+      "Bash(find:*)"
     ],
     "deny": [],
     "ask": []
