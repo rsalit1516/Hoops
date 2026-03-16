@@ -772,29 +772,29 @@ order by webCOntentID desc
 
 
 /* Winter 2022 Registration */
-insert into [dbo].[WebContent]
-  (
-   [CompanyId]
-     ,[Page]
-     ,[WebContentTypeId]
-     ,[Type]
-     ,[Title]
-     ,[ContentSequence]
-     ,[SubTitle]
-     ,[Location]
-     ,[DateAndTime]
-     ,[Body]
-     ,[ExpirationDate]
-     ,[ModifiedDate]
-     ,[ModifiedUser])
- values (
- 1, null, 1, 1, 'Winter Season Registration', 1,
- '',
- 'Cypress Hall by the pool/tennis cts',
- 'Saturday, October 8th, 12 to 2pm',
- 'Girls and boys ages 6 an up thru high school. Registration fee is $135.00 - cash or check only. Non CS residents must Pay an additional $50 for each registration. A copy of a birth certificate and proof of address is required at sign ups. Season runs from November to beginning of February. Please print out the form (go to Documents -> Registration Form), fill out the form and bring to sign up to save time. Coaches and sponsors are needed',
- '2022-10-09', GetDate(), null
- )
+-- insert into [dbo].[WebContent]
+--   (
+--    [CompanyId]
+--      ,[Page]
+--      ,[WebContentTypeId]
+--      ,[Type]
+--      ,[Title]
+--      ,[ContentSequence]
+--      ,[SubTitle]
+--      ,[Location]
+--      ,[DateAndTime]
+--      ,[Body]
+--      ,[ExpirationDate]
+--      ,[ModifiedDate]
+--      ,[ModifiedUser])
+--  values (
+--  1, null, 1, 1, 'Winter Season Registration', 1,
+--  '',
+--  'Cypress Hall by the pool/tennis cts',
+--  'Saturday, October 8th, 12 to 2pm',
+--  'Girls and boys ages 6 an up thru high school. Registration fee is $135.00 - cash or check only. Non CS residents must Pay an additional $50 for each registration. A copy of a birth certificate and proof of address is required at sign ups. Season runs from November to beginning of February. Please print out the form (go to Documents -> Registration Form), fill out the form and bring to sign up to save time. Coaches and sponsors are needed',
+--  '2022-10-09', GetDate(), null
+--  )
 
 
 -- insert into [dbo].[WebContent]
@@ -1143,3 +1143,30 @@ where ExpirationDate > GetDate()
 -- update webcontent
 -- set body = 'Next season will be summer and will post registrations date in late March - NO SIGNUPS ON DAY OF TRYOUTS - Thank you from CSBC'
 -- where webcontentid = 280
+
+-- insert into [dbo].[WebContent]
+--    (
+--    [CompanyId]
+--       ,[Page]
+--       ,[WebContentTypeId]
+--       ,[Type]
+--       ,[Title]
+--       ,[ContentSequence]
+--       ,[SubTitle]
+--       ,[Location]
+--       ,[DateAndTime]
+--       ,[Body]
+--       ,[ExpirationDate]
+--       ,[ModifiedDate]
+--       ,[ModifiedUser])
+--   values (
+--   1, null, 1, 1, 'Board Meeting', 1,
+--   '',
+--   'CS Gymnasium',
+--   'March 19th, 6:30PM',
+--   '',
+--   '2026-03-20', GetDate(), null
+--   )
+
+  select * from WebContent
+  order by ExpirationDate DESC
