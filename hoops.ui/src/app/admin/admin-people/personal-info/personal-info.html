@@ -7,7 +7,7 @@
       <mat-form-field
         [appearance]="inputStyle"
         class="mat-form-field-density-compact"
-        >
+      >
         <mat-label>Last Name</mat-label>
         <input matInput formControlName="lastName" required />
       </mat-form-field>
@@ -15,7 +15,7 @@
       <mat-form-field
         [appearance]="inputStyle"
         class="mat-form-field-density-compact"
-        >
+      >
         <mat-label>First Name</mat-label>
         <input matInput formControlName="firstName" required />
       </mat-form-field>
@@ -23,129 +23,129 @@
       <mat-form-field
         [appearance]="inputStyle"
         class="mat-form-field-density-compact"
-        >
+      >
         <mat-label>Birth Date</mat-label>
         <input
           matInput
           [matDatepicker]="picker"
           formControlName="birthDate"
           required
-          />
-          <mat-datepicker-toggle matSuffix [for]="picker" />
-          <mat-datepicker #picker />
-        </mat-form-field>
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker" />
+        <mat-datepicker #picker />
+      </mat-form-field>
 
-        <mat-label>Birth Certificate</mat-label>
-        <mat-checkbox formControlName="birthCertificate"
-          >Has Birth Certificate</mat-checkbox
-          >
+      <mat-label>Birth Certificate</mat-label>
+      <mat-checkbox formControlName="birthCertificate"
+        >Has Birth Certificate</mat-checkbox
+      >
 
-          <mat-label>Gender</mat-label>
-          <mat-radio-group formControlName="gender">
-            <mat-radio-button value="M">Male</mat-radio-button>
-            <mat-radio-button value="F">Female</mat-radio-button>
-            <!-- <mat-radio-button value="other">Other</mat-radio-button> -->
-          </mat-radio-group>
+      <mat-label>Gender</mat-label>
+      <mat-radio-group formControlName="gender">
+        <mat-radio-button value="M">Male</mat-radio-button>
+        <mat-radio-button value="F">Female</mat-radio-button>
+        <!-- <mat-radio-button value="other">Other</mat-radio-button> -->
+      </mat-radio-group>
 
-          <mat-form-field [appearance]="inputStyle">
-            <mat-label>Cell Phone</mat-label>
-            <input matInput formControlName="cellPhone" />
-          </mat-form-field>
+      <mat-form-field [appearance]="inputStyle">
+        <mat-label>Cell Phone</mat-label>
+        <input matInput formControlName="cellPhone" />
+      </mat-form-field>
 
-          <mat-form-field [appearance]="inputStyle">
-            <mat-label>Work Phone</mat-label>
-            <input matInput formControlName="workPhone" />
-          </mat-form-field>
+      <mat-form-field [appearance]="inputStyle">
+        <mat-label>Work Phone</mat-label>
+        <input matInput formControlName="workPhone" />
+      </mat-form-field>
 
-          <mat-form-field [appearance]="inputStyle">
-            <mat-label>Grade</mat-label>
-            <input matInput type="number" formControlName="grade" />
-          </mat-form-field>
+      <mat-form-field [appearance]="inputStyle">
+        <mat-label>Grade</mat-label>
+        <input matInput type="number" formControlName="grade" />
+      </mat-form-field>
 
-          <mat-form-field [appearance]="inputStyle">
-            <mat-label>School Name</mat-label>
-            <input matInput formControlName="schoolName" />
-          </mat-form-field>
-          <div class="grid gap-4 mt-4">
-            <div id="playerInfo" class="grid grid-cols-3 border p-1 gap-x-4">
-              <div class="flex items-center">
-                <mat-checkbox formControlName="currentBM">
-                  Current BM
-                </mat-checkbox>
-              </div>
-              <div class="flex items-center">
-                <mat-checkbox formControlName="playsUp" class="items-center mr-2">
-                  Plays Up
-                </mat-checkbox>
-              </div>
-            </div>
-
-            <div id="personType" class="grid grid-cols-3 border p-1 gap-x-4">
-              <div class="flex items-center">
-                <mat-checkbox formControlName="player"> Player </mat-checkbox>
-              </div>
-              <div class="flex items-center">
-                <mat-checkbox formControlName="coach"> Coach </mat-checkbox>
-              </div>
-              <div class="flex items-center">
-                <mat-checkbox formControlName="parent"> Parent </mat-checkbox>
-              </div>
-            </div>
+      <mat-form-field [appearance]="inputStyle">
+        <mat-label>School Name</mat-label>
+        <input matInput formControlName="schoolName" />
+      </mat-form-field>
+      <div class="grid gap-4 mt-4">
+        <div id="playerInfo" class="grid grid-cols-3 border p-1 gap-x-4">
+          <div class="flex items-center">
+            <mat-checkbox formControlName="currentBM">
+              Current BM
+            </mat-checkbox>
           </div>
-          <div
-            id="volunteerInfo"
-            class="grid grid-cols-3 gap-2 border p-1 mt-4"
-            formArrayName="volunteerCheckboxes"
-            >
-            @for (volunteer of volunteers; track volunteer; let i = $index) {
-              <div
-                class="flex items-center"
-                >
-                <mat-checkbox [formControlName]="i" class="flex items-center">
-                  {{ volunteer.name }}
-                </mat-checkbox>
-              </div>
-            }
+          <div class="flex items-center">
+            <mat-checkbox formControlName="playsUp" class="items-center mr-2">
+              Plays Up
+            </mat-checkbox>
           </div>
-          <mat-form-field [appearance]="inputStyle">
-            <mat-label>Comments</mat-label>
-            <textarea matInput formControlName="comments" rows="3"></textarea>
-          </mat-form-field>
-        </mat-card-content>
-        <mat-card-actions>
-          <button
-            mat-raised-button
-            color="primary"
-            type="submit"
-            [disabled]="!personalInfoForm.valid || !personalInfoForm.dirty"
-            >
-            Save
-          </button>
-          <button type="button" mat-raised-button color="warn" (click)="onDelete()">Delete</button>
-          <button
-            type="button"
-            mat-raised-button
-            [routerLink]="['/admin/people']"
-            color="primary"
-            >
-            Cancel
-          </button>
-          <button
-            type="button"
-            mat-raised-button
-            (click)="onRegister()"
-            color="primary"
-            >
-            Register
-          </button>
-          <button
-            type="button"
-            mat-raised-button
-            (click)="onCreateUser()"
-            color="accent"
-            >
-            {{ userButtonText() }}
-          </button>
-        </mat-card-actions>
-      </mat-card>
-    </form>
+        </div>
+
+        <div id="personType" class="grid grid-cols-3 border p-1 gap-x-4">
+          <div class="flex items-center">
+            <mat-checkbox formControlName="player"> Player </mat-checkbox>
+          </div>
+          <div class="flex items-center">
+            <mat-checkbox formControlName="coach"> Coach </mat-checkbox>
+          </div>
+          <div class="flex items-center">
+            <mat-checkbox formControlName="parent"> Parent </mat-checkbox>
+          </div>
+        </div>
+      </div>
+      <div
+        id="volunteerInfo"
+        class="grid grid-cols-3 gap-2 border p-1 mt-4"
+        formArrayName="volunteerCheckboxes"
+      >
+        @for (volunteer of volunteers; track volunteer; let i = $index) {
+        <div class="flex items-center">
+          <mat-checkbox [formControlName]="i" class="flex items-center">
+            {{ volunteer.name }}
+          </mat-checkbox>
+        </div>
+        }
+      </div>
+      <mat-form-field [appearance]="inputStyle" class="w-full">
+        <mat-label>Comments</mat-label>
+        <textarea matInput formControlName="comments" rows="3"></textarea>
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="!personalInfoForm.valid || !personalInfoForm.dirty"
+      >
+        Save
+      </button>
+      <button type="button" mat-raised-button color="warn" (click)="onDelete()">
+        Delete
+      </button>
+      <button
+        type="button"
+        mat-raised-button
+        [routerLink]="['/admin/people']"
+        color="primary"
+      >
+        Cancel
+      </button>
+      <button
+        type="button"
+        mat-raised-button
+        (click)="onRegister()"
+        color="primary"
+      >
+        Register
+      </button>
+      <button
+        type="button"
+        mat-raised-button
+        (click)="onCreateUser()"
+        color="accent"
+      >
+        {{ userButtonText() }}
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</form>
