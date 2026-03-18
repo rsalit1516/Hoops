@@ -205,7 +205,7 @@ jobs:
         id: selectapp
         run: |
           if [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
-            APP_DEFAULT="hoops-functions-dev"; RG_DEFAULT="csbc-dev"
+            APP_DEFAULT="hoops-functions-dev"; RG_DEFAULT="Default-Web-US"
             KV_URI_DEFAULT="https://hoops-dev-kv.vault.azure.net/"
             APP_OVERRIDE="${{ vars.FUNCTION_APP_NAME_DEV }}"; RG_OVERRIDE="${{ vars.FUNCTION_RG_DEV }}"
             ENV_NAME="dev"
