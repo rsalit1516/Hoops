@@ -1,6 +1,10 @@
 name: Deploy Azure Functions
 
 on:
+  push:
+    branches:
+      - develop
+      - master
   workflow_dispatch:
 
 permissions:
@@ -81,7 +85,9 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
-    environment: dev
+    # prod environment requires manual approval via GitHub environment protection rules
+    # dev environment deploys automatically
+    environment: ${{ github.ref == 'refs/heads/master' && 'prod' || 'dev' }}
     steps:
       - name: Download ZIP artifact
         uses: actions/download-artifact@v4
@@ -185,7 +191,7 @@ jobs:
           if ! az account show -o table; then
             {
               echo "## Azure Login Failed";
-              echo "- Check federated credential subject (should match environment: dev)";
+              echo "- Check federated credential subject (should match environment: dev or prod)";
               echo "- Ensure id-token: write permission is set at workflow level";
               echo "- Confirm AZURE_CLIENT_ID / TENANT_ID / SUBSCRIPTION_ID environment secrets exist";
             } >> $GITHUB_STEP_SUMMARY
@@ -200,16 +206,22 @@ jobs:
         run: |
           if [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
             APP_DEFAULT="hoops-functions-dev"; RG_DEFAULT="csbc-dev"
+            KV_URI_DEFAULT="https://hoops-dev-kv.vault.azure.net/"
             APP_OVERRIDE="${{ vars.FUNCTION_APP_NAME_DEV }}"; RG_OVERRIDE="${{ vars.FUNCTION_RG_DEV }}"
+            ENV_NAME="dev"
           else
-            APP_DEFAULT="hoops-functions-prod"; RG_DEFAULT="csbc-prod"
+            APP_DEFAULT="hoops-functions-prod"; RG_DEFAULT="hoops-prod-rg"
+            KV_URI_DEFAULT="https://hoops-prod-kv.vault.azure.net/"
             APP_OVERRIDE="${{ vars.FUNCTION_APP_NAME_PROD }}"; RG_OVERRIDE="${{ vars.FUNCTION_RG_PROD }}"
+            ENV_NAME="prod"
           fi
           APP_NAME=${APP_OVERRIDE:-$APP_DEFAULT}
           RG_NAME=${RG_OVERRIDE:-$RG_DEFAULT}
-          echo "Using app: $APP_NAME, resource group: $RG_NAME"
+          echo "Using app: $APP_NAME, resource group: $RG_NAME, environment: $ENV_NAME"
           echo "app_name=$APP_NAME" >> $GITHUB_OUTPUT
           echo "resource_group=$RG_NAME" >> $GITHUB_OUTPUT
+          echo "kv_uri=$KV_URI_DEFAULT" >> $GITHUB_OUTPUT
+          echo "env_name=$ENV_NAME" >> $GITHUB_OUTPUT
 
       - name: Verify Resource Group exists
         run: |
@@ -222,7 +234,9 @@ jobs:
             --resource-group ${{ steps.selectapp.outputs.resource_group }} \
             -o table
 
-      - name: Validate required secrets
+      # Dev only: prod connection string is provided by Key Vault
+      - name: Validate required secrets (dev only)
+        if: steps.selectapp.outputs.env_name == 'dev'
         shell: bash
         run: |
           [ -n "${{ secrets.HOOPS_CONNECTION_STRING }}" ] && echo "HOOPS_CONNECTION_STRING: set" || (echo "HOOPS_CONNECTION_STRING: MISSING (set environment secret for dev)" >&2; exit 1)
@@ -235,20 +249,24 @@ jobs:
           ls -lah deploy.zip
           unzip -t deploy.zip || true
 
-      - name: Deploy via Azure CLI (config-zip)
+      # Use az functionapp deploy (supports FlexConsumption; config-zip uses Kudu which is disabled on FC1)
+      - name: Deploy via Azure CLI
         run: |
-          echo "Deploying deploy.zip via config-zip..."
-          az functionapp deployment source config-zip \
+          echo "Deploying deploy.zip to ${{ steps.selectapp.outputs.app_name }}..."
+          az functionapp deploy \
             --name ${{ steps.selectapp.outputs.app_name }} \
             --resource-group ${{ steps.selectapp.outputs.resource_group }} \
-            --src deploy.zip
+            --src-path deploy.zip \
+            --type zip
 
       - name: Show deployment logs (Kudu)
         if: always()
         run: |
           echo "If deployment failed, check the Function App's Log stream in the portal for startup errors."
 
-      - name: Configure Function App Settings
+      # Dev: set all settings including connection string (not stored in Key Vault for dev)
+      - name: Configure Function App Settings (dev)
+        if: steps.selectapp.outputs.env_name == 'dev'
         run: |
           az functionapp config appsettings set \
             --name ${{ steps.selectapp.outputs.app_name }} \
@@ -258,8 +276,22 @@ jobs:
               "FUNCTIONS_EXTENSION_VERSION=~4" \
               "AzureWebJobsFeatureFlags=EnableOpenApi" \
               "CompanySettings__DefaultCompanyId=1" \
-              "KeyVaultUri=https://hoops-dev-kv.vault.azure.net/" \
+              "KeyVaultUri=${{ steps.selectapp.outputs.kv_uri }}" \
               "ConnectionStrings__hoopsContext=${{ secrets.HOOPS_CONNECTION_STRING }}"
+
+      # Prod: connection string is provided by Key Vault — do not set it here
+      - name: Configure Function App Settings (prod)
+        if: steps.selectapp.outputs.env_name == 'prod'
+        run: |
+          az functionapp config appsettings set \
+            --name ${{ steps.selectapp.outputs.app_name }} \
+            --resource-group ${{ steps.selectapp.outputs.resource_group }} \
+            --settings \
+              "FUNCTIONS_WORKER_RUNTIME=dotnet-isolated" \
+              "FUNCTIONS_EXTENSION_VERSION=~4" \
+              "AzureWebJobsFeatureFlags=EnableOpenApi" \
+              "CompanySettings__DefaultCompanyId=1" \
+              "KeyVaultUri=${{ steps.selectapp.outputs.kv_uri }}"
 
       - name: Verify discovered functions (non-blocking)
         id: verify_functions
@@ -342,10 +374,20 @@ jobs:
 
       - name: Configure CORS
         run: |
-          for ORIGIN in \
-            "https://thankful-pond-090ec730f.4.azurestaticapps.net" \
-            "http://localhost:4200" \
-            "https://localhost:4200"; do
+          if [[ "${{ steps.selectapp.outputs.env_name }}" == "prod" ]]; then
+            ORIGINS=(
+              "https://happy-sky-01a657c0f.1.azurestaticapps.net"
+              "https://csbchoops.com"
+              "https://www.csbchoops.com"
+            )
+          else
+            ORIGINS=(
+              "https://thankful-pond-090ec730f.4.azurestaticapps.net"
+              "http://localhost:4200"
+              "https://localhost:4200"
+            )
+          fi
+          for ORIGIN in "${ORIGINS[@]}"; do
             echo "Adding CORS origin: $ORIGIN"
             az functionapp cors add \
               --name ${{ steps.selectapp.outputs.app_name }} \
@@ -369,20 +411,22 @@ jobs:
             --name "${{ steps.selectapp.outputs.app_name }}/web" \
             --query "properties.cors" -o jsonc
 
-      - name: Enable Managed Identity and Grant Key Vault Access
+      # Dev only: prod managed identity and Key Vault access are configured manually via RBAC
+      - name: Grant Key Vault Access (dev only)
+        if: steps.selectapp.outputs.env_name == 'dev'
         run: |
-          # Enable system-assigned managed identity
+          # Ensure system-assigned managed identity is enabled
           az functionapp identity assign \
             --name ${{ steps.selectapp.outputs.app_name }} \
             --resource-group ${{ steps.selectapp.outputs.resource_group }}
 
-          # Get the principal ID of the managed identity 
+          # Get the principal ID of the managed identity
           PRINCIPAL_ID=$(az functionapp identity show \
             --name ${{ steps.selectapp.outputs.app_name }} \
             --resource-group ${{ steps.selectapp.outputs.resource_group }} \
             --query principalId -o tsv)
 
-          # Grant Key Vault access
+          # Grant Key Vault access (access policy model for dev)
           az keyvault set-policy \
             --name hoops-dev-kv \
             --object-id $PRINCIPAL_ID \
