@@ -277,7 +277,8 @@ jobs:
               "AzureWebJobsFeatureFlags=EnableOpenApi" \
               "CompanySettings__DefaultCompanyId=1" \
               "KeyVaultUri=${{ steps.selectapp.outputs.kv_uri }}" \
-              "ConnectionStrings__hoopsContext=${{ secrets.HOOPS_CONNECTION_STRING }}"
+              "ConnectionStrings__hoopsContext=${{ secrets.HOOPS_CONNECTION_STRING }}" \
+              "WEBSITE_CORS_SUPPORT_CREDENTIALS=true"
 
       # Prod: connection string is provided by Key Vault — do not set it here
       - name: Configure Function App Settings (prod)
@@ -291,7 +292,8 @@ jobs:
               "FUNCTIONS_EXTENSION_VERSION=~4" \
               "AzureWebJobsFeatureFlags=EnableOpenApi" \
               "CompanySettings__DefaultCompanyId=1" \
-              "KeyVaultUri=${{ steps.selectapp.outputs.kv_uri }}"
+              "KeyVaultUri=${{ steps.selectapp.outputs.kv_uri }}" \
+              "WEBSITE_CORS_SUPPORT_CREDENTIALS=true"
 
       - name: Verify discovered functions (non-blocking)
         id: verify_functions
@@ -395,25 +397,18 @@ jobs:
               --allowed-origins "$ORIGIN" || echo "Origin $ORIGIN may already exist; continuing."
           done
 
-      - name: Enable CORS credentials support
-        shell: bash
-        run: |
-          SUB=$(az account show --query id -o tsv)
-          RG="${{ steps.selectapp.outputs.resource_group }}"
-          APP="${{ steps.selectapp.outputs.app_name }}"
-          az resource update \
-            --ids "/subscriptions/$SUB/resourceGroups/$RG/providers/Microsoft.Web/sites/$APP/config/web" \
-            --set properties.cors.supportsCredentials=true
-
       - name: Show current CORS settings
-        shell: bash
         run: |
-          SUB=$(az account show --query id -o tsv)
-          RG="${{ steps.selectapp.outputs.resource_group }}"
-          APP="${{ steps.selectapp.outputs.app_name }}"
-          az resource show \
-            --ids "/subscriptions/$SUB/resourceGroups/$RG/providers/Microsoft.Web/sites/$APP/config/web" \
-            --query "properties.cors" -o jsonc
+          echo "CORS allowed origins:"
+          az functionapp cors show \
+            --name ${{ steps.selectapp.outputs.app_name }} \
+            --resource-group ${{ steps.selectapp.outputs.resource_group }}
+          echo "CORS credentials support:"
+          az functionapp config appsettings list \
+            --name ${{ steps.selectapp.outputs.app_name }} \
+            --resource-group ${{ steps.selectapp.outputs.resource_group }} \
+            --query "[?name=='WEBSITE_CORS_SUPPORT_CREDENTIALS'].{Name:name,Value:value}" \
+            -o table
 
       # Dev only: prod managed identity and Key Vault access are configured manually via RBAC
       - name: Grant Key Vault Access (dev only)

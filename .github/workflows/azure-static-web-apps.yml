@@ -35,6 +35,10 @@ jobs:
         run: npm install --legacy-peer-deps
         working-directory: ./hoops.ui
 
+      - name: Run Angular unit tests
+        run: npx ng test csbc --watch=false --browsers=ChromeHeadless
+        working-directory: ./hoops.ui
+
       - name: Select build configuration
         id: config
         run: |
