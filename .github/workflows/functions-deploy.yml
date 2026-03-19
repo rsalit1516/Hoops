@@ -418,6 +418,7 @@ jobs:
       # Dev only: prod managed identity and Key Vault access are configured manually via RBAC
       - name: Grant Key Vault Access (dev only)
         if: steps.selectapp.outputs.env_name == 'dev'
+        shell: bash
         run: |
           # Ensure system-assigned managed identity is enabled
           az functionapp identity assign \
@@ -430,8 +431,10 @@ jobs:
             --resource-group ${{ steps.selectapp.outputs.resource_group }} \
             --query principalId -o tsv)
 
-          # Grant Key Vault access (access policy model for dev)
-          az keyvault set-policy \
-            --name hoops-dev-kv \
-            --object-id $PRINCIPAL_ID \
-            --secret-permissions get list
+          # hoops-dev-kv uses RBAC — assign Key Vault Secrets User role
+          KV_ID=$(az keyvault show --name hoops-dev-kv --query id -o tsv)
+          az role assignment create \
+            --assignee-object-id "$PRINCIPAL_ID" \
+            --assignee-principal-type ServicePrincipal \
+            --role "Key Vault Secrets User" \
+            --scope "$KV_ID" || echo "Role assignment may already exist; continuing."
