@@ -81,11 +81,14 @@ describe('PlayerList', () => {
 
   beforeEach(async () => {
     mockRouter = jasmine.createSpyObj('Router', ['navigate']);
-    mockSeasonService = jasmine.createSpyObj('SeasonService', ['fetchSeasons'], {
-      selectedSeason: signal(mockSeason)
+    mockSeasonService = jasmine.createSpyObj('SeasonService', ['fetchSeasons', 'fetchCurrentSeason'], {
+      selectedSeason: signal(mockSeason),
+      currentSeason: signal(mockSeason),
+      seasons: [mockSeason],
     });
     mockDivisionService = jasmine.createSpyObj('DivisionService', [], {
-      selectedDivision: signal(mockDivision)
+      selectedDivision: signal(mockDivision),
+      seasonDivisions: signal([mockDivision]),
     });
     mockLoggerService = jasmine.createSpyObj('LoggerService', ['info', 'warn', 'error', 'debug']);
 

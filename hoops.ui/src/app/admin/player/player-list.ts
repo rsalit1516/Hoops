@@ -49,20 +49,12 @@ export class PlayerList implements OnInit {
   @ViewChild(MatSort) sort!: MatSort;
 
   constructor() {
-    // React to season changes
+    // Single effect tracking both season and division to avoid duplicate requests on init
     effect(() => {
       const season = this.seasonService.selectedSeason();
-      if (season?.seasonId) {
-        this.logger.info('Season changed, loading players:', season);
-        this.loadPlayers();
-      }
-    });
-
-    // React to division changes
-    effect(() => {
       const division = this.divisionService.selectedDivision();
-      this.logger.info('Division changed, loading players:', division);
-      if (this.seasonService.selectedSeason()?.seasonId) {
+      this.logger.info('Season/division changed, loading players:', season, division);
+      if (season?.seasonId) {
         this.loadPlayers();
       }
     });

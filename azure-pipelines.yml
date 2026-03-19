@@ -5,6 +5,12 @@ trigger:
       - master
       - main
 
+pr:
+  branches:
+    include:
+      - develop
+      - master
+
 variables:
   # Agent/Tooling
   vmImage: "ubuntu-latest"
@@ -88,8 +94,8 @@ stages:
             condition: succeededOrFailed()
             inputs:
               testResultsFormat: "JUnit"
-              testResultsFiles: "hoops.ui/test-results.xml"
-              failTaskOnFailedTests: false
+              testResultsFiles: "hoops.ui/test-results/test-results.xml"
+              failTaskOnFailedTests: true
 
           - task: PublishCodeCoverageResults@2
             displayName: "Publish Angular code coverage"

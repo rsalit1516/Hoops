@@ -58,7 +58,8 @@
       "Bash(find:*)",
       "Bash(cd:*)",
       "Bash(dotnet nuget locals all --list)",
-      "Bash(wc:*)"
+      "Bash(wc:*)",
+      "Bash(tail:*)"
     ],
     "deny": [],
     "ask": []

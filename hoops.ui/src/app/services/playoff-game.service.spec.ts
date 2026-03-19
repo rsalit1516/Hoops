@@ -1,9 +1,11 @@
 import { PlayoffGameService } from './playoff-game.service';
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { signal } from '@angular/core';
 import { SeasonService } from './season.service';
 import { DivisionService } from './division.service';
 import { DataService } from './data.service';
+import { Season } from '../domain/season';
 
 describe('PlayoffGameService - Time Formatting', () => {
   let service: PlayoffGameService;
@@ -13,7 +15,7 @@ describe('PlayoffGameService - Time Formatting', () => {
       imports: [HttpClientTestingModule],
       providers: [
         PlayoffGameService,
-        { provide: SeasonService, useValue: { selectedSeason: undefined } },
+        { provide: SeasonService, useValue: { selectedSeason: signal<Season | undefined>(undefined) } },
         {
           provide: DivisionService,
           useValue: { selectedDivision: (): any => undefined },

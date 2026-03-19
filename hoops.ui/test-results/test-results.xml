@@ -1,92 +1,806 @@
 <?xml version="1.0"?>
-<testsuite name="Chrome Headless 145.0.0.0 (Windows 10)" package="unit" timestamp="2026-03-13T15:32:54" id="0" hostname="Rich-Think" tests="82" errors="0" failures="0" time="0.254">
+<testsuite name="Chrome Headless 146.0.0.0 (Windows 10)" package="unit" timestamp="2026-03-19T21:08:06" id="0" hostname="Rich-Think" tests="243" errors="0" failures="42" time="18.993">
   <properties>
-    <property name="browser.fullName" value="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/145.0.0.0 Safari/537.36"/>
+    <property name="browser.fullName" value="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/146.0.0.0 Safari/537.36"/>
   </properties>
-  <testcase name="AuthService when no stored session (HTTP path) should be created" time="0.026" classname=".AuthService when no stored session (HTTP path)"/>
-  <testcase name="AuthService when no stored session (HTTP path) isLoggedIn returns false when no user is set" time="0.004" classname=".AuthService when no stored session (HTTP path) isLoggedIn"/>
-  <testcase name="AuthService when no stored session (HTTP path) isLoggedIn returns true after a user is set" time="0.004" classname=".AuthService when no stored session (HTTP path) isLoggedIn"/>
-  <testcase name="AuthService when no stored session (HTTP path) isAdmin returns false when no user" time="0.005" classname=".AuthService when no stored session (HTTP path) isAdmin"/>
-  <testcase name="AuthService when no stored session (HTTP path) isAdmin returns false for userType 1 (regular user)" time="0.003" classname=".AuthService when no stored session (HTTP path) isAdmin"/>
-  <testcase name="AuthService when no stored session (HTTP path) isAdmin returns true for userType 2 (admin)" time="0.004" classname=".AuthService when no stored session (HTTP path) isAdmin"/>
-  <testcase name="AuthService when no stored session (HTTP path) isAdmin returns true for userType 3 (super-admin)" time="0.004" classname=".AuthService when no stored session (HTTP path) isAdmin"/>
+  <testcase name="DirectorDetail should create" time="0.408" classname=".DirectorDetail">
+    <failure type="">ɵNotFound: NG0201: No provider found for `ActivatedRoute`. Source: Standalone[DirectorDetail2]. Find more at https://v21.angular.dev/errors/NG0201
+error properties: Object({ code: -201, ngErrorCode: -201, ngErrorMessage: 'No provider found for `ActivatedRoute`.', ngTokenPath: [ 'ActivatedRoute' ] })
+ɵNotFound: NG0201: No provider found for `ActivatedRoute`. Source: Standalone[DirectorDetail2]. Find more at https://v21.angular.dev/errors/NG0201
+    at createRuntimeError (http://localhost:9876/k8-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/errors_di.ts:130:17)
+    at NullInjector.get (http://localhost:9876/k8-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/null_injector.ts:20:21)
+    at R3Injector.get (http://localhost:9876/k8-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/r3_injector.ts:383:27)
+    at R3Injector.get (http://localhost:9876/k8-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/r3_injector.ts:383:27)
+    at R3Injector.get (http://localhost:9876/k8-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/r3_injector.ts:383:27)
+    at ChainedInjector.get (http://localhost:9876/k8-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/chained_injector.ts:43:32)
+    at lookupTokenUsingModuleInjector (http://localhost:9876/k8-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/di.ts:426:64)
+    at getOrCreateInjectable (http://localhost:9876/k8-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/di.ts:493:10)
+    at injectInjectorOnly (http://localhost:9876/k8-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/di.ts:58:17)
+    at ɵɵinject (http://localhost:9876/k8-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/injector_compatibility.ts:144:40)
+</failure>
+  </testcase>
+  <testcase name="DirectorFiltersComponent should create" time="0.073" classname=".DirectorFiltersComponent"/>
+  <testcase name="DirectorForm should create" time="0.04" classname=".DirectorForm"/>
+  <testcase name="DirectorList should create" time="0.025" classname=".DirectorList">
+    <failure type="">ɵNotFound: NG0201: No provider found for `ActivatedRoute`. Source: Standalone[DirectorList2]. Find more at https://v21.angular.dev/errors/NG0201
+error properties: Object({ code: -201, ngErrorCode: -201, ngErrorMessage: 'No provider found for `ActivatedRoute`.', ngTokenPath: [ 'ActivatedRoute' ] })
+ɵNotFound: NG0201: No provider found for `ActivatedRoute`. Source: Standalone[DirectorList2]. Find more at https://v21.angular.dev/errors/NG0201
+    at createRuntimeError (http://localhost:9876/k8-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/errors_di.ts:130:17)
+    at NullInjector.get (http://localhost:9876/k8-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/null_injector.ts:20:21)
+    at R3Injector.get (http://localhost:9876/k8-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/r3_injector.ts:383:27)
+    at R3Injector.get (http://localhost:9876/k8-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/r3_injector.ts:383:27)
+    at R3Injector.get (http://localhost:9876/k8-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/r3_injector.ts:383:27)
+    at ChainedInjector.get (http://localhost:9876/k8-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/chained_injector.ts:43:32)
+    at lookupTokenUsingModuleInjector (http://localhost:9876/k8-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/di.ts:426:64)
+    at getOrCreateInjectable (http://localhost:9876/k8-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/di.ts:493:10)
+    at injectInjectorOnly (http://localhost:9876/k8-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/di.ts:58:17)
+    at ɵɵinject (http://localhost:9876/k8-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/di/injector_compatibility.ts:144:40)
+</failure>
+  </testcase>
+  <testcase name="AdminGamesPlayoffsDetail - Date/Time Pickers should create" time="0.069" classname=".AdminGamesPlayoffsDetail - Date/Time Pickers"/>
+  <testcase name="AdminGamesPlayoffsDetail - Date/Time Pickers should have form controls for gameDate and gameTime as Date objects" time="0.034" classname=".AdminGamesPlayoffsDetail - Date/Time Pickers"/>
+  <testcase name="AdminGamesPlayoffsDetail - Date/Time Pickers should set Date objects in form when editing existing record" time="0.064" classname=".AdminGamesPlayoffsDetail - Date/Time Pickers"/>
+  <testcase name="AdminGamesPlayoffsDetail - Date/Time Pickers should combine date and time when saving" time="0.098" classname=".AdminGamesPlayoffsDetail - Date/Time Pickers"/>
+  <testcase name="AdminGamesPlayoffsDetail - Date/Time Pickers should have isFormDirty method for PendingChangesGuard" time="0.049" classname=".AdminGamesPlayoffsDetail - Date/Time Pickers"/>
+  <testcase name="HouseholdFilters should create" time="0.053" classname=".HouseholdFilters"/>
+  <testcase name="HouseholdFilters should initialize with letter A" time="0.029" classname=".HouseholdFilters"/>
+  <testcase name="HouseholdFilters should emit filters on letter change" time="5.035" classname=".HouseholdFilters">
+    <failure type="">Uncaught [object Object] thrown
+</failure>
+    <failure type="">Error: Timeout - Async function did not complete within 5000ms (set by jasmine.DEFAULT_TIMEOUT_INTERVAL)
+    at &lt;Jasmine&gt;
+</failure>
+  </testcase>
+  <testcase name="HouseholdFilters should clear filters" time="0.019" classname=".HouseholdFilters"/>
+  <testcase name="PeopleFilters should create" time="0.027" classname=".PeopleFilters"/>
+  <testcase name="PeopleFilters should initialize with letter A" time="0.015" classname=".PeopleFilters"/>
+  <testcase name="PeopleFilters should emit filters on letter change" time="5.028" classname=".PeopleFilters">
+    <failure type="">Uncaught [object Object] thrown
+</failure>
+    <failure type="">Error: Timeout - Async function did not complete within 5000ms (set by jasmine.DEFAULT_TIMEOUT_INTERVAL)
+    at &lt;Jasmine&gt;
+</failure>
+  </testcase>
+  <testcase name="PeopleFilters should clear filters" time="0.028" classname=".PeopleFilters"/>
+  <testcase name="AdminSeasonDetail should create" time="0.09" classname=".AdminSeasonDetail"/>
+  <testcase name="AlphabeticalSearch should highlight selected letter" time="0.013" classname=".AlphabeticalSearch">
+    <failure type="">Expected false to be true.
+    at &lt;Jasmine&gt;
+    at UserContext.&lt;anonymous&gt; (src/app/admin/admin-shared/alphabetical-search/alphabetical-search.spec.ts:38:70)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
+</failure>
+    <failure type="">Expected false to be true.
+    at &lt;Jasmine&gt;
+    at UserContext.&lt;anonymous&gt; (src/app/admin/admin-shared/alphabetical-search/alphabetical-search.spec.ts:39:69)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
+</failure>
+  </testcase>
+  <testcase name="AlphabeticalSearch should default to A on clear" time="0.009" classname=".AlphabeticalSearch"/>
+  <testcase name="AlphabeticalSearch should update criteria in PeopleService when letter is selected" time="0.008" classname=".AlphabeticalSearch">
+    <failure type="">Expected spy updateSelectedCriteria to have been called with:
+  [ &lt;jasmine.objectContaining(Object({ lastName: 'D' }))&gt; ]
+but it was never called.
+    at &lt;Jasmine&gt;
+    at UserContext.&lt;anonymous&gt; (src/app/admin/admin-shared/alphabetical-search/alphabetical-search.spec.ts:52:44)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
+</failure>
+  </testcase>
+  <testcase name="AdminUserDetail should create" time="0.067" classname=".AdminUserDetail"/>
+  <testcase name="AdminUserDetail should load households on init" time="0.031" classname=".AdminUserDetail">
+    <failure type="">Expected spy HouseholdService.getAllHouseholds to have been called.
+    at &lt;Jasmine&gt;
+    at UserContext.&lt;anonymous&gt; (src/app/admin/admin-users/admin-user-detail/admin-user-detail.spec.ts:96:47)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
+</failure>
+    <failure type="">Expected $.length = 0 to equal 3.
+Expected $[0] = undefined to equal Object({ houseId: 1, name: 'Alpha Household' }).
+Expected $[1] = undefined to equal Object({ houseId: 2, name: 'Beta Household' }).
+Expected $[2] = undefined to equal Object({ houseId: 3, name: 'Gamma Household' }).
+    at &lt;Jasmine&gt;
+    at UserContext.&lt;anonymous&gt; (src/app/admin/admin-users/admin-user-detail/admin-user-detail.spec.ts:97:42)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
+</failure>
+  </testcase>
+  <testcase name="AdminUserDetail should include houseId and peopleId in form configuration" time="0.021" classname=".AdminUserDetail"/>
+  <testcase name="AdminUserDetail should load people when household is selected" time="0.026" classname=".AdminUserDetail">
+    <failure type="">Expected spy PeopleService.getHouseholdMembersObservable to have been called with:
+  [ 1 ]
+but it was never called.
+    at &lt;Jasmine&gt;
+    at UserContext.&lt;anonymous&gt; (src/app/admin/admin-users/admin-user-detail/admin-user-detail.spec.ts:119:57)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
+</failure>
+  </testcase>
+  <testcase name="AdminUserDetail should clear people options when household is deselected" time="0.019" classname=".AdminUserDetail"/>
+  <testcase name="AdminUserDetail should sort people by last name then first name" time="0.021" classname=".AdminUserDetail">
+    <failure type="">TypeError: Cannot read properties of undefined (reading 'lastName')
+    at UserContext.&lt;anonymous&gt; (src/app/admin/admin-users/admin-user-detail/admin-user-detail.spec.ts:167:28)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
+    at ZoneImpl.run (node_modules/zone.js/fesm2015/zone.js:113:43)
+    at runInTestZone (node_modules/zone.js/fesm2015/zone-testing.js:216:38)
+    at UserContext.&lt;anonymous&gt; (node_modules/zone.js/fesm2015/zone-testing.js:234:32)
+    at &lt;Jasmine&gt;
+</failure>
+  </testcase>
+  <testcase name="AdminUserDetail should sort households alphabetically by name" time="0.02" classname=".AdminUserDetail">
+    <failure type="">TypeError: Cannot read properties of undefined (reading 'name')
+    at UserContext.&lt;anonymous&gt; (src/app/admin/admin-users/admin-user-detail/admin-user-detail.spec.ts:188:26)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
+    at ZoneImpl.run (node_modules/zone.js/fesm2015/zone.js:113:43)
+    at runInTestZone (node_modules/zone.js/fesm2015/zone-testing.js:216:38)
+    at UserContext.&lt;anonymous&gt; (node_modules/zone.js/fesm2015/zone-testing.js:234:32)
+    at &lt;Jasmine&gt;
+</failure>
+  </testcase>
+  <testcase name="AdminUserDetail should reset form with empty houseId and peopleId for new user" time="0.023" classname=".AdminUserDetail"/>
+  <testcase name="AdminUsersList should create and render rows" time="0.045" classname=".AdminUsersList">
+    <failure type="">TypeError: this.usersService.loadUsers is not a function
+    at AdminUsersList2.call [as ngOnInit] (src/app/admin/admin-users/admin-users-list/admin-users-list.ts:67:23)
+    at callHookInternal (http://localhost:9876/k8-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/hooks.ts:290:10)
+    at callHook (http://localhost:9876/k8-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/hooks.ts:319:7)
+    at callHooks (http://localhost:9876/k8-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/hooks.ts:270:9)
+    at executeInitAndCheckHooks (http://localhost:9876/k8-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/hooks.ts:205:5)
+    at refreshView (http://localhost:9876/k8-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/change_detection.ts:249:11)
+    at detectChangesInView (http://localhost:9876/k8-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/change_detection.ts:497:5)
+    at detectChangesInViewWhileDirty (http://localhost:9876/k8-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/change_detection.ts:106:5)
+    at detectChangesInternal (http://localhost:9876/k8-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/change_detection.ts:94:5)
+    at ViewRef.detectChanges (http://localhost:9876/k8-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/view_ref.ts:320:5)
+</failure>
+  </testcase>
+  <testcase name="PlayerBalance should create" time="0.013" classname=".PlayerBalance"/>
+  <testcase name="PlayerHistory should create" time="0.006" classname=".PlayerHistory"/>
+  <testcase name="PlayerList should create" time="0.049" classname=".PlayerList"/>
+  <testcase name="PlayerList should load players on init when season is available" time="0.033" classname=".PlayerList"/>
+  <testcase name="PlayerList should update players when season changes" time="0.022" classname=".PlayerList"/>
+  <testcase name="PlayerList should update players when division changes" time="0.02" classname=".PlayerList"/>
+  <testcase name="PlayerList should navigate to player registration on row click" time="0.014" classname=".PlayerList"/>
+  <testcase name="PlayerList should set isLoading to true while fetching" time="0.019" classname=".PlayerList"/>
+  <testcase name="PlayerList should handle HTTP errors gracefully" time="0.02" classname=".PlayerList"/>
+  <testcase name="PlayerList should display player data in correct columns" time="0.046" classname=".PlayerList"/>
+  <testcase name="AdminListDetailShell Component Initialization should create the component" time="0.024" classname=".AdminListDetailShell Component Initialization"/>
+  <testcase name="AdminListDetailShell Component Initialization should have default input values" time="0.004" classname=".AdminListDetailShell Component Initialization"/>
+  <testcase name="AdminListDetailShell Component Initialization should accept custom configuration values" time="0.005" classname=".AdminListDetailShell Component Initialization"/>
+  <testcase name="AdminListDetailShell Component Initialization should initialize with loading state" time="0.007" classname=".AdminListDetailShell Component Initialization"/>
+  <testcase name="AdminListDetailShell Component Initialization should initialize with error state" time="0.007" classname=".AdminListDetailShell Component Initialization"/>
+  <testcase name="AdminListDetailShell Table Display should render the title" time="0.021" classname=".AdminListDetailShell Table Display"/>
+  <testcase name="AdminListDetailShell Table Display should render the add button when showAddButton is true" time="0.022" classname=".AdminListDetailShell Table Display"/>
+  <testcase name="AdminListDetailShell Table Display should not render the add button when showAddButton is false" time="0.025" classname=".AdminListDetailShell Table Display">
+    <failure type="">Expected &lt;button _ngcontent-a-c344620742 mat-raised-button color="primary" class="mdc-button mat-mdc-button-base add-button mdc-button--raised mat-mdc-raised-button mat-primary _mat-animation-noopable" mat-ripple-loader-uninitialized mat-ripple-loader-class-name="mat-mdc-button-ripple"&gt;...&lt;/button&gt; to be falsy.
+    at &lt;Jasmine&gt;
+    at UserContext.&lt;anonymous&gt; (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:129:25)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Table Display should render custom add button text" time="0.022" classname=".AdminListDetailShell Table Display">
+    <failure type="">Expected 'add Add New ' to contain 'Create Director'.
+    at &lt;Jasmine&gt;
+    at UserContext.&lt;anonymous&gt; (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:137:38)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Table Display should render table with correct columns" time="0.026" classname=".AdminListDetailShell Table Display">
+    <failure type="">Expected 0 to be 4.
+    at &lt;Jasmine&gt;
+    at UserContext.&lt;anonymous&gt; (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:142:30)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
+</failure>
+    <failure type="">TypeError: Cannot read properties of undefined (reading 'textContent')
+    at UserContext.&lt;anonymous&gt; (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:144:25)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
+    at ZoneImpl.run (node_modules/zone.js/fesm2015/zone.js:113:43)
+    at runInTestZone (node_modules/zone.js/fesm2015/zone-testing.js:216:38)
+    at UserContext.&lt;anonymous&gt; (node_modules/zone.js/fesm2015/zone-testing.js:234:32)
+    at &lt;Jasmine&gt;
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Table Display should render table rows with data" time="0.022" classname=".AdminListDetailShell Table Display">
+    <failure type="">Expected 0 to be 3.
+    at &lt;Jasmine&gt;
+    at UserContext.&lt;anonymous&gt; (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:152:27)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Table Display should render table cells with correct data" time="0.022" classname=".AdminListDetailShell Table Display">
+    <failure type="">Expected undefined to be 4.
+    at &lt;Jasmine&gt;
+    at UserContext.&lt;anonymous&gt; (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:159:29)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
+</failure>
+    <failure type="">Expected undefined to be '1'.
+    at &lt;Jasmine&gt;
+    at UserContext.&lt;anonymous&gt; (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:160:46)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
+</failure>
+    <failure type="">Expected undefined to be 'John Doe'.
+    at &lt;Jasmine&gt;
+    at UserContext.&lt;anonymous&gt; (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:161:46)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
+</failure>
+    <failure type="">Expected undefined to be 'john@example.com'.
+    at &lt;Jasmine&gt;
+    at UserContext.&lt;anonymous&gt; (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:162:46)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
+</failure>
+    <failure type="">Expected undefined to be 'Active'.
+    at &lt;Jasmine&gt;
+    at UserContext.&lt;anonymous&gt; (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:163:46)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Table Display should render actions column when showActionsColumn is true" time="0.02" classname=".AdminListDetailShell Table Display">
+    <failure type="">Expected null to be truthy.
+    at &lt;Jasmine&gt;
+    at UserContext.&lt;anonymous&gt; (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:171:29)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Table Display should not render actions column when showActionsColumn is false" time="0.02" classname=".AdminListDetailShell Table Display"/>
+  <testcase name="AdminListDetailShell Computed Signals should compute displayedColumns correctly without actions" time="0.004" classname=".AdminListDetailShell Computed Signals"/>
+  <testcase name="AdminListDetailShell Computed Signals should compute displayedColumns correctly with actions" time="0.007" classname=".AdminListDetailShell Computed Signals"/>
+  <testcase name="AdminListDetailShell Computed Signals should filter out invisible columns" time="0.005" classname=".AdminListDetailShell Computed Signals"/>
+  <testcase name="AdminListDetailShell Computed Signals should compute hasFilterContent as false when no filter projected" time="0.006" classname=".AdminListDetailShell Computed Signals"/>
+  <testcase name="AdminListDetailShell Column Configuration should use valueGetter when provided" time="0.03" classname=".AdminListDetailShell Column Configuration">
+    <failure type="">Expected undefined to be 'JOHN DOE'.
+    at &lt;Jasmine&gt;
+    at UserContext.&lt;anonymous&gt; (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:227:46)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Column Configuration should apply custom cellClass when provided" time="0.032" classname=".AdminListDetailShell Column Configuration"/>
+  <testcase name="AdminListDetailShell Column Configuration should apply custom headerClass when provided" time="0.02" classname=".AdminListDetailShell Column Configuration"/>
+  <testcase name="AdminListDetailShell Column Configuration should apply width styles when provided" time="0.021" classname=".AdminListDetailShell Column Configuration">
+    <failure type="">TypeError: Cannot read properties of null (reading 'style')
+    at UserContext.&lt;anonymous&gt; (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:263:21)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
+    at ZoneImpl.run (node_modules/zone.js/fesm2015/zone.js:113:43)
+    at runInTestZone (node_modules/zone.js/fesm2015/zone-testing.js:216:38)
+    at UserContext.&lt;anonymous&gt; (node_modules/zone.js/fesm2015/zone-testing.js:234:32)
+    at &lt;Jasmine&gt;
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Column Configuration should enable sorting for sortable columns" time="0.02" classname=".AdminListDetailShell Column Configuration">
+    <failure type="">Expected 0 to be 3.
+    at &lt;Jasmine&gt;
+    at UserContext.&lt;anonymous&gt; (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:272:38)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Column Configuration should not enable sorting for non-sortable columns" time="0.021" classname=".AdminListDetailShell Column Configuration">
+    <failure type="">TypeError: Cannot read properties of undefined (reading 'querySelector')
+    at UserContext.&lt;anonymous&gt; (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:280:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
+    at ZoneImpl.run (node_modules/zone.js/fesm2015/zone.js:113:43)
+    at runInTestZone (node_modules/zone.js/fesm2015/zone-testing.js:216:38)
+    at UserContext.&lt;anonymous&gt; (node_modules/zone.js/fesm2015/zone-testing.js:234:32)
+    at &lt;Jasmine&gt;
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Event Emissions should emit addClick when add button is clicked" time="0.022" classname=".AdminListDetailShell Event Emissions"/>
+  <testcase name="AdminListDetailShell Event Emissions should emit rowClick when a row is clicked" time="0.016" classname=".AdminListDetailShell Event Emissions">
+    <failure type="">TypeError: Cannot read properties of null (reading 'click')
+    at UserContext.&lt;anonymous&gt; (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:305:16)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
+    at ZoneImpl.run (node_modules/zone.js/fesm2015/zone.js:113:43)
+    at runInTestZone (node_modules/zone.js/fesm2015/zone-testing.js:216:38)
+    at UserContext.&lt;anonymous&gt; (node_modules/zone.js/fesm2015/zone-testing.js:234:32)
+    at &lt;Jasmine&gt;
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Event Emissions should not emit rowClick when rowClickable is false" time="0.017" classname=".AdminListDetailShell Event Emissions">
+    <failure type="">TypeError: Cannot read properties of null (reading 'click')
+    at UserContext.&lt;anonymous&gt; (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:316:16)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
+    at ZoneImpl.run (node_modules/zone.js/fesm2015/zone.js:113:43)
+    at runInTestZone (node_modules/zone.js/fesm2015/zone-testing.js:216:38)
+    at UserContext.&lt;anonymous&gt; (node_modules/zone.js/fesm2015/zone-testing.js:234:32)
+    at &lt;Jasmine&gt;
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Event Emissions should call onRowClick method when row is clicked" time="0.021" classname=".AdminListDetailShell Event Emissions">
+    <failure type="">TypeError: Cannot read properties of null (reading 'click')
+    at UserContext.&lt;anonymous&gt; (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:327:16)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
+    at ZoneImpl.run (node_modules/zone.js/fesm2015/zone.js:113:43)
+    at runInTestZone (node_modules/zone.js/fesm2015/zone-testing.js:216:38)
+    at UserContext.&lt;anonymous&gt; (node_modules/zone.js/fesm2015/zone-testing.js:234:32)
+    at &lt;Jasmine&gt;
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Event Emissions should call onAdd method when add button is clicked" time="0.018" classname=".AdminListDetailShell Event Emissions"/>
+  <testcase name="AdminListDetailShell Loading State should show loading spinner when isLoading is true" time="0.008" classname=".AdminListDetailShell Loading State"/>
+  <testcase name="AdminListDetailShell Loading State should show loading text when isLoading is true" time="0.009" classname=".AdminListDetailShell Loading State"/>
+  <testcase name="AdminListDetailShell Loading State should hide table when isLoading is true" time="0.01" classname=".AdminListDetailShell Loading State"/>
+  <testcase name="AdminListDetailShell Loading State should show table when isLoading is false" time="0.015" classname=".AdminListDetailShell Loading State"/>
+  <testcase name="AdminListDetailShell Error State should show error message when errorMessage is set" time="0.005" classname=".AdminListDetailShell Error State"/>
+  <testcase name="AdminListDetailShell Error State should show error icon when errorMessage is set" time="0.006" classname=".AdminListDetailShell Error State"/>
+  <testcase name="AdminListDetailShell Error State should hide table when errorMessage is set" time="0.006" classname=".AdminListDetailShell Error State"/>
+  <testcase name="AdminListDetailShell Error State should not show error message when errorMessage is null" time="0.016" classname=".AdminListDetailShell Error State"/>
+  <testcase name="AdminListDetailShell Error State should have proper ARIA role for error message" time="0.007" classname=".AdminListDetailShell Error State"/>
+  <testcase name="AdminListDetailShell Empty State should show default empty state when no data" time="0.02" classname=".AdminListDetailShell Empty State"/>
+  <testcase name="AdminListDetailShell Empty State should show empty state icon" time="0.023" classname=".AdminListDetailShell Empty State"/>
+  <testcase name="AdminListDetailShell Empty State should show empty state message" time="0.019" classname=".AdminListDetailShell Empty State"/>
+  <testcase name="AdminListDetailShell Empty State should show empty state hint when showAddButton is true" time="0.016" classname=".AdminListDetailShell Empty State"/>
+  <testcase name="AdminListDetailShell Empty State should not show empty state hint when showAddButton is false" time="0.015" classname=".AdminListDetailShell Empty State">
+    <failure type="">Expected &lt;p _ngcontent-a-c344620742 class="empty-state-hint"&gt;...&lt;/p&gt; to be falsy.
+    at &lt;Jasmine&gt;
+    at UserContext.&lt;anonymous&gt; (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:469:20)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Empty State should show custom add button text in empty state hint" time="0.017" classname=".AdminListDetailShell Empty State">
+    <failure type="">Expected ' Click "Add New" to get started. ' to contain 'Click "Create Director" to get started'.
+    at &lt;Jasmine&gt;
+    at UserContext.&lt;anonymous&gt; (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:477:33)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Pagination should render paginator" time="0.016" classname=".AdminListDetailShell Pagination"/>
+  <testcase name="AdminListDetailShell Pagination should use custom page size options" time="0.019" classname=".AdminListDetailShell Pagination">
+    <failure type="">Expected $.length = 4 to equal 3.
+Expected $[0] = 10 to equal 5.
+Expected $[1] = 25 to equal 10.
+Expected $[2] = 50 to equal 20.
+Unexpected $[3] = 100 in array.
+    at &lt;Jasmine&gt;
+    at UserContext.&lt;anonymous&gt; (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:497:51)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Pagination should use custom default page size" time="0.019" classname=".AdminListDetailShell Pagination">
+    <failure type="">Expected 25 to be 50.
+    at &lt;Jasmine&gt;
+    at UserContext.&lt;anonymous&gt; (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:504:44)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Pagination should use custom aria label" time="0.02" classname=".AdminListDetailShell Pagination">
+    <failure type="">Expected 'Select page' to be 'Custom paginator'.
+    at &lt;Jasmine&gt;
+    at UserContext.&lt;anonymous&gt; (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:512:53)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Pagination should show first/last buttons" time="0.017" classname=".AdminListDetailShell Pagination"/>
+  <testcase name="AdminListDetailShell Sorting and Pagination Integration should wire up sort to dataSource after view init" time="0.026" classname=".AdminListDetailShell Sorting and Pagination Integration"/>
+  <testcase name="AdminListDetailShell Sorting and Pagination Integration should wire up paginator to dataSource after view init" time="0.023" classname=".AdminListDetailShell Sorting and Pagination Integration"/>
+  <testcase name="AdminListDetailShell Sorting and Pagination Integration should handle null dataSource gracefully" time="0.017" classname=".AdminListDetailShell Sorting and Pagination Integration"/>
+  <testcase name="AdminListDetailShell Row Styling should apply clickable-row class when rowClickable is true" time="0.015" classname=".AdminListDetailShell Row Styling">
+    <failure type="">Expected undefined to be true.
+    at &lt;Jasmine&gt;
+    at UserContext.&lt;anonymous&gt; (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:555:56)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Row Styling should not apply clickable-row class when rowClickable is false" time="0.015" classname=".AdminListDetailShell Row Styling">
+    <failure type="">Expected undefined to be false.
+    at &lt;Jasmine&gt;
+    at UserContext.&lt;anonymous&gt; (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:563:56)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Content Projection should project filter content" time="0.021" classname=".AdminListDetailShell Content Projection">
+    <failure type="">Expected null to be truthy.
+    at &lt;Jasmine&gt;
+    at src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:600:27
+    at Generator.next (&lt;anonymous&gt;)
+    at fulfilled (chunk-YFCGYO6H.js:92:24)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Content Projection should show filter section when filter content is projected" time="0.014" classname=".AdminListDetailShell Content Projection">
+    <failure type="">Expected null to be truthy.
+    at &lt;Jasmine&gt;
+    at src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:609:29
+    at Generator.next (&lt;anonymous&gt;)
+    at fulfilled (chunk-YFCGYO6H.js:92:24)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Content Projection should project detail form content" time="0.014" classname=".AdminListDetailShell Content Projection"/>
+  <testcase name="AdminListDetailShell Accessibility should have proper ARIA label on paginator" time="0.014" classname=".AdminListDetailShell Accessibility"/>
+  <testcase name="AdminListDetailShell Accessibility should use custom ARIA label when provided" time="0.016" classname=".AdminListDetailShell Accessibility">
+    <failure type="">Expected 'Select page' to be 'Navigate directors pages'.
+    at &lt;Jasmine&gt;
+    at UserContext.&lt;anonymous&gt; (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:639:53)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
+</failure>
+  </testcase>
+  <testcase name="AdminListDetailShell Accessibility should have role=&quot;alert&quot; on error message" time="0.018" classname=".AdminListDetailShell Accessibility">
+    <failure type="">Expected undefined to be 'alert'.
+    at &lt;Jasmine&gt;
+    at UserContext.&lt;anonymous&gt; (src/app/admin/shared/admin-list-detail-shell/admin-list-detail-shell.spec.ts:647:46)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
+</failure>
+  </testcase>
+  <testcase name="ContentEdit Component Initialization should create" time="0.038" classname=".ContentEdit Component Initialization"/>
+  <testcase name="ContentEdit Component Initialization should initialize with correct default values" time="0.013" classname=".ContentEdit Component Initialization"/>
+  <testcase name="ContentEdit Component Initialization should initialize form with correct structure and validators" time="0.026" classname=".ContentEdit Component Initialization"/>
+  <testcase name="ContentEdit Form Validation should validate title field correctly" time="0.03" classname=".ContentEdit Form Validation"/>
+  <testcase name="ContentEdit Form Validation should validate subtitle field correctly" time="0.022" classname=".ContentEdit Form Validation"/>
+  <testcase name="ContentEdit Form Validation should validate expiration date field correctly" time="0.023" classname=".ContentEdit Form Validation"/>
+  <testcase name="ContentEdit Content Loading and Effects should populate form when content is retrieved" time="0.057" classname=".ContentEdit Content Loading and Effects"/>
+  <testcase name="ContentEdit Content Loading and Effects should set page title correctly for new content" time="0.021" classname=".ContentEdit Content Loading and Effects"/>
+  <testcase name="ContentEdit Content Loading and Effects should set page title correctly for existing content" time="0.021" classname=".ContentEdit Content Loading and Effects"/>
+  <testcase name="ContentEdit Content Loading and Effects should compute content types correctly" time="0.021" classname=".ContentEdit Content Loading and Effects"/>
+  <testcase name="ContentEdit Save Functionality should save content when form is valid and dirty" time="0.022" classname=".ContentEdit Save Functionality"/>
+  <testcase name="ContentEdit Save Functionality should not save content when form is invalid" time="0.021" classname=".ContentEdit Save Functionality"/>
+  <testcase name="ContentEdit Save Functionality should not save content when form is not dirty" time="0.026" classname=".ContentEdit Save Functionality"/>
+  <testcase name="ContentEdit Save Functionality should create WebContent object with correct values when saving" time="0.02" classname=".ContentEdit Save Functionality"/>
+  <testcase name="ContentEdit Save Functionality should handle save error and not navigate" time="0.023" classname=".ContentEdit Save Functionality"/>
+  <testcase name="ContentEdit Save Functionality should reset form after successful save" time="0.02" classname=".ContentEdit Save Functionality"/>
+  <testcase name="ContentEdit Delete Functionality should delete content when webContentId is not 0" time="0.019" classname=".ContentEdit Delete Functionality"/>
+  <testcase name="ContentEdit Delete Functionality should not delete content when webContentId is 0" time="0.02" classname=".ContentEdit Delete Functionality"/>
+  <testcase name="ContentEdit Delete Functionality should handle delete error and not navigate" time="0.019" classname=".ContentEdit Delete Functionality"/>
+  <testcase name="ContentEdit Helper Methods should format text correctly" time="0.02" classname=".ContentEdit Helper Methods"/>
+  <testcase name="ContentEdit Helper Methods should convert values to numbers correctly" time="0.023" classname=".ContentEdit Helper Methods"/>
+  <testcase name="ContentEdit Helper Methods should return correct float label value" time="0.018" classname=".ContentEdit Helper Methods"/>
+  <testcase name="ContentEdit Helper Methods should detect form dirty state correctly" time="0.02" classname=".ContentEdit Helper Methods"/>
+  <testcase name="ContentEdit Helper Methods should get web content type correctly" time="0.022" classname=".ContentEdit Helper Methods"/>
+  <testcase name="ContentEdit Helper Methods should handle input events" time="0.019" classname=".ContentEdit Helper Methods"/>
+  <testcase name="ContentEdit Update Method should update form with content values" time="0.02" classname=".ContentEdit Update Method"/>
+  <testcase name="ContentEdit Update Method should format text and log it" time="0.021" classname=".ContentEdit Update Method"/>
+  <testcase name="ContentEdit Error Handling should have hasError method that returns empty string" time="0.018" classname=".ContentEdit Error Handling"/>
+  <testcase name="AuthGuard should allow activation when logged in" time="0.002" classname=".AuthGuard"/>
+  <testcase name="AuthGuard should redirect to login with returnUrl when not logged in" time="0.001" classname=".AuthGuard"/>
+  <testcase name="AuthGuard should allow load when logged in" time="0.001" classname=".AuthGuard"/>
+  <testcase name="AuthGuard should block load when not logged in" time="0.002" classname=".AuthGuard"/>
+  <testcase name="AuthService when no stored session (HTTP path) should be created" time="0.002" classname=".AuthService when no stored session (HTTP path)"/>
+  <testcase name="AuthService when no stored session (HTTP path) isLoggedIn returns false when no user is set" time="0.001" classname=".AuthService when no stored session (HTTP path) isLoggedIn"/>
+  <testcase name="AuthService when no stored session (HTTP path) isLoggedIn returns true after a user is set" time="0.013" classname=".AuthService when no stored session (HTTP path) isLoggedIn"/>
+  <testcase name="AuthService when no stored session (HTTP path) isAdmin returns false when no user" time="0.002" classname=".AuthService when no stored session (HTTP path) isAdmin"/>
+  <testcase name="AuthService when no stored session (HTTP path) isAdmin returns false for userType 1 (regular user)" time="0.002" classname=".AuthService when no stored session (HTTP path) isAdmin"/>
+  <testcase name="AuthService when no stored session (HTTP path) isAdmin returns true for userType 2 (admin)" time="0.002" classname=".AuthService when no stored session (HTTP path) isAdmin"/>
+  <testcase name="AuthService when no stored session (HTTP path) isAdmin returns true for userType 3 (super-admin)" time="0.003" classname=".AuthService when no stored session (HTTP path) isAdmin"/>
   <testcase name="AuthService when no stored session (HTTP path) canEditGames returns false when no user" time="0.002" classname=".AuthService when no stored session (HTTP path) canEditGames"/>
   <testcase name="AuthService when no stored session (HTTP path) canEditGames returns false when no division selected" time="0.002" classname=".AuthService when no stored session (HTTP path) canEditGames"/>
-  <testcase name="AuthService when no stored session (HTTP path) canEditGames returns true for admin user regardless of division assignment" time="0.003" classname=".AuthService when no stored session (HTTP path) canEditGames"/>
+  <testcase name="AuthService when no stored session (HTTP path) canEditGames returns true for admin user regardless of division assignment" time="0.002" classname=".AuthService when no stored session (HTTP path) canEditGames"/>
   <testcase name="AuthService when no stored session (HTTP path) canEditGames returns false for non-admin user without a matching division" time="0.002" classname=".AuthService when no stored session (HTTP path) canEditGames"/>
   <testcase name="AuthService when no stored session (HTTP path) canEditGames returns true for non-admin user with a matching division" time="0.002" classname=".AuthService when no stored session (HTTP path) canEditGames"/>
-  <testcase name="AuthService when no stored session (HTTP path) initializeAuth (HTTP path) leaves currentUser undefined when server returns null" time="0.011" classname=".AuthService when no stored session (HTTP path) initializeAuth (HTTP path)"/>
-  <testcase name="AuthService when no stored session (HTTP path) setUserState sets currentUser and dispatches a store action" time="0.003" classname=".AuthService when no stored session (HTTP path) setUserState"/>
-  <testcase name="AuthService when no stored session (HTTP path) login POSTs credentials and sets user state on success" time="0.003" classname=".AuthService when no stored session (HTTP path) login"/>
+  <testcase name="AuthService when no stored session (HTTP path) initializeAuth (HTTP path) leaves currentUser undefined when server returns null" time="0.002" classname=".AuthService when no stored session (HTTP path) initializeAuth (HTTP path)"/>
+  <testcase name="AuthService when no stored session (HTTP path) setUserState sets currentUser and dispatches a store action" time="0.002" classname=".AuthService when no stored session (HTTP path) setUserState"/>
+  <testcase name="AuthService when no stored session (HTTP path) login POSTs credentials and sets user state on success" time="0.002" classname=".AuthService when no stored session (HTTP path) login"/>
   <testcase name="AuthService when no stored session (HTTP path) login propagates error on failed login" time="0.002" classname=".AuthService when no stored session (HTTP path) login"/>
-  <testcase name="AuthService when no stored session (HTTP path) logout clears user session after successful logout response" time="0.003" classname=".AuthService when no stored session (HTTP path) logout"/>
-  <testcase name="AuthService when no stored session (HTTP path) logout clears user session even when logout request errors" time="0.002" classname=".AuthService when no stored session (HTTP path) logout"/>
+  <testcase name="AuthService when no stored session (HTTP path) logout clears user session after successful logout response" time="0.001" classname=".AuthService when no stored session (HTTP path) logout"/>
+  <testcase name="AuthService when no stored session (HTTP path) logout clears user session even when logout request errors" time="0.003" classname=".AuthService when no stored session (HTTP path) logout"/>
   <testcase name="AuthService when no stored session (HTTP path) logoutDueToInactivity clears the user session" time="0.002" classname=".AuthService when no stored session (HTTP path) logoutDueToInactivity"/>
   <testcase name="AuthService when no stored session (HTTP path) getSessionInfo delegates to userActivityService" time="0.002" classname=".AuthService when no stored session (HTTP path) getSessionInfo"/>
   <testcase name="AuthService when no stored session (HTTP path) hasValidSession delegates to userActivityService" time="0.001" classname=".AuthService when no stored session (HTTP path) hasValidSession"/>
-  <testcase name="AuthService when no stored session (HTTP path) recordActivity delegates to userActivityService" time="0.003" classname=".AuthService when no stored session (HTTP path) recordActivity"/>
-  <testcase name="AuthService when a stored session exists (localStorage path) restores user from localStorage without making an HTTP call" time="0.001" classname=".AuthService when a stored session exists (localStorage path)"/>
-  <testcase name="AuthService when a stored session exists (localStorage path) calls recordActivity to restart the inactivity timer" time="0.001" classname=".AuthService when a stored session exists (localStorage path)"/>
+  <testcase name="AuthService when no stored session (HTTP path) recordActivity delegates to userActivityService" time="0.002" classname=".AuthService when no stored session (HTTP path) recordActivity"/>
+  <testcase name="AuthService when a stored session exists (localStorage path) restores user from localStorage without making an HTTP call" time="0.003" classname=".AuthService when a stored session exists (localStorage path)"/>
+  <testcase name="AuthService when a stored session exists (localStorage path) calls recordActivity to restart the inactivity timer" time="0.003" classname=".AuthService when a stored session exists (localStorage path)"/>
+  <testcase name="YourService put should make a PUT request with the correct URL and data" time="0.004" classname=".YourService put"/>
+  <testcase name="YourService put should handle errors appropriately" time="0.002" classname=".YourService put"/>
+  <testcase name="YourService put should handle null response" time="0.002" classname=".YourService put"/>
+  <testcase name="YourService put should include custom headers in the request" time="0.003" classname=".YourService put"/>
+  <testcase name="DirectorService should be created" time="0.324" classname=".DirectorService">
+    <failure type="">Error: Expected no open requests, found 1: GET http://localhost:7071/api/Director
+    at _HttpClientTestingBackend.verify (http://localhost:9876/k8-fastbuild-ST-fdfa778d11ba/bin/packages/common/http/testing/src/backend.ts:147:13)
+    at UserContext.&lt;anonymous&gt; (src/app/services/director.service.spec.ts:47:14)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
+    at ZoneImpl.run (node_modules/zone.js/fesm2015/zone.js:113:43)
+    at runInTestZone (node_modules/zone.js/fesm2015/zone-testing.js:216:38)
+    at UserContext.&lt;anonymous&gt; (node_modules/zone.js/fesm2015/zone-testing.js:234:32)
+    at &lt;Jasmine&gt;
+</failure>
+  </testcase>
+  <testcase name="DirectorService fetchDirectors should fetch directors and update signal" time="0.002" classname=".DirectorService fetchDirectors">
+    <failure type="">Error: Expected one matching request for criteria "Match URL: http://localhost:7071/api/Director", found 2 requests.
+    at _HttpClientTestingBackend.expectOne (http://localhost:9876/k8-fastbuild-ST-fdfa778d11ba/bin/packages/common/http/testing/src/backend.ts:101:13)
+    at UserContext.&lt;anonymous&gt; (src/app/services/director.service.spec.ts:58:28)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
+    at ZoneImpl.run (node_modules/zone.js/fesm2015/zone.js:113:43)
+    at runInTestZone (node_modules/zone.js/fesm2015/zone-testing.js:216:38)
+    at UserContext.&lt;anonymous&gt; (node_modules/zone.js/fesm2015/zone-testing.js:234:32)
+    at &lt;Jasmine&gt;
+</failure>
+  </testcase>
+  <testcase name="DirectorService fetchDirectors should handle error when fetching directors" time="0.002" classname=".DirectorService fetchDirectors">
+    <failure type="">Error: Expected one matching request for criteria "Match URL: http://localhost:7071/api/Director", found 2 requests.
+    at _HttpClientTestingBackend.expectOne (http://localhost:9876/k8-fastbuild-ST-fdfa778d11ba/bin/packages/common/http/testing/src/backend.ts:101:13)
+    at UserContext.&lt;anonymous&gt; (src/app/services/director.service.spec.ts:70:28)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
+    at ZoneImpl.run (node_modules/zone.js/fesm2015/zone.js:113:43)
+    at runInTestZone (node_modules/zone.js/fesm2015/zone-testing.js:216:38)
+    at UserContext.&lt;anonymous&gt; (node_modules/zone.js/fesm2015/zone-testing.js:234:32)
+    at &lt;Jasmine&gt;
+</failure>
+  </testcase>
+  <testcase name="DirectorService create should create a new director" time="0.003" classname=".DirectorService create">
+    <failure type="">Error: Expected one matching request for criteria "Match URL: http://localhost:7071/api/Director", found 2 requests.
+    at _HttpClientTestingBackend.expectOne (http://localhost:9876/k8-fastbuild-ST-fdfa778d11ba/bin/packages/common/http/testing/src/backend.ts:101:13)
+    at UserContext.&lt;anonymous&gt; (src/app/services/director.service.spec.ts:103:28)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
+    at ZoneImpl.run (node_modules/zone.js/fesm2015/zone.js:113:43)
+    at runInTestZone (node_modules/zone.js/fesm2015/zone-testing.js:213:38)
+    at UserContext.&lt;anonymous&gt; (node_modules/zone.js/fesm2015/zone-testing.js:231:32)
+    at &lt;Jasmine&gt;
+</failure>
+  </testcase>
+  <testcase name="DirectorService update should update an existing director" time="0.003" classname=".DirectorService update">
+    <failure type="">Error: Expected one matching request for criteria "Match URL: http://localhost:7071/api/Director", found 2 requests.
+    at _HttpClientTestingBackend.expectOne (http://localhost:9876/k8-fastbuild-ST-fdfa778d11ba/bin/packages/common/http/testing/src/backend.ts:101:13)
+    at UserContext.&lt;anonymous&gt; (src/app/services/director.service.spec.ts:139:33)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
+    at ZoneImpl.run (node_modules/zone.js/fesm2015/zone.js:113:43)
+    at runInTestZone (node_modules/zone.js/fesm2015/zone-testing.js:213:38)
+    at UserContext.&lt;anonymous&gt; (node_modules/zone.js/fesm2015/zone-testing.js:231:32)
+    at &lt;Jasmine&gt;
+</failure>
+  </testcase>
+  <testcase name="DirectorService update should update an existing director" time="0.003" classname=".DirectorService update">
+    <failure type="">Error: Expected one matching request for criteria "Match URL: http://localhost:7071/api/Director", found 2 requests.
+    at _HttpClientTestingBackend.expectOne (http://localhost:9876/k8-fastbuild-ST-fdfa778d11ba/bin/packages/common/http/testing/src/backend.ts:101:13)
+    at UserContext.&lt;anonymous&gt; (src/app/services/director.service.spec.ts:139:33)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
+    at ZoneImpl.run (node_modules/zone.js/fesm2015/zone.js:113:43)
+    at runInTestZone (node_modules/zone.js/fesm2015/zone-testing.js:213:38)
+    at UserContext.&lt;anonymous&gt; (node_modules/zone.js/fesm2015/zone-testing.js:231:32)
+    at &lt;Jasmine&gt;
+</failure>
+  </testcase>
+  <testcase name="DirectorService update should handle update errors" time="5.013" classname=".DirectorService update">
+    <failure type="">Error: An asynchronous beforeAll or afterAll function called its 'done' callback more than once.
+(in suite: DirectorService update)
+    at &lt;Jasmine&gt;
+    at _ZoneDelegate.invokeTask (node_modules/zone.js/fesm2015/zone.js:431:33)
+    at ZoneImpl.runTask (node_modules/zone.js/fesm2015/zone.js:161:47)
+    at drainMicroTaskQueue (node_modules/zone.js/fesm2015/zone.js:612:35)
+</failure>
+    <failure type="">Failed: should have failed
+    at &lt;Jasmine&gt;
+    at Object.next (src/app/services/director.service.spec.ts:157:15)
+    at ConsumerObserver.next (node_modules/rxjs/src/internal/Subscriber.ts:155:25)
+    at SafeSubscriber._next (node_modules/rxjs/src/internal/Subscriber.ts:113:22)
+    at SafeSubscriber.next (node_modules/rxjs/src/internal/Subscriber.ts:71:12)
+    at _Observable._subscribe (node_modules/rxjs/src/internal/observable/innerFrom.ts:78:18)
+</failure>
+    <failure type="">Error: Timeout - Async function did not complete within 5000ms (set by jasmine.DEFAULT_TIMEOUT_INTERVAL)
+    at &lt;Jasmine&gt;
+</failure>
+    <failure type="">Error: Expected no open requests, found 2: GET http://localhost:7071/api/Director, GET http://localhost:7071/api/Director
+    at _HttpClientTestingBackend.verify (http://localhost:9876/k8-fastbuild-ST-fdfa778d11ba/bin/packages/common/http/testing/src/backend.ts:147:13)
+    at UserContext.&lt;anonymous&gt; (src/app/services/director.service.spec.ts:47:14)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+    at _ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:2132:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
+    at ZoneImpl.run (node_modules/zone.js/fesm2015/zone.js:113:43)
+    at runInTestZone (node_modules/zone.js/fesm2015/zone-testing.js:216:38)
+    at UserContext.&lt;anonymous&gt; (node_modules/zone.js/fesm2015/zone-testing.js:234:32)
+    at &lt;Jasmine&gt;
+</failure>
+  </testcase>
   <testcase name="DivisionService should be created" time="0.003" classname=".DivisionService"/>
   <testcase name="DivisionService updateSelectedDivision sets the selectedDivision signal" time="0.003" classname=".DivisionService updateSelectedDivision"/>
   <testcase name="DivisionService updateSelectedDivision persists the divisionId to localStorage when seasonId is available" time="0.002" classname=".DivisionService updateSelectedDivision"/>
-  <testcase name="DivisionService updateSelectedDivision updates currentDivision state via setCurrent" time="0.002" classname=".DivisionService updateSelectedDivision"/>
-  <testcase name="DivisionService getSeasonDivisions GETs divisions and updates seasonDivisions signal" time="0.002" classname=".DivisionService getSeasonDivisions"/>
-  <testcase name="DivisionService getSeasonDivisions selects the first division as default when none previously selected" time="0.001" classname=".DivisionService getSeasonDivisions"/>
-  <testcase name="DivisionService getSeasonDivisions preserves an existing selection when it is present in the new data" time="0.002" classname=".DivisionService getSeasonDivisions"/>
+  <testcase name="DivisionService updateSelectedDivision updates currentDivision state via setCurrent" time="0.003" classname=".DivisionService updateSelectedDivision"/>
+  <testcase name="DivisionService getSeasonDivisions GETs divisions and updates seasonDivisions signal" time="0.003" classname=".DivisionService getSeasonDivisions"/>
+  <testcase name="DivisionService getSeasonDivisions selects the first division as default when none previously selected" time="0.002" classname=".DivisionService getSeasonDivisions"/>
+  <testcase name="DivisionService getSeasonDivisions preserves an existing selection when it is present in the new data" time="0.003" classname=".DivisionService getSeasonDivisions"/>
   <testcase name="DivisionService getSeasonDivisions restores selection from localStorage when no existing selection" time="0.003" classname=".DivisionService getSeasonDivisions"/>
-  <testcase name="DivisionService getSeasonDivisions sets seasonDivisions to empty array on HTTP error" time="0.002" classname=".DivisionService getSeasonDivisions"/>
-  <testcase name="DivisionService findEligibleDivision returns undefined when birthDate is missing" time="0.002" classname=".DivisionService findEligibleDivision"/>
-  <testcase name="DivisionService findEligibleDivision returns undefined when gender is missing" time="0.003" classname=".DivisionService findEligibleDivision"/>
+  <testcase name="DivisionService getSeasonDivisions sets seasonDivisions to empty array on HTTP error" time="0.003" classname=".DivisionService getSeasonDivisions"/>
+  <testcase name="DivisionService findEligibleDivision returns undefined when birthDate is missing" time="0.003" classname=".DivisionService findEligibleDivision"/>
+  <testcase name="DivisionService findEligibleDivision returns undefined when gender is missing" time="0.002" classname=".DivisionService findEligibleDivision"/>
   <testcase name="DivisionService findEligibleDivision returns undefined when divisions array is empty" time="0.001" classname=".DivisionService findEligibleDivision"/>
-  <testcase name="DivisionService findEligibleDivision matches the primary gender and date range" time="0.003" classname=".DivisionService findEligibleDivision"/>
-  <testcase name="DivisionService findEligibleDivision returns undefined when gender does not match any division" time="0.002" classname=".DivisionService findEligibleDivision"/>
-  <testcase name="DivisionService findEligibleDivision returns undefined when birth date is out of range" time="0.001" classname=".DivisionService findEligibleDivision"/>
+  <testcase name="DivisionService findEligibleDivision matches the primary gender and date range" time="0.001" classname=".DivisionService findEligibleDivision"/>
+  <testcase name="DivisionService findEligibleDivision returns undefined when gender does not match any division" time="0.001" classname=".DivisionService findEligibleDivision"/>
+  <testcase name="DivisionService findEligibleDivision returns undefined when birth date is out of range" time="0.002" classname=".DivisionService findEligibleDivision"/>
   <testcase name="DivisionService findEligibleDivision matches the secondary gender in a co-ed division" time="0.002" classname=".DivisionService findEligibleDivision"/>
-  <testcase name="DivisionService getDivisionMinDate returns September 1st of (currentYear - years)" time="0.001" classname=".DivisionService getDivisionMinDate"/>
+  <testcase name="DivisionService getDivisionMinDate returns September 1st of (currentYear - years)" time="0.002" classname=".DivisionService getDivisionMinDate"/>
   <testcase name="DivisionService getDivisionMaxDate returns August 31st of (currentYear - years)" time="0.002" classname=".DivisionService getDivisionMaxDate"/>
   <testcase name="DivisionService getDefaultDivision returns TR2COED division with correct gender for Trainee 2 Coed" time="0.002" classname=".DivisionService getDefaultDivision"/>
-  <testcase name="DivisionService getDefaultDivision returns SI Boys division with male gender" time="0.002" classname=".DivisionService getDefaultDivision"/>
-  <testcase name="DivisionService getDefaultDivision returns Int Girls division with female gender" time="0.001" classname=".DivisionService getDefaultDivision"/>
+  <testcase name="DivisionService getDefaultDivision returns SI Boys division with male gender" time="0.003" classname=".DivisionService getDefaultDivision"/>
+  <testcase name="DivisionService getDefaultDivision returns Int Girls division with female gender" time="0.002" classname=".DivisionService getDefaultDivision"/>
   <testcase name="DivisionService getDefaultDivision returns Women division with female gender" time="0.001" classname=".DivisionService getDefaultDivision"/>
   <testcase name="DivisionService getDefaultDivision returns Men 18+ division with male gender" time="0.001" classname=".DivisionService getDefaultDivision"/>
-  <testcase name="DivisionService getDefaultDivision returns an empty division for an unknown name" time="0.002" classname=".DivisionService getDefaultDivision"/>
-  <testcase name="DivisionService save calls DataService.put when divisionId is not 0" time="0.003" classname=".DivisionService save"/>
-  <testcase name="DivisionService save calls DataService.post when divisionId is 0" time="0.003" classname=".DivisionService save"/>
+  <testcase name="DivisionService getDefaultDivision returns an empty division for an unknown name" time="0.001" classname=".DivisionService getDefaultDivision"/>
+  <testcase name="DivisionService save calls DataService.put when divisionId is not 0" time="0.002" classname=".DivisionService save"/>
+  <testcase name="DivisionService save calls DataService.post when divisionId is 0" time="0.002" classname=".DivisionService save"/>
   <testcase name="DivisionService delete calls DataService.delete with the correct URL" time="0.002" classname=".DivisionService delete"/>
   <testcase name="DivisionService getmatchingDivision returns the canonical name when there is a case-insensitive match" time="0.002" classname=".DivisionService getmatchingDivision"/>
   <testcase name="DivisionService getmatchingDivision returns &quot;Other&quot; when there is no match" time="0.002" classname=".DivisionService getmatchingDivision"/>
-  <testcase name="DivisionService setLoadingIndicator updates the isLoading state signal" time="0.003" classname=".DivisionService setLoadingIndicator"/>
+  <testcase name="DivisionService setLoadingIndicator updates the isLoading state signal" time="0.001" classname=".DivisionService setLoadingIndicator"/>
+  <testcase name="DraftListService should be created" time="0.002" classname=".DraftListService"/>
+  <testcase name="DraftListService getDraftList should fetch draft list for season and division" time="0.003" classname=".DraftListService getDraftList"/>
+  <testcase name="DraftListService getDraftList should fetch draft list for season without division" time="0.002" classname=".DraftListService getDraftList"/>
+  <testcase name="DraftListService getDraftList should handle error when fetching draft list" time="0.002" classname=".DraftListService getDraftList"/>
+  <testcase name="DraftListService getDraftList should set loading state while fetching" time="0.002" classname=".DraftListService getDraftList"/>
+  <testcase name="DraftListService clearPlayers should clear the players signal" time="0.003" classname=".DraftListService clearPlayers"/>
   <testcase name="GameService should be created" time="0.003" classname=".GameService"/>
-  <testcase name="GameService validateScores returns true for two valid integer scores" time="0.002" classname=".GameService validateScores"/>
-  <testcase name="GameService validateScores returns true for boundary scores of 0 and 0" time="0.001" classname=".GameService validateScores"/>
-  <testcase name="GameService validateScores returns true for boundary scores of 150 and 150" time="0.003" classname=".GameService validateScores"/>
+  <testcase name="GameService validateScores returns true for two valid integer scores" time="0.003" classname=".GameService validateScores"/>
+  <testcase name="GameService validateScores returns true for boundary scores of 0 and 0" time="0.002" classname=".GameService validateScores"/>
+  <testcase name="GameService validateScores returns true for boundary scores of 150 and 150" time="0.002" classname=".GameService validateScores"/>
   <testcase name="GameService validateScores returns false when home score exceeds 150" time="0.002" classname=".GameService validateScores"/>
   <testcase name="GameService validateScores returns false when visitor score is negative" time="0.002" classname=".GameService validateScores"/>
   <testcase name="GameService validateScores returns false for non-integer scores" time="0.002" classname=".GameService validateScores"/>
   <testcase name="GameService validateScores returns false for NaN" time="0.002" classname=".GameService validateScores"/>
-  <testcase name="GameService validateScores returns false for Infinity" time="0.001" classname=".GameService validateScores"/>
+  <testcase name="GameService validateScores returns false for Infinity" time="0.002" classname=".GameService validateScores"/>
   <testcase name="GameService compare returns negative when a &lt; b ascending" time="0.002" classname=".GameService compare"/>
-  <testcase name="GameService compare returns positive when a > b ascending" time="0.002" classname=".GameService compare"/>
+  <testcase name="GameService compare returns positive when a > b ascending" time="0.001" classname=".GameService compare"/>
   <testcase name="GameService compare returns positive when a &lt; b descending" time="0.002" classname=".GameService compare"/>
-  <testcase name="GameService extractDate converts an ISO date string to a JS Date" time="0.025" classname=".GameService extractDate"/>
-  <testcase name="GameService updateSelectedGame sets the selectedGame" time="0.003" classname=".GameService updateSelectedGame"/>
-  <testcase name="GameService clearSelectedGame resets selectedGame to null" time="0.002" classname=".GameService clearSelectedGame"/>
-  <testcase name="GameService updateSeasonGames stores the games in the internal signal" time="0.002" classname=".GameService updateSeasonGames"/>
+  <testcase name="GameService extractDate converts an ISO date string to a JS Date" time="0.004" classname=".GameService extractDate"/>
+  <testcase name="GameService updateSelectedGame sets the selectedGame" time="0.002" classname=".GameService updateSelectedGame"/>
+  <testcase name="GameService clearSelectedGame resets selectedGame to null" time="0.003" classname=".GameService clearSelectedGame"/>
+  <testcase name="GameService updateSeasonGames stores the games in the internal signal" time="0.003" classname=".GameService updateSeasonGames"/>
   <testcase name="GameService groupRegularGamesByDate groups games that share the same calendar date" time="0.004" classname=".GameService groupRegularGamesByDate"/>
   <testcase name="GameService groupRegularGamesByDate returns an empty array for empty input" time="0.002" classname=".GameService groupRegularGamesByDate"/>
-  <testcase name="GameService groupRegularGamesByDate creates one group per unique date" time="0.003" classname=".GameService groupRegularGamesByDate"/>
+  <testcase name="GameService groupRegularGamesByDate creates one group per unique date" time="0.002" classname=".GameService groupRegularGamesByDate"/>
   <testcase name="GameService filterGamesByDivision returns only games matching the selected division" time="0.004" classname=".GameService filterGamesByDivision"/>
-  <testcase name="GameService filterGamesByDivision returns games sorted by gameDate ascending" time="0.003" classname=".GameService filterGamesByDivision"/>
+  <testcase name="GameService filterGamesByDivision returns games sorted by gameDate ascending" time="0.002" classname=".GameService filterGamesByDivision"/>
   <testcase name="GameService filterGamesByDivision returns empty array when no seasonGames are loaded" time="0.002" classname=".GameService filterGamesByDivision"/>
-  <testcase name="GameService filterGamesByTeam emits an empty array when no team is selected" time="0.008" classname=".GameService filterGamesByTeam"/>
+  <testcase name="GameService filterGamesByTeam emits an empty array when no team is selected" time="0.004" classname=".GameService filterGamesByTeam"/>
   <testcase name="GameService seasonGamesCount returns 0 when no games are loaded" time="0.002" classname=".GameService seasonGamesCount"/>
   <testcase name="GameService seasonGamesCount returns the count of loaded season games" time="0.002" classname=".GameService seasonGamesCount"/>
-  <testcase name="GameService fetchSeasonGames does nothing when no season is selected" time="0.002" classname=".GameService fetchSeasonGames"/>
-  <testcase name="GameService fetchSeasonGames GETs season games and updates the signal" time="0.005" classname=".GameService fetchSeasonGames"/>
-  <testcase name="GameService saveGame PUTs to the scores endpoint and updates selected game optimistically" time="0.005" classname=".GameService saveGame"/>
+  <testcase name="GameService fetchSeasonGames does nothing when no season is selected" time="0.001" classname=".GameService fetchSeasonGames"/>
+  <testcase name="GameService fetchSeasonGames GETs season games and updates the signal" time="0.002" classname=".GameService fetchSeasonGames"/>
+  <testcase name="GameService saveGame PUTs to the scores endpoint and updates selected game optimistically" time="0.004" classname=".GameService saveGame"/>
+  <testcase name="PlayoffGameService - Time Formatting should create" time="0.002" classname=".PlayoffGameService - Time Formatting"/>
+  <testcase name="PlayoffGameService - Time Formatting should format time with AM/PM format" time="0.002" classname=".PlayoffGameService - Time Formatting"/>
+  <testcase name="PlayoffGameService - Time Formatting should convert AM/PM time to 24-hour format" time="0.002" classname=".PlayoffGameService - Time Formatting"/>
+  <testcase name="PlayoffGameService - Time Formatting should normalize API playoff game with AM/PM time" time="0.002" classname=".PlayoffGameService - Time Formatting"/>
+  <testcase name="Login Component navigates to returnUrl on successful login" time="0.035" classname=".Login Component"/>
+  <testcase name="Login Component toggles hidePassword state" time="0.009" classname=".Login Component"/>
+  <testcase name="SectionTitle should create" time="0.003" classname=".SectionTitle"/>
+  <testcase name="ShellTitle should create" time="0.005" classname=".ShellTitle"/>
+  <testcase name="AppFeatureFlagDirective creates embedded view when flag enabled" time="0.002" classname=".AppFeatureFlagDirective"/>
+  <testcase name="AppFeatureFlagDirective does not create embedded view when flag disabled" time="0.001" classname=".AppFeatureFlagDirective"/>
+  <testcase name="adminGuard allows when adminModule flag enabled" time="0.001" classname=".adminGuard"/>
+  <testcase name="adminGuard blocks when adminModule flag disabled" time="0.001" classname=".adminGuard"/>
+  <testcase name="NoticeTypesService should be created" time="0.002" classname=".NoticeTypesService"/>
   <system-out>
-    <![CDATA[
+    <![CDATA[Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', '[People Service] [Signal: [object Object]]'
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', 'Emitting household filters:', Object{letter: 'A'}
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', 'Household filter letter changed:', 'A'
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', 'Emitting household filters:', Object{letter: 'A'}
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', '{"lastName":"","firstName":"","playerOnly":false}'
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', '[People Service] [Signal: [object Object]]'
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', 'Emitting household filters:', Object{letter: 'A'}
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', 'Household filter letter changed:', 'A'
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', 'Emitting household filters:', Object{letter: 'A'}
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', '{"lastName":"","firstName":"","playerOnly":false}'
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', '[People Service] [Signal: [object Object]]'
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', 'Emitting household filters:', Object{letter: 'A'}
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', 'Household filter letter changed:', 'A'
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', 'Emitting household filters:', Object{letter: 'A'}
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', '{"lastName":"","firstName":"","playerOnly":false}'
+,Chrome Headless 146.0.0.0 (Windows 10) ERROR: '[LOCAL]', 'Failed to load directors', HttpErrorResponse{headers: _HttpHeaders{headers: Map{}, normalizedNames: Map{}, lazyInit: undefined, lazyUpdate: null}, status: 0, statusText: 'Unknown Error', url: 'http://localhost:7071/api/Director', ok: false, type: undefined, redirected: undefined, responseType: undefined, name: 'HttpErrorResponse', message: 'Http failure response for http://localhost:7071/api/Director: 0 Unknown Error', error: ProgressEvent{isTrusted: true}}
+,Chrome Headless 146.0.0.0 (Windows 10) ERROR: '[LOCAL]', 'getDirectorVolunteers failed', HttpErrorResponse{headers: _HttpHeaders{headers: Map{}, normalizedNames: Map{}, lazyInit: undefined, lazyUpdate: null}, status: 0, statusText: 'Unknown Error', url: 'http://localhost:7071/api/Director/volunteers', ok: false, type: undefined, redirected: undefined, responseType: undefined, name: 'HttpErrorResponse', message: 'Http failure response for http://localhost:7071/api/Director/volunteers: 0 Unknown Error', error: ProgressEvent{isTrusted: true}}
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', '[People Service] [Signal: [object Object]]'
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', 'Emitting household filters:', Object{letter: 'A'}
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', 'Household filter letter changed:', 'A'
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', 'Emitting household filters:', Object{letter: 'A'}
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', '{"lastName":"","firstName":"","playerOnly":false}'
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', '[People Service] [Signal: [object Object]]'
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', 'Emitting people filters:', Object{lastName: '', firstName: '', playerOnly: false, letter: 'A'}
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', 'People filter letter changed:', 'A'
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', 'Emitting people filters:', Object{lastName: '', firstName: '', playerOnly: false, letter: 'A'}
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', '{"lastName":"","firstName":"","playerOnly":false}'
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', '[People Service] [Signal: [object Object]]'
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', 'Emitting people filters:', Object{lastName: '', firstName: '', playerOnly: false, letter: 'A'}
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', 'People filter letter changed:', 'A'
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', 'Emitting people filters:', Object{lastName: '', firstName: '', playerOnly: false, letter: 'A'}
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', '{"lastName":"","firstName":"","playerOnly":false}'
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', '[People Service] [Signal: [object Object]]'
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', 'Emitting people filters:', Object{lastName: '', firstName: '', playerOnly: false, letter: 'A'}
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', 'People filter letter changed:', 'A'
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', 'Emitting people filters:', Object{lastName: '', firstName: '', playerOnly: false, letter: 'A'}
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', '{"lastName":"","firstName":"","playerOnly":false}'
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', 'Emitting household filters:', Object{letter: 'A'}
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', '[People Service] [Signal: [object Object]]'
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', 'Emitting people filters:', Object{lastName: '', firstName: '', playerOnly: false, letter: 'A'}
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', 'People filter letter changed:', 'A'
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', 'Emitting people filters:', Object{lastName: '', firstName: '', playerOnly: false, letter: 'A'}
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', '{"lastName":"","firstName":"","playerOnly":false}'
+,Chrome Headless 146.0.0.0 (Windows 10) DEBUG: '[DEBUG]', 'Selected season:', undefined
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', '{"lastName":"","firstName":"","playerOnly":false}'
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', 'Selected letter:', 'B'
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', '{"lastName":"","firstName":"","playerOnly":false}'
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', 'Selected letter:', 'C'
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', '{"lastName":"","firstName":"","playerOnly":false}'
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', 'Selected letter:', 'D'
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', 'Emitting people filters:', Object{lastName: '', firstName: '', playerOnly: false, letter: 'A'}
+,Chrome Headless 146.0.0.0 (Windows 10) DEBUG: '[DEBUG]', 'PUT url:', 'api/test'
+,Chrome Headless 146.0.0.0 (Windows 10) DEBUG: '[DEBUG]', 'PUT data:', Object{id: 1, name: 'Test'}
+,Chrome Headless 146.0.0.0 (Windows 10) DEBUG: '[DEBUG]', 'PUT url:', 'api/test'
+,Chrome Headless 146.0.0.0 (Windows 10) DEBUG: '[DEBUG]', 'PUT data:', Object{id: 1, name: 'Test'}
+,Chrome Headless 146.0.0.0 (Windows 10) DEBUG: '[DEBUG]', 'PUT url:', 'api/test'
+,Chrome Headless 146.0.0.0 (Windows 10) DEBUG: '[DEBUG]', 'PUT data:', Object{id: 1, name: 'Test'}
+,Chrome Headless 146.0.0.0 (Windows 10) DEBUG: '[DEBUG]', 'PUT url:', 'api/test'
+,Chrome Headless 146.0.0.0 (Windows 10) DEBUG: '[DEBUG]', 'PUT data:', Object{id: 1, name: 'Test'}
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', 'Updated Director:', Object{directorId: 1, companyId: 1, personId: 101, seq: 1, title: 'Updated President', name: 'John Smith', createdDate: Sun Dec 31 2023 19:00:00 GMT-0500 (Eastern Standard Time), createdUser: 'admin'}
+,Chrome Headless 146.0.0.0 (Windows 10) ERROR: '[LOCAL]', 'updateDirector failed', HttpErrorResponse{headers: _HttpHeaders{headers: Map{}, normalizedNames: Map{}, lazyInit: undefined, lazyUpdate: null}, status: 0, statusText: 'Unknown Error', url: 'http://localhost:7071/api/Director/1', ok: false, type: undefined, redirected: undefined, responseType: undefined, name: 'HttpErrorResponse', message: 'Http failure response for http://localhost:7071/api/Director/1: 0 ', error: ProgressEvent{isTrusted: false}}
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', '[DraftListService] Fetching draft list from:', 'http://localhost:7071/api/DraftList/1/2'
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', '[DraftListService] Players received:', [Object{personId: 1, division: 'U12 Boys', draftId: '001', lastName: 'Johnson', firstName: 'John', dob: Fri May 14 2010 20:00:00 GMT-0400 (Eastern Daylight Time), grade: 6, address1: '123 Main St', city: 'Springfield', zip: '12345'}, Object{personId: 2, division: 'U14 Girls', draftId: '002', lastName: 'Smith', firstName: 'Jane', dob: Sun Aug 19 2012 20:00:00 GMT-0400 (Eastern Daylight Time), grade: 4, address1: '456 Oak Ave', city: 'Riverside', zip: '67890'}]
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', '[DraftListService] Fetching draft list from:', 'http://localhost:7071/api/DraftList/1'
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', '[DraftListService] Players received:', [Object{personId: 1, division: 'U12 Boys', draftId: '001', lastName: 'Johnson', firstName: 'John', dob: Fri May 14 2010 20:00:00 GMT-0400 (Eastern Daylight Time), grade: 6, address1: '123 Main St', city: 'Springfield', zip: '12345'}, Object{personId: 2, division: 'U14 Girls', draftId: '002', lastName: 'Smith', firstName: 'Jane', dob: Sun Aug 19 2012 20:00:00 GMT-0400 (Eastern Daylight Time), grade: 4, address1: '456 Oak Ave', city: 'Riverside', zip: '67890'}]
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', '[DraftListService] Fetching draft list from:', 'http://localhost:7071/api/DraftList/1/2'
+,Chrome Headless 146.0.0.0 (Windows 10) ERROR: '[LOCAL]', '[DraftListService] Error fetching draft list:', HttpErrorResponse{headers: _HttpHeaders{headers: Map{}, normalizedNames: Map{}, lazyInit: undefined, lazyUpdate: null}, status: 0, statusText: 'Unknown Error', url: 'http://localhost:7071/api/DraftList/1/2', ok: false, type: undefined, redirected: undefined, responseType: undefined, name: 'HttpErrorResponse', message: 'Http failure response for http://localhost:7071/api/DraftList/1/2: 0 ', error: ProgressEvent{isTrusted: false}}
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', '[DraftListService] Fetching draft list from:', 'http://localhost:7071/api/DraftList/1/2'
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', '[DraftListService] Players received:', [Object{personId: 1, division: 'U12 Boys', draftId: '001', lastName: 'Johnson', firstName: 'John', dob: Fri May 14 2010 20:00:00 GMT-0400 (Eastern Daylight Time), grade: 6, address1: '123 Main St', city: 'Springfield', zip: '12345'}, Object{personId: 2, division: 'U14 Girls', draftId: '002', lastName: 'Smith', firstName: 'Jane', dob: Sun Aug 19 2012 20:00:00 GMT-0400 (Eastern Daylight Time), grade: 4, address1: '456 Oak Ave', city: 'Riverside', zip: '67890'}]
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', '[DraftListService] Fetching draft list from:', 'http://localhost:7071/api/DraftList/1/1'
+,Chrome Headless 146.0.0.0 (Windows 10) INFO: '[LOCAL]', '[DraftListService] Players received:', [Object{personId: 1, division: 'U12 Boys', draftId: '001', lastName: 'Johnson', firstName: 'John', dob: Fri May 14 2010 20:00:00 GMT-0400 (Eastern Daylight Time), grade: 6, address1: '123 Main St', city: 'Springfield', zip: '12345'}, Object{personId: 2, division: 'U14 Girls', draftId: '002', lastName: 'Smith', firstName: 'Jane', dob: Sun Aug 19 2012 20:00:00 GMT-0400 (Eastern Daylight Time), grade: 4, address1: '456 Oak Ave', city: 'Riverside', zip: '67890'}]
+
 ]]>
   </system-out>
   <system-err/>
