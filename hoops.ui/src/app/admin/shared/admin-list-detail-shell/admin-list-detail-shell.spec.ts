@@ -41,10 +41,10 @@ describe('AdminListDetailShell', () => {
     component = fixture.componentInstance;
     compiled = fixture.nativeElement;
 
-    // Set required inputs
-    component.title = 'Test List';
-    component.columns = defaultColumns;
-    component.dataSource = new MatTableDataSource(mockData);
+    // Set required inputs via setInput() so Angular properly tracks them
+    fixture.componentRef.setInput('title', 'Test List');
+    fixture.componentRef.setInput('columns', defaultColumns);
+    fixture.componentRef.setInput('dataSource', new MatTableDataSource(mockData));
   });
 
   describe('Component Initialization', () => {
@@ -138,7 +138,7 @@ describe('AdminListDetailShell', () => {
     });
 
     it('should render table with correct columns', () => {
-      const headers = compiled.querySelectorAll('th.mat-header-cell');
+      const headers = compiled.querySelectorAll('th.mat-mdc-header-cell');
       expect(headers.length).toBe(4); // 4 columns
 
       expect(headers[0].textContent).toContain('ID');
@@ -148,13 +148,13 @@ describe('AdminListDetailShell', () => {
     });
 
     it('should render table rows with data', () => {
-      const rows = compiled.querySelectorAll('tr.mat-row');
+      const rows = compiled.querySelectorAll('tr.mat-mdc-row');
       expect(rows.length).toBe(3); // 3 data rows
     });
 
     it('should render table cells with correct data', () => {
-      const firstRow = compiled.querySelector('tr.mat-row');
-      const cells = firstRow?.querySelectorAll('td.mat-cell');
+      const firstRow = compiled.querySelector('tr.mat-mdc-row');
+      const cells = firstRow?.querySelectorAll('td.mat-mdc-cell');
 
       expect(cells?.length).toBe(4);
       expect(cells?.[0].textContent?.trim()).toBe('1');
@@ -183,14 +183,14 @@ describe('AdminListDetailShell', () => {
   describe('Computed Signals', () => {
     it('should compute displayedColumns correctly without actions', () => {
       component.showActionsColumn = false;
-      const displayed = component.displayedColumns();
+      const displayed = component.displayedColumns;
 
       expect(displayed).toEqual(['id', 'name', 'email', 'status']);
     });
 
     it('should compute displayedColumns correctly with actions', () => {
       component.showActionsColumn = true;
-      const displayed = component.displayedColumns();
+      const displayed = component.displayedColumns;
 
       expect(displayed).toEqual(['id', 'name', 'email', 'status', 'actions']);
     });
@@ -200,14 +200,14 @@ describe('AdminListDetailShell', () => {
         ...defaultColumns,
         { key: 'hidden', label: 'Hidden', visible: false },
       ];
-      const displayed = component.displayedColumns();
+      const displayed = component.displayedColumns;
 
       expect(displayed).not.toContain('hidden');
       expect(displayed).toEqual(['id', 'name', 'email', 'status']);
     });
 
     it('should compute hasFilterContent as false when no filter projected', () => {
-      expect(component.hasFilterContent()).toBe(false);
+      expect(component.hasFilterContent).toBe(false);
     });
   });
 
@@ -223,7 +223,7 @@ describe('AdminListDetailShell', () => {
       component.dataSource = new MatTableDataSource(mockData);
       fixture.detectChanges();
 
-      const firstCell = compiled.querySelector('tr.mat-row td.mat-cell');
+      const firstCell = compiled.querySelector('tr.mat-mdc-row td.mat-mdc-cell');
       expect(firstCell?.textContent?.trim()).toBe('JOHN DOE');
     });
 
@@ -259,7 +259,7 @@ describe('AdminListDetailShell', () => {
       ];
       fixture.detectChanges();
 
-      const header = compiled.querySelector('th.mat-header-cell') as HTMLElement;
+      const header = compiled.querySelector('th.mat-mdc-header-cell') as HTMLElement;
       expect(header.style.width).toBe('200px');
       expect(header.style.minWidth).toBe('100px');
       expect(header.style.maxWidth).toBe('300px');
@@ -268,16 +268,16 @@ describe('AdminListDetailShell', () => {
     it('should enable sorting for sortable columns', () => {
       fixture.detectChanges();
 
-      const sortableHeaders = compiled.querySelectorAll('[mat-sort-header]');
+      const sortableHeaders = compiled.querySelectorAll('[data-sortable]');
       expect(sortableHeaders.length).toBe(3); // id, name, email are sortable
     });
 
     it('should not enable sorting for non-sortable columns', () => {
       fixture.detectChanges();
 
-      const allHeaders = compiled.querySelectorAll('th.mat-header-cell');
+      const allHeaders = compiled.querySelectorAll('th.mat-mdc-header-cell');
       const statusHeader = allHeaders[3]; // status column is not sortable
-      const sortHeader = statusHeader.querySelector('[mat-sort-header]');
+      const sortHeader = statusHeader.querySelector('[data-sortable]');
       expect(sortHeader).toBeFalsy();
     });
   });
@@ -301,7 +301,7 @@ describe('AdminListDetailShell', () => {
       component.rowClickable = true;
       fixture.detectChanges();
 
-      const firstRow = compiled.querySelector('tr.mat-row') as HTMLElement;
+      const firstRow = compiled.querySelector('tr.mat-mdc-row') as HTMLElement;
       firstRow.click();
 
       expect(component.rowClick.emit).toHaveBeenCalledWith(mockData[0]);
@@ -312,7 +312,7 @@ describe('AdminListDetailShell', () => {
       component.rowClickable = false;
       fixture.detectChanges();
 
-      const firstRow = compiled.querySelector('tr.mat-row') as HTMLElement;
+      const firstRow = compiled.querySelector('tr.mat-mdc-row') as HTMLElement;
       firstRow.click();
 
       expect(component.rowClick.emit).not.toHaveBeenCalled();
@@ -323,7 +323,7 @@ describe('AdminListDetailShell', () => {
       component.rowClickable = true;
       fixture.detectChanges();
 
-      const firstRow = compiled.querySelector('tr.mat-row') as HTMLElement;
+      const firstRow = compiled.querySelector('tr.mat-mdc-row') as HTMLElement;
       firstRow.click();
 
       expect(component.onRowClick).toHaveBeenCalled();
@@ -551,7 +551,7 @@ describe('AdminListDetailShell', () => {
       component.rowClickable = true;
       fixture.detectChanges();
 
-      const row = compiled.querySelector('tr.mat-row');
+      const row = compiled.querySelector('tr.mat-mdc-row');
       expect(row?.classList.contains('clickable-row')).toBe(true);
     });
 
@@ -559,7 +559,7 @@ describe('AdminListDetailShell', () => {
       component.rowClickable = false;
       fixture.detectChanges();
 
-      const row = compiled.querySelector('tr.mat-row');
+      const row = compiled.querySelector('tr.mat-mdc-row');
       expect(row?.classList.contains('clickable-row')).toBe(false);
     });
   });

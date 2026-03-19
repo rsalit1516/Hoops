@@ -16,11 +16,9 @@
   </div>
 
   <!-- Filter section (projected content) -->
-  @if (hasFilterContent()) {
-    <div class="filter-section">
-      <ng-content select="[filter]" />
-    </div>
-  }
+  <div class="filter-section">
+    <ng-content select="[filter]" />
+  </div>
 
   <!-- Error message -->
   @if (errorMessage()) {
@@ -54,6 +52,7 @@
               mat-header-cell
               *matHeaderCellDef
               [mat-sort-header]="column.sortable ? column.key : undefined"
+              [attr.data-sortable]="column.sortable || null"
               [class]="column.headerClass || ''"
               [style.min-width]="column.minWidth"
               [style.max-width]="column.maxWidth"
@@ -92,17 +91,17 @@
         }
 
         <!-- Table headers and rows -->
-        <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr
           mat-row
-          *matRowDef="let row; columns: displayedColumns()"
+          *matRowDef="let row; columns: displayedColumns"
           (click)="onRowClick(row)"
           [class.clickable-row]="rowClickable"
         ></tr>
 
         <!-- Empty state row -->
         <tr class="mat-row no-data-row" *matNoDataRow>
-          <td class="mat-cell empty-state-cell" [attr.colspan]="displayedColumns().length">
+          <td class="mat-cell empty-state-cell" [attr.colspan]="displayedColumns.length">
             <ng-content select="[empty-state]">
               <div class="default-empty-state">
                 <mat-icon>inbox</mat-icon>

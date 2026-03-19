@@ -4,6 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { signal } from '@angular/core';
 import { of } from 'rxjs';
 import { AdminUserDetail } from './admin-user-detail';
 import { AdminUsersService } from '../admin-users.service';
@@ -17,7 +18,7 @@ describe('AdminUserDetail', () => {
   let component: AdminUserDetail;
   let householdService: jasmine.SpyObj<HouseholdService>;
   let peopleService: jasmine.SpyObj<PeopleService>;
-  let adminUsersService: jasmine.SpyObj<AdminUsersService>;
+  let adminUsersService: { selectedUser: ReturnType<typeof signal<any>> };
 
   const mockHouseholds: Household[] = [
     { houseId: 1, name: 'Alpha Household' },
@@ -43,9 +44,9 @@ describe('AdminUserDetail', () => {
     const peopleSpy = jasmine.createSpyObj('PeopleService', [
       'getHouseholdMembersObservable',
     ]);
-    const adminUsersSpy = jasmine.createSpyObj('AdminUsersService', [
-      'selectedUser',
-    ]);
+    const adminUsersSpy = {
+      selectedUser: signal<any>(null),
+    };
     const loggerSpy = jasmine.createSpyObj('LoggerService', ['error']);
 
     await TestBed.configureTestingModule({
@@ -78,10 +79,10 @@ describe('AdminUserDetail', () => {
     // Setup service mocks
     householdService.getAllHouseholds.and.returnValue(of(mockHouseholds));
     peopleService.getHouseholdMembersObservable.and.returnValue(of(mockPeople));
-    adminUsersService.selectedUser.and.returnValue(null);
 
     const fixture = TestBed.createComponent(AdminUserDetail);
     component = fixture.componentInstance;
+    component.userId = 0;
   });
 
   it('should create', () => {
@@ -193,7 +194,6 @@ describe('AdminUserDetail', () => {
   it('should reset form with empty houseId and peopleId for new user', () => {
     // Arrange
     component.ngOnInit();
-    adminUsersService.selectedUser.and.returnValue(null);
 
     // Act
     component.form.reset({

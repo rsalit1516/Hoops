@@ -4,10 +4,10 @@
       <button
         (click)="selectLetter(letter)"
         class="px-1.0 py-1 min-w-0 rounded border border-gray-300 hover:bg-gray-200 transition"
-      [class]="{
-        'bg-blue-500 text-white font-bold': letter === selectedLetter(),
-        'text-gray-700': letter !== selectedLetter()
-      }"
+      [class.bg-blue-500]="letter === selectedLetter()"
+      [class.text-white]="letter === selectedLetter()"
+      [class.font-bold]="letter === selectedLetter()"
+      [class.text-gray-700]="letter !== selectedLetter()"
         >
         {{ letter }}
       </button>

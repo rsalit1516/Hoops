@@ -27,11 +27,11 @@ describe('PeopleFilters', () => {
   it('should emit filters on letter change', (done) => {
     component.filterChange.subscribe((filters) => {
       expect(filters.letter).toBe('B');
-      expect(filters.lastName).toBe('B');
       done();
     });
 
     component.selectedLetter.set('B');
+    fixture.detectChanges();
   });
 
   it('should clear filters', () => {

@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
 import { DirectorList } from './director-list';
 
@@ -9,6 +10,7 @@ describe('DirectorList', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [DirectorList],
+      providers: [provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DirectorList);

@@ -59,7 +59,8 @@
       "Bash(cd:*)",
       "Bash(dotnet nuget locals all --list)",
       "Bash(wc:*)",
-      "Bash(tail:*)"
+      "Bash(tail:*)",
+      "Bash(tee:*)"
     ],
     "deny": [],
     "ask": []

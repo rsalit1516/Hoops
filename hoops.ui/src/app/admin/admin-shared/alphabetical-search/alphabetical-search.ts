@@ -52,7 +52,7 @@ export class AlphabeticalSearch implements OnInit {
       firstName: '',
       playerOnly: false,
     };
-    // this.#peopleService.updateSelectedCriteria(this.selectedCriteria);
+    this.#peopleService.updateSelectedCriteria(this.selectedCriteria);
     // this.loadPeople(letter);
   }
 

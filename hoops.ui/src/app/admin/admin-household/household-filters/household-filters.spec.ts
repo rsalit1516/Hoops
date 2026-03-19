@@ -31,6 +31,7 @@ describe('HouseholdFilters', () => {
     });
 
     component.selectedLetter.set('B');
+    fixture.detectChanges();
   });
 
   it('should clear filters', () => {

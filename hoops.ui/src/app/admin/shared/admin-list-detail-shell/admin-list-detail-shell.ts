@@ -9,8 +9,6 @@ import {
   TemplateRef,
   signal,
   Signal,
-  computed,
-  ChangeDetectionStrategy,
 } from '@angular/core';
 
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
@@ -69,7 +67,6 @@ import { ColumnConfig } from '../models';
     './admin-list-detail-shell.scss',
     '../../../shared/scss/tables.scss',
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminListDetailShell<T> implements AfterViewInit {
   // Configuration inputs
@@ -127,22 +124,24 @@ export class AdminListDetailShell<T> implements AfterViewInit {
   /**
    * Check if filter content is projected
    */
-  hasFilterContent = computed(() => !!this.filterContent);
+  get hasFilterContent(): boolean {
+    return !!this.filterContent;
+  }
 
   /**
    * Get array of column keys to display
    */
-  displayedColumns = computed(() => {
+  get displayedColumns(): string[] {
     const cols = this.columns
       .filter(c => c.visible !== false)
-      .map(c => c.key);
+      .map(c => c.key as string);
 
     if (this.showActionsColumn) {
       cols.push('actions');
     }
 
     return cols;
-  });
+  }
 
   /**
    * Initialize table sort and pagination after view init
