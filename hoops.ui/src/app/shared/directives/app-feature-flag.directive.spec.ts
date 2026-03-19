@@ -1,3 +1,4 @@
+import { TemplateRef, ViewContainerRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { AppFeatureFlagDirective } from './app-feature-flag.directive';
 import { FeatureFlagService } from '../services/feature-flags';
@@ -10,7 +11,7 @@ describe('AppFeatureFlagDirective', () => {
     );
     (featureFlags.isEnabled as any).and.returnValue(featureEnabled);
 
-    const mockTemplateRef = {} as any; // not used beyond passing through
+    const mockTemplateRef = {} as any;
     const mockViewContainer = {
       clear: jasmine.createSpy('clear'),
       createEmbeddedView: jasmine.createSpy('createEmbeddedView'),
@@ -18,14 +19,15 @@ describe('AppFeatureFlagDirective', () => {
 
     let directive: AppFeatureFlagDirective;
     TestBed.configureTestingModule({
-      providers: [{ provide: FeatureFlagService, useValue: featureFlags }],
+      providers: [
+        { provide: FeatureFlagService, useValue: featureFlags },
+        { provide: TemplateRef, useValue: mockTemplateRef },
+        { provide: ViewContainerRef, useValue: mockViewContainer },
+      ],
     });
 
     TestBed.runInInjectionContext(() => {
-      directive = new AppFeatureFlagDirective(
-        mockTemplateRef,
-        mockViewContainer
-      );
+      directive = new AppFeatureFlagDirective();
       // trigger setter
       (directive as any).appFeatureFlag = 'adminModule';
     });
