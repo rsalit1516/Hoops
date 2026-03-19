@@ -103,4 +103,21 @@ var host = new HostBuilder()
     })
     .Build();
 
+// Seed local database on startup (replaces Hoops.Api seeding behaviour)
+// Skipped when USE_PROD_DATA=true to protect the read-only prod connection
+using (var scope = host.Services.CreateScope())
+{
+    var env = scope.ServiceProvider.GetRequiredService<IHostEnvironment>();
+    var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
+    var useProdData = string.Equals(config["USE_PROD_DATA"], "true", StringComparison.OrdinalIgnoreCase);
+
+    if (env.IsEnvironment("Local") && !useProdData)
+    {
+        Console.WriteLine("Local environment — running database seeder...");
+        var seeder = scope.ServiceProvider.GetRequiredService<SeedCoordinator>();
+        await seeder.InitializeDataAsync();
+        Console.WriteLine("Database seeding complete.");
+    }
+}
+
 await host.RunAsync();

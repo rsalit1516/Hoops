@@ -1,56 +1,7 @@
 {
   "version": "2.0.0",
   "tasks": [
-    {
-      "label": "Start Backend (Local)",
-      "type": "shell",
-      "command": "dotnet",
-      "args": ["run", "--launch-profile", "Local"],
-      "options": {
-        "cwd": "${workspaceFolder}/src/Hoops.Api"
-      },
-      "isBackground": true,
-      "problemMatcher": {
-        "pattern": [
-          {
-            "regexp": ".",
-            "file": 1,
-            "location": 2,
-            "message": 3
-          }
-        ],
-        "background": {
-          "activeOnStart": true,
-          "beginsPattern": "Now listening on:",
-          "endsPattern": "Application started. Press Ctrl\\+C to shut down."
-        }
-      }
-    },
-    {
-      "label": "Start Backend (Production)",
-      "type": "shell",
-      "command": "dotnet",
-      "args": ["run", "--launch-profile", "Local-Production"],
-      "options": {
-        "cwd": "${workspaceFolder}/src/Hoops.Api"
-      },
-      "isBackground": true,
-      "problemMatcher": {
-        "pattern": [
-          {
-            "regexp": ".",
-            "file": 1,
-            "location": 2,
-            "message": 3
-          }
-        ],
-        "background": {
-          "activeOnStart": true,
-          "beginsPattern": "Now listening on:",
-          "endsPattern": "Application started. Press Ctrl\\+C to shut down."
-        }
-      }
-    },
+    // ── Backend ────────────────────────────────────────────────────────────────
     {
       "label": "Start Functions (Local)",
       "type": "shell",
@@ -104,83 +55,33 @@
         }
       }
     },
+    // ── Frontend ───────────────────────────────────────────────────────────────
     {
-      "label": "Start Frontend (Local API)",
+      "label": "Start Frontend (Local)",
       "type": "shell",
       "command": "npm",
       "args": ["start"],
       "options": {
-        "cwd": "${workspaceFolder}/hoops.ui/src",
-        "env": {
-          "API_BASE_URL": "http://localhost:5000"
-        }
+        "cwd": "${workspaceFolder}/hoops.ui/src"
       },
-      "dependsOn": ["Start Functions (Local)", "Start Backend (Local)"],
+      "dependsOn": ["Start Functions (Local)"],
       "dependsOrder": "sequence",
       "problemMatcher": []
     },
     {
-      "label": "Start Frontend (Prod DB)",
+      "label": "Start Frontend (Dev Cloud API)",
       "type": "shell",
       "command": "npm",
       "args": ["start"],
       "options": {
         "cwd": "${workspaceFolder}/hoops.ui/src",
         "env": {
-          "API_BASE_URL": "http://localhost:5000"
+          "API_BASE_URL": "https://hoops-functions-dev-djeqhegwahbua7eq.eastus-01.azurewebsites.net"
         }
       },
-      "dependsOn": ["Start Backend (Production)"]
+      "problemMatcher": []
     },
-    {
-      "label": "Start Frontend (Cloud Test API)",
-      "type": "shell",
-      "command": "npm",
-      "args": ["start"],
-      "options": {
-        "cwd": "${workspaceFolder}/hoops.ui/src",
-        "env": {
-          "API_BASE_URL": "https://hoops-api-dev-dnggf0ewe3c2b9ae.eastus-01.azurewebsites.net"
-        }
-      }
-    },
-    {
-      "label": "Start Frontend (Production API)",
-      "type": "shell",
-      "command": "npm",
-      "args": ["start"],
-      "options": {
-        "cwd": "${workspaceFolder}/hoops.ui/src",
-        "env": {
-          "API_BASE_URL": "https://csbc-api-prod.azurewebsites.net"
-        }
-      }
-    },
-    {
-      "label": "Rename Angular Components",
-      "type": "shell",
-      "command": "node",
-      "args": ["scripts/rename-components.mjs"]
-    },
-    {
-      "label": "Rebuild Functions",
-      "type": "shell",
-      "command": "dotnet",
-      "args": [
-        "build",
-        "src/Hoops.Functions/Hoops.Functions.csproj",
-        "-c",
-        "Debug",
-        "/nologo"
-      ]
-    },
-    {
-      "label": "Start Functions (Local)",
-      "type": "shell",
-      "command": "func",
-      "args": ["start"],
-      "isBackground": true
-    },
+    // ── Build / Test ───────────────────────────────────────────────────────────
     {
       "label": "Build Solution",
       "type": "shell",
@@ -197,83 +98,7 @@
         "--filter",
         "TestCategory!=Slow",
         "--nologo"
-      ]
-    },
-    {
-      "label": "Rebuild Functions",
-      "type": "shell",
-      "command": "dotnet",
-      "args": [
-        "build",
-        "src/Hoops.Functions/Hoops.Functions.csproj",
-        "-c",
-        "Debug",
-        "/nologo"
-      ]
-    },
-    {
-      "label": "Build Functions",
-      "type": "shell",
-      "command": "dotnet",
-      "args": [
-        "build",
-        "src/Hoops.Functions/Hoops.Functions.csproj",
-        "-c",
-        "Debug",
-        "/nologo"
-      ]
-    },
-    {
-      "label": "Build Functions (Debug)",
-      "type": "shell",
-      "command": "dotnet",
-      "args": [
-        "build",
-        "src/Hoops.Functions/Hoops.Functions.csproj",
-        "-c",
-        "Debug",
-        "/nologo"
       ],
-      "isBackground": false,
-      "problemMatcher": ["$msCompile"],
-      "group": "build"
-    },
-    {
-      "label": "Start Functions (Local)",
-      "type": "shell",
-      "command": "func",
-      "args": ["start"],
-      "isBackground": true,
-      "problemMatcher": ["$func-java-watch"]
-    },
-    {
-      "label": "Build Functions (Debug)",
-      "type": "shell",
-      "command": "dotnet",
-      "args": [
-        "build",
-        "src/Hoops.Functions/Hoops.Functions.csproj",
-        "-c",
-        "Debug",
-        "/nologo"
-      ],
-      "isBackground": false,
-      "problemMatcher": ["$msCompile"],
-      "group": "build"
-    },
-    {
-      "label": "__adhoc: dotnet test fast",
-      "type": "shell",
-      "command": "dotnet",
-      "args": [
-        "test",
-        "Hoops.sln",
-        "--filter",
-        "TestCategory!=Slow",
-        "--nologo"
-      ],
-      "isBackground": false,
-      "problemMatcher": ["$msCompile"],
       "group": "test"
     },
     {
@@ -288,54 +113,13 @@
         "/nologo"
       ],
       "isBackground": false,
-      "group": "build"
+      "problemMatcher": ["$msCompile"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
     },
-    {
-      "label": "__adhoc: dotnet test fast",
-      "type": "shell",
-      "command": "dotnet",
-      "args": [
-        "test",
-        "Hoops.sln",
-        "--filter",
-        "TestCategory!=Slow",
-        "--nologo"
-      ]
-    },
-    {
-      "label": "Build Functions (Debug)",
-      "type": "shell",
-      "command": "dotnet",
-      "args": [
-        "build",
-        "src/Hoops.Functions/Hoops.Functions.csproj",
-        "-c",
-        "Debug",
-        "/nologo"
-      ],
-      "isBackground": false,
-      "group": "build"
-    },
-    {
-      "label": "Build Functions (Debug)",
-      "type": "shell",
-      "command": "dotnet",
-      "args": [
-        "build",
-        "src/Hoops.Functions/Hoops.Functions.csproj",
-        "-c",
-        "Debug",
-        "/nologo"
-      ],
-      "isBackground": false,
-      "group": "build"
-    },
-    {
-      "label": "Build Solution",
-      "type": "shell",
-      "command": "dotnet",
-      "args": ["build", "Hoops.sln", "-c", "Debug", "/nologo"]
-    },
+    // ── VS Code / Functions debugger tasks (used by launch.json) ──────────────
     {
       "label": "clean (functions)",
       "command": "dotnet",
@@ -411,6 +195,13 @@
       "command": "host start",
       "isBackground": true,
       "problemMatcher": "$func-dotnet-watch"
+    },
+    // ── Utilities ──────────────────────────────────────────────────────────────
+    {
+      "label": "Rename Angular Components",
+      "type": "shell",
+      "command": "node",
+      "args": ["scripts/rename-components.mjs"]
     },
     {
       "label": "Lint Frontend",
