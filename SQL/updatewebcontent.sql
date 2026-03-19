@@ -1168,5 +1168,39 @@ where ExpirationDate > GetDate()
 --   '2026-03-20', GetDate(), null
 --   )
 
+insert into [dbo].[WebContent]
+   (
+   [CompanyId]
+      ,[Page]
+      ,[WebContentTypeId]
+      ,[Type]
+      ,[Title]
+      ,[ContentSequence]
+      ,[SubTitle]
+      ,[Location]
+      ,[DateAndTime]
+      ,[Body]
+      ,[ExpirationDate]
+      ,[ModifiedDate]
+      ,[ModifiedUser])
+  values (
+  1, null, 1, 1, 'Board Meeting', 1,
+  '',
+  '',
+  '',
+  'Board meeting for tonight (3-19-26) has been cancelled and will be rescheduled at a later date.',
+  '2026-03-20', GetDate(), null
+  )
+
   select * from WebContent
   order by ExpirationDate DESC
+
+  -- update WebContent
+  -- set ExpirationDate = '2026-03-19'
+  -- where WebContentId = 284
+
+  -- delete from WebContent
+  -- where WebContentId = 281 or 
+  -- WebContentId = 282 or 
+  -- WebContentId = 283 OR
+  -- WebContentId = 285
