@@ -406,11 +406,13 @@ jobs:
             --set properties.cors.supportsCredentials=true
 
       - name: Show current CORS settings
+        shell: bash
         run: |
+          SUB=$(az account show --query id -o tsv)
+          RG="${{ steps.selectapp.outputs.resource_group }}"
+          APP="${{ steps.selectapp.outputs.app_name }}"
           az resource show \
-            --resource-group ${{ steps.selectapp.outputs.resource_group }} \
-            --resource-type Microsoft.Web/sites/config \
-            --name "${{ steps.selectapp.outputs.app_name }}/web" \
+            --ids "/subscriptions/$SUB/resourceGroups/$RG/providers/Microsoft.Web/sites/$APP/config/web" \
             --query "properties.cors" -o jsonc
 
       # Dev only: prod managed identity and Key Vault access are configured manually via RBAC
