@@ -1,0 +1,263 @@
+<div class="container">
+  <mat-card class="form-card">
+    <form (ngSubmit)="onSubmit()">
+      <mat-card-header>
+        <mat-card-title>{{ pageTitle }}</mat-card-title>
+        <div class="season-select">
+          <mat-form-field [appearance]="inputStyle">
+            <mat-label>Season</mat-label>
+            <mat-select
+              [ngModel]="playerFormModel().seasonId"
+              (ngModelChange)="updateFormField('seasonId', $event)"
+              name="seasonId"
+              required
+            >
+              @for (season of seasons(); track season.seasonId) {
+              <mat-option [value]="season.seasonId">
+                {{ season.description }}
+              </mat-option>
+              }
+            </mat-select>
+            @if (!playerFormModel().seasonId) {
+            <mat-error>Season is required</mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </mat-card-header>
+
+      <mat-card-content>
+        <!-- Player Name (readonly) -->
+        <div class="form-row">
+          <mat-form-field [appearance]="inputStyle" class="full-width">
+            <mat-label>Player Name</mat-label>
+            <input
+              matInput
+              [ngModel]="playerFormModel().playerName"
+              (ngModelChange)="updateFormField('playerName', $event)"
+              name="playerName"
+              readonly
+            />
+          </mat-form-field>
+        </div>
+
+        <!-- Division -->
+        <div class="form-row">
+          <mat-form-field [appearance]="inputStyle" class="full-width">
+            <mat-label>Division</mat-label>
+            <mat-select
+              [ngModel]="playerFormModel().divisionId"
+              (ngModelChange)="updateFormField('divisionId', $event)"
+              name="divisionId"
+            >
+              @for (division of divisions(); track division.divisionId) {
+              <mat-option [value]="division.divisionId">
+                {{ division.divisionDescription }}
+              </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Payment Info Section -->
+        <mat-card class="section-card">
+          <mat-card-header>
+            <mat-card-title>Payment Info</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <!-- Payment Type -->
+            <div class="form-row">
+              <mat-label>Payment Type</mat-label>
+              <mat-radio-group
+                [ngModel]="playerFormModel().payType"
+                (ngModelChange)="updateFormField('payType', $event)"
+                name="payType"
+                class="radio-group"
+              >
+                @for (type of paymentTypes; track type) {
+                <mat-radio-button [value]="type">{{ type }}</mat-radio-button>
+                }
+              </mat-radio-group>
+            </div>
+
+            <!-- Paid Amount and Balance -->
+            <div class="form-row two-column">
+              <mat-form-field [appearance]="inputStyle">
+                <mat-label>Paid Amount</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  step="0.01"
+                  [ngModel]="playerFormModel().paidAmount"
+                  (ngModelChange)="updateFormField('paidAmount', $event)"
+                  name="paidAmount"
+                />
+                <span matTextPrefix>$&nbsp;</span>
+              </mat-form-field>
+
+              <mat-form-field [appearance]="inputStyle">
+                <mat-label>Balance</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  step="0.01"
+                  [ngModel]="playerFormModel().balanceOwed"
+                  (ngModelChange)="updateFormField('balanceOwed', $event)"
+                  name="balanceOwed"
+                />
+                <span matTextPrefix>$&nbsp;</span>
+              </mat-form-field>
+            </div>
+
+            <!-- Check # and Paid Date -->
+            <div class="form-row two-column">
+              <mat-form-field [appearance]="inputStyle">
+                <mat-label>Check #</mat-label>
+                <input
+                  matInput
+                  [ngModel]="playerFormModel().checkMemo"
+                  (ngModelChange)="updateFormField('checkMemo', $event)"
+                  name="checkMemo"
+                />
+              </mat-form-field>
+
+              <mat-form-field [appearance]="inputStyle">
+                <mat-label>Paid Date</mat-label>
+                <input
+                  matInput
+                  [matDatepicker]="paidDatePicker"
+                  [ngModel]="playerFormModel().paidDate"
+                  (ngModelChange)="updateFormField('paidDate', $event)"
+                  name="paidDate"
+                />
+                <mat-datepicker-toggle
+                  matIconSuffix
+                  [for]="paidDatePicker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #paidDatePicker></mat-datepicker>
+              </mat-form-field>
+            </div>
+
+            <!-- Memo -->
+            <div class="form-row">
+              <mat-form-field [appearance]="inputStyle" class="full-width">
+                <mat-label>Memo</mat-label>
+                <textarea
+                  matInput
+                  [ngModel]="playerFormModel().noteDesc"
+                  (ngModelChange)="updateFormField('noteDesc', $event)"
+                  name="noteDesc"
+                  rows="3"
+                ></textarea>
+              </mat-form-field>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Draft Info Section -->
+        <mat-card class="section-card">
+          <mat-card-header>
+            <mat-card-title>Draft Info</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <!-- Draft ID and Draft Note -->
+            <div class="form-row two-column">
+              <mat-form-field [appearance]="inputStyle">
+                <mat-label>Draft ID</mat-label>
+                <input
+                  matInput
+                  [ngModel]="playerFormModel().draftId"
+                  (ngModelChange)="updateFormField('draftId', $event)"
+                  name="draftId"
+                />
+              </mat-form-field>
+
+              <mat-form-field [appearance]="inputStyle">
+                <mat-label>Draft Note</mat-label>
+                <input
+                  matInput
+                  [ngModel]="playerFormModel().draftNotes"
+                  (ngModelChange)="updateFormField('draftNotes', $event)"
+                  name="draftNotes"
+                />
+              </mat-form-field>
+            </div>
+
+            <!-- Rating and Change Division -->
+            <div class="form-row two-column">
+              <mat-form-field [appearance]="inputStyle">
+                <mat-label>Rating</mat-label>
+                <mat-select
+                  [ngModel]="playerFormModel().rating"
+                  (ngModelChange)="updateFormField('rating', $event)"
+                  name="rating"
+                >
+                  @for (rating of ratingOptions; track rating) {
+                  <mat-option [value]="rating">{{ rating }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field [appearance]="inputStyle">
+                <mat-label>Change Division</mat-label>
+                <mat-select
+                  [ngModel]="playerFormModel().changeDivision"
+                  (ngModelChange)="updateFormField('changeDivision', $event)"
+                  name="changeDivision"
+                >
+                  @for (option of changeDivisionOptions; track option) {
+                  <mat-option [value]="option">{{ option }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <!-- Fee Waived Checkboxes -->
+            <div class="form-row">
+              <mat-label class="section-label">Fee Waived</mat-label>
+              <div class="checkbox-group">
+                <mat-checkbox
+                  [ngModel]="playerFormModel().scholarship"
+                  (ngModelChange)="updateFormField('scholarship', $event)"
+                  name="scholarship"
+                  >Scholarship</mat-checkbox
+                >
+                <mat-checkbox
+                  [ngModel]="playerFormModel().rollover"
+                  (ngModelChange)="updateFormField('rollover', $event)"
+                  name="rollover"
+                  >Rollover</mat-checkbox
+                >
+                <mat-checkbox
+                  [ngModel]="playerFormModel().familyDisc"
+                  (ngModelChange)="updateFormField('familyDisc', $event)"
+                  name="familyDisc"
+                  >Family Discount</mat-checkbox
+                >
+                <mat-checkbox
+                  [ngModel]="playerFormModel().ad"
+                  (ngModelChange)="updateFormField('ad', $event)"
+                  name="ad"
+                  >Athletic Director</mat-checkbox
+                >
+                <mat-checkbox
+                  [ngModel]="playerFormModel().outOfTown"
+                  (ngModelChange)="updateFormField('outOfTown', $event)"
+                  name="outOfTown"
+                  >Partial Refund</mat-checkbox
+                >
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Action Buttons -->
+        <div class="form-actions">
+          <button mat-raised-button color="primary" type="submit">Save</button>
+          <button mat-raised-button type="button" (click)="onCancel()">
+            Cancel
+          </button>
+        </div>
+      </mat-card-content>
+    </form>
+  </mat-card>
+</div>

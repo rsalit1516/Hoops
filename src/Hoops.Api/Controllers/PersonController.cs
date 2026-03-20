@@ -59,7 +59,47 @@ namespace Hoops.Controllers
             _logger.LogInformation("Searching for people");
             var people = repository.FindPeopleByLastAndFirstName(lastName, firstName, playerOnly);
             return Ok(people);
+        }
 
+        // GET: api/Person/5
+        [HttpGet("{id}")]
+        public ActionResult<Person> GetPerson(int id)
+        {
+            _logger.LogInformation("Getting person by ID: {id}", id);
+            var person = repository.GetById(id);
+            if (person == null)
+            {
+                return NotFound();
+            }
+            return Ok(person);
+        }
+
+        // PUT: api/Person/5
+        [HttpPut("{id}")]
+        public IActionResult PutPerson(int id, Person person)
+        {
+            if (id != person.PersonId)
+            {
+                return BadRequest("Person ID mismatch");
+            }
+
+            try
+            {
+                var updatedPerson = repository.Update(person);
+                repository.SaveChanges();
+                return Ok(updatedPerson);
+            }
+            catch (Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException)
+            {
+                if (repository.GetById(id) == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
         }
     }
 }

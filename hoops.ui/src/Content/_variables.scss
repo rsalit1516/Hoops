@@ -3,12 +3,12 @@
 // default colors
 $black: #000 !default;
 $brand: #d17b00;
-$default-lighten: 5%;
+$default-lighten: 10%;
 
 $sidebar-background-color: #232323;
 $brand-color: #d17b00; //#ff5600
 $sidebar-color: #d17b00;
-$background-color: color.adjust($black, $lightness: $default-lighten);
+$base-background-color: $black;
 $sidebar-pill-background: $brand-color;
 $panel-default-heading-background: #000000;
 $basketball-color: #b86850;
@@ -21,12 +21,13 @@ $sidebar-menu: color.adjust(black, $lightness: 10%);
 $card-background-color: color.adjust($black, $lightness: $default-lighten);
 $card-background-color-shadow: color.adjust(#3f3f3f, $lightness: -40%);
 $card-color: color.adjust(#d17b00, $lightness: 20%);
+$card-border-color: color.adjust($base-background-color, $lightness: 5%);
 $status-bar-background: color.adjust(#000000, $lightness: 10%);
 $app-bar-background: #212121;
 $color: #d17b00;
 $card-sub-title-color: #d17b00;
 $default-lighten: 5%;
-$csbc-background-color: color.adjust($black, $lightness: 20%);
+$csbc-background-color: color.adjust($black, $lightness: 10%);
 
 $sidebar-background-color: #232323;
 $brand-color: #d17b00;
@@ -47,14 +48,14 @@ $table-body-color: #292929;
 $table-font-color: #fce9cd;
 $table-header-background-color: color.adjust($black, $lightness: 10%);
 $table-border-color: rgb(112, 111, 111);
-$table-font-size: 0.9rem;
-$table-background-color: color.adjust($black, $lightness: 5%);
+$table-font-size: 1rem;
+$table-background-color: color.adjust($black, $lightness: 10%);
 $table-alternate-background-color: color.adjust($black, $lightness: 10%);
 $table-border-height: 40px;
 
 /* font sizes */
 $input-font-size: 0.9rem;
-$heading-font-size: 1.4rem;
+$heading-font-size: 1.2rem;
 $card-body: 0.9rem;
 $wrapper-font-size: 1rem;
 $card-title-font-size: 1.4rem;
@@ -62,14 +63,17 @@ $button-font-size: 1rem;
 $select-font-size: 0.8rem;
 
 /* admin */
-$admin-background-color: color.adjust(black, $lightness: 15%);
+$admin-background-color: color.adjust(black, $lightness: 5%);
 
 $admin-font-color: white;
 $admin-table-background-color: color.adjust(
   $black,
   $lightness: $default-lighten
 );
-$admin-card-background-color: #333333;
+$admin-card-background-color: color.adjust(
+  $base-background-color,
+  $lightness: 10%
+);
 
 $admin-input-background-color: rgb(58, 56, 56);
 $admin-table-background-color-border: color.adjust(black, $lightness: 5%);

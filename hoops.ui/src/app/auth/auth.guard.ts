@@ -1,11 +1,21 @@
-import { Injectable } from '@angular/core';
-import { Route, UrlSegment, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { Injectable, inject } from '@angular/core';
+import {
+  Route,
+  UrlSegment,
+  ActivatedRouteSnapshot,
+  RouterStateSnapshot,
+  UrlTree,
+  Router,
+} from '@angular/router';
 import { Observable } from 'rxjs';
+import { AuthService } from '@app/services/auth.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class AuthGuard  {
+export class AuthGuard {
+  #auth = inject(AuthService);
+  #router = inject(Router);
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
@@ -14,13 +24,19 @@ export class AuthGuard  {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    // console.log('AuthGuard#canActivate called');
-    return true;
+    const isLoggedIn = this.#auth.isLoggedIn();
+    if (isLoggedIn) return true;
+    // redirect to login with returnUrl
+    this.#router.navigate(['/login'], {
+      queryParams: { returnUrl: state.url },
+      replaceUrl: true,
+    });
+    return false;
   }
   canLoad(
     route: Route,
     segments: UrlSegment[]
   ): Observable<boolean> | Promise<boolean> | boolean {
-    return true;
+    return this.#auth.isLoggedIn();
   }
 }

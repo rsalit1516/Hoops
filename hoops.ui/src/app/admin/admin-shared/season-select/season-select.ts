@@ -1,0 +1,88 @@
+import {
+  Component,
+  inject,
+  OnInit,
+  computed,
+  OnChanges,
+  effect,
+} from '@angular/core';
+
+import { Season } from '@app/domain/season';
+import { UntypedFormControl, FormsModule } from '@angular/forms';
+import { AdminSeasonService } from '../services/season.service';
+import { AsyncPipe } from '@angular/common';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { SeasonService } from '@app/services/season.service';
+import { LoggerService } from '@app/services/logger.service';
+
+@Component({
+  selector: 'season-select',
+  template: `<mat-form-field>
+    <mat-label>{{ title }}</mat-label>
+    <mat-select
+      [(value)]="season"
+      [compareWith]="compareSeasons"
+      class="form-control"
+    >
+  @for (season of seasonService.seasons; track season.seasonId) {
+      <mat-option [value]="season" (click)="changeSeason(season)">
+        {{ season.description }}
+      </mat-option>
+      }
+    </mat-select>
+  </mat-form-field>`,
+  styleUrls: [
+    './../../../shared/scss/select.scss',
+    './../../../shared/scss/forms.scss',
+  ],
+  imports: [
+    FormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatOptionModule
+],
+})
+export class SeasonSelect implements OnInit {
+  readonly seasonService = inject(SeasonService);
+  private logger = inject(LoggerService);
+  title = 'Select Season';
+  // seasonComponent: UntypedFormControl | null | undefined;
+  defaultSeason: Season | undefined;
+  seasons = this.seasonService.seasons;
+  selectedSeason = computed(() => this.seasonService.selectedSeason);
+  season = this.selectedSeason();
+
+  constructor() {
+    effect(() => {
+      const sel = this.selectedSeason();
+      // Keep bound selection in sync with the service's selected season
+      this.season = sel;
+    });
+  }
+
+  ngOnInit() {
+    // Ensure seasons and current season are loaded so selector initializes
+    if (
+      !this.seasonService.seasons ||
+      this.seasonService.seasons.length === 0
+    ) {
+      this.seasonService.fetchSeasons();
+    }
+    if (!this.seasonService.currentSeason) {
+      this.seasonService.fetchCurrentSeason();
+    }
+  }
+  changeSeason(season: Season) {
+    this.logger.info('Season changed to:', season);
+    this.seasonService.updateSelectedSeason(season);
+  }
+
+  compareSeasons = (a: Season, b: Season) =>
+    !!a && !!b && a.seasonId === b.seasonId;
+
+  // onChange (season: Season) {
+  //   this.seasonService.selectSeason(season);
+  // }
+}

@@ -12,7 +12,7 @@ namespace Hoops.Core.ViewModels
             {
                 var result = (from d in db.Divisions
                               from g in db.ScheduleGames
-                              from l in db.ScheduleLocations
+                              from l in db.Location
 
                               where g.SeasonId == seasonId
                               where g.DivisionId == d.DivisionId
@@ -185,7 +185,7 @@ namespace Hoops.Core.ViewModels
             using (var db = new hoopsContext())
             {
                 var games = (from g in db.SchedulePlayoffs
-                             from l in db.ScheduleLocations
+                             from l in db.Location
                              from d in db.Divisions
                              where g.DivisionId == divisionId
                              where g.LocationNumber == l.LocationNumber

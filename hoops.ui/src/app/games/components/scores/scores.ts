@@ -1,0 +1,99 @@
+import { Component, OnInit, Input, input, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { Store, select } from '@ngrx/store';
+import { AuthService } from '@app/services/auth.service';
+import { LoggerService } from '@app/services/logger.service';
+
+import * as fromGames from '../../state';
+import * as fromUser from '../../../user/state';
+
+import { RegularGame } from '@app/domain/regularGame';
+import { User } from '@app/domain/user';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { DatePipe } from '@angular/common';
+
+@Component({
+  selector: 'csbc-scores',
+  templateUrl: './scores.html',
+  styleUrls: ['./scores.scss', '../../containers/games-shell/games-shell.scss'],
+  imports: [
+    //
+    MatTableModule,
+    // NgIf,
+    MatButtonModule,
+    MatIconModule,
+    DatePipe
+],
+})
+export class Scores implements OnInit {
+  private store = inject<Store<fromGames.State>>(Store);
+  private userStore = inject<Store<fromUser.State>>(Store);
+  dialog = inject(MatDialog);
+  private logger = inject(LoggerService);
+
+  readonly authService = inject(AuthService);
+  dataSource!: MatTableDataSource<RegularGame>;
+  groupedGames!: RegularGame[];
+  _gamesByDate!: [Date, RegularGame[]];
+  divisionId: number | undefined;
+  flexMediaWatcher: any;
+  currentScreenWidth: any;
+  get games() {
+    return this._games;
+  }
+  @Input()
+  set games(games: RegularGame[]) {
+    this._games = games;
+    //    console.log(games);
+    this.dataSource = new MatTableDataSource(games);
+    //this.groupByDate(games).subscribe(grouped => {
+    // this.groupedGames = grouped;
+    //console.log(grouped);
+    //});
+  }
+  private _games!: RegularGame[];
+
+  errorMessage!: string;
+  public title: string;
+  private user!: User;
+
+  displayedColumns = [
+    'gameDate',
+    'visitingTeamName',
+    'homeTeamName',
+    'visitingTeamScore',
+    'homeTeamScore',
+  ];
+
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+  constructor() {
+    this.title = 'Schedule!';
+  }
+
+  ngOnInit() {
+    this.userStore.pipe(select(fromUser.getCurrentUser)).subscribe((user) => {
+      this.user = user;
+      this.logger.debug('Current user:', this.user);
+    });
+    this.store
+      .pipe(select(fromGames.getCurrentDivision))
+      .subscribe((division) => {
+        if (division !== null && fromGames.getCurrentDivisionId !== undefined) {
+          this.divisionId = division?.divisionId;
+        }
+      });
+    this.store.pipe(select(fromGames.getFilteredGames)).subscribe((games) => {
+      this.games = games;
+      this.dataSource.data = games;
+    });
+    this.dataSource = new MatTableDataSource(this.games);
+    // Dynamically add actions column if user can edit
+    if (this.authService.canEditGames()) {
+      this.displayedColumns.push('actions');
+    }
+  }
+}

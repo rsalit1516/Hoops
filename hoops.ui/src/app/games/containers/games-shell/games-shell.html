@@ -1,0 +1,10 @@
+<!-- <h1>{{seasonService.season1().description}}</h1> -->
+<section class="container">
+  <csbc-games-top-menu
+    [divisions]="divisions()"
+    (selectedDivision)="divisionSelected($event)"
+  />
+  <div class="games-wrapper">
+    <router-outlet />
+  </div>
+</section>

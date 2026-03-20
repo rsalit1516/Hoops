@@ -1,0 +1,70 @@
+@use "./../../../../Content/variables" as v;
+
+.games-list {
+  padding: 0 8px 8px;
+}
+
+.game-card {
+  border-bottom: 1px solid v.$card-border-color;
+  padding: 8px 8px;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.game-rows {
+  min-width: 0;
+}
+
+.game-row {
+  display: grid;
+  grid-template-columns: 5rem 1fr;
+  align-items: center;
+  column-gap: 8px;
+  padding-left: 12px;
+  height: 24px;
+
+  @media (min-width: 768px) {
+    grid-template-columns: 5.5rem 240px;
+    column-gap: 12px;
+    padding-left: 24px;
+  }
+}
+
+.game-row--description {
+  grid-template-columns: 1fr;
+  height: auto;
+  padding-bottom: 2px;
+}
+
+.col-description {
+  color: v.$brand-color;
+  font-size: v.$table-font-size;
+  font-weight: 600;
+}
+
+.col-meta {
+  color: v.$table-font-color;
+  font-size: v.$table-font-size;
+  white-space: nowrap;
+}
+
+.col-location {
+  color: v.$table-font-color;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.col-team {
+  color: v.$table-font-color;
+  font-size: v.$table-font-size;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+section {
+  background-color: v.$card-background-color;
+}

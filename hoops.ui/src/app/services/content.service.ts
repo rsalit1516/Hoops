@@ -1,29 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { DataService } from './data.service';
 import { WebContent } from '../domain/webContent';
 import { Observable } from 'rxjs';
+import { Constants } from '@app/shared/constants';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ContentService {
-  private _webContentUrl: string;
-  getActiveContent$ = this._http.get<WebContent[]>(
-    this.dataService.getActiveWebContentUrl
-  );
-  constructor(private _http: HttpClient, public dataService: DataService) {
-    this._webContentUrl = this.dataService.getActiveWebContentUrl;
-  }
+  getActiveContent$ = this._http.get<WebContent[]>(Constants.getActiveContentUrl);
+
+  constructor(private _http: HttpClient) {}
 
   getContents(): Observable<WebContent[]> {
-    return this._http
-      .get<WebContent[]>(this.dataService.getActiveWebContentUrl);
+    return this._http.get<WebContent[]>(Constants.getActiveContentUrl);
   }
-
-  // getContent(id: number): Observable<WebContent> {
-  //   return this.getContents().pipe(
-  //     map((content: WebContent[]) => content.find((p) => p.webContentId === id))
-  //   );
-  // }
 }

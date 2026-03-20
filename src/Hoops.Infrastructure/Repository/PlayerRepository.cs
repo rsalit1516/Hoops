@@ -377,7 +377,6 @@ namespace Hoops.Infrastructure.Repository
             if (playerold != null)
             {
                 context.Entry(playerold).CurrentValues.SetValues(player);
-                context.SaveChanges();
                 if (player.SeasonId != 0 && player.PersonId != 0 && player.CompanyId != 0)
                 {
                     if (player.SeasonId != 0 && player.PersonId != 0 && player.CompanyId != 0)
@@ -394,8 +393,9 @@ namespace Hoops.Infrastructure.Repository
                         }
                     }
                 }
+                return playerold;
             }
-            return player ?? new Player();
+            return new Player();
         }
 
         public void SetDivision(int seasonId, int personId, int companyId)
@@ -575,6 +575,33 @@ namespace Hoops.Infrastructure.Repository
         IQueryable<SeasonPlayer> IPlayerRepository.GetCoachPlayers(int seasonId, int coachId)
         {
             throw new NotImplementedException();
+        }
+
+        public List<DraftListPlayer> GetDraftListPlayers(int seasonId, int? divisionId)
+        {
+            var query = from p in context.Set<Person>()
+                        join pl in context.Set<Player>() on p.PersonId equals pl.PersonId
+                        join h in context.Set<Household>() on p.HouseId equals h.HouseId
+                        join d in context.Set<Division>() on pl.DivisionId equals d.DivisionId
+                        join s in context.Set<Season>() on d.SeasonId equals s.SeasonId
+                        where s.SeasonId == seasonId
+                        where !divisionId.HasValue || pl.DivisionId == divisionId
+                        orderby d.DivisionDescription, p.LastName, p.FirstName
+                        select new DraftListPlayer
+                        {
+                            PersonId = p.PersonId,
+                            Division = d.DivisionDescription ?? string.Empty,
+                            DraftId = pl.DraftId,
+                            LastName = p.LastName ?? string.Empty,
+                            FirstName = p.FirstName ?? string.Empty,
+                            DOB = p.BirthDate != null ? p.BirthDate.Value.Date : (DateTime?)null,
+                            Grade = p.Grade,
+                            Address1 = h.Address1,
+                            City = h.City,
+                            Zip = h.Zip
+                        };
+
+            return query.ToList();
         }
     }
 }

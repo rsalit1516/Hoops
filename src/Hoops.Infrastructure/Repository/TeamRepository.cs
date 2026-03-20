@@ -93,17 +93,12 @@ namespace Hoops.Infrastructure.Repository
             var color = colors.FirstOrDefault(c => c.ColorId == team.TeamColorId);
             team.TeamColor = color?.ColorName;
 
-            var teamNameSuffix = $" ({team.TeamNumber})";
             if (string.IsNullOrEmpty(team.TeamName))
             {
                 team.TeamName = team.TeamColor?.ToUpper() ?? string.Empty;
             }
-            else 
-            {
-                team.TeamName = $"{team.TeamName} ";
-            }
-
-            team.TeamName += teamNameSuffix;
+            // Don't add team number suffix - use the team name as-is
+            
             return team;
         }
     }

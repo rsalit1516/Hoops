@@ -1,0 +1,151 @@
+@use "sass:color";
+@use "variables" as v;
+
+.container {
+  background-color: v.$base-background-color;
+  margin: 0 auto;
+}
+.mat-mdc-card-header {
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-bottom: 12px !important;
+}
+.mat-mdc-card-header-text {
+  width: 100%;
+  text-align: center;
+}
+.mat-mdc-card-title,
+.mat-mdc-card-subtitle {
+  text-align: center !important;
+  width: 100%;
+}
+.mat-mdc-card-content {
+  border-top: 1px solid color.adjust(v.$card-sub-title-color, $lightness: 10%) !important;
+}
+
+h4 {
+  color: v.$brand-color;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+img {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.tag {
+  height: 60px;
+}
+.tag-line {
+  font-variant: small-caps;
+  font-style: italic;
+  font-size: 1.2rem;
+  font-weight: 400;
+  text-align: right;
+  padding-top: 12px;
+  padding-right: 12px;
+}
+#logo {
+  display: flex;
+  justify-content: center;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+.panel-title {
+  font-size: 1.2em;
+  text-align: center;
+  background-color: #424242;
+}
+
+em {
+  text-align: right;
+}
+.manny {
+  background-color: transparent;
+  color: color.adjust(#ebf3c6, $lightness: -10%);
+  text-align: right;
+  font-size: v.$card-body;
+  font-weight: 400;
+  font-style: italic;
+  padding-top: 40px;
+  padding-right: 24px;
+}
+.center-top {
+  padding-top: 20px;
+}
+
+.top-padding {
+  margin-top: 24px;
+  padding-left: auto;
+  padding-right: auto;
+}
+.title {
+  font-size: 1.4rem !important;
+  font-weight: 500;
+}
+.sub-title {
+  color: color.adjust(v.$card-sub-title-color, $lightness: 10%);
+  font-weight: 500;
+  font-size: 1.2rem;
+  padding-bottom: 8px;
+}
+.home-wrapper {
+  background-color: v.$black;
+  font-size: v.$wrapper-font-size;
+  height: 100%;
+}
+
+.infoLocation {
+  // background-color: v.$card-highlight;
+  color: color.adjust(v.$card-sub-title-color, $lightness: 10%);
+  font-size: 1.1rem;
+  margin-right: 4vw;
+  margin-left: 4vw;
+  margin-top: 2vh;
+  border-radius: 10px;
+  border-color: v.$card-highlight;
+  border-style: outset;
+  border-width: 1px;
+  padding-top: 1vh;
+  padding-bottom: 1vh;
+}
+
+div.sponsor {
+  height: 140px;
+  position: fixed;
+  left: 0;
+  bottom: 0%;
+  width: 100%;
+  background-color: color.adjust(v.$card-background-color, $lightness: -10%);
+  // opacity: 1;
+  text-align: center;
+}
+.sponsor-carousel {
+  height: 120px;
+}
+
+p {
+  color: white;
+}
+.body-text {
+  color: v.$brand-color;
+  font-size: 1rem;
+  font-weight: 400;
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-top: 12px;
+  margin-right: 4vw;
+  margin-left: 4vw;
+  text-align: left;
+}
+
+.mat-mdc-card {
+  margin-left: 0% !important;
+  margin-right: 0% !important;
+  @media (min-width: 768px) {
+    margin-left: 10% !important;
+    margin-right: 10% !important;
+  }
+}

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,6 +7,7 @@ using Hoops.Core.ViewModels;
 using Hoops.Infrastructure.Repository;
 using Hoops.Infrastructure.Data;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Hoops.Data
 {
@@ -125,7 +126,7 @@ namespace Hoops.Data
 
         public bool InitPersonTest(hoopsContext context)
         {
-            ILogger<PersonRepository> _logger = LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<PersonRepository>();
+            ILogger<PersonRepository> _logger = NullLogger<PersonRepository>.Instance;
             Household house;
             IQueryable<Household> houses;
             var rep = new PersonRepository(context, _logger);
@@ -205,7 +206,7 @@ namespace Hoops.Data
         }
         public bool InitDirectorTest()
         {
-            ILogger<PersonRepository> _logger = LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<PersonRepository>();
+            ILogger<PersonRepository> _logger = NullLogger<PersonRepository>.Instance;
             using (var db = new hoopsContext())
             {
                 var rep = new DirectorRepository(db);
@@ -224,7 +225,7 @@ namespace Hoops.Data
 
         public bool InitUser(hoopsContext context)
         {
-            ILogger<PersonRepository> _logger = LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<PersonRepository>();
+            ILogger<PersonRepository> _logger = NullLogger<PersonRepository>.Instance;
             using (var db = new hoopsContext())
             {
                 var personRep = new PersonRepository(db, _logger);
@@ -261,7 +262,7 @@ namespace Hoops.Data
 
         public void InitPlayers(hoopsContext context)
         {
-            ILogger<PersonRepository> _logger = LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<PersonRepository>();
+            ILogger<PersonRepository> _logger = NullLogger<PersonRepository>.Instance;
             context = new hoopsContext();
             var currentSeason = CurrentSeason.SeasonId;
             var repPeople = new PersonRepository(new hoopsContext(), _logger);
@@ -293,7 +294,7 @@ namespace Hoops.Data
 
         public void InitCoaches(hoopsContext context)
         {
-            ILogger<PersonRepository> _logger = LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<PersonRepository>();
+            ILogger<PersonRepository> _logger = NullLogger<PersonRepository>.Instance;
             context = new hoopsContext();
             var currentSeason = CurrentSeason.SeasonId;
             var repPeople = new PersonRepository(new hoopsContext(), _logger);
@@ -316,7 +317,7 @@ namespace Hoops.Data
         }
         public void InitSponsors()
         {
-            ILogger<PersonRepository> _logger = LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<PersonRepository>();
+            ILogger<PersonRepository> _logger = NullLogger<PersonRepository>.Instance;
             using (var db = new hoopsContext())
             {
                 var currentSeason = CurrentSeason.SeasonId;
@@ -361,7 +362,7 @@ namespace Hoops.Data
 
         public async Task<bool> InitDivision(hoopsContext context)
         {
-            ILogger<PersonRepository> _logger = LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<PersonRepository>();
+            ILogger<PersonRepository> _logger = NullLogger<PersonRepository>.Instance;
             var init = new HoopsInitializer();
             var divisionRep = new DivisionRepository(context);
 
@@ -384,8 +385,8 @@ namespace Hoops.Data
                         DivisionDescription = "T2_Coed",
                         DirectorId = (person).FirstOrDefault()?.PersonId ?? 0,
                         Gender = "M",
-                        MinDate = schoolYearStart.AddYears(-6),
-                        MaxDate = schoolYearStart.AddYears(-5).AddDays(-1),
+                        MinDate = schoolYearStart.AddYears(-6).AddDays(-1),
+                        MaxDate = schoolYearStart.AddYears(-5),
                         DraftDate = today.AddDays(12),
                         DraftTime = today.AddDays(12).ToShortTimeString()
                     });
@@ -414,8 +415,8 @@ namespace Hoops.Data
                        DivisionDescription = "T4_Coed",
                        DirectorId = (person).FirstOrDefault()?.PersonId ?? 0,
                        Gender = "M",
-                       MinDate = schoolYearStart.AddYears(-10),
-                       MaxDate = schoolYearStart.AddYears(-8).AddDays(-1),
+                       MinDate = schoolYearStart.AddYears(-8).AddDays(-1),
+                       MaxDate = schoolYearStart.AddYears(-10),
                        DraftDate = today.AddDays(12),
                        DraftTime = today.AddDays(12).ToShortTimeString()
                    });
@@ -428,8 +429,8 @@ namespace Hoops.Data
                        DivisionDescription = "SI_Boys",
                        DirectorId = (person).FirstOrDefault<Person>().PersonId,
                        Gender = "M",
-                       MinDate = schoolYearStart.AddYears(-12),
-                       MaxDate = schoolYearStart.AddYears(-10).AddDays(-1),
+                       MinDate = schoolYearStart.AddYears(-10).AddDays(-1),
+                       MaxDate = schoolYearStart.AddYears(-12),
                        DraftDate = today.AddDays(12),
                        DraftTime = today.AddDays(12).ToShortTimeString()
                    });
@@ -442,8 +443,8 @@ namespace Hoops.Data
                        DivisionDescription = "FJV_Boys",
                        DirectorId = (person).FirstOrDefault<Person>().PersonId,
                        Gender = "M",
-                       MinDate = schoolYearStart.AddYears(-14),
-                       MaxDate = schoolYearStart.AddYears(-12).AddDays(-1),
+                       MinDate = schoolYearStart.AddYears(-12),
+                       MaxDate = schoolYearStart.AddYears(-14).AddDays(-1),
                        DraftDate = today.AddDays(12),
                        DraftTime = today.AddDays(12).ToShortTimeString()
                    });
@@ -456,8 +457,8 @@ namespace Hoops.Data
                        DivisionDescription = "SJV_Boys",
                        DirectorId = (person).FirstOrDefault<Person>().PersonId,
                        Gender = "M",
-                       MinDate = schoolYearStart.AddYears(-16),
-                       MaxDate = schoolYearStart.AddYears(-14).AddDays(-1),
+                       MinDate = schoolYearStart.AddYears(-14),
+                       MaxDate = schoolYearStart.AddYears(-16).AddDays(-1),
                        DraftDate = today.AddDays(12),
                        DraftTime = today.AddDays(12).ToShortTimeString()
                    });
@@ -470,8 +471,8 @@ namespace Hoops.Data
                        DivisionDescription = "HS_Boys",
                        DirectorId = (person).FirstOrDefault<Person>().PersonId,
                        Gender = "M",
-                       MinDate = schoolYearStart.AddYears(-18),
-                       MaxDate = schoolYearStart.AddYears(-16).AddDays(-1),
+                       MinDate = schoolYearStart.AddYears(-16),
+                       MaxDate = schoolYearStart.AddYears(-18).AddDays(-1),
                        DraftDate = today.AddDays(12),
                        DraftTime = today.AddDays(12).ToShortTimeString()
                    });
@@ -484,8 +485,8 @@ namespace Hoops.Data
                         DivisionDescription = "JV_Girls",
                         DirectorId = (person).FirstOrDefault<Person>().PersonId,
                         Gender = "F",
-                        MinDate = schoolYearStart.AddYears(-17),
-                        MaxDate = schoolYearStart.AddYears(-14),
+                        MinDate = schoolYearStart.AddYears(-14),
+                        MaxDate = schoolYearStart.AddYears(-17),
                         DraftDate = today.AddDays(12),
                         DraftTime = today.AddDays(12).ToShortTimeString()
                     });
@@ -642,7 +643,7 @@ namespace Hoops.Data
         }
         public void DeleteTestPeople(hoopsContext context)
         {
-            ILogger<PersonRepository> _logger = LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<PersonRepository>();
+            ILogger<PersonRepository> _logger = NullLogger<PersonRepository>.Instance;
             var rep = new PersonRepository(context, _logger);
             var people = rep.GetAll(CompanyId);
             foreach (Person person in people)
@@ -652,11 +653,12 @@ namespace Hoops.Data
         }
         public void DeleteTestComments(hoopsContext context)
         {
-            var rep = new CommentRepository(context);
-            var comments = rep.GetAll().ToList<Comment>();
-            foreach (Comment comment in comments)
+            // Use DbContext directly to avoid dependency on CommentRepository
+            var comments = context.Comments.ToList();
+            if (comments.Count > 0)
             {
-                rep.Delete(comment);
+                context.Comments.RemoveRange(comments);
+                context.SaveChanges();
             }
         }
         public void DeleteTestPlayers(hoopsContext context)

@@ -1,0 +1,31 @@
+import { Component, inject, OnInit, Output } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Standing } from '@app/domain/standing';
+import { Season } from '@app/domain/season';
+import { Division } from '@app/domain/division';
+import { Store, select } from '@ngrx/store';
+
+import * as fromGames from '../../state';
+
+import { Standings } from '@app/games/components/standings/standings';
+import { GameService } from '@app/services/game.service';
+
+@Component({
+  selector: 'csbc-standings-shell',
+  imports: [Standings],
+  template: `<div class="container mx-auto">
+    <div>
+      <h2>{{ title }}</h2>
+      <csbc-standings [standings]="divisionStandings() ?? []" />
+    </div>
+  </div> `,
+  styleUrls: [
+    // '../../../../Content/styles.scss',
+  ],
+})
+export class StandingsShell {
+  private gameService = inject(GameService);
+
+  title = 'Standings';
+  divisionStandings = this.gameService.divisionStandings;
+}

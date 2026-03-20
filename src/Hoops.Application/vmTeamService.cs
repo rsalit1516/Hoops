@@ -33,7 +33,10 @@ namespace Hoops.Application.DTOs
             {
                 if (team.TeamColorId > 0)
                 {
-                    newTeam.TeamName = colorRepo.GetById(team.TeamColorId).ColorName + " (" + team.TeamNumber.ToString() + ")";
+                    var color = colorRepo.GetById(team.TeamColorId);
+                    newTeam.TeamName = color?.ColorName != null
+                        ? color.ColorName + " (" + team.TeamNumber?.ToString() + ")"
+                        : team.TeamNumber;
                 }
                 else
                     newTeam.TeamName = team.TeamNumber;

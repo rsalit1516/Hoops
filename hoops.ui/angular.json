@@ -14,7 +14,15 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss"
+          "style": "scss",
+          "type": "",
+          "standalone": true
+        },
+        "@schematics/angular:directive": {
+          "standalone": true
+        },
+        "@schematics/angular:pipe": {
+          "standalone": true
         },
         "@schematics/angular:application": {
           "strict": true
@@ -72,6 +80,28 @@
               ],
               "outputHashing": "all"
             },
+            "staging": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.development.ts"
+                }
+              ],
+              "optimization": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500mb",
+                  "maximumError": "10mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2mb",
+                  "maximumError": "4mb"
+                }
+              ],
+              "outputHashing": "all"
+            },
             "development": {
               "optimization": false,
               "extractLicenses": false,
@@ -103,6 +133,9 @@
             "production": {
               "buildTarget": "csbc:build:production"
             },
+            "staging": {
+              "buildTarget": "csbc:build:staging"
+            },
             "development": {
               "buildTarget": "csbc:build:development"
             },
@@ -123,18 +156,16 @@
           "options": {
             "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "tsconfig.spec.json",
-            "inlineStyleLanguage": "sass",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
-            ],
+            "karmaConfig": "karma.conf.js",
+            "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/Content/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "stylePreprocessorOptions": {
+              "includePaths": ["src/Content"]
+            }
           }
         }
       }
@@ -142,13 +173,13 @@
   },
   "schematics": {
     "@schematics/angular:component": {
-      "type": "component"
+      "type": ""
     },
     "@schematics/angular:directive": {
-      "type": "directive"
+      "type": ""
     },
     "@schematics/angular:service": {
-      "type": "service"
+      "type": ""
     },
     "@schematics/angular:guard": {
       "typeSeparator": "."

@@ -23,17 +23,17 @@ namespace Hoops.Infrastructure.Repository
         {
             var result = from h in context.Set<Household>() where h.CompanyId == CompanyId select h;
             if (!String.IsNullOrEmpty(name))
-                result = from h in result where h.Name.StartsWith(name) orderby h.Name select h;
+                result = from h in result where h.Name != null && h.Name.StartsWith(name) orderby h.Name select h;
             if (!String.IsNullOrEmpty(address))
                 result =
                     from h in result
-                    where h.Address1.Contains(address)
+                    where h.Address1 != null && h.Address1.Contains(address)
                     orderby h.Address1
                     select h;
             if (!String.IsNullOrEmpty(phone))
-                result = from h in result where h.Phone.Contains(phone) orderby h.Phone select h;
+                result = from h in result where h.Phone != null && h.Phone.Contains(phone) orderby h.Phone select h;
             if (!String.IsNullOrEmpty(email))
-                result = from h in result where h.Email.Contains(email) orderby h.Email select h;
+                result = from h in result where h.Email != null && h.Email.Contains(email) orderby h.Email select h;
             return result;
         }
 
@@ -107,13 +107,25 @@ namespace Hoops.Infrastructure.Repository
 
         public IQueryable<Household> GetByName(string name)
         {
-            var house = context.Set<Household>().Where(h => h.Name.ToUpper() == name.ToUpper());
+            var house = context.Set<Household>().Where(h => h.Name != null && h.Name.ToUpper() == name.ToUpper());
             return house;
         }
 
         public override Household Update(Household entity)
         {
             var household = GetById(entity.HouseId);
+
+            // Update properties from the incoming entity
+            household.Name = entity.Name;
+            household.Address1 = entity.Address1;
+            household.Address2 = entity.Address2;
+            household.City = entity.City;
+            household.State = entity.State;
+            household.Zip = entity.Zip;
+            household.Phone = entity.Phone;
+            household.Email = entity.Email;
+            household.CompanyId = entity.CompanyId;
+
             context.Entry(household).State = EntityState.Modified;
             context.SaveChanges();
             return household;
@@ -123,13 +135,24 @@ namespace Hoops.Infrastructure.Repository
         {
             var query = context.Households.AsQueryable();
             if (!string.IsNullOrEmpty(criteria.Name))
-                query = query.Where(p => p.Name.Contains(criteria.Name));
+            {
+                // Use StartsWith for single letter (alphabetical filtering)
+                // Use Contains for longer strings (text search)
+                if (criteria.Name.Length == 1)
+                    query = query.Where(p => p.Name != null && p.Name.StartsWith(criteria.Name));
+                else
+                    query = query.Where(p => p.Name != null && p.Name.Contains(criteria.Name));
+            }
             if (!string.IsNullOrEmpty(criteria.Address))
-                query = query.Where(p => p.Address1.Contains(criteria.Address));
+                query = query.Where(p => p.Address1 != null && p.Address1.Contains(criteria.Address));
             if (!string.IsNullOrEmpty(criteria.Email))
-                query = query.Where(p => p.Email.Contains(criteria.Email));
+                query = query.Where(p => p.Email != null && p.Email.Contains(criteria.Email));
             if (!string.IsNullOrEmpty(criteria.Phone))
-                query = query.Where(p => p.Phone.Contains(criteria.Phone));
+                query = query.Where(p => p.Phone != null && p.Phone.Contains(criteria.Phone));
+
+            // Order by name for consistent results
+            query = query.OrderBy(p => p.Name);
+
             return query.ToList();
         }
     }

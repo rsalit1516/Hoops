@@ -37,7 +37,7 @@ namespace Hoops.Infrastructure.Repository
 
             var div = context.Set<Division>().Where(d => d.SeasonId == seasonId);
             _logger.LogInformation("Retrieved " + div.Count().ToString() + " divisions");
-            var locations = context.Set<ScheduleLocation>();
+            var locations = context.Set<Location>();
             // var locations = context.Set<Location>();
             _logger.LogInformation("Retrieved " + locations.Count().ToString() + " locations");
 
@@ -46,12 +46,14 @@ namespace Hoops.Infrastructure.Repository
 
             var gamesl = context.SchedulePlayoffs
                 .Join(context.Divisions, sp => sp.DivisionId, d => d.DivisionId, (sp, d) => new { sp, d })
-                .Join(context.ScheduleLocations, spd => spd.sp.LocationNumber, l => l.LocationNumber, (spd, l) => new { spd.sp, spd.d, l })
+                .Join(context.Location, spd => spd.sp.LocationNumber, l => l.LocationNumber, (spd, l) => new { spd.sp, spd.d, l })
                 .Where(spdl => spdl.d.SeasonId == seasonId)
                 .OrderBy(spdl => spdl.sp.GameDate)
                 .ThenBy(spdl => spdl.sp.GameTime)
                 .Select(spdl => new PlayoffGameVm
                 {
+                    SchedulePlayoffId = spdl.sp.SchedulePlayoffId,
+                    ScheduleNumber = spdl.sp.ScheduleNumber,
                     GameNumber = spdl.sp.GameNumber,
                     LocationNumber = spdl.sp.LocationNumber,
                     GameDate = spdl.sp.GameDate,
@@ -82,7 +84,7 @@ namespace Hoops.Infrastructure.Repository
                 return gameTime;
             }
         }
-        private List<PlayoffGameVm> GetLocationNames(List<PlayoffGameVm> gamesVm, IQueryable<ScheduleLocation> locations)
+        private List<PlayoffGameVm> GetLocationNames(List<PlayoffGameVm> gamesVm, IQueryable<Location> locations)
         {
             foreach (var game in gamesVm)
             {
@@ -119,7 +121,7 @@ namespace Hoops.Infrastructure.Repository
             return playoffGame;
         }
 
-        private string GetGameLocation(Int32 locationNumber, IQueryable<ScheduleLocation> locations)
+        private string GetGameLocation(Int32 locationNumber, IQueryable<Location> locations)
         {
             var location = locations.First(l => l.LocationNumber == locationNumber);
 

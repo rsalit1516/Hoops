@@ -9,6 +9,7 @@ import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import * as fromAdmin from '../../state';
 import * as adminActions from '../../state/admin.actions';
+import { LoggerService } from '@app/services/logger.service';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +18,8 @@ export class TeamService {
   constructor(
     private dataService: DataService,
     private store: Store<fromAdmin.State>,
-    private http: HttpClient
+    private http: HttpClient,
+    private logger: LoggerService
   ) {}
 
   filterTeamsByDivision(div: number): Observable<Team[]> {
@@ -50,11 +52,11 @@ export class TeamService {
     return of(filteredTeams);
   }
   saveTeam(team: Team): void {
-    console.log(team);
+    this.logger.info('Saving team:', team);
 
     if (team.teamId === 0) {
       this.addTeam(team).subscribe((team) => {
-        console.log(team);
+        this.logger.info('Team created:', team);
         this.store.dispatch(new adminActions.LoadSeasonTeams());
       });
     } else {
@@ -64,10 +66,10 @@ export class TeamService {
     }
   }
   addTeam(team: Team): Observable<Team | ArrayBuffer> {
-    console.log(this.dataService.teamPostUrl);
+    this.logger.debug('Adding team to URL:', Constants.teamPostUrl);
     return this.http
       .post<Team>(
-        this.dataService.teamPostUrl,
+        Constants.teamPostUrl,
         team,
          this.dataService.httpOptions
       )
@@ -94,7 +96,7 @@ export class TeamService {
   updateTeam (team: Team) {
     return this.http
       .put<Team>(
-        this.dataService.teamPutUrl + team.teamId,
+        Constants.teamPutUrl + team.teamId,
         team,
         this.dataService.httpOptions
       )

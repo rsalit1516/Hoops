@@ -1,7 +1,7 @@
 @use "variables" as v;
 
 .mat-toolbar {
-  background: v.$background-color;
+  background: v.$base-background-color;
   color: v.$font-color-text;
 }
 
@@ -50,7 +50,7 @@
 }
 
 .mat-table {
-  background-color: v.$background-color;
+  background-color: v.$base-background-color;
 }
 
 th.mat-header-cell {

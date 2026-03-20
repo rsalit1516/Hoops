@@ -11,8 +11,13 @@ import { ContentService } from './web-content/content.service';
   providedIn: 'root',
 })
 export class getWebContentDataResolver implements Resolve<any> {
+  private store = inject<Store<fromContent.State>>(Store);
+
   contentService = inject(ContentService);
-  constructor (private store: Store<fromContent.State>) {}
+
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+  constructor () {}
 
   resolve (route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     return this.contentService.getContents();

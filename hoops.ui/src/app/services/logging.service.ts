@@ -7,6 +7,7 @@ import { environment } from '../../environments/environment';
 export class LoggerService {
   log(message: any, ...optionalParams: any[]): void {
     if (!environment.production) {
+      // eslint-disable-next-line no-console
       console.log(message, ...optionalParams);
     }
   }

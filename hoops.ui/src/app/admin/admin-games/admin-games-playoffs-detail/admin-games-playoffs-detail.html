@@ -1,0 +1,98 @@
+<form [formGroup]="form" class="form-grid">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Playoff Game Details</mat-card-title>
+      <mat-card-subtitle> </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <!-- Division (hidden) -->
+      <input type="hidden" formControlName="divisionId" />
+
+      <!-- Location dropdown -->
+      <mat-form-field appearance="fill">
+        <mat-label>Location</mat-label>
+        <mat-select formControlName="locationNumber" required>
+          @for (loc of locationsSig(); track loc) {
+          <mat-option [value]="loc.locationNumber">
+            {{ loc.locationName }}
+          </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Game Date -->
+      <mat-form-field appearance="fill">
+        <mat-label>Game Date</mat-label>
+        <input
+          matInput
+          [matDatepicker]="datePicker"
+          formControlName="gameDate"
+          required
+        />
+        <mat-datepicker-toggle matSuffix [for]="datePicker" />
+        <mat-datepicker #datePicker />
+      </mat-form-field>
+
+      <!-- Game Time -->
+      <mat-form-field appearance="fill">
+        <mat-label>Game Time</mat-label>
+        <input
+          matInput
+          [matTimepicker]="timePicker"
+          formControlName="gameTime"
+          required
+        />
+        <mat-timepicker-toggle matIconSuffix [for]="timePicker" />
+        <mat-timepicker interval="5min" #timePicker />
+      </mat-form-field>
+
+      <!-- Teams (free-form text) -->
+      <mat-form-field appearance="fill">
+        <mat-label>Description</mat-label>
+        <input matInput formControlName="descr" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Home Team</mat-label>
+        <input matInput formControlName="homeTeam" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Visiting Team</mat-label>
+        <input matInput formControlName="visitingTeam" required />
+      </mat-form-field>
+
+      <!-- Scores (numbers) -->
+      <mat-form-field appearance="fill">
+        <mat-label>Home Team Score</mat-label>
+        <input matInput type="number" formControlName="homeTeamScore" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Visiting Team Score</mat-label>
+        <input matInput type="number" formControlName="visitingTeamScore" />
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions>
+      <div class="button-row">
+        <button
+          type="button"
+          mat-raised-button
+          color="primary"
+          (click)="save()"
+          [disabled]="form.invalid || isSaving"
+        >
+          {{ isEditing ? 'Update' : 'Save' }}
+        </button>
+        <button
+          type="button"
+          mat-stroked-button
+          color="accent"
+          routerLink="/admin/games/list-playoff"
+        >
+          Cancel
+        </button>
+      </div>
+    </mat-card-actions>
+  </mat-card>
+</form>

@@ -1,0 +1,25 @@
+<div class="list-page-container">
+  <!-- Filter Section -->
+  <div class="filter-section">
+    <ng-content select="[filter]" />
+  </div>
+
+  <!-- List/Table Section -->
+  <div class="list-section">
+    <mat-card>
+      @if (title()) {
+        <mat-card-header>
+          <div class="header-content">
+            <mat-card-title>{{ title() }}@if (count() > 0) { ({{ count() }})} </mat-card-title>
+            <div class="header-actions">
+              <ng-content select="[actions]" />
+            </div>
+          </div>
+        </mat-card-header>
+      }
+      <mat-card-content>
+        <ng-content select="[list]" />
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

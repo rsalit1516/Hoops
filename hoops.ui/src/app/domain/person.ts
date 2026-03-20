@@ -40,3 +40,14 @@ export class Person {
   public tempId: number = 0;
   // public  household: null
 }
+
+// Interface for people list display
+export interface PersonListItem {
+  id: number; // For BaseList compatibility
+  personId: number;
+  houseId: number;
+  lastName: string;
+  firstName: string;
+  birthDate: Date;
+  gender: string;
+}

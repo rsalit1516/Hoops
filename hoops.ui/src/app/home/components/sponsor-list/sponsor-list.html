@@ -1,0 +1,14 @@
+<!-- <p>sponsor-list works!</p> -->
+<div class="sponsor-carousel" showNavigationIndicators="false">
+  <!-- <ngb-carousel [showNavigationIndicators]=false> -->
+  @for (sponsor of sponsors; track sponsor) {
+    <div class="sponsor-wrapper">
+      <div class="sponsor-name">
+        {{sponsor.name}}
+      </div>
+      <div class="sponsor-phone">{{sponsor.phone}}</div>
+      <div class="sponsor-website"><a title="sponsor web site"href = "{{sponsor.website}}" target = "_blank"></a>{{sponsor.website}}</div>
+    </div>
+  }
+<!-- </ngb-carousel> -->
+</div>

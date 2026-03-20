@@ -1,0 +1,26 @@
+<section class="daily-playoff-schedule">
+  @if (gameDate()) {
+    <div class="gamedate">{{ gameDate() | date: 'EEEE, MMMM d' }}</div>
+  }
+  <div class="games-list">
+    @for (game of sortedGames(); track game.gameNumber) {
+      <div class="game-card">
+        <div class="game-rows">
+          @if (game.descr) {
+            <div class="game-row game-row--description">
+              <span class="col-description">{{ game.descr }}</span>
+            </div>
+          }
+          <div class="game-row">
+            <span class="col-meta">{{ game.gameTime | date: 'shortTime' }}</span>
+            <span class="col-team">{{ game.visitingTeam }}</span>
+          </div>
+          <div class="game-row">
+            <span class="col-meta col-location">{{ game.locationName }}</span>
+            <span class="col-team">{{ game.homeTeam }}</span>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</section>

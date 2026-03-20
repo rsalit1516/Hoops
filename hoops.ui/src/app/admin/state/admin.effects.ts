@@ -20,7 +20,6 @@ import * as fromAdmin from './';
 import { RegularGame } from '@app/domain/regularGame';
 import { HttpClient } from '@angular/common/http';
 import { TeamService } from '../admin-shared/services/team.service';
-import { DataService } from '@app/services/data.service';
 import { Division } from '@app/domain/division';
 import { Season } from '@app/domain/season';
 import { Team } from '@app/domain/team';
@@ -28,6 +27,7 @@ import { AdminGameService } from '../admin-games/adminGame.service';
 import { PlayoffGame } from '@app/domain/playoffGame';
 import { ContentService } from '../web-content/content.service';
 import { LocationService } from '../admin-shared/services/location.service';
+import { Constants } from '@app/shared/constants';
 
 @Injectable()
 export class AdminEffects {
@@ -38,13 +38,12 @@ export class AdminEffects {
   http = inject(HttpClient);
   gameService = inject(AdminGameService);
   teamService = inject(TeamService);
-  dataService = inject(DataService);
   store = inject(Store<fromAdmin.State>);
 
   seasonId!: number;
-  gameUrl = this.dataService.seasonGamesUrl;
-  seasonDivisionsUrl = this.dataService.seasonDivisionsUrl;
-  readonly #playoffGameUrl = this.dataService.playoffGameUrl;
+  gameUrl = Constants.SEASON_GAMES_URL;
+  seasonDivisionsUrl = Constants.SEASON_DIVISIONS_URL;
+  readonly #playoffGameUrl = Constants.PLAYOFF_GAMES_URL;
   divisionId!: number;
   division!: Division | null;
   teamId!: number;
@@ -194,7 +193,7 @@ export class AdminEffects {
     }),
 
     mergeMap(action =>
-      this.http.get<Team[]>(this.dataService.getSeasonTeamsUrl + this.seasonId).pipe(
+      this.http.get<Team[]>(Constants.GET_SEASON_TEAMS_URL + this.seasonId).pipe(
         // tap(data => console.log('All admin teams:' + JSON.stringify(data))),
         shareReplay(1),
         map(teams => new adminActions.LoadSeasonTeamsSuccess(teams)),

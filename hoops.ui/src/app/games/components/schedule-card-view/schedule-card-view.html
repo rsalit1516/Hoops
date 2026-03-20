@@ -1,0 +1,12 @@
+<div class="container-fluid">
+  <div id="panelGames" class="row">
+    <div class="col-12"><h2>Schedule</h2></div>
+  </div>
+  <div class="row">
+    @for (item of games; track item) {
+      <div class="col-sm-6 col-md-4 col-lg-4 col-12 mb-4">
+        <csbc-game-card [game]="item"  />
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,45 @@
+.list-page-container {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 100%;
+}
+
+.filter-section {
+  flex-shrink: 0;
+}
+
+.list-section {
+  flex: 1;
+  min-height: 0; /* Important for proper scrolling */
+}
+
+.list-section mat-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.list-section mat-card-header {
+  flex-shrink: 0;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 16px;
+}
+
+.header-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.list-section mat-card-content {
+  flex: 1;
+  overflow: auto;
+}

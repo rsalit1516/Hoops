@@ -1,3 +1,4 @@
+@use "sass:color";
 @use "./../../../Content/variables" as v;
 
 #topMenu {
@@ -27,4 +28,12 @@
 .mat-tab-label .mat-tab-label-content {
   color: v.$color !important;
   font-size: 1.1rem;
+}
+
+/* Active nav link — applied via routerLinkActive="menu-active" */
+.menu-active {
+  font-weight: 700 !important;
+  background-color: color.adjust(v.$card-background-color, $lightness: 15%);
+  border-radius: 4px;
+  padding: 2px 8px;
 }

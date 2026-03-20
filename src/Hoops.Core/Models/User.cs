@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Hoops.Core.Models
 {
@@ -20,6 +21,7 @@ namespace Hoops.Core.Models
         public int? UserType { get; set; }
         public int? ValidationCode { get; set; }
         [Column("PeopleID")]
+        [JsonPropertyName("peopleId")]
         public int? PersonId { get; set; }
         //[ForeignKey("HouseID")]
         [Column("HouseID")]

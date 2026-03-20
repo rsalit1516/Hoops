@@ -53,18 +53,17 @@ namespace Hoops.Controllers
 
         // PUT: api/Household/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutHousehold(int id, Household household)
+        public IActionResult PutHousehold(int id, Household household)
         {
             if (id != household.HouseId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(household).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                var updatedHousehold = _repository.Update(household);
+                return Ok(updatedHousehold);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -77,17 +76,15 @@ namespace Hoops.Controllers
                     throw;
                 }
             }
-
-            return NoContent();
         }
 
         // POST: api/Household
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<Household>> PostHousehold(Household household)
+        public ActionResult<Household> PostHousehold(Household household)
         {
-            var house = new Household();
+            Household house;
             try
             {
                 house = _repository.Insert(household);

@@ -1,0 +1,38 @@
+<csbc-list-page-shell [title]="'Directors'" [count]="filteredDirectors().length">
+  <div filter>
+    <csbc-director-filters [filters]="filters()"
+      (filterChange)="onFilterChange($event)"
+     />
+  </div>
+
+  <div actions>
+    <button mat-raised-button color="primary" (click)="navigateToNew()">
+      <mat-icon>add</mat-icon>
+      New
+    </button>
+  </div>
+
+  <div list>
+    <app-generic-mat-table [columns]="columns"
+      [data]="filteredDirectors()"
+      (rowClick)="onRowClick($event)"
+     />
+  </div>
+</csbc-list-page-shell>
+
+<!-- Custom column templates -->
+<!-- <ng-template #statusTemplate let-director>
+  <mat-chip [color]="director.active ? 'primary' : 'warn'">
+    {{ director.active ? 'Active' : 'Inactive' }}
+  </mat-chip>
+</ng-template> -->
+
+<ng-template #actionsTemplate let-director>
+  <button mat-icon-button (click)="$event.stopPropagation()">
+    <mat-icon>more_vert</mat-icon>
+  </button>
+  <!-- <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="onEdit(director)">Edit</button>
+    <button mat-menu-item (click)="onDelete(director)">Delete</button>
+  </mat-menu> -->
+</ng-template>

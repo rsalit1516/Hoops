@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { Color } from '@app/domain/color';
+import { Constants } from '@app/shared/constants';
 import { DataService } from '@app/services/data.service';
 import { catchError, map, tap } from 'rxjs/operators';
 
@@ -21,7 +22,7 @@ export class ColorService {
 
 
   getColors () {
-    return this.#http.get<Color[]>(this.#dataService.getColorUrl).pipe(
+    return this.#http.get<Color[]>(Constants.getColorUrl).pipe(
       map((colors) => {
         return colors;
       }),

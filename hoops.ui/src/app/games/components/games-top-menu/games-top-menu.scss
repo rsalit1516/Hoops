@@ -1,0 +1,156 @@
+@use "sass:color";
+@use "variables" as v;
+
+:host {
+  font-size: 1rem;
+}
+
+.mat-sidenav-container {
+  background-color: v.$base-background-color;
+}
+
+.mat-form-field {
+  width: 120px;
+}
+
+.mat-toolbar {
+  padding-top: 4px;
+  background-color: v.$card-background-color;
+  color: v.$navbar-color !important;
+  font-size: v.$wrapper-font-size;
+}
+
+.mat-mdc-tab.mdc-tab--active .mdc-tab__text-label {
+  color: v.$brand-color;
+}
+
+.mat-mdc-tab .mdc-tab__text-label {
+  color: v.$navbar-color;
+}
+
+button {
+  font-size: v.$button-font-size;
+  font-variant-caps: small-caps;
+  font-weight: 500;
+  background-color: v.$card-background-color;
+  padding-right: 8px;
+  padding-left: 8px;
+  margin-right: 12px;
+  color: v.$navbar-color;
+}
+button:active {
+  font-weight: 800;
+}
+
+.games-button {
+  font-size: v.$button-font-size;
+  font-variant-caps: small-caps;
+  font-weight: 500;
+  padding-right: 8px;
+  padding-left: 8px;
+  margin-right: 12px;
+  background-color: v.$brand-color;
+  color: black;
+}
+.mat-button-toggle-appearance-standard {
+  line-height: 30px !important;
+}
+.mat-button-toggle-group {
+  background-color: v.$brand-color;
+  line-height: 30px;
+}
+
+.games-button button:active {
+  font-weight: 800;
+}
+
+h2 {
+  color: v.$brand-color;
+  background-color: transparent;
+  font-variant: small-caps;
+  font-size: v.$heading-font-size;
+  font-weight: 700;
+  text-align: left;
+  padding-top: 8px;
+  padding-bottom: 4px;
+  padding-right: 20px;
+}
+.seasonDescription {
+  height: 30px;
+  padding-left: 20px;
+}
+.top-menu-wrapper {
+  background-color: v.$base-background-color;
+  margin-bottom: 4px;
+  padding-bottom: 4px;
+  border-bottom: 2px solid v.$brand-color;
+  font-size: v.$wrapper-font-size;
+  @media (min-width: 768px) {
+    max-width: 1200px;
+    margin: 0 auto;
+    border-radius: v.$border-radius;
+    padding: 0;
+  }
+}
+.mat-form-field-wrapper {
+  height: 40px;
+}
+
+.mat-tab-label.label .mat-tab-label-content.label {
+  color: v.$brand-color !important;
+  font-size: 1.1rem;
+}
+.mat-ink-bar {
+  background-color: v.$brand-color !important;
+}
+
+.mat-ink-bar.mat-ink-bar {
+  background-color: v.$brand-color !important;
+}
+
+.mat-mdc-tab.mdc-tab--active .mdc-tab__text-label {
+  color: v.$brand-color !important;
+}
+
+.mat-mdc-tab.mdc-tab--active .mdc-tab-indicator {
+  background-color: v.$brand-color !important;
+}
+
+.mat-mdc-tab.mdc-tab--active .mdc-tab__text-label {
+  color: v.$brand-color !important;
+}
+
+.mat-tab {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: v.$navbar-color;
+}
+.mdc-tab__content {
+  color: v.$navbar-color !important;
+}
+
+.mdc-tab__text-label {
+  color: v.$brand-color !important;
+}
+label {
+  color: v.$navbar-color !important;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+a {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: color.adjust(v.$navbar-color, $lightness: 20%) !important;
+  padding-right: 12px;
+  font-variant: small-caps;
+  font-style: normal;
+  text-decoration: none;
+}
+a:hover {
+  font-weight: 800;
+}
+a:active {
+  font-weight: 600;
+  color: v.$navbar-color !important;
+}

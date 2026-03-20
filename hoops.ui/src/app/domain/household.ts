@@ -8,4 +8,15 @@ export class Household {
   public zip?: string;
   public email?: string;
   public phone?: string;
+  public companyId?: number = 1;
+}
+
+// Interface for household list display
+export interface HouseholdListItem {
+  id: number; // For BaseList compatibility
+  houseId: number;
+  name: string;
+  address1?: string;
+  phone?: string;
+  email?: string;
 }

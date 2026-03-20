@@ -1,0 +1,27 @@
+<div class="top-menu-wrapper flex flex-col md:flex-row gap-4 items-start">
+  <!-- <div class="seasonDescription w-full md:w-[15%] flex-shrink-0">
+    <h2>{{ seasonDescription() }}</h2>
+  </div> -->
+  <mat-toolbar class="w-full md:flex-1">
+    <mat-toolbar-row>
+      <a
+        class="btn"
+        routerLink="/games/schedule"
+        routerLinkActive="menu-active"
+        >Schedule</a
+      >
+      @if (hasPlayoffs()) {
+      <div>
+        <a class="btn" routerLink="/games/playoffs" routerLinkActive="menu-active">Playoffs</a>
+      </div>
+      } @if (hasStandings()) {
+      <div>
+        <a class="btn" routerLink="/games/standings" routerLinkActive="menu-active">Standings</a>
+      </div>
+      }
+    </mat-toolbar-row>
+    <mat-toolbar-row>
+      <csbc-game-filter [display]="display()" class="" />
+    </mat-toolbar-row>
+  </mat-toolbar>
+</div>

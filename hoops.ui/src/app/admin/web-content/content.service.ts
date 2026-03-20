@@ -1,17 +1,12 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
-import { map, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
-import {
-  HttpClient,
-  HttpParams,
-  httpResource,
-} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 import { Content } from '../../domain/content';
 import { DataService } from '../../services/data.service';
 
 import * as fromContent from '../state';
-import * as contentActions from '../state/admin.actions';
 
 import { Store } from '@ngrx/store';
 import { WebContentType } from '@app/domain/webContentType';
@@ -19,155 +14,116 @@ import { WebContent } from '../../domain/webContent';
 import { Observable, of } from 'rxjs';
 import { Constants } from '@app/shared/constants';
 import { DateTime } from 'luxon';
+import { LoggerService } from '@app/services/logger.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ContentService {
-  readonly #http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
   readonly data = inject(DataService);
   readonly store = inject(Store<fromContent.State>);
+  private readonly logger = inject(LoggerService);
 
-  // private _selectedContent: any;
   selectedContent$!: Observable<any>;
   standardNotice = 1;
-  private _activeWebContent = signal<WebContent[]>([]);
-  public get activeWebContent () {
-    return this._activeWebContent;
-  }
-  updateActiveWebContent (value: WebContent[]) {
-    this._activeWebContent.set(value);
-  }
+
+  // Single source of truth: all web content
   allWebContent = signal<WebContent[]>([]);
+
+  // Computed signal: filter active content from allWebContent
+  activeWebContent = computed(() => {
+    const today = DateTime.now().startOf('day');
+    return this.allWebContent().filter(content => {
+      const expirationDate = DateTime.fromISO(content.expirationDate.toString());
+      return expirationDate >= today;
+    });
+  });
+
+  // UI state for showing active only
   isActiveContent = signal<boolean>(true);
   selectedContent = signal<WebContent | undefined>(undefined);
-  contents = signal<WebContent[]>([]);
-  getContents (): Observable<WebContent[]> {
-    return this.#http.get<WebContent[]>(this.data.getContentUrl);
-  }
-  fetchAllContents () {
-    this.#http.get<WebContent[]>(this.data.getContentUrl).subscribe((data) => {
-      this.allWebContent.update(() => data);
-      this.contents.set(data);
+
+  /**
+   * Fetches all web content from the API and updates the signal.
+   * Active content is automatically computed from this.
+   */
+  fetchAllContents() {
+    this.http.get<WebContent[]>(Constants.getContentUrl).subscribe((data) => {
+      this.allWebContent.set(data);
+      this.logger.debug('Fetched all contents:', data.length);
     });
   }
-  retrieveAllContents () {
-    return httpResource<ContentResponse>(() =>
-      `${ Constants.getContentUrl }`);
+
+  /**
+   * Returns an Observable of all web content.
+   * Use this for one-time fetches or when you need an Observable.
+   */
+  getContents(): Observable<WebContent[]> {
+    return this.http.get<WebContent[]>(Constants.getContentUrl);
   }
 
-  getActiveContent () {
-    return this.#http.get<WebContent[]>(`${ Constants.getActiveWebContentUrl }`);
-  }
-  fetchActiveContents () {
-    this.getActiveContent()
-      .subscribe((data) => {
-        console.log('fetchActiveContents: ' + JSON.stringify(data));
-        this.updateActiveWebContent(data);
-        console.log(this._activeWebContent());
-      });
-  }
-
-  getAllContents (): Observable<WebContent[]> {
-    let filteredContent: WebContent[] = [];
-    console.log(filteredContent);
-    this.store.select(fromContent.getContentList).subscribe((contents) => {
-      if (contents !== undefined) {
-        for (let i = 0; i < contents.length; i++) {
-          filteredContent.push(contents[i]);
-        }
-      }
-    });
-    console.log(filteredContent);
-    return of(filteredContent);
-  }
-
-  getContent (webContentId: number) {
-    console.log(webContentId);
+  /**
+   * Gets a single content item by ID, or returns an initialized empty content if ID is 0.
+   */
+  getContent(webContentId: number): Observable<Content> {
+    this.logger.debug('Getting content with ID:', webContentId);
     if (webContentId === 0) {
       return of(this.initializeContent());
     }
-    return this.#http.get(this.data.getContentUrl).pipe(
-      tap((data) => {
-        // this.store.dispatch(new contentActions.SetAllContent());
-        // this.store.dispatch(new contentActions.SetActiveContent());
-        console.log('getContent: ' + JSON.stringify(data))
-      }),
-      catchError(this.data.handleError('getContent', []))
+    return this.http.get<Content>(`${Constants.getContentUrl}/${webContentId}`).pipe(
+      tap((data) => this.logger.debug('getContent result:', data)),
+      catchError(this.data.handleError('getContent', this.initializeContent()))
     );
   }
-  private webContentResource = httpResource(() =>
-    `${ Constants.getActiveWebContentUrl }`)
-
-  activeWebContent2 = computed(() => this.webContentResource.value() as
-    WebContent[]);
-  deleteContent (webContentId: number | null) {
-    console.log('Deleting content');
-    let headers = new Headers({ 'Content-Type': 'application/json' });
-    // To Do: add this back
-    let options = { params: new HttpParams() };
-
-    const url = `${ this.data.getContentUrl }/${ webContentId }`;
+  deleteContent(webContentId: number | null): Observable<unknown> {
+    this.logger.info('Deleting content with ID:', webContentId);
+    const url = `${Constants.getContentUrl}/${webContentId}`;
     return this.data.delete(url);
   }
 
-  saveContent (data: WebContent) {
-    let content = new WebContent();
-    content.webContentId = data.webContentId === null ? 0 : data.webContentId;
-    content.companyId = Constants.COMPANYID;
-    content.page = '';
-    content.type = '';
-    content.title = data.title;
-    content.contentSequence = data.contentSequence;
-    content.subTitle = data.subTitle;
-    content.location = data.location;
-    content.dateAndTime = data.dateAndTime;
-    content.body = data.body;
-    content.expirationDate = data.expirationDate;
-    content.modifiedDate = DateTime.now().toJSDate();
-    content.modifiedUser = 121; // To Do: get this from the user
-    content.webContentTypeId = data.webContentTypeId === undefined ? 1 : data.webContentTypeId;
+  /**
+   * Saves web content - creates new content (POST) or updates existing content (PUT).
+   * Following the pattern from admin-household and admin-people modules.
+   * @param content The web content to save
+   * @returns Observable<WebContent> - allows component to handle success/error
+   */
+  saveContent(content: WebContent): Observable<WebContent> {
+    // Ensure CompanyId is set
+    if (!content.companyId) {
+      content.companyId = Constants.COMPANYID;
+    }
 
-    // console.log(content);
-    if (data.webContentId === undefined) {
-      return this.createContent(content).subscribe((x) => {
-        // console.log(x)
-        this.store.dispatch(new contentActions.SetAllContent());
-      });
+    // Set modification metadata
+    content.modifiedDate = DateTime.now().toJSDate();
+    content.modifiedUser = 121; // TODO: get this from authenticated user
+
+    // Ensure default values for optional fields
+    content.page = content.page ?? '';
+    content.type = content.type ?? '';
+    content.webContentTypeId = content.webContentTypeId ?? 1;
+
+    if (content.webContentId && content.webContentId !== 0) {
+      // Update existing content (PUT)
+      const url = `${Constants.PUT_CONTENT_URL}${content.webContentId}`;
+      this.logger.info('Updating content at URL:', url);
+      return this.http.put<WebContent>(url, content, { withCredentials: true }).pipe(
+        tap((response) => {
+          this.logger.info('Content updated:', response);
+        })
+      );
     } else {
-      return this.updateContent(content).subscribe((x) => {
-        // console.log(x);
-        this.store.dispatch(new contentActions.SetAllContent());
-      });
+      // Create new content (POST)
+      this.logger.info('Creating new content');
+      return this.http.post<WebContent>(Constants.postContentUrl, content, { withCredentials: true }).pipe(
+        tap((response) => {
+          this.logger.info('Content created:', response);
+        })
+      );
     }
   }
 
-  private createContent (content: WebContent): Observable<void | WebContent> {
-
-    console.log(content);
-    return this.data.post(this.data.postContentUrl, content).pipe(
-      // tap((data) => console.log('createContent: ' + JSON.stringify(data))),
-      map((data) => this.store.dispatch(new contentActions.LoadAdminContent())),
-      catchError(this.data.handleError('createContent', content))
-    );
-  }
-
-  private updateContent (content: WebContent): Observable<WebContent> {
-    let url = Constants.PUT_CONTENT_URL + content.webContentId;
-    console.log(url);
-    // const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.#http.put<WebContent>(url, content);
-
-  }
-
-  private extractData (response: Response) {
-    let body = ''; // response.json();
-    console.log(response);
-    // console.log(body);
-    return body || {};
-  }
-
-  initializeContent (): Content {
+  initializeContent(): Content {
     return {
       webContentId: 0,
       companyId: 1,
@@ -182,7 +138,7 @@ export class ContentService {
       webContentType: new WebContentType(),
     };
   }
-  getWebContentType (id: number): WebContentType {
+  getWebContentType(id: number): WebContentType {
     let webContentType = new WebContentType();
     // console.log(id);
     switch (id) {
@@ -208,12 +164,4 @@ export class ContentService {
     }
     return webContentType;
   }
-
-}
-
-export interface ContentResponse {
-  count: number;
-  next: string;
-  previous: string;
-  results: WebContent[]
 }

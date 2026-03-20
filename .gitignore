@@ -144,6 +144,12 @@ _TeamCity*
 *.coverage
 *.coveragexml
 
+# Frontend coverage results
+coverage/
+cov/
+*.lcov
+test-results/
+
 # NCrunch
 _NCrunch_*
 .*crunch*.local.xml
@@ -367,3 +373,9 @@ Hoops.Api/.DS_Store
 Hoops.Core/.DS_Store
 .DS_Store
 .DS_Store
+
+# Playwright
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/

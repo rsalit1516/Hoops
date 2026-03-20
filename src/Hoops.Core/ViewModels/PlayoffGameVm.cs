@@ -4,6 +4,7 @@ namespace Hoops.Core.ViewModels
 {
     public class PlayoffGameVm
     {
+        public int SchedulePlayoffId { get; set; }
         public int ScheduleNumber { get; set; }
 
         public int GameNumber { get; set; }
@@ -15,7 +16,7 @@ namespace Hoops.Core.ViewModels
         public string Descr { get; set; }
         public int? VisitingTeamScore { get; set; }
         public int? HomeTeamScore { get; set; }
-        public int DivisionId { get; set; }
+        public int? DivisionId { get; set; }
         public string LocationName { get; set; }
         // public int? SchedulePlayoffId { get; set; }
     }
