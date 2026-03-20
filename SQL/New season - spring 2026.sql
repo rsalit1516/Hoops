@@ -58,41 +58,41 @@ select * from Divisions where SeasonID = @seasonId
 
 -- -- -- SJV boys
 --  update [dbo].[ScheduleGames]
---    set DivisionId = 4134
---    where seasonid = @seasonID and ScheduleNumber = 75
+--    set DivisionId = 4291
+--    where seasonid = @seasonID and ScheduleNumber = 16
 
 -- -- -- HS boys
 --  update [dbo].[ScheduleGames]
---    set DivisionId = 4135
---    where seasonid = @seasonID and ScheduleNumber = 76
+--    set DivisionId = 4292
+--    where seasonid = @seasonID and ScheduleNumber = 17
 
 -- -- -- Int Girls
 --  update [dbo].[ScheduleGames]
---    set DivisionId = 4136
---    where seasonid = @seasonID and ScheduleNumber = 80
+--    set DivisionId = 4293
+--    where seasonid = @seasonID and ScheduleNumber = 26
 
 -- -- -- 18+ 
 --  update [dbo].[ScheduleGames]
---    set DivisionId = 4138
---    where seasonid = @seasonID and ScheduleNumber = 83
+--    set DivisionId = 4296
+--    where seasonid = @seasonID and ScheduleNumber = 25
 
 -- -- -- JVG
 --  update [dbo].[ScheduleGames]
---    set DivisionId = 4139
---    where seasonid = @seasonID and ScheduleNumber = 77
+--    set DivisionId = 4294
+--    where seasonid = @seasonID and ScheduleNumber = 21
 
 -- -- -- HS Girls
 --  update [dbo].[ScheduleGames]
---    set DivisionId = 4140
---    where seasonid = @seasonID and ScheduleNumber = 82
+--    set DivisionId = 4295
+--    where seasonid = @seasonID and ScheduleNumber = 22
 
 /*
 Adjust teams and colors Colors - ToDo: change in program to show accurately
 */
-select * from Teams where DivisionID in (select DivisionID from Divisions where seasonid= 2205)
+select * from Teams where DivisionID in (select DivisionID from Divisions where seasonid= 2223)
 -- update Teams 
--- set seasonid = 2205
--- where DivisionID in (select DivisionID from Divisions where seasonid= 2205)
+-- set seasonid = 2223
+-- where DivisionID in (select DivisionID from Divisions where seasonid= 2223)
 
 -- update Teams
 -- set TeamName = null
@@ -104,11 +104,11 @@ Update season to make the season live
 */
 -- update Seasons
 -- set [CurrentSeason] = 0, CurrentSchedule = 0, CurrentSignUps = 0
--- where seasonId <> 2205
+-- where seasonId <> 2223
 
 -- update Seasons
 -- set [CurrentSeason] = 1, CurrentSchedule = 1, CurrentSignUps = 1
--- where seasonId = 2205
+-- where seasonId = 2223
 
 
 /*
@@ -129,16 +129,20 @@ Disable unnecesary divisions
 -- set LocationNumber=9
 -- where ScheduleGamesId=22433 or ScheduleGamesId = 22434 or ScheduleGamesId = 22435
 
-select * from teams where SeasonID = 2205
-order by createdDate desc 
+select * from teams where SeasonID = 2223
+order by DivisionId, TeamNumber
 
-select * from Divisions where seasonId = 2199
+select * from Divisions where seasonId = 2223
 -- update Divisions
 -- set seasonid = null
 -- where divisionId = 4092
 
 -- delete from teams where TeamID = 7560 and createdUser = 'BARRY POPOCK'
+select * from ScheduleDivTeams
+where SeasonId = 2223
+order by SCheduleNumber, ScheduleTeamNumber
 
+select * from Colors
 /*
 1. Automate Division Mapping
 Instead of manually matching ScheduleNumber to DivisionId after reviewing the schedule, consider:
