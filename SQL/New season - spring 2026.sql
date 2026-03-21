@@ -142,7 +142,44 @@ select * from ScheduleDivTeams
 where SeasonId = 2223
 order by SCheduleNumber, ScheduleTeamNumber
 
-select * from Colors
+select * from ScheduleGames
+where SeasonId = 2223
+-- and divisionId = 4293
+order by ScheduleNumber, GameDate, GameTime
+
+-- update ScheduleDivTeams
+-- set ScheduleTeamNumber = 1
+-- where ScheduleDivTeamsId = 4775
+
+-- update ScheduleDivTeams
+-- set ScheduleTeamNumber = 1
+-- where ScheduleDivTeamsId = 4688
+
+-- update ScheduleDivTeams
+-- set ScheduleTeamNumber = 9
+-- where ScheduleDivTeamsId = 4687
+
+-- update ScheduleDivTeams
+-- set ScheduleTeamNumber = 1
+-- where ScheduleDivTeamsId = 4686
+
+-- update ScheduleDivTeams
+-- set ScheduleTeamNumber = 2
+-- where ScheduleDivTeamsId = 4706
+
+-- update ScheduleDivTeams
+-- set ScheduleTeamNumber = 11
+-- where ScheduleDivTeamsId = 4707
+
+-- update ScheduleDivTeams
+-- set ScheduleTeamNumber = 1
+-- where ScheduleDivTeamsId = 4717
+
+-- update ScheduleDivTeams
+-- set ScheduleTeamNumber = 11
+-- where ScheduleDivTeamsId = 4720
+
+-- select * from Colors
 /*
 1. Automate Division Mapping
 Instead of manually matching ScheduleNumber to DivisionId after reviewing the schedule, consider:
