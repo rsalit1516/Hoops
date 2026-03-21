@@ -225,14 +225,15 @@ jobs:
 
       - name: Verify Resource Group exists
         run: |
-          az group show --name ${{ steps.selectapp.outputs.resource_group }} -o table
+          az group show --name ${{ steps.selectapp.outputs.resource_group }} --query "{name:name, location:location}" -o json
 
       - name: Verify Function App exists
         run: |
           az functionapp show \
             --name ${{ steps.selectapp.outputs.app_name }} \
             --resource-group ${{ steps.selectapp.outputs.resource_group }} \
-            -o table
+            --query "{name:name, resourceGroup:resourceGroup, state:state}" \
+            -o json
 
       # Dev only: prod connection string is provided by Key Vault
       - name: Validate required secrets (dev only)
