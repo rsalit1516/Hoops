@@ -22,14 +22,14 @@
 
 .game-row {
   display: grid;
-  grid-template-columns: 5rem 1fr 2rem;
+  grid-template-columns: 9rem 1fr 2rem;
   align-items: center;
   column-gap: 8px;
   padding-left: 12px;
   height: 24px;
 
   @media (min-width: 768px) {
-    grid-template-columns: 5.5rem 240px 50px;
+    grid-template-columns: 10rem 240px 50px;
     column-gap: 12px;
     padding-left: 24px;
   }
