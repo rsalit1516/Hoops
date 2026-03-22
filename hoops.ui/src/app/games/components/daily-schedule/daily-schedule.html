@@ -9,12 +9,12 @@
           <div class="game-row">
             <span class="col-meta">{{ game.gameTime | date: 'shortTime' }}</span>
             <span class="col-team">{{ game.visitingTeamName }}</span>
-            <span class="col-score">{{ game.visitingTeamScore != null ? game.visitingTeamScore : '' }}</span>
+            <span class="col-score">{{ game.visitingTeamScore !== -1 || game.homeTeamScore !== -1 ? game.visitingTeamScore : '' }}</span>
           </div>
           <div class="game-row">
             <span class="col-meta col-location">{{ game.locationName }}</span>
             <span class="col-team">{{ game.homeTeamName }}</span>
-            <span class="col-score">{{ game.homeTeamScore != null ? game.homeTeamScore : '' }}</span>
+            <span class="col-score">{{ game.visitingTeamScore !== -1 || game.homeTeamScore !== -1 ? game.homeTeamScore : '' }}</span>
           </div>
         </div>
         @if (canEdit()) {
