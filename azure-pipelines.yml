@@ -27,7 +27,7 @@ variables:
 
   # Azure deployment (replace with your values in the pipeline UI or variable group)
   azureServiceConnection: "YOUR-AZURE-SVC-CONN" # e.g., Hoops-Dev-Connection
-  appType: "functionApp" # Windows function app
+  appType: "functionAppLinux" # Flex Consumption is Linux-based
 
   # Branch-based environment mapping
   ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/develop') }}:
