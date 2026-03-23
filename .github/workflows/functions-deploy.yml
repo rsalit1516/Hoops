@@ -41,13 +41,13 @@ jobs:
       - name: Test (fast)
         run: dotnet test Hoops.sln -c Release --no-build --filter "TestCategory!=Slow" --nologo
 
-      - name: Publish Functions (self-contained linux-x64)
+      - name: Publish Functions (win-x64 framework-dependent)
         run: |
           dotnet publish ${{ env.FUNCTIONS_PROJECT }} \
             -c Release \
             -o ${{ env.PUBLISH_DIR }} \
-            -r linux-x64 \
-            --self-contained true \
+            -r win-x64 \
+            --self-contained false \
             /p:PublishSingleFile=false
 
       - name: Verify publish output
@@ -189,12 +189,12 @@ jobs:
         id: selectapp
         run: |
           if [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
-            APP_DEFAULT="hoops-functions-dev"; RG_DEFAULT="csbc-dev"
+            APP_DEFAULT="hoops-functions-dev-djeqhegwahbua7eq"; RG_DEFAULT="csbc-dev"
             KV_URI_DEFAULT="https://hoops-dev-kv.vault.azure.net/"
             APP_OVERRIDE="${{ vars.FUNCTION_APP_NAME_DEV }}"; RG_OVERRIDE="${{ vars.FUNCTION_RG_DEV }}"
             ENV_NAME="dev"
           else
-            APP_DEFAULT="hoops-functions-prod"; RG_DEFAULT="hoops-prod-rg"
+            APP_DEFAULT="hoops-functions-prod-cjh4eggzfqgma8dc"; RG_DEFAULT="hoops-prod-rg"
             KV_URI_DEFAULT="https://hoops-prod-kv.vault.azure.net/"
             APP_OVERRIDE="${{ vars.FUNCTION_APP_NAME_PROD }}"; RG_OVERRIDE="${{ vars.FUNCTION_RG_PROD }}"
             ENV_NAME="prod"
