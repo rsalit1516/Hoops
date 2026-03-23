@@ -41,12 +41,25 @@ jobs:
       - name: Test (fast)
         run: dotnet test Hoops.sln -c Release --no-build --filter "TestCategory!=Slow" --nologo
 
-      - name: Publish Functions (win-x64 framework-dependent)
+      # dev (develop branch) = Windows app → win-x64 produces Hoops.Functions.exe
+      # prod (master branch) = Linux app  → linux-x64 produces Hoops.Functions
+      - name: Publish Functions (win-x64, dev)
+        if: github.ref == 'refs/heads/develop'
         run: |
           dotnet publish ${{ env.FUNCTIONS_PROJECT }} \
             -c Release \
             -o ${{ env.PUBLISH_DIR }} \
             -r win-x64 \
+            --self-contained false \
+            /p:PublishSingleFile=false
+
+      - name: Publish Functions (linux-x64, prod)
+        if: github.ref == 'refs/heads/master'
+        run: |
+          dotnet publish ${{ env.FUNCTIONS_PROJECT }} \
+            -c Release \
+            -o ${{ env.PUBLISH_DIR }} \
+            -r linux-x64 \
             --self-contained false \
             /p:PublishSingleFile=false
 
