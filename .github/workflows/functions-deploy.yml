@@ -230,14 +230,12 @@ jobs:
         run: |
           [ -n "${{ secrets.HOOPS_CONNECTION_STRING }}" ] && echo "HOOPS_CONNECTION_STRING: set" || (echo "HOOPS_CONNECTION_STRING: MISSING (set environment secret for dev)" >&2; exit 1)
 
-      # az functionapp deploy supports Flex Consumption; azure/functions-action@v1 uses Kudu which is disabled on FC
       - name: Deploy via Azure CLI
         run: |
-          az functionapp deploy \
+          az functionapp deployment source config-zip \
             --name ${{ steps.selectapp.outputs.app_name }} \
             --resource-group ${{ steps.selectapp.outputs.resource_group }} \
-            --src-path functions.zip \
-            --type zip
+            --src functions.zip
 
       - name: Show deployment logs (Kudu)
         if: always()
