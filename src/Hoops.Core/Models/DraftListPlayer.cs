@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 
 namespace Hoops.Core.Models
