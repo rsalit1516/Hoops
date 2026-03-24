@@ -469,9 +469,8 @@ namespace Hoops.Infrastructure.Repository
                     VisitingTeamNumber = g.VisitingTeamNumber,
                     HomeTeamNumber = g.HomeTeamNumber,
                     ScheduleNumber = g.ScheduleNumber,
-                    HomeTeamScore = g.HomeTeamScore == -1 ? 0 : (int)(g.HomeTeamScore ?? 0),
-                    VisitingTeamScore =
-                        g.VisitingTeamScore == -1 ? 0 : (int)(g.VisitingTeamScore ?? 0),
+                    HomeTeamScore = (int)(g.HomeTeamScore ?? 0),
+                    VisitingTeamScore = (int)(g.VisitingTeamScore ?? 0),
                     GameType = GameTypes.Regular,
                 };
 
