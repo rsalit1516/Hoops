@@ -169,9 +169,9 @@ jobs:
 
       - name: Set subscription explicitly
         run: |
-          echo "Subscriptions visible to this SP:"
-          az account list --query "[].{name:name, id:id}" -o table
-          az account set --subscription "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+          SUB_ID=$(az account list --query "[0].id" -o tsv)
+          echo "Setting subscription: $SUB_ID"
+          az account set --subscription "$SUB_ID"
 
       - name: Verify Azure login
         shell: bash
