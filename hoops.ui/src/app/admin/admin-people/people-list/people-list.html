@@ -1,3 +1,11 @@
+<ng-template #registerTemplate let-item>
+  @if (item.player) {
+  <button mat-button color="primary" (click)="onRegister($event, item)">
+    Register
+  </button>
+  }
+</ng-template>
+
 <csbc-list-page-shell [title]="'People'" [count]="filteredPeople().length">
   <div filter>
     <csbc-people-filters
