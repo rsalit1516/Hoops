@@ -1,7 +1,7 @@
 {
-  "adminModule": false,
+  "adminModule": true,
   "notificationModule": true,
-  "scheduleModule": false,
+  "scheduleModule": true,
   "adminDirectors": true,
   "adminHouseholds": true,
   "adminPeople": true,
