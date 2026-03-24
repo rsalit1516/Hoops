@@ -198,7 +198,7 @@ jobs:
             APP_OVERRIDE="${{ vars.FUNCTION_APP_NAME_DEV }}"; RG_OVERRIDE="${{ vars.FUNCTION_RG_DEV }}"
             ENV_NAME="dev"
           else
-            APP_DEFAULT="hoops-functions-prod-cjh4eggzfqgma8dc"; RG_DEFAULT="hoops-prod-rg"
+            APP_DEFAULT="hoops-functions-prod"; RG_DEFAULT="hoops-prod-rg"
             KV_URI_DEFAULT="https://hoops-prod-kv.vault.azure.net/"
             APP_OVERRIDE="${{ vars.FUNCTION_APP_NAME_PROD }}"; RG_OVERRIDE="${{ vars.FUNCTION_RG_PROD }}"
             ENV_NAME="prod"
