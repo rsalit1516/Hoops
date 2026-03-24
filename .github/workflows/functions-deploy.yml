@@ -145,20 +145,9 @@ jobs:
           [ -n "$CID" ] && echo "AZURE_CLIENT_ID: set" || (echo "AZURE_CLIENT_ID: MISSING" && exit 1)
           [ -n "$TID" ] && echo "AZURE_TENANT_ID: set" || (echo "AZURE_TENANT_ID: MISSING" && exit 1)
           [ -n "$SID" ] && echo "AZURE_SUBSCRIPTION_ID: set" || (echo "AZURE_SUBSCRIPTION_ID: MISSING" && exit 1)
-          BRANCH="${{ github.ref }}"
-          echo "Branch: $BRANCH"
-          if [ "$BRANCH" = "refs/heads/develop" ]; then
-            echo "Forcing OIDC on develop"
-            echo "auth_mode=oidc" >> $GITHUB_OUTPUT
-          else
-            if [ -n "$CSEC" ]; then
-              echo "AZURE_CLIENT_SECRET: set (using Service Principal secret auth)"
-              echo "auth_mode=sp" >> $GITHUB_OUTPUT
-            else
-              echo "AZURE_CLIENT_SECRET: not set (using OIDC federated credentials)"
-              echo "auth_mode=oidc" >> $GITHUB_OUTPUT
-            fi
-          fi
+          # Always use OIDC — both dev and prod have federated credentials configured.
+          # Avoid SP secret fallback to prevent repo-level dev secret leaking into prod login.
+          echo "auth_mode=oidc" >> $GITHUB_OUTPUT
 
       - name: Azure Login (Service Principal secret)
         if: steps.auth.outputs.auth_mode == 'sp'
