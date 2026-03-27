@@ -110,10 +110,10 @@ namespace Hoops.Functions.Functions
                 return req.CreateResponse(HttpStatusCode.BadRequest);
             }
 
-            // Basic score validation
-            if (body.HomeTeamScore.HasValue && (body.HomeTeamScore < 0 || body.HomeTeamScore > 150))
+            // Basic score validation (-1 is the sentinel value for "no score recorded")
+            if (body.HomeTeamScore.HasValue && (body.HomeTeamScore < -1 || body.HomeTeamScore > 150))
                 return req.CreateResponse(HttpStatusCode.BadRequest);
-            if (body.VisitingTeamScore.HasValue && (body.VisitingTeamScore < 0 || body.VisitingTeamScore > 150))
+            if (body.VisitingTeamScore.HasValue && (body.VisitingTeamScore < -1 || body.VisitingTeamScore > 150))
                 return req.CreateResponse(HttpStatusCode.BadRequest);
 
             var existing = await _repository.GetByIdAsync(id);
@@ -167,9 +167,9 @@ namespace Hoops.Functions.Functions
             {
                 return req.CreateResponse(HttpStatusCode.BadRequest);
             }
-            if (dto.HomeTeamScore.HasValue && (dto.HomeTeamScore < 0 || dto.HomeTeamScore > 150))
+            if (dto.HomeTeamScore.HasValue && (dto.HomeTeamScore < -1 || dto.HomeTeamScore > 150))
                 return req.CreateResponse(HttpStatusCode.BadRequest);
-            if (dto.VisitingTeamScore.HasValue && (dto.VisitingTeamScore < 0 || dto.VisitingTeamScore > 150))
+            if (dto.VisitingTeamScore.HasValue && (dto.VisitingTeamScore < -1 || dto.VisitingTeamScore > 150))
                 return req.CreateResponse(HttpStatusCode.BadRequest);
 
             var existing = await _repository.GetByIdAsync(id);
