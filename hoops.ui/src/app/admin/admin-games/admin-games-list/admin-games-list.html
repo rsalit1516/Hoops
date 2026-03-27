@@ -26,13 +26,13 @@
           ><ng-container matColumnDef="homeTeamName">
           <th mat-header-cell *matHeaderCellDef>Home</th>
           <td mat-cell *matCellDef="let game" class="teamName">
-            {{ game.homeTeamName }}
+            {{ game.homeTeamName | teamDisplay : game.homeTeamColor : game.homeTeamSeasonNumber }}
           </td>
         </ng-container>
         <ng-container matColumnDef="visitingTeamName">
           <th mat-header-cell *matHeaderCellDef>Visitor</th>
           <td mat-cell *matCellDef="let game" class="teamName">
-            {{ game.visitingTeamName }}
+            {{ game.visitingTeamName | teamDisplay : game.visitingTeamColor : game.visitingTeamSeasonNumber }}
           </td>
         </ng-container>
         @if (showScores()) {

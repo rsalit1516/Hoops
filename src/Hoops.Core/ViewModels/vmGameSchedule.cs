@@ -21,6 +21,8 @@ namespace Hoops.Core.ViewModels
         public int HomeTeamSeasonNumber { get; set; }
         public string VisitingTeamName { get; set; }
         public string HomeTeamName { get; set; }
+        public string VisitingTeamColor { get; set; }
+        public string HomeTeamColor { get; set; }
         public int ScheduleNumber { get; set; }
         public int HomeTeamScore { get; set; }
         public int VisitingTeamScore { get; set; }

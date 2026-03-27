@@ -14,11 +14,13 @@ export class RegularGame {
   public gameTime: Date | undefined;
   public gameTimeString: string | undefined;
   public homeTeamName: string | undefined;
+  public homeTeamColor: string | undefined;
   public homeTeamId!: number;
   public homeTeamNumber!: number;
   public homeTeamScore: number | undefined;
   public homeTeamSeasonNumber: number | undefined;
   public visitingTeamName: string | undefined;
+  public visitingTeamColor: string | undefined;
   public visitingTeamId: number | undefined;
   public visitingTeamNumber: number | undefined;
   public visitingTeamScore: number | undefined;

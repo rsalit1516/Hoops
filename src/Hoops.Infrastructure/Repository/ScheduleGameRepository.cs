@@ -534,8 +534,12 @@ namespace Hoops.Infrastructure.Repository
                     if (team != null)
                     {
                         _logger.LogInformation(team.TeamName);
-                        //                        var color = colors.FirstOrDefault(c => c.ColorId == team.TeamColorId);
-                        game.VisitingTeamName = team.TeamName; // color.ColorName + "(" + team.TeamNumber + ")";
+                        game.VisitingTeamColor = team.TeamColor;
+                        // TeamName equals the color (uppercase) when no custom name was entered;
+                        // send null in that case so the frontend can fall back to the color field.
+                        game.VisitingTeamName = string.Equals(team.TeamName, team.TeamColor, StringComparison.OrdinalIgnoreCase)
+                            ? null
+                            : team.TeamName;
                         game.VisitingTeamId = team.TeamId;
                     }
                 }
@@ -552,8 +556,12 @@ namespace Hoops.Infrastructure.Repository
                     );
                     if (team != null)
                     {
-                        // var color = colors.FirstOrDefault(c => c.ColorId == team.TeamColorId);
-                        game.HomeTeamName = team.TeamName; //color.ColorName + "(" + team.TeamNumber + ")";
+                        game.HomeTeamColor = team.TeamColor;
+                        // TeamName equals the color (uppercase) when no custom name was entered;
+                        // send null in that case so the frontend can fall back to the color field.
+                        game.HomeTeamName = string.Equals(team.TeamName, team.TeamColor, StringComparison.OrdinalIgnoreCase)
+                            ? null
+                            : team.TeamName;
                         game.HomeTeamId = team.TeamId;
                     }
                 }

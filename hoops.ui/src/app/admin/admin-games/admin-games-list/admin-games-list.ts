@@ -13,6 +13,7 @@ import { RegularGame } from '@app/domain/regularGame';
 import * as fromAdmin from '../../state';
 import { Observable } from 'rxjs';
 import { DatePipe, NgIf } from '@angular/common';
+import { TeamDisplayPipe } from '@app/shared/pipes/team-display.pipe';
 // import { ReactiveFormsModule } from '@angular/forms';
 
 import { MatDialog } from '@angular/material/dialog';
@@ -34,7 +35,8 @@ import { Router } from '@angular/router';
     MatPaginatorModule,
     MatIconModule,
     DatePipe,
-    NgIf
+    NgIf,
+    TeamDisplayPipe,
 ],
   templateUrl: './admin-games-list.html',
   styleUrls: [

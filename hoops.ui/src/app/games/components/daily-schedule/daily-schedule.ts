@@ -5,6 +5,7 @@ import { GameScoreDialog } from '../game-score-dialog/game-score-dialog';
 import * as fromGames from '../../state';
 import { MatDialog } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
+import { TeamDisplayPipe } from '@app/shared/pipes/team-display.pipe';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '@app/services/auth.service';
@@ -15,7 +16,7 @@ import { LoggerService } from '@app/services/logger.service';
   selector: 'csbc-daily-schedule',
   templateUrl: './daily-schedule.html',
   styleUrls: ['./daily-schedule.scss'],
-  imports: [MatButtonModule, MatIconModule, DatePipe],
+  imports: [MatButtonModule, MatIconModule, DatePipe, TeamDisplayPipe],
 })
 export class DailySchedule {
   private store = inject<Store<fromGames.State>>(Store);
