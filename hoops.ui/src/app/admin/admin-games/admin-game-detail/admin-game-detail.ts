@@ -94,9 +94,9 @@ export class AdminGameDetail {
     visitingTeamScore: 0,
   });
   readonly gameForm = form(this.model, (schema) => {
-    min(schema.visitingTeamScore, 0);
+    min(schema.visitingTeamScore, -1);
     max(schema.visitingTeamScore, 150);
-    min(schema.homeTeamScore, 0);
+    min(schema.homeTeamScore, -1);
     max(schema.homeTeamScore, 150);
   });
   private readonly initialSnapshot = signal<AdminGameEditModel | null>(null);
@@ -252,8 +252,20 @@ export class AdminGameDetail {
         if (needVisitor || needHome) {
           this.gameForm.visitorTeam().value.set(visiting ?? null);
           this.gameForm.homeTeam().value.set(home ?? null);
-          // Programmatic patch: reset dirty baseline
-          this.initialSnapshot.set({ ...this.model() });
+          // Programmatic patch: update only team fields in the snapshot so that
+          // any edits the user already made to other fields (e.g. gameDate) are
+          // not absorbed into the baseline. This fixes the prod race condition
+          // where the HTTP response arrives after the user starts editing.
+          const snap = this.initialSnapshot();
+          if (snap) {
+            this.initialSnapshot.set({
+              ...snap,
+              visitorTeam: visiting ?? null,
+              homeTeam: home ?? null,
+            });
+          } else {
+            this.initialSnapshot.set({ ...this.model() });
+          }
         }
       });
     });

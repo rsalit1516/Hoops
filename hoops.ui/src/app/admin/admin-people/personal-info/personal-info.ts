@@ -206,7 +206,7 @@ export class PersonalInfo implements OnInit {
       cellphone: this.personalInfoForm.value.cellPhone,
       workphone: this.personalInfoForm.value.workPhone,
       gender: this.personalInfoForm.value.gender,
-      grade: this.personalInfoForm.value.grade ? Number(this.personalInfoForm.value.grade) : null,
+      grade: this.personalInfoForm.value.grade ? Number(this.personalInfoForm.value.grade) : 0,
       schoolName: this.personalInfoForm.value.schoolName,
       parent: this.personalInfoForm.value.parent,
       coach: this.personalInfoForm.value.coach,

@@ -579,6 +579,7 @@ namespace Hoops.Infrastructure.Repository
 
         public List<DraftListPlayer> GetDraftListPlayers(int seasonId, int? divisionId)
         {
+#pragma warning disable CS8629 // p.BirthDate.Value is guarded by != null check; compiler cannot flow-analyze inside expression trees
             var query = from p in context.Set<Person>()
                         join pl in context.Set<Player>() on p.PersonId equals pl.PersonId
                         join h in context.Set<Household>() on p.HouseId equals h.HouseId
@@ -601,6 +602,7 @@ namespace Hoops.Infrastructure.Repository
                             Zip = h.Zip
                         };
 
+#pragma warning restore CS8629
             return query.ToList();
         }
     }

@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, inject, OnInit, AfterViewInit, signal, ViewChild, TemplateRef } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -33,10 +33,12 @@ type PersonWithId = Person & { id: number };
   templateUrl: './people-list.html',
   styleUrls: ['./people-list.scss'],
 })
-export class PeopleList extends BaseList<PersonWithId> implements OnInit {
+export class PeopleList extends BaseList<PersonWithId> implements OnInit, AfterViewInit {
   private peopleService = inject(PeopleService);
   private householdService = inject(HouseholdService);
   private logger = inject(LoggerService);
+
+  @ViewChild('registerTemplate') registerTemplate!: TemplateRef<any>;
 
   override get basePath(): string {
     return '/admin/people';
@@ -63,6 +65,16 @@ export class PeopleList extends BaseList<PersonWithId> implements OnInit {
     effect(() => {
       const currentFilters = this.filters();
       this.logger.info('People filters changed:', currentFilters);
+    });
+  }
+
+  ngAfterViewInit() {
+    // Defer to avoid ExpressionChangedAfterItHasBeenCheckedError
+    Promise.resolve().then(() => {
+      this.columns = [
+        ...this.columns,
+        { key: 'register', header: '', template: this.registerTemplate },
+      ];
     });
   }
 
@@ -142,5 +154,11 @@ export class PeopleList extends BaseList<PersonWithId> implements OnInit {
     this.peopleService.updateSelectedPerson(person);
     this.householdService.selectedHouseholdByHouseId(person.houseId);
     this.router.navigate(['..', 'detail'], { relativeTo: this.route });
+  }
+
+  onRegister(event: Event, person: PersonWithId): void {
+    event.stopPropagation();
+    this.peopleService.updateSelectedPerson(person);
+    this.router.navigate(['/admin/player-registration', person.personId]);
   }
 }

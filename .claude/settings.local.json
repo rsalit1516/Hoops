@@ -65,7 +65,9 @@
       "Bash(az role:*)",
       "Bash(az group:*)",
       "Bash(az cloud show --query \"name\" -o tsv && az account show -o json 2>&1)",
-      "Bash(az ad:*)"
+      "Bash(az ad:*)",
+      "Bash(az functionapp:*)",
+      "Bash(az webapp:*)"
     ],
     "deny": [],
     "ask": []

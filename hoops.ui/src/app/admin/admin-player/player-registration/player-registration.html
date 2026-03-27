@@ -26,8 +26,8 @@
       </mat-card-header>
 
       <mat-card-content>
-        <!-- Player Name (readonly) -->
-        <div class="form-row">
+        <!-- Player Name and Division -->
+        <div class="form-row two-column">
           <mat-form-field [appearance]="inputStyle" class="full-width">
             <mat-label>Player Name</mat-label>
             <input
@@ -38,10 +38,7 @@
               readonly
             />
           </mat-form-field>
-        </div>
 
-        <!-- Division -->
-        <div class="form-row">
           <mat-form-field [appearance]="inputStyle" class="full-width">
             <mat-label>Division</mat-label>
             <mat-select
