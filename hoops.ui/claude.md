@@ -40,8 +40,9 @@ This project uses cutting-edge Angular features. Claude's training data may be i
 
 ## Project Structure
 
-Located in `hoops.ui/src/app/`:
+Located in `hoops.ui/src/` (Angular modern style — no `app/` subfolder):
 
+- `app.ts` / `app.config.ts` / `app-routing.ts` — Root app files
 - `admin/` — Admin features: people (`admin/people/`), games (`admin/games/`)
 - `games/` — Game viewing and management
 - `home/` — Home/landing feature
@@ -117,5 +118,5 @@ npm run lint
 - **Tooling**: Angular TestBed for components and services
 - **Focus**: Test observable/signal state changes and DOM updates — not internal implementation details
 - **DOM updates**: Always call `fixture.detectChanges()` after actions that affect the DOM
-- **Coverage**: All components, services, and pipes must have unit tests
+- **Coverage**: All components, services, and pipes must have unit tests for happy and unhappy paths
 - All tests must pass before merge

@@ -1,7 +1,7 @@
 import { Component, computed, inject, OnInit, output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from '@app/domain/user';
-import { environment } from '../../../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { RouterLinkActive, RouterModule } from '@angular/router';
 import { Constants } from '../../constants';
 import { MatDialogModule } from '@angular/material/dialog';

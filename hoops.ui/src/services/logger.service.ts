@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { environment } from '../../environments/environment';
+import { environment } from '../environments/environment';
 import { LOGGER_OPTIONS, LoggerOptions } from './logger.tokens';
 
 @Injectable({

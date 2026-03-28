@@ -14,7 +14,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { reducers, metaReducers } from './reducers';
 import { DataService } from './services/data.service';
-import { environment } from '../environments/environment';
+import { environment } from './environments/environment';
 import { LOGGER_OPTIONS, LoggerOptions } from './services/logger.tokens';
 import { ActivityTrackingInterceptor } from './services/activity-tracking.interceptor';
 

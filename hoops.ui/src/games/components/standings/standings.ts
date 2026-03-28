@@ -12,7 +12,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
     '../../../shared/scss/tables.scss',
     './standings.scss',
     '../../containers/games-shell/games-shell.scss',
-    '../../../../Content/styles.scss'
+    '../../../Content/styles.scss'
   ]
 })
 export class Standings implements OnInit {

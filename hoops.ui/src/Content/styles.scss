@@ -2,9 +2,9 @@
 @use "_material.scss";
 
 @use "./_mixins";
-@use "./../app//shared/scss/menu";
-@use "./../app//shared/scss/tables";
-@use "./../app//shared/scss/forms";
+@use "./../shared/scss/menu";
+@use "./../shared/scss/tables";
+@use "./../shared/scss/forms";
 
 @use "tailwindcss/base";
 @use "tailwindcss/components";
