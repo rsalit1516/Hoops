@@ -17,10 +17,10 @@
     "target": "ES2022",
     "module": "ES2022",
     "paths": {
-      "@app/*": ["./src/app/*"],
-      "@domain/*": ["./src/app/domain/*"],
-      "@shared/*": ["./src/app/shared/*"],
-      "@content/*": ["./src/app/services/*"],
+      "@app/*": ["./src/*"],
+      "@domain/*": ["./src/domain/*"],
+      "@shared/*": ["./src/shared/*"],
+      "@content/*": ["./src/services/*"],
       "@styles/*": ["./src/content/*"]
     },
     "useDefineForClassFields": false

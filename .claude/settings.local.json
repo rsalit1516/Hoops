@@ -67,7 +67,9 @@
       "Bash(az cloud show --query \"name\" -o tsv && az account show -o json 2>&1)",
       "Bash(az ad:*)",
       "Bash(az functionapp:*)",
-      "Bash(az webapp:*)"
+      "Bash(az webapp:*)",
+      "Bash(cd C:/Users/rrsal/repos/hoops/hoops.ui && git mv src/app/app.ts src/app.ts 2>&1)",
+      "Bash(cd C:/Users/rrsal/repos/hoops/hoops.ui && git mv src/app/admin src/admin 2>&1)"
     ],
     "deny": [],
     "ask": []
