@@ -6,13 +6,21 @@
   <mat-card-content class="">
     <div class="counter-wrapper">
       <div class="counter">{{ divisionCount() }} divisions</div>
+      <div class="counter">{{ totalPlayerCount() }} players</div>
     </div>
-    <mat-list role="list" class="">
-      @for (division of seasonDivisions(); track division.divisionId) {
-      <mat-list-item role="listitem" [class.selected]="division === this.selectedDivision" (click)="goToDivision(division)" class="">{{
-        division.divisionDescription
-      }}</mat-list-item>
-    }
-      </mat-list>
+    <table mat-table [dataSource]="seasonDivisions()" class="w-full">
+      <ng-container matColumnDef="division">
+        <th mat-header-cell *matHeaderCellDef>Division</th>
+        <td mat-cell *matCellDef="let element">{{ element.divisionDescription }}</td>
+      </ng-container>
+      <ng-container matColumnDef="players">
+        <th mat-header-cell *matHeaderCellDef class="mat-column-players">Players</th>
+        <td mat-cell *matCellDef="let element" class="mat-column-players">{{ getPlayerCount(element) }}</td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+          [class.selected]="row === selectedDivision"
+          (click)="goToDivision(row)"></tr>
+    </table>
   </mat-card-content>
 </mat-card>

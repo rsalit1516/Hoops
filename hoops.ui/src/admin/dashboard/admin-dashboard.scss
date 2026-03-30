@@ -101,3 +101,33 @@ tbody {
 .selected {
   background-color: v.$card-highlight;
 }
+
+tr.mat-mdc-row {
+  background-color: color.adjust(v.$admin-background-color, $lightness: 10%);
+  cursor: pointer;
+  color: v.$brand-color;
+}
+
+tr.mat-mdc-row:hover {
+  box-shadow: 4px 4px 6px -2px color.adjust(v.$admin-background-color, $lightness: -10%);
+  font-weight: 800;
+}
+
+tr.mat-mdc-row.selected {
+  background-color: v.$card-highlight;
+}
+
+tr.mat-mdc-header-row {
+  background-color: color.adjust(v.$admin-background-color, $lightness: 5%);
+  color: v.$admin-font-color;
+}
+
+.mat-column-players {
+  text-align: right;
+  padding-right: 16px;
+}
+
+table[mat-table] {
+  width: 100%;
+  background: transparent;
+}
