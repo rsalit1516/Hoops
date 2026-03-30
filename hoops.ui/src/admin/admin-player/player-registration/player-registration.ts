@@ -100,7 +100,7 @@ export class PlayerRegistration implements OnInit {
   selectedSeason = signal<Season | undefined>(undefined);
 
   // Options for dropdowns
-  paymentTypes = ['Check', 'Credit Card', 'Online', 'Cash'];
+  paymentTypes = ['Check', 'Credit Card', 'Online', 'Cash', 'Zelle'];
   ratingOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   changeDivisionOptions = ['N/A', 'Plays Up', 'Plays Down'];
 
@@ -140,7 +140,7 @@ export class PlayerRegistration implements OnInit {
       const currentPerson = this.person();
       this.logger.debug(
         'Person changed in player registration:',
-        currentPerson
+        currentPerson,
       );
     });
 
@@ -167,13 +167,13 @@ export class PlayerRegistration implements OnInit {
             const eligibleDivision = this.divisionService.findEligibleDivision(
               currentPerson.birthDate,
               currentPerson.gender,
-              divs
+              divs,
             );
             if (eligibleDivision) {
               this.updateFormField('divisionId', eligibleDivision.divisionId);
               this.logger.info(
                 'Auto-selected division on load:',
-                eligibleDivision.divisionDescription
+                eligibleDivision.divisionDescription,
               );
             }
           }
@@ -202,7 +202,7 @@ export class PlayerRegistration implements OnInit {
     this.route.params.subscribe((params) => {
       const personId = params['personId'];
       if (personId) {
-        this.loadPersonAndPlayer(+personId);  // Convert string to number
+        this.loadPersonAndPlayer(+personId); // Convert string to number
       }
     });
   }
@@ -284,13 +284,13 @@ export class PlayerRegistration implements OnInit {
       const eligibleDivision = this.divisionService.findEligibleDivision(
         currentPerson.birthDate,
         currentPerson.gender,
-        this.divisions()
+        this.divisions(),
       );
       if (eligibleDivision) {
         newPlayer.divisionId = eligibleDivision.divisionId;
         this.logger.info(
           'Auto-selected division:',
-          eligibleDivision.divisionDescription
+          eligibleDivision.divisionDescription,
         );
       }
     }
@@ -300,7 +300,12 @@ export class PlayerRegistration implements OnInit {
   }
 
   patchFormWithPlayer(player: Player, playerName: string): void {
-    console.log('DEBUG: patchFormWithPlayer called with player:', player, 'playerName:', playerName);
+    console.log(
+      'DEBUG: patchFormWithPlayer called with player:',
+      player,
+      'playerName:',
+      playerName,
+    );
     // Determine change division value based on playsUp/playsDown
     let changeDivision = 'N/A';
     if (player.playsUp) {
@@ -400,7 +405,10 @@ export class PlayerRegistration implements OnInit {
     player.outOfTown = formValue.outOfTown;
 
     this.logger.info('Saving player:', player);
-    console.log('DEBUG: Full player object being sent:', JSON.stringify(player, null, 2));
+    console.log(
+      'DEBUG: Full player object being sent:',
+      JSON.stringify(player, null, 2),
+    );
 
     // Call the backend to save
     this.playerService.savePlayer(player).subscribe({
@@ -442,7 +450,7 @@ export class PlayerRegistration implements OnInit {
    */
   updateFormField<K extends keyof PlayerFormData>(
     field: K,
-    value: PlayerFormData[K]
+    value: PlayerFormData[K],
   ): void {
     const currentModel = this.playerFormModel();
     this.playerFormModel.set({
