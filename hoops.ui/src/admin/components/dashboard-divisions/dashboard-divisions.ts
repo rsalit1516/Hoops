@@ -22,7 +22,7 @@ import { Constants } from '@shared/constants';
 export class DashboardDivisions {
   readonly #divisionService = inject(DivisionService);
   readonly #seasonService = inject(SeasonService);
-  divisionCount = computed(() => (this.#divisionService.seasonDivisions?.length ?? 0));
+  divisionCount = computed(() => (this.#divisionService.seasonDivisions()?.length ?? 0));
   seasonDivisions = this.#divisionService.seasonDivisions;
   selectedDivision: Division | undefined;
   displayedColumns = ['division', 'players'];
