@@ -13,6 +13,7 @@ import { Constants } from '@shared/constants';
   imports: [MatCardModule, MatTableModule],
   templateUrl: "./dashboard-divisions.html",
   styleUrls: [
+    './dashboard-divisions.scss',
     '../../../shared/scss/cards.scss',
     '../../dashboard/admin-dashboard.scss',
     '../../admin.scss'
