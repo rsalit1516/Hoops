@@ -1,12 +1,12 @@
 <mat-nav-list >
-  <a mat-list-item (click)="onSidenavClose()" >
+  <a mat-list-item routerLink="/home" (click)="onSidenavClose()" >
     <mat-icon>home</mat-icon><span class="nav-caption">Home</span>
   </a>
-  <a mat-list-item routerLink="/games" >Games</a>
-  <a  mat-list-item routerLink="/photos">Photos</a>
-  <a  mat-list-item routerLink="/contacts">Contacts</a>
-  <a  mat-list-item routerLink="/clubDocs">Club Docs</a>
+  <a mat-list-item routerLink="/games" (click)="onSidenavClose()">Games</a>
+  <a mat-list-item routerLink="/photos" (click)="onSidenavClose()">Photos</a>
+  <a mat-list-item routerLink="/contacts" (click)="onSidenavClose()">Contacts</a>
+  <a mat-list-item routerLink="/clubDocs" (click)="onSidenavClose()">Club Docs</a>
   @if (showAdminMenu) {
-    <a  mat-list-item routerLink="/admin" >Admin</a>
+    <a mat-list-item routerLink="/admin" (click)="onSidenavClose()">Admin</a>
   }
 </mat-nav-list>
