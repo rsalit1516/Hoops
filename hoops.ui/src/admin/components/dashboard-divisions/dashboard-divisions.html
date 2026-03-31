@@ -8,7 +8,7 @@
       <div class="counter">{{ divisionCount() }} divisions</div>
       <div class="counter">{{ totalPlayerCount() }} players</div>
     </div>
-    <table mat-table [dataSource]="seasonDivisions()" class="w-full">
+    <table mat-table [dataSource]="seasonDivisions() || []" class="w-full">
       <ng-container matColumnDef="division">
         <th mat-header-cell *matHeaderCellDef>Division</th>
         <td mat-cell *matCellDef="let element">{{ element.divisionDescription }}</td>
