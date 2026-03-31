@@ -7,7 +7,7 @@
   height: 90%;
   background-color: v.$table-body-color;
   color: v.$table-font-color;
-  overflow-y: auto;
+  // overflow-y: auto;
 }
 
 .card {
@@ -50,15 +50,15 @@
 }
 
 .mat-list-item:hover {
-  box-shadow: 4px 4px 6px -2px color.adjust(v.$admin-background-color, $lightness:
-        -10%);
+  box-shadow: 4px 4px 6px -2px
+    color.adjust(v.$admin-background-color, $lightness: -10%);
   font-weight: 800;
 }
 
 .mat-list-iten:active,
 .mat-list-iten:focus {
-  box-shadow: 4px 4px 6px -2px color.adjust(v.$admin-background-color, $lightness:
-        -10%);
+  box-shadow: 4px 4px 6px -2px
+    color.adjust(v.$admin-background-color, $lightness: -10%);
 }
 .mat-list-text:active {
   font-weight: 800;
@@ -109,7 +109,8 @@ tr.mat-mdc-row {
 }
 
 tr.mat-mdc-row:hover {
-  box-shadow: 4px 4px 6px -2px color.adjust(v.$admin-background-color, $lightness: -10%);
+  box-shadow: 4px 4px 6px -2px
+    color.adjust(v.$admin-background-color, $lightness: -10%);
   font-weight: 800;
 }
 
