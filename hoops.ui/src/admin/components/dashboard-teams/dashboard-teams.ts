@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { Team } from '@app/domain/team';
@@ -22,7 +22,7 @@ export class DashboardTeams {
   selectedDivision = this.#teamService.selectedDivision;
   divisionTeams = this.#teamService.divisionTeams;
   selectedTeam: Team | undefined;
-  teamCount = this.divisionTeams?.length;
+  teamCount = computed(() => this.divisionTeams().length);
   setTeam (team: Team) {
     this.#teamService.updateSelectedTeam(team);
   }
