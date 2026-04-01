@@ -21,6 +21,7 @@ import { DivisionService } from '@app/services/division.service';
 import { DashboardDivisions } from '../components/dashboard-divisions/dashboard-divisions';
 import { DashboardTeams } from "../components/dashboard-teams/dashboard-teams";
 import { DashboardGames } from '../components/dashboard-games/dashboard-games';
+import { DashboardSummary } from '../components/dashboard-summary/dashboard-summary';
 
 @Component({
   selector: 'csbc-admin-dashboard',
@@ -36,7 +37,8 @@ import { DashboardGames } from '../components/dashboard-games/dashboard-games';
     MatListModule,
     DashboardDivisions,
     DashboardTeams,
-    DashboardGames
+    DashboardGames,
+    DashboardSummary
 ]
 })
 export class AdminDashboard implements OnInit {
