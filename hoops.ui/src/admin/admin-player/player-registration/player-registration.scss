@@ -44,11 +44,19 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 16px;
+    align-items: start;
   }
 
   .full-width {
     width: 100%;
   }
+}
+
+// Override the global 32px container height from forms.scss.
+// inputs work around it via `input { height: 3rem }` but mat-select has no such
+// override, causing the label to be clipped and the field to appear shorter.
+mat-form-field {
+  --mat-form-field-container-height: 56px;
 }
 
 .radio-group {
