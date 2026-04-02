@@ -5,6 +5,27 @@ body {
   background-color: v.$admin-background-color;
 }
 
+.admin-sidenav-container {
+  height: 100%;
+  background-color: v.$black;
+}
+
+.admin-sidenav {
+  width: 200px;
+  background-color: v.$black;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.admin-sidenav-content {
+  background-color: v.$black;
+  color: v.$table-body-color;
+}
+
+.menu-toggle-bar {
+  padding: 4px 8px;
+  color: v.$admin-font-color;
+}
+
 .admin-container {
   // border-radius: 10px;
   padding-left: 2px;
