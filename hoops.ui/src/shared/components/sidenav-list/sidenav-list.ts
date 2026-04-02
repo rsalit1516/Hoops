@@ -8,36 +8,45 @@ import { RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { AuthService } from '@app/services/auth.service';
+import { FeatureFlagService } from '@app/shared/services/feature-flags';
 
 @Component({
   selector: 'csbc-sidenav-list',
-  templateUrl: "./sidenav-list.html",
+  templateUrl: './sidenav-list.html',
   styleUrls: ['./sidenav-list.css'],
-  imports: [MatListModule, MatIconModule, RouterLink]
+  imports: [MatListModule, MatIconModule, RouterLink],
 })
 export class SidenavList implements OnInit {
-  readonly #authService = inject(AuthService);
+  private authService = inject(AuthService);
   readonly store = inject(Store<fromUser.State>);
+  private featureFlags = inject(FeatureFlagService);
+
   readonly sidenavClose = output();
-  showAdminMenu = false;
+  showAdminMenu = computed(() => {
+    const adminModuleEnabled = this.featureFlags.getFlag('adminModule')();
+    const isAdmin = this.authService.isAdmin();
+    const showMenu = adminModuleEnabled && isAdmin;
+  });
   // currentUser: User | undefined;
   userName: string | undefined;
-  currentUser = computed(() => this.#authService.currentUser());
-  constructor () { }
+  currentUser = computed(() => this.authService.currentUser());
+  constructor() {}
 
-  ngOnInit () {
+  ngOnInit() {
     // this.store.pipe(select(fromUser.getCurrentUser)).subscribe(user => {
     // console.log(user);
     // if (user !== null && user.userId !== 0) {
     // this.currentUser = user;
     if (this.currentUser()) {
       this.userName = this.currentUser()!.firstName;
-      this.showAdminMenu = this.currentUser()!.screens == undefined ? false :
-        this.showAdminMenu = this.currentUser()!.screens!.length > 0;
+      //   this.showAdminMenu =
+      //     this.currentUser()!.screens == undefined
+      //       ? false
+      //       : (this.showAdminMenu = this.currentUser()!.screens!.length > 0);
+      // }
     }
+    //   });
   }
-  //   });
-  // }
 
   public onSidenavClose = () => {
     this.sidenavClose.emit();
