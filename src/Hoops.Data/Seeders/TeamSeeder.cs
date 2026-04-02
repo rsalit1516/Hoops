@@ -73,7 +73,7 @@ namespace Hoops.Data.Seeders
                                 SeasonId = season.SeasonId,
                                 DivisionId = division.DivisionId,
                                 TeamNumber = i.ToString(),
-                                TeamName = $"Team {i} - {division.DivisionDescription}",
+                                TeamName = null,
                                 TeamColor = colors.Any() ? colors.ElementAt(ranColor.Next(0, colors.Count)).ColorName : "Unknown",
                                 TeamColorId = colors.Any() ? colors.ElementAt(ranColor.Next(0, colors.Count)).ColorId : 1,
                                 CreatedDate = DateTime.Now,

@@ -5,9 +5,9 @@
     >
   </mat-card-header>
   <mat-card-content class="">
-    <div class="counter-wrapper">
+    <!-- <div class="counter-wrapper">
       <div class="counter">{{ teamCount() }} Teams:</div>
-    </div>
+    </div> -->
     <mat-list role="list" class="">
       @for (team of divisionTeams(); track team.teamId) {
       <mat-list-item
@@ -16,7 +16,7 @@
         [class.selected]="team === selectedTeam"
         class=""
       >
-        {{ team.teamName }}
+        {{ getDisplayLabel(team) }}
       </mat-list-item>
       }
     </mat-list>

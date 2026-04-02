@@ -26,6 +26,7 @@ export class SidenavList implements OnInit {
     const adminModuleEnabled = this.featureFlags.getFlag('adminModule')();
     const isAdmin = this.authService.isAdmin();
     const showMenu = adminModuleEnabled && isAdmin;
+    return showMenu;
   });
   // currentUser: User | undefined;
   userName: string | undefined;
