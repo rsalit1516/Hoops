@@ -6,6 +6,7 @@ import { Division } from '@app/domain/division';
 import { DraftListPlayer } from '@app/domain/draft-list-player';
 import { DivisionService } from '@app/services/division.service';
 import { SeasonService } from '@app/services/season.service';
+import { TeamService } from '@app/services/team.service';
 import { Constants } from '@shared/constants';
 
 @Component({
@@ -22,10 +23,22 @@ import { Constants } from '@shared/constants';
 export class DashboardDivisions {
   readonly #divisionService = inject(DivisionService);
   readonly #seasonService = inject(SeasonService);
+  readonly #teamService = inject(TeamService);
   divisionCount = computed(() => (this.#divisionService.seasonDivisions()?.length ?? 0));
   seasonDivisions = this.#divisionService.seasonDivisions;
   selectedDivision: Division | undefined;
-  displayedColumns = ['division', 'players'];
+  displayedColumns = ['division', 'teams', 'players'];
+
+  teamCountByDivision = computed(() =>
+    (this.#teamService.seasonTeams() ?? []).reduce((map, t) => {
+      map.set(t.divisionId, (map.get(t.divisionId) ?? 0) + 1);
+      return map;
+    }, new Map<number, number>())
+  );
+
+  getTeamCount(division: Division): number {
+    return this.teamCountByDivision().get(division.divisionId) ?? 0;
+  }
 
   seasonPlayers = httpResource<DraftListPlayer[]>(() => {
     const seasonId = this.#seasonService.selectedSeason()?.seasonId;
