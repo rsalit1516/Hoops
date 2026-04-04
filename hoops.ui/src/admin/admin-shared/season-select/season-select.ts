@@ -19,7 +19,7 @@ import { LoggerService } from '@app/services/logger.service';
 
 @Component({
   selector: 'season-select',
-  template: `<mat-form-field>
+  template: `<mat-form-field floatLabel="always">
     <mat-label>{{ title }}</mat-label>
     <mat-select
       [(value)]="season"

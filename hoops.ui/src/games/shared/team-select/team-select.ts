@@ -17,7 +17,7 @@ import { Team } from '@app/domain/team';
 @Component({
   selector: 'team-select',
   template: `
-    <mat-form-field>
+    <mat-form-field floatLabel="always">
       <mat-label>{{ title() }}</mat-label>
       <mat-select
         [(value)]="team"
