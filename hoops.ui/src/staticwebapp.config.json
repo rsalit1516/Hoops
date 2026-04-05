@@ -1,9 +1,13 @@
 {
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/assets/*", "/*.{css,js,ico,png,svg,json}"]
+  },
   "routes": [
     {
-      "route": "/home",
-      "redirect": "/",
-      "statusCode": 301
+      "route": "/*",
+      "serve": "/index.html",
+      "statusCode": 200
     }
   ]
 }
