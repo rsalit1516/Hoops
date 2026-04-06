@@ -203,6 +203,11 @@ export class HouseholdService {
         )
       );
   }
+
+  searchByName(name: string): Observable<Household[]> {
+    const url = `${Constants.SEARCH_HOUSEHOLD_URL}?name=${encodeURIComponent(name)}`;
+    return this.http.get<Household[]>(url, { responseType: 'json' });
+  }
 }
 export interface householdSearchCriteria {
   householdName: string;
