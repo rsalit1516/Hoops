@@ -47,6 +47,7 @@ export class DailySchedule {
     const dialogRef = this.dialog.open(GameScoreDialog, {
       width: '500px',
       data: { game },
+      panelClass: 'score-dialog',
     });
     dialogRef.afterClosed().subscribe(() => {
       this.logger.debug('Game score dialog closed');
