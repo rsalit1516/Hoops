@@ -10,6 +10,12 @@
 @use "tailwindcss/components";
 @use "tailwindcss/utilities";
 
+/* Score dialog — visible border */
+.score-dialog .mat-mdc-dialog-surface {
+  border: 2px solid #d17b00;
+  border-radius: 8px;
+}
+
 /* Snack bar variants */
 .snack-success {
   background: #2e7d32 !important;
