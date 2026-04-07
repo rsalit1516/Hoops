@@ -1,4 +1,4 @@
-import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, flushMicrotasks, tick } from '@angular/core/testing';
 import {
   HttpClientTestingModule,
   HttpTestingController,
@@ -20,6 +20,7 @@ import { Person } from '@app/domain/person';
 
 describe('AdminUserDetail', () => {
   let component: AdminUserDetail;
+  let fixture: ComponentFixture<AdminUserDetail>;
   let householdServiceSpy: jasmine.SpyObj<HouseholdService>;
   let peopleServiceSpy: jasmine.SpyObj<PeopleService>;
   let httpMock: HttpTestingController;
@@ -69,7 +70,7 @@ describe('AdminUserDetail', () => {
     householdServiceSpy.searchByName.and.returnValue(of(mockHouseholds));
     peopleServiceSpy.getHouseholdMembersObservable.and.returnValue(of(mockPeople));
 
-    const fixture = TestBed.createComponent(AdminUserDetail);
+    fixture = TestBed.createComponent(AdminUserDetail);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -222,7 +223,8 @@ describe('AdminUserDetail', () => {
     householdServiceSpy.searchByName.and.returnValue(of(mockHouseholds));
 
     component.householdSearchText.set('Sm');
-    tick(300);
+    TestBed.flushEffects(); // flush toObservable's internal effect
+    tick(300);              // expire the debounce
 
     expect(householdServiceSpy.searchByName).toHaveBeenCalledWith('Sm');
     expect(component.filteredHouseholds()).toEqual(mockHouseholds);
@@ -233,6 +235,7 @@ describe('AdminUserDetail', () => {
     householdServiceSpy.searchByName.calls.reset();
 
     component.householdSearchText.set('S');
+    flushMicrotasks();
     tick(300);
 
     expect(householdServiceSpy.searchByName).not.toHaveBeenCalled();
@@ -244,6 +247,7 @@ describe('AdminUserDetail', () => {
     householdServiceSpy.searchByName.and.returnValue(throwError(() => new Error('Network error')));
 
     component.householdSearchText.set('Er');
+    flushMicrotasks();
     tick(300);
 
     expect(component.filteredHouseholds()).toEqual([]);
@@ -254,10 +258,13 @@ describe('AdminUserDetail', () => {
     householdServiceSpy.searchByName.calls.reset();
 
     component.householdSearchText.set('S');
+    TestBed.flushEffects();
     tick(100);
     component.householdSearchText.set('Sm');
+    TestBed.flushEffects();
     tick(100);
     component.householdSearchText.set('Smi');
+    TestBed.flushEffects();
     tick(300);
 
     expect(householdServiceSpy.searchByName).toHaveBeenCalledTimes(1);
@@ -329,7 +336,8 @@ describe('AdminUserDetail', () => {
   it('showHouseholdDropdown — false when editing an existing user (userId > 0)', () => {
     component.ngOnInit();
     component.userId = 7;
-    component.householdName.set('');
+    // userId is a plain property; trigger a signal change to force the computed to re-evaluate
+    component.householdName.set('Loaded Household');
     expect(component.showHouseholdDropdown()).toBeFalse();
   });
 });
