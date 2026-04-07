@@ -5,6 +5,7 @@ import {
 } from '@angular/common/http/testing';
 import { HouseholdService } from './household.service';
 import { Household } from '@app/domain/household';
+import { Person } from '@app/domain/person';
 import { Constants } from '@app/shared/constants';
 import { PeopleService } from './people.service';
 
@@ -21,7 +22,7 @@ describe('HouseholdService', () => {
 
   const peopleServiceStub = {
     getHouseholdMembers: jasmine.createSpy('getHouseholdMembers'),
-    householdMembers: [],
+    householdMembers: [] as Person[],
   };
 
   beforeEach(() => {
