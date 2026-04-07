@@ -1,4 +1,10 @@
-import { Component, OnDestroy, computed, inject, EffectRef } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  computed,
+  inject,
+  EffectRef,
+} from '@angular/core';
 import {
   FormBuilder,
   Validators,
@@ -17,12 +23,12 @@ import {
   MatDialogTitle,
   MatDialogContent,
   MatDialogActions,
-  MAT_DIALOG_DATA
+  MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-
+import { TeamDisplayPipe } from '@app/shared/pipes/team-display.pipe';
 
 @Component({
   selector: 'game-score-dialog',
@@ -37,18 +43,19 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatInputModule,
     MatDialogActions,
     MatButtonModule,
-    ],
+    TeamDisplayPipe,
+  ],
 })
 export class GameScoreDialog implements OnDestroy {
   dialogRef = inject<MatDialogRef<GameScoreDialog>>(MatDialogRef);
   private fb = inject(FormBuilder);
   data = inject<{
     game?: RegularGame;
-}>(MAT_DIALOG_DATA);
+  }>(MAT_DIALOG_DATA);
 
   // Typed, non-nullable form for editable score fields only
   private static integerValidator(
-    ctrl: AbstractControl
+    ctrl: AbstractControl,
   ): ValidationErrors | null {
     const v = ctrl.value;
     if (v === null || v === undefined || v === '') return null; // required handled separately
