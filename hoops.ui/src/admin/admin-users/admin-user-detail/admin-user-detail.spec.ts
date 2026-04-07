@@ -219,15 +219,23 @@ describe('AdminUserDetail', () => {
   // ── filteredHouseholds signal (debounced search) ─────────────────────────────
 
   it('filteredHouseholds — positive: calls searchByName after 300 ms debounce for ≥2 chars', fakeAsync(() => {
-    component.ngOnInit();
+    // IMPORTANT: The component MUST be created inside fakeAsync.
+    // Angular 21's ZoneAwareEffectScheduler stores Zone.current at effect creation time
+    // (node.zone). If created in beforeEach (async/testProxyZone), debounceTime timers
+    // are registered in that zone — invisible to tick(). Creating here ensures
+    // node.zone = fakeAsyncZone so tick(300) can fire them.
+    // Note: TestBed.flushEffects() inside fakeAsync causes NG0101 recursive tick — avoid it.
+    const localFixture = TestBed.createComponent(AdminUserDetail);
+    const localComponent = localFixture.componentInstance;
+    localFixture.detectChanges();
     householdServiceSpy.searchByName.and.returnValue(of(mockHouseholds));
 
-    component.householdSearchText.set('Sm');
-    TestBed.flushEffects(); // flush toObservable's internal effect
-    tick(300);              // expire the debounce
+    localComponent.householdSearchText.set('Sm');
+    localFixture.detectChanges(); // flush the toObservable effect in fakeAsync zone
+    tick(300);                    // fire the debounce timer
 
     expect(householdServiceSpy.searchByName).toHaveBeenCalledWith('Sm');
-    expect(component.filteredHouseholds()).toEqual(mockHouseholds);
+    expect(localComponent.filteredHouseholds()).toEqual(mockHouseholds);
   }));
 
   it('filteredHouseholds — negative: does not call searchByName for < 2 chars', fakeAsync(() => {
@@ -254,17 +262,20 @@ describe('AdminUserDetail', () => {
   }));
 
   it('filteredHouseholds — debounce: only calls API once for rapid keystrokes', fakeAsync(() => {
-    component.ngOnInit();
+    // Must create inside fakeAsync — see zone mismatch note in the positive test above.
+    const localFixture = TestBed.createComponent(AdminUserDetail);
+    const localComponent = localFixture.componentInstance;
+    localFixture.detectChanges();
     householdServiceSpy.searchByName.calls.reset();
 
-    component.householdSearchText.set('S');
-    TestBed.flushEffects();
+    localComponent.householdSearchText.set('S');
+    localFixture.detectChanges();
     tick(100);
-    component.householdSearchText.set('Sm');
-    TestBed.flushEffects();
+    localComponent.householdSearchText.set('Sm');
+    localFixture.detectChanges();
     tick(100);
-    component.householdSearchText.set('Smi');
-    TestBed.flushEffects();
+    localComponent.householdSearchText.set('Smi');
+    localFixture.detectChanges();
     tick(300);
 
     expect(householdServiceSpy.searchByName).toHaveBeenCalledTimes(1);

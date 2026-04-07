@@ -1,4 +1,4 @@
-import { Component, OnDestroy, effect, inject, EffectRef, Signal } from '@angular/core';
+import { Component, OnDestroy, computed, inject, EffectRef } from '@angular/core';
 import {
   FormBuilder,
   Validators,
@@ -77,9 +77,12 @@ export class GameScoreDialog implements OnDestroy {
     ],
   });
   gameService = inject(GameService);
-  // Keep a reference to the readonly signal; call game() to access value
-  readonly game: Signal<RegularGame | null> =
-    this.gameService.selectedGameSignal;
+  // Computed that reads the service signal with a direct-data fallback.
+  // Falls back to data.game so team names always render even if the service
+  // signal hasn't been set yet when the dialog view first initialises.
+  readonly game = computed(
+    () => this.gameService.selectedGameSignal() ?? this.data?.game ?? null,
+  );
   private effectRef?: EffectRef; // (may be removed if no live updates)
   saving = false;
 
