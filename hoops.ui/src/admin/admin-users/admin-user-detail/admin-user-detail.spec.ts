@@ -219,17 +219,31 @@ describe('AdminUserDetail', () => {
   // ── filteredHouseholds signal (debounced search) ─────────────────────────────
 
   it('filteredHouseholds — positive: calls searchByName after 300 ms debounce for ≥2 chars', fakeAsync(() => {
+<<<<<<< HEAD
     // Create the component INSIDE fakeAsync so the toObservable effect's stored
     // node.zone is the fakeAsyncZone. When the effect flushes, debounceTime's timer
     // is registered in the fakeAsync zone and tick(300) can fire it.
+=======
+    // IMPORTANT: The component MUST be created inside fakeAsync.
+    // Angular 21's ZoneAwareEffectScheduler stores Zone.current at effect creation time
+    // (node.zone). If created in beforeEach (async/testProxyZone), debounceTime timers
+    // are registered in that zone — invisible to tick(). Creating here ensures
+    // node.zone = fakeAsyncZone so tick(300) can fire them.
+    // Note: TestBed.flushEffects() inside fakeAsync causes NG0101 recursive tick — avoid it.
+>>>>>>> scores-dialog-color-fix
     const localFixture = TestBed.createComponent(AdminUserDetail);
     const localComponent = localFixture.componentInstance;
     localFixture.detectChanges();
     householdServiceSpy.searchByName.and.returnValue(of(mockHouseholds));
 
     localComponent.householdSearchText.set('Sm');
+<<<<<<< HEAD
     localFixture.detectChanges(); // flush the toObservable effect
     tick(300); // fire the debounce timer
+=======
+    localFixture.detectChanges(); // flush the toObservable effect in fakeAsync zone
+    tick(300);                    // fire the debounce timer
+>>>>>>> scores-dialog-color-fix
 
     expect(householdServiceSpy.searchByName).toHaveBeenCalledWith('Sm');
     expect(localComponent.filteredHouseholds()).toEqual(mockHouseholds);
@@ -259,7 +273,11 @@ describe('AdminUserDetail', () => {
   }));
 
   it('filteredHouseholds — debounce: only calls API once for rapid keystrokes', fakeAsync(() => {
+<<<<<<< HEAD
     // Create inside fakeAsync so debounceTime timers are in the fakeAsync zone.
+=======
+    // Must create inside fakeAsync — see zone mismatch note in the positive test above.
+>>>>>>> scores-dialog-color-fix
     const localFixture = TestBed.createComponent(AdminUserDetail);
     const localComponent = localFixture.componentInstance;
     localFixture.detectChanges();
