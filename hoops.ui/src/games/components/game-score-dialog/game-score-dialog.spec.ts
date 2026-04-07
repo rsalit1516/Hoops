@@ -42,9 +42,7 @@ describe('GameScoreDialog', () => {
       selectedGameSignal: selectedGameSignal.asReadonly(),
       updateSelectedGame: jasmine.createSpy('updateSelectedGame'),
       saveGame: jasmine.createSpy('saveGame').and.returnValue(of(dialogGame)),
-      validateScores: jasmine
-        .createSpy('validateScores')
-        .and.returnValue(true),
+      validateScores: jasmine.createSpy('validateScores').and.returnValue(true),
     };
 
     await TestBed.configureTestingModule({
