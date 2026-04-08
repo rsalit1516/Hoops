@@ -8,7 +8,7 @@ namespace Hoops.Core.Models
     public partial class User
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("UserID")]
         public int UserId { get; set; }
         [Column("CompanyID")]

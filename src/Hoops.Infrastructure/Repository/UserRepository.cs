@@ -25,8 +25,8 @@ namespace Hoops.Infrastructure.Repository
         #region IRepository<T> Members
         public override User Insert(User entity)
         {
-            // Calculate the next available UserId manually
-            entity.UserId = context.Users.Any() ? context.Users.Max(t => t.UserId) + 1 : 1;
+            // Let SQL Server generate the identity value for UserId.
+            entity.UserId = 0;
 
             // Set default CompanyId if not provided or is 0
             if (!entity.CompanyId.HasValue || entity.CompanyId.Value == 0)
@@ -34,9 +34,9 @@ namespace Hoops.Infrastructure.Repository
                 entity.CompanyId = 1; // Default CompanyId value used throughout the application
             }
 
-            var newUser = context.Users.Add(entity);
-            var no = context.SaveChanges();
-            return context.Users.FirstOrDefault(user => user.UserName == entity.UserName)!;
+            context.Users.Add(entity);
+            context.SaveChanges();
+            return entity;
         }
         public override User Update(User entity)
         {
@@ -419,11 +419,8 @@ namespace Hoops.Infrastructure.Repository
 
         public async Task<User> InsertUserAsync(User user)
         {
-            // Calculate the next available UserId manually since auto-increment isn't configured
-            var maxUserId = await context.Users.AnyAsync()
-                ? await context.Users.MaxAsync(u => u.UserId)
-                : 0;
-            user.UserId = maxUserId + 1;
+            // Let SQL Server generate the identity value for UserId.
+            user.UserId = 0;
 
             // Set default CompanyId if not provided or is 0
             if (!user.CompanyId.HasValue || user.CompanyId.Value == 0)
@@ -434,7 +431,6 @@ namespace Hoops.Infrastructure.Repository
             context.Users.Add(user);
             await context.SaveChangesAsync();
 
-            // Return the user with the manually assigned UserId
             return user;
         }
 
@@ -469,7 +465,7 @@ namespace Hoops.Infrastructure.Repository
             if (!string.IsNullOrWhiteSpace(user.PassWord))
                 existingUser.PassWord = user.PassWord;
 
-            // Only update HouseId if it's provided and not 0 (HouseId is non-nullable int)
+            // Only update HouseId if it's provided and not 0
             if (user.HouseId > 0)
                 existingUser.HouseId = user.HouseId;
 
