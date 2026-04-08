@@ -4,7 +4,6 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
@@ -51,7 +50,6 @@ describe('AdminUserDetail', () => {
         AdminUserDetail,
         HttpClientTestingModule,
         RouterTestingModule,
-        ReactiveFormsModule,
         NoopAnimationsModule,
         MatSnackBarModule,
       ],
@@ -88,23 +86,20 @@ describe('AdminUserDetail', () => {
 
   // ── Form initialisation ─────────────────────────────────────────────────────
 
-  it('should initialise form with empty values for a new user', () => {
-    component.ngOnInit();
-    expect(component.form.get('houseId')?.value).toBe('');
-    expect(component.form.get('peopleId')?.value).toBe('');
-    expect(component.form.get('userType')?.value).toBe(1);
-    expect(component.userId).toBe(0);
+  it('should initialise model with empty values for a new user', () => {
+    expect(component.model().houseId).toBeNull();
+    expect(component.model().peopleId).toBeNull();
+    expect(component.model().userType).toBe(1);
+    expect(component.userId()).toBe(0);
   });
 
-  it('should disable peopleId control on init until a household is selected', () => {
-    component.ngOnInit();
-    expect(component.form.get('peopleId')?.disabled).toBeTrue();
+  it('should have peopleSelectEnabled false on init until a household is selected', () => {
+    expect(component.peopleSelectEnabled()).toBeFalse();
   });
 
-  it('should include houseId and peopleId in form configuration', () => {
-    component.ngOnInit();
-    expect(component.form.get('houseId')).toBeTruthy();
-    expect(component.form.get('peopleId')).toBeTruthy();
+  it('should expose houseId and peopleId fields on the signal form', () => {
+    expect(component.userForm.houseId).toBeDefined();
+    expect(component.userForm.peopleId).toBeDefined();
   });
 
   // ── displayHousehold ────────────────────────────────────────────────────────
@@ -126,36 +121,32 @@ describe('AdminUserDetail', () => {
   // ── onHouseholdSearchInput ──────────────────────────────────────────────────
 
   it('onHouseholdSearchInput — positive: updates householdSearchText signal', () => {
-    component.ngOnInit();
     const event = { target: { value: 'Smith' } } as unknown as Event;
     component.onHouseholdSearchInput(event);
     expect(component.householdSearchText()).toBe('Smith');
   });
 
-  it('onHouseholdSearchInput — negative: clears houseId form value', () => {
-    component.ngOnInit();
-    component.form.get('houseId')?.setValue(42);
+  it('onHouseholdSearchInput — negative: clears houseId in model', () => {
+    component.userForm.houseId().value.set(42);
 
     const event = { target: { value: 'new text' } } as unknown as Event;
     component.onHouseholdSearchInput(event);
 
-    expect(component.form.get('houseId')?.value).toBe('');
+    expect(component.model().houseId).toBeNull();
   });
 
-  it('onHouseholdSearchInput — negative: clears peopleId and disables the control', () => {
-    component.ngOnInit();
-    component.form.get('peopleId')?.enable();
-    component.form.get('peopleId')?.setValue(5);
+  it('onHouseholdSearchInput — negative: clears peopleId and disables the select', () => {
+    component.peopleSelectEnabled.set(true);
+    component.userForm.peopleId().value.set(5);
 
     const event = { target: { value: 'x' } } as unknown as Event;
     component.onHouseholdSearchInput(event);
 
-    expect(component.form.get('peopleId')?.value).toBe('');
-    expect(component.form.get('peopleId')?.disabled).toBeTrue();
+    expect(component.model().peopleId).toBeNull();
+    expect(component.peopleSelectEnabled()).toBeFalse();
   });
 
   it('onHouseholdSearchInput — negative: clears peopleOptions', () => {
-    component.ngOnInit();
     component.peopleOptions.set(mockPeople);
 
     const event = { target: { value: '' } } as unknown as Event;
@@ -166,28 +157,25 @@ describe('AdminUserDetail', () => {
 
   // ── onHouseholdSelected ─────────────────────────────────────────────────────
 
-  it('onHouseholdSelected — positive: sets houseId on the form', () => {
-    component.ngOnInit();
+  it('onHouseholdSelected — positive: sets houseId in model', () => {
     const household = { houseId: 3, name: 'Gamma Household' } as Household;
     const event = { option: { value: household } } as MatAutocompleteSelectedEvent;
 
     component.onHouseholdSelected(event);
 
-    expect(component.form.get('houseId')?.value).toBe(3);
+    expect(component.model().houseId).toBe(3);
   });
 
-  it('onHouseholdSelected — positive: marks houseId as dirty', () => {
-    component.ngOnInit();
+  it('onHouseholdSelected — positive: marks the form as dirty', () => {
     const household = { houseId: 3, name: 'Gamma Household' } as Household;
     const event = { option: { value: household } } as MatAutocompleteSelectedEvent;
 
     component.onHouseholdSelected(event);
 
-    expect(component.form.get('houseId')?.dirty).toBeTrue();
+    expect(component.isDirty()).toBeTrue();
   });
 
   it('onHouseholdSelected — positive: updates householdSearchText to the name', () => {
-    component.ngOnInit();
     const household = { houseId: 3, name: 'Gamma Household' } as Household;
     const event = { option: { value: household } } as MatAutocompleteSelectedEvent;
 
@@ -197,7 +185,6 @@ describe('AdminUserDetail', () => {
   });
 
   it('onHouseholdSelected — positive: loads people for the selected household', () => {
-    component.ngOnInit();
     const household = { houseId: 3, name: 'Gamma Household' } as Household;
     const event = { option: { value: household } } as MatAutocompleteSelectedEvent;
 
@@ -207,7 +194,6 @@ describe('AdminUserDetail', () => {
   });
 
   it('onHouseholdSelected — negative: household with no name sets search text to empty', () => {
-    component.ngOnInit();
     const household = { houseId: 4 } as Household;
     const event = { option: { value: household } } as MatAutocompleteSelectedEvent;
 
@@ -224,7 +210,6 @@ describe('AdminUserDetail', () => {
     // (node.zone). If created in beforeEach (async/testProxyZone), debounceTime timers
     // are registered in that zone — invisible to tick(). Creating here ensures
     // node.zone = fakeAsyncZone so tick(300) can fire them.
-    // Note: TestBed.flushEffects() inside fakeAsync causes NG0101 recursive tick — avoid it.
     const localFixture = TestBed.createComponent(AdminUserDetail);
     const localComponent = localFixture.componentInstance;
     localFixture.detectChanges();
@@ -239,7 +224,6 @@ describe('AdminUserDetail', () => {
   }));
 
   it('filteredHouseholds — negative: does not call searchByName for < 2 chars', fakeAsync(() => {
-    component.ngOnInit();
     householdServiceSpy.searchByName.calls.reset();
 
     component.householdSearchText.set('S');
@@ -251,7 +235,6 @@ describe('AdminUserDetail', () => {
   }));
 
   it('filteredHouseholds — negative: returns empty array on HTTP error', fakeAsync(() => {
-    component.ngOnInit();
     householdServiceSpy.searchByName.and.returnValue(throwError(() => new Error('Network error')));
 
     component.householdSearchText.set('Er');
@@ -294,7 +277,6 @@ describe('AdminUserDetail', () => {
 
     const household = { houseId: 5, name: 'Test' } as Household;
     const event = { option: { value: household } } as MatAutocompleteSelectedEvent;
-    component.ngOnInit();
     component.onHouseholdSelected(event);
 
     const sorted = component.peopleOptions();
@@ -305,21 +287,19 @@ describe('AdminUserDetail', () => {
     expect(sorted[2].lastName).toBe('Zebra');
   });
 
-  it('loadPeopleForHousehold — positive: enables peopleId control after load', () => {
-    component.ngOnInit();
+  it('loadPeopleForHousehold — positive: enables peopleSelectEnabled after load', () => {
     const household = { houseId: 1, name: 'Alpha' } as Household;
     const event = { option: { value: household } } as MatAutocompleteSelectedEvent;
 
     component.onHouseholdSelected(event);
 
-    expect(component.form.get('peopleId')?.enabled).toBeTrue();
+    expect(component.peopleSelectEnabled()).toBeTrue();
   });
 
-  it('loadPeopleForHousehold — negative: clears peopleOptions and keeps control disabled on error', () => {
+  it('loadPeopleForHousehold — negative: clears peopleOptions on error', () => {
     peopleServiceSpy.getHouseholdMembersObservable.and.returnValue(
       throwError(() => new Error('load error'))
     );
-    component.ngOnInit();
 
     const household = { houseId: 99, name: 'Error House' } as Household;
     const event = { option: { value: household } } as MatAutocompleteSelectedEvent;
@@ -331,23 +311,19 @@ describe('AdminUserDetail', () => {
   // ── showHouseholdDropdown computed ──────────────────────────────────────────
 
   it('showHouseholdDropdown — true when userId is 0 and no householdName', () => {
-    component.ngOnInit();
-    component.userId = 0;
+    component.userId.set(0);
     component.householdName.set('');
     expect(component.showHouseholdDropdown()).toBeTrue();
   });
 
   it('showHouseholdDropdown — false when householdName is set', () => {
-    component.ngOnInit();
-    component.userId = 0;
+    component.userId.set(0);
     component.householdName.set('Some House');
     expect(component.showHouseholdDropdown()).toBeFalse();
   });
 
   it('showHouseholdDropdown — false when editing an existing user (userId > 0)', () => {
-    component.ngOnInit();
-    component.userId = 7;
-    // userId is a plain property; trigger a signal change to force the computed to re-evaluate
+    component.userId.set(7);
     component.householdName.set('Loaded Household');
     expect(component.showHouseholdDropdown()).toBeFalse();
   });
