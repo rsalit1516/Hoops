@@ -71,7 +71,6 @@ namespace Hoops.Data.Seeders
                 var person = adminPeople[i];
                 var user = new User
                 {
-                    UserId = i + 1, // Sequential user IDs starting from 1
                     CompanyId = 1,
                     UserName = GenerateUserName(person.FirstName, person.LastName),
                     Name = $"{person.FirstName} {person.LastName}",
@@ -95,7 +94,6 @@ namespace Hoops.Data.Seeders
                 var person = adPeople[i];
                 var user = new User
                 {
-                    UserId = i + 4, // Continue sequential numbering after admins
                     CompanyId = 1,
                     UserName = GenerateUserName(person.FirstName, person.LastName),
                     Name = $"{person.FirstName} {person.LastName}",

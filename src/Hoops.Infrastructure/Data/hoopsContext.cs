@@ -995,7 +995,7 @@ public partial class hoopsContext : DbContext
 
             entity.Property(e => e.UserId)
                 .HasColumnName("UserID")
-                .ValueGeneratedOnAdd();
+                .UseIdentityColumn();
 
             entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
 
