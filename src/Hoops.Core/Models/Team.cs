@@ -27,10 +27,6 @@ namespace Hoops.Core.Models
         [Display(Name = "Division")]
         public int DivisionId { get; set; }
 
-        [Column("SeasonID")]
-        [Display(Name = "Season")]
-        public int? SeasonId { get; set; }
-
         [Column("CoachID")]
         [Display(Name = "Head Coach")]
         public int? CoachId { get; set; }
@@ -77,7 +73,6 @@ namespace Hoops.Core.Models
         public int? Round8 { get; set; }
 
         // Navigation properties (nullable)
-        public virtual Season? Season { get; set; }
         public virtual Division? Division { get; set; }
         public virtual Coach? Coach { get; set; }
         public virtual Coach? AssistantCoach { get; set; }

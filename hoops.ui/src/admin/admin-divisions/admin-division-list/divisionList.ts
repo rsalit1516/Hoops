@@ -125,7 +125,6 @@ export class DivisionList implements OnInit, OnChanges {
       this.logger.debug('Division data row', data[i]);
       if (data[i] !== undefined) {
         let division: Division = {
-          companyId: 1,
           seasonId: data[i].seasonId,
           divisionId: data[i].divisionId,
           divisionDescription: data[i].divisionDescription,

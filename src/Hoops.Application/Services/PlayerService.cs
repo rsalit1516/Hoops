@@ -52,7 +52,6 @@ namespace Hoops.Application.Services
             {
                 PersonId = personId,
                 SeasonId = seasonId,
-                CompanyId = 1,
                 DivisionId = divisionId,
                 PaidAmount = season.ParticipationFee,
                 BalanceOwed = season.ParticipationFee,

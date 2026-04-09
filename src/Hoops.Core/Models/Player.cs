@@ -9,8 +9,6 @@ namespace Hoops.Core.Models
         [Key]
         [Column("PlayerID")]
         public int PlayerId { get; set; }
-        [Column("CompanyID")]
-        public int? CompanyId { get; set; }
         [Column("SeasonID")]
         public int? SeasonId { get; set; }
         [Column("DivisionID")]

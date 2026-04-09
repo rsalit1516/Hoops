@@ -55,7 +55,6 @@ namespace Hoops.Data.Seeders
                 {
 new()
                     {
-                        CompanyId = 1,
                         SeasonId = season.SeasonId,
                         DivisionDescription = "T2 - Coed",
                         Gender = "M",
@@ -73,7 +72,6 @@ new()
                     },
                     new Division
                     {
-                        CompanyId = 1,
                         SeasonId = season.SeasonId,
                         DivisionDescription = "T4 - Coed",
                         Gender = "M",
@@ -90,7 +88,6 @@ new()
 
                     },
                     new() {
-                        CompanyId = 1,
                         SeasonId = season.SeasonId,
                         DivisionDescription = "JV Girls",
                         Gender = "F",
@@ -105,7 +102,6 @@ new()
 
                     new Division
                     {
-                        CompanyId = 1,
                         SeasonId = season.SeasonId,
                         DivisionDescription = "JV Boys",
                         Gender = "M",
@@ -120,7 +116,6 @@ new()
                     },
                     new Division
                     {
-                        CompanyId = 1,
                         SeasonId = season.SeasonId,
                         DivisionDescription = "HS Boys",
                         Gender = "M",

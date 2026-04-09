@@ -30,12 +30,6 @@ namespace Hoops.Core.Models
         public int DivisionId { get; set; }
 
         /// <summary>
-        /// Gets or sets the company identifier associated with the division
-        /// </summary>
-        [Column("CompanyID")]
-        public int? CompanyId { get; set; }
-
-        /// <summary>
         /// Gets or sets the season identifier this division belongs to
         /// </summary>
         [Column("SeasonID")]

@@ -70,7 +70,6 @@ namespace Hoops.Data.Seeders
                         {
                             var team = new Team
                             {
-                                SeasonId = season.SeasonId,
                                 DivisionId = division.DivisionId,
                                 TeamNumber = i.ToString(),
                                 TeamName = null,

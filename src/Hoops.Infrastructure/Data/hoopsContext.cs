@@ -185,7 +185,6 @@ public partial class hoopsContext : DbContext
             entity.Property(e => e.DivisionId).HasColumnName("DivisionID");
             entity.Property(e => e.DirectorId).HasColumnName("DirectorID");
             entity.Property(e => e.CoDirectorId).HasColumnName("CoDirectorID");
-            entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
             entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime").HasDefaultValue(DateTime.Now);
             entity.Property(e => e.CreatedUser).HasMaxLength(50);
             entity.Property(e => e.DivisionDescription)
@@ -364,8 +363,6 @@ public partial class hoopsContext : DbContext
             entity.Property(e => e.CheckMemo).HasMaxLength(50);
 
             entity.Property(e => e.CoachId).HasColumnName("CoachID");
-
-            entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
 
             entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime").HasDefaultValue(DateTime.Now);
 
@@ -888,7 +885,7 @@ public partial class hoopsContext : DbContext
             entity.HasIndex(e => e.TeamId)
                 .HasDatabaseName("idx_DCh_615_614_Teams");
 
-            entity.HasIndex(e => new { e.DivisionId, e.TeamName, e.TeamColorId, e.TeamNumber, e.SeasonId })
+            entity.HasIndex(e => new { e.DivisionId, e.TeamName, e.TeamColorId, e.TeamNumber })
                 .HasDatabaseName("idx_DCh_376_375_Teams");
 
             entity.Property(e => e.TeamId).HasColumnName("TeamID");
@@ -905,8 +902,6 @@ public partial class hoopsContext : DbContext
 
             entity.Property(e => e.DivisionId).HasColumnName("DivisionID");
 
-            entity.Property(e => e.SeasonId).HasColumnName("SeasonID");
-
             entity.Property(e => e.SponsorId).HasColumnName("SponsorID");
 
             entity.Property(e => e.TeamColor).HasMaxLength(50);
@@ -918,12 +913,6 @@ public partial class hoopsContext : DbContext
             entity.Property(e => e.TeamNumber).HasMaxLength(4);
 
             // Relationships
-            entity.HasOne(d => d.Season)
-                .WithMany(p => p.Teams)
-                .HasForeignKey(d => d.SeasonId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Teams_Seasons");
-
             entity.HasOne(d => d.Division)
                 .WithMany(p => p.Teams)
                 .HasForeignKey(d => d.DivisionId)

@@ -55,7 +55,10 @@ namespace Hoops.Infrastructure.Repository
 
         public List<Team> GetSeasonTeams(int seasonId)
         {
-            var colors = context.Colors.Where(x => x.CompanyId == 1).ToList();
+            var season = context.Seasons.FirstOrDefault(s => s.SeasonId == seasonId);
+            var colors = season?.CompanyId != null
+                ? context.Colors.Where(x => x.CompanyId == season.CompanyId).ToList()
+                : context.Colors.ToList();
             var teams = new List<Team>();
             var divisions = context.Divisions.Where(div => div.SeasonId == seasonId);
             foreach (Division division in divisions)
@@ -65,7 +68,6 @@ namespace Hoops.Infrastructure.Repository
                     from team in teamDiv
                     select new Team()
                     {
-                        SeasonId = team.SeasonId,
                         DivisionId = team.DivisionId,
                         TeamName = team.TeamName,
                         TeamColor = team.TeamColor,

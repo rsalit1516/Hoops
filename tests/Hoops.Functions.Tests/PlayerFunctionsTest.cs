@@ -142,8 +142,7 @@ namespace Hoops.Functions.Tests
                 PlayerId = 0,
                 PersonId = 100,
                 SeasonId = 1,
-                DivisionId = 5,
-                CompanyId = 1
+                DivisionId = 5
             };
 
             var playerJson = JsonSerializer.Serialize(player, new JsonSerializerOptions
@@ -156,8 +155,7 @@ namespace Hoops.Functions.Tests
                 PlayerId = 1,
                 PersonId = 100,
                 SeasonId = 1,
-                DivisionId = 5,
-                CompanyId = 1
+                DivisionId = 5
             };
 
             _mockRepository.Setup(r => r.Insert(It.IsAny<Player>()))

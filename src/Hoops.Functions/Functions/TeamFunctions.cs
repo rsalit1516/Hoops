@@ -237,7 +237,6 @@ namespace Hoops.Functions.Functions
         {
             TeamId = t.TeamId,
             DivisionId = t.DivisionId,
-            SeasonId = t.SeasonId,
             TeamColorId = t.TeamColorId,
             TeamName = t.TeamName,
             Name = t.TeamName,

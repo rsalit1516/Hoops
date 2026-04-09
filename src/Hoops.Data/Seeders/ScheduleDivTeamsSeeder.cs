@@ -72,7 +72,7 @@ namespace Hoops.Data.Seeders
                     {
                         // Get actual teams for this division (assumes teams are seeded first)
                         var divisionTeams = await context.Teams
-                            .Where(t => t.DivisionId == division.DivisionId && t.SeasonId == season.SeasonId)
+                            .Where(t => t.DivisionId == division.DivisionId)
                             .OrderBy(t => t.TeamId)
                             .ToListAsync();
 

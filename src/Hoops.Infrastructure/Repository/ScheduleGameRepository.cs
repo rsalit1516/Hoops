@@ -186,7 +186,7 @@ namespace Hoops.Infrastructure.Repository
             var colors = context.Colors.Where(c => c.CompanyId == 1).ToList();
             _logger.LogInformation("Retrieved colors: " + colors.Count().ToString());
 
-            var teams = context.Teams.Where(s => s.DivisionId == divisionId && s.SeasonId == seasonId).ToList();
+            var teams = context.Teams.Where(s => s.DivisionId == divisionId).ToList();
             _logger.LogInformation("Retrieved Teams: " + teams.Count().ToString());
 
             var division = context.Divisions.FirstOrDefault(d => d.DivisionId == divisionId);

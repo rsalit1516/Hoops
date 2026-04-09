@@ -141,7 +141,6 @@ namespace Hoops.Functions.Functions
                 }
 
                 // Set default values if not provided
-                player.CompanyId ??= 1;
                 player.CreatedDate ??= DateTime.Now;
 
                 var createdPlayer = _repository.Insert(player);

@@ -17,7 +17,6 @@ namespace Hoops.Core.Models
         public Season()
         {
             Divisions = new HashSet<Division>();
-            Teams = new HashSet<Team>();
             Players = new HashSet<Player>();
             Coaches = new HashSet<Coach>();
             Sponsors = new HashSet<Sponsor>();
@@ -153,11 +152,6 @@ namespace Hoops.Core.Models
         /// Gets or sets the collection of divisions associated with this season
         /// </summary>
         public virtual ICollection<Division> Divisions { get; set; }
-
-        /// <summary>
-        /// Gets or sets the collection of teams associated with this season
-        /// </summary>
-        public virtual ICollection<Team> Teams { get; set; }
 
         /// <summary>
         /// Gets or sets the collection of players associated with this season
