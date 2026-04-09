@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit } from '@angular/core';
+import { AfterViewInit, Component, computed, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from '@app/services/auth.service';
 import {
   FormsModule,
@@ -32,7 +32,7 @@ import { ActivatedRoute, Router } from '@angular/router';
     MatCardModule
 ],
 })
-export class Login implements OnInit {
+export class Login implements OnInit, AfterViewInit {
   /* injected */
   #authService = inject(AuthService);
   #router = inject(Router);
@@ -55,8 +55,14 @@ export class Login implements OnInit {
   get password() {
     return this.loginForm.get('password');
   }
+  @ViewChild('userNameInput') userNameInput!: ElementRef<HTMLInputElement>;
+
   currentUser = computed(() => this.#authService.currentUser());
   constructor() {}
+
+  ngAfterViewInit() {
+    setTimeout(() => this.userNameInput.nativeElement.focus());
+  }
 
   ngOnInit() {
     this.isFormValid = true;

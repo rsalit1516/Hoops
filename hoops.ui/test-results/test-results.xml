@@ -1,34 +1,10 @@
 <?xml version="1.0"?>
-<testsuite name="Chrome Headless 146.0.0.0 (Windows 10)" package="unit" timestamp="2026-04-08T15:05:09" id="0" hostname="Rich-Think" tests="26" errors="0" failures="0" time="0.837">
+<testsuite name="Chrome Headless 146.0.0.0 (Windows 10)" package="unit" timestamp="2026-04-09T13:14:37" id="0" hostname="Rich-Think" tests="2" errors="0" failures="0" time="0.181">
   <properties>
     <property name="browser.fullName" value="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/146.0.0.0 Safari/537.36"/>
   </properties>
-  <testcase name="AdminUserDetail should create" time="0.163" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail should initialise model with empty values for a new user" time="0.039" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail should have peopleSelectEnabled false on init until a household is selected" time="0.035" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail should expose houseId and peopleId fields on the signal form" time="0.025" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail displayHousehold — positive: returns the household name" time="0.031" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail displayHousehold — negative: returns empty string for null" time="0.027" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail displayHousehold — negative: returns empty string when name is undefined" time="0.048" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail onHouseholdSearchInput — positive: updates householdSearchText signal" time="0.031" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail onHouseholdSearchInput — negative: clears houseId in model" time="0.03" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail onHouseholdSearchInput — negative: clears peopleId and disables the select" time="0.027" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail onHouseholdSearchInput — negative: clears peopleOptions" time="0.025" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail onHouseholdSelected — positive: sets houseId in model" time="0.033" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail onHouseholdSelected — positive: marks the form as dirty" time="0.019" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail onHouseholdSelected — positive: updates householdSearchText to the name" time="0.018" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail onHouseholdSelected — positive: loads people for the selected household" time="0.02" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail onHouseholdSelected — negative: household with no name sets search text to empty" time="0.022" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail filteredHouseholds — positive: calls searchByName after 300 ms debounce for ≥2 chars" time="0.036" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail filteredHouseholds — negative: does not call searchByName for &lt; 2 chars" time="0.019" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail filteredHouseholds — negative: returns empty array on HTTP error" time="0.018" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail filteredHouseholds — debounce: only calls API once for rapid keystrokes" time="0.038" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail loadPeopleForHousehold — positive: sorts people by last name then first name" time="0.02" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail loadPeopleForHousehold — positive: enables peopleSelectEnabled after load" time="0.018" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail loadPeopleForHousehold — negative: clears peopleOptions on error" time="0.036" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail showHouseholdDropdown — true when userId is 0 and no householdName" time="0.027" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail showHouseholdDropdown — false when householdName is set" time="0.016" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail showHouseholdDropdown — false when editing an existing user (userId > 0)" time="0.016" classname=".AdminUserDetail"/>
+  <testcase name="Login Component navigates to returnUrl on successful login" time="0.159" classname=".Login Component"/>
+  <testcase name="Login Component toggles hidePassword state" time="0.022" classname=".Login Component"/>
   <system-out>
     <![CDATA[
 ]]>

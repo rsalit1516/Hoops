@@ -1,3 +1,5 @@
+@use "variables" as v;
+
 /* Center the login page and set a clean, responsive width */
 .login-page {
   min-height: calc(100vh - 64px);
@@ -10,6 +12,10 @@
 .login-card {
   width: 100%;
   max-width: 420px;
+
+  mat-card {
+    border: 2px solid v.$brand-color;
+  }
 }
 
 @media (min-width: 1200px) {
