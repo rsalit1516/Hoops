@@ -1,4 +1,11 @@
-import { Component, computed, inject, model, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  model,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { LoggerService } from '@app/services/logger.service';
 import { Constants } from '@app/shared/constants';
