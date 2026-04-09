@@ -54,6 +54,14 @@ export const ADMINROUTES: Routes = [
         children: ADMIN_PEOPLE_ROUTES,
       },
       {
+        path: 'sponsors',
+        title: 'Sponsors',
+        loadComponent: () =>
+          import('./sponsors/containers/sponsor-shell/sponsor-shell').then(
+            (m) => m.SponsorShell,
+          ),
+      },
+      {
         path: 'players',
         title: 'Players',
         loadComponent: () =>
@@ -64,7 +72,7 @@ export const ADMINROUTES: Routes = [
         title: 'Player Registration',
         loadComponent: () =>
           import('./admin-player/player-registration/player-registration').then(
-            (m) => m.PlayerRegistration
+            (m) => m.PlayerRegistration,
           ),
       },
       { path: 'teams', component: TeamList },
@@ -96,14 +104,14 @@ export const ADMINROUTES: Routes = [
             pathMatch: 'full',
             loadComponent: () =>
               import('./admin-users/admin-users-list/admin-users-list').then(
-                (m) => m.AdminUsersList
+                (m) => m.AdminUsersList,
               ),
           },
           {
             path: 'detail',
             loadComponent: () =>
               import('./admin-users/admin-user-detail/admin-user-detail').then(
-                (m) => m.AdminUserDetail
+                (m) => m.AdminUserDetail,
               ),
             canDeactivate: [PendingChangesGuard],
           },

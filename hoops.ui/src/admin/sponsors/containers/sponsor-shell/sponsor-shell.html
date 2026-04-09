@@ -1,3 +1,47 @@
-<p>
-  sponsor-shell works!
-</p>
+<div class="container mx-auto w-full">
+  <h2>Sponsors</h2>
+
+  <div class="filters-row">
+    <input
+      class="name-filter-input"
+      placeholder="Filter by sponsor name"
+      [value]="nameFilter()"
+      (input)="onNameFilterInput($event)"
+    />
+  </div>
+
+  <div class="alpha-filter-row">
+    <csbc-alphabetical-search [(selectedLetter)]="selectedLetter" />
+  </div>
+
+  @if (isLoading()) {
+  <p>Loading sponsors...</p>
+  } @else if (errorMessage()) {
+  <p>{{ errorMessage() }}</p>
+  } @else if (filteredSponsors().length === 0) {
+  <p>No sponsors found.</p>
+  } @else {
+  <div class="sponsor-table-container">
+    <table class="sponsor-table" aria-label="Sponsor profile list">
+      <thead>
+        <tr>
+          <th>Sponsor Name</th>
+          <th>Contact Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (sponsor of filteredSponsors(); track sponsor.sponsorProfileId) {
+        <tr>
+          <td>{{ sponsor.spoName }}</td>
+          <td>{{ sponsor.contactName }}</td>
+          <td>{{ sponsor.email }}</td>
+          <td>{{ sponsor.phone }}</td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  }
+</div>
