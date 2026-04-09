@@ -78,7 +78,6 @@ namespace Hoops.Infrastructure.Repository
         public override WebContent Update(WebContent entity)
         {
             var dbEntityEntry = context.Entry(entity);
-            entity.ModifiedDate = DateTime.Now;
             if (dbEntityEntry.State != EntityState.Detached)
             {
                 dbEntityEntry.State = EntityState.Modified;
@@ -105,7 +104,6 @@ namespace Hoops.Infrastructure.Repository
             newEntity.DateAndTime = entity.DateAndTime;
             newEntity.Page = entity.Page;
             var dbEntityEntry = context.Entry(newEntity);
-            newEntity.ModifiedDate = DateTime.Now;
 
             // var maxId = context.WebContent.Max(x => x.WebContentId);
             // entity.WebContentId = null;

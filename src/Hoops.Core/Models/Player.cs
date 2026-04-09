@@ -1,10 +1,11 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Hoops.Core.Interface;
 
 namespace Hoops.Core.Models
 {
-    public partial class Player
+    public partial class Player : IAuditable
     {
         [Key]
         [Column("PlayerID")]
@@ -42,7 +43,9 @@ namespace Hoops.Core.Models
         public string NoteDesc { get; set; }
         public string CheckMemo { get; set; }
         public DateTime? CreatedDate { get; set; }
-        public string CreatedUser { get; set; }
+        public int? CreatedUser { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public int? ModifiedUser { get; set; }
         public bool? PlaysDown { get; set; }
         public bool? PlaysUp { get; set; }
         [Column("ShoppingCartID")]

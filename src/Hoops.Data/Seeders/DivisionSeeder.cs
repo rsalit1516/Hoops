@@ -66,8 +66,7 @@ new()
     Stats = true,
                         DraftVenue = "Mullins Hall",
                         DraftTime = "7:00 PM",
-                        CreatedDate = DateTime.Now,
-                        CreatedUser = "Seed"
+                        CreatedDate = DateTime.UtcNow,
 
                     },
                     new Division
@@ -83,8 +82,7 @@ new()
     Stats = true,
                         DraftVenue = "Mullins Hall",
                         DraftTime = "7:00 PM",
-                        CreatedDate = DateTime.Now,
-                        CreatedUser = "Seed"
+                        CreatedDate = DateTime.UtcNow,
 
                     },
                     new() {
@@ -96,8 +94,7 @@ new()
                         Stats = true,
                         DraftVenue = "Mullins Hall",
                         DraftTime = "7:00 PM",
-                        CreatedDate = DateTime.Now,
-                        CreatedUser = "Seed"
+                        CreatedDate = DateTime.UtcNow,
                     },
 
                     new Division
@@ -111,8 +108,7 @@ new()
                         Stats = true,
                         DraftVenue = "Mullins Hall",
                         DraftTime = "7:00 PM",
-                        CreatedDate = DateTime.Now,
-                        CreatedUser = "Seed"
+                        CreatedDate = DateTime.UtcNow,
                     },
                     new Division
                     {
@@ -125,8 +121,7 @@ new()
                         Stats = true,
                         DraftVenue = "Mullins Hall",
                         DraftTime = "7:00 PM",
-                        CreatedDate = DateTime.Now,
-                        CreatedUser = "Seed"
+                        CreatedDate = DateTime.UtcNow,
 
                     },
 

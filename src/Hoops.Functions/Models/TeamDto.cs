@@ -12,6 +12,6 @@ namespace Hoops.Functions.Models
         public string? Name { get; set; } // alias for TeamName to satisfy some UI usages
         public string? TeamNumber { get; set; }
         public DateTime? CreatedDate { get; set; }
-        public string? CreatedUser { get; set; }
+        public int? CreatedUser { get; set; }
     }
 }

@@ -65,7 +65,7 @@ namespace Hoops.Data.Seeders
                     {
                         var teamCount = ranTeams.Next(4, 15);
                         _logger.LogDebug("Creating {TeamCount} teams for Division {Division} in Season {Season}", teamCount, division.DivisionDescription, season.Description);
-                        
+
                         for (var i = 1; i <= teamCount; i++)
                         {
                             var team = new Team
@@ -75,10 +75,8 @@ namespace Hoops.Data.Seeders
                                 TeamName = null,
                                 TeamColor = colors.Any() ? colors.ElementAt(ranColor.Next(0, colors.Count)).ColorName : "Unknown",
                                 TeamColorId = colors.Any() ? colors.ElementAt(ranColor.Next(0, colors.Count)).ColorId : 1,
-                                CreatedDate = DateTime.Now,
-                                CreatedUser = "Seed"
                             };
-                            
+
                             context.Teams.Add(team);
                         }
                     }

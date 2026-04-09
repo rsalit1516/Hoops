@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Hoops.Core.Interface;
 
 namespace Hoops.Core.Models
 {
@@ -9,7 +10,7 @@ namespace Hoops.Core.Models
     /// Represents a division within a season, containing teams and players organized by age and gender
     /// </summary>
     [Table("Divisions")]
-    public partial class Division
+    public partial class Division : IAuditable
     {
         /// <summary>
         /// Initializes a new instance of the Division class
@@ -134,11 +135,22 @@ namespace Hoops.Core.Models
         public DateTime? CreatedDate { get; set; }
 
         /// <summary>
-        /// Gets or sets the user who created the division record
+        /// Gets or sets the user ID (FK to Users) who created the division record
         /// </summary>
-        [StringLength(50)]
         [Display(Name = "Created By")]
-        public string CreatedUser { get; set; }
+        public int? CreatedUser { get; set; }
+
+        /// <summary>
+        /// Gets or sets the date and time of the last modification
+        /// </summary>
+        [Display(Name = "Modified Date")]
+        public DateTime? ModifiedDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the user ID (FK to Users) who last modified the division record
+        /// </summary>
+        [Display(Name = "Modified By")]
+        public int? ModifiedUser { get; set; }
 
         // Navigation properties
         /// <summary>

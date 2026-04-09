@@ -73,16 +73,25 @@ var host = new HostBuilder()
         var selectedName = useProdData ? "ConnectionStrings:hoopsContextProdRO|SQL_CONNECTION_PROD_RO" : "ConnectionStrings:hoopsContext|SQL_CONNECTION_DEV";
         var conn = useProdData ? prodRoConn : devConn;
 
+        // Audit interceptor — scoped so it can access the per-request AuthContext
+        services.AddScoped<AuditInterceptor>();
+        // Register AuthContext as both itself and IAuditContext (same instance per scope)
+        services.AddScoped<AuthContext>();
+        services.AddScoped<IAuditContext>(sp => sp.GetRequiredService<AuthContext>());
+
         if (string.IsNullOrWhiteSpace(conn))
         {
             Console.WriteLine($"Warning: No SQL connection string resolved for '{selectedName}'. Using in-memory database to allow Function host startup. Some endpoints may not function until the connection is configured.");
-            services.AddDbContext<hoopsContext>(options => options.UseInMemoryDatabase("hoops-fallback"));
+            services.AddDbContext<hoopsContext>((sp, options) =>
+                options.UseInMemoryDatabase("hoops-fallback")
+                       .AddInterceptors(sp.GetRequiredService<AuditInterceptor>()));
         }
         else
         {
             Console.WriteLine($"Info: Using {(useProdData ? "READ-ONLY PROD" : "DEV")} SQL connection (configured from {selectedName}).");
-            services.AddDbContext<hoopsContext>(options =>
-                options.UseSqlServer(conn, sql => sql.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null)));
+            services.AddDbContext<hoopsContext>((sp, options) =>
+                options.UseSqlServer(conn, sql => sql.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null))
+                       .AddInterceptors(sp.GetRequiredService<AuditInterceptor>()));
         }
 
         services.AddHoopsRepositories();
@@ -91,9 +100,6 @@ var host = new HostBuilder()
         // Application services
         services.AddScoped<ISeasonService, SeasonService>();
         services.AddScoped<IPlayerService, PlayerService>();
-
-        // Auth context — carries authenticated userId from middleware to functions
-        services.AddScoped<AuthContext>();
 
         // Logging
         services.AddLogging(builder =>
