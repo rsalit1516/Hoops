@@ -53,6 +53,10 @@ public class AuditInterceptor : SaveChangesInterceptor
             }
             else if (entry.State == EntityState.Modified)
             {
+                // Created fields are immutable after insert and must not be overwritten on update.
+                entry.Property(e => e.CreatedDate).IsModified = false;
+                entry.Property(e => e.CreatedUser).IsModified = false;
+
                 entry.Entity.ModifiedDate = now;
                 entry.Entity.ModifiedUser = userId;
             }

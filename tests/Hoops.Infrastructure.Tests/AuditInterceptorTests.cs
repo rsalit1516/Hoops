@@ -14,10 +14,10 @@ public class AuditInterceptorTests
         public int? UserId { get; set; }
     }
 
-    private static hoopsContext CreateContext(TestAuditContext auditContext)
+    private static hoopsContext CreateContext(TestAuditContext auditContext, string? dbName = null)
     {
         var options = new DbContextOptionsBuilder<hoopsContext>()
-            .UseInMemoryDatabase(Guid.NewGuid().ToString())
+            .UseInMemoryDatabase(dbName ?? Guid.NewGuid().ToString())
             .AddInterceptors(new AuditInterceptor(auditContext))
             .Options;
 
@@ -83,6 +83,49 @@ public class AuditInterceptorTests
         Assert.NotNull(division.ModifiedDate);
         Assert.Equal(42, division.ModifiedUser);
         Assert.True(division.ModifiedDate >= before && division.ModifiedDate <= after);
+    }
+
+    [Fact]
+    public void SaveChanges_OnDisconnectedUpdate_PreservesCreatedFields()
+    {
+        // Arrange
+        var dbName = Guid.NewGuid().ToString();
+        var auditContext = new TestAuditContext { UserId = 10 };
+        var seasonId = 0;
+
+        using (var seedContext = CreateContext(auditContext, dbName))
+        {
+            var season = new Season { Description = "Fall 2027" };
+            seedContext.Seasons.Add(season);
+            seedContext.SaveChanges();
+            seasonId = season.SeasonId;
+        }
+
+        // Simulate API payload for PUT that omits created fields.
+        auditContext.UserId = 77;
+        using (var updateContext = CreateContext(auditContext, dbName))
+        {
+            var detached = new Season
+            {
+                SeasonId = seasonId,
+                Description = "Fall 2027 Updated",
+                CreatedDate = null,
+                CreatedUser = null
+            };
+
+            updateContext.Update(detached);
+            updateContext.SaveChanges();
+        }
+
+        using var verifyContext = CreateContext(auditContext, dbName);
+        var updated = verifyContext.Seasons.Single(s => s.SeasonId == seasonId);
+
+        // Assert
+        Assert.NotNull(updated.CreatedDate);
+        Assert.Equal(10, updated.CreatedUser);
+        Assert.NotNull(updated.ModifiedDate);
+        Assert.Equal(77, updated.ModifiedUser);
+        Assert.Equal("Fall 2027 Updated", updated.Description);
     }
 
     [Fact]
