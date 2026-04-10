@@ -234,6 +234,21 @@ namespace Hoops.Infrastructure.Migrations
                 table: "WebContent",
                 column: "ModifiedUser");
 
+            migrationBuilder.Sql("UPDATE s SET s.[CreatedUser] = NULL FROM [Seasons] s LEFT JOIN [Users] u ON s.[CreatedUser] = u.[UserID] WHERE s.[CreatedUser] IS NOT NULL AND u.[UserID] IS NULL;");
+            migrationBuilder.Sql("UPDATE s SET s.[ModifiedUser] = NULL FROM [Seasons] s LEFT JOIN [Users] u ON s.[ModifiedUser] = u.[UserID] WHERE s.[ModifiedUser] IS NOT NULL AND u.[UserID] IS NULL;");
+            migrationBuilder.Sql("UPDATE d SET d.[CreatedUser] = NULL FROM [Divisions] d LEFT JOIN [Users] u ON d.[CreatedUser] = u.[UserID] WHERE d.[CreatedUser] IS NOT NULL AND u.[UserID] IS NULL;");
+            migrationBuilder.Sql("UPDATE d SET d.[ModifiedUser] = NULL FROM [Divisions] d LEFT JOIN [Users] u ON d.[ModifiedUser] = u.[UserID] WHERE d.[ModifiedUser] IS NOT NULL AND u.[UserID] IS NULL;");
+            migrationBuilder.Sql("UPDATE t SET t.[CreatedUser] = NULL FROM [Teams] t LEFT JOIN [Users] u ON t.[CreatedUser] = u.[UserID] WHERE t.[CreatedUser] IS NOT NULL AND u.[UserID] IS NULL;");
+            migrationBuilder.Sql("UPDATE t SET t.[ModifiedUser] = NULL FROM [Teams] t LEFT JOIN [Users] u ON t.[ModifiedUser] = u.[UserID] WHERE t.[ModifiedUser] IS NOT NULL AND u.[UserID] IS NULL;");
+            migrationBuilder.Sql("UPDATE p SET p.[CreatedUser] = NULL FROM [Players] p LEFT JOIN [Users] u ON p.[CreatedUser] = u.[UserID] WHERE p.[CreatedUser] IS NOT NULL AND u.[UserID] IS NULL;");
+            migrationBuilder.Sql("UPDATE p SET p.[ModifiedUser] = NULL FROM [Players] p LEFT JOIN [Users] u ON p.[ModifiedUser] = u.[UserID] WHERE p.[ModifiedUser] IS NOT NULL AND u.[UserID] IS NULL;");
+            migrationBuilder.Sql("UPDATE g SET g.[CreatedUser] = NULL FROM [ScheduleGames] g LEFT JOIN [Users] u ON g.[CreatedUser] = u.[UserID] WHERE g.[CreatedUser] IS NOT NULL AND u.[UserID] IS NULL;");
+            migrationBuilder.Sql("UPDATE g SET g.[ModifiedUser] = NULL FROM [ScheduleGames] g LEFT JOIN [Users] u ON g.[ModifiedUser] = u.[UserID] WHERE g.[ModifiedUser] IS NOT NULL AND u.[UserID] IS NULL;");
+            migrationBuilder.Sql("UPDATE p SET p.[CreatedUser] = NULL FROM [SchedulePlayoffs] p LEFT JOIN [Users] u ON p.[CreatedUser] = u.[UserID] WHERE p.[CreatedUser] IS NOT NULL AND u.[UserID] IS NULL;");
+            migrationBuilder.Sql("UPDATE p SET p.[ModifiedUser] = NULL FROM [SchedulePlayoffs] p LEFT JOIN [Users] u ON p.[ModifiedUser] = u.[UserID] WHERE p.[ModifiedUser] IS NOT NULL AND u.[UserID] IS NULL;");
+            migrationBuilder.Sql("UPDATE w SET w.[CreatedUser] = NULL FROM [WebContent] w LEFT JOIN [Users] u ON w.[CreatedUser] = u.[UserID] WHERE w.[CreatedUser] IS NOT NULL AND u.[UserID] IS NULL;");
+            migrationBuilder.Sql("UPDATE w SET w.[ModifiedUser] = NULL FROM [WebContent] w LEFT JOIN [Users] u ON w.[ModifiedUser] = u.[UserID] WHERE w.[ModifiedUser] IS NOT NULL AND u.[UserID] IS NULL;");
+
             migrationBuilder.AddForeignKey(
                 name: "FK_Seasons_Users_CreatedUser",
                 table: "Seasons",
