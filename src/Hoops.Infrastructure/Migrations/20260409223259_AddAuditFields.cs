@@ -11,6 +11,11 @@ namespace Hoops.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.Sql("UPDATE [Seasons] SET [CreatedUser] = NULL WHERE [CreatedUser] IS NOT NULL AND TRY_CONVERT(int, [CreatedUser]) IS NULL;");
+            migrationBuilder.Sql("UPDATE [Divisions] SET [CreatedUser] = NULL WHERE [CreatedUser] IS NOT NULL AND TRY_CONVERT(int, [CreatedUser]) IS NULL;");
+            migrationBuilder.Sql("UPDATE [Teams] SET [CreatedUser] = NULL WHERE [CreatedUser] IS NOT NULL AND TRY_CONVERT(int, [CreatedUser]) IS NULL;");
+            migrationBuilder.Sql("UPDATE [Players] SET [CreatedUser] = NULL WHERE [CreatedUser] IS NOT NULL AND TRY_CONVERT(int, [CreatedUser]) IS NULL;");
+
             migrationBuilder.AlterColumn<int>(
                 name: "CreatedUser",
                 table: "Seasons",
