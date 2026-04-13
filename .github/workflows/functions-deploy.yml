@@ -44,6 +44,13 @@ jobs:
       - name: Install EF Core tools
         run: dotnet tool install --global dotnet-ef
 
+      - name: Restore EF migration bundle dependencies (linux-x64)
+        run: |
+          dotnet restore src/Hoops.Infrastructure/Hoops.Infrastructure.csproj \
+            --runtime linux-x64
+          dotnet restore src/Hoops.Functions/Hoops.Functions.csproj \
+            --runtime linux-x64
+
       - name: Build EF migration bundle (linux-x64)
         run: |
           dotnet ef migrations bundle \
