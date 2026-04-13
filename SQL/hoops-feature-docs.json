@@ -1,0 +1,213 @@
+[
+  {
+    "fields": {
+      "System.WorkItemType": "Feature",
+      "System.Title": "Admin-Managed Document Library for Hoops App",
+      "System.Description": "Enable administrative users to upload, manage, and categorize PDF documents displayed in the Hoops app. Documents will be stored in Azure Blob Storage, and metadata (including menu category, section, and blob path) will be stored in Azure Table Storage. The public-facing app will dynamically load documents without requiring code deployments.",
+      "Microsoft.VSTS.Common.BusinessValue": "High"
+    }
+  },
+  {
+    "fields": {
+      "System.WorkItemType": "User Story",
+      "System.Title": "Define Table Storage Schema for Document Metadata",
+      "System.Description": "Create a structured Azure Table Storage schema to store metadata for documents displayed in the Hoops app.",
+      "Microsoft.VSTS.Common.AcceptanceCriteria": "- Table named 'MenuDocuments' exists\n- Columns include PartitionKey, RowKey, Title, BlobPath, BlobUrl, SortOrder, Description, IsActive, Season, LastUpdatedUtc, Section\n- Schema documented for frontend and backend teams"
+    },
+    "relations": [
+      {
+        "rel": "System.LinkTypes.Hierarchy-Reverse",
+        "url": "$1"
+      }
+    ]
+  },
+  {
+    "fields": {
+      "System.WorkItemType": "Task",
+      "System.Title": "Create Azure Table Storage table 'MenuDocuments'",
+      "System.Description": "Provision the table inside the existing Azure Storage Account.",
+      "System.AssignedTo": ""
+    },
+    "relations": [
+      {
+        "rel": "System.LinkTypes.Hierarchy-Reverse",
+        "url": "$2"
+      }
+    ]
+  },
+  {
+    "fields": {
+      "System.WorkItemType": "Task",
+      "System.Title": "Document schema definition and naming conventions",
+      "System.Description": "Document PartitionKey, RowKey, and all metadata fields including the new Section field."
+    },
+    "relations": [
+      {
+        "rel": "System.LinkTypes.Hierarchy-Reverse",
+        "url": "$2"
+      }
+    ]
+  },
+  {
+    "fields": {
+      "System.WorkItemType": "Task",
+      "System.Title": "Create sample metadata rows for testing",
+      "System.Description": "Insert sample rows into the table for UI and API validation."
+    },
+    "relations": [
+      {
+        "rel": "System.LinkTypes.Hierarchy-Reverse",
+        "url": "$2"
+      }
+    ]
+  },
+
+  {
+    "fields": {
+      "System.WorkItemType": "User Story",
+      "System.Title": "Implement Azure Function for PDF Upload and Metadata Write",
+      "System.Description": "Create an Azure Function that allows admins to upload PDFs and automatically writes metadata to Table Storage.",
+      "Microsoft.VSTS.Common.AcceptanceCriteria": "- Admin can upload PDF\n- File stored in Blob Storage\n- Metadata row created in Table Storage including Section\n- API returns success/failure\n- Validation errors returned cleanly"
+    },
+    "relations": [
+      {
+        "rel": "System.LinkTypes.Hierarchy-Reverse",
+        "url": "$1"
+      }
+    ]
+  },
+  {
+    "fields": {
+      "System.WorkItemType": "Task",
+      "System.Title": "Create Azure Function endpoint for PDF upload",
+      "System.Description": "Implement POST /admin/documents/upload endpoint."
+    },
+    "relations": [
+      {
+        "rel": "System.LinkTypes.Hierarchy-Reverse",
+        "url": "$6"
+      }
+    ]
+  },
+  {
+    "fields": {
+      "System.WorkItemType": "Task",
+      "System.Title": "Implement Blob Storage upload logic",
+      "System.Description": "Upload PDF to Blob Storage and generate BlobPath and BlobUrl."
+    },
+    "relations": [
+      {
+        "rel": "System.LinkTypes.Hierarchy-Reverse",
+        "url": "$6"
+      }
+    ]
+  },
+  {
+    "fields": {
+      "System.WorkItemType": "Task",
+      "System.Title": "Write metadata row to Table Storage",
+      "System.Description": "Insert metadata including Section, Title, Category, SortOrder, and BlobPath."
+    },
+    "relations": [
+      {
+        "rel": "System.LinkTypes.Hierarchy-Reverse",
+        "url": "$6"
+      }
+    ]
+  },
+
+  {
+    "fields": {
+      "System.WorkItemType": "User Story",
+      "System.Title": "Build Angular Admin UI for Document Upload and Management",
+      "System.Description": "Create an admin UI page that allows uploading PDFs and entering metadata.",
+      "Microsoft.VSTS.Common.AcceptanceCriteria": "- Admin UI exists under /admin/documents\n- Form includes Title, Category, Section, Season, SortOrder, File\n- Calls upload API\n- Shows success/error messages"
+    },
+    "relations": [
+      {
+        "rel": "System.LinkTypes.Hierarchy-Reverse",
+        "url": "$1"
+      }
+    ]
+  },
+  {
+    "fields": {
+      "System.WorkItemType": "Task",
+      "System.Title": "Create Angular route and upload form",
+      "System.Description": "Add /admin/documents route and build upload form UI."
+    },
+    "relations": [
+      {
+        "rel": "System.LinkTypes.Hierarchy-Reverse",
+        "url": "$10"
+      }
+    ]
+  },
+  {
+    "fields": {
+      "System.WorkItemType": "Task",
+      "System.Title": "Add dropdowns for Category and Section",
+      "System.Description": "Populate dropdowns from static config or API."
+    },
+    "relations": [
+      {
+        "rel": "System.LinkTypes.Hierarchy-Reverse",
+        "url": "$10"
+      }
+    ]
+  },
+  {
+    "fields": {
+      "System.WorkItemType": "Task",
+      "System.Title": "Integrate form with upload API",
+      "System.Description": "Call Azure Function and handle responses."
+    },
+    "relations": [
+      {
+        "rel": "System.LinkTypes.Hierarchy-Reverse",
+        "url": "$10"
+      }
+    ]
+  },
+
+  {
+    "fields": {
+      "System.WorkItemType": "User Story",
+      "System.Title": "Update Public App to Load Documents Dynamically",
+      "System.Description": "Modify the public-facing Hoops app to load documents dynamically from Table Storage metadata.",
+      "Microsoft.VSTS.Common.AcceptanceCriteria": "- API returns documents filtered by category and section\n- Angular loads metadata dynamically\n- Documents open via BlobUrl\n- Inactive documents hidden"
+    },
+    "relations": [
+      {
+        "rel": "System.LinkTypes.Hierarchy-Reverse",
+        "url": "$1"
+      }
+    ]
+  },
+  {
+    "fields": {
+      "System.WorkItemType": "Task",
+      "System.Title": "Create public API to query documents",
+      "System.Description": "Implement GET /documents?category=&section= using Table Storage queries."
+    },
+    "relations": [
+      {
+        "rel": "System.LinkTypes.Hierarchy-Reverse",
+        "url": "$14"
+      }
+    ]
+  },
+  {
+    "fields": {
+      "System.WorkItemType": "Task",
+      "System.Title": "Update Angular menu to load metadata dynamically",
+      "System.Description": "Replace static menu items with API-driven document lists."
+    },
+    "relations": [
+      {
+        "rel": "System.LinkTypes.Hierarchy-Reverse",
+        "url": "$14"
+      }
+    ]
+  }
+]
