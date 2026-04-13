@@ -135,7 +135,6 @@ export class DivisionService {
     maxDate2: new Date(),
     gender2: 'M',
     seasonId: 0,
-    companyId: 1,
     directorId: null,
   });
 
@@ -297,7 +296,6 @@ export class DivisionService {
 
   getDefaultDivision(name: string): Division {
     let division = new Division();
-    division.companyId = 1;
     division.seasonId = this.season?.seasonId ?? 0;
 
     switch (name) {

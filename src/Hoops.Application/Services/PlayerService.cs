@@ -52,12 +52,9 @@ namespace Hoops.Application.Services
             {
                 PersonId = personId,
                 SeasonId = seasonId,
-                CompanyId = 1,
                 DivisionId = divisionId,
                 PaidAmount = season.ParticipationFee,
                 BalanceOwed = season.ParticipationFee,
-                CreatedDate = DateTime.Now,
-                CreatedUser = "System" // This should ideally come from the authenticated user
             };
 
             // Insert the player

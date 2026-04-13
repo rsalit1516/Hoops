@@ -180,7 +180,6 @@ export class GamesShell implements OnInit {
       // console.log(data[i]);
       if (data[i] !== undefined) {
         let division: Division = {
-          companyId: 1,
           seasonId: data[i].seasonId,
           divisionId: data[i].divisionId,
           divisionDescription: data[i].divisionDescription,

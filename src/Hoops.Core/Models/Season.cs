@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Hoops.Core.Interface;
 
 namespace Hoops.Core.Models
 {
@@ -9,7 +10,7 @@ namespace Hoops.Core.Models
     /// Represents a sports season with registration periods, fees, and associated divisions/teams
     /// </summary>
     [Table("Seasons")]
-    public partial class Season
+    public partial class Season : IAuditable
     {
         /// <summary>
         /// Initializes a new instance of the Season class
@@ -17,7 +18,6 @@ namespace Hoops.Core.Models
         public Season()
         {
             Divisions = new HashSet<Division>();
-            Teams = new HashSet<Team>();
             Players = new HashSet<Player>();
             Coaches = new HashSet<Coach>();
             Sponsors = new HashSet<Sponsor>();
@@ -142,22 +142,28 @@ namespace Hoops.Core.Models
         public DateTime? CreatedDate { get; set; }
 
         /// <summary>
-        /// Gets or sets the user who created the season record
+        /// Gets or sets the user ID (FK to Users) who created the season record
         /// </summary>
-        [StringLength(50)]
         [Display(Name = "Created By")]
-        public string CreatedUser { get; set; }
+        public int? CreatedUser { get; set; }
+
+        /// <summary>
+        /// Gets or sets the date and time of the last modification
+        /// </summary>
+        [Display(Name = "Modified Date")]
+        public DateTime? ModifiedDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the user ID (FK to Users) who last modified the season record
+        /// </summary>
+        [Display(Name = "Modified By")]
+        public int? ModifiedUser { get; set; }
 
         // Navigation properties
         /// <summary>
         /// Gets or sets the collection of divisions associated with this season
         /// </summary>
         public virtual ICollection<Division> Divisions { get; set; }
-
-        /// <summary>
-        /// Gets or sets the collection of teams associated with this season
-        /// </summary>
-        public virtual ICollection<Team> Teams { get; set; }
 
         /// <summary>
         /// Gets or sets the collection of players associated with this season

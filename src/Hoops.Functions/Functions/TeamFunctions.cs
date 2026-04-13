@@ -83,7 +83,14 @@ namespace Hoops.Functions.Functions
             using (var sr = new StreamReader(req.Body))
             {
                 var json = await sr.ReadToEndAsync();
-                body = JsonSerializer.Deserialize<Team>(json, JsonOptions);
+                try
+                {
+                    body = JsonSerializer.Deserialize<Team>(json, JsonOptions);
+                }
+                catch (JsonException)
+                {
+                    return req.CreateResponse(HttpStatusCode.BadRequest);
+                }
             }
             if (body == null)
             {
@@ -125,7 +132,14 @@ namespace Hoops.Functions.Functions
             using (var sr = new StreamReader(req.Body))
             {
                 var json = await sr.ReadToEndAsync();
-                body = JsonSerializer.Deserialize<Team>(json, JsonOptions);
+                try
+                {
+                    body = JsonSerializer.Deserialize<Team>(json, JsonOptions);
+                }
+                catch (JsonException)
+                {
+                    return req.CreateResponse(HttpStatusCode.BadRequest);
+                }
             }
             if (body == null)
             {
@@ -237,7 +251,6 @@ namespace Hoops.Functions.Functions
         {
             TeamId = t.TeamId,
             DivisionId = t.DivisionId,
-            SeasonId = t.SeasonId,
             TeamColorId = t.TeamColorId,
             TeamName = t.TeamName,
             Name = t.TeamName,

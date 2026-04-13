@@ -25,7 +25,6 @@ function makeDivision(
   return {
     divisionId: overrides.divisionId,
     divisionDescription: overrides.divisionDescription ?? 'Test Div',
-    companyId: overrides.companyId ?? 1,
     seasonId: overrides.seasonId ?? 1,
     gender: overrides.gender ?? 'M',
     gender2: overrides.gender2 ?? 'M',

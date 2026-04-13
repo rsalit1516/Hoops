@@ -2,14 +2,13 @@ using Hoops.Application.Services;
 using Hoops.Core.Interface;
 using Hoops.Core.Models;
 using Moq;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace Hoops.Api.Tests
 {
-    // TODO: This test file is incomplete. It references a PlayersController that doesn't exist.
-    // The tests below have been commented out until PlayersController is created.
-    // Either create PlayersController or convert these to PlayerService tests.
     public class PlayersServiceTest
     {
         private readonly Mock<IPlayerRepository> _mockPlayerRepository;
@@ -31,207 +30,221 @@ namespace Hoops.Api.Tests
                 _mockDivisionRepository.Object);
         }
 
-        /* Commented out - references non-existent _controller and _mockPlayerService
         [Fact]
-        public async Task GetPlayer_WithValidId_ReturnsPlayer()
+        public async Task GetPlayerByIdAsync_WithValidId_ReturnsPlayer()
         {
             // Arrange
             var playerId = 1;
             var expectedPlayer = new Player { PlayerId = playerId, PersonId = 100 };
-            _mockPlayerService.Setup(s => s.GetPlayerByIdAsync(playerId))
-                .ReturnsAsync(expectedPlayer);
+            _mockPlayerRepository.Setup(r => r.GetById(playerId)).Returns(expectedPlayer);
 
             // Act
-            var result = await _controller.GetPlayer(playerId);
+            var result = await _service.GetPlayerByIdAsync(playerId);
 
             // Assert
-            var okResult = Assert.IsType<OkObjectResult>(result.Result);
-            var player = Assert.IsType<Player>(okResult.Value);
-            Assert.Equal(playerId, player.PlayerId);
+            Assert.Equal(playerId, result.PlayerId);
+            Assert.Equal(100, result.PersonId);
         }
 
         [Fact]
-        public async Task GetPlayer_WithInvalidId_ReturnsNotFound()
+        public async Task GetPlayerByIdAsync_WithInvalidId_ThrowsInvalidOperationException()
         {
             // Arrange
             var playerId = 999;
-            _mockPlayerService.Setup(s => s.GetPlayerByIdAsync(playerId))
-                .ThrowsAsync(new System.InvalidOperationException());
+            _mockPlayerRepository.Setup(r => r.GetById(playerId)).Returns((Player)null);
 
-            // Act
-            var result = await _controller.GetPlayer(playerId);
-
-            // Assert
-            Assert.IsType<NotFoundResult>(result.Result);
+            // Act & Assert
+            await Assert.ThrowsAsync<InvalidOperationException>(() => _service.GetPlayerByIdAsync(playerId));
         }
 
         [Fact]
-        public async Task CreatePlayer_WithValidData_ReturnsCreatedPlayer()
+        public async Task UpdatePlayerAsync_WithValidData_ReturnsUpdatedPlayer()
         {
             // Arrange
-            var player = new Player
-            {
-                PersonId = 100,
-                SeasonId = 1,
-                CompanyId = 1,
-                DivisionId = null
-            };
-            var createdPlayer = new Player
-            {
-                PlayerId = 1,
-                PersonId = 100,
-                SeasonId = 1,
-                CompanyId = 1,
-                DivisionId = 5
-            };
-
-            _mockPlayerService.Setup(s => s.DetermineDivisionAsync(100, 1))
-                .ReturnsAsync(5);
-            _mockPlayerRepository.Setup(r => r.Insert(It.IsAny<Player>()))
-                .Returns(createdPlayer);
-            _mockPlayerRepository.Setup(r => r.SaveChanges());
+            var player = new Player { PlayerId = 1, PersonId = 100, SeasonId = 1 };
+            _mockPlayerRepository.Setup(r => r.GetById(player.PlayerId)).Returns(player);
+            _mockPlayerRepository.Setup(r => r.Update(It.IsAny<Player>())).Returns(player);
 
             // Act
-            var result = await _controller.CreatePlayer(player);
+            var result = await _service.UpdatePlayerAsync(player);
 
             // Assert
-            var createdResult = Assert.IsType<CreatedAtActionResult>(result.Result);
-            var returnedPlayer = Assert.IsType<Player>(createdResult.Value);
-            Assert.Equal(1, returnedPlayer.PlayerId);
-            Assert.Equal(5, returnedPlayer.DivisionId);
+            Assert.Equal(player.PlayerId, result.PlayerId);
+            _mockPlayerRepository.Verify(r => r.Update(It.IsAny<Player>()), Times.Once);
+            _mockPlayerRepository.Verify(r => r.SaveChanges(), Times.Once);
         }
 
         [Fact]
-        public async Task CreatePlayer_WithoutSeasonId_ReturnsBadRequest()
+        public async Task UpdatePlayerAsync_WithNullPlayer_ThrowsArgumentNullException()
+        {
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentNullException>(() => _service.UpdatePlayerAsync(null));
+        }
+
+        [Fact]
+        public async Task UpdatePlayerAsync_WithNonExistentPlayer_ThrowsInvalidOperationException()
         {
             // Arrange
-            var player = new Player
-            {
-                PersonId = 100,
-                SeasonId = null
-            };
+            var player = new Player { PlayerId = 999, PersonId = 100 };
+            _mockPlayerRepository.Setup(r => r.GetById(player.PlayerId)).Returns((Player)null);
 
-            // Act
-            var result = await _controller.CreatePlayer(player);
-
-            // Assert
-            Assert.IsType<BadRequestObjectResult>(result.Result);
+            // Act & Assert
+            await Assert.ThrowsAsync<InvalidOperationException>(() => _service.UpdatePlayerAsync(player));
         }
 
         [Fact]
-        public async Task UpdatePlayer_WithValidData_ReturnsUpdatedPlayer()
-        {
-            // Arrange
-            var playerId = 1;
-            var player = new Player
-            {
-                PlayerId = playerId,
-                PersonId = 100,
-                SeasonId = 1
-            };
-
-            _mockPlayerService.Setup(s => s.UpdatePlayerAsync(player))
-                .ReturnsAsync(player);
-
-            // Act
-            var result = await _controller.UpdatePlayer(playerId, player);
-
-            // Assert
-            var okResult = Assert.IsType<OkObjectResult>(result);
-            var updatedPlayer = Assert.IsType<Player>(okResult.Value);
-            Assert.Equal(playerId, updatedPlayer.PlayerId);
-        }
-
-        [Fact]
-        public async Task UpdatePlayer_WithMismatchedId_ReturnsBadRequest()
-        {
-            // Arrange
-            var playerId = 1;
-            var player = new Player
-            {
-                PlayerId = 2,
-                PersonId = 100
-            };
-
-            // Act
-            var result = await _controller.UpdatePlayer(playerId, player);
-
-            // Assert
-            Assert.IsType<BadRequestObjectResult>(result);
-        }
-
-        [Fact]
-        public void DeletePlayer_WithValidId_ReturnsDeletedPlayer()
-        {
-            // Arrange
-            var playerId = 1;
-            var player = new Player { PlayerId = playerId, PersonId = 100 };
-            _mockPlayerRepository.Setup(r => r.GetById(playerId))
-                .Returns(player);
-            _mockPlayerRepository.Setup(r => r.Delete(player));
-            _mockPlayerRepository.Setup(r => r.SaveChanges());
-
-            // Act
-            var result = _controller.DeletePlayer(playerId);
-
-            // Assert
-            var okResult = Assert.IsType<OkObjectResult>(result.Result);
-            var deletedPlayer = Assert.IsType<Player>(okResult.Value);
-            Assert.Equal(playerId, deletedPlayer.PlayerId);
-        }
-
-        [Fact]
-        public void DeletePlayer_WithInvalidId_ReturnsNotFound()
-        {
-            // Arrange
-            var playerId = 999;
-            _mockPlayerRepository.Setup(r => r.GetById(playerId))
-                .Returns((Player?)null);
-
-            // Act
-            var result = _controller.DeletePlayer(playerId);
-
-            // Assert
-            Assert.IsType<NotFoundResult>(result.Result);
-        }
-
-        [Fact]
-        public void GetPlayerByPersonId_WithValidId_ReturnsPlayer()
-        {
-            // Arrange
-            var personId = 100;
-            var player = new Player { PlayerId = 1, PersonId = personId };
-            _mockPlayerRepository.Setup(r => r.GetByPersonId(personId))
-                .Returns(player);
-
-            // Act
-            var result = _controller.GetPlayerByPersonId(personId);
-
-            // Assert
-            var okResult = Assert.IsType<OkObjectResult>(result.Result);
-            var returnedPlayer = Assert.IsType<Player>(okResult.Value);
-            Assert.Equal(personId, returnedPlayer.PersonId);
-        }
-
-        [Fact]
-        public void GetPlayerByPersonAndSeason_WithValidIds_ReturnsPlayer()
+        public async Task DetermineDivisionAsync_WithEligiblePerson_ReturnsDivisionId()
         {
             // Arrange
             var personId = 100;
             var seasonId = 1;
-            var player = new Player { PlayerId = 1, PersonId = personId, SeasonId = seasonId };
-            _mockPlayerRepository.Setup(r => r.GetPlayerByPersonAndSeasonId(personId, seasonId))
-                .Returns(player);
+            var birthDate = new DateTime(2015, 6, 1);
+            var person = new Person { PersonId = personId, BirthDate = birthDate, Gender = "M" };
+            var division = new Division
+            {
+                DivisionId = 5,
+                SeasonId = seasonId,
+                Gender = "M",
+                MinDate = new DateTime(2012, 1, 1),
+                MaxDate = new DateTime(2017, 12, 31)
+            };
+
+            _mockPersonRepository.Setup(r => r.GetById(personId)).Returns(person);
+            _mockDivisionRepository.Setup(r => r.GetSeasonDivisionsAsync(seasonId))
+                .ReturnsAsync(new List<Division> { division });
 
             // Act
-            var result = _controller.GetPlayerByPersonAndSeason(personId, seasonId);
+            var result = await _service.DetermineDivisionAsync(personId, seasonId);
 
             // Assert
-            var okResult = Assert.IsType<OkObjectResult>(result.Result);
-            var returnedPlayer = Assert.IsType<Player>(okResult.Value);
-            Assert.Equal(personId, returnedPlayer.PersonId);
-            Assert.Equal(seasonId, returnedPlayer.SeasonId);
+            Assert.Equal(5, result);
         }
-        */
+
+        [Fact]
+        public async Task DetermineDivisionAsync_WithPersonMissingBirthDate_ReturnsNull()
+        {
+            // Arrange
+            var personId = 100;
+            var seasonId = 1;
+            var person = new Person { PersonId = personId, BirthDate = null, Gender = "M" };
+
+            _mockPersonRepository.Setup(r => r.GetById(personId)).Returns(person);
+
+            // Act
+            var result = await _service.DetermineDivisionAsync(personId, seasonId);
+
+            // Assert
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public async Task DetermineDivisionAsync_WithPersonMissingGender_ReturnsNull()
+        {
+            // Arrange
+            var personId = 100;
+            var seasonId = 1;
+            var person = new Person { PersonId = personId, BirthDate = new DateTime(2015, 1, 1), Gender = null };
+
+            _mockPersonRepository.Setup(r => r.GetById(personId)).Returns(person);
+
+            // Act
+            var result = await _service.DetermineDivisionAsync(personId, seasonId);
+
+            // Assert
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public async Task DetermineDivisionAsync_WhenNoMatchingDivision_ReturnsNull()
+        {
+            // Arrange
+            var personId = 100;
+            var seasonId = 1;
+            // Born 2005 — won't fit in the 2012-2017 range
+            var person = new Person { PersonId = personId, BirthDate = new DateTime(2005, 1, 1), Gender = "M" };
+            var division = new Division
+            {
+                DivisionId = 5,
+                SeasonId = seasonId,
+                Gender = "M",
+                MinDate = new DateTime(2012, 1, 1),
+                MaxDate = new DateTime(2017, 12, 31)
+            };
+
+            _mockPersonRepository.Setup(r => r.GetById(personId)).Returns(person);
+            _mockDivisionRepository.Setup(r => r.GetSeasonDivisionsAsync(seasonId))
+                .ReturnsAsync(new List<Division> { division });
+
+            // Act
+            var result = await _service.DetermineDivisionAsync(personId, seasonId);
+
+            // Assert
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public async Task CreatePlayerRegistrationAsync_WithValidData_CreatesPlayerWithDivision()
+        {
+            // Arrange
+            var personId = 100;
+            var seasonId = 1;
+            var birthDate = new DateTime(2015, 6, 1);
+            var person = new Person { PersonId = personId, BirthDate = birthDate, Gender = "M" };
+            var season = new Season { SeasonId = seasonId, ParticipationFee = 75m };
+            var division = new Division
+            {
+                DivisionId = 5,
+                SeasonId = seasonId,
+                Gender = "M",
+                MinDate = new DateTime(2012, 1, 1),
+                MaxDate = new DateTime(2017, 12, 31)
+            };
+            var createdPlayer = new Player { PlayerId = 1, PersonId = personId, SeasonId = seasonId, DivisionId = 5 };
+
+            _mockPersonRepository.Setup(r => r.GetById(personId)).Returns(person);
+            _mockSeasonRepository.Setup(r => r.GetByIdAsync(seasonId)).ReturnsAsync(season);
+            _mockDivisionRepository.Setup(r => r.GetSeasonDivisionsAsync(seasonId))
+                .ReturnsAsync(new List<Division> { division });
+            _mockPlayerRepository.Setup(r => r.Insert(It.IsAny<Player>())).Returns(createdPlayer);
+
+            // Act
+            var result = await _service.CreatePlayerRegistrationAsync(personId, seasonId);
+
+            // Assert
+            Assert.Equal(1, result.PlayerId);
+            Assert.Equal(5, result.DivisionId);
+            _mockPlayerRepository.Verify(r => r.Insert(It.Is<Player>(p =>
+                p.PersonId == personId && p.SeasonId == seasonId && p.DivisionId == 5)), Times.Once);
+            _mockPlayerRepository.Verify(r => r.SaveChanges(), Times.Once);
+        }
+
+        [Fact]
+        public async Task CreatePlayerRegistrationAsync_WithUnknownPerson_ThrowsInvalidOperationException()
+        {
+            // Arrange
+            var personId = 999;
+            var seasonId = 1;
+            _mockPersonRepository.Setup(r => r.GetById(personId)).Returns((Person)null);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<InvalidOperationException>(
+                () => _service.CreatePlayerRegistrationAsync(personId, seasonId));
+        }
+
+        [Fact]
+        public async Task CreatePlayerRegistrationAsync_WithUnknownSeason_ThrowsInvalidOperationException()
+        {
+            // Arrange
+            var personId = 100;
+            var seasonId = 999;
+            var person = new Person { PersonId = personId, BirthDate = new DateTime(2015, 1, 1), Gender = "M" };
+
+            _mockPersonRepository.Setup(r => r.GetById(personId)).Returns(person);
+            _mockSeasonRepository.Setup(r => r.GetByIdAsync(seasonId)).ReturnsAsync((Season)null);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<InvalidOperationException>(
+                () => _service.CreatePlayerRegistrationAsync(personId, seasonId));
+        }
     }
 }

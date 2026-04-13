@@ -1,15 +1,16 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Hoops.Core.Interface;
 
 namespace Hoops.Core.Models
 {
-    public partial class SchedulePlayoff
+    public partial class SchedulePlayoff : IAuditable
     {
         [Key]
         [Column("SchedulePlayoffID")]
         public int SchedulePlayoffId { get; set; }
-        
+
         public int ScheduleNumber { get; set; }
         public int GameNumber { get; set; }
         public int? LocationNumber { get; set; }
@@ -21,5 +22,10 @@ namespace Hoops.Core.Models
         public int? VisitingTeamScore { get; set; }
         public int? HomeTeamScore { get; set; }
         public int? DivisionId { get; set; }
+
+        public DateTime? CreatedDate { get; set; }
+        public int? CreatedUser { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public int? ModifiedUser { get; set; }
     }
 }

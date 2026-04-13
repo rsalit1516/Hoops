@@ -29,7 +29,6 @@ const MOCK_DIVISION: Division = {
   divisionDescription: 'Test Division',
   gender: 'M',
   gender2: 'M',
-  companyId: 1,
   seasonId: 1,
   minDate: undefined,
   maxDate: undefined,

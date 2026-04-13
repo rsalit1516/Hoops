@@ -190,7 +190,6 @@ export class DivisionDetail implements OnInit {
   save() {
     // console.log('Save');
     let division = new Division();
-    division.companyId = 1; // get from constants
     // Default to the currently selected season id; if editing, we'll override with the record's seasonId below
     division.seasonId = this.divisionService.seasonId;
     division.divisionDescription = this.divisionForm.get('name')?.value ?? '';

@@ -7,12 +7,11 @@ namespace Hoops.Functions.Models
     {
         public int TeamId { get; set; }
         public int DivisionId { get; set; }
-        public int? SeasonId { get; set; }
         public int TeamColorId { get; set; }
         public string? TeamName { get; set; }
         public string? Name { get; set; } // alias for TeamName to satisfy some UI usages
         public string? TeamNumber { get; set; }
         public DateTime? CreatedDate { get; set; }
-        public string? CreatedUser { get; set; }
+        public int? CreatedUser { get; set; }
     }
 }

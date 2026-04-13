@@ -42,7 +42,6 @@ describe('PlayerList', () => {
     divisionId: 5,
     divisionDescription: 'HS Boys',
     seasonId: 1,
-    companyId: 1,
     minDate: new Date(),
     maxDate: new Date(),
     gender: 'M',
