@@ -73,10 +73,9 @@ describe('GameService', () => {
       'error',
     ]);
     mockDataService = {
-      handleError:
-        jasmine
-          .createSpy('handleError')
-          .and.callFake((_op: string, result: any) => () => of(result)),
+      handleError: jasmine
+        .createSpy('handleError')
+        .and.callFake((_op: string, result: any) => () => of(result)),
     };
 
     const mockSeasonService = {
@@ -94,7 +93,11 @@ describe('GameService', () => {
         return undefined;
       },
     };
-    const mockStore = jasmine.createSpyObj('Store', ['dispatch', 'pipe', 'select']);
+    const mockStore = jasmine.createSpyObj('Store', [
+      'dispatch',
+      'pipe',
+      'select',
+    ]);
 
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
@@ -170,11 +173,15 @@ describe('GameService', () => {
     });
 
     it('returns positive when a > b ascending', () => {
-      expect(service.compare('2024-12-31', '2024-01-01', true)).toBeGreaterThan(0);
+      expect(service.compare('2024-12-31', '2024-01-01', true)).toBeGreaterThan(
+        0,
+      );
     });
 
     it('returns positive when a < b descending', () => {
-      expect(service.compare('2024-01-01', '2024-12-31', false)).toBeGreaterThan(0);
+      expect(
+        service.compare('2024-01-01', '2024-12-31', false),
+      ).toBeGreaterThan(0);
     });
   });
 
@@ -211,7 +218,10 @@ describe('GameService', () => {
 
   describe('updateSeasonGames', () => {
     it('stores the games in the internal signal', () => {
-      const games = [makeGame(1, 5, '2024-01-01'), makeGame(2, 5, '2024-01-08')];
+      const games = [
+        makeGame(1, 5, '2024-01-01'),
+        makeGame(2, 5, '2024-01-08'),
+      ];
       service.updateSeasonGames(games);
       expect(service.seasonGames).toEqual(games);
     });
@@ -257,7 +267,6 @@ describe('GameService', () => {
         divisionDescription: 'Boys 12',
         gender: 'M',
         gender2: 'M',
-        companyId: 1,
         seasonId: 1,
         minDate: undefined,
         maxDate: undefined,
@@ -372,7 +381,6 @@ describe('GameService', () => {
         divisionDescription: 'Boys',
         gender: 'M',
         gender2: 'M',
-        companyId: 1,
         seasonId: 1,
         minDate: undefined,
         maxDate: undefined,
@@ -385,9 +393,9 @@ describe('GameService', () => {
       selectedSeasonSignal.set(season);
 
       let saved: RegularGame | undefined;
-      service.saveGame({ game, homeTeamScore: 55, visitingTeamScore: 42 }).subscribe(
-        (updated) => (saved = updated),
-      );
+      service
+        .saveGame({ game, homeTeamScore: 55, visitingTeamScore: 42 })
+        .subscribe((updated) => (saved = updated));
 
       // saveGame PUT
       const putReq = httpMock.expectOne((r) =>
