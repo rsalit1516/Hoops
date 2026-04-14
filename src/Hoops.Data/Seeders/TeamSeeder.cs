@@ -68,13 +68,14 @@ namespace Hoops.Data.Seeders
 
                         for (var i = 1; i <= teamCount; i++)
                         {
+                            var colorIndex = colors.Any() ? ranColor.Next(0, colors.Count) : -1;
                             var team = new Team
                             {
-                                DivisionId = division.DivisionId,
-                                TeamNumber = i.ToString(),
-                                TeamName = null,
-                                TeamColor = colors.Any() ? colors.ElementAt(ranColor.Next(0, colors.Count)).ColorName : "Unknown",
-                                TeamColorId = colors.Any() ? colors.ElementAt(ranColor.Next(0, colors.Count)).ColorId : 1,
+                                DivisionId  = division.DivisionId,
+                                TeamNumber  = i.ToString(),
+                                TeamName    = colorIndex >= 0 ? $"{colors[colorIndex].ColorName} {i}" : $"Team {i}",
+                                TeamColor   = colorIndex >= 0 ? colors[colorIndex].ColorName : "Unknown",
+                                TeamColorId = colorIndex >= 0 ? colors[colorIndex].ColorId   : 1,
                             };
 
                             context.Teams.Add(team);

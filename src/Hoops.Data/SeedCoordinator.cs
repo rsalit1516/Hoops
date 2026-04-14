@@ -59,19 +59,23 @@ namespace Hoops.Data
         }
         public async Task InitializeDataAsync()
         {
-            //first delete all records    
-            await _userSeeder.DeleteAllAsync(); // Delete users first (they reference People)
-            await _schedulePlayoffSeeder.DeleteAllAsync(); // Delete playoff games first
+            //first delete all records
+            // Order: most-dependent → least-dependent.
+            // Users must come AFTER all tables whose audit fields (CreatedUser/ModifiedUser)
+            // carry a FK back to Users (Divisions, Teams, Seasons, etc.).
+            // Users must come BEFORE People/Households because Users.PersonId → People.
+            await _schedulePlayoffSeeder.DeleteAllAsync();
             await _scheduleGameSeeder.DeleteAllAsync();
-            await _scheduleDivTeamsSeeder.DeleteAllAsync(); // Delete after ScheduleGames
+            await _scheduleDivTeamsSeeder.DeleteAllAsync();
             await _teamSeeder.DeleteAllAsync();
             await _divisionSeeder.DeleteAllAsync();
-            await _directorSeeder.DeleteAllAsync(); // Delete after divisions to avoid FK issues
+            await _directorSeeder.DeleteAllAsync();
             await _seasonSeeder.DeleteAllAsync();
             await _colorSeeder.DeleteAllAsync();
             await _locationSeeder.DeleteAllAsync();
             await _webContentSeeder.DeleteAllAsync();
             await _webContentTypeSeeder.DeleteAllAsync();
+            await _userSeeder.DeleteAllAsync();           // after audit-field dependents, before People
             await _householdAndPeopleSeeder.DeleteAllAsync();
 
             //then create new records

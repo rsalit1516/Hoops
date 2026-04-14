@@ -67,6 +67,14 @@ namespace Hoops.Data.Seeders
 
             foreach (var season in seasons)
             {
+                // Skip seasons that haven't started yet — those are setup-only (no games scheduled)
+                if (season.FromDate.HasValue && season.FromDate.Value.Date > DateTime.Today)
+                {
+                    _logger.LogDebug("Skipping future season '{Description}' ({FromDate:MMM d yyyy}) — schedule not yet created",
+                        season.Description, season.FromDate.Value);
+                    continue;
+                }
+
                 var divisions = await _divisionRepo.GetSeasonDivisionsAsync(season.SeasonId);
                 var externalScheduleNumber = 1; // Simulate external scheduling program numbering
 
@@ -122,8 +130,30 @@ namespace Hoops.Data.Seeders
 
             _logger.LogDebug("Using {TeamCount} ScheduleDivTeams for Division: {DivisionDescription}", scheduleDivTeams.Count, division.DivisionDescription);
 
-            // Generate multiple rounds for a full season (each team plays each other multiple times)
-            var totalRounds = (scheduleDivTeams.Count - 1) * 2; // Double round-robin for more games
+            // Generate pairings targeting exactly GamesPerTeam regular-season games per team.
+            // Round-robin rounds are cycled until every team reaches the target; surplus pairings
+            // where one team is already at the limit are discarded.
+            const int GamesPerTeam = 10;
+            var gamesPerTeam = scheduleDivTeams.ToDictionary(t => t.TeamNumber, _ => 0);
+            var allRoundPairings = new List<(ScheduleDivTeam home, ScheduleDivTeam visiting)>();
+            var roundIndex = 0;
+            while (gamesPerTeam.Values.Any(g => g < GamesPerTeam) && roundIndex < 50)
+            {
+                foreach (var pairing in GenerateRoundRobinRound(scheduleDivTeams, roundIndex))
+                {
+                    if (gamesPerTeam.GetValueOrDefault(pairing.home.TeamNumber) < GamesPerTeam &&
+                        gamesPerTeam.GetValueOrDefault(pairing.visiting.TeamNumber) < GamesPerTeam)
+                    {
+                        allRoundPairings.Add(pairing);
+                        gamesPerTeam[pairing.home.TeamNumber]++;
+                        gamesPerTeam[pairing.visiting.TeamNumber]++;
+                    }
+                }
+                roundIndex++;
+            }
+
+            _logger.LogDebug("Generated {Count} game pairings targeting {GamesPerTeam} games per team ({Teams} teams)",
+                allRoundPairings.Count, GamesPerTeam, scheduleDivTeams.Count);
 
             // Track when each team last played for rest day enforcement
             var teamLastGameDate = new Dictionary<int, DateTime>();
@@ -139,21 +169,14 @@ namespace Hoops.Data.Seeders
             // Schedule games in batches per game date to create multiple games per day
             var scheduledGamesByDate = new Dictionary<DateTime, List<(ScheduleDivTeam home, ScheduleDivTeam visiting)>>();
 
-            // First, generate all round-robin pairings
-            var allRoundPairings = new List<(ScheduleDivTeam home, ScheduleDivTeam visiting)>();
-            for (int round = 0; round < totalRounds; round++)
-            {
-                var roundGames = GenerateRoundRobinRound(scheduleDivTeams, round);
-                allRoundPairings.AddRange(roundGames);
-            }
+            // 2 game days per week; each day runs (teamCount / 2) concurrent games so every team
+            // plays once per game day — achieving ~2 games per team per week.
+            var gamesPerGameDay = scheduleDivTeams.Count / 2;
+            var maxGamesPerWeek = Math.Max(gamesPerGameDay * 2, 2);
 
-            _logger.LogDebug("Generated {Count} total game pairings for the season", allRoundPairings.Count);
-
-            // Now schedule games to achieve 2-3 games per team per week
             var gameCounter = 0;
             var weekStartDate = GetStartOfWeek(currentDate);
             var gamesScheduledThisWeek = 0;
-            var maxGamesPerWeek = Math.Min(scheduleDivTeams.Count * 2, allRoundPairings.Count / 8); // Spread games over ~8 weeks
 
             foreach (var (homeTeam, visitingTeam) in allRoundPairings)
             {

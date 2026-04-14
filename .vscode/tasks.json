@@ -1,5 +1,17 @@
 {
   "version": "2.0.0",
+  "inputs": [
+    {
+      "id": "seedDb",
+      "type": "pickString",
+      "description": "Refresh (wipe and re-seed) the local database?",
+      "options": [
+        { "label": "No  — keep existing data", "value": "no" },
+        { "label": "Yes — wipe and re-seed",   "value": "yes" }
+      ],
+      "default": "no"
+    }
+  ],
   "tasks": [
     // ── Backend ────────────────────────────────────────────────────────────────
     {
@@ -8,7 +20,10 @@
       "command": "func",
       "args": ["start"],
       "options": {
-        "cwd": "${workspaceFolder}/src/Hoops.Functions"
+        "cwd": "${workspaceFolder}/src/Hoops.Functions",
+        "env": {
+          "SEED_DB": "${input:seedDb}"
+        }
       },
       "isBackground": true,
       "problemMatcher": {

@@ -109,20 +109,26 @@ var host = new HostBuilder()
     })
     .Build();
 
-// Seed local database on startup (replaces Hoops.Api seeding behaviour)
-// Skipped when USE_PROD_DATA=true to protect the read-only prod connection
+// Seed local database on startup when explicitly requested.
+// Gate: Development environment + USE_PROD_DATA=false + SEED_DB=yes
+// SEED_DB is set by the "Start Functions (Local)" VS Code task via a pickString prompt.
 using (var scope = host.Services.CreateScope())
 {
     var env = scope.ServiceProvider.GetRequiredService<IHostEnvironment>();
     var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
     var useProdData = string.Equals(config["USE_PROD_DATA"], "true", StringComparison.OrdinalIgnoreCase);
+    var seedDb = string.Equals(config["SEED_DB"], "yes", StringComparison.OrdinalIgnoreCase);
 
-    if (env.IsEnvironment("Local") && !useProdData)
+    if (env.IsDevelopment() && !useProdData && seedDb)
     {
-        Console.WriteLine("Local environment — running database seeder...");
+        Console.WriteLine("SEED_DB=yes — wiping and re-seeding local database...");
         var seeder = scope.ServiceProvider.GetRequiredService<SeedCoordinator>();
         await seeder.InitializeDataAsync();
         Console.WriteLine("Database seeding complete.");
+    }
+    else if (env.IsDevelopment() && !useProdData)
+    {
+        Console.WriteLine("Skipping database seed (SEED_DB != yes). Re-run the VS Code task and choose 'Yes' to refresh.");
     }
 }
 
