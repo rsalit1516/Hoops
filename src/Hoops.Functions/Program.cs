@@ -97,6 +97,14 @@ var host = new HostBuilder()
         services.AddHoopsRepositories();
         services.AddHoopsSeeders();
 
+        // Azure Storage (Blob + Table) for document management
+        // Dev/local: hoopsstoragedev storage account (or Azurite emulator when value is "UseDevelopmentStorage=true")
+        // Prod:      hoopsstorprod storage account (connection string in Key Vault)
+        var storageConn = configuration.GetConnectionString("StorageConnectionString")
+                          ?? configuration["AZURE_STORAGE_CONNECTION_STRING"]
+                          ?? "UseDevelopmentStorage=true";
+        services.AddHoopsDocumentStorage(storageConn);
+
         // Application services
         services.AddScoped<ISeasonService, SeasonService>();
         services.AddScoped<IPlayerService, PlayerService>();

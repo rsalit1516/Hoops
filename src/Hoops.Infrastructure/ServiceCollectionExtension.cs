@@ -1,11 +1,28 @@
-using Microsoft.Extensions.DependencyInjection;
+using Azure.Data.Tables;
+using Azure.Storage.Blobs;
 using Hoops.Core.Interface;
 using Hoops.Infrastructure.Repository;
+using Hoops.Infrastructure.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Hoops.Infrastructure
 {
     public static class ServiceCollectionExtensions
     {
+        /// <summary>
+        /// Registers BlobServiceClient, TableServiceClient, and IDocumentStorageService.
+        /// Pass the Azure Storage connection string (or "UseDevelopmentStorage=true" locally).
+        /// </summary>
+        public static IServiceCollection AddHoopsDocumentStorage(
+            this IServiceCollection services,
+            string connectionString)
+        {
+            services.AddSingleton(new BlobServiceClient(connectionString));
+            services.AddSingleton(new TableServiceClient(connectionString));
+            services.AddScoped<IDocumentStorageService, DocumentStorageService>();
+            return services;
+        }
+
         public static IServiceCollection AddHoopsRepositories(this IServiceCollection services)
         {
             services.AddScoped<ISeasonRepository, SeasonRepository>();

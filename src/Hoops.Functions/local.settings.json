@@ -13,6 +13,7 @@
   },
   "ConnectionStrings": {
     "hoopsContext": "Server=localhost,1433;Database=csbchoops;Persist Security Info=False;User ID=sa;Password=@nKbr0407;Encrypt=True;TrustServerCertificate=true;MultipleActiveResultSets=False;Connection Timeout=30;",
-    "hoopsContextProdRO": "Server=tcp:richardsalit.database.windows.net,1433;Initial Catalog=csbchoops3;Persist Security Info=False;User ID=rsalit;Password=w@Ker1516;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+    "hoopsContextProdRO": "Server=tcp:richardsalit.database.windows.net,1433;Initial Catalog=csbchoops3;Persist Security Info=False;User ID=rsalit;Password=w@Ker1516;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;",
+    "StorageConnectionString": "UseDevelopmentStorage=true"
   }
 }
