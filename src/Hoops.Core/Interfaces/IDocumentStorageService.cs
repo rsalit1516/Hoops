@@ -28,6 +28,14 @@ public interface IDocumentStorageService
         CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Returns only active documents for public display.
+    /// BlobUrl is replaced with a short-lived SAS URL so blobs can be
+    /// opened directly in the browser without making the container public.
+    /// </summary>
+    Task<IReadOnlyList<DocumentMetadata>> GetPublicDocumentsAsync(
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// Updates metadata for an existing document.
     /// If <paramref name="fileStream"/> is not null a new blob is uploaded
     /// and the blob references are updated.

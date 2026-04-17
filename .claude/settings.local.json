@@ -72,7 +72,8 @@
       "Bash(cd C:/Users/rrsal/repos/hoops/hoops.ui && git mv src/app/admin src/admin 2>&1)",
       "Bash(head:*)",
       "Bash(az storage *)",
-      "Bash(npx tsc *)"
+      "Bash(npx tsc *)",
+      "Bash(dotnet list *)"
     ],
     "deny": [],
     "ask": []

@@ -392,6 +392,37 @@ public class DocumentFunctions
     }
 
     /// <summary>
+    /// GET /api/documents/public
+    ///
+    /// Public (unauthenticated) endpoint. Returns only active documents.
+    /// BlobUrl in each record is a 24-hour SAS URL so browsers can open
+    /// the PDF directly without the container being publicly accessible.
+    /// Sorted by Section then SortOrder.
+    /// </summary>
+    [Function("Document_Public")]
+    public async Task<HttpResponseData> Public(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "documents/public")]
+        HttpRequestData req,
+        FunctionContext context)
+    {
+        try
+        {
+            var documents = await _documentStorage.GetPublicDocumentsAsync(context.CancellationToken);
+            var res = ResponseUtils.CreateResponse(req, HttpStatusCode.OK);
+            await ResponseUtils.WriteJsonAsync(res, documents, HttpStatusCode.OK);
+            return res;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to retrieve public documents");
+            var detail = _env.IsProduction()
+                ? "An error occurred while retrieving documents."
+                : $"[{ex.GetType().Name}] {ex.Message}";
+            return ResponseUtils.CreateErrorResponse(req, HttpStatusCode.InternalServerError, detail);
+        }
+    }
+
+    /// <summary>
     /// GET /api/documents
     ///
     /// Returns all documents sorted by Section then SortOrder.

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using Azure.Storage.Sas;
 using Azure.Data.Tables;
 using Hoops.Core.Interface;
 using Hoops.Core.Models;
@@ -137,6 +138,68 @@ public class DocumentStorageService : IDocumentStorageService
             .OrderBy(d => d.Section, StringComparer.OrdinalIgnoreCase)
             .ThenBy(d => d.SortOrder)
             .ToList();
+    }
+
+    public async Task<IReadOnlyList<DocumentMetadata>> GetPublicDocumentsAsync(
+        CancellationToken cancellationToken = default)
+    {
+        var tableClient = _tableServiceClient.GetTableClient(TableName);
+        await tableClient.CreateIfNotExistsAsync(cancellationToken);
+
+        var results = new List<DocumentMetadata>();
+
+        await foreach (var entity in tableClient.QueryAsync<DocumentTableEntity>(
+            filter: "IsActive eq true",
+            cancellationToken: cancellationToken))
+        {
+            results.Add(new DocumentMetadata
+            {
+                DocumentId = entity.RowKey,
+                Title = entity.Title,
+                BlobPath = entity.BlobPath,
+                BlobUrl = GenerateSasUrl(entity.BlobPath),
+                SortOrder = entity.SortOrder,
+                Description = entity.Description,
+                IsActive = entity.IsActive,
+                Season = entity.Season,
+                Section = entity.Section,
+                LastUpdatedUtc = entity.LastUpdatedUtc
+            });
+        }
+
+        return results
+            .OrderBy(d => d.Section, StringComparer.OrdinalIgnoreCase)
+            .ThenBy(d => d.SortOrder)
+            .ToList();
+    }
+
+    /// <summary>
+    /// Generates a 24-hour read-only SAS URL for a blob.
+    /// Falls back to the raw blob URI if SAS generation is unavailable
+    /// (e.g. when the client was created with a managed identity instead of a key).
+    /// </summary>
+    private string GenerateSasUrl(string blobPath)
+    {
+        var containerClient = _blobServiceClient.GetBlobContainerClient(BlobContainerName);
+        var blobClient = containerClient.GetBlobClient(blobPath);
+
+        if (!blobClient.CanGenerateSasUri)
+        {
+            _logger.LogWarning(
+                "Cannot generate SAS URI for blob {BlobPath} — returning raw URI", blobPath);
+            return blobClient.Uri.ToString();
+        }
+
+        var sasBuilder = new BlobSasBuilder
+        {
+            BlobContainerName = BlobContainerName,
+            BlobName = blobPath,
+            Resource = "b",
+            ExpiresOn = DateTimeOffset.UtcNow.AddHours(24)
+        };
+        sasBuilder.SetPermissions(BlobSasPermissions.Read);
+
+        return blobClient.GenerateSasUri(sasBuilder).ToString();
     }
 
     public async Task<DocumentMetadata> UpdateDocumentAsync(

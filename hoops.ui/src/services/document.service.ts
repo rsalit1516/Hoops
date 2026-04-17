@@ -31,6 +31,15 @@ export class DocumentService {
     );
   }
 
+  /**
+   * Returns only active documents for public display.
+   * BlobUrl is a 24-hour SAS URL generated server-side.
+   * No auth cookie required.
+   */
+  getPublicDocuments(): Observable<DocumentMetadata[]> {
+    return this.http.get<DocumentMetadata[]>(Constants.DOCUMENT_PUBLIC_URL);
+  }
+
   /** Updates metadata (and optionally the file) for an existing document. */
   updateDocument(documentId: string, formData: FormData): Observable<DocumentMetadata> {
     return this.http.put<DocumentMetadata>(
