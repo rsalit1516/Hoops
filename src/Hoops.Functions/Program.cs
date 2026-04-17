@@ -100,7 +100,8 @@ var host = new HostBuilder()
         // Azure Storage (Blob + Table) for document management
         // Dev/local: hoopsstoragedev storage account (or Azurite emulator when value is "UseDevelopmentStorage=true")
         // Prod:      hoopsstorprod storage account (connection string in Key Vault)
-        var storageConn = configuration.GetConnectionString("StorageConnectionString")
+        var storageConn = configuration["StorageConnectionString"]
+                          ?? configuration.GetConnectionString("StorageConnectionString")
                           ?? configuration["AZURE_STORAGE_CONNECTION_STRING"]
                           ?? "UseDevelopmentStorage=true";
         services.AddHoopsDocumentStorage(storageConn);
