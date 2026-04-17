@@ -19,6 +19,7 @@ import { ADMIN_SEASONS_ROUTES } from './admin-seasons/admin-seasons-routing';
 import { PendingChangesGuard } from './admin-games/pending-changes.guard';
 import { ADMIN_DIRECTORS_ROUTES } from './admin-directors/admin-directors-routing';
 import { ADMIN_REPORTS_ROUTES } from './admin-reports/admin-reports-routing';
+import { ADMIN_DOCUMENTS_ROUTES } from './admin-documents/admin-documents-routing';
 
 export const ADMINROUTES: Routes = [
   {
@@ -108,6 +109,11 @@ export const ADMINROUTES: Routes = [
             canDeactivate: [PendingChangesGuard],
           },
         ],
+      },
+      {
+        path: 'documents',
+        title: 'Documents',
+        children: ADMIN_DOCUMENTS_ROUTES,
       },
       {
         path: 'reports',

@@ -26,7 +26,11 @@
   <a mat-list-item routerLink="/admin/users" routerLinkActive="active"
     >Users</a
   >
-  } @if ( showDirectors || showHouseholds || showPeople || showColors ||
+  }
+  <a mat-list-item routerLink="/admin/documents" routerLinkActive="active"
+    >Documents</a
+  >
+  @if ( showDirectors || showHouseholds || showPeople || showColors ||
   showUsers ) {
   <mat-divider />
   }

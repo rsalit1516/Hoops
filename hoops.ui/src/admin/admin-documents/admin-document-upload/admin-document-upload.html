@@ -1,0 +1,114 @@
+<div class="form-header">
+  <h2>{{ isEditMode() ? 'Edit Document' : 'Upload Document' }}</h2>
+</div>
+
+<form class="form-container">
+  <div class="grid grid-cols-2 gap-4">
+
+    <!-- Title -->
+    <mat-form-field appearance="fill" class="col-span-2">
+      <mat-label>Title *</mat-label>
+      <input matInput [formField]="uploadForm.title" placeholder="Document title" />
+      @if (model().title.length > 0 && model().title.trim().length === 0) {
+        <mat-error>Title cannot be blank.</mat-error>
+      }
+    </mat-form-field>
+
+    <!-- Section -->
+    <mat-form-field appearance="fill">
+      <mat-label>Section *</mat-label>
+      <input matInput [formField]="uploadForm.section" placeholder="e.g. Schedules, Rules, Forms" />
+    </mat-form-field>
+
+    <!-- Season -->
+    <mat-form-field appearance="fill">
+      <mat-label>Season</mat-label>
+      <mat-select [formField]="uploadForm.season">
+        <mat-option value="">— None —</mat-option>
+        @for (s of seasons(); track s.seasonId) {
+          <mat-option [value]="s.description">{{ s.description }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Sort Order -->
+    <mat-form-field appearance="fill">
+      <mat-label>Sort Order</mat-label>
+      <input
+        matInput
+        type="number"
+        [formField]="uploadForm.sortOrder"
+        placeholder="0"
+      />
+      <mat-hint>Lower numbers appear first</mat-hint>
+    </mat-form-field>
+
+    <!-- Active toggle -->
+    <div class="flex items-center gap-3 pl-3">
+      <mat-slide-toggle
+        [checked]="model().isActive"
+        (change)="uploadForm.isActive().value.set($event.checked)"
+        color="primary"
+      >
+        Active
+      </mat-slide-toggle>
+    </div>
+
+    <!-- Description -->
+    <mat-form-field appearance="fill" class="col-span-2">
+      <mat-label>Description</mat-label>
+      <textarea
+        matInput
+        [formField]="uploadForm.description"
+        rows="3"
+        placeholder="Optional description"
+      ></textarea>
+    </mat-form-field>
+
+    <!-- File picker -->
+    <div class="col-span-2">
+      <p class="mat-body-2 mb-2 file-label">
+        PDF File @if (!isEditMode()) { * }
+        @if (isEditMode()) { <span class="text-gray-400 text-sm">(leave blank to keep existing file)</span> }
+      </p>
+      <div class="flex items-center gap-4">
+        <button mat-stroked-button type="button" (click)="fileInput.click()">
+          <mat-icon>upload_file</mat-icon>
+          Choose PDF
+        </button>
+        <input
+          #fileInput
+          type="file"
+          accept=".pdf"
+          class="hidden"
+          (change)="onFileChange($event)"
+        />
+        <span class="text-sm" [class.text-green-400]="selectedFile()" [class.text-gray-400]="!selectedFile()">
+          {{ selectedFileName() || 'No file chosen' }}
+        </span>
+      </div>
+      @if (fileError()) {
+        <p class="text-red-400 text-sm mt-1">{{ fileError() }}</p>
+      }
+    </div>
+
+  </div>
+
+  <!-- Actions -->
+  <div class="form-actions mt-4">
+    <button
+      mat-raised-button
+      color="primary"
+      type="button"
+      [disabled]="!canSave()"
+      (click)="submit()"
+    >
+      @if (isSaving()) {
+        {{ isEditMode() ? 'Saving…' : 'Uploading…' }}
+      } @else {
+        {{ isEditMode() ? 'Save' : 'Upload' }}
+      }
+    </button>
+    <button mat-button type="button" (click)="cancel()">Cancel</button>
+  </div>
+</form>
