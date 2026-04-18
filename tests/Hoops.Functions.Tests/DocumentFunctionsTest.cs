@@ -10,6 +10,7 @@ using Hoops.Core.Models;
 using Hoops.Functions.Functions;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
@@ -20,6 +21,7 @@ namespace Hoops.Functions.Tests
     {
         private readonly Mock<IDocumentStorageService> _mockStorage;
         private readonly Mock<ILogger<DocumentFunctions>> _mockLogger;
+        private readonly Mock<IHostEnvironment> _mockEnv;
         private readonly DocumentFunctions _functions;
         private readonly Mock<FunctionContext> _mockContext;
 
@@ -35,7 +37,9 @@ namespace Hoops.Functions.Tests
         {
             _mockStorage = new Mock<IDocumentStorageService>();
             _mockLogger = new Mock<ILogger<DocumentFunctions>>();
-            _functions = new DocumentFunctions(_mockStorage.Object, _mockLogger.Object);
+            _mockEnv = new Mock<IHostEnvironment>();
+            _mockEnv.Setup(e => e.EnvironmentName).Returns("Development");
+            _functions = new DocumentFunctions(_mockStorage.Object, _mockLogger.Object, _mockEnv.Object);
             _mockContext = new Mock<FunctionContext>();
 
             // Auth: authenticated by default
