@@ -26,7 +26,7 @@ import { AdminDocumentStateService } from '../admin-document-state.service';
     MatToolbarModule,
   ],
   templateUrl: './admin-document-list.html',
-  styleUrls: ['../../../shared/scss/tables.scss'],
+  styleUrls: ['../../../shared/scss/tables.scss', '../../admin.scss'],
   providers: [MatSort, MatPaginator],
 })
 export class AdminDocumentList implements OnInit, AfterViewInit {

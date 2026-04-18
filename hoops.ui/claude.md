@@ -112,6 +112,19 @@ npm run test:ci
 npm run lint
 ```
 
+## Admin List Components
+
+Every admin list component **must** include `../../admin.scss` (relative to the component file) in its `styleUrls`. This is what gives the toolbar its correct dark background (`$admin-background-color`) and keeps all admin list toolbars visually consistent.
+
+```typescript
+styleUrls: [
+  '../../../shared/scss/tables.scss',
+  '../../admin.scss',           // ← required for toolbar background + admin chrome
+],
+```
+
+Omitting `admin.scss` will leave the `<mat-toolbar>` with a white/default Material background, which is wrong on the dark admin theme.
+
 ## Testing Requirements
 
 - **Framework**: Jasmine with Karma
