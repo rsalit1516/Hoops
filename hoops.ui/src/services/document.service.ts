@@ -48,4 +48,12 @@ export class DocumentService {
       { withCredentials: true }
     );
   }
+
+  /** Permanently deletes a document's blob and metadata. */
+  deleteDocument(documentId: string, section: string): Observable<void> {
+    return this.http.delete<void>(
+      `${Constants.DOCUMENT_LIST_URL}/${documentId}?section=${encodeURIComponent(section)}`,
+      { withCredentials: true }
+    );
+  }
 }

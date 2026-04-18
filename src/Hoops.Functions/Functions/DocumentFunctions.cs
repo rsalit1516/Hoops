@@ -392,6 +392,54 @@ public class DocumentFunctions
     }
 
     /// <summary>
+    /// DELETE /api/documents/{documentId}?section={section}
+    ///
+    /// Permanently deletes the PDF blob and its metadata table entry.
+    /// The "section" query parameter is required (it is the Table Storage PartitionKey).
+    ///
+    /// Returns 204 No Content on success.
+    /// Returns 400 Bad Request if section is missing.
+    /// Returns 401 Unauthorized if no valid auth cookie is present.
+    /// </summary>
+    [Function("Document_Delete")]
+    public async Task<HttpResponseData> Delete(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "documents/{documentId}")]
+        HttpRequestData req,
+        string documentId,
+        FunctionContext context)
+    {
+        var authError = context.CheckAuthentication(req, _logger);
+        if (authError != null)
+            return authError;
+
+        var query = System.Web.HttpUtility.ParseQueryString(req.Url.Query);
+        var section = query["section"];
+
+        if (string.IsNullOrWhiteSpace(section))
+            return await SingleErrorResponse(req, "'section' query parameter is required.");
+
+        try
+        {
+            await _documentStorage.DeleteDocumentAsync(documentId, section, context.CancellationToken);
+
+            _logger.LogInformation(
+                "Document deleted: documentId={DocumentId} section={Section}", documentId, section);
+
+            return ResponseUtils.CreateResponse(req, HttpStatusCode.NoContent);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Document delete failed: documentId={DocumentId}", documentId);
+
+            var detail = _env.IsProduction()
+                ? "An error occurred while deleting the document."
+                : $"[{ex.GetType().Name}] {ex.Message}";
+
+            return ResponseUtils.CreateErrorResponse(req, HttpStatusCode.InternalServerError, detail);
+        }
+    }
+
+    /// <summary>
     /// GET /api/documents/public
     ///
     /// Public (unauthenticated) endpoint. Returns only active documents.

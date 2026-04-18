@@ -26,6 +26,7 @@ This project uses cutting-edge Angular features. Claude's training data may be i
 - **ALWAYS** use Signal Forms for all new and refactored forms
 - **NEVER** use `ReactiveFormsModule` or template-driven forms for new work
 - If unsure about the Signal Forms API, fetch the documentation before implementing: https://angular.dev/guide/signals/signal-forms
+- Save buttons should only be availble for existing records when something has been changed and the form is valid on the form and for a New form when the form is valid.
 
 ### Standalone Components
 

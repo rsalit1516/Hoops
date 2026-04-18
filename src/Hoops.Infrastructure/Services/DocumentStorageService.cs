@@ -140,6 +140,35 @@ public class DocumentStorageService : IDocumentStorageService
             .ToList();
     }
 
+    public async Task DeleteDocumentAsync(
+        string documentId,
+        string section,
+        CancellationToken cancellationToken = default)
+    {
+        // ── 1. Retrieve entity to get blob path ───────────────────────────────
+        var tableClient = _tableServiceClient.GetTableClient(TableName);
+        await tableClient.CreateIfNotExistsAsync(cancellationToken);
+
+        var response = await tableClient.GetEntityAsync<DocumentTableEntity>(
+            section, documentId, cancellationToken: cancellationToken);
+
+        var blobPath = response.Value.BlobPath;
+
+        // ── 2. Delete blob ────────────────────────────────────────────────────
+        var containerClient = _blobServiceClient.GetBlobContainerClient(BlobContainerName);
+        var blobClient = containerClient.GetBlobClient(blobPath);
+        await blobClient.DeleteIfExistsAsync(cancellationToken: cancellationToken);
+
+        _logger.LogInformation(
+            "Document blob deleted: documentId={DocumentId} path={BlobPath}", documentId, blobPath);
+
+        // ── 3. Delete table entity ────────────────────────────────────────────
+        await tableClient.DeleteEntityAsync(section, documentId, cancellationToken: cancellationToken);
+
+        _logger.LogInformation(
+            "Document metadata deleted: documentId={DocumentId} section={Section}", documentId, section);
+    }
+
     public async Task<IReadOnlyList<DocumentMetadata>> GetPublicDocumentsAsync(
         CancellationToken cancellationToken = default)
     {

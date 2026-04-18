@@ -28,6 +28,14 @@ public interface IDocumentStorageService
         CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Deletes the document's table entity and its associated blob.
+    /// </summary>
+    Task DeleteDocumentAsync(
+        string documentId,
+        string section,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// Returns only active documents for public display.
     /// BlobUrl is replaced with a short-lived SAS URL so blobs can be
     /// opened directly in the browser without making the container public.
