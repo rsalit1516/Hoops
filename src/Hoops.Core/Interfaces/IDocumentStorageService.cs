@@ -20,6 +20,7 @@ public interface IDocumentStorageService
         string? description = null,
         string? season = null,
         int sortOrder = 0,
+        int sectionSortOrder = 0,
         bool isActive = true,
         CancellationToken cancellationToken = default);
 
@@ -58,6 +59,7 @@ public interface IDocumentStorageService
         string? description = null,
         string? season = null,
         int sortOrder = 0,
+        int sectionSortOrder = 0,
         bool isActive = true,
         Stream? fileStream = null,
         string? fileName = null,

@@ -21,6 +21,7 @@ public class DocumentTableEntity : ITableEntity
     public string BlobPath { get; set; } = string.Empty;
     public string BlobUrl { get; set; } = string.Empty;
     public int SortOrder { get; set; }
+    public int SectionSortOrder { get; set; }
     public string? Description { get; set; }
     public bool IsActive { get; set; }
     public string? Season { get; set; }

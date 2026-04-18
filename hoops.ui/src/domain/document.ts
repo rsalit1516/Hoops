@@ -4,6 +4,7 @@ export interface DocumentMetadata {
   blobPath: string;
   blobUrl: string;
   sortOrder: number;
+  sectionSortOrder: number;
   description?: string;
   isActive: boolean;
   season?: string;

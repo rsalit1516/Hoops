@@ -47,7 +47,19 @@
         [formField]="uploadForm.sortOrder"
         placeholder="0"
       />
-      <mat-hint>Lower numbers appear first</mat-hint>
+      <mat-hint>Order within section (lower = first)</mat-hint>
+    </mat-form-field>
+
+    <!-- Section Sort Order -->
+    <mat-form-field appearance="fill">
+      <mat-label>Section Sort Order</mat-label>
+      <input
+        matInput
+        type="number"
+        [formField]="uploadForm.sectionSortOrder"
+        placeholder="0"
+      />
+      <mat-hint>Same value for all docs in this section</mat-hint>
     </mat-form-field>
 
     <!-- Active toggle -->

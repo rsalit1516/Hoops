@@ -6,6 +6,7 @@ import { DocumentService } from '@app/services/document.service';
 
 interface DocumentSection {
   name: string;
+  sectionSortOrder: number;
   documents: DocumentMetadata[];
 }
 
@@ -26,7 +27,7 @@ export class CsbcClubDocs implements OnInit {
   readonly hasError = signal(false);
   private readonly documents = signal<DocumentMetadata[]>([]);
 
-  /** Documents grouped by section, sections sorted alphabetically. */
+  /** Documents grouped by section, sections sorted by sectionSortOrder then name. */
   readonly sections = computed<DocumentSection[]>(() => {
     const map = new Map<string, DocumentMetadata[]>();
     for (const doc of this.documents()) {
@@ -35,11 +36,16 @@ export class CsbcClubDocs implements OnInit {
       map.set(doc.section, list);
     }
     return Array.from(map.entries())
-      .sort(([a], [b]) => a.localeCompare(b))
       .map(([name, docs]) => ({
         name,
+        sectionSortOrder: docs[0]?.sectionSortOrder ?? 0,
         documents: [...docs].sort((a, b) => a.sortOrder - b.sortOrder),
-      }));
+      }))
+      .sort((a, b) =>
+        a.sectionSortOrder !== b.sectionSortOrder
+          ? a.sectionSortOrder - b.sectionSortOrder
+          : a.name.localeCompare(b.name)
+      );
   });
 
   ngOnInit(): void {

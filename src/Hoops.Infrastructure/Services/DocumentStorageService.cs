@@ -47,6 +47,7 @@ public class DocumentStorageService : IDocumentStorageService
         string? description = null,
         string? season = null,
         int sortOrder = 0,
+        int sectionSortOrder = 0,
         bool isActive = true,
         CancellationToken cancellationToken = default)
     {
@@ -82,6 +83,7 @@ public class DocumentStorageService : IDocumentStorageService
             BlobPath = blobPath,
             BlobUrl = blobUrl,
             SortOrder = sortOrder,
+            SectionSortOrder = sectionSortOrder,
             Description = description,
             IsActive = isActive,
             Season = season,
@@ -100,6 +102,7 @@ public class DocumentStorageService : IDocumentStorageService
             BlobPath = blobPath,
             BlobUrl = blobUrl,
             SortOrder = sortOrder,
+            SectionSortOrder = sectionSortOrder,
             Description = description,
             IsActive = isActive,
             Season = season,
@@ -126,6 +129,7 @@ public class DocumentStorageService : IDocumentStorageService
                 BlobPath = entity.BlobPath,
                 BlobUrl = entity.BlobUrl,
                 SortOrder = entity.SortOrder,
+                SectionSortOrder = entity.SectionSortOrder,
                 Description = entity.Description,
                 IsActive = entity.IsActive,
                 Season = entity.Season,
@@ -135,7 +139,8 @@ public class DocumentStorageService : IDocumentStorageService
         }
 
         return results
-            .OrderBy(d => d.Section, StringComparer.OrdinalIgnoreCase)
+            .OrderBy(d => d.SectionSortOrder)
+            .ThenBy(d => d.Section, StringComparer.OrdinalIgnoreCase)
             .ThenBy(d => d.SortOrder)
             .ToList();
     }
@@ -188,6 +193,7 @@ public class DocumentStorageService : IDocumentStorageService
                 BlobPath = entity.BlobPath,
                 BlobUrl = GenerateSasUrl(entity.BlobPath),
                 SortOrder = entity.SortOrder,
+                SectionSortOrder = entity.SectionSortOrder,
                 Description = entity.Description,
                 IsActive = entity.IsActive,
                 Season = entity.Season,
@@ -197,7 +203,8 @@ public class DocumentStorageService : IDocumentStorageService
         }
 
         return results
-            .OrderBy(d => d.Section, StringComparer.OrdinalIgnoreCase)
+            .OrderBy(d => d.SectionSortOrder)
+            .ThenBy(d => d.Section, StringComparer.OrdinalIgnoreCase)
             .ThenBy(d => d.SortOrder)
             .ToList();
     }
@@ -239,6 +246,7 @@ public class DocumentStorageService : IDocumentStorageService
         string? description = null,
         string? season = null,
         int sortOrder = 0,
+        int sectionSortOrder = 0,
         bool isActive = true,
         Stream? fileStream = null,
         string? fileName = null,
@@ -282,6 +290,7 @@ public class DocumentStorageService : IDocumentStorageService
             BlobPath = blobPath,
             BlobUrl = blobUrl,
             SortOrder = sortOrder,
+            SectionSortOrder = sectionSortOrder,
             Description = description,
             IsActive = isActive,
             Season = season,
@@ -313,6 +322,7 @@ public class DocumentStorageService : IDocumentStorageService
             BlobPath = blobPath,
             BlobUrl = blobUrl,
             SortOrder = sortOrder,
+            SectionSortOrder = sectionSortOrder,
             Description = description,
             IsActive = isActive,
             Season = season,

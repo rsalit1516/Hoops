@@ -76,6 +76,7 @@ public class DocumentFunctions
         string? description = null;
         string? season = null;
         int sortOrder = 0;
+        int sectionSortOrder = 0;
         bool isActive = true;
         Stream? fileStream = null;
         string? fileName = null;
@@ -126,6 +127,9 @@ public class DocumentFunctions
                         case "season":      season = string.IsNullOrWhiteSpace(value) ? null : value; break;
                         case "sortorder":
                             if (int.TryParse(value, out var so)) sortOrder = so;
+                            break;
+                        case "sectionsortorder":
+                            if (int.TryParse(value, out var sso)) sectionSortOrder = sso;
                             break;
                         case "isactive":
                             if (bool.TryParse(value, out var ia)) isActive = ia;
@@ -183,6 +187,7 @@ public class DocumentFunctions
                 description,
                 season,
                 sortOrder,
+                sectionSortOrder,
                 isActive,
                 context.CancellationToken);
 
@@ -252,6 +257,7 @@ public class DocumentFunctions
         string? description = null;
         string? season = null;
         int sortOrder = 0;
+        int sectionSortOrder = 0;
         bool isActive = true;
         Stream? fileStream = null;
         string? fileName = null;
@@ -303,6 +309,9 @@ public class DocumentFunctions
                         case "season":      season = string.IsNullOrWhiteSpace(value) ? null : value; break;
                         case "sortorder":
                             if (int.TryParse(value, out var so)) sortOrder = so;
+                            break;
+                        case "sectionsortorder":
+                            if (int.TryParse(value, out var sso)) sectionSortOrder = sso;
                             break;
                         case "isactive":
                             if (bool.TryParse(value, out var ia)) isActive = ia;
@@ -361,6 +370,7 @@ public class DocumentFunctions
                 description,
                 season,
                 sortOrder,
+                sectionSortOrder,
                 isActive,
                 fileStream,
                 fileName,

@@ -20,7 +20,14 @@ public class DocumentMetadata
     /// <summary>Full HTTPS URL to the blob.</summary>
     public string BlobUrl { get; set; } = string.Empty;
 
+    /// <summary>Controls the display order of documents within a section.</summary>
     public int SortOrder { get; set; }
+
+    /// <summary>
+    /// Controls the display order of sections on the public page.
+    /// All documents in the same section should share the same value.
+    /// </summary>
+    public int SectionSortOrder { get; set; }
 
     public string? Description { get; set; }
 

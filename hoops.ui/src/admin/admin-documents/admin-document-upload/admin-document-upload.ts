@@ -27,6 +27,7 @@ interface DocumentUploadModel {
   section: string;
   season: string;
   sortOrder: number | null;
+  sectionSortOrder: number | null;
   description: string;
   isActive: boolean;
 }
@@ -36,6 +37,7 @@ const EMPTY_MODEL: DocumentUploadModel = {
   section: '',
   season: '',
   sortOrder: null,
+  sectionSortOrder: null,
   description: '',
   isActive: true,
 };
@@ -91,6 +93,7 @@ export class AdminDocumentUpload {
         section: doc.section,
         season: doc.season ?? '',
         sortOrder: doc.sortOrder,
+        sectionSortOrder: doc.sectionSortOrder,
         description: doc.description ?? '',
         isActive: doc.isActive,
       };
@@ -135,6 +138,7 @@ export class AdminDocumentUpload {
       m.section !== initial.section ||
       m.season !== initial.season ||
       m.sortOrder !== initial.sortOrder ||
+      m.sectionSortOrder !== initial.sectionSortOrder ||
       m.description !== initial.description ||
       m.isActive !== initial.isActive ||
       this.selectedFile() !== null
@@ -187,6 +191,7 @@ export class AdminDocumentUpload {
     if (m.description.trim()) formData.append('description', m.description.trim());
     if (m.season) formData.append('season', m.season);
     if (m.sortOrder !== null) formData.append('sortOrder', String(m.sortOrder));
+    if (m.sectionSortOrder !== null) formData.append('sectionSortOrder', String(m.sectionSortOrder));
     formData.append('isActive', String(m.isActive));
 
     const existingDoc = this.stateService.selectedDocument();
