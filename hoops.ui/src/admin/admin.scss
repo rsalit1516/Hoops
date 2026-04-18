@@ -369,6 +369,10 @@ table {
   border-radius: v.$border-radius;
 }
 
+.mat-mdc-button:not(:disabled) {
+  color: white !important;
+}
+
 button:disabled,
 button[disabled],
 .mat-mdc-raised-button:disabled,
