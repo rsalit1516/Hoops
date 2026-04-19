@@ -73,7 +73,7 @@ namespace Hoops.Functions.Tests
                 s => s.UploadDocumentAsync(
                     It.IsAny<Stream>(), It.IsAny<string>(), It.IsAny<string>(),
                     It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
-                    It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()),
+                    It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()),
                 Times.Never);
         }
 
@@ -290,7 +290,7 @@ namespace Hoops.Functions.Tests
             _mockStorage
                 .Setup(s => s.UploadDocumentAsync(
                     It.IsAny<Stream>(), "schedule.pdf", "Schedule 2024", "Schedules",
-                    "Fall season schedule", "2024-25", 5, true, It.IsAny<CancellationToken>()))
+                    "Fall season schedule", "2024-25", 5, 0, true, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(expectedMetadata);
 
             var (body, contentType) = BuildMultipartRequest(
@@ -315,7 +315,7 @@ namespace Hoops.Functions.Tests
             _mockStorage.Verify(
                 s => s.UploadDocumentAsync(
                     It.IsAny<Stream>(), "schedule.pdf", "Schedule 2024", "Schedules",
-                    "Fall season schedule", "2024-25", 5, true, It.IsAny<CancellationToken>()),
+                    "Fall season schedule", "2024-25", 5, 0, true, It.IsAny<CancellationToken>()),
                 Times.Once);
         }
 
@@ -326,7 +326,7 @@ namespace Hoops.Functions.Tests
             _mockStorage
                 .Setup(s => s.UploadDocumentAsync(
                     It.IsAny<Stream>(), It.IsAny<string>(), "Minimal Doc", "Rules",
-                    null, null, 0, true, It.IsAny<CancellationToken>()))
+                    null, null, 0, 0, true, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new DocumentMetadata
                 {
                     DocumentId = "xyz-456",
@@ -359,7 +359,7 @@ namespace Hoops.Functions.Tests
             _mockStorage
                 .Setup(s => s.UploadDocumentAsync(
                     It.IsAny<Stream>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
-                    It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>(),
+                    It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>(),
                     It.IsAny<CancellationToken>()))
                 .ThrowsAsync(new System.Exception("Storage unavailable"));
 
