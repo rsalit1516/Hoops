@@ -119,7 +119,7 @@ var host = new HostBuilder()
     .Build();
 
 // Seed local database on startup when explicitly requested.
-// Gate: Development environment + USE_PROD_DATA=false + SEED_DB=yes
+// Gate: Development environment + USE_PROD_DATA=false + SEED_DB=yes + relational DB configured
 // SEED_DB is set by the "Start Functions (Local)" VS Code task via a pickString prompt.
 using (var scope = host.Services.CreateScope())
 {
@@ -130,10 +130,20 @@ using (var scope = host.Services.CreateScope())
 
     if (env.IsDevelopment() && !useProdData && seedDb)
     {
-        Console.WriteLine("SEED_DB=yes — wiping and re-seeding local database...");
-        var seeder = scope.ServiceProvider.GetRequiredService<SeedCoordinator>();
-        await seeder.InitializeDataAsync();
-        Console.WriteLine("Database seeding complete.");
+        var db = scope.ServiceProvider.GetRequiredService<hoopsContext>();
+        var isInMemory = db.Database.ProviderName == "Microsoft.EntityFrameworkCore.InMemory";
+
+        if (isInMemory)
+        {
+            Console.WriteLine("Warning: SEED_DB=yes but no SQL connection string is configured — skipping seed. Set hoopsContext in ConnectionStrings (local.settings.json) and ensure SQL Server is running.");
+        }
+        else
+        {
+            Console.WriteLine("SEED_DB=yes — wiping and re-seeding local database...");
+            var seeder = scope.ServiceProvider.GetRequiredService<SeedCoordinator>();
+            await seeder.InitializeDataAsync();
+            Console.WriteLine("Database seeding complete.");
+        }
     }
     else if (env.IsDevelopment() && !useProdData)
     {
