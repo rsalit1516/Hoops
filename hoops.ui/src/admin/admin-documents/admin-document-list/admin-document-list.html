@@ -1,0 +1,43 @@
+<div class="container mx-auto w-full">
+  <mat-toolbar>
+    <mat-toolbar-row>
+      <button mat-raised-button type="button" (click)="addNew()">New</button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+  <div id="panelContent" class="row">
+    <table mat-table matSort [dataSource]="dataSource">
+
+      <ng-container matColumnDef="title">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Title</th>
+        <td mat-cell *matCellDef="let doc">{{ doc.title }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="section">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Section</th>
+        <td mat-cell *matCellDef="let doc">{{ doc.section }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="description">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Description</th>
+        <td mat-cell *matCellDef="let doc">{{ doc.description }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="sortOrder">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Sort Order</th>
+        <td mat-cell *matCellDef="let doc">{{ doc.sortOrder }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayColumns" matHeaderRowDefSticky="true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayColumns" (click)="edit(row)"></tr>
+    </table>
+
+    <mat-paginator
+      #docPaginator
+      aria-label="Select page of documents"
+      [pageSizeOptions]="[5, 10, 25, 100]"
+      [pageSize]="pageSize"
+      [showFirstLastButtons]="showFirstLastButtons"
+    />
+  </div>
+</div>

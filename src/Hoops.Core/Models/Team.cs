@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Hoops.Core.Interface;
 
 namespace Hoops.Core.Models
 {
@@ -10,7 +11,7 @@ namespace Hoops.Core.Models
     /// Represents a team within a division, including coaches, players, and draft information
     /// </summary>
     [Table("Teams")]
-    public partial class Team
+    public partial class Team : IAuditable
     {
         public Team()
         {
@@ -26,10 +27,6 @@ namespace Hoops.Core.Models
         [Column("DivisionID")]
         [Display(Name = "Division")]
         public int DivisionId { get; set; }
-
-        [Column("SeasonID")]
-        [Display(Name = "Season")]
-        public int? SeasonId { get; set; }
 
         [Column("CoachID")]
         [Display(Name = "Head Coach")]
@@ -59,12 +56,17 @@ namespace Hoops.Core.Models
         [Display(Name = "Team Number")]
         public string? TeamNumber { get; set; }
 
-        [StringLength(50)]
         [Display(Name = "Created By")]
-        public string? CreatedUser { get; set; }
+        public int? CreatedUser { get; set; }
 
         [Display(Name = "Created Date")]
         public DateTime? CreatedDate { get; set; }
+
+        [Display(Name = "Modified Date")]
+        public DateTime? ModifiedDate { get; set; }
+
+        [Display(Name = "Modified By")]
+        public int? ModifiedUser { get; set; }
 
         // Draft pick properties (nullable)
         public int? Round1 { get; set; }
@@ -77,7 +79,6 @@ namespace Hoops.Core.Models
         public int? Round8 { get; set; }
 
         // Navigation properties (nullable)
-        public virtual Season? Season { get; set; }
         public virtual Division? Division { get; set; }
         public virtual Coach? Coach { get; set; }
         public virtual Coach? AssistantCoach { get; set; }

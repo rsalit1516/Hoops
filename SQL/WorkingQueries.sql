@@ -42,6 +42,6 @@
   join ScheduleDivTeams sdth on sg.ScheduleNumber = sdth.ScheduleNumber
    and sdth.TeamNumber = sg.HomeTeamNumber
   where DivisionId = 4291
-  and GameDate >= '2026-03-01' and GameDate <= GETDATE()
+  and GameDate >= '2026-04-01' and GameDate <= GETDATE()
   and sdtv.SeasonId = 2223
   and sdth.SeasonId = 2223

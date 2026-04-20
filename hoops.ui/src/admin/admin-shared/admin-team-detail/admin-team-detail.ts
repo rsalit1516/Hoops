@@ -17,7 +17,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
-import { AuthService } from '@app/services/auth.service';
 import { DivisionService } from '@app/services/division.service';
 import { SeasonService } from '@app/services/season.service';
 import { TeamService } from '@app/services/team.service';
@@ -44,15 +43,12 @@ import { LoggerService } from '@app/services/logger.service';
   ],
 })
 export class AdminTeamDetail implements OnInit {
-  private readonly authService = inject(AuthService);
   readonly teamService = inject(TeamService);
   private readonly divisionService = inject(DivisionService);
   private readonly seasonService = inject(SeasonService);
   readonly colorService = inject(ColorService);
   readonly locationService = inject(LocationService);
   private logger = inject(LoggerService);
-
-  user = computed(() => this.authService.currentUser());
 
   // Signal Forms - Define the form data model
   teamFormModel = signal({
@@ -153,8 +149,6 @@ export class AdminTeamDetail implements OnInit {
       teamNumber: formValue.teamNo,
       teamColorId: formValue.color ?? undefined,
       teamName: formValue.teamName,
-      createdUser: this.user()?.userName ?? 'system',
-      createdDate: new Date(),
     };
 
     // Subscribe to save, then refresh list and reset form

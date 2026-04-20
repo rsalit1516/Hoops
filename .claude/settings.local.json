@@ -69,7 +69,11 @@
       "Bash(az functionapp:*)",
       "Bash(az webapp:*)",
       "Bash(cd C:/Users/rrsal/repos/hoops/hoops.ui && git mv src/app/app.ts src/app.ts 2>&1)",
-      "Bash(cd C:/Users/rrsal/repos/hoops/hoops.ui && git mv src/app/admin src/admin 2>&1)"
+      "Bash(cd C:/Users/rrsal/repos/hoops/hoops.ui && git mv src/app/admin src/admin 2>&1)",
+      "Bash(head:*)",
+      "Bash(az storage *)",
+      "Bash(npx tsc *)",
+      "Bash(dotnet list *)"
     ],
     "deny": [],
     "ask": []

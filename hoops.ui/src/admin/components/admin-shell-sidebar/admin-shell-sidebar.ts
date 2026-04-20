@@ -46,6 +46,7 @@ export class AdminShellSidebar {
     { name: 'People', route: '/admin/people', isSelected: false },
     { name: 'Sponsors', route: '/admin/sponsors', isSelected: false },
     { name: 'Users', route: '/admin/users', isSelected: false },
+    { name: 'Documents', route: '/admin/documents', isSelected: false },
     { name: 'Uniform Colors', route: '/admin/colors', isSelected: false },
   ];
 

@@ -368,3 +368,16 @@ table {
   background-color: v.$table-background-color;
   border-radius: v.$border-radius;
 }
+
+.mat-mdc-button:not(:disabled) {
+  color: white !important;
+}
+
+button:disabled,
+button[disabled],
+.mat-mdc-raised-button:disabled,
+.mat-mdc-button:disabled {
+  background-color: v.$button-disabled-background !important;
+  color: v.$button-disabled-color !important;
+  opacity: 1 !important;
+}

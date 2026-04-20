@@ -65,10 +65,10 @@ namespace Hoops.Infrastructure.Tests
             // Add Teams
             context.Teams.AddRange(new List<Team>
             {
-                new Team { TeamId = 1, TeamNumber = "1", TeamName = "Red Team", DivisionId = 10, SeasonId = 1, TeamColorId = 1 },
-                new Team { TeamId = 2, TeamNumber = "2", TeamName = "Blue Team", DivisionId = 10, SeasonId = 1, TeamColorId = 2 },
-                new Team { TeamId = 3, TeamNumber = "3", TeamName = "Green Team", DivisionId = 20, SeasonId = 1, TeamColorId = 3 },
-                new Team { TeamId = 4, TeamNumber = "4", TeamName = "Yellow Team", DivisionId = 20, SeasonId = 1, TeamColorId = 4 }
+                new Team { TeamId = 1, TeamNumber = "1", TeamName = "Red Team", DivisionId = 10, TeamColorId = 1 },
+                new Team { TeamId = 2, TeamNumber = "2", TeamName = "Blue Team", DivisionId = 10, TeamColorId = 2 },
+                new Team { TeamId = 3, TeamNumber = "3", TeamName = "Green Team", DivisionId = 20, TeamColorId = 3 },
+                new Team { TeamId = 4, TeamNumber = "4", TeamName = "Yellow Team", DivisionId = 20, TeamColorId = 4 }
             });
 
             // Add ScheduleDivTeams (mapping between teams and schedule numbers)

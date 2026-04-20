@@ -72,6 +72,9 @@ export class Constants {
   public static PLAYER_URL = `${this.FUNCTIONS_BASE_URL}/api/Players`;
   public static GET_SEASON_PLAYERS_URL = `${this.FUNCTIONS_BASE_URL}/api/Player/season`;
   public static DRAFT_LIST_URL = `${this.FUNCTIONS_BASE_URL}/api/DraftList`;
+  public static DOCUMENT_UPLOAD_URL = `${this.FUNCTIONS_BASE_URL}/api/documents/upload`;
+  public static DOCUMENT_LIST_URL = `${this.FUNCTIONS_BASE_URL}/api/documents`;
+  public static DOCUMENT_PUBLIC_URL = `${this.FUNCTIONS_BASE_URL}/api/documents/public`;
 }
 export const Literals = {
   BUTTONS: {

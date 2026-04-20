@@ -7,8 +7,8 @@ namespace Hoops.Core.Interface
 {
     public interface IPlayerRepository : IRepository<Player>
     {
-        string GetNextDraftId(int companyId, int seasonId, int divisionId);
-        int FindPlayerByLastName(int companyId, int seasonId, string lastName);
+        string GetNextDraftId(int seasonId, int divisionId);
+        int FindPlayerByLastName(int seasonId, string lastName);
         IEnumerable<SeasonPlayer> GetSeasonPlayers(int seasonId);
         IQueryable<SeasonPlayer> GetDivisionPlayers(int divisionId);
         IQueryable<SeasonPlayer> GetTeamPlayers(int teamId);
@@ -17,7 +17,7 @@ namespace Hoops.Core.Interface
         IQueryable<SeasonPlayer> GetPlayers(int seasonId, int coachId);
         IQueryable<SeasonPlayer> GetSponsorPlayers(int seasonId, int sponsorId);
         IQueryable<SeasonPlayer> GetCoachPlayers(int seasonId, int coachId);
-        void SetDivision(int seasonId, int personId, int companyId);
+        void SetDivision(int seasonId, int personId);
         bool DeleteById(int id);
         Player GetByPersonId(int peopleId);
         bool WasPlayer(int peopleId);

@@ -54,13 +54,11 @@ namespace Hoops.Application.Services
 
         public async Task<Team> AddTeamToSeason(int seasonId, Team team)
         {
+            // Teams now belong to Divisions which belong to Seasons.
+            // Verify the season exists, then return the team (saved via its Division).
             var season = await _seasonRepository.GetByIdAsync(seasonId);
             if (season == null)
                 throw new InvalidOperationException($"Season {seasonId} not found.");
-            if (season.Teams == null)
-                season.Teams = new List<Team>();
-            season.Teams.Add(team);
-            await _seasonRepository.UpdateAsync(season);
             return team;
         }
 

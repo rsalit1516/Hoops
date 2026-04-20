@@ -26,6 +26,7 @@ This project uses cutting-edge Angular features. Claude's training data may be i
 - **ALWAYS** use Signal Forms for all new and refactored forms
 - **NEVER** use `ReactiveFormsModule` or template-driven forms for new work
 - If unsure about the Signal Forms API, fetch the documentation before implementing: https://angular.dev/guide/signals/signal-forms
+- Save buttons should only be availble for existing records when something has been changed and the form is valid on the form and for a New form when the form is valid.
 
 ### Standalone Components
 
@@ -110,6 +111,19 @@ npm run test:ci
 # Lint TypeScript files
 npm run lint
 ```
+
+## Admin List Components
+
+Every admin list component **must** include `../../admin.scss` (relative to the component file) in its `styleUrls`. This is what gives the toolbar its correct dark background (`$admin-background-color`) and keeps all admin list toolbars visually consistent.
+
+```typescript
+styleUrls: [
+  '../../../shared/scss/tables.scss',
+  '../../admin.scss',           // ← required for toolbar background + admin chrome
+],
+```
+
+Omitting `admin.scss` will leave the `<mat-toolbar>` with a white/default Material background, which is wrong on the dark admin theme.
 
 ## Testing Requirements
 

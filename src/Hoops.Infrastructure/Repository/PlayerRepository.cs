@@ -34,18 +34,18 @@ namespace Hoops.Infrastructure.Repository
         //    return entity;
         //}
 
-        public string GetNextDraftId(int companyId, int seasonId, int divisionId)
+        public string GetNextDraftId(int seasonId, int divisionId)
         {
             var count = context
                 .Set<Player>()
                 .Count(p =>
-                    p.CompanyId == companyId && p.SeasonId == seasonId && p.DivisionId == divisionId
+                    p.SeasonId == seasonId && p.DivisionId == divisionId
                 );
             count = count + 1;
             return (count.ToString().PadLeft(3, '0'));
         }
 
-        public int FindPlayerByLastName(int companyId, int seasonId, string lastName)
+        public int FindPlayerByLastName(int seasonId, string lastName)
         {
             int id = 0;
             //need join to get
@@ -377,34 +377,36 @@ namespace Hoops.Infrastructure.Repository
             if (playerold != null)
             {
                 context.Entry(playerold).CurrentValues.SetValues(player);
-                if (player.SeasonId != 0 && player.PersonId != 0 && player.CompanyId != 0)
+                if (player.SeasonId.HasValue && player.PersonId != 0)
                 {
-                    if (player.SeasonId != 0 && player.PersonId != 0 && player.CompanyId != 0)
-                    {
-                        if (player.SeasonId != 0 && player.PersonId != 0 && player.CompanyId != 0)
-                        {
-                            if (player.SeasonId.HasValue)
-                            {
-                                if (player.CompanyId.HasValue)
-                                {
-                                    SetDivision(player.SeasonId.Value, player.PersonId, player.CompanyId.Value);
-                                }
-                            }
-                        }
-                    }
+                    SetDivision(player.SeasonId.Value, player.PersonId);
                 }
                 return playerold;
             }
             return new Player();
         }
 
-        public void SetDivision(int seasonId, int personId, int companyId)
+        public void SetDivision(int seasonId, int personId)
         {
-            // ToDo: Fix this!!
-            // var sql = "Exec sp_SetDivision @iSeason = " +
-            //           seasonId.ToString() + ", @iPersonId = " +
-            //           personId.ToString() + ", @iCompanyID = " + companyId.ToString();
-            // context.Database.ExecuteSqlCommand(sql);
+            var person = context.Set<Person>().Find(personId);
+            if (person == null || !person.BirthDate.HasValue || string.IsNullOrEmpty(person.Gender))
+                return;
+
+            var divisions = context.Set<Division>()
+                .Where(d => d.SeasonId == seasonId)
+                .ToList();
+
+            var matchingDivision = divisions.FirstOrDefault(d => d.IsPlayerEligible(person.BirthDate.Value, person.Gender));
+            if (matchingDivision == null)
+                return;
+
+            var player = context.Set<Player>()
+                .FirstOrDefault(p => p.PersonId == personId && p.SeasonId == seasonId);
+            if (player != null)
+            {
+                player.DivisionId = matchingDivision.DivisionId;
+                context.SaveChanges();
+            }
         }
 
         /*public int FindByEmail(string email)

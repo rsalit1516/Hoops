@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Hoops.Core.Interface;
 
 namespace Hoops.Core.Models
 {
@@ -8,7 +9,7 @@ namespace Hoops.Core.Models
     /// Represents a scheduled game between two teams
     /// </summary>
     [Table("ScheduleGames")]
-    public partial class ScheduleGame
+    public partial class ScheduleGame : IAuditable
     {
         /// <summary>
         /// Gets or sets the unique identifier for the scheduled game
@@ -94,7 +95,10 @@ namespace Hoops.Core.Models
         [Column("DivisionID")]
         public int? DivisionId { get; set; }
 
-        // Navigation properties
+        public DateTime? CreatedDate { get; set; }
+        public int? CreatedUser { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public int? ModifiedUser { get; set; }
         /// <summary>
         /// Gets or sets the visiting team
         /// </summary>

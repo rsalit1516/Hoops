@@ -1,6 +1,5 @@
 export class Player {
   public playerId: number = 0;
-  public companyId: number = 1;
   public seasonId: number | null = null;
   public divisionId: number | null = null;
   public teamId: number | null = null;

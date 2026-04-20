@@ -55,7 +55,6 @@ namespace Hoops.Data.Seeders
                 {
 new()
                     {
-                        CompanyId = 1,
                         SeasonId = season.SeasonId,
                         DivisionDescription = "T2 - Coed",
                         Gender = "M",
@@ -67,13 +66,11 @@ new()
     Stats = true,
                         DraftVenue = "Mullins Hall",
                         DraftTime = "7:00 PM",
-                        CreatedDate = DateTime.Now,
-                        CreatedUser = "Seed"
+                        CreatedDate = DateTime.UtcNow,
 
                     },
                     new Division
                     {
-                        CompanyId = 1,
                         SeasonId = season.SeasonId,
                         DivisionDescription = "T4 - Coed",
                         Gender = "M",
@@ -85,12 +82,10 @@ new()
     Stats = true,
                         DraftVenue = "Mullins Hall",
                         DraftTime = "7:00 PM",
-                        CreatedDate = DateTime.Now,
-                        CreatedUser = "Seed"
+                        CreatedDate = DateTime.UtcNow,
 
                     },
                     new() {
-                        CompanyId = 1,
                         SeasonId = season.SeasonId,
                         DivisionDescription = "JV Girls",
                         Gender = "F",
@@ -99,13 +94,11 @@ new()
                         Stats = true,
                         DraftVenue = "Mullins Hall",
                         DraftTime = "7:00 PM",
-                        CreatedDate = DateTime.Now,
-                        CreatedUser = "Seed"
+                        CreatedDate = DateTime.UtcNow,
                     },
 
                     new Division
                     {
-                        CompanyId = 1,
                         SeasonId = season.SeasonId,
                         DivisionDescription = "JV Boys",
                         Gender = "M",
@@ -115,12 +108,10 @@ new()
                         Stats = true,
                         DraftVenue = "Mullins Hall",
                         DraftTime = "7:00 PM",
-                        CreatedDate = DateTime.Now,
-                        CreatedUser = "Seed"
+                        CreatedDate = DateTime.UtcNow,
                     },
                     new Division
                     {
-                        CompanyId = 1,
                         SeasonId = season.SeasonId,
                         DivisionDescription = "HS Boys",
                         Gender = "M",
@@ -130,8 +121,7 @@ new()
                         Stats = true,
                         DraftVenue = "Mullins Hall",
                         DraftTime = "7:00 PM",
-                        CreatedDate = DateTime.Now,
-                        CreatedUser = "Seed"
+                        CreatedDate = DateTime.UtcNow,
 
                     },
 

@@ -15,7 +15,7 @@ namespace Hoops.Application.DTOs
             {
                 TeamID = team.TeamId,
                 // CompanyID = team.CompanyId,
-                SeasonID = team.SeasonId ?? 0,
+                SeasonID = team.Division?.SeasonId ?? 0,
                 DivisionId = (int)team.DivisionId,
                 CoachID = team.CoachId,
                 TeamName = team.TeamName,

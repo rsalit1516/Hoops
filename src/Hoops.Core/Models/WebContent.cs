@@ -1,11 +1,12 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Hoops.Core.Interface;
 
 namespace Hoops.Core.Models;
 
 [Table("WebContent")]
-public partial class WebContent
+public partial class WebContent : IAuditable
 {
     [Key]
     public int WebContentId { get; set; }
@@ -20,6 +21,8 @@ public partial class WebContent
     public string DateAndTime { get; set; }
     public string Body { get; set; }
     public DateTime? ExpirationDate { get; set; }
+    public DateTime? CreatedDate { get; set; }
+    public int? CreatedUser { get; set; }
     public DateTime? ModifiedDate { get; set; }
     public int? ModifiedUser { get; set; }
 

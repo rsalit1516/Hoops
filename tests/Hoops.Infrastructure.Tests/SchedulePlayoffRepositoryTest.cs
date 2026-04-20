@@ -73,7 +73,6 @@ namespace Hoops.Infrastructure.Tests
                 _context.Divisions.AddRange(
                     new Division
                     {
-                        CompanyId = 1,
                         SeasonId = season.SeasonId,
                         DivisionDescription = "HS Boys",
                         Gender = "M",
@@ -83,7 +82,6 @@ namespace Hoops.Infrastructure.Tests
                     },
                 new Division
                 {
-                    CompanyId = 1,
                     SeasonId = season.SeasonId,
                     DivisionDescription = "JV Boys",
                     Gender = "M",

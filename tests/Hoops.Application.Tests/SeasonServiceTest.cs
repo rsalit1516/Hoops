@@ -41,8 +41,9 @@ namespace Hoops.Application.Tests
         }
 
         [Fact]
-        public async Task AddTeamToSeason_AddsTeam()
+        public async Task AddTeamToSeason_ValidSeason_ReturnsTeam()
         {
+            // Teams now belong to Divisions which belong to Seasons; verify the season exists and the team is returned.
             var repo = new TestSeasonRepository();
             var season = new Hoops.Core.Models.Season { SeasonId = 3, CompanyId = 1, Description = "Winter 2025" };
             repo.AddSeason(season);
@@ -53,8 +54,6 @@ namespace Hoops.Application.Tests
 
             Assert.NotNull(result);
             Assert.Equal(20, result.TeamId);
-            var updatedSeason = await repo.GetByIdAsync(3);
-            Assert.Contains(updatedSeason.Teams, t => t.TeamId == 20);
         }
 
         [Fact]

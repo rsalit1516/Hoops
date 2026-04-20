@@ -73,27 +73,42 @@ var host = new HostBuilder()
         var selectedName = useProdData ? "ConnectionStrings:hoopsContextProdRO|SQL_CONNECTION_PROD_RO" : "ConnectionStrings:hoopsContext|SQL_CONNECTION_DEV";
         var conn = useProdData ? prodRoConn : devConn;
 
+        // Audit interceptor — scoped so it can access the per-request AuthContext
+        services.AddScoped<AuditInterceptor>();
+        // Register AuthContext as both itself and IAuditContext (same instance per scope)
+        services.AddScoped<AuthContext>();
+        services.AddScoped<IAuditContext>(sp => sp.GetRequiredService<AuthContext>());
+
         if (string.IsNullOrWhiteSpace(conn))
         {
             Console.WriteLine($"Warning: No SQL connection string resolved for '{selectedName}'. Using in-memory database to allow Function host startup. Some endpoints may not function until the connection is configured.");
-            services.AddDbContext<hoopsContext>(options => options.UseInMemoryDatabase("hoops-fallback"));
+            services.AddDbContext<hoopsContext>((sp, options) =>
+                options.UseInMemoryDatabase("hoops-fallback")
+                       .AddInterceptors(sp.GetRequiredService<AuditInterceptor>()));
         }
         else
         {
             Console.WriteLine($"Info: Using {(useProdData ? "READ-ONLY PROD" : "DEV")} SQL connection (configured from {selectedName}).");
-            services.AddDbContext<hoopsContext>(options =>
-                options.UseSqlServer(conn, sql => sql.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null)));
+            services.AddDbContext<hoopsContext>((sp, options) =>
+                options.UseSqlServer(conn, sql => sql.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null))
+                       .AddInterceptors(sp.GetRequiredService<AuditInterceptor>()));
         }
 
         services.AddHoopsRepositories();
         services.AddHoopsSeeders();
 
+        // Azure Storage (Blob + Table) for document management
+        // Dev/local: hoopsstoragedev storage account (or Azurite emulator when value is "UseDevelopmentStorage=true")
+        // Prod:      hoopsstorprod storage account (connection string in Key Vault)
+        var storageConn = configuration["StorageConnectionString"]
+                          ?? configuration.GetConnectionString("StorageConnectionString")
+                          ?? configuration["AZURE_STORAGE_CONNECTION_STRING"]
+                          ?? "UseDevelopmentStorage=true";
+        services.AddHoopsDocumentStorage(storageConn);
+
         // Application services
         services.AddScoped<ISeasonService, SeasonService>();
         services.AddScoped<IPlayerService, PlayerService>();
-
-        // Auth context — carries authenticated userId from middleware to functions
-        services.AddScoped<AuthContext>();
 
         // Logging
         services.AddLogging(builder =>
@@ -103,20 +118,36 @@ var host = new HostBuilder()
     })
     .Build();
 
-// Seed local database on startup (replaces Hoops.Api seeding behaviour)
-// Skipped when USE_PROD_DATA=true to protect the read-only prod connection
+// Seed local database on startup when explicitly requested.
+// Gate: Development environment + USE_PROD_DATA=false + SEED_DB=yes + relational DB configured
+// SEED_DB is set by the "Start Functions (Local)" VS Code task via a pickString prompt.
 using (var scope = host.Services.CreateScope())
 {
     var env = scope.ServiceProvider.GetRequiredService<IHostEnvironment>();
     var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
     var useProdData = string.Equals(config["USE_PROD_DATA"], "true", StringComparison.OrdinalIgnoreCase);
+    var seedDb = string.Equals(config["SEED_DB"], "yes", StringComparison.OrdinalIgnoreCase);
 
-    if (env.IsEnvironment("Local") && !useProdData)
+    if (env.IsDevelopment() && !useProdData && seedDb)
     {
-        Console.WriteLine("Local environment — running database seeder...");
-        var seeder = scope.ServiceProvider.GetRequiredService<SeedCoordinator>();
-        await seeder.InitializeDataAsync();
-        Console.WriteLine("Database seeding complete.");
+        var db = scope.ServiceProvider.GetRequiredService<hoopsContext>();
+        var isInMemory = db.Database.ProviderName == "Microsoft.EntityFrameworkCore.InMemory";
+
+        if (isInMemory)
+        {
+            Console.WriteLine("Warning: SEED_DB=yes but no SQL connection string is configured — skipping seed. Set hoopsContext in ConnectionStrings (local.settings.json) and ensure SQL Server is running.");
+        }
+        else
+        {
+            Console.WriteLine("SEED_DB=yes — wiping and re-seeding local database...");
+            var seeder = scope.ServiceProvider.GetRequiredService<SeedCoordinator>();
+            await seeder.InitializeDataAsync();
+            Console.WriteLine("Database seeding complete.");
+        }
+    }
+    else if (env.IsDevelopment() && !useProdData)
+    {
+        Console.WriteLine("Skipping database seed (SEED_DB != yes). Re-run the VS Code task and choose 'Yes' to refresh.");
     }
 }
 

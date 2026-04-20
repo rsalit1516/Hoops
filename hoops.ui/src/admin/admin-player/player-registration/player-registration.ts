@@ -27,7 +27,6 @@ import { LoggerService } from '@app/services/logger.service';
 interface PlayerFormData {
   playerId: number;
   personId: number;
-  companyId: number;
   seasonId: number | null;
   playerName: string;
   divisionId: number | null;
@@ -108,7 +107,6 @@ export class PlayerRegistration implements OnInit {
   playerFormModel = signal<PlayerFormData>({
     playerId: 0,
     personId: 0,
-    companyId: 1,
     seasonId: null,
     playerName: '',
     divisionId: null,
@@ -318,7 +316,6 @@ export class PlayerRegistration implements OnInit {
     this.playerFormModel.set({
       playerId: player.playerId,
       personId: player.personId,
-      companyId: player.companyId ?? 1,
       seasonId: player.seasonId,
       divisionId: player.divisionId,
       playerName: playerName,
@@ -375,7 +372,6 @@ export class PlayerRegistration implements OnInit {
 
     player.playerId = formValue.playerId;
     player.personId = formValue.personId;
-    player.companyId = formValue.companyId;
     player.seasonId = formValue.seasonId;
     player.divisionId = formValue.divisionId;
 

@@ -185,9 +185,12 @@ public partial class hoopsContext : DbContext
             entity.Property(e => e.DivisionId).HasColumnName("DivisionID");
             entity.Property(e => e.DirectorId).HasColumnName("DirectorID");
             entity.Property(e => e.CoDirectorId).HasColumnName("CoDirectorID");
-            entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
             entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime").HasDefaultValue(DateTime.Now);
-            entity.Property(e => e.CreatedUser).HasMaxLength(50);
+            entity.Property(e => e.CreatedUser);
+            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+            entity.Property(e => e.ModifiedUser);
+            // Preserve legacy column that exists in DB but is not surfaced in the entity.
+            entity.Property<int?>("CompanyID").HasColumnName("CompanyID");
             entity.Property(e => e.DivisionDescription)
                 .HasColumnName("Div_Desc")
                 .HasMaxLength(50);
@@ -230,6 +233,18 @@ public partial class hoopsContext : DbContext
                 .HasForeignKey(d => d.CoDirectorId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Divisions_CoDirectors");
+
+            entity.HasOne<User>()
+                .WithMany()
+                .HasForeignKey(d => d.CreatedUser)
+                .OnDelete(DeleteBehavior.NoAction)
+                .HasConstraintName("FK_Divisions_Users_CreatedUser");
+
+            entity.HasOne<User>()
+                .WithMany()
+                .HasForeignKey(d => d.ModifiedUser)
+                .OnDelete(DeleteBehavior.NoAction)
+                .HasConstraintName("FK_Divisions_Users_ModifiedUser");
         });
 
         // modelBuilder.Entity<Dtproperties>(entity =>
@@ -365,11 +380,15 @@ public partial class hoopsContext : DbContext
 
             entity.Property(e => e.CoachId).HasColumnName("CoachID");
 
-            entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
-
             entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime").HasDefaultValue(DateTime.Now);
+            entity.Property(e => e.CreatedUser);
 
-            entity.Property(e => e.CreatedUser).HasMaxLength(20);
+            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+
+            entity.Property(e => e.ModifiedUser);
+
+            // Preserve legacy column that exists in DB but is not surfaced in the entity.
+            entity.Property<int?>("CompanyID").HasColumnName("CompanyID");
 
             entity.Property(e => e.DivisionId).HasColumnName("DivisionID");
 
@@ -398,6 +417,18 @@ public partial class hoopsContext : DbContext
             entity.Property(e => e.SponsorId).HasColumnName("SponsorID");
 
             entity.Property(e => e.TeamId).HasColumnName("TeamID");
+
+            entity.HasOne<User>()
+                .WithMany()
+                .HasForeignKey(d => d.CreatedUser)
+                .OnDelete(DeleteBehavior.NoAction)
+                .HasConstraintName("FK_Players_Users_CreatedUser");
+
+            entity.HasOne<User>()
+                .WithMany()
+                .HasForeignKey(d => d.ModifiedUser)
+                .OnDelete(DeleteBehavior.NoAction)
+                .HasConstraintName("FK_Players_Users_ModifiedUser");
         });
 
         modelBuilder.Entity<Role>(entity =>
@@ -546,6 +577,8 @@ public partial class hoopsContext : DbContext
             entity.Property(e => e.GameTime).HasMaxLength(20);
             entity.Property(e => e.SeasonId).HasColumnName("SeasonID");
             entity.Property(e => e.DivisionId).HasColumnName("DivisionID");
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
 
             // Configure the visiting team relationship
             entity.HasOne(d => d.VisitingTeam)
@@ -579,6 +612,18 @@ public partial class hoopsContext : DbContext
                 .HasForeignKey(d => d.LocationNumber)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ScheduleGames_Location");
+
+            entity.HasOne<User>()
+                .WithMany()
+                .HasForeignKey(d => d.CreatedUser)
+                .OnDelete(DeleteBehavior.NoAction)
+                .HasConstraintName("FK_ScheduleGames_Users_CreatedUser");
+
+            entity.HasOne<User>()
+                .WithMany()
+                .HasForeignKey(d => d.ModifiedUser)
+                .OnDelete(DeleteBehavior.NoAction)
+                .HasConstraintName("FK_ScheduleGames_Users_ModifiedUser");
         });
 
         // modelBuilder.Entity<ScheduleGamesStats>(entity =>
@@ -608,11 +653,25 @@ public partial class hoopsContext : DbContext
             entity.Property(e => e.SchedulePlayoffId).HasColumnName("SchedulePlayoffID");
             entity.Property(e => e.DivisionId).HasColumnName("DivisionId");
             entity.Property(e => e.GameDate).HasColumnType("datetime2");
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
 
             // Add compound unique constraint on ScheduleNumber + GameNumber
             entity.HasIndex(e => new { e.ScheduleNumber, e.GameNumber })
                   .IsUnique()
                   .HasDatabaseName("UQ_SchedulePlayoffs_Schedule_Game");
+
+            entity.HasOne<User>()
+                .WithMany()
+                .HasForeignKey(d => d.CreatedUser)
+                .OnDelete(DeleteBehavior.NoAction)
+                .HasConstraintName("FK_SchedulePlayoffs_Users_CreatedUser");
+
+            entity.HasOne<User>()
+                .WithMany()
+                .HasForeignKey(d => d.ModifiedUser)
+                .OnDelete(DeleteBehavior.NoAction)
+                .HasConstraintName("FK_SchedulePlayoffs_Users_ModifiedUser");
         });
 
 
@@ -626,7 +685,9 @@ public partial class hoopsContext : DbContext
             entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
             entity.Property(e => e.ConvenienceFee).HasColumnType("money");
             entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime").HasDefaultValue(DateTime.Now);
-            entity.Property(e => e.CreatedUser).HasMaxLength(50);
+            entity.Property(e => e.CreatedUser);
+            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+            entity.Property(e => e.ModifiedUser);
             entity.Property(e => e.FromDate).HasColumnType("smalldatetime");
             entity.Property(e => e.ParticipationFee).HasColumnType("money");
             entity.Property(e => e.Description)
@@ -652,6 +713,18 @@ public partial class hoopsContext : DbContext
 
             entity.HasIndex(e => new { e.SignUpsDate, e.SignUpsEnd })
                 .HasDatabaseName("IX_Seasons_SignUpDates");
+
+            entity.HasOne<User>()
+                .WithMany()
+                .HasForeignKey(d => d.CreatedUser)
+                .OnDelete(DeleteBehavior.NoAction)
+                .HasConstraintName("FK_Seasons_Users_CreatedUser");
+
+            entity.HasOne<User>()
+                .WithMany()
+                .HasForeignKey(d => d.ModifiedUser)
+                .OnDelete(DeleteBehavior.NoAction)
+                .HasConstraintName("FK_Seasons_Users_ModifiedUser");
         });
 
         modelBuilder.Entity<SponsorFee>(entity =>
@@ -888,7 +961,7 @@ public partial class hoopsContext : DbContext
             entity.HasIndex(e => e.TeamId)
                 .HasDatabaseName("idx_DCh_615_614_Teams");
 
-            entity.HasIndex(e => new { e.DivisionId, e.TeamName, e.TeamColorId, e.TeamNumber, e.SeasonId })
+            entity.HasIndex(e => new { e.DivisionId, e.TeamName, e.TeamColorId, e.TeamNumber })
                 .HasDatabaseName("idx_DCh_376_375_Teams");
 
             entity.Property(e => e.TeamId).HasColumnName("TeamID");
@@ -901,11 +974,16 @@ public partial class hoopsContext : DbContext
 
             entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime").HasDefaultValue(DateTime.Now);
 
-            entity.Property(e => e.CreatedUser).HasMaxLength(50);
+            entity.Property(e => e.CreatedUser);
+
+            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+
+            entity.Property(e => e.ModifiedUser);
+
+            // Preserve legacy SeasonID column + FK that exist in DB but are not surfaced in the entity.
+            entity.Property<int?>("SeasonID").HasColumnName("SeasonID");
 
             entity.Property(e => e.DivisionId).HasColumnName("DivisionID");
-
-            entity.Property(e => e.SeasonId).HasColumnName("SeasonID");
 
             entity.Property(e => e.SponsorId).HasColumnName("SponsorID");
 
@@ -918,12 +996,6 @@ public partial class hoopsContext : DbContext
             entity.Property(e => e.TeamNumber).HasMaxLength(4);
 
             // Relationships
-            entity.HasOne(d => d.Season)
-                .WithMany(p => p.Teams)
-                .HasForeignKey(d => d.SeasonId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Teams_Seasons");
-
             entity.HasOne(d => d.Division)
                 .WithMany(p => p.Teams)
                 .HasForeignKey(d => d.DivisionId)
@@ -953,12 +1025,31 @@ public partial class hoopsContext : DbContext
                 .HasForeignKey(d => d.TeamColorId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Teams_Colors");
+
+            entity.HasOne<Season>()
+                .WithMany()
+                .HasForeignKey("SeasonID")
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Teams_Seasons");
+
+            entity.HasOne<User>()
+                .WithMany()
+                .HasForeignKey(d => d.CreatedUser)
+                .OnDelete(DeleteBehavior.NoAction)
+                .HasConstraintName("FK_Teams_Users_CreatedUser");
+
+            entity.HasOne<User>()
+                .WithMany()
+                .HasForeignKey(d => d.ModifiedUser)
+                .OnDelete(DeleteBehavior.NoAction)
+                .HasConstraintName("FK_Teams_Users_ModifiedUser");
         });
 
         modelBuilder.Entity<WebContent>(entity =>
  {
      // entity.ToTable("WebContent");
      // entity.HasKey(entity => entity.WebContentId);
+     entity.Property(e => e.CreatedDate).HasColumnType("datetime");
      entity.Property(e => e.DateAndTime).HasMaxLength(50);
      entity.Property(e => e.ExpirationDate).HasColumnType("datetime");
      entity.Property(e => e.Location).HasMaxLength(50);
@@ -968,6 +1059,17 @@ public partial class hoopsContext : DbContext
      entity.Property(e => e.SubTitle).HasMaxLength(50);
      entity.Property(e => e.Title).HasMaxLength(50);
      entity.Property(e => e.Type).HasMaxLength(50);
+     entity.HasOne<User>()
+         .WithMany()
+         .HasForeignKey(d => d.CreatedUser)
+         .OnDelete(DeleteBehavior.NoAction)
+         .HasConstraintName("FK_WebContent_Users_CreatedUser");
+
+     entity.HasOne<User>()
+         .WithMany()
+         .HasForeignKey(d => d.ModifiedUser)
+         .OnDelete(DeleteBehavior.NoAction)
+         .HasConstraintName("FK_WebContent_Users_ModifiedUser");
      // entity.Navigation(w => w.WebContentType)
      // .UsePropertyAccessMode(PropertyAccessMode..Property);
  });

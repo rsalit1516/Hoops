@@ -280,7 +280,6 @@ namespace Hoops.Data
                     rep.Insert(
                         new Player
                         {
-                            CompanyId = CompanyId,
                             SeasonId = currentSeason,
                             DivisionId = division,
                             PersonId = person.PersonId
@@ -380,7 +379,6 @@ namespace Hoops.Data
             divisionRep.Insert(
                     new Division
                     {
-                        CompanyId = CompanyId,
                         SeasonId = season.SeasonId,
                         DivisionDescription = "T2_Coed",
                         DirectorId = (person).FirstOrDefault()?.PersonId ?? 0,
@@ -395,7 +393,6 @@ namespace Hoops.Data
             divisionRep.Insert(
                    new Division
                    {
-                       CompanyId = CompanyId,
                        SeasonId = season.SeasonId,
                        DivisionDescription = "T3_Coed",
                        DirectorId = (person).FirstOrDefault()?.PersonId ?? 0,
@@ -410,7 +407,6 @@ namespace Hoops.Data
             divisionRep.Insert(
                    new Division
                    {
-                       CompanyId = CompanyId,
                        SeasonId = season.SeasonId,
                        DivisionDescription = "T4_Coed",
                        DirectorId = (person).FirstOrDefault()?.PersonId ?? 0,
@@ -424,7 +420,6 @@ namespace Hoops.Data
             divisionRep.Insert(
                    new Division
                    {
-                       CompanyId = CompanyId,
                        SeasonId = season.SeasonId,
                        DivisionDescription = "SI_Boys",
                        DirectorId = (person).FirstOrDefault<Person>().PersonId,
@@ -438,7 +433,6 @@ namespace Hoops.Data
             divisionRep.Insert(
                    new Division
                    {
-                       CompanyId = CompanyId,
                        SeasonId = season.SeasonId,
                        DivisionDescription = "FJV_Boys",
                        DirectorId = (person).FirstOrDefault<Person>().PersonId,
@@ -452,7 +446,6 @@ namespace Hoops.Data
             divisionRep.Insert(
                    new Division
                    {
-                       CompanyId = CompanyId,
                        SeasonId = season.SeasonId,
                        DivisionDescription = "SJV_Boys",
                        DirectorId = (person).FirstOrDefault<Person>().PersonId,
@@ -466,7 +459,6 @@ namespace Hoops.Data
             divisionRep.Insert(
                    new Division
                    {
-                       CompanyId = CompanyId,
                        SeasonId = season.SeasonId,
                        DivisionDescription = "HS_Boys",
                        DirectorId = (person).FirstOrDefault<Person>().PersonId,
@@ -480,7 +472,6 @@ namespace Hoops.Data
             divisionRep.Insert(
                     new Division
                     {
-                        CompanyId = CompanyId,
                         SeasonId = season.SeasonId,
                         DivisionDescription = "JV_Girls",
                         DirectorId = (person).FirstOrDefault<Person>().PersonId,

@@ -73,11 +73,6 @@ export class PlayerService {
     this.logger.info('Creating new player:', player);
     this.updateLoadingState(true);
 
-    // Ensure CompanyId is set
-    if (!player.companyId) {
-      player.companyId = 1;
-    }
-
     return this.http.post<Player>(Constants.PLAYER_URL, player, { withCredentials: true });
   }
 
@@ -119,7 +114,6 @@ export class PlayerService {
     const player = new Player();
     player.personId = personId;
     player.seasonId = seasonId;
-    player.companyId = 1;
     return player;
   }
 }
