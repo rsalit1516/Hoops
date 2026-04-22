@@ -3,7 +3,8 @@ import { Component, computed, effect, inject, input, linkedSignal, OnInit, ViewC
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { PaginationPreferencesService } from '@app/services/pagination-preferences.service';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
@@ -44,13 +45,14 @@ export class HouseholdMembers implements OnInit {
   #router = inject(Router);
   #logger = inject(LoggerService);
   #dialog = inject(MatDialog);
+  #prefs = inject(PaginationPreferencesService);
 
   results = input<Household[]>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort: MatSort = inject(MatSort);
   showFirstLastButtons = true;
-  pageSize = 10;
+  pageSize = this.#prefs.getPageSize(10);
 
   displayedColumns = [
     'lastName',
@@ -111,6 +113,11 @@ export class HouseholdMembers implements OnInit {
     this.#peopleService.updateSelectedPerson(person);
     this.#router.navigate(['/admin/people/detail']);
   }
+  onPage(event: PageEvent): void {
+    this.pageSize = event.pageSize;
+    this.#prefs.savePageSize(event.pageSize);
+  }
+
   addHouseHoldMember () {
     this.#logger.info('Adding household member');
     var newPerson = new Person();

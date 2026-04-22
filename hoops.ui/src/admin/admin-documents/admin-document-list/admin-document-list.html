@@ -38,6 +38,7 @@
       [pageSizeOptions]="[5, 10, 25, 100]"
       [pageSize]="pageSize"
       [showFirstLastButtons]="showFirstLastButtons"
+      (page)="onPage($event)"
     />
   </div>
 </div>

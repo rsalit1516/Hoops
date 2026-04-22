@@ -122,6 +122,7 @@
         [pageSize]="defaultPageSize"
         [showFirstLastButtons]="true"
         [aria-label]="paginatorAriaLabel"
+        (page)="onPage($event)"
        />
     </div>
   }

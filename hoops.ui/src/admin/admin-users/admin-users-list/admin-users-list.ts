@@ -10,7 +10,8 @@ import {
 import { Router } from '@angular/router';
 
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { PaginationPreferencesService } from '@app/services/pagination-preferences.service';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -36,11 +37,12 @@ export class AdminUsersList implements OnInit, AfterViewInit {
   private usersService = inject(AdminUsersService);
   private readonly logger = inject(LoggerService);
   private router = inject(Router);
+  private readonly prefs = inject(PaginationPreferencesService);
   selectedLetter = model<string>('A');
   displayedColumns: string[] = ['userName', 'name', 'userType'];
   dataSource = new MatTableDataSource<User>([]);
   pageSizeOptions = [5, 10, 25];
-  pageSize = 10;
+  pageSize = this.prefs.getPageSize(10);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -70,6 +72,11 @@ export class AdminUsersList implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+  }
+
+  onPage(event: PageEvent): void {
+    this.pageSize = event.pageSize;
+    this.prefs.savePageSize(event.pageSize);
   }
 
   applyFilter(event: Event) {

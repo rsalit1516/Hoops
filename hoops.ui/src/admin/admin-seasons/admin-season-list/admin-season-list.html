@@ -35,7 +35,8 @@
       <mat-paginator #seasonPaginator aria-label="Select page of users"
       [pageSizeOptions]="[5, 10, 25, 100]"
       [pageSize]="pageSize"
-      [showFirstLastButtons]="showFirstLastButtons" />
+      [showFirstLastButtons]="showFirstLastButtons"
+      (page)="onPage($event)" />
     </div>
   <!-- </div> -->
 </div>

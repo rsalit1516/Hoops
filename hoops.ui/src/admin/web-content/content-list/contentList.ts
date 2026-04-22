@@ -23,7 +23,8 @@ import { DatePipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { ContentListToolbar } from '../content-list-toolbar/content-list-toolbar';
 import { DateTime } from 'luxon';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { PaginationPreferencesService } from '@app/services/pagination-preferences.service';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { ContentService } from '../content.service';
 import { LoggerService } from '@app/services/logger.service';
@@ -53,13 +54,14 @@ export class ContentList implements OnInit, AfterViewInit {
 
   readonly #contentService = inject(ContentService);
   private readonly logger = inject(LoggerService);
+  private readonly prefs = inject(PaginationPreferencesService);
 
   readonly selectedContent = output<Content>();
   @ViewChild('contentPaginator') paginator: MatPaginator = inject(MatPaginator);
   @ViewChild(MatSort) sort: MatSort = inject(MatSort);
   allWebContent = computed(() => this.#contentService.allWebContent);
   showFirstLastButtons = true;
-  pageSize = 10;
+  pageSize = this.prefs.getPageSize(10);
   contents$!: Observable<WebContent[]>;
   errorMessage: string | undefined;
   pageTitle: string | undefined;
@@ -141,5 +143,10 @@ export class ContentList implements OnInit, AfterViewInit {
 
   clearFilter(): void {
     this.dataSource.filter = '';
+  }
+
+  onPage(event: PageEvent): void {
+    this.pageSize = event.pageSize;
+    this.prefs.savePageSize(event.pageSize);
   }
 }
