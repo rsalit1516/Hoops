@@ -32,7 +32,7 @@ describe('AdminSeasonDetail', () => {
     mockSeasonService = {
       selectedSeason: signal<Season | undefined>(undefined),
       season: signal(new Season()),
-      seasonSaved: signal(false),
+      seasonSaved: { set: jasmine.createSpy('seasonSaved.set') },
       postSeason: jasmine.createSpy('postSeason').and.returnValue(of(new Season())),
       putSeason: jasmine.createSpy('putSeason').and.returnValue(of(new Season())),
       fetchSeasons: jasmine.createSpy('fetchSeasons'),
