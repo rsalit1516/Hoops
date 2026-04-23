@@ -28,6 +28,7 @@ import { RouterModule, Router } from '@angular/router';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Season } from '@app/domain/season';
 import { SeasonService } from '@app/services/season.service';
+import { AuthService } from '@app/services/auth.service';
 import { Store } from '@ngrx/store';
 import * as fromAdmin from '../../state';
 import { LoggerService } from '@app/services/logger.service';
@@ -57,6 +58,7 @@ import { LoggerService } from '@app/services/logger.service';
 export class AdminSeasonDetail implements OnInit {
   title = 'Season';
   private readonly seasonService = inject(SeasonService);
+  private readonly authService = inject(AuthService);
   private fb = inject(UntypedFormBuilder);
   readonly router = inject(Router);
   private snackBar = inject(MatSnackBar);
@@ -148,13 +150,16 @@ export class AdminSeasonDetail implements OnInit {
       value.signUpEndDate != undefined ? value.signUpEndDate : null;
     // _season.gameSchedules = value.gameSchedules;
     _season.currentSeason = value.currentSeason;
+    _season.currentSchedule = value.currentSchedule;
+    _season.currentSignUps = value.currentSignUps;
     _season.onlineRegistration =
       value.onlineRegistration !== undefined ? value.onlineRegistration : false;
     this.seasonService.season = signal(_season);
     this.logger.debug('Season object:', _season);
+    const userId = this.authService.currentUser()?.userId;
     if (_season.seasonId === 0) {
       this.logger.info('Creating new season');
-      this.seasonService.postSeason(_season).subscribe({
+      this.seasonService.postSeason(_season, userId).subscribe({
         next: (created) => {
           this.logger.info('Season created:', created);
           this.seasonService.seasonSaved.set(true);
@@ -168,7 +173,7 @@ export class AdminSeasonDetail implements OnInit {
       });
     } else {
       this.logger.info('Updating existing season');
-      this.seasonService.putSeason(_season).subscribe({
+      this.seasonService.putSeason(_season, userId).subscribe({
         next: (updated) => {
           this.logger.info('Season updated:', updated);
           this.seasonService.seasonSaved.set(true);
