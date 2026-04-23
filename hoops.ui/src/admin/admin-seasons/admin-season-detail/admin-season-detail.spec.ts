@@ -48,7 +48,14 @@ describe('AdminSeasonDetail', () => {
         { provide: AuthService, useValue: mockAuthService },
         { provide: MatSnackBar, useValue: mockSnackBar },
       ],
-    }).compileComponents();
+    })
+    // overrideComponent injects the mock at the component element injector level,
+    // which takes priority over MatSnackBarModule's environment injector from the
+    // component's standalone imports array.
+    .overrideComponent(AdminSeasonDetail, {
+      add: { providers: [{ provide: MatSnackBar, useValue: mockSnackBar }] },
+    })
+    .compileComponents();
 
     fixture = TestBed.createComponent(AdminSeasonDetail);
     component = fixture.componentInstance;
