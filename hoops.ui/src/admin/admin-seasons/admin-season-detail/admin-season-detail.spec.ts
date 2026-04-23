@@ -17,10 +17,14 @@ describe('AdminSeasonDetail', () => {
   let fixture: ComponentFixture<AdminSeasonDetail>;
   let mockSeasonService: any;
   let mockAuthService: any;
-  let snackBarSpy: jasmine.Spy;
+  let mockSnackBar: jasmine.SpyObj<MatSnackBar>;
   let routerNavigateSpy: jasmine.Spy;
 
   beforeEach(async () => {
+    // Provide MatSnackBar as a mock so the component injects our spy directly,
+    // avoiding the spyOn-after-injection instance mismatch.
+    mockSnackBar = jasmine.createSpyObj('MatSnackBar', ['open']);
+
     mockAuthService = {
       currentUser: signal<User | undefined>(new User(99, 'admin', true)),
     };
@@ -42,6 +46,7 @@ describe('AdminSeasonDetail', () => {
         provideRouter([]),
         { provide: SeasonService, useValue: mockSeasonService },
         { provide: AuthService, useValue: mockAuthService },
+        { provide: MatSnackBar, useValue: mockSnackBar },
       ],
     }).compileComponents();
 
@@ -49,8 +54,7 @@ describe('AdminSeasonDetail', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
 
-    snackBarSpy = spyOn(TestBed.inject(MatSnackBar), 'open');
-    routerNavigateSpy = spyOn(TestBed.inject(Router), 'navigate');
+    routerNavigateSpy = spyOn(TestBed.inject(Router), 'navigate').and.returnValue(Promise.resolve(true));
   });
 
   it('should create', () => {
@@ -70,7 +74,7 @@ describe('AdminSeasonDetail', () => {
 
     it('shows created snackbar and navigates to list on success', () => {
       component.onSubmit();
-      expect(snackBarSpy).toHaveBeenCalledWith('Season created', 'OK', { duration: 2500 });
+      expect(mockSnackBar.open).toHaveBeenCalledWith('Season created', 'OK', { duration: 2500 });
       expect(routerNavigateSpy).toHaveBeenCalledWith(['/admin/seasons/list']);
     });
 
@@ -83,7 +87,7 @@ describe('AdminSeasonDetail', () => {
     it('does not show snackbar when postSeason errors', () => {
       mockSeasonService.postSeason.and.returnValue(throwError(() => new Error('network error')));
       component.onSubmit();
-      expect(snackBarSpy).not.toHaveBeenCalled();
+      expect(mockSnackBar.open).not.toHaveBeenCalled();
       expect(routerNavigateSpy).not.toHaveBeenCalled();
     });
 
@@ -107,7 +111,7 @@ describe('AdminSeasonDetail', () => {
 
     it('shows updated snackbar and navigates to list on success', () => {
       component.onSubmit();
-      expect(snackBarSpy).toHaveBeenCalledWith('Season updated', 'OK', { duration: 2500 });
+      expect(mockSnackBar.open).toHaveBeenCalledWith('Season updated', 'OK', { duration: 2500 });
       expect(routerNavigateSpy).toHaveBeenCalledWith(['/admin/seasons/list']);
     });
   });
