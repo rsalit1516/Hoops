@@ -3,24 +3,17 @@ import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
-import { signal } from '@angular/core';
 
 import { SeasonService } from './season.service';
-import { AuthService } from './auth.service';
 import { Season } from '../domain/season';
-import { User } from '../domain/user';
 
 describe('SeasonService', () => {
   let service: SeasonService;
   let httpMock: HttpTestingController;
-  let mockAuthService: { currentUser: ReturnType<typeof signal<User | undefined>> };
 
   beforeEach(() => {
-    mockAuthService = { currentUser: signal<User | undefined>(undefined) };
-
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [{ provide: AuthService, useValue: mockAuthService }],
     });
     service = TestBed.inject(SeasonService);
     httpMock = TestBed.inject(HttpTestingController);
@@ -32,17 +25,13 @@ describe('SeasonService', () => {
   });
 
   describe('convertToSeasonApiFormat', () => {
-    it('sets createdUser to the logged-in user id', () => {
-      mockAuthService.currentUser.set(new User(42, 'admin', true));
-
-      const payload = service.convertToSeasonApiFormat(new Season());
+    it('sets createdUser to the passed userId', () => {
+      const payload = service.convertToSeasonApiFormat(new Season(), 42);
 
       expect(payload['createdUser']).toBe(42);
     });
 
-    it('sets createdUser to null when no user is logged in', () => {
-      mockAuthService.currentUser.set(undefined);
-
+    it('sets createdUser to null when no userId is provided', () => {
       const payload = service.convertToSeasonApiFormat(new Season());
 
       expect(payload['createdUser']).toBeNull();

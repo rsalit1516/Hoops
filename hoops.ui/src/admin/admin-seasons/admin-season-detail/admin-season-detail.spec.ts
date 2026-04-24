@@ -92,6 +92,7 @@ describe('AdminSeasonDetail', () => {
     });
 
     it('does not show snackbar when postSeason errors', () => {
+      spyOn(console, 'error');
       mockSeasonService.postSeason.and.returnValue(throwError(() => new Error('network error')));
       component.onSubmit();
       expect(mockSnackBar.open).not.toHaveBeenCalled();
