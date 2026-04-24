@@ -87,6 +87,7 @@ describe('DraftListService', () => {
     });
 
     it('should handle error when fetching draft list', () => {
+      spyOn(console, 'error');
       const seasonId = 1;
       const divisionId = 2;
 

@@ -116,18 +116,18 @@ export class SeasonService {
     return this.http.get<Season[]>(this.seasonsUrl);
   }
 
-  postSeason(season: Season): Observable<Season | null> {
+  postSeason(season: Season, userId?: number | null): Observable<Season | null> {
     this.logger.info('Posting season');
-    const payload = this.convertToSeasonApiFormat(season);
+    const payload = this.convertToSeasonApiFormat(season, userId);
     return this.dataService.post<any>(
       Constants.SEASON_URL,
       payload
     ) as unknown as Observable<Season | null>;
   }
 
-  putSeason(season: Season): Observable<Season> {
+  putSeason(season: Season, userId?: number | null): Observable<Season> {
     this.logger.info('Putting season', season);
-    const payload = this.convertToSeasonApiFormat(season);
+    const payload = this.convertToSeasonApiFormat(season, userId);
     this.logger.debug('Season payload', payload);
 
     const url = `${Constants.SEASON_URL}${season.seasonId}`;
@@ -137,7 +137,7 @@ export class SeasonService {
       payload
     ) as unknown as Observable<Season>;
   }
-  convertToSeasonApiFormat(season: Season): Record<string, any> {
+  convertToSeasonApiFormat(season: Season, userId?: number | null): Record<string, any> {
     return {
       seasonId: season.seasonId,
       companyId: 1,
@@ -155,7 +155,7 @@ export class SeasonService {
       testSeason: false,
       newSchoolYear: false,
       createdDate: new Date().toISOString(),
-      createdUser: '',
+      createdUser: userId ?? null,
     };
   }
 }

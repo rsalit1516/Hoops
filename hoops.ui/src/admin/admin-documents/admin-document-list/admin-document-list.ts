@@ -8,8 +8,9 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
+import { PaginationPreferencesService } from '@app/services/pagination-preferences.service';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { DocumentMetadata } from '@app/domain/document';
@@ -32,12 +33,13 @@ import { AdminDocumentStateService } from '../admin-document-state.service';
 export class AdminDocumentList implements OnInit, AfterViewInit {
   private readonly stateService = inject(AdminDocumentStateService);
   private readonly router = inject(Router);
+  private readonly prefs = inject(PaginationPreferencesService);
 
   readonly paginator = viewChild<MatPaginator>('docPaginator');
   readonly sort = viewChild(MatSort);
 
   displayColumns = ['title', 'section', 'description', 'sortOrder'];
-  pageSize = 10;
+  pageSize = this.prefs.getPageSize(10);
   showFirstLastButtons = true;
 
   dataSource = new MatTableDataSource<DocumentMetadata>([]);
@@ -53,6 +55,11 @@ export class AdminDocumentList implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator() ?? null;
     this.dataSource.sort = this.sort() ?? null;
+  }
+
+  onPage(event: PageEvent): void {
+    this.pageSize = event.pageSize;
+    this.prefs.savePageSize(event.pageSize);
   }
 
   addNew(): void {

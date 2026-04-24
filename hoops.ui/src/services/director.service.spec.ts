@@ -144,6 +144,7 @@ describe('DirectorService', () => {
     });
 
     it('should handle update errors', (done) => {
+      spyOn(console, 'error');
       const updatedDirector: Director = {
         directorId: 1,
         companyId: 1,
@@ -157,11 +158,15 @@ describe('DirectorService', () => {
 
       // catchError in update() returns a default value on error (does not re-throw)
       service.update(updatedDirector).subscribe({
-        next: () => done(),
+        next: (result) => {
+          expect(result).toBeUndefined();
+          done();
+        },
         error: () => fail('catchError should have handled the error'),
       });
 
       const req = httpMock.expectOne(`${Constants.GET_DIRECTOR_URL}/1`);
+      expect(req.request.method).toBe('PUT');
       req.error(new ProgressEvent('error'));
     });
   });

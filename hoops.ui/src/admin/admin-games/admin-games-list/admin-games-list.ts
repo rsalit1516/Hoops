@@ -19,7 +19,8 @@ import { TeamDisplayPipe } from '@app/shared/pipes/team-display.pipe';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { PaginationPreferencesService } from '@app/services/pagination-preferences.service';
 import { MatSort } from '@angular/material/sort';
 import { AdminGameService } from '../adminGame.service';
 import { GameService } from '@app/services/game.service';
@@ -51,6 +52,7 @@ export class AdminGamesList implements OnInit, OnChanges, AfterViewInit {
   gameService = inject(GameService);
   readonly router = inject(Router);
   readonly logger = inject(LoggerService);
+  private readonly prefs = inject(PaginationPreferencesService);
   readonly showScores = input<boolean>(false);
   pageTitle = 'Admin Game List';
   dialog = inject(MatDialog);
@@ -64,7 +66,7 @@ export class AdminGamesList implements OnInit, OnChanges, AfterViewInit {
   canEdit: boolean = false;
   clickedRows = new Set<RegularGame>();
   showFirstLastButtons = true;
-  pageSize = 10;
+  pageSize = this.prefs.getPageSize(10);
 
   @ViewChild('gamesPaginator') paginator: MatPaginator = inject(MatPaginator);
   @ViewChild(MatSort) sort: MatSort = inject(MatSort);
@@ -122,7 +124,11 @@ export class AdminGamesList implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngOnChanges() {
-    this.paginator.page.subscribe(() => this.refreshData());
+    this.paginator.page.subscribe((event: PageEvent) => {
+      this.pageSize = event.pageSize;
+      this.prefs.savePageSize(event.pageSize);
+      this.refreshData();
+    });
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }

@@ -1,6 +1,7 @@
 import {
   Component,
   Input,
+  OnInit,
   Output,
   EventEmitter,
   ViewChild,
@@ -9,11 +10,13 @@ import {
   TemplateRef,
   signal,
   Signal,
+  inject,
 } from '@angular/core';
 
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatSortModule, MatSort } from '@angular/material/sort';
-import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
+import { MatPaginatorModule, MatPaginator, PageEvent } from '@angular/material/paginator';
+import { PaginationPreferencesService } from '@app/services/pagination-preferences.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -68,7 +71,8 @@ import { ColumnConfig } from '../models';
     '../../../shared/scss/tables.scss',
   ],
 })
-export class AdminListDetailShell<T> implements AfterViewInit {
+export class AdminListDetailShell<T> implements OnInit, AfterViewInit {
+  private readonly prefs = inject(PaginationPreferencesService);
   // Configuration inputs
   /** Title displayed in the header */
   @Input({ required: true }) title!: string;
@@ -141,6 +145,16 @@ export class AdminListDetailShell<T> implements AfterViewInit {
     }
 
     return cols;
+  }
+
+  ngOnInit(): void {
+    // Apply stored preference, using the @Input defaultPageSize as fallback
+    this.defaultPageSize = this.prefs.getPageSize(this.defaultPageSize);
+  }
+
+  onPage(event: PageEvent): void {
+    this.defaultPageSize = event.pageSize;
+    this.prefs.savePageSize(event.pageSize);
   }
 
   /**

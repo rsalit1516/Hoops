@@ -15,7 +15,8 @@ import { SeasonsToolbar } from '../../components/seasons-toolbar/seasons-toolbar
 import { Router } from '@angular/router';
 import { SeasonService } from '@app/services/season.service';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { PaginationPreferencesService } from '@app/services/pagination-preferences.service';
 import { LoggerService } from '@app/services/logger.service';
 
 @Component({
@@ -39,10 +40,11 @@ export class AdminSeasonList implements OnInit, AfterViewInit {
   readonly #seasonService = inject(SeasonService);
   readonly #router = inject(Router);
   private readonly logger = inject(LoggerService);
+  private readonly prefs = inject(PaginationPreferencesService);
   readonly paginator = viewChild<MatPaginator>('seasonPaginator');
   readonly sort = viewChild(MatSort);
   showFirstLastButtons = true;
-  pageSize = 10;
+  pageSize = this.prefs.getPageSize(10);
   seasons = computed(() => this.#seasonService.seasons);
 
   dataSource = new MatTableDataSource<Season>(this.seasons());
@@ -65,6 +67,11 @@ export class AdminSeasonList implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator() ?? null;
     this.dataSource.sort = this.sort() ?? null;
   }
+  onPage(event: PageEvent): void {
+    this.pageSize = event.pageSize;
+    this.prefs.savePageSize(event.pageSize);
+  }
+
   edit(row: Season) {
     this.#seasonService.updateSelectedSeason(row);
     this.logger.debug('Editing season:', row);

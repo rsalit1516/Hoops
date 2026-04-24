@@ -1,7 +1,8 @@
 import { Component, OnInit, inject, ViewChild, effect } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
-import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
+import { MatPaginatorModule, MatPaginator, PageEvent } from '@angular/material/paginator';
+import { PaginationPreferencesService } from '@app/services/pagination-preferences.service';
 import { MatSortModule, MatSort } from '@angular/material/sort';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -40,10 +41,12 @@ export class PlayerList implements OnInit {
   private seasonService = inject(SeasonService);
   private divisionService = inject(DivisionService);
   private logger = inject(LoggerService);
+  private readonly prefs = inject(PaginationPreferencesService);
 
   displayedColumns: string[] = ['name', 'draftId', 'division'];
   dataSource = new MatTableDataSource<DraftListPlayer>([]);
   isLoading = false;
+  pageSize = this.prefs.getPageSize(25);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -97,6 +100,11 @@ export class PlayerList implements OnInit {
         this.isLoading = false;
       },
     });
+  }
+
+  onPage(event: PageEvent): void {
+    this.pageSize = event.pageSize;
+    this.prefs.savePageSize(event.pageSize);
   }
 
   onRowClick(player: DraftListPlayer) {
