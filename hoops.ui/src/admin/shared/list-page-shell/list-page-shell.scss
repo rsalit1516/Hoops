@@ -2,7 +2,7 @@
   padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 8px;
   height: 100%;
   max-height: calc(100vh - 175px);
   overflow: hidden;
@@ -30,8 +30,10 @@
 .list-section mat-card-content {
   flex: 1;
   min-height: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding-bottom: 0;
 }
 
 .header-content {
@@ -46,9 +48,4 @@
   display: flex;
   gap: 8px;
   align-items: center;
-}
-
-.list-section mat-card-content {
-  flex: 1;
-  overflow: auto;
 }

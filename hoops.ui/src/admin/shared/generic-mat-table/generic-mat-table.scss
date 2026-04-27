@@ -4,3 +4,23 @@
 .clickable-row:hover {
   background-color: #f5f5f5;
 }
+
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.table-container {
+  height: 100%;
+  min-height: 0;
+  overflow-y: auto;
+
+  mat-paginator {
+    position: sticky;
+    bottom: 0;
+    background: white;
+    z-index: 1;
+  }
+}

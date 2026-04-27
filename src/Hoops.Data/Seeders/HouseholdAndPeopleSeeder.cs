@@ -53,7 +53,7 @@ namespace Hoops.Data.Seeders
         public async Task SeedAsync()
         {
             var random = new Random();
-            var householdNames = new[] { "Adams", "Boomers", "Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Rodriguez", "Martinez", "Lopez", "Gonzalez", "Wilson", "Anderson", "Thomas", "Taylor", "Moore", "Jackson", "Martin", "Lee", "Perez", "Thompson", "White", "Harris", "Sanchez", "Clark", "Ramirez", "Lewis" };
+            var householdNames = new[] { "Adams", "Boomers", "Fernandez", "Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Rodriguez", "Martinez", "Lopez", "Gonzalez", "Wilson", "Anderson", "Thomas", "Taylor", "Moore", "Jackson", "Martin", "Lee", "Perez", "Taylor", "Thompson", "White", "Harris", "Sanchez", "Smith", "Salmon", "Schwartz", "Shiloh", "Se", "Slavin", "Swartzkopf", "Spark", "Clark", "Ramirez", "Lewis" };
             var firstNames = new[] { "John", "Jane", "Alex", "Chris", "Pat", "Taylor", "Jordan", "Morgan", "Casey", "Sam", "Jamie", "Riley", "Cameron", "Avery", "Skyler", "Drew", "Bailey", "Peyton", "Reese", "Quinn", "Charlie", "Dakota", "Finley", "Harper", "Rowan", "Sage", "Tatum", "Emerson", "Kendall", "Parker", "Sydney", "Aidan", "Blake", "Carter", "Dylan", "Evan", "Gavin", "Hunter", "Isaac", "Jaxon", "Liam", "Mason", "Noah", "Owen", "Ryan", "Tyler", "Zachary", "Aiden", "Brayden", "Caleb", "Ethan", "Logan", "Lucas", "Michael", "Nathan", "Samuel", "William" };
 
             // Insert 5 households
