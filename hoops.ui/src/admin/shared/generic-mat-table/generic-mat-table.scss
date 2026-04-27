@@ -13,14 +13,21 @@
 }
 
 .table-container {
+  display: flex;
+  flex-direction: column;
   height: 100%;
   min-height: 0;
-  overflow-y: auto;
+  overflow: hidden;
+
+  .table-scroll {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: auto;
+  }
 
   mat-paginator {
-    position: sticky;
-    bottom: 0;
+    flex-shrink: 0;
     background: white;
-    z-index: 1;
   }
 }
