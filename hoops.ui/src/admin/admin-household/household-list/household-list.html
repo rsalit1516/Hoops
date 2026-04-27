@@ -1,4 +1,7 @@
-<csbc-list-page-shell [title]="'Households'" [count]="filteredHouseholds().length">
+<csbc-list-page-shell
+  [title]="'Households'"
+  [count]="filteredHouseholds().length"
+>
   <div filter>
     <csbc-household-filters
       [filters]="filters()"
@@ -13,11 +16,10 @@
     </button>
   </div>
 
-  <div list>
-    <app-generic-mat-table
-      [columns]="columns"
-      [data]="filteredHouseholds()"
-      (rowClick)="onRowClick($event)"
-    />
-  </div>
+  <app-generic-mat-table
+    list
+    [columns]="columns"
+    [data]="filteredHouseholds()"
+    (rowClick)="onRowClick($event)"
+  />
 </csbc-list-page-shell>
