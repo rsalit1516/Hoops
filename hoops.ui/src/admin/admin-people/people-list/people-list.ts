@@ -1,4 +1,14 @@
-import { Component, computed, effect, inject, OnInit, AfterViewInit, signal, ViewChild, TemplateRef } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  OnInit,
+  AfterViewInit,
+  signal,
+  ViewChild,
+  TemplateRef,
+} from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -31,9 +41,12 @@ type PersonWithId = Person & { id: number };
     PeopleFilters,
   ],
   templateUrl: './people-list.html',
-  styleUrls: ['./people-list.scss'],
+  styleUrls: ['./people-list.scss', '../../admin.scss'],
 })
-export class PeopleList extends BaseList<PersonWithId> implements OnInit, AfterViewInit {
+export class PeopleList
+  extends BaseList<PersonWithId>
+  implements OnInit, AfterViewInit
+{
   private peopleService = inject(PeopleService);
   private householdService = inject(HouseholdService);
   private logger = inject(LoggerService);
@@ -102,11 +115,21 @@ export class PeopleList extends BaseList<PersonWithId> implements OnInit, AfterV
         this.logger.info('Invalid search criteria in storage', e);
         localStorage.removeItem('peopleSearchCriteria');
         // Load with default 'A' filter
-        this.onFilterChange({ lastName: 'A', firstName: '', playerOnly: false, letter: 'A' });
+        this.onFilterChange({
+          lastName: 'A',
+          firstName: '',
+          playerOnly: false,
+          letter: 'A',
+        });
       }
     } else {
       // Load initial data with 'A' filter
-      this.onFilterChange({ lastName: 'A', firstName: '', playerOnly: false, letter: 'A' });
+      this.onFilterChange({
+        lastName: 'A',
+        firstName: '',
+        playerOnly: false,
+        letter: 'A',
+      });
     }
   }
 
@@ -116,10 +139,13 @@ export class PeopleList extends BaseList<PersonWithId> implements OnInit, AfterV
     if (!peopleData) return [];
 
     // Map to ensure 'id' property exists for BaseList compatibility
-    return peopleData.map(person => ({
-      ...person,
-      id: person.personId
-    } as PersonWithId));
+    return peopleData.map(
+      (person) =>
+        ({
+          ...person,
+          id: person.personId,
+        }) as PersonWithId,
+    );
   });
 
   // Computed signal for filtered people
@@ -159,6 +185,8 @@ export class PeopleList extends BaseList<PersonWithId> implements OnInit, AfterV
   onRegister(event: Event, person: PersonWithId): void {
     event.stopPropagation();
     this.peopleService.updateSelectedPerson(person);
-    this.router.navigate(['/admin/player-registration', person.personId], { queryParams: { from: 'people' } });
+    this.router.navigate(['/admin/player-registration', person.personId], {
+      queryParams: { from: 'people' },
+    });
   }
 }
