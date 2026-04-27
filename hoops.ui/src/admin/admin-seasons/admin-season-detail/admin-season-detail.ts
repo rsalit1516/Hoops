@@ -1,4 +1,3 @@
-
 import {
   Component,
   computed,
@@ -46,8 +45,8 @@ import { LoggerService } from '@app/services/logger.service';
     MatButtonModule,
     MatSelectModule,
     MatCheckboxModule,
-    MatSnackBarModule
-],
+    MatSnackBarModule,
+  ],
   providers: [provideNativeDateAdapter()],
   templateUrl: './admin-season-detail.html',
   styleUrls: [

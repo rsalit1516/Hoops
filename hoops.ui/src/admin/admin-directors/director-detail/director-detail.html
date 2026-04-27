@@ -5,10 +5,11 @@
     </mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <csbc-director-form [director]="director()"
+    <csbc-director-form
+      [director]="director()"
       (save)="onSave($event)"
       (cancel)="onCancel()"
       (delete)="onDelete($event)"
-     />
+    />
   </mat-card-content>
 </mat-card>

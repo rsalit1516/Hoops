@@ -118,7 +118,7 @@ export class AdminUserDetail implements OnInit {
   });
 
   readonly showHouseholdDropdown = computed(
-    () => this.isNewRecord() && !this.householdName()
+    () => this.isNewRecord() && !this.householdName(),
   );
 
   readonly userTypeOptions = [
@@ -141,10 +141,10 @@ export class AdminUserDetail implements OnInit {
             ? this.householdService
                 .searchByName(text)
                 .pipe(catchError(() => of([])))
-            : of([])
-        )
+            : of([]),
+        ),
       ),
-      { initialValue: [] as Household[] }
+      { initialValue: [] as Household[] },
     );
 
     effect(() => {
@@ -242,7 +242,7 @@ export class AdminUserDetail implements OnInit {
 
   private getHouseholdById(houseId: number): Observable<Household> {
     return this.http.get<Household>(
-      `${Constants.GET_HOUSEHOLD_BY_ID_URL}/${houseId}`
+      `${Constants.GET_HOUSEHOLD_BY_ID_URL}/${houseId}`,
     );
   }
 
