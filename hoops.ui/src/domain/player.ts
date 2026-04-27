@@ -24,7 +24,7 @@ export class Player {
   public noteDesc: string = '';
   public checkMemo: string = '';
   public createdDate: Date | null = null;
-  public createdUser: string = '';
+  public createdUser: number | null = null;
   public playsDown: boolean = false;
   public playsUp: boolean = false;
   public shoppingCartId: number | null = null;

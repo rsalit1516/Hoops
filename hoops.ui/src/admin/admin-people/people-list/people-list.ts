@@ -159,6 +159,6 @@ export class PeopleList extends BaseList<PersonWithId> implements OnInit, AfterV
   onRegister(event: Event, person: PersonWithId): void {
     event.stopPropagation();
     this.peopleService.updateSelectedPerson(person);
-    this.router.navigate(['/admin/player-registration', person.personId]);
+    this.router.navigate(['/admin/player-registration', person.personId], { queryParams: { from: 'people' } });
   }
 }

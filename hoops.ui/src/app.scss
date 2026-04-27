@@ -476,11 +476,15 @@ th {
   padding-top: 10px;
 }
 
-mat-side-container {
+app-root {
+  display: block;
+  height: 100%;
+}
+
+mat-sidenav-container {
+  height: 100vh;
   background-color: v.$base-background-color;
 }
-mat-side-container,
-mat-sidenav-content,
 mat-sidenav {
   height: 100%;
 }
@@ -492,8 +496,9 @@ mat-sidenav {
 .mat-drawer-container {
   background-color: v.$base-background-color;
 }
+
 .mat-drawer-content {
-  overflow: inherit;
+  overflow-y: auto !important;
 }
 main {
   padding: 10px;

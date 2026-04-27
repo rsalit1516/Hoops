@@ -4,7 +4,7 @@
       <mat-card-header>
         <mat-card-title>{{ pageTitle }}</mat-card-title>
         <div class="season-select">
-          <mat-form-field [appearance]="inputStyle">
+          <mat-form-field [appearance]="inputStyle" subscriptSizing="dynamic">
             <mat-label>Season</mat-label>
             <mat-select
               [ngModel]="playerFormModel().seasonId"
@@ -28,7 +28,7 @@
       <mat-card-content>
         <!-- Player Name and Division -->
         <div class="form-row two-column">
-          <mat-form-field [appearance]="inputStyle" class="full-width">
+          <mat-form-field [appearance]="inputStyle" class="full-width" subscriptSizing="dynamic">
             <mat-label>Player Name</mat-label>
             <input
               matInput
@@ -39,7 +39,7 @@
             />
           </mat-form-field>
 
-          <mat-form-field [appearance]="inputStyle" class="full-width">
+          <mat-form-field [appearance]="inputStyle" class="full-width" subscriptSizing="dynamic">
             <mat-label>Division</mat-label>
             <mat-select
               [ngModel]="playerFormModel().divisionId"
@@ -61,7 +61,6 @@
             <mat-card-title>Payment Info</mat-card-title>
           </mat-card-header>
           <mat-card-content>
-            <!-- Payment Type -->
             <div class="form-row">
               <mat-label>Payment Type</mat-label>
               <mat-radio-group
@@ -76,9 +75,8 @@
               </mat-radio-group>
             </div>
 
-            <!-- Paid Amount and Balance -->
             <div class="form-row two-column">
-              <mat-form-field [appearance]="inputStyle">
+              <mat-form-field [appearance]="inputStyle" subscriptSizing="dynamic">
                 <mat-label>Paid Amount</mat-label>
                 <input
                   matInput
@@ -91,7 +89,7 @@
                 <span matTextPrefix>$&nbsp;</span>
               </mat-form-field>
 
-              <mat-form-field [appearance]="inputStyle">
+              <mat-form-field [appearance]="inputStyle" subscriptSizing="dynamic">
                 <mat-label>Balance</mat-label>
                 <input
                   matInput
@@ -105,9 +103,8 @@
               </mat-form-field>
             </div>
 
-            <!-- Check # and Paid Date -->
             <div class="form-row two-column">
-              <mat-form-field [appearance]="inputStyle">
+              <mat-form-field [appearance]="inputStyle" subscriptSizing="dynamic">
                 <mat-label>Check #</mat-label>
                 <input
                   matInput
@@ -117,7 +114,7 @@
                 />
               </mat-form-field>
 
-              <mat-form-field [appearance]="inputStyle">
+              <mat-form-field [appearance]="inputStyle" subscriptSizing="dynamic">
                 <mat-label>Paid Date</mat-label>
                 <input
                   matInput
@@ -134,16 +131,15 @@
               </mat-form-field>
             </div>
 
-            <!-- Memo -->
             <div class="form-row">
-              <mat-form-field [appearance]="inputStyle" class="full-width">
+              <mat-form-field [appearance]="inputStyle" class="full-width" subscriptSizing="dynamic">
                 <mat-label>Memo</mat-label>
                 <textarea
                   matInput
                   [ngModel]="playerFormModel().noteDesc"
                   (ngModelChange)="updateFormField('noteDesc', $event)"
                   name="noteDesc"
-                  rows="3"
+                  rows="2"
                 ></textarea>
               </mat-form-field>
             </div>
@@ -156,9 +152,8 @@
             <mat-card-title>Draft Info</mat-card-title>
           </mat-card-header>
           <mat-card-content>
-            <!-- Draft ID and Draft Note -->
             <div class="form-row two-column">
-              <mat-form-field [appearance]="inputStyle">
+              <mat-form-field [appearance]="inputStyle" subscriptSizing="dynamic">
                 <mat-label>Draft ID</mat-label>
                 <input
                   matInput
@@ -168,7 +163,7 @@
                 />
               </mat-form-field>
 
-              <mat-form-field [appearance]="inputStyle">
+              <mat-form-field [appearance]="inputStyle" subscriptSizing="dynamic">
                 <mat-label>Draft Note</mat-label>
                 <input
                   matInput
@@ -179,9 +174,8 @@
               </mat-form-field>
             </div>
 
-            <!-- Rating and Change Division -->
             <div class="form-row two-column">
-              <mat-form-field [appearance]="inputStyle">
+              <mat-form-field [appearance]="inputStyle" subscriptSizing="dynamic">
                 <mat-label>Rating</mat-label>
                 <mat-select
                   [ngModel]="playerFormModel().rating"
@@ -194,7 +188,7 @@
                 </mat-select>
               </mat-form-field>
 
-              <mat-form-field [appearance]="inputStyle">
+              <mat-form-field [appearance]="inputStyle" subscriptSizing="dynamic">
                 <mat-label>Change Division</mat-label>
                 <mat-select
                   [ngModel]="playerFormModel().changeDivision"
@@ -208,7 +202,6 @@
               </mat-form-field>
             </div>
 
-            <!-- Fee Waived Checkboxes -->
             <div class="form-row">
               <mat-label class="section-label">Fee Waived</mat-label>
               <div class="checkbox-group">

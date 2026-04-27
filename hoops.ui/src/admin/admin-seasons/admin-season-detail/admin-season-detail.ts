@@ -51,6 +51,7 @@ import { LoggerService } from '@app/services/logger.service';
   providers: [provideNativeDateAdapter()],
   templateUrl: './admin-season-detail.html',
   styleUrls: [
+    '../../admin.scss',
     '../../../shared/scss/forms.scss',
     '../../../shared/scss/cards.scss',
   ],

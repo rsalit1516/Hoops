@@ -27,6 +27,7 @@ import { MatCardModule } from '@angular/material/card';
   templateUrl: './admin-games-playoffs-detail.html',
   styleUrls: [
     // './admin-games-playoffs-detail.scss',
+    '../../admin.scss',
     '../../../shared/scss/forms.scss',
     '../../../shared/scss/cards.scss',
   ],

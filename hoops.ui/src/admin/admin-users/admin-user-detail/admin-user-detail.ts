@@ -59,7 +59,7 @@ interface UserEditModel {
     MatSnackBarModule,
   ],
   templateUrl: './admin-user-detail.html',
-  styleUrls: ['../../../shared/scss/forms.scss'],
+  styleUrls: ['../../../shared/scss/forms.scss', '../../admin.scss'],
 })
 export class AdminUserDetail implements OnInit {
   private route = inject(ActivatedRoute);

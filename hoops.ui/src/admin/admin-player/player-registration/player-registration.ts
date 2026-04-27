@@ -193,14 +193,19 @@ export class PlayerRegistration implements OnInit {
     });
   }
 
+  private returnToPeople = false;
+
   ngOnInit(): void {
     this.loadSeasons();
 
-    // Get personId from route params
+    this.route.queryParams.subscribe((qp) => {
+      this.returnToPeople = qp['from'] === 'people';
+    });
+
     this.route.params.subscribe((params) => {
       const personId = params['personId'];
       if (personId) {
-        this.loadPersonAndPlayer(+personId); // Convert string to number
+        this.loadPersonAndPlayer(+personId);
       }
     });
   }
@@ -417,8 +422,11 @@ export class PlayerRegistration implements OnInit {
           duration: 3000,
         });
 
-        // Navigate back to the previous page
-        this.location.back();
+        if (this.returnToPeople) {
+          this.router.navigate(['/admin/people']);
+        } else {
+          this.location.back();
+        }
       },
       error: (error) => {
         this.logger.error('Error saving player:', error);
@@ -437,7 +445,11 @@ export class PlayerRegistration implements OnInit {
   }
 
   onCancel(): void {
-    this.location.back();
+    if (this.returnToPeople) {
+      this.router.navigate(['/admin/people']);
+    } else {
+      this.location.back();
+    }
   }
 
   /**

@@ -116,7 +116,7 @@ describe('PeopleList', () => {
       stopPropagation: jasmine.createSpy(),
     } as unknown as Event;
     component.onRegister(mockEvent, { ...mockPeople[0], id: 1 } as any);
-    expect(navigateSpy).toHaveBeenCalledWith(['/admin/player-registration', 1]);
+    expect(navigateSpy).toHaveBeenCalledWith(['/admin/player-registration', 1], { queryParams: { from: 'people' } });
   });
 
   it('onRegister stops event propagation to prevent row navigation', () => {

@@ -1,8 +1,9 @@
-<div class="form-header">
-  <h2>{{ isNewRecord() ? 'Create New User' : 'Edit User' }}</h2>
-</div>
+<div class="admin-detail-scroll">
+  <div class="form-header">
+    <h2>{{ isNewRecord() ? 'Create New User' : 'Edit User' }}</h2>
+  </div>
 
-<form class="form-container">
+  <form class="form-container">
   <div class="grid grid-cols-2 gap-4">
     <!-- User Id — hidden for new records -->
     @if (!isNewRecord()) {
@@ -89,16 +90,17 @@
     </mat-form-field>
   </div>
 
-  <div class="form-actions">
-    <button
-      mat-raised-button
-      color="primary"
-      type="button"
-      [disabled]="!canSave()"
-      (click)="save()"
-    >
-      {{ isSaving() ? 'Saving…' : isNewRecord() ? 'Create' : 'Save' }}
-    </button>
-    <button mat-button type="button" (click)="cancel()">Cancel</button>
-  </div>
-</form>
+    <div class="form-actions">
+      <button
+        mat-raised-button
+        color="primary"
+        type="button"
+        [disabled]="!canSave()"
+        (click)="save()"
+      >
+        {{ isSaving() ? 'Saving…' : isNewRecord() ? 'Create' : 'Save' }}
+      </button>
+      <button mat-button type="button" (click)="cancel()">Cancel</button>
+    </div>
+  </form>
+</div>

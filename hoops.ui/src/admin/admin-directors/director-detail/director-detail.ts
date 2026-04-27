@@ -12,6 +12,7 @@ import { Observable } from 'rxjs';
   templateUrl: './director-detail.html',
   styleUrls: [
     './director-detail.scss',
+    '../../admin.scss',
     '../../../shared/scss/forms.scss',
     '../../../shared/scss/cards.scss',
   ],

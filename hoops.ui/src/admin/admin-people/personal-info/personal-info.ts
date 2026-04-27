@@ -296,7 +296,7 @@ export class PersonalInfo implements OnInit {
     }
 
     // Navigate to player registration form
-    this.router.navigate(['/admin/player-registration', currentPerson.personId]);
+    this.router.navigate(['/admin/player-registration', currentPerson.personId], { queryParams: { from: 'people' } });
   }
 
   onCreateUser () {
