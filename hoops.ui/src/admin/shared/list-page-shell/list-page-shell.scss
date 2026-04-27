@@ -3,8 +3,7 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  height: 100%;
-  max-height: calc(100vh - 175px);
+  height: calc(100vh - 175px);
   overflow: hidden;
 }
 
@@ -36,11 +35,12 @@
   padding-bottom: 0;
 }
 
-.list-section mat-card-content > [list] {
+.list-content {
   flex: 1;
   min-height: 0;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .header-content {
