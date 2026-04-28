@@ -21,10 +21,6 @@
   <!-- Player Table -->
   @if (!isLoading) {
   <div class="mat-elevation-z8">
-    <ng-template #nameTemplate let-item>
-      {{ item.lastName }}, {{ item.firstName }}
-    </ng-template>
-
     <app-generic-mat-table
       [columns]="columns"
       [data]="dataSource.data"

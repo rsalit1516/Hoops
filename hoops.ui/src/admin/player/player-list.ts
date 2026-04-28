@@ -1,11 +1,4 @@
-import {
-  Component,
-  OnInit,
-  inject,
-  ViewChild,
-  TemplateRef,
-  effect,
-} from '@angular/core';
+import { Component, OnInit, inject, effect } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatTableDataSource } from '@angular/material/table';
 import { PaginationPreferencesService } from '@app/services/pagination-preferences.service';
@@ -49,12 +42,13 @@ export class PlayerList implements OnInit {
   private logger = inject(LoggerService);
   private readonly prefs = inject(PaginationPreferencesService);
 
-  @ViewChild('nameTemplate', { static: true })
-  nameTemplate!: TemplateRef<unknown>;
+  columns: TableColumn<DraftListPlayer & { name: string }>[] = [
+    { key: 'name', header: 'Name', field: 'name' },
+    { key: 'draftId', header: 'Draft ID', field: 'draftId' },
+    { key: 'division', header: 'Division', field: 'division' },
+  ];
 
-  columns: TableColumn<DraftListPlayer>[] = [];
-
-  dataSource = new MatTableDataSource<DraftListPlayer>([]);
+  dataSource = new MatTableDataSource<DraftListPlayer & { name: string }>([]);
   isLoading = false;
   pageSize = this.prefs.getPageSize(25);
 
@@ -75,12 +69,6 @@ export class PlayerList implements OnInit {
   }
 
   ngOnInit() {
-    this.columns = [
-      { key: 'name', header: 'Name', template: this.nameTemplate },
-      { key: 'draftId', header: 'Draft ID', field: 'draftId' },
-      { key: 'division', header: 'Division', field: 'division' },
-    ];
-
     // Initial load will be triggered by season effect once season is available
   }
 
@@ -104,7 +92,10 @@ export class PlayerList implements OnInit {
     this.http.get<DraftListPlayer[]>(url).subscribe({
       next: (players) => {
         this.logger.info('Players loaded:', players.length);
-        this.dataSource.data = players;
+        this.dataSource.data = players.map((player) => ({
+          ...player,
+          name: `${player.lastName}, ${player.firstName}`,
+        }));
         this.isLoading = false;
       },
       error: (error) => {
