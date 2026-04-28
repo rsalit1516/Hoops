@@ -1,4 +1,11 @@
-import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -29,7 +36,10 @@ import { LoggerService } from '@app/services/logger.service';
   templateUrl: './household-list.html',
   styleUrl: './household-list.scss',
 })
-export class HouseholdList extends BaseList<HouseholdListItem> implements OnInit {
+export class HouseholdList
+  extends BaseList<HouseholdListItem>
+  implements OnInit
+{
   private householdService = inject(HouseholdService);
   private logger = inject(LoggerService);
 
@@ -75,7 +85,7 @@ export class HouseholdList extends BaseList<HouseholdListItem> implements OnInit
           address1: household.address1,
           phone: household.phone,
           email: household.email,
-        } as HouseholdListItem)
+        }) as HouseholdListItem,
     );
   });
 
@@ -121,15 +131,9 @@ export class HouseholdList extends BaseList<HouseholdListItem> implements OnInit
 
   onRowClick(item: HouseholdListItem): void {
     this.logger.info('Row clicked:', item);
-    // Convert back to full Household for service
-    const household = new Household();
-    household.houseId = item.houseId;
-    household.name = item.name;
-    household.address1 = item.address1;
-    household.phone = item.phone;
-    household.email = item.email;
-
-    this.householdService.updateSelectedHousehold(household);
+    // Load the full household record so detail form fields (for example zip)
+    // are populated from canonical data rather than trimmed list-row data.
+    this.householdService.selectedHouseholdByHouseId(item.houseId);
     this.router.navigate(['..', 'detail'], { relativeTo: this.route });
   }
 }
