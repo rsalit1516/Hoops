@@ -4,7 +4,11 @@
       <mat-card-header>
         <mat-card-title>{{ pageTitle }}</mat-card-title>
         <div class="season-select">
-          <mat-form-field [appearance]="inputStyle" subscriptSizing="dynamic">
+          <mat-form-field
+            [appearance]="inputStyle"
+            floatLabel="always"
+            subscriptSizing="dynamic"
+          >
             <mat-label>Season</mat-label>
             <mat-select
               [ngModel]="playerFormModel().seasonId"
@@ -28,7 +32,11 @@
       <mat-card-content>
         <!-- Player Name and Division -->
         <div class="form-row two-column">
-          <mat-form-field [appearance]="inputStyle" class="full-width" subscriptSizing="dynamic">
+          <mat-form-field
+            [appearance]="inputStyle"
+            class="full-width"
+            subscriptSizing="dynamic"
+          >
             <mat-label>Player Name</mat-label>
             <input
               matInput
@@ -39,7 +47,12 @@
             />
           </mat-form-field>
 
-          <mat-form-field [appearance]="inputStyle" class="full-width" subscriptSizing="dynamic">
+          <mat-form-field
+            [appearance]="inputStyle"
+            floatLabel="always"
+            class="full-width"
+            subscriptSizing="dynamic"
+          >
             <mat-label>Division</mat-label>
             <mat-select
               [ngModel]="playerFormModel().divisionId"
@@ -76,7 +89,10 @@
             </div>
 
             <div class="form-row two-column">
-              <mat-form-field [appearance]="inputStyle" subscriptSizing="dynamic">
+              <mat-form-field
+                [appearance]="inputStyle"
+                subscriptSizing="dynamic"
+              >
                 <mat-label>Paid Amount</mat-label>
                 <input
                   matInput
@@ -89,7 +105,10 @@
                 <span matTextPrefix>$&nbsp;</span>
               </mat-form-field>
 
-              <mat-form-field [appearance]="inputStyle" subscriptSizing="dynamic">
+              <mat-form-field
+                [appearance]="inputStyle"
+                subscriptSizing="dynamic"
+              >
                 <mat-label>Balance</mat-label>
                 <input
                   matInput
@@ -104,7 +123,10 @@
             </div>
 
             <div class="form-row two-column">
-              <mat-form-field [appearance]="inputStyle" subscriptSizing="dynamic">
+              <mat-form-field
+                [appearance]="inputStyle"
+                subscriptSizing="dynamic"
+              >
                 <mat-label>Check #</mat-label>
                 <input
                   matInput
@@ -114,7 +136,10 @@
                 />
               </mat-form-field>
 
-              <mat-form-field [appearance]="inputStyle" subscriptSizing="dynamic">
+              <mat-form-field
+                [appearance]="inputStyle"
+                subscriptSizing="dynamic"
+              >
                 <mat-label>Paid Date</mat-label>
                 <input
                   matInput
@@ -132,7 +157,11 @@
             </div>
 
             <div class="form-row">
-              <mat-form-field [appearance]="inputStyle" class="full-width" subscriptSizing="dynamic">
+              <mat-form-field
+                [appearance]="inputStyle"
+                class="full-width"
+                subscriptSizing="dynamic"
+              >
                 <mat-label>Memo</mat-label>
                 <textarea
                   matInput
@@ -153,7 +182,10 @@
           </mat-card-header>
           <mat-card-content>
             <div class="form-row two-column">
-              <mat-form-field [appearance]="inputStyle" subscriptSizing="dynamic">
+              <mat-form-field
+                [appearance]="inputStyle"
+                subscriptSizing="dynamic"
+              >
                 <mat-label>Draft ID</mat-label>
                 <input
                   matInput
@@ -163,7 +195,10 @@
                 />
               </mat-form-field>
 
-              <mat-form-field [appearance]="inputStyle" subscriptSizing="dynamic">
+              <mat-form-field
+                [appearance]="inputStyle"
+                subscriptSizing="dynamic"
+              >
                 <mat-label>Draft Note</mat-label>
                 <input
                   matInput
@@ -175,7 +210,11 @@
             </div>
 
             <div class="form-row two-column">
-              <mat-form-field [appearance]="inputStyle" subscriptSizing="dynamic">
+              <mat-form-field
+                [appearance]="inputStyle"
+                floatLabel="always"
+                subscriptSizing="dynamic"
+              >
                 <mat-label>Rating</mat-label>
                 <mat-select
                   [ngModel]="playerFormModel().rating"
@@ -188,7 +227,11 @@
                 </mat-select>
               </mat-form-field>
 
-              <mat-form-field [appearance]="inputStyle" subscriptSizing="dynamic">
+              <mat-form-field
+                [appearance]="inputStyle"
+                floatLabel="always"
+                subscriptSizing="dynamic"
+              >
                 <mat-label>Change Division</mat-label>
                 <mat-select
                   [ngModel]="playerFormModel().changeDivision"

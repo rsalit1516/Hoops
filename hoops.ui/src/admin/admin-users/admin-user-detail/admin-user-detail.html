@@ -85,7 +85,7 @@
       </mat-form-field>
 
       <!-- User Type -->
-      <mat-form-field appearance="fill" class="col-span-2">
+      <mat-form-field appearance="fill" floatLabel="always" class="col-span-2">
         <mat-label>User Type</mat-label>
         <mat-select [formField]="userForm.userType">
           @for (opt of userTypeOptions; track opt.value) {

@@ -9,7 +9,7 @@
       <input type="hidden" formControlName="divisionId" />
 
       <!-- Location dropdown -->
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="fill" floatLabel="always">
         <mat-label>Location</mat-label>
         <mat-select formControlName="locationNumber" required>
           @for (loc of locationsSig(); track loc) {

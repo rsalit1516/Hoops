@@ -1,13 +1,11 @@
-<mat-form-field>
+<mat-form-field floatLabel="always">
   <mat-label>Division</mat-label>
   <mat-select
     [(value)]="selectedDivision"
     (selectionChange)="onChange($event.value)"
     class="form-control"
   >
-    <mat-option [value]="null" (click)="changeDivision(null)">
-      All
-    </mat-option>
+    <mat-option [value]="null" (click)="changeDivision(null)"> All </mat-option>
     @for( division of divisionService.seasonDivisions(); track division) {
     <mat-option [value]="division" (click)="changeDivision(division)">
       {{ division.divisionDescription }}
