@@ -34,7 +34,7 @@ $brand-color: #d17b00;
 $default-lighten: 5%;
 
 $sidebar-background-color: #232323;
-$default-lighten: 5%;
+$default-lighten: 10%;
 
 $card-highlight: $brand-color;
 
@@ -63,7 +63,7 @@ $button-font-size: 1rem;
 $select-font-size: 0.8rem;
 
 /* admin */
-$admin-background-color: color.adjust(black, $lightness: 5%);
+$admin-background-color: color.adjust(black, $lightness: 0%);
 
 $admin-font-color: white;
 $admin-table-background-color: color.adjust(

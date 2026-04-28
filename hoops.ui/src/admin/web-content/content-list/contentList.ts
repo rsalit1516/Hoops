@@ -62,17 +62,7 @@ export class ContentList implements OnInit {
   @ViewChild('actionsTemplate', { static: true })
   actionsTemplate!: TemplateRef<unknown>;
 
-  columns: TableColumn<WebContent>[] = [
-    { key: 'title', header: 'Title', field: 'title' },
-    { key: 'dateAndTime', header: 'Date And Time', field: 'dateAndTime' },
-    { key: 'location', header: 'Location', field: 'location' },
-    {
-      key: 'expirationDate',
-      header: 'Expiry Date',
-      template: this.expirationDateTemplate,
-    },
-    { key: 'actions', header: '', template: this.actionsTemplate },
-  ];
+  columns: TableColumn<WebContent>[] = [];
 
   allWebContent = computed(() => this.#contentService.allWebContent);
   pageSize = this.prefs.getPageSize(10);
@@ -101,6 +91,18 @@ export class ContentList implements OnInit {
   }
 
   ngOnInit() {
+    this.columns = [
+      { key: 'title', header: 'Title', field: 'title' },
+      { key: 'dateAndTime', header: 'Date And Time', field: 'dateAndTime' },
+      { key: 'location', header: 'Location', field: 'location' },
+      {
+        key: 'expirationDate',
+        header: 'Expiry Date',
+        template: this.expirationDateTemplate,
+      },
+      { key: 'actions', header: '', template: this.actionsTemplate },
+    ];
+
     this.pageTitle = 'Web Site Messages';
     // Fetch fresh data every time the list is displayed
     // Active content is computed automatically from allWebContent

@@ -1,3 +1,5 @@
+@use "../../../Content/variables" as v;
+
 .list-page-container {
   padding: 16px;
   display: flex;
@@ -5,6 +7,7 @@
   gap: 8px;
   height: calc(100vh - 175px);
   overflow: hidden;
+  background-color: v.$admin-background-color;
 }
 
 .filter-section {

@@ -1,4 +1,11 @@
-import { Component, computed, HostListener, OnInit, inject, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  HostListener,
+  OnInit,
+  inject,
+  signal,
+} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs/operators';
@@ -23,16 +30,25 @@ import { LoggerService } from '@app/services/logger.service';
   selector: 'csbc-admin-shell',
   template: `
     <mat-sidenav-container class="admin-sidenav-container">
-      <mat-sidenav [mode]="isMobile() ? 'over' : 'side'" [opened]="sidenavOpened()" (openedChange)="isOpen.set($event)" class="admin-sidenav">
+      <mat-sidenav
+        [mode]="isMobile() ? 'over' : 'side'"
+        [opened]="sidenavOpened()"
+        (openedChange)="isOpen.set($event)"
+        class="admin-sidenav"
+      >
         <app-admin-shell-sidebar />
       </mat-sidenav>
       <mat-sidenav-content class="admin-sidenav-content">
         <div class="flex items-center md:hidden menu-toggle-bar">
-          <button mat-icon-button (click)="isOpen.set(!isOpen())" aria-label="Toggle navigation">
+          <button
+            mat-icon-button
+            (click)="isOpen.set(!isOpen())"
+            aria-label="Toggle navigation"
+          >
             <mat-icon>menu</mat-icon>
           </button>
         </div>
-        <div class="px-4">
+        <div class="px-4 shell-content">
           <router-outlet />
         </div>
       </mat-sidenav-content>
@@ -84,7 +100,7 @@ export class AdminShell implements OnInit {
 
     // Close drawer after navigation on mobile
     this.#router.events
-      .pipe(filter(e => e instanceof NavigationEnd))
+      .pipe(filter((e) => e instanceof NavigationEnd))
       .subscribe(() => {
         if (this.isMobile()) {
           this.isOpen.set(false);
