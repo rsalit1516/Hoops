@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, inject, OnInit, signal, viewChild } from '@angular/core';
 import { Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -20,8 +20,12 @@ import { PlayerService } from '../player.service';
 import { PeopleService } from '@app/services/people.service';
 import { SeasonService } from '@app/services/season.service';
 import { DivisionService } from '@app/services/division.service';
+import { HouseholdService } from '@app/services/household.service';
 import { FormSettings } from '@app/shared/constants';
 import { LoggerService } from '@app/services/logger.service';
+import { RegistrationHouseholdForm } from './registration-household-form/registration-household-form';
+import { RegistrationPersonPhoneForm } from './registration-person-phone-form/registration-person-phone-form';
+import { HasUnsavedChanges } from '@app/admin/admin-games/pending-changes.guard';
 
 // Player registration form data interface
 interface PlayerFormData {
@@ -67,6 +71,8 @@ interface PlayerFormData {
     MatRadioModule,
     MatSelectModule,
     RouterModule,
+    RegistrationHouseholdForm,
+    RegistrationPersonPhoneForm,
   ],
   templateUrl: './player-registration.html',
   styleUrls: [
@@ -77,7 +83,7 @@ interface PlayerFormData {
   ],
   providers: [provideNativeDateAdapter()],
 })
-export class PlayerRegistration implements OnInit {
+export class PlayerRegistration implements OnInit, HasUnsavedChanges {
   readonly router = inject(Router);
   readonly route = inject(ActivatedRoute);
   private readonly location = inject(Location);
@@ -85,6 +91,7 @@ export class PlayerRegistration implements OnInit {
   private readonly peopleService = inject(PeopleService);
   private readonly seasonService = inject(SeasonService);
   private readonly divisionService = inject(DivisionService);
+  private readonly householdService = inject(HouseholdService);
   private logger = inject(LoggerService);
   private snackBar = inject(MatSnackBar);
 
@@ -102,6 +109,39 @@ export class PlayerRegistration implements OnInit {
   paymentTypes = ['Check', 'Credit Card', 'Online', 'Cash', 'Zelle'];
   ratingOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   changeDivisionOptions = ['N/A', 'Plays Up', 'Plays Down'];
+
+  // Sub-form refs for cross-form dirty check
+  private readonly householdFormRef = viewChild(RegistrationHouseholdForm);
+  private readonly personPhoneFormRef = viewChild(RegistrationPersonPhoneForm);
+
+  isFormDirty(): boolean {
+    return (
+      this.isDirty() ||
+      (this.householdFormRef()?.isDirty() ?? false) ||
+      (this.personPhoneFormRef()?.isDirty() ?? false)
+    );
+  }
+
+  // Dirty tracking
+  private initialSnapshot = signal<PlayerFormData | null>(null);
+
+  readonly isDirty = computed(() => {
+    const initial = this.initialSnapshot();
+    if (!initial) return false;
+    const current = this.playerFormModel();
+    const toISO = (v: Date | string | null | undefined): string | null =>
+      v ? new Date(v).toISOString() : null;
+    return (
+      JSON.stringify({ ...current, paidDate: toISO(current.paidDate) }) !==
+      JSON.stringify({ ...initial, paidDate: toISO(initial.paidDate) })
+    );
+  });
+
+  readonly canSave = computed(() => {
+    const model = this.playerFormModel();
+    if (model.playerId === 0) return model.seasonId !== null;
+    return this.isDirty();
+  });
 
   // Signal-based form model
   playerFormModel = signal<PlayerFormData>({
@@ -140,6 +180,9 @@ export class PlayerRegistration implements OnInit {
         'Person changed in player registration:',
         currentPerson,
       );
+      if (currentPerson?.houseId) {
+        this.householdService.selectedHouseholdByHouseId(currentPerson.houseId);
+      }
     });
 
     effect(() => {
@@ -348,6 +391,7 @@ export class PlayerRegistration implements OnInit {
     });
 
     this.playerService.updateFormDirtyState(false);
+    this.initialSnapshot.set({ ...this.playerFormModel() });
   }
 
   onSubmit(): void {
@@ -417,6 +461,7 @@ export class PlayerRegistration implements OnInit {
         this.logger.info('Player saved successfully:', response);
         this.playerService.updateSelectedPlayer(response);
         this.playerService.updateFormDirtyState(false);
+        this.initialSnapshot.set({ ...this.playerFormModel() });
 
         this.snackBar.open('Player registration saved successfully', 'OK', {
           duration: 3000,
