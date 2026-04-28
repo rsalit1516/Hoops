@@ -92,17 +92,7 @@ export class DivisionList implements OnInit, OnChanges {
   @ViewChild('teamsTemplate', { static: true })
   teamsTemplate!: TemplateRef<unknown>;
 
-  columns: TableColumn<Division>[] = [
-    { key: 'divisionId', header: 'ID', field: 'divisionId' },
-    {
-      key: 'divisionDescription',
-      header: 'Division',
-      field: 'divisionDescription',
-    },
-    { key: 'minDate', header: 'Min Date', template: this.minDateTemplate },
-    { key: 'maxDate', header: 'Max Date', template: this.maxDateTemplate },
-    { key: 'teams', header: '', template: this.teamsTemplate },
-  ];
+  columns: TableColumn<Division>[] = [];
 
   dataSource: MatTableDataSource<Division> = new MatTableDataSource<Division>(
     this.divisionService.seasonDivisions(),
@@ -117,7 +107,19 @@ export class DivisionList implements OnInit, OnChanges {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.columns = [
+      { key: 'divisionId', header: 'ID', field: 'divisionId' },
+      {
+        key: 'divisionDescription',
+        header: 'Division',
+        field: 'divisionDescription',
+      },
+      { key: 'minDate', header: 'Min Date', template: this.minDateTemplate },
+      { key: 'maxDate', header: 'Max Date', template: this.maxDateTemplate },
+      { key: 'teams', header: '', template: this.teamsTemplate },
+    ];
+  }
 
   ngOnChanges(): void {
     // if (this.selectedSeason !== undefined) {
