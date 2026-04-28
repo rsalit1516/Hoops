@@ -17,39 +17,16 @@
       ></csbc-alphabetical-search>
     </div> -->
     <div class="flex flex-col w-full mb-2">
-      <mat-table [dataSource]="dataSource" class="w-full">
-        <ng-container matColumnDef="userName">
-          <th mat-header-cell *matHeaderCellDef>Username</th>
-          <td mat-cell *matCellDef="let u">{{ u.userName }}</td>
-        </ng-container>
+      <ng-template #userTypeTemplate let-item>
+        {{ userTypeLabel(item.userType) }}
+      </ng-template>
 
-        <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef>Name</th>
-          <td mat-cell *matCellDef="let u">{{ u.name }}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="userType">
-          <th mat-header-cell *matHeaderCellDef>User Type</th>
-          <td mat-cell *matCellDef="let u">{{ userTypeLabel(u.userType) }}</td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr
-          mat-row
-          *matRowDef="let row; columns: displayedColumns"
-          (click)="selectUser(row)"
-        ></tr>
-        <tr class="mat-row" *matNoDataRow>
-          <td class="mat-cell" colspan="3">No users found</td>
-        </tr>
-      </mat-table>
+      <app-generic-mat-table
+        [columns]="columns"
+        [data]="filteredUsers"
+        [pageSize]="pageSize"
+        (rowClick)="selectUser($event)"
+      />
     </div>
-    <div class="mt-2"></div>
-    <mat-paginator [pageSizeOptions]="pageSizeOptions"
-      [pageSize]="pageSize"
-      showFirstLastButtons
-      aria-label="Select page of users"
-      (page)="onPage($event)"
-     />
   </div>
 </div>

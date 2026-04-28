@@ -6,6 +6,7 @@ using Hoops.Infrastructure.Data;
 using Hoops.Core.Interface;
 using Hoops.Data.Seeders;
 using Hoops.Core.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hoops.Data
 {
@@ -61,9 +62,13 @@ namespace Hoops.Data
         {
             //first delete all records
             // Order: most-dependent → least-dependent.
+            // Players and Coaches reference Team, Division, Season, and Person,
+            // so they must be deleted first before any of those parent tables.
             // Users must come AFTER all tables whose audit fields (CreatedUser/ModifiedUser)
             // carry a FK back to Users (Divisions, Teams, Seasons, etc.).
             // Users must come BEFORE People/Households because Users.PersonId → People.
+            await context.Database.ExecuteSqlRawAsync("DELETE FROM Players");
+            await context.Database.ExecuteSqlRawAsync("DELETE FROM Coach");
             await _schedulePlayoffSeeder.DeleteAllAsync();
             await _scheduleGameSeeder.DeleteAllAsync();
             await _scheduleDivTeamsSeeder.DeleteAllAsync();

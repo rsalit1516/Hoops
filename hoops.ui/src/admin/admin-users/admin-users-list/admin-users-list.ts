@@ -1,7 +1,7 @@
 import {
-  AfterViewInit,
   Component,
   OnInit,
+  TemplateRef,
   ViewChild,
   effect,
   inject,
@@ -9,43 +9,39 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { PaginationPreferencesService } from '@app/services/pagination-preferences.service';
-import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { User } from '@app/domain/user';
 import { AdminUsersService } from '../admin-users.service';
+import {
+  GenericMatTableComponent,
+  TableColumn,
+} from '../../shared/generic-mat-table/generic-mat-table';
 
 import { LoggerService } from '@app/services/logger.service';
 
 @Component({
   selector: 'csbc-admin-users-list',
   standalone: true,
-  imports: [
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatIconModule,
-    MatButtonModule,
-    ],
+  imports: [GenericMatTableComponent, MatIconModule, MatButtonModule],
   templateUrl: './admin-users-list.html',
   styleUrls: ['./admin-users-list.scss', '../../../shared/scss/tables.scss'],
 })
-export class AdminUsersList implements OnInit, AfterViewInit {
+export class AdminUsersList implements OnInit {
   private usersService = inject(AdminUsersService);
   private readonly logger = inject(LoggerService);
   private router = inject(Router);
   private readonly prefs = inject(PaginationPreferencesService);
   selectedLetter = model<string>('A');
-  displayedColumns: string[] = ['userName', 'name', 'userType'];
-  dataSource = new MatTableDataSource<User>([]);
-  pageSizeOptions = [5, 10, 25];
+  allUsers: User[] = [];
+  filteredUsers: User[] = [];
+  columns: TableColumn<User>[] = [];
   pageSize = this.prefs.getPageSize(10);
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild('userTypeTemplate', { static: true })
+  userTypeTemplate!: TemplateRef<unknown>;
+
   constructor() {
     // Reactively update table when users list changes
     effect(() => {
@@ -55,7 +51,8 @@ export class AdminUsersList implements OnInit, AfterViewInit {
         firstName: u.firstName ?? '',
         lastName: u.lastName ?? '',
       }));
-      this.dataSource.data = mapped;
+      this.allUsers = mapped;
+      this.filteredUsers = mapped;
     });
     effect(() => {
       const letter = this.selectedLetter();
@@ -65,26 +62,42 @@ export class AdminUsersList implements OnInit, AfterViewInit {
     });
   }
   ngOnInit(): void {
+    this.columns = [
+      { key: 'userName', header: 'Username', field: 'userName' },
+      { key: 'name', header: 'Name', field: 'name' },
+      {
+        key: 'userType',
+        header: 'User Type',
+        template: this.userTypeTemplate,
+      },
+    ];
+
     // Kick off load using signals API
     this.usersService.loadUsers();
   }
 
-  ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
-
-  onPage(event: PageEvent): void {
-    this.pageSize = event.pageSize;
-    this.prefs.savePageSize(event.pageSize);
-  }
-
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
+    const filter = filterValue.trim().toLowerCase();
+    if (!filter) {
+      this.filteredUsers = this.allUsers;
+      return;
     }
+
+    this.filteredUsers = this.allUsers.filter((user) => {
+      const name =
+        `${user.firstName ?? ''} ${user.lastName ?? ''}`.toLowerCase();
+      const displayName = (user.name ?? '').toLowerCase();
+      const username = (user.userName ?? '').toLowerCase();
+      const type = this.userTypeLabel(user.userType).toLowerCase();
+
+      return (
+        name.includes(filter) ||
+        displayName.includes(filter) ||
+        username.includes(filter) ||
+        type.includes(filter)
+      );
+    });
   }
 
   userTypeLabel(userType?: number): string {

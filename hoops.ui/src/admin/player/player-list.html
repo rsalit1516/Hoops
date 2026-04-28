@@ -13,49 +13,24 @@
 
   <!-- Loading Spinner -->
   @if (isLoading) {
-    <div class="flex justify-center items-center p-8">
-      <mat-spinner></mat-spinner>
-    </div>
+  <div class="flex justify-center items-center p-8">
+    <mat-spinner></mat-spinner>
+  </div>
   }
 
   <!-- Player Table -->
   @if (!isLoading) {
-    <div class="mat-elevation-z8">
-      <table mat-table [dataSource]="dataSource" matSort class="w-full">
+  <div class="mat-elevation-z8">
+    <ng-template #nameTemplate let-item>
+      {{ item.lastName }}, {{ item.firstName }}
+    </ng-template>
 
-        <!-- Name Column -->
-        <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-          <td mat-cell *matCellDef="let player">{{player.lastName}}, {{player.firstName}}</td>
-        </ng-container>
-
-        <!-- Draft ID Column -->
-        <ng-container matColumnDef="draftId">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Draft ID</th>
-          <td mat-cell *matCellDef="let player">{{player.draftId}}</td>
-        </ng-container>
-
-        <!-- Division Column -->
-        <ng-container matColumnDef="division">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Division</th>
-          <td mat-cell *matCellDef="let player">{{player.division}}</td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr
-          mat-row
-          *matRowDef="let row; columns: displayedColumns;"
-          (click)="onRowClick(row)"
-          class="cursor-pointer hover:bg-gray-100"
-        ></tr>
-      </table>
-
-      <mat-paginator
-        [pageSizeOptions]="[25, 50, 100]"
-        [pageSize]="pageSize"
-        showFirstLastButtons
-        (page)="onPage($event)"
-      ></mat-paginator>
-    </div>
+    <app-generic-mat-table
+      [columns]="columns"
+      [data]="dataSource.data"
+      [pageSize]="pageSize"
+      (rowClick)="onRowClick($event)"
+    />
+  </div>
   }
 </div>

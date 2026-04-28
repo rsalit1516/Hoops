@@ -3,7 +3,7 @@ import {
   OnInit,
   output,
   inject,
-  AfterViewInit,
+  TemplateRef,
   ViewChild,
   computed,
   effect,
@@ -18,16 +18,18 @@ import * as fromContent from '../../state';
 import * as contentActions from '../../state/admin.actions';
 import { WebContent } from '../../../domain/webContent';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
 import { DatePipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { ContentListToolbar } from '../content-list-toolbar/content-list-toolbar';
 import { DateTime } from 'luxon';
-import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { PaginationPreferencesService } from '@app/services/pagination-preferences.service';
-import { MatSort, MatSortModule } from '@angular/material/sort';
 import { ContentService } from '../content.service';
 import { LoggerService } from '@app/services/logger.service';
+import {
+  GenericMatTableComponent,
+  TableColumn,
+} from '../../shared/generic-mat-table/generic-mat-table';
 
 @Component({
   selector: 'csbc-content-list',
@@ -39,16 +41,13 @@ import { LoggerService } from '@app/services/logger.service';
   ],
   imports: [
     MatDialogModule,
-    MatTableModule,
     MatIconModule,
     ContentListToolbar,
-    MatSortModule,
-    MatPaginatorModule,
-    DatePipe
-],
-  providers: [MatSort, MatPaginator],
+    DatePipe,
+    GenericMatTableComponent,
+  ],
 })
-export class ContentList implements OnInit, AfterViewInit {
+export class ContentList implements OnInit {
   router = inject(Router);
   store = inject(Store<fromContent.State>);
 
@@ -57,22 +56,30 @@ export class ContentList implements OnInit, AfterViewInit {
   private readonly prefs = inject(PaginationPreferencesService);
 
   readonly selectedContent = output<Content>();
-  @ViewChild('contentPaginator') paginator: MatPaginator = inject(MatPaginator);
-  @ViewChild(MatSort) sort: MatSort = inject(MatSort);
+  @ViewChild('expirationDateTemplate', { static: true })
+  expirationDateTemplate!: TemplateRef<unknown>;
+
+  @ViewChild('actionsTemplate', { static: true })
+  actionsTemplate!: TemplateRef<unknown>;
+
+  columns: TableColumn<WebContent>[] = [
+    { key: 'title', header: 'Title', field: 'title' },
+    { key: 'dateAndTime', header: 'Date And Time', field: 'dateAndTime' },
+    { key: 'location', header: 'Location', field: 'location' },
+    {
+      key: 'expirationDate',
+      header: 'Expiry Date',
+      template: this.expirationDateTemplate,
+    },
+    { key: 'actions', header: '', template: this.actionsTemplate },
+  ];
+
   allWebContent = computed(() => this.#contentService.allWebContent);
-  showFirstLastButtons = true;
   pageSize = this.prefs.getPageSize(10);
   contents$!: Observable<WebContent[]>;
   errorMessage: string | undefined;
   pageTitle: string | undefined;
   public dialog!: MatDialog;
-  displayedColumns = [
-    'title',
-    'expirationDate',
-    'dateAndTime',
-    'location',
-    'actions',
-  ];
   dataSource = new MatTableDataSource<WebContent>([]);
   data: WebContent[] = [];
   filterValue = '';
@@ -84,8 +91,11 @@ export class ContentList implements OnInit, AfterViewInit {
       } else {
         this.data = this.#contentService.allWebContent();
       }
-      this.dataSource.data = this.data;
-      this.refreshData();
+      this.dataSource.data = [...this.data].sort((a, b) => {
+        const left = DateTime.fromISO(String(a.expirationDate)).toMillis();
+        const right = DateTime.fromISO(String(b.expirationDate)).toMillis();
+        return right - left;
+      });
       this.logger.info(this.data);
     });
   }
@@ -95,8 +105,6 @@ export class ContentList implements OnInit, AfterViewInit {
     // Fetch fresh data every time the list is displayed
     // Active content is computed automatically from allWebContent
     this.#contentService.fetchAllContents();
-    this.refreshData();
-    this.dataSource = new MatTableDataSource<WebContent>(this.data);
 
     // Note: filterPredicate is no longer needed - filtering is done via computed signal
     this.dataSource.filterPredicate = (data: WebContent, filter: string) => {
@@ -108,19 +116,7 @@ export class ContentList implements OnInit, AfterViewInit {
       return result;
     };
   }
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-    this.sort.sort({ id: 'expirationDate', start: 'desc', disableClear: false });
-  }
 
-  refreshData() {
-    // this.store.select(fromContent.getContentList).subscribe((data) => {
-    // this.data = data;
-    this.dataSource._updateChangeSubscription();
-    this.dataSource.disconnect();
-    this.dataSource.connect();
-  }
   editContent(content: WebContent) {
     // this.store.dispatch(new contentActions.SetSelectedContent(content));
     this.#contentService.selectedContent.update(() => content);
@@ -143,10 +139,5 @@ export class ContentList implements OnInit, AfterViewInit {
 
   clearFilter(): void {
     this.dataSource.filter = '';
-  }
-
-  onPage(event: PageEvent): void {
-    this.pageSize = event.pageSize;
-    this.prefs.savePageSize(event.pageSize);
   }
 }

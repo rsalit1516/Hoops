@@ -26,7 +26,11 @@
     flex: 1;
     min-height: 0;
     overflow-y: auto;
-    overflow-x: auto;
+    overflow-x: hidden;
+
+    table {
+      width: 100%;
+    }
   }
 
   mat-paginator {

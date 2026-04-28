@@ -2,7 +2,7 @@
   <div class="table-scroll">
     <table mat-table [dataSource]="dataSource" matSort>
       <!-- Dynamic columns -->
-      @for (column of columns; track column) {
+      @for (column of columns; track column.key) {
       <ng-container [matColumnDef]="column.key">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>
           {{ column.header }}

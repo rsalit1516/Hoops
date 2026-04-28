@@ -2,6 +2,8 @@ import {
   Component,
   OnInit,
   OnChanges,
+  TemplateRef,
+  ViewChild,
   input,
   inject,
   computed,
@@ -17,7 +19,7 @@ import * as fromAdmin from '../../state';
 
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
 import { DatePipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -28,6 +30,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DivisionToolbar } from '../../components/division-toolbar/division-toolbar';
 import { LoggerService } from '@app/services/logger.service';
+import {
+  GenericMatTableComponent,
+  TableColumn,
+} from '../../shared/generic-mat-table/generic-mat-table';
 
 @Component({
   selector: 'csbc-division-list',
@@ -37,13 +43,13 @@ import { LoggerService } from '@app/services/logger.service';
   imports: [
     MatToolbarModule,
     MatButtonModule,
-    MatTableModule,
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
     MatRadioModule,
     DatePipe,
     DivisionToolbar,
+    GenericMatTableComponent,
   ],
 })
 export class DivisionList implements OnInit, OnChanges {
@@ -77,23 +83,36 @@ export class DivisionList implements OnInit, OnChanges {
   seasonId: number | undefined;
   divisions = computed(() => this.divisionService.seasonDivisions()); // This will be a signal
 
-  displayedColumns = [
-    'divisionId',
-    'divisionDescription',
-    'minDate',
-    'maxDate',
-    // 'view',
-    'teams',
+  @ViewChild('minDateTemplate', { static: true })
+  minDateTemplate!: TemplateRef<unknown>;
+
+  @ViewChild('maxDateTemplate', { static: true })
+  maxDateTemplate!: TemplateRef<unknown>;
+
+  @ViewChild('teamsTemplate', { static: true })
+  teamsTemplate!: TemplateRef<unknown>;
+
+  columns: TableColumn<Division>[] = [
+    { key: 'divisionId', header: 'ID', field: 'divisionId' },
+    {
+      key: 'divisionDescription',
+      header: 'Division',
+      field: 'divisionDescription',
+    },
+    { key: 'minDate', header: 'Min Date', template: this.minDateTemplate },
+    { key: 'maxDate', header: 'Max Date', template: this.maxDateTemplate },
+    { key: 'teams', header: '', template: this.teamsTemplate },
   ];
+
   dataSource: MatTableDataSource<Division> = new MatTableDataSource<Division>(
-    this.divisionService.seasonDivisions()
+    this.divisionService.seasonDivisions(),
   );
   divisions$: Observable<Division[]> | undefined;
 
   constructor() {
     effect(() => {
       this.dataSource = new MatTableDataSource<Division>(
-        this.divisionService.seasonDivisions()
+        this.divisionService.seasonDivisions(),
       );
     });
   }
@@ -156,7 +175,7 @@ export class DivisionList implements OnInit, OnChanges {
     this.divisionService.updateSelectedDivision(division);
     this.logger.debug(
       'Selected division after update',
-      this.divisionService.selectedDivision()
+      this.divisionService.selectedDivision(),
     );
     this.#router.navigate(['./admin/season-setup']);
   }
@@ -166,7 +185,7 @@ export class DivisionList implements OnInit, OnChanges {
     this.divisionService.updateSelectedDivision(division);
     this.logger.debug(
       'Selected division after update',
-      this.divisionService.selectedDivision()
+      this.divisionService.selectedDivision(),
     );
     //this.divisionService.getDvision(division);
     //console.log(this.divisionService.currentDivision());
