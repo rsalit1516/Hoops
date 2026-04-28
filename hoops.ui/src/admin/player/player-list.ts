@@ -52,11 +52,7 @@ export class PlayerList implements OnInit {
   @ViewChild('nameTemplate', { static: true })
   nameTemplate!: TemplateRef<unknown>;
 
-  columns: TableColumn<DraftListPlayer>[] = [
-    { key: 'name', header: 'Name', template: this.nameTemplate },
-    { key: 'draftId', header: 'Draft ID', field: 'draftId' },
-    { key: 'division', header: 'Division', field: 'division' },
-  ];
+  columns: TableColumn<DraftListPlayer>[] = [];
 
   dataSource = new MatTableDataSource<DraftListPlayer>([]);
   isLoading = false;
@@ -79,6 +75,12 @@ export class PlayerList implements OnInit {
   }
 
   ngOnInit() {
+    this.columns = [
+      { key: 'name', header: 'Name', template: this.nameTemplate },
+      { key: 'draftId', header: 'Draft ID', field: 'draftId' },
+      { key: 'division', header: 'Division', field: 'division' },
+    ];
+
     // Initial load will be triggered by season effect once season is available
   }
 
