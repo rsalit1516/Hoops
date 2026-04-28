@@ -105,7 +105,12 @@ export class RegistrationHouseholdForm {
     };
     this.isSaving.set(true);
     this.householdService.saveHousehold(updated).subscribe({
-      next: () => {
+      next: (saved) => {
+        // Push saved record back into the service signal so any navigation
+        // to the household detail page sees the updated data.
+        // The populatedHouseId guard in the effect prevents re-populating
+        // the form since houseId hasn't changed.
+        this.householdService.updateSelectedHousehold(saved);
         this.initialSnapshot.set({ ...current });
         this.snackBar.open('Household saved', 'OK', { duration: 3000 });
       },
