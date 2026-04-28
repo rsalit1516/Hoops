@@ -42,12 +42,7 @@ export class AdminSeasonList implements OnInit {
   @ViewChild('toDateTemplate', { static: true })
   toDateTemplate!: TemplateRef<unknown>;
 
-  columns: TableColumn<Season>[] = [
-    { key: 'seasonId', header: 'ID', field: 'seasonId' },
-    { key: 'description', header: 'Description', field: 'description' },
-    { key: 'fromDate', header: 'From Date', template: this.fromDateTemplate },
-    { key: 'toDate', header: 'To Date', template: this.toDateTemplate },
-  ];
+  columns: TableColumn<Season>[] = [];
 
   pageSize = this.prefs.getPageSize(10);
   seasons = computed(() => this.#seasonService.seasons);
@@ -62,6 +57,13 @@ export class AdminSeasonList implements OnInit {
   constructor() {}
 
   ngOnInit() {
+    this.columns = [
+      { key: 'seasonId', header: 'ID', field: 'seasonId' },
+      { key: 'description', header: 'Description', field: 'description' },
+      { key: 'fromDate', header: 'From Date', template: this.fromDateTemplate },
+      { key: 'toDate', header: 'To Date', template: this.toDateTemplate },
+    ];
+
     // Ensure we have fresh seasons when the list loads
     this.#seasonService.fetchSeasons();
     this.dataSource = new MatTableDataSource<Season>(this.seasons());
