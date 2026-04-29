@@ -46,7 +46,7 @@ export class PlayoffGameService {
       if (this.selectedDivision() !== undefined) {
         this.getDivisionPlayoffGames();
         const dailyGames = this.groupPlayoffGamesByDate(
-          this.divisionPlayoffGames()!
+          this.divisionPlayoffGames()!,
         );
         this.dailyPlayoffSchedule.update(() => dailyGames);
       }
@@ -64,9 +64,9 @@ export class PlayoffGameService {
         tap((data) =>
           this.logger.debug('Loaded season playoff games', {
             count: data.length,
-          })
+          }),
         ),
-        catchError(this.#dataService.handleError('getCurrentSeason', null))
+        catchError(this.#dataService.handleError('getCurrentSeason', null)),
       );
     }
   }
@@ -77,7 +77,7 @@ export class PlayoffGameService {
     this.getSeasonPlayoffGames().subscribe((playoffGames) => {
       if (playoffGames) {
         const normalized = playoffGames.map((g: any) =>
-          this.normalizeApiPlayoffGame(g)
+          this.normalizeApiPlayoffGame(g),
         );
         this.seasonPlayoffGames.update(() => normalized);
       }
@@ -131,7 +131,7 @@ export class PlayoffGameService {
     return this.http.post<PlayoffGame>(
       url,
       this.toApiModel(game),
-      this.#dataService.httpOptions
+      this.#dataService.httpOptions,
     );
   }
 
@@ -144,20 +144,20 @@ export class PlayoffGameService {
       return this.http.put<void>(
         url,
         this.toApiModel(game),
-        this.#dataService.httpOptions
+        this.#dataService.httpOptions,
       );
     }
     // Fallback: composite keys
     if (game.scheduleNumber == null || game.gameNumber == null) {
       throw new Error(
-        'Cannot update playoff game: missing primary key and composite keys'
+        'Cannot update playoff game: missing primary key and composite keys',
       );
     }
     const url = `${Constants.FUNCTIONS_BASE_URL}/api/SchedulePlayoff/${game.scheduleNumber}/${game.gameNumber}`;
     return this.http.put<void>(
       url,
       this.toApiModel(game),
-      this.#dataService.httpOptions
+      this.#dataService.httpOptions,
     );
   }
 
@@ -169,7 +169,9 @@ export class PlayoffGameService {
       scheduleNumber: game.scheduleNumber,
       gameNumber: game.gameNumber,
       locationNumber: game.locationNumber ?? null,
-      gameDate: game.gameDate ?? null,
+      // Send a local, timezone-free datetime string to preserve entered date/time.
+      // If we send a JS Date directly, JSON serialization converts to UTC and can shift days.
+      gameDate: game.gameDate ? this.formatLocalDateTime(game.gameDate) : null,
       gameTime: game.gameTime ? this.formatTime(game.gameTime) : '',
       visitingTeam: game.visitingTeam ?? '',
       homeTeam: game.homeTeam ?? '',
@@ -178,6 +180,15 @@ export class PlayoffGameService {
       homeTeamScore: game.homeTeamScore ?? null,
       divisionId: game.divisionId ?? 0,
     };
+  }
+
+  private formatLocalDateTime(date: Date): string {
+    const pad = (n: number) => n.toString().padStart(2, '0');
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(
+      date.getDate(),
+    )}T${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(
+      date.getSeconds(),
+    )}`;
   }
 
   private formatTime(date: Date): string {
