@@ -1,10 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { effect, inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DataService } from './data.service';
 import { Constants } from '../shared/constants';
 import { Person } from '@app/domain/person';
-import { first } from 'rxjs-compat/operator/first';
 import { LoggerService } from './logger.service';
 
 @Injectable({
@@ -25,6 +24,7 @@ export class PeopleService {
 
   updateSelectedCriteria(criteria: peopleSearchCriteria) {
     this.selectedCriteria.set(criteria);
+    this.executeSearch();
   }
   private _results = signal<Person[]>([]);
   get results() {
@@ -62,13 +62,6 @@ export class PeopleService {
   }
   updateFormDirtyState(isDirty: boolean) {
     this._isFormDirty.set(isDirty);
-  }
-
-  constructor() {
-    effect(() => {
-      this.logger.info('[People Service] ' + this.selectedCriteria);
-      this.executeSearch();
-    });
   }
 
   getData(): Observable<any> {
