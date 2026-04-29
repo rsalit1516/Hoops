@@ -1,58 +1,109 @@
 <mat-accordion>
-  <mat-expansion-panel>
+  <mat-expansion-panel
+    [expanded]="panelExpanded()"
+    (opened)="onPanelOpened()"
+    (closed)="onPanelClosed()"
+  >
     <mat-expansion-panel-header>
       <mat-panel-title>Household</mat-panel-title>
       @if (household()) {
-        <mat-panel-description>
-          <span class="nav-link" [class.nav-disabled]="isDirty()"
-                (click)="navigateToHousehold($event)">{{ household()!.name }}</span>
-        </mat-panel-description>
+      <mat-panel-description>
+        <span
+          class="nav-link"
+          [class.nav-disabled]="isDirty()"
+          (click)="navigateToHousehold($event)"
+          >{{ household()!.name }}</span
+        >
+      </mat-panel-description>
       }
     </mat-expansion-panel-header>
 
     @if (household()) {
-      <div class="sub-form">
-        <mat-form-field appearance="fill" floatLabel="always" subscriptSizing="dynamic" class="full-width">
-          <mat-label>Address 1</mat-label>
-          <input matInput [formField]="householdForm.address1" />
+    <div class="sub-form">
+      <mat-form-field
+        appearance="fill"
+        floatLabel="always"
+        subscriptSizing="dynamic"
+        class="full-width"
+      >
+        <mat-label>Address 1</mat-label>
+        <input matInput [formField]="householdForm.address1" />
+      </mat-form-field>
+
+      <mat-form-field
+        appearance="fill"
+        floatLabel="always"
+        subscriptSizing="dynamic"
+        class="full-width"
+      >
+        <mat-label>Address 2</mat-label>
+        <input matInput [formField]="householdForm.address2" />
+      </mat-form-field>
+
+      <div class="city-row">
+        <mat-form-field
+          appearance="fill"
+          floatLabel="always"
+          subscriptSizing="dynamic"
+          class="city-field"
+        >
+          <mat-label>City</mat-label>
+          <input matInput [formField]="householdForm.city" />
         </mat-form-field>
 
-        <mat-form-field appearance="fill" floatLabel="always" subscriptSizing="dynamic" class="full-width">
-          <mat-label>Address 2</mat-label>
-          <input matInput [formField]="householdForm.address2" />
+        <mat-form-field
+          appearance="fill"
+          floatLabel="always"
+          subscriptSizing="dynamic"
+          class="state-field"
+        >
+          <mat-label>State</mat-label>
+          <input matInput [formField]="householdForm.state" />
         </mat-form-field>
 
-        <div class="city-row">
-          <mat-form-field appearance="fill" floatLabel="always" subscriptSizing="dynamic" class="city-field">
-            <mat-label>City</mat-label>
-            <input matInput [formField]="householdForm.city" />
-          </mat-form-field>
-
-          <mat-form-field appearance="fill" floatLabel="always" subscriptSizing="dynamic" class="state-field">
-            <mat-label>State</mat-label>
-            <input matInput [formField]="householdForm.state" />
-          </mat-form-field>
-
-          <mat-form-field appearance="fill" floatLabel="always" subscriptSizing="dynamic" class="zip-field">
-            <mat-label>Zip</mat-label>
-            <input matInput [formField]="householdForm.zip" />
-          </mat-form-field>
-        </div>
-
-        <mat-form-field appearance="fill" floatLabel="always" subscriptSizing="dynamic" class="full-width">
-          <mat-label>Email</mat-label>
-          <input matInput type="email" [formField]="householdForm.email" />
+        <mat-form-field
+          appearance="fill"
+          floatLabel="always"
+          subscriptSizing="dynamic"
+          class="zip-field"
+        >
+          <mat-label>Zip</mat-label>
+          <input matInput [formField]="householdForm.zip" />
         </mat-form-field>
-
-        <div class="panel-actions">
-          <button mat-raised-button type="button" color="primary" [disabled]="!canSave()" (click)="save()">
-            {{ isSaving() ? 'Saving…' : 'Save' }}
-          </button>
-          <button mat-raised-button type="button" [disabled]="!isDirty()" (click)="cancel()">Cancel</button>
-        </div>
       </div>
+
+      <mat-form-field
+        appearance="fill"
+        floatLabel="always"
+        subscriptSizing="dynamic"
+        class="full-width"
+      >
+        <mat-label>Email</mat-label>
+        <input matInput type="email" [formField]="householdForm.email" />
+      </mat-form-field>
+
+      <div class="panel-actions">
+        <button
+          mat-raised-button
+          type="button"
+          color="primary"
+          [disabled]="!canSave()"
+          (click)="save()"
+        >
+          {{ isSaving() ? 'Saving…' : 'Save' }}
+        </button>
+        <button
+          mat-raised-button
+          type="button"
+          [disabled]="!isDirty()"
+          (click)="cancel()"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
     } @else {
-      <p class="no-data">No household linked to this person.</p>
+    <p class="no-data">No household linked to this person.</p>
     }
   </mat-expansion-panel>
 </mat-accordion>

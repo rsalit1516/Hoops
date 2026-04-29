@@ -1,36 +1,67 @@
 <mat-accordion>
-  <mat-expansion-panel>
+  <mat-expansion-panel
+    [expanded]="panelExpanded()"
+    (opened)="onPanelOpened()"
+    (closed)="onPanelClosed()"
+  >
     <mat-expansion-panel-header>
       <mat-panel-title>People</mat-panel-title>
       @if (person()) {
-        <mat-panel-description>
-          <span class="nav-link" [class.nav-disabled]="isDirty()"
-                (click)="navigateToPerson($event)">{{ person()!.firstName }} {{ person()!.lastName }}</span>
-        </mat-panel-description>
+      <mat-panel-description>
+        <span
+          class="nav-link"
+          [class.nav-disabled]="isDirty()"
+          (click)="navigateToPerson($event)"
+          >{{ person()!.firstName }} {{ person()!.lastName }}</span
+        >
+      </mat-panel-description>
       }
     </mat-expansion-panel-header>
 
     @if (person()) {
-      <div class="sub-form">
-        <mat-form-field appearance="fill" floatLabel="always" subscriptSizing="dynamic" class="full-width">
-          <mat-label>Cell Phone</mat-label>
-          <input matInput type="tel" [formField]="personPhoneForm.cellphone" />
-        </mat-form-field>
+    <div class="sub-form">
+      <mat-form-field
+        appearance="fill"
+        floatLabel="always"
+        subscriptSizing="dynamic"
+        class="full-width"
+      >
+        <mat-label>Cell Phone</mat-label>
+        <input matInput type="tel" [formField]="personPhoneForm.cellphone" />
+      </mat-form-field>
 
-        <mat-form-field appearance="fill" floatLabel="always" subscriptSizing="dynamic" class="full-width">
-          <mat-label>Work Phone</mat-label>
-          <input matInput type="tel" [formField]="personPhoneForm.workphone" />
-        </mat-form-field>
+      <mat-form-field
+        appearance="fill"
+        floatLabel="always"
+        subscriptSizing="dynamic"
+        class="full-width"
+      >
+        <mat-label>Work Phone</mat-label>
+        <input matInput type="tel" [formField]="personPhoneForm.workphone" />
+      </mat-form-field>
 
-        <div class="panel-actions">
-          <button mat-raised-button type="button" color="primary" [disabled]="!canSave()" (click)="save()">
-            {{ isSaving() ? 'Saving…' : 'Save' }}
-          </button>
-          <button mat-raised-button type="button" [disabled]="!isDirty()" (click)="cancel()">Cancel</button>
-        </div>
+      <div class="panel-actions">
+        <button
+          mat-raised-button
+          type="button"
+          color="primary"
+          [disabled]="!canSave()"
+          (click)="save()"
+        >
+          {{ isSaving() ? 'Saving…' : 'Save' }}
+        </button>
+        <button
+          mat-raised-button
+          type="button"
+          [disabled]="!isDirty()"
+          (click)="cancel()"
+        >
+          Cancel
+        </button>
       </div>
+    </div>
     } @else {
-      <p class="no-data">No person selected.</p>
+    <p class="no-data">No person selected.</p>
     }
   </mat-expansion-panel>
 </mat-accordion>

@@ -1,4 +1,11 @@
-import { Component, computed, effect, inject, signal, untracked } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  signal,
+  untracked,
+} from '@angular/core';
 import { form, FormField } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -39,12 +46,16 @@ interface HouseholdFormModel {
   ],
 })
 export class RegistrationHouseholdForm {
+  private static readonly PANEL_STATE_KEY =
+    'csbc.registrationHouseholdForm.expanded';
+
   private readonly householdService = inject(HouseholdService);
   private readonly snackBar = inject(MatSnackBar);
   private readonly router = inject(Router);
 
   readonly household = this.householdService.selectedRecordSignal;
   readonly isSaving = signal(false);
+  readonly panelExpanded = signal(this.loadPanelExpanded());
 
   readonly model = signal<HouseholdFormModel>({
     address1: '',
@@ -131,6 +142,38 @@ export class RegistrationHouseholdForm {
     event.stopPropagation();
     if (!this.isDirty()) {
       this.router.navigate(['/admin/households/detail']);
+    }
+  }
+
+  onPanelOpened(): void {
+    this.panelExpanded.set(true);
+    this.savePanelExpanded(true);
+  }
+
+  onPanelClosed(): void {
+    this.panelExpanded.set(false);
+    this.savePanelExpanded(false);
+  }
+
+  private loadPanelExpanded(): boolean {
+    try {
+      const value = localStorage.getItem(
+        RegistrationHouseholdForm.PANEL_STATE_KEY,
+      );
+      return value === null ? true : value === 'true';
+    } catch {
+      return true;
+    }
+  }
+
+  private savePanelExpanded(expanded: boolean): void {
+    try {
+      localStorage.setItem(
+        RegistrationHouseholdForm.PANEL_STATE_KEY,
+        String(expanded),
+      );
+    } catch {
+      // Ignore storage failures and keep in-memory state.
     }
   }
 }
