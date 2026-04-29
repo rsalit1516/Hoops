@@ -183,15 +183,14 @@ export class PeopleList
 
   onRowClick(person: PersonWithId): void {
     this.logger.info('Row clicked:', person);
-    // Pass the full Person object to the service (PersonWithId is a Person with extra id property)
-    this.peopleService.updateSelectedPerson(person);
+    this.peopleService.loadAndSelectPerson(person.personId, person);
     this.householdService.selectedHouseholdByHouseId(person.houseId);
     this.router.navigate(['..', 'detail'], { relativeTo: this.route });
   }
 
   onRegister(event: Event, person: PersonWithId): void {
     event.stopPropagation();
-    this.peopleService.updateSelectedPerson(person);
+    this.peopleService.loadAndSelectPerson(person.personId, person);
     this.router.navigate(['/admin/player-registration', person.personId], {
       queryParams: { from: 'people' },
     });

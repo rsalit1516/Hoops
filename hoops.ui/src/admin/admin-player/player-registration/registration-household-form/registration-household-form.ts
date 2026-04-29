@@ -23,6 +23,7 @@ interface HouseholdFormModel {
   city: string;
   state: string;
   zip: string;
+  phone: string;
   email: string;
 }
 
@@ -63,6 +64,7 @@ export class RegistrationHouseholdForm {
     city: '',
     state: '',
     zip: '',
+    phone: '',
     email: '',
   });
 
@@ -93,6 +95,7 @@ export class RegistrationHouseholdForm {
         city: hh.city ?? '',
         state: hh.state ?? 'FL',
         zip: hh.zip ?? '',
+        phone: hh.phone ?? '',
         email: hh.email ?? '',
       };
       this.model.set({ ...snap });
@@ -112,6 +115,7 @@ export class RegistrationHouseholdForm {
       city: current.city,
       state: current.state,
       zip: current.zip,
+      phone: current.phone,
       email: current.email,
     };
     this.isSaving.set(true);

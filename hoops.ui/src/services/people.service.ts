@@ -41,6 +41,21 @@ export class PeopleService {
     this._selectedPerson.set(person);
   }
 
+  loadAndSelectPerson(personId: number, fallbackPerson?: Person): void {
+    if (fallbackPerson) {
+      this.updateSelectedPerson(fallbackPerson);
+    }
+
+    this.getPersonById(personId).subscribe({
+      next: (person) => {
+        this.updateSelectedPerson(person);
+      },
+      error: (error) => {
+        this.logger.error('Failed to hydrate selected person by ID:', error);
+      },
+    });
+  }
+
   private _isFormDirty = signal<boolean>(false);
   get isFormDirty() {
     return this._isFormDirty.asReadonly();
@@ -116,7 +131,7 @@ export class PeopleService {
     this.searchUrl = this.constructQueryString(this.selectedCriteria());
     localStorage.setItem(
       'peopleSearchCriteria',
-      JSON.stringify(this.selectedCriteria())
+      JSON.stringify(this.selectedCriteria()),
     );
 
     this.searchPeople$().subscribe((response) => {
@@ -139,7 +154,9 @@ export class PeopleService {
     } else {
       // Create new person (POST)
       this.logger.info('Creating new person at URL: ', Constants.peopleUrl);
-      return this.http.post<Person>(Constants.peopleUrl, person, { withCredentials: true });
+      return this.http.post<Person>(Constants.peopleUrl, person, {
+        withCredentials: true,
+      });
     }
   }
 

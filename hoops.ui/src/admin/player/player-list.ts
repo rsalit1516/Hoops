@@ -7,9 +7,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
 import { DraftListPlayer } from '@app/domain/draft-list-player';
+import { Person } from '@app/domain/person';
 import { Constants } from '@app/shared/constants';
 import { SeasonService } from '@app/services/season.service';
 import { DivisionService } from '@app/services/division.service';
+import { PeopleService } from '@app/services/people.service';
 import { SeasonSelect } from '../admin-shared/season-select/season-select';
 import { DivisionSelect } from '../admin-shared/division-select/division-select';
 import { LoggerService } from '@app/services/logger.service';
@@ -39,6 +41,7 @@ export class PlayerList implements OnInit {
   private router = inject(Router);
   private seasonService = inject(SeasonService);
   private divisionService = inject(DivisionService);
+  private peopleService = inject(PeopleService);
   private logger = inject(LoggerService);
   private readonly prefs = inject(PaginationPreferencesService);
 
@@ -107,6 +110,14 @@ export class PlayerList implements OnInit {
 
   onRowClick(player: DraftListPlayer) {
     this.logger.info('Navigating to player registration:', player);
+
+    const fallbackPerson = new Person();
+    fallbackPerson.personId = player.personId;
+    fallbackPerson.firstName = player.firstName ?? '';
+    fallbackPerson.lastName = player.lastName ?? '';
+    fallbackPerson.birthDate = player.dob ? new Date(player.dob) : new Date();
+
+    this.peopleService.loadAndSelectPerson(player.personId, fallbackPerson);
     this.router.navigate(['/admin/player-registration', player.personId]);
   }
 }
