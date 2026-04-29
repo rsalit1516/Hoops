@@ -9,6 +9,7 @@ import {
   ViewChild,
   TemplateRef,
 } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -33,6 +34,7 @@ type PersonWithId = Person & { id: number };
 @Component({
   selector: 'csbc-people-list',
   imports: [
+    DatePipe,
     MatTableModule,
     MatIconModule,
     MatButtonModule,
@@ -52,6 +54,7 @@ export class PeopleList
   private logger = inject(LoggerService);
 
   @ViewChild('registerTemplate') registerTemplate!: TemplateRef<any>;
+  @ViewChild('birthDateTemplate') birthDateTemplate!: TemplateRef<any>;
 
   override get basePath(): string {
     return '/admin/people';
@@ -85,7 +88,11 @@ export class PeopleList
     // Defer to avoid ExpressionChangedAfterItHasBeenCheckedError
     Promise.resolve().then(() => {
       this.columns = [
-        ...this.columns,
+        ...this.columns.map((column) =>
+          column.key === 'birthDate'
+            ? { ...column, template: this.birthDateTemplate }
+            : column,
+        ),
         { key: 'register', header: '', template: this.registerTemplate },
       ];
     });

@@ -6,6 +6,10 @@
   }
 </ng-template>
 
+<ng-template #birthDateTemplate let-item>
+  {{ item.birthDate ? (item.birthDate | date: 'MM/dd/yyyy') : '' }}
+</ng-template>
+
 <csbc-list-page-shell [title]="'People'" [count]="filteredPeople().length">
   <div filter>
     <csbc-people-filters
