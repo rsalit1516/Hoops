@@ -43,6 +43,7 @@ describe('PeopleList', () => {
             results: signal(mockPeople),
             updateSelectedCriteria: jasmine.createSpy('updateSelectedCriteria'),
             updateSelectedPerson: jasmine.createSpy('updateSelectedPerson'),
+            loadAndSelectPerson: jasmine.createSpy('loadAndSelectPerson'),
           },
         },
         {
@@ -107,7 +108,7 @@ describe('PeopleList', () => {
     } as unknown as Event;
     const alice = { ...mockPeople[0], id: 1 } as any;
     component.onRegister(mockEvent, alice);
-    expect(peopleService.updateSelectedPerson).toHaveBeenCalledWith(alice);
+    expect(peopleService.loadAndSelectPerson).toHaveBeenCalledWith(1, alice);
   });
 
   it('onRegister navigates to player-registration with personId', () => {
@@ -116,7 +117,10 @@ describe('PeopleList', () => {
       stopPropagation: jasmine.createSpy(),
     } as unknown as Event;
     component.onRegister(mockEvent, { ...mockPeople[0], id: 1 } as any);
-    expect(navigateSpy).toHaveBeenCalledWith(['/admin/player-registration', 1], { queryParams: { from: 'people' } });
+    expect(navigateSpy).toHaveBeenCalledWith(
+      ['/admin/player-registration', 1],
+      { queryParams: { from: 'people' } },
+    );
   });
 
   it('onRegister stops event propagation to prevent row navigation', () => {
