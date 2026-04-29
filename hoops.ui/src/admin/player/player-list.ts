@@ -50,7 +50,7 @@ export class PlayerList implements OnInit {
 
   dataSource = new MatTableDataSource<DraftListPlayer & { name: string }>([]);
   isLoading = false;
-  pageSize = this.prefs.getPageSize(25);
+  pageSize = this.prefs.getPageSize(10);
 
   constructor() {
     // Single effect tracking both season and division to avoid duplicate requests on init
