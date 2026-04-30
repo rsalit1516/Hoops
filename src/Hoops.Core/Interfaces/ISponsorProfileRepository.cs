@@ -1,10 +1,12 @@
-﻿using Hoops.Core.Models;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Hoops.Core.Models;
+using Hoops.Core.ViewModels;
 
 namespace Hoops.Core.Interface
 {
     public interface ISponsorProfileRepository : IRepository<SponsorProfile>
     {
-        //List<SponsorPayment> GetSponsorPayments(int sponsorProfileId);
-        //decimal GetTotalPayments(int sponsorProfileId);
+        Task<List<SponsorProfileListItemDto>> GetAllWithLastSeasonAsync(int companyId);
     }
 }

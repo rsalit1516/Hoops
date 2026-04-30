@@ -1,3 +1,14 @@
-<p>
-  sponsor-list works!
-</p>
+<csbc-list-page-shell [title]="'Sponsors'" [count]="filteredSponsors().length">
+  <div filter>
+    <csbc-sponsor-filters
+      [filters]="filters()"
+      (filterChange)="onFilterChange($event)"
+    />
+  </div>
+
+  <app-generic-mat-table
+    list
+    [columns]="columns"
+    [data]="filteredSponsors()"
+  />
+</csbc-list-page-shell>

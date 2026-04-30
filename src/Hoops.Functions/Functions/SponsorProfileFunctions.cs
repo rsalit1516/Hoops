@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -35,17 +34,7 @@ namespace Hoops.Functions.Functions
         public async Task<HttpResponseData> GetSponsorProfiles(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "SponsorProfile")] HttpRequestData req)
         {
-            var sponsors = _repository
-                .GetAll(DefaultCompanyId)
-                .Select(s => new
-                {
-                    s.SponsorProfileId,
-                    s.SpoName,
-                    s.ContactName,
-                    s.Email,
-                    s.Phone
-                })
-                .ToList();
+            var sponsors = await _repository.GetAllWithLastSeasonAsync(DefaultCompanyId);
 
             var resp = req.CreateResponse();
             await WriteJsonAsync(resp, sponsors);
