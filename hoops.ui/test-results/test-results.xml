@@ -1,12 +1,14 @@
 <?xml version="1.0"?>
-<testsuite name="Chrome Headless 147.0.0.0 (Windows 10)" package="unit" timestamp="2026-04-29T18:20:48" id="0" hostname="Rich-Think" tests="4" errors="0" failures="0" time="0.065">
+<testsuite name="Chrome Headless 147.0.0.0 (Windows 10)" package="unit" timestamp="2026-04-30T11:27:52" id="0" hostname="Rich-Think" tests="6" errors="0" failures="0" time="0.062">
   <properties>
     <property name="browser.fullName" value="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/147.0.0.0 Safari/537.36"/>
   </properties>
-  <testcase name="PlayoffGameService - Time Formatting should create" time="0.026" classname=".PlayoffGameService - Time Formatting"/>
-  <testcase name="PlayoffGameService - Time Formatting should format time with AM/PM format" time="0.031" classname=".PlayoffGameService - Time Formatting"/>
-  <testcase name="PlayoffGameService - Time Formatting should convert AM/PM time to 24-hour format" time="0.003" classname=".PlayoffGameService - Time Formatting"/>
-  <testcase name="PlayoffGameService - Time Formatting should normalize API playoff game with AM/PM time" time="0.005" classname=".PlayoffGameService - Time Formatting"/>
+  <testcase name="PlayoffGameService - Time Formatting should create" time="0.019" classname=".PlayoffGameService - Time Formatting"/>
+  <testcase name="PlayoffGameService - Time Formatting should format time with AM/PM format" time="0.026" classname=".PlayoffGameService - Time Formatting"/>
+  <testcase name="PlayoffGameService - Time Formatting should convert AM/PM time to 24-hour format" time="0.004" classname=".PlayoffGameService - Time Formatting"/>
+  <testcase name="PlayoffGameService - Time Formatting should normalize API playoff game with AM/PM time" time="0.007" classname=".PlayoffGameService - Time Formatting"/>
+  <testcase name="PlayoffGameService - Time Formatting formatLocalDateTime should return YYYY-MM-DDTHH:mm:ss with no timezone offset" time="0.003" classname=".PlayoffGameService - Time Formatting"/>
+  <testcase name="PlayoffGameService - Time Formatting toApiModel should send a local datetime string (not UTC) for gameDate" time="0.003" classname=".PlayoffGameService - Time Formatting"/>
   <system-out>
     <![CDATA[
 ]]>
