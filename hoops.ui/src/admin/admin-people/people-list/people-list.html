@@ -6,6 +6,10 @@
   }
 </ng-template>
 
+<ng-template #birthDateTemplate let-item>
+  {{ item.birthDate ? (item.birthDate | date: 'MM/dd/yyyy') : '' }}
+</ng-template>
+
 <csbc-list-page-shell [title]="'People'" [count]="filteredPeople().length">
   <div filter>
     <csbc-people-filters
@@ -21,11 +25,10 @@
     </button>
   </div>
 
-  <div list>
-    <app-generic-mat-table
-      [columns]="columns"
-      [data]="filteredPeople()"
-      (rowClick)="onRowClick($event)"
-    />
-  </div>
+  <app-generic-mat-table
+    list
+    [columns]="columns"
+    [data]="filteredPeople()"
+    (rowClick)="onRowClick($event)"
+  />
 </csbc-list-page-shell>

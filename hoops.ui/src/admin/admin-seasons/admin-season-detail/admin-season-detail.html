@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card class="admin-detail-scroll">
   <mat-card-header>
     <mat-card-title>Season Detail</mat-card-title>
   </mat-card-header>
@@ -36,9 +36,7 @@
                       [matDatepicker]="startDatePicker"
                       formControlName="startDate"
                     />
-                    <mat-datepicker-toggle matSuffix
-                      [for]="startDatePicker"
-                     />
+                    <mat-datepicker-toggle matSuffix [for]="startDatePicker" />
                     <mat-datepicker #startDatePicker />
                     <mat-hint>Select the start date for the season</mat-hint>
                   </mat-form-field>
@@ -51,9 +49,7 @@
                       [matDatepicker]="endDatePicker"
                       formControlName="endDate"
                     />
-                    <mat-datepicker-toggle matSuffix
-                      [for]="endDatePicker"
-                     />
+                    <mat-datepicker-toggle matSuffix [for]="endDatePicker" />
                     <mat-datepicker #endDatePicker />
                   </mat-form-field>
                 </div>
@@ -107,9 +103,10 @@
                       [matDatepicker]="onlineStartPicker"
                       formControlName="signUpStartDate"
                     />
-                    <mat-datepicker-toggle matSuffix
+                    <mat-datepicker-toggle
+                      matSuffix
                       [for]="onlineStartPicker"
-                     />
+                    />
                     <mat-datepicker #onlineStartPicker />
                   </mat-form-field>
                 </div>
@@ -121,9 +118,7 @@
                       [matDatepicker]="onlineStopPicker"
                       formControlName="signUpEndDate"
                     />
-                    <mat-datepicker-toggle matSuffix
-                      [for]="onlineStopPicker"
-                     />
+                    <mat-datepicker-toggle matSuffix [for]="onlineStopPicker" />
                     <mat-datepicker #onlineStopPicker />
                   </mat-form-field>
                 </div>

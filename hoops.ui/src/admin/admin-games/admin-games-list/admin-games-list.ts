@@ -1,8 +1,8 @@
 import {
-  AfterViewInit,
   Component,
   OnChanges,
   OnInit,
+  TemplateRef,
   ViewChild,
   effect,
   inject,
@@ -17,37 +17,35 @@ import { TeamDisplayPipe } from '@app/shared/pipes/team-display.pipe';
 // import { ReactiveFormsModule } from '@angular/forms';
 
 import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
-import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { PaginationPreferencesService } from '@app/services/pagination-preferences.service';
-import { MatSort } from '@angular/material/sort';
 import { AdminGameService } from '../adminGame.service';
 import { GameService } from '@app/services/game.service';
 
-
 import { LoggerService } from '@app/services/logger.service';
 import { Router } from '@angular/router';
+import {
+  GenericMatTableComponent,
+  TableColumn,
+} from '../../shared/generic-mat-table/generic-mat-table';
 @Component({
   selector: 'csbc-admin-games-list',
   imports: [
     MatIconModule,
-    MatTableModule,
-    MatPaginatorModule,
     MatIconModule,
     DatePipe,
-    NgIf,
     TeamDisplayPipe,
-],
+    GenericMatTableComponent,
+  ],
   templateUrl: './admin-games-list.html',
   styleUrls: [
     '../../../shared/scss/tables.scss',
     './admin-games-list.scss',
     '../../admin.scss',
   ],
-  providers: [MatSort, MatPaginator],
 })
-export class AdminGamesList implements OnInit, OnChanges, AfterViewInit {
+export class AdminGamesList implements OnInit, OnChanges {
   adminGameService = inject(AdminGameService);
   gameService = inject(GameService);
   readonly router = inject(Router);
@@ -59,43 +57,48 @@ export class AdminGamesList implements OnInit, OnChanges, AfterViewInit {
   dataSource!: MatTableDataSource<RegularGame>;
   games!: RegularGame[];
   games$: Observable<RegularGame[]> | undefined;
-  pageSizeOptions = [5, 10, 25];
   flexMediaWatcher: any;
   currentScreenWidth: any;
   title = 'Game List';
   canEdit: boolean = false;
   clickedRows = new Set<RegularGame>();
-  showFirstLastButtons = true;
   pageSize = this.prefs.getPageSize(10);
 
-  @ViewChild('gamesPaginator') paginator: MatPaginator = inject(MatPaginator);
-  @ViewChild(MatSort) sort: MatSort = inject(MatSort);
+  @ViewChild('gameDateTemplate', { static: true })
+  gameDateTemplate!: TemplateRef<unknown>;
+
+  @ViewChild('gameTimeTemplate', { static: true })
+  gameTimeTemplate!: TemplateRef<unknown>;
+
+  @ViewChild('homeTeamTemplate', { static: true })
+  homeTeamTemplate!: TemplateRef<unknown>;
+
+  @ViewChild('visitingTeamTemplate', { static: true })
+  visitingTeamTemplate!: TemplateRef<unknown>;
+
+  @ViewChild('actionsTemplate', { static: true })
+  actionsTemplate!: TemplateRef<unknown>;
+
   filteredGames = this.gameService.divisionGames;
-  displayedColumns = [
-    'gameDate',
-    'gameTime',
-    'locationName',
-    'homeTeamName',
-    'visitingTeamName',
-    'homeTeamScore',
-    'visitingTeamScore',
-  ];
+  columns: TableColumn<RegularGame>[] = [];
   showPlayoffs = false;
   showRegularSeason = true;
   private listEffectCounter = 0;
 
   constructor() {
-    this.setupTable();
+    this.updateColumns();
 
     effect(() => {
       this.listEffectCounter++;
-      this.logger.debug(`[LIST-EFFECT] Admin games list effect run #${this.listEffectCounter}`);
+      this.logger.debug(
+        `[LIST-EFFECT] Admin games list effect run #${this.listEffectCounter}`,
+      );
       const games = this.gameService.divisionGames();
-      this.logger.debug(`[LIST-EFFECT] divisionGames count: ${games?.length ?? 0}`);
+      this.logger.debug(
+        `[LIST-EFFECT] divisionGames count: ${games?.length ?? 0}`,
+      );
       this.dataSource = new MatTableDataSource(games!);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-      this.paginator.pageSize = this.pageSize;
+      this.updateColumns();
       // Note: Don't subscribe to paginator.page here - it's already handled in ngOnChanges
       // Creating multiple subscriptions causes memory leaks and can trigger unwanted refreshes
     });
@@ -108,7 +111,7 @@ export class AdminGamesList implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.setupTable();
+    this.updateColumns();
     // this.store.select(fromAdmin.getFilteredGames).subscribe((games) => {
     // console.log(games);
     // this.games = games;
@@ -118,52 +121,43 @@ export class AdminGamesList implements OnInit, OnChanges, AfterViewInit {
     // }
     // });
   }
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
-
   ngOnChanges() {
-    this.paginator.page.subscribe((event: PageEvent) => {
-      this.pageSize = event.pageSize;
-      this.prefs.savePageSize(event.pageSize);
-      this.refreshData();
-    });
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.updateColumns();
   }
 
-  setupTable() {
+  updateColumns() {
+    const nextColumns: TableColumn<RegularGame>[] = [
+      { key: 'gameDate', header: 'Date', template: this.gameDateTemplate },
+      { key: 'gameTime', header: 'Time', template: this.gameTimeTemplate },
+      { key: 'locationName', header: 'Location', field: 'locationName' },
+      { key: 'homeTeamName', header: 'Home', template: this.homeTeamTemplate },
+      {
+        key: 'visitingTeamName',
+        header: 'Visitor',
+        template: this.visitingTeamTemplate,
+      },
+    ];
+
     if (this.showScores()) {
-      this.displayedColumns = [
-        'gameDate',
-        'gameTime',
-        'locationName',
-        'homeTeamName',
-        'visitingTeamName',
-        'homeTeamScore',
-        'visitingTeamScore',
-      ];
-    } else {
-      this.displayedColumns = [
-        'gameDate',
-        'gameTime',
-        'locationName',
-        'homeTeamName',
-        'visitingTeamName',
-      ];
+      nextColumns.push(
+        { key: 'homeTeamScore', header: 'Home Score', field: 'homeTeamScore' },
+        {
+          key: 'visitingTeamScore',
+          header: 'Visitor Score',
+          field: 'visitingTeamScore',
+        },
+      );
     }
-    if (this.currentScreenWidth === 'xs') {
-      // only display internalId on larger screens
-      //this.displayedColumns.shift(); // remove 'internalId'
-      this.displayedColumns = [
-        'gameDate',
-        'gameTime',
-        'locationName',
-        'homeTeamName',
-        'visitingTeamName',
-      ];
+
+    if (this.canEdit) {
+      nextColumns.push({
+        key: 'actions',
+        header: 'Actions',
+        template: this.actionsTemplate,
+      });
     }
+
+    this.columns = nextColumns;
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -183,11 +177,6 @@ export class AdminGamesList implements OnInit, OnChanges, AfterViewInit {
   }
   dataExists(): boolean {
     return this.games.length > 0;
-  }
-  refreshData() {
-    this.dataSource._updateChangeSubscription();
-    this.dataSource.disconnect();
-    this.dataSource.connect();
   }
   handlefilterUpdate($event: any) {
     this.logger.info($event.gametType);

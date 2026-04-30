@@ -1,91 +1,41 @@
 <div class="container mx-auto w-full">
   <div id="panelContent" class="row">
     <div class="flex flex-col w-full">
-      <mat-table #table id="grdSchedule" [dataSource]="dataSource">
-        <ng-container matColumnDef="scheduleGamesId">
-          <th mat-header-cell *matHeaderCellDef>Id</th>
-          <td mat-cell *matCellDef="let game">{{ game.scheduleGamesId }}</td>
-        </ng-container>
-        <ng-container matColumnDef="gameDate">
-          <th mat-header-cell *matHeaderCellDef>Date</th>
-          <td mat-cell *matCellDef="let game" class="date">
-            {{ game.gameDate | date : "M/d" }}
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="gameTime">
-          <th mat-header-cell *matHeaderCellDef>Time</th>
-          <td mat-cell *matCellDef="let game" class="time">
-            {{ game.gameTime | date : "shortTime" }}
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="locationName">
-          <th mat-header-cell *matHeaderCellDef>Location</th>
-          <td mat-cell *matCellDef="let game" class="location">
-            {{ game.locationName }}
-          </td> </ng-container
-          ><ng-container matColumnDef="homeTeamName">
-          <th mat-header-cell *matHeaderCellDef>Home</th>
-          <td mat-cell *matCellDef="let game" class="teamName">
-            {{ game.homeTeamName | teamDisplay : game.homeTeamColor : game.homeTeamSeasonNumber }}
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="visitingTeamName">
-          <th mat-header-cell *matHeaderCellDef>Visitor</th>
-          <td mat-cell *matCellDef="let game" class="teamName">
-            {{ game.visitingTeamName | teamDisplay : game.visitingTeamColor : game.visitingTeamSeasonNumber }}
-          </td>
-        </ng-container>
-        @if (showScores()) {
-          <ng-container matColumnDef="homeTeamScore">
-            <th mat-header-cell *matHeaderCellDef>Home Score</th>
-            <td mat-cell *matCellDef="let game" class="teamName">
-              {{ game.homeTeamScore }}
-            </td>
-          </ng-container>
-        }
-        @if (showScores()) {
-          <ng-container matColumnDef="visitingTeamScore">
-            <th mat-header-cell *matHeaderCellDef>Visitor Score</th>
-            <td mat-cell *matCellDef="let game" class="teamName">
-              {{ game.visitingTeamScore }}
-            </td>
-          </ng-container>
-        }
-        @if (canEdit) {
-          <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef>Actions</th>
-            <td mat-cell *matCellDef="let game">
-              @if (canEdit) {
-                <button
-                  type="submit"
-                  class="edit"
-                  (click)="editGame(game)"
-                  mat-icon-button
-                  >
-                  <mat-icon>edit</mat-icon>
-                </button>
-              }
-            </td>
-          </ng-container>
-        }
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr
-          mat-row
-          *matRowDef="let row; columns: displayedColumns"
-          (click)="selectRow(row)"
-          [class.row-is-clicked]="clickedRows.has(row)"
-        ></tr>
-        <!-- Row shown when there is no matching data that will be provided to the wrapper table. -->
-        <tr class="mat-row" *matNoDataRow>
-          <td class="mat-cell" colspan="7">No data</td>
-        </tr>
-      </mat-table>
-      <mat-paginator #gamesPaginator
-        [pageSizeOptions]="pageSizeOptions"
+      <ng-template #gameDateTemplate let-item>
+        {{ item.gameDate | date : "M/d" }}
+      </ng-template>
+
+      <ng-template #gameTimeTemplate let-item>
+        {{ item.gameTime | date : "shortTime" }}
+      </ng-template>
+
+      <ng-template #homeTeamTemplate let-item>
+        {{ item.homeTeamName | teamDisplay : item.homeTeamColor :
+        item.homeTeamSeasonNumber }}
+      </ng-template>
+
+      <ng-template #visitingTeamTemplate let-item>
+        {{ item.visitingTeamName | teamDisplay : item.visitingTeamColor :
+        item.visitingTeamSeasonNumber }}
+      </ng-template>
+
+      <ng-template #actionsTemplate let-item>
+        <button
+          type="submit"
+          class="edit"
+          (click)="$event.stopPropagation(); editGame(item)"
+          mat-icon-button
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
+      </ng-template>
+
+      <app-generic-mat-table
+        [columns]="columns"
+        [data]="dataSource.data"
         [pageSize]="pageSize"
-        showFirstLastButtons
-        aria-label="Select page of game"
-       />
+        (rowClick)="selectRow($event)"
+      />
       <!--
       <div class="table-wrapper" *ngIf="dataSource.data.length === 0">
         <div class="no-data">No data</div>

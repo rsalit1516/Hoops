@@ -1,23 +1,25 @@
 import {
-  AfterViewInit,
   Component,
   OnInit,
+  TemplateRef,
+  ViewChild,
   computed,
   effect,
   inject,
-  viewChild,
 } from '@angular/core';
 
 import { Season } from '@app/domain/season';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
 import { DatePipe } from '@angular/common';
 import { SeasonsToolbar } from '../../components/seasons-toolbar/seasons-toolbar';
 import { Router } from '@angular/router';
 import { SeasonService } from '@app/services/season.service';
-import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { PaginationPreferencesService } from '@app/services/pagination-preferences.service';
 import { LoggerService } from '@app/services/logger.service';
+import {
+  GenericMatTableComponent,
+  TableColumn,
+} from '../../shared/generic-mat-table/generic-mat-table';
 
 @Component({
   selector: 'csbc-admin-season-list',
@@ -27,23 +29,21 @@ import { LoggerService } from '@app/services/logger.service';
     './admin-season-list.scss',
     '../../admin.scss',
   ],
-  imports: [
-    MatTableModule,
-    DatePipe,
-    SeasonsToolbar,
-    MatSortModule,
-    MatPaginatorModule,
-  ],
-  providers: [MatSort, MatPaginator],
+  imports: [DatePipe, SeasonsToolbar, GenericMatTableComponent],
 })
-export class AdminSeasonList implements OnInit, AfterViewInit {
+export class AdminSeasonList implements OnInit {
   readonly #seasonService = inject(SeasonService);
   readonly #router = inject(Router);
   private readonly logger = inject(LoggerService);
   private readonly prefs = inject(PaginationPreferencesService);
-  readonly paginator = viewChild<MatPaginator>('seasonPaginator');
-  readonly sort = viewChild(MatSort);
-  showFirstLastButtons = true;
+  @ViewChild('fromDateTemplate', { static: true })
+  fromDateTemplate!: TemplateRef<unknown>;
+
+  @ViewChild('toDateTemplate', { static: true })
+  toDateTemplate!: TemplateRef<unknown>;
+
+  columns: TableColumn<Season>[] = [];
+
   pageSize = this.prefs.getPageSize(10);
   seasons = computed(() => this.#seasonService.seasons);
 
@@ -54,24 +54,20 @@ export class AdminSeasonList implements OnInit, AfterViewInit {
     this.dataSource.data = this.seasons();
   });
 
-  displayColumns = ['seasonId', 'description', 'fromDate', 'toDate'];
-
   constructor() {}
 
   ngOnInit() {
+    this.columns = [
+      { key: 'seasonId', header: 'ID', field: 'seasonId' },
+      { key: 'description', header: 'Description', field: 'description' },
+      { key: 'fromDate', header: 'From Date', template: this.fromDateTemplate },
+      { key: 'toDate', header: 'To Date', template: this.toDateTemplate },
+    ];
+
     // Ensure we have fresh seasons when the list loads
     this.#seasonService.fetchSeasons();
     this.dataSource = new MatTableDataSource<Season>(this.seasons());
   }
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator() ?? null;
-    this.dataSource.sort = this.sort() ?? null;
-  }
-  onPage(event: PageEvent): void {
-    this.pageSize = event.pageSize;
-    this.prefs.savePageSize(event.pageSize);
-  }
-
   edit(row: Season) {
     this.#seasonService.updateSelectedSeason(row);
     this.logger.debug('Editing season:', row);

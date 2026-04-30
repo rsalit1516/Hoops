@@ -1,4 +1,4 @@
-<mat-form-field>
+<mat-form-field floatLabel="always">
   <mat-label>Game Type</mat-label>
   <mat-select
     class="form-control"
@@ -7,9 +7,7 @@
     (selectionChange)="onChange($event.value)"
   >
     @for( type of gameTypes; track type) {
-    <mat-option [value]="type">
-      {{ type }}
-    </mat-option>
+    <mat-option [value]="type"> {{ type }} </mat-option>
     }
   </mat-select>
 </mat-form-field>

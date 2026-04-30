@@ -40,7 +40,10 @@
   border-radius: 8px;
 }
 
+html,
 body {
+  height: 100%;
+  overflow: hidden;
   padding: 0;
   margin: 0;
   font: Roboto, Arial, Helvetica, sans-serif;

@@ -170,6 +170,22 @@ namespace Hoops.Functions.Functions
             }
         }
 
+        [Function("GetPersonById")]
+        public async Task<HttpResponseData> GetPersonById(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Person/{id:int}")] HttpRequestData req,
+            int id)
+        {
+            Person? entity = null;
+            try { entity = await _repository.FindByAsync(id); } catch { entity = null; }
+            if (entity == null)
+            {
+                return req.CreateResponse(HttpStatusCode.NotFound);
+            }
+            var resp = req.CreateResponse();
+            await WriteJsonAsync(resp, ToDto(entity));
+            return resp;
+        }
+
         [Function("DeletePerson")]
         public async Task<HttpResponseData> DeletePerson(
             [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "Person/{id:int}")] HttpRequestData req,

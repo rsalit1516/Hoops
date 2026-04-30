@@ -15,7 +15,10 @@ describe('PlayoffGameService - Time Formatting', () => {
       imports: [HttpClientTestingModule],
       providers: [
         PlayoffGameService,
-        { provide: SeasonService, useValue: { selectedSeason: signal<Season | undefined>(undefined) } },
+        {
+          provide: SeasonService,
+          useValue: { selectedSeason: signal<Season | undefined>(undefined) },
+        },
         {
           provide: DivisionService,
           useValue: { selectedDivision: (): any => undefined },
@@ -48,7 +51,7 @@ describe('PlayoffGameService - Time Formatting', () => {
   it('should convert AM/PM time to 24-hour format', () => {
     // Access private method through bracket notation for testing
     const convertAmPmTo24Hour = (service as any).convertAmPmTo24Hour.bind(
-      service
+      service,
     );
 
     expect(convertAmPmTo24Hour('06:00:00 AM')).toBe('06:00:00');
@@ -79,5 +82,49 @@ describe('PlayoffGameService - Time Formatting', () => {
     expect(normalized.gameTime).toBeInstanceOf(Date);
     expect(normalized.gameTime?.getHours()).toBe(18); // 6 PM in 24-hour format
     expect(normalized.gameTime?.getMinutes()).toBe(0);
+  });
+
+  it('formatLocalDateTime should return YYYY-MM-DDTHH:mm:ss with no timezone offset', () => {
+    const formatLocalDateTime = (service as any).formatLocalDateTime.bind(
+      service,
+    );
+
+    // Use a date constructed from local time parts to avoid any timezone ambiguity in the test
+    const date = new Date(2025, 7, 20, 20, 30, 0); // Aug 20, 2025 8:30:00 PM local
+
+    const result: string = formatLocalDateTime(date);
+
+    expect(result).toBe('2025-08-20T20:30:00');
+    // Must not contain a Z or +/- timezone offset
+    expect(result).not.toMatch(/Z|[+-]\d{2}:\d{2}/);
+  });
+
+  it('toApiModel should send a local datetime string (not UTC) for gameDate', () => {
+    const toApiModel = (service as any).toApiModel.bind(service);
+
+    // Aug 20 2025, 8:30 PM local — would shift to 00:30 next day if serialized as UTC in UTC+4 or later
+    const localDate = new Date(2025, 7, 20, 20, 30, 0);
+
+    const game = {
+      schedulePlayoffId: 1,
+      scheduleNumber: 1,
+      gameNumber: 1,
+      locationNumber: 1,
+      gameDate: localDate,
+      gameTime: new Date(2025, 7, 20, 20, 30, 0),
+      visitingTeam: 'Team B',
+      homeTeam: 'Team A',
+      descr: '',
+      visitingTeamScore: null as number | null,
+      homeTeamScore: null as number | null,
+      divisionId: 1,
+    };
+
+    const payload = toApiModel(game);
+
+    // Should be a plain string, not a Date object (which would serialize to UTC)
+    expect(typeof payload.gameDate).toBe('string');
+    // Should start with the local date, not potentially shifted to next day
+    expect(payload.gameDate).toMatch(/^2025-08-20T20:30:00$/);
   });
 });

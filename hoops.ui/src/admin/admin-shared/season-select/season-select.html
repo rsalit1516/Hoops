@@ -1,9 +1,6 @@
-<mat-form-field>
+<mat-form-field floatLabel="always">
   <mat-label>Season</mat-label>
-  <mat-select
-    [(value)]="seasonService.selectedSeason"
-    class="form-control"
-  >
+  <mat-select [(value)]="seasonService.selectedSeason" class="form-control">
     @for( season of seasonService.seasons; track season) {
     <mat-option [value]="season.seasonId" (click)="changeSeason(season)">
       {{ season.description }}

@@ -5,6 +5,10 @@ body {
   background-color: v.$admin-background-color;
 }
 
+.shell-content {
+  background-color: v.$admin-background-color;
+}
+
 .admin-sidenav-container {
   height: 100vh;
   background-color: v.$black;
@@ -12,7 +16,7 @@ body {
 
 .admin-sidenav {
   width: 200px;
-  background-color: v.$black;
+  background-color: v.$admin-card-background-color;
   border-right: 1px solid rgba(255, 255, 255, 0.1);
   overflow-x: hidden;
 }
@@ -89,7 +93,9 @@ a.mat-list-item,
 .active {
   border-bottom: v.$brand-color;
   transform: scale(1.1);
-  transition: border-bottom 0.3s ease color 0.3s ease, transform 0.3s ease;
+  transition:
+    border-bottom 0.3s ease color 0.3s ease,
+    transform 0.3s ease;
   padding-left: 24px;
   font-weight: 700;
   background-color: v.$sidebar-color;
@@ -97,7 +103,7 @@ a.mat-list-item,
 }
 .mat-drawer-content {
   overflow: hidden;
-  background-color: v.$admin-card-background-color;
+  // background-color: v.$admin-card-background-color;
 }
 .mat-mdc-icon-button:disabled {
   color: v.$color;

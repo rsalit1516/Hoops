@@ -6,19 +6,19 @@ import {
   EventEmitter,
   ViewChild,
   AfterViewInit,
-  ContentChild,
   TemplateRef,
-  signal,
   Signal,
-  computed,
-  ChangeDetectionStrategy,
   inject,
 } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatSortModule, MatSort } from '@angular/material/sort';
-import { MatPaginatorModule, MatPaginator, PageEvent } from '@angular/material/paginator';
+import {
+  MatPaginatorModule,
+  MatPaginator,
+  PageEvent,
+} from '@angular/material/paginator';
 import { PaginationPreferencesService } from '@app/services/pagination-preferences.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -36,8 +36,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatPaginatorModule,
     MatButtonModule,
     MatIconModule,
-    MatProgressSpinnerModule
-],
+    MatProgressSpinnerModule,
+  ],
 })
 export class GenericMatTableComponent<T> implements OnInit, AfterViewInit {
   private readonly prefs = inject(PaginationPreferencesService);
@@ -45,6 +45,7 @@ export class GenericMatTableComponent<T> implements OnInit, AfterViewInit {
   @Input() columns: TableColumn<T>[] = [];
   @Input() data: T[] = [];
   @Input() pageSize = 25;
+  @Input() pageSizeKey?: string;
 
   @Output() rowClick = new EventEmitter<T>();
 
@@ -59,7 +60,7 @@ export class GenericMatTableComponent<T> implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     // Apply stored preference, using the @Input pageSize as fallback
-    this.pageSize = this.prefs.getPageSize(this.pageSize);
+    this.pageSize = this.prefs.getPageSize(this.pageSize, this.pageSizeKey);
   }
 
   ngOnChanges() {
@@ -73,7 +74,7 @@ export class GenericMatTableComponent<T> implements OnInit, AfterViewInit {
 
   onPage(event: PageEvent): void {
     this.pageSize = event.pageSize;
-    this.prefs.savePageSize(event.pageSize);
+    this.prefs.savePageSize(event.pageSize, this.pageSizeKey);
   }
 
   onRowClick(row: T): void {

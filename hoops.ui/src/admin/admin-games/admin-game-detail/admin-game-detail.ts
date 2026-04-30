@@ -67,9 +67,9 @@ interface AdminGameEditModel {
   ],
   templateUrl: './admin-game-detail.html',
   styleUrls: [
+    '../../admin.scss',
     '../../../shared/scss/forms.scss',
     '../../../shared/scss/cards.scss',
-    // '../../admin.scss',
   ],
   providers: [provideNativeDateAdapter()],
 })

@@ -369,6 +369,18 @@ table {
   border-radius: v.$border-radius;
 }
 
+.admin-detail-scroll {
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+@media (max-width: 768px) {
+  .admin-detail-scroll {
+    max-height: calc(100vh - 96px);
+  }
+}
+
 .mat-mdc-button:not(:disabled) {
   color: white !important;
 }

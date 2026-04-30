@@ -8,17 +8,21 @@
   <div class="list-section">
     <mat-card>
       @if (title()) {
-        <mat-card-header>
-          <div class="header-content">
-            <mat-card-title>{{ title() }}@if (count() > 0) { ({{ count() }})} </mat-card-title>
-            <div class="header-actions">
-              <ng-content select="[actions]" />
-            </div>
+      <mat-card-header>
+        <div class="header-content">
+          <mat-card-title
+            >{{ title() }}@if (count() > 0) { ({{ count() }})}
+          </mat-card-title>
+          <div class="header-actions">
+            <ng-content select="[actions]" />
           </div>
-        </mat-card-header>
+        </div>
+      </mat-card-header>
       }
       <mat-card-content>
-        <ng-content select="[list]" />
+        <div class="list-content">
+          <ng-content select="[list]" />
+        </div>
       </mat-card-content>
     </mat-card>
   </div>

@@ -1,38 +1,39 @@
-import { Component, OnInit, inject, ViewChild, effect } from '@angular/core';
+import { Component, OnInit, inject, effect } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { MatTableModule, MatTableDataSource } from '@angular/material/table';
-import { MatPaginatorModule, MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { PaginationPreferencesService } from '@app/services/pagination-preferences.service';
-import { MatSortModule, MatSort } from '@angular/material/sort';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
 import { DraftListPlayer } from '@app/domain/draft-list-player';
+import { Person } from '@app/domain/person';
 import { Constants } from '@app/shared/constants';
 import { SeasonService } from '@app/services/season.service';
 import { DivisionService } from '@app/services/division.service';
+import { PeopleService } from '@app/services/people.service';
 import { SeasonSelect } from '../admin-shared/season-select/season-select';
 import { DivisionSelect } from '../admin-shared/division-select/division-select';
 import { LoggerService } from '@app/services/logger.service';
 import { CommonModule } from '@angular/common';
+import {
+  GenericMatTableComponent,
+  TableColumn,
+} from '../shared/generic-mat-table/generic-mat-table';
 
 @Component({
   selector: 'csbc-player-list',
   templateUrl: './player-list.html',
-  styleUrls: ['./player.component.scss',
-    '../../shared/scss/tables.scss'],
+  styleUrls: ['./player.component.scss', '../../shared/scss/tables.scss'],
   standalone: true,
   imports: [
     CommonModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
     MatFormFieldModule,
     MatSelectModule,
     MatProgressSpinnerModule,
     SeasonSelect,
     DivisionSelect,
+    GenericMatTableComponent,
   ],
 })
 export class PlayerList implements OnInit {
@@ -40,23 +41,30 @@ export class PlayerList implements OnInit {
   private router = inject(Router);
   private seasonService = inject(SeasonService);
   private divisionService = inject(DivisionService);
+  private peopleService = inject(PeopleService);
   private logger = inject(LoggerService);
   private readonly prefs = inject(PaginationPreferencesService);
 
-  displayedColumns: string[] = ['name', 'draftId', 'division'];
-  dataSource = new MatTableDataSource<DraftListPlayer>([]);
-  isLoading = false;
-  pageSize = this.prefs.getPageSize(25);
+  columns: TableColumn<DraftListPlayer & { name: string }>[] = [
+    { key: 'name', header: 'Name', field: 'name' },
+    { key: 'draftId', header: 'Draft ID', field: 'draftId' },
+    { key: 'division', header: 'Division', field: 'division' },
+  ];
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
+  dataSource = new MatTableDataSource<DraftListPlayer & { name: string }>([]);
+  isLoading = false;
+  pageSize = this.prefs.getPageSize(10);
 
   constructor() {
     // Single effect tracking both season and division to avoid duplicate requests on init
     effect(() => {
       const season = this.seasonService.selectedSeason();
       const division = this.divisionService.selectedDivision();
-      this.logger.info('Season/division changed, loading players:', season, division);
+      this.logger.info(
+        'Season/division changed, loading players:',
+        season,
+        division,
+      );
       if (season?.seasonId) {
         this.loadPlayers();
       }
@@ -65,11 +73,6 @@ export class PlayerList implements OnInit {
 
   ngOnInit() {
     // Initial load will be triggered by season effect once season is available
-  }
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
   }
 
   loadPlayers() {
@@ -92,7 +95,10 @@ export class PlayerList implements OnInit {
     this.http.get<DraftListPlayer[]>(url).subscribe({
       next: (players) => {
         this.logger.info('Players loaded:', players.length);
-        this.dataSource.data = players;
+        this.dataSource.data = players.map((player) => ({
+          ...player,
+          name: `${player.lastName}, ${player.firstName}`,
+        }));
         this.isLoading = false;
       },
       error: (error) => {
@@ -102,13 +108,16 @@ export class PlayerList implements OnInit {
     });
   }
 
-  onPage(event: PageEvent): void {
-    this.pageSize = event.pageSize;
-    this.prefs.savePageSize(event.pageSize);
-  }
-
   onRowClick(player: DraftListPlayer) {
     this.logger.info('Navigating to player registration:', player);
+
+    const fallbackPerson = new Person();
+    fallbackPerson.personId = player.personId;
+    fallbackPerson.firstName = player.firstName ?? '';
+    fallbackPerson.lastName = player.lastName ?? '';
+    fallbackPerson.birthDate = player.dob ? new Date(player.dob) : new Date();
+
+    this.peopleService.loadAndSelectPerson(player.personId, fallbackPerson);
     this.router.navigate(['/admin/player-registration', player.personId]);
   }
 }

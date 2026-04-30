@@ -44,7 +44,7 @@ namespace Hoops.Functions.Functions
             {
                 var player = await _playerService.GetPlayerByIdAsync(id);
                 var resp = req.CreateResponse();
-                await WriteJsonAsync(resp, player);
+                await WriteJsonAsync(resp, ToDto(player));
                 return resp;
             }
             catch (InvalidOperationException)
@@ -65,7 +65,7 @@ namespace Hoops.Functions.Functions
             }
 
             var resp = req.CreateResponse();
-            WriteJsonAsync(resp, player).GetAwaiter().GetResult();
+            WriteJsonAsync(resp, ToDto(player)).GetAwaiter().GetResult();
             return resp;
         }
 
@@ -82,7 +82,7 @@ namespace Hoops.Functions.Functions
             }
 
             var resp = req.CreateResponse();
-            WriteJsonAsync(resp, player).GetAwaiter().GetResult();
+            WriteJsonAsync(resp, ToDto(player)).GetAwaiter().GetResult();
             return resp;
         }
 
@@ -147,7 +147,7 @@ namespace Hoops.Functions.Functions
                 await _repository.SaveChangesAsync();
 
                 var resp = req.CreateResponse(HttpStatusCode.Created);
-                await WriteJsonAsync(resp, createdPlayer, HttpStatusCode.Created);
+                await WriteJsonAsync(resp, ToDto(createdPlayer), HttpStatusCode.Created);
                 return resp;
             }
             catch (InvalidOperationException ex)
@@ -186,7 +186,7 @@ namespace Hoops.Functions.Functions
 
                 var updatedPlayer = await _playerService.UpdatePlayerAsync(player);
                 var resp = req.CreateResponse();
-                await WriteJsonAsync(resp, updatedPlayer);
+                await WriteJsonAsync(resp, ToDto(updatedPlayer));
                 return resp;
             }
             catch (InvalidOperationException)
@@ -229,7 +229,7 @@ namespace Hoops.Functions.Functions
                 await _repository.SaveChangesAsync();
 
                 var resp = req.CreateResponse();
-                await WriteJsonAsync(resp, player);
+                await WriteJsonAsync(resp, ToDto(player));
                 return resp;
             }
             catch (Exception ex)
@@ -238,6 +238,76 @@ namespace Hoops.Functions.Functions
                 await errorResp.WriteStringAsync($"Error deleting player: {ex.Message}\n{ex.StackTrace}");
                 return errorResp;
             }
+        }
+
+        private static PlayerDto ToDto(Player p) => new PlayerDto
+        {
+            PlayerId = p.PlayerId,
+            SeasonId = p.SeasonId,
+            DivisionId = p.DivisionId,
+            TeamId = p.TeamId,
+            PersonId = p.PersonId,
+            DraftId = p.DraftId,
+            DraftNotes = p.DraftNotes,
+            Rating = p.Rating,
+            Coach = p.Coach,
+            CoachId = p.CoachId,
+            Sponsor = p.Sponsor,
+            SponsorId = p.SponsorId,
+            Ad = p.Ad,
+            Scholarship = p.Scholarship,
+            FamilyDisc = p.FamilyDisc,
+            Rollover = p.Rollover,
+            OutOfTown = p.OutOfTown,
+            RefundBatchId = p.RefundBatchId,
+            PaidDate = p.PaidDate,
+            PaidAmount = p.PaidAmount,
+            BalanceOwed = p.BalanceOwed,
+            PayType = p.PayType,
+            NoteDesc = p.NoteDesc,
+            CheckMemo = p.CheckMemo,
+            CreatedDate = p.CreatedDate,
+            CreatedUser = p.CreatedUser,
+            ModifiedDate = p.ModifiedDate,
+            ModifiedUser = p.ModifiedUser,
+            PlaysDown = p.PlaysDown,
+            PlaysUp = p.PlaysUp,
+            ShoppingCartId = p.ShoppingCartId,
+        };
+
+        private sealed class PlayerDto
+        {
+            public int PlayerId { get; set; }
+            public int? SeasonId { get; set; }
+            public int? DivisionId { get; set; }
+            public int? TeamId { get; set; }
+            public int PersonId { get; set; }
+            public string? DraftId { get; set; }
+            public string? DraftNotes { get; set; }
+            public int? Rating { get; set; }
+            public int? Coach { get; set; }
+            public int? CoachId { get; set; }
+            public int? Sponsor { get; set; }
+            public int? SponsorId { get; set; }
+            public bool? Ad { get; set; }
+            public bool? Scholarship { get; set; }
+            public bool? FamilyDisc { get; set; }
+            public bool? Rollover { get; set; }
+            public bool? OutOfTown { get; set; }
+            public int? RefundBatchId { get; set; }
+            public DateTime? PaidDate { get; set; }
+            public decimal? PaidAmount { get; set; }
+            public decimal? BalanceOwed { get; set; }
+            public string? PayType { get; set; }
+            public string? NoteDesc { get; set; }
+            public string? CheckMemo { get; set; }
+            public DateTime? CreatedDate { get; set; }
+            public int? CreatedUser { get; set; }
+            public DateTime? ModifiedDate { get; set; }
+            public int? ModifiedUser { get; set; }
+            public bool? PlaysDown { get; set; }
+            public bool? PlaysUp { get; set; }
+            public int? ShoppingCartId { get; set; }
         }
     }
 }

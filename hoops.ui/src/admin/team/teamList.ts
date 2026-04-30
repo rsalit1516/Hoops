@@ -1,7 +1,7 @@
 import { Component, OnInit, inject, input } from '@angular/core';
 import { TeamService } from '../../services/team.service';
 import { Team } from '../../domain/team';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
 
 import { SeasonSelect } from '../admin-shared/season-select/season-select';
 import { DivisionSelect } from '../admin-shared/division-select/division-select';
@@ -11,20 +11,16 @@ import { Store } from '@ngrx/store';
 import * as fromAdmin from '@app/admin/state';
 import * as adminActions from '@app/admin//state/admin.actions';
 import { LoggerService } from '@app/services/logger.service';
+import {
+  GenericMatTableComponent,
+  TableColumn,
+} from '../shared/generic-mat-table/generic-mat-table';
 
 @Component({
   selector: 'csbc-team-list',
-  templateUrl: "./teamList.html",
-  imports: [
-    MatTableModule,
-    SeasonSelect,
-    DivisionSelect,
-    ],
-  styleUrls: [
-    '../../shared/scss/tables.scss',
-    './team.scss',
-    '../admin.scss',
-  ],
+  templateUrl: './teamList.html',
+  imports: [SeasonSelect, DivisionSelect, GenericMatTableComponent],
+  styleUrls: ['../../shared/scss/tables.scss', './team.scss', '../admin.scss'],
 })
 export class TeamList implements OnInit {
   readonly teams = input<Team[]>([]);
@@ -33,7 +29,12 @@ export class TeamList implements OnInit {
   errorMessage: string | undefined;
   selectedTeam: Team | undefined;
   #teamService = inject(TeamService);
-  displayedColumns = ['teamId', 'name', 'teamColorId', 'teamNumber'];
+  columns: TableColumn<Team>[] = [
+    { key: 'teamId', header: 'ID', field: 'teamId' },
+    { key: 'name', header: 'Team', field: 'name' },
+    { key: 'teamColorId', header: 'Color', field: 'teamColorId' },
+    { key: 'teamNumber', header: 'Number', field: 'teamNumber' },
+  ];
   dataSource!: MatTableDataSource<Team>;
   constructor() {}
 

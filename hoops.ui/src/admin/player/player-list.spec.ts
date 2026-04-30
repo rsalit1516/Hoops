@@ -1,5 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { PlayerList } from './player-list';
@@ -7,6 +10,7 @@ import { DraftListPlayer } from '@app/domain/draft-list-player';
 import { SeasonService } from '@app/services/season.service';
 import { DivisionService } from '@app/services/division.service';
 import { LoggerService } from '@app/services/logger.service';
+import { PeopleService } from '@app/services/people.service';
 import { Constants } from '@app/shared/constants';
 import { Season } from '@app/domain/season';
 import { Division } from '@app/domain/division';
@@ -24,6 +28,7 @@ describe('PlayerList', () => {
   let mockSeasonService: jasmine.SpyObj<SeasonService>;
   let mockDivisionService: jasmine.SpyObj<DivisionService>;
   let mockLoggerService: jasmine.SpyObj<LoggerService>;
+  let mockPeopleService: jasmine.SpyObj<PeopleService>;
 
   const mockSeason: Season = {
     seasonId: 1,
@@ -35,7 +40,7 @@ describe('PlayerList', () => {
     currentSchedule: false,
     currentSignUps: false,
     gameSchedules: false,
-    onlineRegistration: false
+    onlineRegistration: false,
   };
 
   const mockDivision: Division = {
@@ -48,7 +53,7 @@ describe('PlayerList', () => {
     minDate2: new Date(),
     maxDate2: new Date(),
     gender2: 'M',
-    directorId: null
+    directorId: null,
   };
 
   const mockPlayers: DraftListPlayer[] = [
@@ -62,7 +67,7 @@ describe('PlayerList', () => {
       grade: 11,
       address1: '123 Main St',
       city: 'Anytown',
-      zip: '12345'
+      zip: '12345',
     },
     {
       personId: 2,
@@ -74,22 +79,34 @@ describe('PlayerList', () => {
       grade: 10,
       address1: '456 Oak Ave',
       city: 'Sometown',
-      zip: '67890'
-    }
+      zip: '67890',
+    },
   ];
 
   beforeEach(async () => {
     mockRouter = jasmine.createSpyObj('Router', ['navigate']);
-    mockSeasonService = jasmine.createSpyObj('SeasonService', ['fetchSeasons', 'fetchCurrentSeason'], {
-      selectedSeason: signal(mockSeason),
-      currentSeason: signal(mockSeason),
-      seasons: [mockSeason],
-    });
+    mockSeasonService = jasmine.createSpyObj(
+      'SeasonService',
+      ['fetchSeasons', 'fetchCurrentSeason'],
+      {
+        selectedSeason: signal(mockSeason),
+        currentSeason: signal(mockSeason),
+        seasons: [mockSeason],
+      },
+    );
     mockDivisionService = jasmine.createSpyObj('DivisionService', [], {
       selectedDivision: signal(mockDivision),
       seasonDivisions: signal([mockDivision]),
     });
-    mockLoggerService = jasmine.createSpyObj('LoggerService', ['info', 'warn', 'error', 'debug']);
+    mockLoggerService = jasmine.createSpyObj('LoggerService', [
+      'info',
+      'warn',
+      'error',
+      'debug',
+    ]);
+    mockPeopleService = jasmine.createSpyObj('PeopleService', [
+      'loadAndSelectPerson',
+    ]);
 
     await TestBed.configureTestingModule({
       imports: [
@@ -98,14 +115,15 @@ describe('PlayerList', () => {
         MatTableModule,
         MatPaginatorModule,
         MatSortModule,
-        NoopAnimationsModule
+        NoopAnimationsModule,
       ],
       providers: [
         { provide: Router, useValue: mockRouter },
         { provide: SeasonService, useValue: mockSeasonService },
         { provide: DivisionService, useValue: mockDivisionService },
-        { provide: LoggerService, useValue: mockLoggerService }
-      ]
+        { provide: LoggerService, useValue: mockLoggerService },
+        { provide: PeopleService, useValue: mockPeopleService },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PlayerList);
@@ -124,7 +142,9 @@ describe('PlayerList', () => {
   it('should load players on init when season is available', () => {
     fixture.detectChanges();
 
-    const req = httpMock.expectOne(`${Constants.GET_SEASON_PLAYERS_URL}/1?divisionId=5`);
+    const req = httpMock.expectOne(
+      `${Constants.GET_SEASON_PLAYERS_URL}/1?divisionId=5`,
+    );
     expect(req.request.method).toBe('GET');
     req.flush(mockPlayers);
 
@@ -136,7 +156,9 @@ describe('PlayerList', () => {
     fixture.detectChanges();
 
     // Initial load
-    let req = httpMock.expectOne(`${Constants.GET_SEASON_PLAYERS_URL}/1?divisionId=5`);
+    let req = httpMock.expectOne(
+      `${Constants.GET_SEASON_PLAYERS_URL}/1?divisionId=5`,
+    );
     req.flush(mockPlayers);
 
     // Change season
@@ -144,7 +166,9 @@ describe('PlayerList', () => {
     mockSeasonService.selectedSeason.set(newSeason);
     fixture.detectChanges();
 
-    req = httpMock.expectOne(`${Constants.GET_SEASON_PLAYERS_URL}/2?divisionId=5`);
+    req = httpMock.expectOne(
+      `${Constants.GET_SEASON_PLAYERS_URL}/2?divisionId=5`,
+    );
     req.flush([mockPlayers[0]]);
 
     expect(component.dataSource.data.length).toBe(1);
@@ -154,7 +178,9 @@ describe('PlayerList', () => {
     fixture.detectChanges();
 
     // Initial load
-    let req = httpMock.expectOne(`${Constants.GET_SEASON_PLAYERS_URL}/1?divisionId=5`);
+    let req = httpMock.expectOne(
+      `${Constants.GET_SEASON_PLAYERS_URL}/1?divisionId=5`,
+    );
     req.flush(mockPlayers);
 
     // Change division
@@ -162,7 +188,9 @@ describe('PlayerList', () => {
     mockDivisionService.selectedDivision.set(newDivision);
     fixture.detectChanges();
 
-    req = httpMock.expectOne(`${Constants.GET_SEASON_PLAYERS_URL}/1?divisionId=6`);
+    req = httpMock.expectOne(
+      `${Constants.GET_SEASON_PLAYERS_URL}/1?divisionId=6`,
+    );
     req.flush([mockPlayers[1]]);
 
     expect(component.dataSource.data.length).toBe(1);
@@ -171,7 +199,14 @@ describe('PlayerList', () => {
   it('should navigate to player registration on row click', () => {
     component.onRowClick(mockPlayers[0]);
 
-    expect(mockRouter.navigate).toHaveBeenCalledWith(['/admin/player-registration', 1]);
+    expect(mockPeopleService.loadAndSelectPerson).toHaveBeenCalledWith(
+      1,
+      jasmine.anything(),
+    );
+    expect(mockRouter.navigate).toHaveBeenCalledWith([
+      '/admin/player-registration',
+      1,
+    ]);
   });
 
   it('should set isLoading to true while fetching', () => {
@@ -179,7 +214,9 @@ describe('PlayerList', () => {
 
     expect(component.isLoading).toBe(true);
 
-    const req = httpMock.expectOne(`${Constants.GET_SEASON_PLAYERS_URL}/1?divisionId=5`);
+    const req = httpMock.expectOne(
+      `${Constants.GET_SEASON_PLAYERS_URL}/1?divisionId=5`,
+    );
     req.flush(mockPlayers);
 
     expect(component.isLoading).toBe(false);
@@ -188,7 +225,9 @@ describe('PlayerList', () => {
   it('should handle HTTP errors gracefully', () => {
     fixture.detectChanges();
 
-    const req = httpMock.expectOne(`${Constants.GET_SEASON_PLAYERS_URL}/1?divisionId=5`);
+    const req = httpMock.expectOne(
+      `${Constants.GET_SEASON_PLAYERS_URL}/1?divisionId=5`,
+    );
     req.error(new ProgressEvent('error'));
 
     expect(component.isLoading).toBe(false);
@@ -198,7 +237,9 @@ describe('PlayerList', () => {
   it('should display player data in correct columns', () => {
     fixture.detectChanges();
 
-    const req = httpMock.expectOne(`${Constants.GET_SEASON_PLAYERS_URL}/1?divisionId=5`);
+    const req = httpMock.expectOne(
+      `${Constants.GET_SEASON_PLAYERS_URL}/1?divisionId=5`,
+    );
     req.flush(mockPlayers);
     fixture.detectChanges();
 

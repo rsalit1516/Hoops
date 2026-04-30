@@ -1,0 +1,92 @@
+@use "sass:color";
+@use "../../../../Content/variables" as v;
+
+:host ::ng-deep {
+  .mat-expansion-panel {
+    background-color: v.$admin-card-background-color !important;
+    border: 1px solid v.$card-border-color;
+    border-radius: 10px !important;
+    box-shadow: none !important;
+
+    &.mat-expanded {
+      border-color: color.adjust(v.$brand-color, $lightness: -15%);
+    }
+  }
+
+  .mat-expansion-panel-header {
+    background-color: v.$admin-card-background-color !important;
+    border-radius: 10px;
+
+    &.mat-expanded {
+      border-bottom-left-radius: 0 !important;
+      border-bottom-right-radius: 0 !important;
+    }
+
+    &:hover {
+      background-color: color.adjust(
+        v.$admin-card-background-color,
+        $lightness: 5%
+      ) !important;
+    }
+  }
+
+  .mat-panel-title,
+  .mat-expansion-panel-header-title,
+  mat-panel-title {
+    color: v.$brand-color !important;
+    font-weight: 600;
+    font-size: 1rem;
+  }
+
+  .mat-panel-description,
+  .mat-expansion-panel-header-description,
+  mat-panel-description {
+    color: color.adjust(v.$field-label, $lightness: -15%) !important;
+    font-size: 0.85rem;
+    font-style: italic;
+  }
+
+  .mat-expansion-panel-body {
+    background-color: v.$admin-card-background-color;
+    padding: 8px 16px 16px;
+  }
+
+  .mat-expansion-indicator::after {
+    border-color: v.$admin-font-color !important;
+  }
+}
+
+.sub-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 4px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.panel-actions {
+  display: flex;
+  gap: 12px;
+  padding-top: 8px;
+  padding-bottom: 4px;
+}
+
+.no-data {
+  font-size: 14px;
+  padding: 8px 0;
+}
+
+.nav-link {
+  cursor: pointer;
+  text-decoration: underline;
+  font-style: italic;
+
+  &.nav-disabled {
+    cursor: default;
+    text-decoration: none;
+    opacity: 0.5;
+  }
+}

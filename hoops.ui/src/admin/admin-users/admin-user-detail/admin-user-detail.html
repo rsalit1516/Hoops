@@ -1,19 +1,20 @@
-<div class="form-header">
-  <h2>{{ isNewRecord() ? 'Create New User' : 'Edit User' }}</h2>
-</div>
+<div class="admin-detail-scroll">
+  <div class="form-header">
+    <h2>{{ isNewRecord() ? 'Create New User' : 'Edit User' }}</h2>
+  </div>
 
-<form class="form-container">
-  <div class="grid grid-cols-2 gap-4">
-    <!-- User Id — hidden for new records -->
-    @if (!isNewRecord()) {
+  <form class="form-container">
+    <div class="grid grid-cols-2 gap-4">
+      <!-- User Id — hidden for new records -->
+      @if (!isNewRecord()) {
       <mat-form-field appearance="fill" class="col-span-2">
         <mat-label>User Id</mat-label>
         <input matInput [value]="userId()" readonly />
       </mat-form-field>
-    }
+      }
 
-    <!-- Household autocomplete (new user) or read-only display (existing) -->
-    @if (showHouseholdDropdown()) {
+      <!-- Household autocomplete (new user) or read-only display (existing) -->
+      @if (showHouseholdDropdown()) {
       <mat-form-field appearance="fill">
         <mat-label>Household</mat-label>
         <input
@@ -29,76 +30,82 @@
           (optionSelected)="onHouseholdSelected($event)"
         >
           @for (h of filteredHouseholds(); track h.houseId) {
-            <mat-option [value]="h">{{ h.name }}</mat-option>
+          <mat-option [value]="h">{{ h.name }}</mat-option>
           }
         </mat-autocomplete>
       </mat-form-field>
-    } @else {
+      } @else {
       <mat-form-field appearance="fill">
         <mat-label>Household</mat-label>
-        <input matInput [value]="householdName()" readonly class="readonly-field" />
+        <input
+          matInput
+          [value]="householdName()"
+          readonly
+          class="readonly-field"
+        />
         @if (isNewRecord()) {
-          <mat-hint>Pre-populated from person detail</mat-hint>
+        <mat-hint>Pre-populated from person detail</mat-hint>
         }
       </mat-form-field>
-    }
+      }
 
-    <!-- Person select — disabled until a household is chosen -->
-    <mat-form-field appearance="fill" floatLabel="always">
-      <mat-label>Person</mat-label>
-      <mat-select
-        [value]="model().peopleId"
-        (selectionChange)="onPersonSelected($event.value)"
-        [disabled]="!peopleSelectEnabled()"
-      >
-        <mat-option [value]="null">-- Select Person --</mat-option>
-        @for (person of peopleOptions(); track person.personId) {
+      <!-- Person select — disabled until a household is chosen -->
+      <mat-form-field appearance="fill" floatLabel="always">
+        <mat-label>Person</mat-label>
+        <mat-select
+          [value]="model().peopleId"
+          (selectionChange)="onPersonSelected($event.value)"
+          [disabled]="!peopleSelectEnabled()"
+        >
+          <mat-option [value]="null">-- Select Person --</mat-option>
+          @for (person of peopleOptions(); track person.personId) {
           <mat-option [value]="person.personId">
             {{ person.lastName }}, {{ person.firstName }}
           </mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
+          }
+        </mat-select>
+      </mat-form-field>
 
-    <!-- Username -->
-    <mat-form-field appearance="fill">
-      <mat-label>Username</mat-label>
-      <input matInput [formField]="userForm.userName" />
-    </mat-form-field>
+      <!-- Username -->
+      <mat-form-field appearance="fill">
+        <mat-label>Username</mat-label>
+        <input matInput [formField]="userForm.userName" />
+      </mat-form-field>
 
-    <!-- Name -->
-    <mat-form-field appearance="fill">
-      <mat-label>Name</mat-label>
-      <input matInput [formField]="userForm.name" />
-    </mat-form-field>
+      <!-- Name -->
+      <mat-form-field appearance="fill">
+        <mat-label>Name</mat-label>
+        <input matInput [formField]="userForm.name" />
+      </mat-form-field>
 
-    <!-- Password -->
-    <mat-form-field appearance="fill" class="col-span-2">
-      <mat-label>Password</mat-label>
-      <input matInput [formField]="userForm.pword" type="password" />
-    </mat-form-field>
+      <!-- Password -->
+      <mat-form-field appearance="fill" class="col-span-2">
+        <mat-label>Password</mat-label>
+        <input matInput [formField]="userForm.pword" type="password" />
+      </mat-form-field>
 
-    <!-- User Type -->
-    <mat-form-field appearance="fill" class="col-span-2">
-      <mat-label>User Type</mat-label>
-      <mat-select [formField]="userForm.userType">
-        @for (opt of userTypeOptions; track opt.value) {
+      <!-- User Type -->
+      <mat-form-field appearance="fill" floatLabel="always" class="col-span-2">
+        <mat-label>User Type</mat-label>
+        <mat-select [formField]="userForm.userType">
+          @for (opt of userTypeOptions; track opt.value) {
           <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
-  </div>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
 
-  <div class="form-actions">
-    <button
-      mat-raised-button
-      color="primary"
-      type="button"
-      [disabled]="!canSave()"
-      (click)="save()"
-    >
-      {{ isSaving() ? 'Saving…' : isNewRecord() ? 'Create' : 'Save' }}
-    </button>
-    <button mat-button type="button" (click)="cancel()">Cancel</button>
-  </div>
-</form>
+    <div class="form-actions">
+      <button
+        mat-raised-button
+        color="primary"
+        type="button"
+        [disabled]="!canSave()"
+        (click)="save()"
+      >
+        {{ isSaving() ? 'Saving…' : isNewRecord() ? 'Create' : 'Save' }}
+      </button>
+      <button mat-button type="button" (click)="cancel()">Cancel</button>
+    </div>
+  </form>
+</div>

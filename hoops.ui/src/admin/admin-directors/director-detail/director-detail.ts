@@ -12,6 +12,7 @@ import { Observable } from 'rxjs';
   templateUrl: './director-detail.html',
   styleUrls: [
     './director-detail.scss',
+    '../../admin.scss',
     '../../../shared/scss/forms.scss',
     '../../../shared/scss/cards.scss',
   ],
@@ -36,7 +37,7 @@ export class DirectorDetail extends BaseDetail<Director> {
       // Only load if we're in edit mode, have an ID, have directors, and don't already have an item
       if (this.mode() === 'edit' && id && directors && !this.item()) {
         const directorId = +id;
-        const director = directors.find(d => d.directorId === directorId);
+        const director = directors.find((d) => d.directorId === directorId);
         if (director) {
           this.item.set(director);
         }

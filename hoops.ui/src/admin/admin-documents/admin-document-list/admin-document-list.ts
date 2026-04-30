@@ -1,46 +1,36 @@
-import {
-  AfterViewInit,
-  Component,
-  effect,
-  inject,
-  OnInit,
-  viewChild,
-} from '@angular/core';
+import { Component, effect, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
-import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { PaginationPreferencesService } from '@app/services/pagination-preferences.service';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { DocumentMetadata } from '@app/domain/document';
 import { AdminDocumentStateService } from '../admin-document-state.service';
+import {
+  GenericMatTableComponent,
+  TableColumn,
+} from '../../shared/generic-mat-table/generic-mat-table';
 
 @Component({
   selector: 'app-admin-document-list',
   standalone: true,
-  imports: [
-    MatButtonModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatTableModule,
-    MatToolbarModule,
-  ],
+  imports: [MatButtonModule, MatToolbarModule, GenericMatTableComponent],
   templateUrl: './admin-document-list.html',
   styleUrls: ['../../../shared/scss/tables.scss', '../../admin.scss'],
-  providers: [MatSort, MatPaginator],
 })
-export class AdminDocumentList implements OnInit, AfterViewInit {
+export class AdminDocumentList implements OnInit {
   private readonly stateService = inject(AdminDocumentStateService);
   private readonly router = inject(Router);
   private readonly prefs = inject(PaginationPreferencesService);
 
-  readonly paginator = viewChild<MatPaginator>('docPaginator');
-  readonly sort = viewChild(MatSort);
-
-  displayColumns = ['title', 'section', 'description', 'sortOrder'];
+  columns: TableColumn<DocumentMetadata>[] = [
+    { key: 'title', header: 'Title', field: 'title' },
+    { key: 'section', header: 'Section', field: 'section' },
+    { key: 'description', header: 'Description', field: 'description' },
+    { key: 'sortOrder', header: 'Sort Order', field: 'sortOrder' },
+  ];
   pageSize = this.prefs.getPageSize(10);
-  showFirstLastButtons = true;
 
   dataSource = new MatTableDataSource<DocumentMetadata>([]);
 
@@ -50,16 +40,6 @@ export class AdminDocumentList implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.stateService.fetchDocuments();
-  }
-
-  ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator() ?? null;
-    this.dataSource.sort = this.sort() ?? null;
-  }
-
-  onPage(event: PageEvent): void {
-    this.pageSize = event.pageSize;
-    this.prefs.savePageSize(event.pageSize);
   }
 
   addNew(): void {

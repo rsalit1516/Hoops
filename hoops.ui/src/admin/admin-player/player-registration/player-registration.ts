@@ -1,4 +1,12 @@
-import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  OnInit,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,12 +24,17 @@ import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { Player } from '@app/domain/player';
 import { Season } from '@app/domain/season';
 import { Division } from '@app/domain/division';
+import { Person } from '@app/domain/person';
 import { PlayerService } from '../player.service';
 import { PeopleService } from '@app/services/people.service';
 import { SeasonService } from '@app/services/season.service';
 import { DivisionService } from '@app/services/division.service';
+import { HouseholdService } from '@app/services/household.service';
 import { FormSettings } from '@app/shared/constants';
 import { LoggerService } from '@app/services/logger.service';
+import { RegistrationHouseholdForm } from './registration-household-form/registration-household-form';
+import { RegistrationPersonPhoneForm } from './registration-person-phone-form/registration-person-phone-form';
+import { HasUnsavedChanges } from '@app/admin/admin-games/pending-changes.guard';
 
 // Player registration form data interface
 interface PlayerFormData {
@@ -67,6 +80,8 @@ interface PlayerFormData {
     MatRadioModule,
     MatSelectModule,
     RouterModule,
+    RegistrationHouseholdForm,
+    RegistrationPersonPhoneForm,
   ],
   templateUrl: './player-registration.html',
   styleUrls: [
@@ -77,7 +92,7 @@ interface PlayerFormData {
   ],
   providers: [provideNativeDateAdapter()],
 })
-export class PlayerRegistration implements OnInit {
+export class PlayerRegistration implements OnInit, HasUnsavedChanges {
   readonly router = inject(Router);
   readonly route = inject(ActivatedRoute);
   private readonly location = inject(Location);
@@ -85,6 +100,7 @@ export class PlayerRegistration implements OnInit {
   private readonly peopleService = inject(PeopleService);
   private readonly seasonService = inject(SeasonService);
   private readonly divisionService = inject(DivisionService);
+  private readonly householdService = inject(HouseholdService);
   private logger = inject(LoggerService);
   private snackBar = inject(MatSnackBar);
 
@@ -97,11 +113,46 @@ export class PlayerRegistration implements OnInit {
   seasons = signal<Season[]>([]);
   divisions = signal<Division[]>([]);
   selectedSeason = signal<Season | undefined>(undefined);
+  private pendingRegistration: { personId: number; playerName: string } | null =
+    null;
 
   // Options for dropdowns
   paymentTypes = ['Check', 'Credit Card', 'Online', 'Cash', 'Zelle'];
   ratingOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   changeDivisionOptions = ['N/A', 'Plays Up', 'Plays Down'];
+
+  // Sub-form refs for cross-form dirty check
+  private readonly householdFormRef = viewChild(RegistrationHouseholdForm);
+  private readonly personPhoneFormRef = viewChild(RegistrationPersonPhoneForm);
+
+  isFormDirty(): boolean {
+    return (
+      this.isDirty() ||
+      (this.householdFormRef()?.isDirty() ?? false) ||
+      (this.personPhoneFormRef()?.isDirty() ?? false)
+    );
+  }
+
+  // Dirty tracking
+  private initialSnapshot = signal<PlayerFormData | null>(null);
+
+  readonly isDirty = computed(() => {
+    const initial = this.initialSnapshot();
+    if (!initial) return false;
+    const current = this.playerFormModel();
+    const toISO = (v: Date | string | null | undefined): string | null =>
+      v ? new Date(v).toISOString() : null;
+    return (
+      JSON.stringify({ ...current, paidDate: toISO(current.paidDate) }) !==
+      JSON.stringify({ ...initial, paidDate: toISO(initial.paidDate) })
+    );
+  });
+
+  readonly canSave = computed(() => {
+    const model = this.playerFormModel();
+    if (model.playerId === 0) return model.seasonId !== null;
+    return this.isDirty();
+  });
 
   // Signal-based form model
   playerFormModel = signal<PlayerFormData>({
@@ -140,6 +191,9 @@ export class PlayerRegistration implements OnInit {
         'Person changed in player registration:',
         currentPerson,
       );
+      if (currentPerson?.houseId) {
+        this.householdService.selectedHouseholdByHouseId(currentPerson.houseId);
+      }
     });
 
     effect(() => {
@@ -147,7 +201,9 @@ export class PlayerRegistration implements OnInit {
       this.logger.debug('Selected season changed:', selectedSeason);
       if (selectedSeason?.seasonId) {
         this.selectedSeason.set(selectedSeason);
+        this.ensureSeasonSelected(selectedSeason);
         this.loadDivisionsForSeason(selectedSeason.seasonId);
+        this.tryResolvePendingRegistration();
       }
     });
 
@@ -193,30 +249,67 @@ export class PlayerRegistration implements OnInit {
     });
   }
 
+  private returnToPeople = false;
+
   ngOnInit(): void {
     this.loadSeasons();
 
-    // Get personId from route params
+    this.route.queryParams.subscribe((qp) => {
+      this.returnToPeople = qp['from'] === 'people';
+    });
+
     this.route.params.subscribe((params) => {
       const personId = params['personId'];
       if (personId) {
-        this.loadPersonAndPlayer(+personId); // Convert string to number
+        this.loadPersonAndPlayer(+personId);
       }
     });
   }
 
   loadSeasons(): void {
-    this.seasonService.fetchSeasons();
-    this.seasons.set(this.seasonService.seasons);
+    this.seasonService.seasons$.subscribe({
+      next: (seasons) => {
+        this.seasons.set(seasons);
+        this.ensureSeasonSelected();
+      },
+      error: (error) => {
+        this.logger.error('Failed to load seasons:', error);
+      },
+    });
 
-    // Set default to current season
-    const currentSeason = this.seasonService.selectedSeason();
-    if (currentSeason) {
-      const currentModel = this.playerFormModel();
-      this.playerFormModel.set({
-        ...currentModel,
-        seasonId: currentSeason.seasonId ?? null,
-      });
+    this.seasonService.fetchSeasons();
+    this.seasonService.fetchCurrentSeason();
+  }
+
+  private ensureSeasonSelected(preferredSeason?: Season): void {
+    const currentModel = this.playerFormModel();
+    if (currentModel.seasonId) {
+      return;
+    }
+
+    let season = preferredSeason;
+    if (!season?.seasonId) {
+      const selected = this.seasonService.selectedSeason();
+      if (selected?.seasonId) {
+        season = selected;
+      }
+    }
+
+    if (!season?.seasonId) {
+      const current = this.seasonService.currentSeason();
+      if (current?.seasonId) {
+        season = current;
+      }
+    }
+
+    if (!season?.seasonId) {
+      season = this.seasons()[0];
+    }
+
+    if (season?.seasonId) {
+      this.updateFormField('seasonId', season.seasonId);
+      this.selectedSeason.set(season);
+      this.seasonService.updateSelectedSeason(season);
     }
   }
 
@@ -225,37 +318,76 @@ export class PlayerRegistration implements OnInit {
   }
 
   loadPersonAndPlayer(personId: number): void {
-    // Get the player name from the already-selected person
-    const currentPerson = this.person();
-    const playerName = currentPerson
-      ? `${currentPerson.firstName} ${currentPerson.lastName}`
-      : '';
+    this.peopleService.getPersonById(personId).subscribe({
+      next: (person) => {
+        this.applyPersonToForm(personId, person);
+      },
+      error: (error) => {
+        this.logger.error('Failed to load person for registration:', error);
 
-    // Set personId in form model
-    this.updateFormField('personId', personId);
-    if (playerName) {
-      this.updateFormField('playerName', playerName);
-    }
+        const selectedPerson = this.peopleService.selectedPerson();
+        if (selectedPerson && selectedPerson.personId === personId) {
+          this.logger.info(
+            'Falling back to selected person from People service:',
+            personId,
+          );
+          this.applyPersonToForm(personId, selectedPerson);
+          return;
+        }
 
-    // Check if we already have a player for this person and season
-    const seasonId = this.playerFormModel().seasonId;
-    if (seasonId) {
-      this.playerService
-        .getPlayerByPersonAndSeason(personId, seasonId)
-        .subscribe({
-          next: (player) => {
-            this.logger.info('Existing player found:', player);
-            this.playerService.updateSelectedPlayer(player);
-            this.patchFormWithPlayer(player, playerName);
-          },
-          error: (error) => {
-            this.logger.info('No existing player, creating new registration');
-            this.createNewPlayerRegistration(personId, playerName);
-          },
+        this.snackBar.open('Unable to load player details', 'OK', {
+          duration: 5000,
         });
-    } else {
-      this.createNewPlayerRegistration(personId, playerName);
+      },
+    });
+  }
+
+  private applyPersonToForm(personId: number, person: Person): void {
+    this.peopleService.updateSelectedPerson(person);
+
+    const playerName =
+      `${person.firstName ?? ''} ${person.lastName ?? ''}`.trim();
+
+    this.updateFormField('personId', personId);
+    this.updateFormField('playerName', playerName);
+
+    if (person.houseId) {
+      this.householdService.selectedHouseholdByHouseId(person.houseId);
     }
+
+    this.pendingRegistration = { personId, playerName };
+    this.tryResolvePendingRegistration();
+  }
+
+  private tryResolvePendingRegistration(): void {
+    if (!this.pendingRegistration) {
+      return;
+    }
+
+    const seasonId =
+      this.playerFormModel().seasonId ??
+      this.selectedSeason()?.seasonId ??
+      null;
+    if (!seasonId) {
+      return;
+    }
+
+    const { personId, playerName } = this.pendingRegistration;
+    this.pendingRegistration = null;
+
+    this.playerService
+      .getPlayerByPersonAndSeason(personId, seasonId)
+      .subscribe({
+        next: (player) => {
+          this.logger.info('Existing player found:', player);
+          this.playerService.updateSelectedPlayer(player);
+          this.patchFormWithPlayer(player, playerName);
+        },
+        error: () => {
+          this.logger.info('No existing player, creating new registration');
+          this.createNewPlayerRegistration(personId, playerName);
+        },
+      });
   }
 
   createNewPlayerRegistration(personId: number, playerName: string): void {
@@ -269,11 +401,11 @@ export class PlayerRegistration implements OnInit {
     // Create a new player with default values
     const newPlayer = this.playerService.createNewPlayer(personId, seasonId);
 
-    // Set the paid amount to the season's participation fee
+    // Default new registrations to fully paid while still showing the season fee.
     const season = this.seasons().find((s) => s.seasonId === seasonId);
     if (season && season.participationFee) {
       newPlayer.paidAmount = season.participationFee;
-      newPlayer.balanceOwed = season.participationFee;
+      newPlayer.balanceOwed = 0;
     }
 
     // Set default division based on person's birth date and gender
@@ -343,6 +475,7 @@ export class PlayerRegistration implements OnInit {
     });
 
     this.playerService.updateFormDirtyState(false);
+    this.initialSnapshot.set({ ...this.playerFormModel() });
   }
 
   onSubmit(): void {
@@ -412,21 +545,32 @@ export class PlayerRegistration implements OnInit {
         this.logger.info('Player saved successfully:', response);
         this.playerService.updateSelectedPlayer(response);
         this.playerService.updateFormDirtyState(false);
+        this.initialSnapshot.set({ ...this.playerFormModel() });
 
         this.snackBar.open('Player registration saved successfully', 'OK', {
           duration: 3000,
         });
 
-        // Navigate back to the previous page
-        this.location.back();
+        if (this.returnToPeople) {
+          this.router.navigate(['/admin/people']);
+        } else {
+          this.location.back();
+        }
       },
       error: (error) => {
         this.logger.error('Error saving player:', error);
         console.log('DEBUG: Error details:', error);
+        const rawError =
+          typeof error?.error === 'string'
+            ? error.error
+            : error?.error?.message || error?.message || '';
+        const firstLine = rawError
+          ? String(rawError).split(/\r?\n/)[0]
+          : 'Error saving player registration';
         if (error.error) {
           console.log('DEBUG: Error body:', error.error);
         }
-        this.snackBar.open('Error saving player registration', 'OK', {
+        this.snackBar.open(firstLine, 'OK', {
           duration: 5000,
         });
       },
@@ -437,7 +581,11 @@ export class PlayerRegistration implements OnInit {
   }
 
   onCancel(): void {
-    this.location.back();
+    if (this.returnToPeople) {
+      this.router.navigate(['/admin/people']);
+    } else {
+      this.location.back();
+    }
   }
 
   /**

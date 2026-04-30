@@ -75,6 +75,7 @@ export const ADMINROUTES: Routes = [
           import('./admin-player/player-registration/player-registration').then(
             (m) => m.PlayerRegistration,
           ),
+        canDeactivate: [PendingChangesGuard],
       },
       { path: 'teams', component: TeamList },
       {

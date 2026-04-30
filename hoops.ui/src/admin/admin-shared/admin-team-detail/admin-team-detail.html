@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card class="admin-detail-scroll">
   <mat-card-title>{{ title }}</mat-card-title>
   <mat-card-content>
     <div class="flex flex-col gap-4 h-full px-3">
@@ -6,7 +6,11 @@
         <mat-label>Team No</mat-label>
         <input matInput placeholder="" [formField]="editTeamForm.teamNo" />
       </mat-form-field>
-      <mat-form-field class="form-control w-full" appearance="fill">
+      <mat-form-field
+        class="form-control w-full"
+        appearance="fill"
+        floatLabel="always"
+      >
         <mat-label>Color</mat-label>
         <mat-select [formField]="editTeamForm.color" class="form-control">
           @for (color of colorService.colors(); track color.colorId) {
