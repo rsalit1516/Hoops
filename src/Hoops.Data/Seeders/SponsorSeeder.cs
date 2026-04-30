@@ -24,9 +24,9 @@ namespace Hoops.Data.Seeders
 
         public async Task DeleteAllAsync()
         {
-            // Sponsors FK → SponsorProfiles, so delete Sponsors first
+            // Sponsors FK → SponsorProfile, so delete Sponsors first
             await context.Database.ExecuteSqlRawAsync("DELETE FROM Sponsors");
-            await context.Database.ExecuteSqlRawAsync("DELETE FROM SponsorProfiles");
+            await context.Database.ExecuteSqlRawAsync("DELETE FROM SponsorProfile");
         }
 
         public async Task SeedAsync()
