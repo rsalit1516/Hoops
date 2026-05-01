@@ -18,20 +18,21 @@
   <a mat-list-item routerLink="/admin/people" routerLinkActive="active"
     >People</a
   >
+  <a mat-list-item routerLink="/admin/sponsors" routerLinkActive="active"
+    >Sponsors</a
+  >
   } @if (showColors) {
   <a mat-list-item routerLink="/admin/colors" routerLinkActive="active"
     >Uniform Colors</a
   >
   } @if (showUsers) {
-  <a mat-list-item routerLink="/admin/users" routerLinkActive="active"
-    >Users</a
-  >
+  <a mat-list-item routerLink="/admin/users" routerLinkActive="active">Users</a>
   }
   <a mat-list-item routerLink="/admin/documents" routerLinkActive="active"
     >Documents</a
   >
-  @if ( showDirectors || showHouseholds || showPeople || showColors ||
-  showUsers ) {
+  @if ( showDirectors || showHouseholds || showPeople || showColors || showUsers
+  ) {
   <mat-divider />
   }
   <!-- <a mat-list-item routerLink="./director" routerLinkActive="active">Directors</a> -->

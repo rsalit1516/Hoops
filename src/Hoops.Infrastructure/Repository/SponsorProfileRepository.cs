@@ -2,7 +2,9 @@
 using System.Data;
 using Hoops.Core.Interface;
 using Hoops.Core.Models;
+using Hoops.Core.ViewModels;
 using Hoops.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hoops.Infrastructure.Repository
 {
@@ -78,9 +80,52 @@ namespace Hoops.Infrastructure.Repository
                              where o.SeasonId == seasonId
                              select o.SponsorProfileId)
                            .Contains(c.SponsorProfileId)
-                           
+
                            select c;
             return sponsors.OrderBy(s => s.SpoName);
+        }
+
+        public async Task<List<SponsorProfileListItemDto>> GetAllWithLastSeasonAsync(int companyId)
+        {
+            var lastSeasonIds = await context.Set<Sponsor>()
+                .Where(s => s.CompanyId == companyId)
+                .GroupBy(s => s.SponsorProfileId)
+                .Select(g => new { SponsorProfileId = g.Key, LastSeasonId = g.Max(s => s.SeasonId) })
+                .ToListAsync();
+
+            var lastSeasonMap = lastSeasonIds.ToDictionary(x => x.SponsorProfileId, x => x.LastSeasonId);
+
+            var uniqueSeasonIds = lastSeasonIds
+                .Select(x => x.LastSeasonId)
+                .Where(id => id.HasValue)
+                .Select(id => id!.Value)
+                .Distinct()
+                .ToList();
+
+            var seasonDescriptions = await context.Set<Season>()
+                .Where(s => s.CompanyId == companyId && uniqueSeasonIds.Contains(s.SeasonId))
+                .ToDictionaryAsync(s => s.SeasonId, s => s.Description);
+
+            var profiles = await context.Set<SponsorProfile>()
+                .Where(sp => sp.CompanyId == companyId)
+                .OrderBy(sp => sp.SpoName)
+                .ToListAsync();
+
+            return profiles.Select(sp =>
+            {
+                var lastSeasonId = lastSeasonMap.TryGetValue(sp.SponsorProfileId, out var sid) ? sid : null;
+                var seasonDesc = lastSeasonId.HasValue && seasonDescriptions.TryGetValue(lastSeasonId.Value, out var desc) ? desc : null;
+                return new SponsorProfileListItemDto
+                {
+                    SponsorProfileId = sp.SponsorProfileId,
+                    SpoName = sp.SpoName ?? string.Empty,
+                    ContactName = sp.ContactName ?? string.Empty,
+                    Email = sp.Email ?? string.Empty,
+                    Phone = sp.Phone ?? string.Empty,
+                    LastSeasonId = lastSeasonId,
+                    LastSeasonDescription = seasonDesc ?? string.Empty
+                };
+            }).ToList();
         }
     }
 }

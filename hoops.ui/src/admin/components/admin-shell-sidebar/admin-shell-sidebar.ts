@@ -7,12 +7,7 @@ import { LoggerService } from '@app/services/logger.service';
 
 @Component({
   selector: 'app-admin-shell-sidebar',
-  imports: [
-    MatListModule,
-    RouterLink,
-    RouterLinkActive,
-    MatDividerModule,
-  ],
+  imports: [MatListModule, RouterLink, RouterLinkActive, MatDividerModule],
   templateUrl: './admin-shell-sidebar.html',
   styleUrls: [
     './admin-shell-sidebar.scss',
@@ -49,6 +44,7 @@ export class AdminShellSidebar {
     { name: 'Directors', route: '/admin/director', isSelected: false },
     { name: 'Households', route: '/admin/households', isSelected: false },
     { name: 'People', route: '/admin/people', isSelected: false },
+    { name: 'Sponsors', route: '/admin/sponsors', isSelected: false },
     { name: 'Users', route: '/admin/users', isSelected: false },
     { name: 'Documents', route: '/admin/documents', isSelected: false },
     { name: 'Uniform Colors', route: '/admin/colors', isSelected: false },

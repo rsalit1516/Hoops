@@ -1,16 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { SponsorList } from '../../components/sponsor-list/sponsor-list';
 
 @Component({
-    selector: 'sponsor-shell',
-    templateUrl: "./sponsor-shell.html",
-    styleUrls: ['./sponsor-shell.css'],
-    standalone: true
+  selector: 'sponsor-shell',
+  template: '<sponsor-list />',
+  standalone: true,
+  imports: [SponsorList],
 })
-export class SponsorShell implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
-}
+export class SponsorShell {}
