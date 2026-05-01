@@ -88,6 +88,7 @@ namespace Hoops.Infrastructure.Repository
         public async Task<List<SponsorProfileListItemDto>> GetAllWithLastSeasonAsync(int companyId)
         {
             var lastSeasonIds = await context.Set<Sponsor>()
+                .Where(s => s.CompanyId == companyId)
                 .GroupBy(s => s.SponsorProfileId)
                 .Select(g => new { SponsorProfileId = g.Key, LastSeasonId = g.Max(s => s.SeasonId) })
                 .ToListAsync();
@@ -102,7 +103,7 @@ namespace Hoops.Infrastructure.Repository
                 .ToList();
 
             var seasonDescriptions = await context.Set<Season>()
-                .Where(s => uniqueSeasonIds.Contains(s.SeasonId))
+                .Where(s => s.CompanyId == companyId && uniqueSeasonIds.Contains(s.SeasonId))
                 .ToDictionaryAsync(s => s.SeasonId, s => s.Description);
 
             var profiles = await context.Set<SponsorProfile>()

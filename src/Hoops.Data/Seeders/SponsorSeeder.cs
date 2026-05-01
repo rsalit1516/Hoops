@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Hoops.Core.Interface;
 using Hoops.Core.Models;
 using Hoops.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -12,13 +11,9 @@ namespace Hoops.Data.Seeders
     public class SponsorSeeder : ISeeder<SponsorProfile>
     {
         public hoopsContext context { get; private set; }
-        private readonly ISponsorRepository _sponsorRepo;
-        private readonly ISponsorProfileRepository _sponsorProfileRepo;
 
-        public SponsorSeeder(ISponsorRepository sponsorRepo, ISponsorProfileRepository sponsorProfileRepo, hoopsContext context)
+        public SponsorSeeder(hoopsContext context)
         {
-            _sponsorRepo = sponsorRepo;
-            _sponsorProfileRepo = sponsorProfileRepo;
             this.context = context;
         }
 
@@ -31,10 +26,10 @@ namespace Hoops.Data.Seeders
 
         public async Task SeedAsync()
         {
-            var seasons = context.Set<Season>()
+            var seasons = await context.Set<Season>()
                 .Where(s => s.CompanyId == 1)
                 .OrderBy(s => s.SeasonId)
-                .ToList();
+                .ToListAsync();
 
             if (!seasons.Any())
                 return;
@@ -45,8 +40,8 @@ namespace Hoops.Data.Seeders
                 .OrderByDescending(s => s.SeasonId)
                 .ToList();
 
-            int profileId = context.Set<SponsorProfile>().Any()
-                ? context.Set<SponsorProfile>().Max(s => s.SponsorProfileId)
+            int profileId = await context.Set<SponsorProfile>().AnyAsync()
+                ? await context.Set<SponsorProfile>().MaxAsync(s => s.SponsorProfileId)
                 : 0;
 
             var sponsorData = new[]
@@ -93,8 +88,8 @@ namespace Hoops.Data.Seeders
             //   profiles[0-3]  → oldest past season as well
             //   profiles[4-7]  → next-oldest past season as well
             //   profiles[8-11] → most-recent past season only (not current)
-            int sponsorId = context.Set<Sponsor>().Any()
-                ? context.Set<Sponsor>().Max(s => s.SponsorId)
+            int sponsorId = await context.Set<Sponsor>().AnyAsync()
+                ? await context.Set<Sponsor>().MaxAsync(s => s.SponsorId)
                 : 0;
 
             void AddSponsor(SponsorProfile profile, int seasonId)
