@@ -1,14 +1,30 @@
 <?xml version="1.0"?>
-<testsuite name="Chrome Headless 147.0.0.0 (Windows 10)" package="unit" timestamp="2026-04-30T11:27:52" id="0" hostname="Rich-Think" tests="6" errors="0" failures="0" time="0.062">
+<testsuite name="Chrome Headless 147.0.0.0 (Windows 10)" package="unit" timestamp="2026-05-01T15:19:55" id="0" hostname="Rich-Think" tests="22" errors="0" failures="0" time="0.898">
   <properties>
     <property name="browser.fullName" value="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/147.0.0.0 Safari/537.36"/>
   </properties>
-  <testcase name="PlayoffGameService - Time Formatting should create" time="0.019" classname=".PlayoffGameService - Time Formatting"/>
-  <testcase name="PlayoffGameService - Time Formatting should format time with AM/PM format" time="0.026" classname=".PlayoffGameService - Time Formatting"/>
-  <testcase name="PlayoffGameService - Time Formatting should convert AM/PM time to 24-hour format" time="0.004" classname=".PlayoffGameService - Time Formatting"/>
-  <testcase name="PlayoffGameService - Time Formatting should normalize API playoff game with AM/PM time" time="0.007" classname=".PlayoffGameService - Time Formatting"/>
-  <testcase name="PlayoffGameService - Time Formatting formatLocalDateTime should return YYYY-MM-DDTHH:mm:ss with no timezone offset" time="0.003" classname=".PlayoffGameService - Time Formatting"/>
-  <testcase name="PlayoffGameService - Time Formatting toApiModel should send a local datetime string (not UTC) for gameDate" time="0.003" classname=".PlayoffGameService - Time Formatting"/>
+  <testcase name="SponsorList should create" time="0.191" classname=".SponsorList"/>
+  <testcase name="SponsorList should call fetchCurrentSeason on init" time="0.046" classname=".SponsorList"/>
+  <testcase name="SponsorList should map sponsorProfileId to id for BaseList compatibility" time="0.042" classname=".SponsorList"/>
+  <testcase name="SponsorList should expose empty list before HTTP response arrives" time="0.034" classname=".SponsorList"/>
+  <testcase name="SponsorList should handle an empty HTTP response" time="0.049" classname=".SponsorList"/>
+  <testcase name="SponsorList should set isLoading to false after successful response" time="0.038" classname=".SponsorList"/>
+  <testcase name="SponsorList should set isLoading to false and keep sponsors empty on HTTP error" time="0.035" classname=".SponsorList"/>
+  <testcase name="SponsorList should define a spoName column" time="0.039" classname=".SponsorList"/>
+  <testcase name="SponsorList should define a lastSeasonDescription column" time="0.043" classname=".SponsorList"/>
+  <testcase name="SponsorList should show all sponsors when no filter is active" time="0.039" classname=".SponsorList"/>
+  <testcase name="SponsorList should filter sponsors by name substring" time="0.033" classname=".SponsorList"/>
+  <testcase name="SponsorList should filter sponsors by name case-insensitively" time="0.029" classname=".SponsorList"/>
+  <testcase name="SponsorList should return no results when name filter matches nothing" time="0.023" classname=".SponsorList"/>
+  <testcase name="SponsorList should show all sponsors when name filter is cleared" time="0.022" classname=".SponsorList"/>
+  <testcase name="SponsorList should show no sponsors when currentSeasonOnly is true and season is not loaded" time="0.025" classname=".SponsorList"/>
+  <testcase name="SponsorList should show all sponsors when currentSeasonOnly is false regardless of season" time="0.021" classname=".SponsorList"/>
+  <testcase name="SponsorList should filter to only current-season sponsors when currentSeasonOnly is true" time="0.018" classname=".SponsorList"/>
+  <testcase name="SponsorList should exclude sponsors with no season history when currentSeasonOnly is true" time="0.032" classname=".SponsorList"/>
+  <testcase name="SponsorList should exclude past-season-only sponsors when currentSeasonOnly is true" time="0.034" classname=".SponsorList"/>
+  <testcase name="SponsorList should reactively update when currentSeason signal changes" time="0.036" classname=".SponsorList"/>
+  <testcase name="SponsorList should apply name and currentSeasonOnly filters together" time="0.035" classname=".SponsorList"/>
+  <testcase name="SponsorList should return nothing when name matches a past-season sponsor with currentSeasonOnly active" time="0.034" classname=".SponsorList"/>
   <system-out>
     <![CDATA[
 ]]>
