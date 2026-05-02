@@ -1,0 +1,82 @@
+<mat-card class="daily-schedule-card">
+  <mat-card-header>
+    <mat-card-title>Daily Schedule Report</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <div class="filters-container">
+      <season-select></season-select>
+
+      <mat-form-field floatLabel="always">
+        <mat-label>Division</mat-label>
+        <mat-select
+          [value]="selectedDivisionId()"
+          (valueChange)="selectedDivisionId.set($event)"
+        >
+          @for (div of divisionsForSelect(); track div.divisionId) {
+            <mat-option [value]="div.divisionId">{{ div.divisionDescription }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field floatLabel="always">
+        <mat-label>Start Date</mat-label>
+        <input
+          matInput
+          [matDatepicker]="startPicker"
+          [value]="startDate()"
+          (dateChange)="startDate.set($event.value)"
+        />
+        <mat-datepicker-toggle matIconSuffix [for]="startPicker"></mat-datepicker-toggle>
+        <mat-datepicker #startPicker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field floatLabel="always">
+        <mat-label>End Date</mat-label>
+        <input
+          matInput
+          [matDatepicker]="endPicker"
+          [value]="endDate()"
+          (dateChange)="endDate.set($event.value)"
+        />
+        <mat-datepicker-toggle matIconSuffix [for]="endPicker"></mat-datepicker-toggle>
+        <mat-datepicker #endPicker></mat-datepicker>
+      </mat-form-field>
+
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="downloadCSV()"
+        [disabled]="filteredGames().length === 0"
+        class="download-button"
+      >
+        <mat-icon>download</mat-icon>
+        Download CSV
+      </button>
+    </div>
+
+    @if (isLoadingGames()) {
+      <div class="loading-container">
+        <mat-spinner></mat-spinner>
+      </div>
+    }
+
+    @if (!hasSeasonSelected() && !isLoadingGames()) {
+      <div class="no-selection-message">
+        <p>Please select a season to view the schedule.</p>
+      </div>
+    }
+
+    @if (showTable && filteredGames().length > 0) {
+      <div class="table-container">
+        <app-generic-mat-table [columns]="columns" [data]="filteredGames()" />
+      </div>
+    }
+
+    @if (showTable && filteredGames().length === 0) {
+      <div class="no-data-message">
+        <p>No games found for the selected filters.</p>
+      </div>
+    }
+  </mat-card-content>
+</mat-card>
