@@ -1,0 +1,37 @@
+@use "../../../Content/variables" as v;
+
+.daily-schedule-card {
+  margin: 20px;
+}
+
+.filters-container {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.download-button {
+  height: 56px;
+  margin-top: 8px;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+
+.no-selection-message,
+.no-data-message {
+  text-align: center;
+  padding: 40px;
+  color: v.$admin-font-color;
+  font-size: 16px;
+}
+
+.table-container {
+  margin-top: 16px;
+}

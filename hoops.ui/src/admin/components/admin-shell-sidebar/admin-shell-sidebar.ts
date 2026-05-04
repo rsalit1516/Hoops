@@ -57,6 +57,11 @@ export class AdminShellSidebar {
       route: '/admin/reports/draft-list',
       isSelected: false,
     },
+    {
+      name: 'Daily Schedule Report',
+      route: '/admin/reports/daily-schedule',
+      isSelected: false,
+    },
   ];
   showReports = true;
 
