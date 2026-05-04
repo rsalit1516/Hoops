@@ -1,12 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-<<<<<<< HEAD
 import {
   HttpTestingController,
   provideHttpClientTesting,
 } from '@angular/common/http/testing';
-=======
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
->>>>>>> 5e87d8896df8b451a62fcc135500329fb7eee6a4
 import { provideHttpClient } from '@angular/common/http';
 import { signal } from '@angular/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -15,10 +11,7 @@ import { GameService } from '@app/services/game.service';
 import { SeasonService } from '@app/services/season.service';
 import { DivisionService } from '@app/services/division.service';
 import { RegularGame } from '@app/domain/regularGame';
-<<<<<<< HEAD
 import { Season } from '@app/domain/season';
-=======
->>>>>>> 5e87d8896df8b451a62fcc135500329fb7eee6a4
 
 const makeGame = (overrides: Partial<RegularGame>): RegularGame =>
   Object.assign(new RegularGame(0, 0, 0, 0), overrides);
@@ -66,15 +59,9 @@ describe('DailyScheduleReport', () => {
   };
 
   const mockSeasonService = {
-<<<<<<< HEAD
     seasons: [] as Season[],
     selectedSeason: signal<any>(undefined),
     currentSeason: undefined as Season | undefined,
-=======
-    seasons: [],
-    selectedSeason: signal<any>(undefined),
-    currentSeason: null,
->>>>>>> 5e87d8896df8b451a62fcc135500329fb7eee6a4
     fetchSeasons: jasmine.createSpy('fetchSeasons'),
     fetchCurrentSeason: jasmine.createSpy('fetchCurrentSeason'),
     updateSelectedSeason: jasmine.createSpy('updateSelectedSeason'),
@@ -106,13 +93,9 @@ describe('DailyScheduleReport', () => {
 
     httpMock = TestBed.inject(HttpTestingController);
     // Flush AuthService init request if triggered
-<<<<<<< HEAD
     httpMock
       .match((r) => r.url.includes('/api/auth/me'))
       .forEach((r) => r.flush(null));
-=======
-    httpMock.match((r) => r.url.includes('/api/auth/me')).forEach((r) => r.flush(null));
->>>>>>> 5e87d8896df8b451a62fcc135500329fb7eee6a4
 
     fixture = TestBed.createComponent(DailyScheduleReport);
     component = fixture.componentInstance;
@@ -181,11 +164,7 @@ describe('DailyScheduleReport', () => {
 
   describe('time formatting', () => {
     const timeTestCases: [string, string][] = [
-<<<<<<< HEAD
       ['1899-12-30 20:30:00', '08:30 PM'], // SQL Server legacy datetime format
-=======
-      ['1899-12-30 20:30:00', '08:30 PM'],   // SQL Server legacy datetime format
->>>>>>> 5e87d8896df8b451a62fcc135500329fb7eee6a4
       ['1899-12-30 09:00:00', '09:00 AM'],
       ['1899-12-30 18:00:00', '06:00 PM'],
       ['9:00 AM', '09:00 AM'],
@@ -273,7 +252,6 @@ describe('DailyScheduleReport', () => {
       const snackBar = component['snackBar'];
       spyOn(snackBar, 'open');
       component.downloadCSV();
-<<<<<<< HEAD
       expect(snackBar.open).toHaveBeenCalledWith(
         'No data to download',
         'Close',
@@ -281,11 +259,6 @@ describe('DailyScheduleReport', () => {
           duration: 3000,
         },
       );
-=======
-      expect(snackBar.open).toHaveBeenCalledWith('No data to download', 'Close', {
-        duration: 3000,
-      });
->>>>>>> 5e87d8896df8b451a62fcc135500329fb7eee6a4
     });
 
     it('should trigger file download when games exist', () => {
@@ -295,15 +268,11 @@ describe('DailyScheduleReport', () => {
       component.endDate.set(null);
       fixture.detectChanges();
 
-<<<<<<< HEAD
       const link = {
         setAttribute: jasmine.createSpy(),
         click: jasmine.createSpy(),
         style: {},
       } as any;
-=======
-      const link = { setAttribute: jasmine.createSpy(), click: jasmine.createSpy(), style: {} } as any;
->>>>>>> 5e87d8896df8b451a62fcc135500329fb7eee6a4
       spyOn(document, 'createElement').and.returnValue(link);
       spyOn(document.body, 'appendChild');
       spyOn(document.body, 'removeChild');
@@ -315,7 +284,6 @@ describe('DailyScheduleReport', () => {
       component.downloadCSV();
 
       expect(link.click).toHaveBeenCalled();
-<<<<<<< HEAD
       expect(snackBar.open).toHaveBeenCalledWith(
         'File downloaded successfully',
         'Close',
@@ -323,11 +291,6 @@ describe('DailyScheduleReport', () => {
           duration: 3000,
         },
       );
-=======
-      expect(snackBar.open).toHaveBeenCalledWith('File downloaded successfully', 'Close', {
-        duration: 3000,
-      });
->>>>>>> 5e87d8896df8b451a62fcc135500329fb7eee6a4
     });
   });
 });
