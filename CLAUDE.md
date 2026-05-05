@@ -14,6 +14,12 @@ Hoops is a youth basketball league management system with a .NET 9 backend API, 
 - **Cloud**: Azure (App Services, Functions, SQL Server)
 - **CI/CD**: Azure Pipelines
 
+## Frontend Testing Direction
+
+- The current Angular frontend still runs unit tests with Jasmine/Karma.
+- Future frontend unit tests should be written with Vitest migration in mind: prefer Vitest-compatible patterns and avoid introducing new Jasmine-only helpers unless the existing runner requires them.
+- Do not partially migrate individual frontend specs to Vitest syntax unless the task also updates the Angular test configuration and CI accordingly.
+
 ## Repository Structure
 
 ```

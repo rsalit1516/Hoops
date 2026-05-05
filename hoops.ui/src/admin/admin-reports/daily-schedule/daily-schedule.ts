@@ -5,7 +5,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { MatOptionModule, provideNativeDateAdapter } from '@angular/material/core';
+import {
+  MatOptionModule,
+  provideNativeDateAdapter,
+} from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -69,10 +72,18 @@ export class DailyScheduleReport {
 
   private today = new Date();
   startDate = signal<Date | null>(
-    new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate()),
+    new Date(
+      this.today.getFullYear(),
+      this.today.getMonth(),
+      this.today.getDate(),
+    ),
   );
   endDate = signal<Date | null>(
-    new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate()),
+    new Date(
+      this.today.getFullYear(),
+      this.today.getMonth(),
+      this.today.getDate(),
+    ),
   );
 
   divisionsForSelect = computed(() => [
@@ -97,7 +108,8 @@ export class DailyScheduleReport {
         const afterStart = !start || gameDate >= start;
         const beforeEnd = !endOfDay || gameDate <= endOfDay;
         const inDivision =
-          divisionId === this.ALL_DIVISIONS_ID || game.divisionId === divisionId;
+          divisionId === this.ALL_DIVISIONS_ID ||
+          game.divisionId === divisionId;
         return afterStart && beforeEnd && inDivision;
       })
       .sort((a, b) => {
@@ -170,7 +182,15 @@ export class DailyScheduleReport {
       return;
     }
 
-    const headers = ['Date', 'Time', 'Location', 'Division', 'Home Team', 'Away Team', 'Type'];
+    const headers = [
+      'Date',
+      'Time',
+      'Location',
+      'Division',
+      'Home Team',
+      'Away Team',
+      'Type',
+    ];
     const rows = games.map((g) =>
       [
         g.gameDate,
@@ -197,6 +217,8 @@ export class DailyScheduleReport {
     link.click();
     document.body.removeChild(link);
 
-    this.snackBar.open('File downloaded successfully', 'Close', { duration: 3000 });
+    this.snackBar.open('File downloaded successfully', 'Close', {
+      duration: 3000,
+    });
   }
 }

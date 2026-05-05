@@ -8,7 +8,7 @@ This file provides Angular-specific guidance for the `hoops.ui/` directory. For 
 - Angular Material (UI components)
 - Tailwind CSS (layout and formatting)
 - TypeScript (ES modules only)
-- Jasmine/Karma (testing)
+- Jasmine/Karma currently; Vitest is the target direction for future unit tests
 
 ## !! CRITICAL: Modern Angular Patterns !!
 
@@ -127,9 +127,12 @@ Omitting `admin.scss` will leave the `<mat-toolbar>` with a white/default Materi
 
 ## Testing Requirements
 
-- **Framework**: Jasmine with Karma
+- **Current runner**: Jasmine with Karma
+- **Direction**: Prefer Vitest-compatible patterns for all new or substantially rewritten unit tests so the later runner migration is cheaper.
+- **Migration guardrail**: Do not partially convert individual specs to Vitest syntax unless the task also updates the project test configuration to run them.
 - **Location**: Colocated `.spec.ts` files alongside source files
 - **Tooling**: Angular TestBed for components and services
+- **Spies/mocks**: Prefer simple test doubles and patterns that are easy to translate to Vitest; avoid adding new Jasmine-specific utilities unless required by the current runner.
 - **Focus**: Test observable/signal state changes and DOM updates — not internal implementation details
 - **DOM updates**: Always call `fixture.detectChanges()` after actions that affect the DOM
 - **Coverage**: All components, services, and pipes must have unit tests for happy and unhappy paths
