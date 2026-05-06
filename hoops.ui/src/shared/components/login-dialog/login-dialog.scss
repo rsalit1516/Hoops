@@ -24,7 +24,7 @@ input {
   background-color: white;
 }
 button {
-  margin-right: 10px;
+  margin-right: 0.625rem;
 }
 
 /* Responsive centering */
@@ -32,13 +32,13 @@ button {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding: 12px 8px;
+  padding: 0.75rem 0.5rem;
 }
 
 .login-form {
   max-width: 480px;
   width: 100%;
-  padding: 8px 12px 4px 12px;
+  padding: 0.5rem 0.75rem 0.25rem 0.75rem;
   border-radius: 4px;
 }
 

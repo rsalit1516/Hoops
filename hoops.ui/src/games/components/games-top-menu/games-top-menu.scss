@@ -14,7 +14,7 @@
 }
 
 .mat-toolbar {
-  padding-top: 4px;
+  padding-top: 0.25rem;
   background-color: v.$card-background-color;
   color: v.$navbar-color !important;
   font-size: v.$wrapper-font-size;
@@ -33,9 +33,9 @@ button {
   font-variant-caps: small-caps;
   font-weight: 500;
   background-color: v.$card-background-color;
-  padding-right: 8px;
-  padding-left: 8px;
-  margin-right: 12px;
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+  margin-right: 0.75rem;
   color: v.$navbar-color;
 }
 button:active {
@@ -46,18 +46,18 @@ button:active {
   font-size: v.$button-font-size;
   font-variant-caps: small-caps;
   font-weight: 500;
-  padding-right: 8px;
-  padding-left: 8px;
-  margin-right: 12px;
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+  margin-right: 0.75rem;
   background-color: v.$brand-color;
   color: black;
 }
 .mat-button-toggle-appearance-standard {
-  line-height: 30px !important;
+  line-height: 1.875rem !important;
 }
 .mat-button-toggle-group {
   background-color: v.$brand-color;
-  line-height: 30px;
+  line-height: 1.875rem;
 }
 
 .games-button button:active {
@@ -71,13 +71,13 @@ h2 {
   font-size: v.$heading-font-size;
   font-weight: 700;
   text-align: left;
-  padding-top: 8px;
-  padding-bottom: 4px;
-  padding-right: 20px;
+  padding-top: 0.5rem;
+  padding-bottom: 0.25rem;
+  padding-right: 1.25rem;
 }
 .seasonDescription {
   height: 30px;
-  padding-left: 20px;
+  padding-left: 1.25rem;
 }
 .top-menu-wrapper {
   background-color: v.$base-background-color;
@@ -142,7 +142,7 @@ a {
   font-size: 1.2rem;
   font-weight: 500;
   color: color.adjust(v.$navbar-color, $lightness: 20%) !important;
-  padding-right: 12px;
+  padding-right: 0.75rem;
   font-variant: small-caps;
   font-style: normal;
   text-decoration: none;

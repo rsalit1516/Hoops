@@ -14,7 +14,7 @@
   background-color: v.$table-body-color;
   color: v.$table-font-color;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
-  padding: 4px 8px 4px 8px;
+  padding: 0.25rem 0.5rem 0.25rem 0.5rem;
   border-radius: 10px;
 }
 
@@ -27,26 +27,26 @@
 .mat-card {
   color: v.$table-font-color;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
-  padding: 12px 8px 4px 8px;
+  padding: 0.75rem 0.5rem 0.25rem 0.5rem;
   border-radius: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem;
 }
 
 .mat-list-item {
   color: v.$brand-color;
-  padding-top: 4px;
-  padding-bottom: 4px;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
   height: 40px;
   width: 90%;
   background-color: color.adjust(v.$admin-background-color, $lightness: 10%);
   border-bottom-left-radius: 10px;
   border-top-left-radius: 10px;
-  padding-left: 10px;
+  padding-left: 0.625rem;
   margin-left: 5%;
   border-bottom-right-radius: 10px;
   border-top-right-radius: 10px;
   margin-right: 5%;
-  margin-bottom: 8px;
+  margin-bottom: 0.5rem;
 }
 
 .mat-list-item:hover {
@@ -68,15 +68,15 @@
   font-size: 1.4em;
   color: white;
   text-align: center;
-  padding-bottom: 8px;
+  padding-bottom: 0.5rem;
 }
 
 .dashboard-header {
   font-size: 1.4rem;
   text-align: center;
   color: v.$admin-font-color;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
 }
 
 .body {
@@ -90,13 +90,13 @@ tbody {
 }
 
 .showOptions {
-  padding-top: 20px;
-  padding-bottom: 20px;
-  padding-left: 20px;
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+  padding-left: 1.25rem;
 }
 
 .counter-wrapper {
-  padding-bottom: 20px;
+  padding-bottom: 1.25rem;
 }
 .selected {
   background-color: v.$card-highlight;
@@ -125,7 +125,7 @@ tr.mat-mdc-header-row {
 
 .mat-column-players {
   text-align: right;
-  padding-right: 16px;
+  padding-right: 1rem;
 }
 
 table[mat-table] {

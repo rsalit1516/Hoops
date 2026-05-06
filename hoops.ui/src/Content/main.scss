@@ -22,7 +22,7 @@ textarea {
 }
 
 p {
-    padding: 0 0 10px 0;
+    padding: 0 0 0.625rem 0;
     margin: 0;
 }
 
@@ -38,7 +38,7 @@ img {
 a {
     outline: none;
     text-decoration: none;
-    margin-bottom: 0px;
+    margin-bottom: 0;
     text-align: left;
 }
 
@@ -51,23 +51,23 @@ h4 {
 }
 /*-------------------       General      --------------*/
 .fontSize14 {
-    font-size: 14px;
-    line-height: 18px;
+    font-size: 0.875rem;
+    line-height: 1.125rem;
 }
 
 .fontSize16 {
-    font-size: 16px;
-    line-height: 20px;
+    font-size: 1rem;
+    line-height: 1.25rem;
 }
 
 .fontSize18 {
-    font-size: 18px;
-    line-height: 24px;
+    font-size: 1.125rem;
+    line-height: 1.5rem;
 }
 
 .fontSize24 {
-    font-size: 24px;
-    line-height: 36px;
+    font-size: 1.5rem;
+    line-height: 2.25rem;
 }
 
 .blueText {
@@ -100,47 +100,47 @@ h4 {
 
 .whiteLink {
     color: #fff;
-    font-size: 11px;
+    font-size: 0.6875rem;
 }
 
     .whiteLink:hover {
         color: #FE8E2F;
-        font-size: 11px;
+        font-size: 0.6875rem;
     }
 
 .heading_1 {
-    font-size: 18px;
+    font-size: 1.125rem;
     font-weight: normal;
     color: #fff;
-    line-height: 20px;
-    padding: 0 0 10px 00px;
+    line-height: 1.25rem;
+    padding: 0 0 0.625rem 0;
     display: block;
 }
 
 .heading_2 {
-    font-size: 24px;
+    font-size: 1.5rem;
     font-weight: normal;
     color: #D17B00;
-    line-height: 28px;
-    padding: 0 0 10px 0;
+    line-height: 1.75rem;
+    padding: 0 0 0.625rem 0;
     display: block;
 }
 
 .heading_3 {
-    font-size: 18px;
+    font-size: 1.125rem;
     color: #D17B00;
-    line-height: 18px;
+    line-height: 1.125rem;
     display: block;
-    padding: 10px 0 10px 0;
+    padding: 0.625rem 0 0.625rem 0;
     font-weight: normal;
 }
 
 .heading_4 {
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: bold;
     color: #34362E;
-    line-height: 18px;
-    padding: 3px 0 20px 35px;
+    line-height: 1.125rem;
+    padding: 0.1875rem 0 1.25rem 2.1875rem;
     display: block;
     background: url(/images/heading_arrow3.gif) left top no-repeat;
 }
@@ -152,8 +152,8 @@ h4 {
 // }
 
 .row {
-    padding-left: 20px;
-    padding-right: 24px;
+    padding-left: 1.25rem;
+    padding-right: 1.5rem;
 }
 
 .whiteBg {
@@ -174,8 +174,8 @@ h4 {
 
 
 #logo {
-    padding-top: 10px;
-    padding-left: 80px;
+    padding-top: 0.625rem;
+    padding-left: 5rem;
 }
 
 #follow_us_on {
@@ -199,25 +199,25 @@ h4 {
 }
 
 #mainCol {
-    padding: 10px;
+    padding: 0.625rem;
 }
 
 #contentText {
-    margin-top: 8px;
-    margin-bottom: 4px;
-    padding-top: 12px;
-    padding-bottom: 12px;
+    margin-top: 0.5rem;
+    margin-bottom: 0.25rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
 }
 
 .showMultiItemList {
-    margin-bottom: 4px;
+    margin-bottom: 0.25rem;
     border-bottom: 1px solid gray;
-    padding-bottom: 4px;
-    padding-top: 4px;
+    padding-bottom: 0.25rem;
+    padding-top: 0.25rem;
 }
 
 .PageTop {
-    padding-top: 8px;
+    padding-top: 0.5rem;
 }
 
 
@@ -233,22 +233,22 @@ h4 {
 }
 
 #blackbox {
-    padding: 0px 0px 0px 140px;
+    padding: 0 0 0 8.75rem;
     height: 500px;
-    margin: 0px;
+    margin: 0;
     color: #495257;
     background: #040404;
 }
 
 #graybox {
-    padding: 0px 0px 0px 0px;
-    margin: 0px;
+    padding: 0;
+    margin: 0;
     color: #495257;
     background: #FAFAFA;
 }
 
 #firebox {
-    padding: 0px 0px 0px 0px;
+    padding: 0;
     margin-left: auto;
     margin-right: auto;
     color: #495257;
@@ -266,20 +266,20 @@ h4 {
     background-repeat: no-repeat;
     background-position: left bottom;
     clear: both;
-    padding-bottom: 24px;
+    padding-bottom: 1.5rem;
 }
 
 #banner {
     width: 620px;
     height: 326px;
-    margin-bottom: 5px;
+    margin-bottom: 0.3125rem;
     background: url(/images/banner.jpg) top left no-repeat;
 }
 
 #bannerContent {
-    padding: 260px 30px 0 30px;
+    padding: 16.25rem 1.875rem 0 1.875rem;
     color: #fff;
-    font-size: 11px;
+    font-size: 0.6875rem;
 }
 
     #bannerContent a {
@@ -297,17 +297,17 @@ h4 {
     text-align: center;
     font-weight: bold;
     display: block;
-    font-size: 12px;
-    line-height: 30px;
+    font-size: 0.75rem;
+    line-height: 1.875rem;
     text-transform: uppercase;
     border: #545454 1px solid;
     background: #969696 url(/images/heading_bg.gif) top left repeat-x;
 }
 
 .box {
-    margin-bottom: 4px;
-    padding-left: 8px;
-    padding-right: 8px;
+    margin-bottom: 0.25rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
 }
 
 #sponsorBox.box {
@@ -315,44 +315,44 @@ h4 {
 }
 
 .boxHeading {
-    padding: 0 0 0 17px;
+    padding: 0 0 0 1.0625rem;
     color: #fff;
     font-weight: bold;
     display: block;
-    font-size: 12px;
-    line-height: 30px;
+    font-size: 0.75rem;
+    line-height: 1.875rem;
     text-transform: uppercase;
     border: #545454 1px solid;
     background: #969696 url(/images/heading_bg.gif) top left repeat-x;
 }
 
 .boxContentHeader {
-    padding-top: 4px;
-    padding-bottom: 6px;
+    padding-top: 0.25rem;
+    padding-bottom: 0.375rem;
 }
 
 .boxHeadingcenter {
-    padding: 0 0 0 17px;
-    margin-bottom: 10px;
+    padding: 0 0 0 1.0625rem;
+    margin-bottom: 0.625rem;
     color: #fff;
     font-weight: bold;
     text-align: center;
     display: block;
-    font-size: 21px;
-    line-height: 30px;
+    font-size: 1.3125rem;
+    line-height: 1.875rem;
     text-transform: uppercase;
     border: #545454 1px solid;
     background: #969696 url(/images/heading_bg.gif) top left repeat-x;
 }
 
 .boxContent {
-    padding-top: 10px;
-    margin-bottom: 4px;
+    padding-top: 0.625rem;
+    margin-bottom: 0.25rem;
     /*border: #545454 1px solid;*/
     background: #070606;
-    padding-left: 12px;
-    padding-right: 12px;
-    padding-bottom: 12px;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    padding-bottom: 0.75rem;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
     color: #B7AFAF;
@@ -401,7 +401,7 @@ h4 {
 }
 
 .boxPadding {
-    padding: 10px 0 10px 10px;
+    padding: 0.625rem 0 0.625rem 0.625rem;
 }
 
 
@@ -410,7 +410,7 @@ h4 {
     font-weight: bold;
     color: #495257;
     background: #DEDEDE;
-    padding: 2px 4px 2px 4px;
+    padding: 0.125rem 0.25rem 0.125rem 0.25rem;
 }
 
 .gameList {
@@ -418,19 +418,19 @@ h4 {
 }
 
 .addBanner {
-    padding: 10px 0 8px 0;
+    padding: 0.625rem 0 0.5rem 0;
 }
 
 .poll {
-    padding: 20px 0 8px 20px;
+    padding: 1.25rem 0 0.5rem 1.25rem;
 }
 
 .Chart td {
-    padding: 2px 0px 2px 0px;
+    padding: 0.125rem 0 0.125rem 0;
     border-bottom: #DADADA 1px solid;
     border-top: #fff 1px solid;
     color: #495257;
-    line-height: 24px;
+    line-height: 1.5rem;
 }
 
 .ChartHeading td {
@@ -446,25 +446,25 @@ h4 {
 }
 
 .Chart .paddingLeft {
-    padding-left: 20px;
+    padding-left: 1.25rem;
 }
 /*--------------------  footer ------------------------------*/
 #footer {
     text-align: center;
     color: #796A6A;
-    padding: 20px 0 20px 0;
-    font: 14px/20px "Trebuchet MS", Times, serif;
+    padding: 1.25rem 0 1.25rem 0;
+    font: 0.875rem/1.25rem "Trebuchet MS", Times, serif;
 }
 
 .footerLink {
     text-transform: uppercase;
-    padding-bottom: 10px;
-    font-size: 11px;
+    padding-bottom: 0.625rem;
+    font-size: 0.6875rem;
 }
 
     .footerLink a {
         color: #fff;
-        padding: 0 4px 0 4px;
+        padding: 0 0.25rem 0 0.25rem;
     }
 
 #footer a:hover {
@@ -475,8 +475,8 @@ h4 {
 .reportLink {
     font-size: 1em;
     color: #780505;
-    padding-left: 4px;
-    padding-right: 12px;
+    padding-left: 0.25rem;
+    padding-right: 0.75rem;
 }
 
     .reportLink a {
@@ -493,8 +493,8 @@ h4 {
         }
 
 #BestGame {
-    padding-top: 4px;
-    padding-bottom: 6px;
+    padding-top: 0.25rem;
+    padding-bottom: 0.375rem;
 }
 
 .centerlow {
@@ -503,10 +503,10 @@ h4 {
     text-align: right;
     font-size: 1.2em;
     font-weight: 500;
-    padding-left: 12px;
-    padding-right: 12px;
-    padding-top: 4px;
-    padding-bottom: 10px;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    padding-top: 0.25rem;
+    padding-bottom: 0.625rem;
 }
 
     .centerlow a {
@@ -529,7 +529,7 @@ h4 {
 }
 /*# sourceMappingURL=style.css.map */
 #panelGames {
-    padding-top:10px;
+    padding-top: 0.625rem;
 }
 
 /**
@@ -733,7 +733,7 @@ $altTheme: mat-light-theme($theme-primary, $theme-accent, $theme-warn);
   padding: 0 1.15em;
   margin: 0 .65em;
   min-width: 3em;
-  line-height: 36.4px
+  line-height: 2.275rem
 }
 
 .mat-standard-chip {

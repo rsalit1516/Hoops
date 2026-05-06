@@ -38,13 +38,13 @@ textarea {
   margin-right: auto;
   margin-left: auto;
   @media (min-width: 768px) {
-    padding-left: 0px;
-    padding-right: 16px;
+    padding-left: 0;
+    padding-right: 1rem;
   }
 }
 
 p {
-  padding: 0 0 10px 0;
+  padding: 0 0 0.625rem 0;
   margin: 0;
 }
 
@@ -60,7 +60,7 @@ img {
 a {
   outline: none;
   text-decoration: none;
-  margin-bottom: 0px;
+  margin-bottom: 0;
   text-align: left;
 }
 h2 {
@@ -83,8 +83,8 @@ th {
 }
 
 .row {
-  padding-left: 20px;
-  padding-right: 24px;
+  padding-left: 1.25rem;
+  padding-right: 1.5rem;
 }
 
 .whiteBg {
@@ -104,8 +104,8 @@ th {
 }
 
 #logo {
-  padding-top: 10px;
-  padding-left: 80px;
+  padding-top: 0.625rem;
+  padding-left: 5rem;
 }
 
 #follow_us_on {
@@ -137,26 +137,26 @@ th {
 }
 
 #mainCol {
-  padding: 10px;
+  padding: 0.625rem;
   background: #070606;
 }
 
 #contentText {
-  margin-top: 8px;
-  margin-bottom: 4px;
-  padding-top: 12px;
-  padding-bottom: 12px;
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
 }
 
 .showMultiItemList {
-  margin-bottom: 4px;
+  margin-bottom: 0.25rem;
   border-bottom: 1px solid gray;
-  padding-bottom: 4px;
-  padding-top: 4px;
+  padding-bottom: 0.25rem;
+  padding-top: 0.25rem;
 }
 
 .PageTop {
-  padding-top: 8px;
+  padding-top: 0.5rem;
 }
 
 #login .panel-body {
@@ -170,22 +170,22 @@ th {
 }
 
 #blackbox {
-  padding: 0px 0px 0px 140px;
+  padding: 0 0 0 8.75rem;
   height: 500px;
-  margin: 0px;
+  margin: 0;
   color: #495257;
   background: #040404;
 }
 
 #graybox {
-  padding: 0px 0px 0px 0px;
-  margin: 0px;
+  padding: 0;
+  margin: 0;
   color: #495257;
   background: #fafafa;
 }
 
 #firebox {
-  padding: 0px 0px 0px 0px;
+  padding: 0;
   margin-left: auto;
   margin-right: auto;
   color: #495257;
@@ -203,7 +203,7 @@ th {
   background-repeat: no-repeat;
   background-position: left bottom;
   clear: both;
-  padding-bottom: 24px;
+  padding-bottom: 1.5rem;
 }
 
 .colHeader {
@@ -211,17 +211,17 @@ th {
   text-align: center;
   font-weight: bold;
   display: block;
-  font-size: 12px;
-  line-height: 30px;
+  font-size: 0.75rem;
+  line-height: 1.875rem;
   text-transform: uppercase;
   border: #545454 1px solid;
   background: #969696 url(/images/heading_bg.gif) top left repeat-x;
 }
 
 .box {
-  margin-bottom: 4px;
-  padding-left: 8px;
-  padding-right: 8px;
+  margin-bottom: 0.25rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
 }
 
 #sponsorBox.box {
@@ -229,44 +229,44 @@ th {
 }
 
 .boxHeading {
-  padding: 0 0 0 17px;
+  padding: 0 0 0 1.0625rem;
   color: #fff;
   font-weight: bold;
   display: block;
-  font-size: 12px;
-  line-height: 30px;
+  font-size: 0.75rem;
+  line-height: 1.875rem;
   text-transform: uppercase;
   border: #545454 1px solid;
   background: #969696 url(/images/heading_bg.gif) top left repeat-x;
 }
 
 .boxContentHeader {
-  padding-top: 4px;
-  padding-bottom: 6px;
+  padding-top: 0.25rem;
+  padding-bottom: 0.375rem;
 }
 
 .boxHeadingcenter {
-  padding: 0 0 0 17px;
-  margin-bottom: 10px;
+  padding: 0 0 0 1.0625rem;
+  margin-bottom: 0.625rem;
   color: #fff;
   font-weight: bold;
   text-align: center;
   display: block;
-  font-size: 21px;
-  line-height: 30px;
+  font-size: 1.3125rem;
+  line-height: 1.875rem;
   text-transform: uppercase;
   border: #545454 1px solid;
   background: #969696 url(/images/heading_bg.gif) top left repeat-x;
 }
 
 .boxContent {
-  padding-top: 10px;
-  margin-bottom: 4px;
+  padding-top: 0.625rem;
+  margin-bottom: 0.25rem;
   /*border: #545454 1px solid;*/
   background: #070606;
-  padding-left: 12px;
-  padding-right: 12px;
-  padding-bottom: 12px;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  padding-bottom: 0.75rem;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   color: #b7afaf;
@@ -343,7 +343,7 @@ th {
 }
 
 .boxPadding {
-  padding: 10px 0 10px 10px;
+  padding: 0.625rem 0 0.625rem 0.625rem;
 }
 
 .newsDate {
@@ -351,7 +351,7 @@ th {
   font-weight: bold;
   color: #495257;
   background: #dedede;
-  padding: 2px 4px 2px 4px;
+  padding: 0.125rem 0.25rem 0.125rem 0.25rem;
 }
 
 .gameList {
@@ -359,19 +359,19 @@ th {
 }
 
 .addBanner {
-  padding: 10px 0 8px 0;
+  padding: 0.625rem 0 0.5rem 0;
 }
 
 .poll {
-  padding: 20px 0 8px 20px;
+  padding: 1.25rem 0 0.5rem 1.25rem;
 }
 
 .Chart td {
-  padding: 2px 0px 2px 0px;
+  padding: 0.125rem 0 0.125rem 0;
   border-bottom: #dadada 1px solid;
   border-top: #fff 1px solid;
   color: #495257;
-  line-height: 24px;
+  line-height: 1.5rem;
 }
 
 .ChartHeading td {
@@ -387,29 +387,29 @@ th {
 }
 
 .Chart .paddingLeft {
-  padding-left: 20px;
+  padding-left: 1.25rem;
 }
 
 /*--------------------  footer ------------------------------*/
 #footer {
   text-align: center;
   color: #796a6a;
-  padding: 20px 0 20px 0;
+  padding: 1.25rem 0 1.25rem 0;
   font:
-    14px/20px "Trebuchet MS",
+    0.875rem/1.25rem "Trebuchet MS",
     Times,
     serif;
 }
 
 .footerLink {
   text-transform: uppercase;
-  padding-bottom: 10px;
-  font-size: 11px;
+  padding-bottom: 0.625rem;
+  font-size: 0.6875rem;
 }
 
 .footerLink a {
   color: #fff;
-  padding: 0 4px 0 4px;
+  padding: 0 0.25rem 0 0.25rem;
 }
 
 #footer a:hover {
@@ -420,8 +420,8 @@ th {
 .reportLink {
   font-size: 1rem;
   color: #780505;
-  padding-left: 4px;
-  padding-right: 12px;
+  padding-left: 0.25rem;
+  padding-right: 0.75rem;
 }
 
 .reportLink a {
@@ -438,8 +438,8 @@ th {
 }
 
 #BestGame {
-  padding-top: 4px;
-  padding-bottom: 6px;
+  padding-top: 0.25rem;
+  padding-bottom: 0.375rem;
 }
 
 .centerlow {
@@ -450,8 +450,8 @@ th {
   font-weight: 500;
   padding-left: auto;
   padding-right: auto;
-  padding-top: 4px;
-  padding-bottom: 10px;
+  padding-top: 0.25rem;
+  padding-bottom: 0.625rem;
 }
 
 .centerlow a {
@@ -473,7 +473,7 @@ th {
   visibility: visible;
 }
 #panelGames {
-  padding-top: 10px;
+  padding-top: 0.625rem;
 }
 
 app-root {
@@ -501,7 +501,7 @@ mat-sidenav {
   overflow-y: auto !important;
 }
 main {
-  padding: 10px;
+  padding: 0.625rem;
 }
 
 .content-page-wrapper {
