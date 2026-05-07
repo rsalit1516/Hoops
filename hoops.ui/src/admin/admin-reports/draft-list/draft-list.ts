@@ -58,7 +58,17 @@ export class DraftList {
       field: 'firstName',
       sortable: true,
     },
-    { key: 'dob', header: 'DOB', field: 'dob', sortable: true },
+    {
+      key: 'dob',
+      header: 'DOB',
+      field: 'dob',
+      sortable: true,
+      formatter: (val: string | null) => {
+        if (!val) return '';
+        const parts = val.split('T')[0].split('-');
+        return `${parts[1]}-${parts[2]}-${parts[0]}`;
+      },
+    },
     { key: 'grade', header: 'Grade', field: 'grade', sortable: true },
     { key: 'address1', header: 'Address', field: 'address1', sortable: true },
     { key: 'city', header: 'City', field: 'city', sortable: true },
@@ -70,6 +80,15 @@ export class DraftList {
 
   players = computed(() => this.draftListService.players());
   isLoading = computed(() => this.draftListService.isLoading());
+
+  sortedPlayers = computed(() => {
+    const division = this.selectedDivision();
+    const players = this.players();
+    if (division?.divisionId === 0) {
+      return [...players].sort((a, b) => a.division.localeCompare(b.division));
+    }
+    return players;
+  });
 
   constructor() {
     // Load draft list when division changes
@@ -85,7 +104,7 @@ export class DraftList {
   }
 
   downloadCSV(): void {
-    const players = this.players();
+    const players = this.sortedPlayers();
     const season = this.selectedSeason();
     const division = this.selectedDivision();
 

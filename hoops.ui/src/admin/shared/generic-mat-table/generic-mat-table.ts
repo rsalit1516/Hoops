@@ -94,4 +94,5 @@ export interface TableColumn<T> {
   field?: string; // For simple field access
   template?: TemplateRef<any>; // For custom rendering
   sortable?: boolean;
+  formatter?: (value: any) => string;
 }
