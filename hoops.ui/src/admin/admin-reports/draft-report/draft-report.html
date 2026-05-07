@@ -1,0 +1,89 @@
+<div class="draft-report-page">
+
+  <!-- Controls — hidden when printing -->
+  <div class="controls no-print">
+    <mat-card class="controls-card">
+      <mat-card-content>
+        <div class="filters-container">
+          <season-select></season-select>
+          <division-select [includeAll]="true"></division-select>
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="print()"
+            [disabled]="!showReport || groupedByDivision().length === 0"
+            class="print-button"
+          >
+            <mat-icon>print</mat-icon>
+            Print
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Loading -->
+  @if (isLoading()) {
+  <div class="loading-container no-print">
+    <mat-spinner></mat-spinner>
+  </div>
+  }
+
+  <!-- No selection -->
+  @if (showNoSelection) {
+  <div class="no-selection-message no-print">
+    <p>Select a season and division to preview the draft report.</p>
+  </div>
+  }
+
+  <!-- Report body — one section per division -->
+  @if (showReport) {
+    @for (group of groupedByDivision(); track group.division; let first = $first) {
+    <div class="division-section" [class.page-break]="!first">
+
+      <div class="report-header">
+        <div class="club-name">Coral Springs Basketball Club</div>
+        <div class="report-title">Draft List</div>
+        <div class="report-subtitle">
+          {{ selectedSeason()?.description }} &mdash; {{ group.division }}
+        </div>
+      </div>
+
+      <table class="draft-table">
+        <thead>
+          <tr>
+            <th class="col-id">ID</th>
+            <th class="col-rating">Rating</th>
+            <th class="col-name">Name</th>
+            <th class="col-dob">Birth Date</th>
+            <th class="col-phone">Phone</th>
+            <th class="col-grade">Grade</th>
+            <th class="col-notes">Draft Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (player of group.players; track player.personId) {
+          <tr>
+            <td class="col-id">{{ player.draftId }}</td>
+            <td class="col-rating"></td>
+            <td class="col-name">{{ player.lastName }}, {{ player.firstName }}</td>
+            <td class="col-dob">{{ formatDob(player.dob) }}</td>
+            <td class="col-phone">{{ player.phone }}</td>
+            <td class="col-grade">{{ player.grade }}</td>
+            <td class="col-notes"></td>
+          </tr>
+          }
+        </tbody>
+      </table>
+
+    </div>
+    }
+
+    @if (showReport && groupedByDivision().length === 0 && !isLoading()) {
+    <div class="no-data-message no-print">
+      <p>No players found for the selected division.</p>
+    </div>
+    }
+  }
+
+</div>

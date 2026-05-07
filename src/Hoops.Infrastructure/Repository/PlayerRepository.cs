@@ -607,5 +607,32 @@ namespace Hoops.Infrastructure.Repository
 #pragma warning restore CS8629
             return query.ToList();
         }
+
+        public List<DraftReportPlayer> GetDraftReportPlayers(int seasonId, int? divisionId)
+        {
+#pragma warning disable CS8629 // p.BirthDate.Value is guarded by != null check; compiler cannot flow-analyze inside expression trees
+            var query = from p in context.Set<Person>()
+                        join pl in context.Set<Player>() on p.PersonId equals pl.PersonId
+                        join h in context.Set<Household>() on p.HouseId equals h.HouseId
+                        join d in context.Set<Division>() on pl.DivisionId equals d.DivisionId
+                        join s in context.Set<Season>() on d.SeasonId equals s.SeasonId
+                        where s.SeasonId == seasonId
+                        where !divisionId.HasValue || pl.DivisionId == divisionId
+                        orderby d.DivisionDescription, pl.DraftId
+                        select new DraftReportPlayer
+                        {
+                            PersonId = p.PersonId,
+                            Division = d.DivisionDescription ?? string.Empty,
+                            DraftId = pl.DraftId,
+                            LastName = p.LastName ?? string.Empty,
+                            FirstName = p.FirstName ?? string.Empty,
+                            DOB = p.BirthDate != null ? p.BirthDate.Value.Date : (DateTime?)null,
+                            Phone = h.Phone,
+                            Grade = p.Grade,
+                        };
+
+#pragma warning restore CS8629
+            return query.ToList();
+        }
     }
 }
