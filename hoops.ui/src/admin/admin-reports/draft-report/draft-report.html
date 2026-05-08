@@ -65,12 +65,12 @@
           @for (player of group.players; track player.personId) {
           <tr>
             <td class="col-id">{{ player.draftId }}</td>
-            <td class="col-rating"></td>
+            <td class="col-rating">{{ player.rating }}</td>
             <td class="col-name">{{ player.lastName }}, {{ player.firstName }}</td>
             <td class="col-dob">{{ formatDob(player.dob) }}</td>
             <td class="col-phone">{{ player.phone }}</td>
             <td class="col-grade">{{ player.grade }}</td>
-            <td class="col-notes"></td>
+            <td class="col-notes">{{ player.draftNotes }}</td>
           </tr>
           }
         </tbody>

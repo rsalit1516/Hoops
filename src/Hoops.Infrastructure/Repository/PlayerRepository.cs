@@ -610,10 +610,8 @@ namespace Hoops.Infrastructure.Repository
 
         public List<DraftReportPlayer> GetDraftReportPlayers(int seasonId, int? divisionId)
         {
-#pragma warning disable CS8629 // p.BirthDate.Value is guarded by != null check; compiler cannot flow-analyze inside expression trees
             var query = from p in context.Set<Person>()
                         join pl in context.Set<Player>() on p.PersonId equals pl.PersonId
-                        join h in context.Set<Household>() on p.HouseId equals h.HouseId
                         join d in context.Set<Division>() on pl.DivisionId equals d.DivisionId
                         join s in context.Set<Season>() on d.SeasonId equals s.SeasonId
                         where s.SeasonId == seasonId
@@ -626,12 +624,14 @@ namespace Hoops.Infrastructure.Repository
                             DraftId = pl.DraftId,
                             LastName = p.LastName ?? string.Empty,
                             FirstName = p.FirstName ?? string.Empty,
-                            DOB = p.BirthDate != null ? p.BirthDate.Value.Date : (DateTime?)null,
-                            Phone = h.Phone,
+                            DOB = p.BirthDate != null ? p.BirthDate.Value.Date : null,
+                            // Correlated subquery — returns null when HouseId is null or household has no phone
+                            Phone = context.Set<Household>().Where(h => h.HouseId == p.HouseId).Select(h => h.Phone).FirstOrDefault(),
                             Grade = p.Grade,
+                            Rating = pl.Rating,
+                            DraftNotes = pl.DraftNotes,
                         };
 
-#pragma warning restore CS8629
             return query.ToList();
         }
     }

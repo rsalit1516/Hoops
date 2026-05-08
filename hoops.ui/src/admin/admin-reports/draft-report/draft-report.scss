@@ -23,7 +23,7 @@
   display: flex;
   justify-content: center;
   padding: 2rem;
-  color: #666;
+  color: #ccc;
 }
 
 // ── Report layout (screen preview) ──────────────────────────────────────────
@@ -31,6 +31,7 @@
 .report-header {
   text-align: center;
   margin-bottom: 0.75rem;
+  color: #fff;
 
   .club-name {
     font-size: 1.25rem;
@@ -63,6 +64,7 @@
   width: 100%;
   border-collapse: collapse;
   font-size: 0.85rem;
+  color: #fff;
 
   th,
   td {
@@ -72,9 +74,10 @@
   }
 
   th {
-    background-color: #eee;
+    background-color: #444;
     font-weight: 600;
     text-align: left;
+    color: #fff;
   }
 
   tbody tr {
@@ -89,7 +92,7 @@
 .col-dob    { width: 7rem;  white-space: nowrap; }
 .col-phone  { width: 8rem;  white-space: nowrap; }
 .col-grade  { width: 3.5rem; text-align: center; }
-.col-notes  { /* fills remaining width */ }
+.col-notes  { min-width: 20%; }
 
 // ── Print styles ─────────────────────────────────────────────────────────────
 
@@ -121,6 +124,7 @@
 
   .report-header {
     margin-bottom: 0.4rem;
+    color: #000;
 
     .club-name  { font-size: 14pt; }
     .report-title { font-size: 12pt; }
@@ -129,6 +133,7 @@
 
   .draft-table {
     font-size: 9pt;
+    color: #000;
 
     th,
     td {
@@ -138,6 +143,7 @@
 
     th {
       background-color: #ddd !important;
+      color: #000 !important;
       -webkit-print-color-adjust: exact;
       print-color-adjust: exact;
     }
@@ -146,4 +152,14 @@
       height: 1.4rem;
     }
   }
+
+  // Override column widths for print — fixed rem values shrink at 9pt,
+  // so pin the narrow columns and give notes a guaranteed 20%.
+  .col-id     { width: 0.5in; }
+  .col-rating { width: 0.5in; }
+  .col-name   { width: 1.6in; }
+  .col-dob    { width: 0.75in; }
+  .col-phone  { width: 0.9in; }
+  .col-grade  { width: 0.4in; }
+  .col-notes  { width: 20%; min-width: 20%; }
 }

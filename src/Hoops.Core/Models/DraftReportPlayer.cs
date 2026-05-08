@@ -13,5 +13,7 @@ namespace Hoops.Core.Models
         public DateTime? DOB { get; set; }
         public string? Phone { get; set; }
         public int? Grade { get; set; }
+        public int? Rating { get; set; }
+        public string? DraftNotes { get; set; }
     }
 }

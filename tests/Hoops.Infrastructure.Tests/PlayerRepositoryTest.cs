@@ -270,6 +270,29 @@ namespace Hoops.Infrastructure.Tests
         }
 
         [Fact]
+        public void GetDraftReportPlayers_IncludesPlayer_WhenHouseIdIsNull()
+        {
+            // A player with no household must still appear; Phone should be null
+            var options = new DbContextOptionsBuilder<hoopsContext>()
+                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+                .Options;
+            var context = new hoopsContext(options);
+
+            context.People.Add(new Person { PersonId = 10, FirstName = "No", LastName = "House", HouseId = null, BirthDate = new DateTime(2012, 3, 1) });
+            context.Seasons.Add(new Season { SeasonId = 1, Description = "2024-25", FromDate = new DateTime(2024, 9, 1), ToDate = new DateTime(2025, 5, 31) });
+            context.Divisions.Add(new Division { DivisionId = 1, SeasonId = 1, DivisionDescription = "U12 Boys" });
+            context.Players.Add(new Player { PlayerId = 10, PersonId = 10, SeasonId = 1, DivisionId = 1, DraftId = "099" });
+            context.SaveChanges();
+
+            var repo = new PlayerRepository(context);
+            var result = repo.GetDraftReportPlayers(1, null);
+
+            Assert.Single(result);
+            Assert.Equal("House", result[0].LastName);
+            Assert.Null(result[0].Phone);
+        }
+
+        [Fact]
         public void GetDraftReportPlayers_OrdersByDivisionThenDraftId()
         {
             var repo = CreateRepositoryWithPhoneData();

@@ -7,4 +7,6 @@ export class DraftReportPlayer {
   public dob: Date | string | null = null;
   public phone: string | null = null;
   public grade: number | null = null;
+  public rating: number | null = null;
+  public draftNotes: string | null = null;
 }
