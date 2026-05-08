@@ -24,6 +24,8 @@ describe('DraftReportService', () => {
       dob: '2010-05-15T00:00:00' as any,
       phone: '555-111-1111',
       grade: 6,
+      rating: null,
+      draftNotes: null,
     },
     {
       personId: 2,
@@ -34,6 +36,8 @@ describe('DraftReportService', () => {
       dob: '2012-08-20T00:00:00' as any,
       phone: '555-222-2222',
       grade: 4,
+      rating: null,
+      draftNotes: null,
     },
   ];
 
