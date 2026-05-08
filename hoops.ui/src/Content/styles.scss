@@ -152,3 +152,28 @@ a {
   letter-spacing: 6px;
   min-height: 24px;
 }
+
+/* ── Print: hide shell chrome so reports render cleanly ── */
+@media print {
+  /* Top nav bar and admin sidenav */
+  csbc-top-nav,
+  mat-sidenav,
+  .menu-toggle-bar {
+    display: none !important;
+  }
+
+  /* Remove the sidebar margin that Material inlines on the content pane */
+  .mat-drawer-content {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  /* Let the page flow naturally instead of being clipped to the viewport */
+  html,
+  body,
+  mat-sidenav-container,
+  .mat-sidenav-container {
+    height: auto !important;
+    overflow: visible !important;
+  }
+}

@@ -58,6 +58,11 @@ export class AdminShellSidebar {
       isSelected: false,
     },
     {
+      name: 'Draft Report',
+      route: '/admin/reports/draft-report',
+      isSelected: false,
+    },
+    {
       name: 'Daily Schedule Report',
       route: '/admin/reports/daily-schedule',
       isSelected: false,

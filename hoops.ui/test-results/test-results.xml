@@ -1,33 +1,40 @@
 <?xml version="1.0"?>
-<testsuite name="Chrome Headless 147.0.0.0 (Windows 10)" package="unit" timestamp="2026-05-07T15:10:55" id="0" hostname="Rich-Think" tests="23" errors="0" failures="0" time="0.657">
+<testsuite name="Chrome Headless 147.0.0.0 (Windows 10)" package="unit" timestamp="2026-05-07T16:49:02" id="0" hostname="Rich-Think" tests="26" errors="0" failures="0" time="0.582">
   <properties>
     <property name="browser.fullName" value="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/147.0.0.0 Safari/537.36"/>
   </properties>
-  <testcase name="DraftList should create" time="0.132" classname=".DraftList"/>
-  <testcase name="DraftList showNoSelection should be true when no division is selected and not loading" time="0.02" classname=".DraftList showNoSelection"/>
-  <testcase name="DraftList showNoSelection should be false when a specific division is selected" time="0.024" classname=".DraftList showNoSelection"/>
-  <testcase name="DraftList showNoSelection should be false when All Divisions sentinel is selected" time="0.019" classname=".DraftList showNoSelection"/>
-  <testcase name="DraftList showTable should be false when no division is selected" time="0.025" classname=".DraftList showTable"/>
-  <testcase name="DraftList showTable should be true when a division is selected and not loading" time="0.022" classname=".DraftList showTable"/>
-  <testcase name="DraftList showTable should be false when loading even with a division selected" time="0.02" classname=".DraftList showTable"/>
-  <testcase name="DraftList sortedPlayers should return players unchanged for a specific division" time="0.094" classname=".DraftList sortedPlayers"/>
-  <testcase name="DraftList sortedPlayers should sort players by division name when All Divisions is selected" time="0.046" classname=".DraftList sortedPlayers"/>
-  <testcase name="DraftList sortedPlayers should not mutate the original players array when sorting" time="0.034" classname=".DraftList sortedPlayers"/>
-  <testcase name="DraftList sortedPlayers should return empty array when no players" time="0.013" classname=".DraftList sortedPlayers"/>
-  <testcase name="DraftList effect: getDraftList should call getDraftList when both season and division are set" time="0.013" classname=".DraftList effect: getDraftList"/>
-  <testcase name="DraftList effect: getDraftList should not call getDraftList when only season is set" time="0.011" classname=".DraftList effect: getDraftList"/>
-  <testcase name="DraftList effect: getDraftList should not call getDraftList when only division is set" time="0.01" classname=".DraftList effect: getDraftList"/>
-  <testcase name="DraftList effect: getDraftList should pass null divisionId when All Divisions sentinel is selected" time="0.013" classname=".DraftList effect: getDraftList"/>
-  <testcase name="DraftList downloadCSV should show snackbar when there are no players" time="0.011" classname=".DraftList downloadCSV"/>
-  <testcase name="DraftList downloadCSV should trigger file download when players exist" time="0.037" classname=".DraftList downloadCSV"/>
-  <testcase name="DraftList downloadCSV should include division description in filename for a specific division" time="0.035" classname=".DraftList downloadCSV"/>
-  <testcase name="DraftList downloadCSV should use &quot;All&quot; in filename when All Divisions is selected" time="0.035" classname=".DraftList downloadCSV"/>
-  <testcase name="DraftList DOB column formatter should format ISO date string as mm-dd-yyyy" time="0.011" classname=".DraftList DOB column formatter"/>
-  <testcase name="DraftList DOB column formatter should zero-pad single-digit month and day" time="0.008" classname=".DraftList DOB column formatter"/>
-  <testcase name="DraftList DOB column formatter should return empty string for null" time="0.013" classname=".DraftList DOB column formatter"/>
-  <testcase name="DraftList DOB column formatter should return empty string for undefined" time="0.011" classname=".DraftList DOB column formatter"/>
+  <testcase name="DraftReport should create" time="0.194" classname=".DraftReport"/>
+  <testcase name="DraftReport showNoSelection should be true when no division is selected" time="0.028" classname=".DraftReport showNoSelection"/>
+  <testcase name="DraftReport showNoSelection should be false when a division is selected" time="0.028" classname=".DraftReport showNoSelection"/>
+  <testcase name="DraftReport showNoSelection should be false when All Divisions sentinel is selected" time="0.024" classname=".DraftReport showNoSelection"/>
+  <testcase name="DraftReport showReport should be false when no division is selected" time="0.021" classname=".DraftReport showReport"/>
+  <testcase name="DraftReport showReport should be true when a division is selected and not loading" time="0.023" classname=".DraftReport showReport"/>
+  <testcase name="DraftReport showReport should be false while loading" time="0.023" classname=".DraftReport showReport"/>
+  <testcase name="DraftReport groupedByDivision should return empty array when no players" time="0.02" classname=".DraftReport groupedByDivision"/>
+  <testcase name="DraftReport groupedByDivision should return a single group for a specific division" time="0.024" classname=".DraftReport groupedByDivision"/>
+  <testcase name="DraftReport groupedByDivision should group by division when All Divisions is selected" time="0.052" classname=".DraftReport groupedByDivision"/>
+  <testcase name="DraftReport groupedByDivision should sort groups alphabetically by division name" time="0.02" classname=".DraftReport groupedByDivision"/>
+  <testcase name="DraftReport groupedByDivision should place multiple players in the correct group" time="0.012" classname=".DraftReport groupedByDivision"/>
+  <testcase name="DraftReport effect: getDraftReport should call getDraftReport when both season and division are set" time="0.014" classname=".DraftReport effect: getDraftReport"/>
+  <testcase name="DraftReport effect: getDraftReport should not call getDraftReport when only season is set" time="0.011" classname=".DraftReport effect: getDraftReport"/>
+  <testcase name="DraftReport effect: getDraftReport should not call getDraftReport when only division is set" time="0.015" classname=".DraftReport effect: getDraftReport"/>
+  <testcase name="DraftReport effect: getDraftReport should pass null divisionId when All Divisions sentinel is selected" time="0.013" classname=".DraftReport effect: getDraftReport"/>
+  <testcase name="DraftReport formatDob should format ISO date string as mm/dd/yyyy" time="0.01" classname=".DraftReport formatDob"/>
+  <testcase name="DraftReport formatDob should zero-pad single-digit month and day" time="0.009" classname=".DraftReport formatDob"/>
+  <testcase name="DraftReport formatDob should return empty string for null" time="0.009" classname=".DraftReport formatDob"/>
+  <testcase name="DraftReport formatDob should return empty string for undefined" time="0.01" classname=".DraftReport formatDob"/>
+  <testcase name="DraftReport print should call window.print()" time="0.01" classname=".DraftReport print"/>
+  <testcase name="DraftReportService should be created" time="0.002" classname=".DraftReportService"/>
+  <testcase name="DraftReportService getDraftReport should fetch players for season without division" time="0.003" classname=".DraftReportService getDraftReport"/>
+  <testcase name="DraftReportService getDraftReport should fetch players for season and division" time="0.002" classname=".DraftReportService getDraftReport"/>
+  <testcase name="DraftReportService getDraftReport should set loading false and clear players on error" time="0.003" classname=".DraftReportService getDraftReport"/>
+  <testcase name="DraftReportService clearPlayers should clear the players signal" time="0.002" classname=".DraftReportService clearPlayers"/>
   <system-out>
-    <![CDATA[
+    <![CDATA[Chrome Headless 147.0.0.0 (Windows 10) INFO: '[LOCAL]', '[DraftReportService] Fetching draft report from:', 'http://localhost:7071/api/DraftReport/1'
+,Chrome Headless 147.0.0.0 (Windows 10) INFO: '[LOCAL]', '[DraftReportService] Fetching draft report from:', 'http://localhost:7071/api/DraftReport/1/2'
+,Chrome Headless 147.0.0.0 (Windows 10) INFO: '[LOCAL]', '[DraftReportService] Fetching draft report from:', 'http://localhost:7071/api/DraftReport/1'
+,Chrome Headless 147.0.0.0 (Windows 10) INFO: '[LOCAL]', '[DraftReportService] Fetching draft report from:', 'http://localhost:7071/api/DraftReport/1'
+
 ]]>
   </system-out>
   <system-err/>
