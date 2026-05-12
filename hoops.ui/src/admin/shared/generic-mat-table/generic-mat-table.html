@@ -16,7 +16,7 @@
                     context: { $implicit: item, column: column }
                   "
           />
-          } @else { {{ getFieldValue(item, column.field) }} }
+          } @else { {{ column.formatter ? column.formatter(getFieldValue(item, column.field)) : getFieldValue(item, column.field) }} }
         </td>
       </ng-container>
       }

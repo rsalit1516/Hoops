@@ -24,7 +24,7 @@
   "appService.deploySubpath": "Hoops.Api/publish",
   "dotnet-test-explorer.testProjectPath": "hoops.test",
   "azureFunctions.projectSubpath": "src\\Hoops.Functions",
-  "azureFunctions.deploySubpath": "src\\Hoops.Functions/bin/Release/net9.0/publish",
+  "azureFunctions.deploySubpath": "src\\Hoops.Functions/bin/Release/net10.0/publish",
   "azureFunctions.projectLanguage": "C#",
   "azureFunctions.projectRuntime": "~4",
   "azureFunctions.preDeployTask": "publish (functions)"

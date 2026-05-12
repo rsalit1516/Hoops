@@ -1,37 +1,37 @@
 @use "../../../Content/variables" as v;
 
 .draft-list-card {
-  margin: 20px;
+  margin: 1.25rem;
 }
 
 .filters-container {
   display: flex;
-  gap: 16px;
+  gap: 1rem;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 1.5rem;
   flex-wrap: wrap;
 }
 
 .download-button {
   height: 56px;
-  margin-top: 8px;
+  margin-top: 0.5rem;
 }
 
 .loading-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 40px;
+  padding: 2.5rem;
 }
 
 .no-selection-message,
 .no-data-message {
   text-align: center;
-  padding: 40px;
+  padding: 2.5rem;
   color: v.$admin-font-color;
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 .table-container {
-  margin-top: 16px;
+  margin-top: 1rem;
 }

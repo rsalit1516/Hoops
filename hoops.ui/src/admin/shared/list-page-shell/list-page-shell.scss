@@ -1,10 +1,10 @@
 @use "../../../Content/variables" as v;
 
 .list-page-container {
-  padding: 16px;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0.5rem;
   height: calc(100vh - 175px);
   overflow: hidden;
   background-color: v.$admin-background-color;
@@ -51,11 +51,11 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  gap: 16px;
+  gap: 1rem;
 }
 
 .header-actions {
   display: flex;
-  gap: 8px;
+  gap: 0.5rem;
   align-items: center;
 }

@@ -16,7 +16,7 @@ h2 {
 }
 
 .form-container {
-  margin: 4px;
+  margin: 0.25rem;
 }
 
 .form-heading {
@@ -106,8 +106,8 @@ label,
   color: v.$field-label !important;
   font-size: v.$input-font-size;
   font-weight: 500;
-  padding-bottom: 6px;
-  padding-left: 12px;
+  padding-bottom: 0.375rem;
+  padding-left: 0.75rem;
 }
 
 .mdc-text-field__input {

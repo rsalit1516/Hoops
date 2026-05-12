@@ -1,18 +1,18 @@
 <mat-card class="draft-list-card">
   <mat-card-header>
-    <mat-card-title>Draft List Report</mat-card-title>
+    <mat-card-title>Season Players</mat-card-title>
   </mat-card-header>
 
   <mat-card-content>
     <div class="filters-container">
       <season-select></season-select>
-      <division-select></division-select>
+      <division-select [includeAll]="true"></division-select>
 
       <button
         mat-raised-button
         color="primary"
         (click)="downloadCSV()"
-        [disabled]="!selectedDivision() || players().length === 0"
+        [disabled]="!selectedDivision() || sortedPlayers().length === 0"
         class="download-button"
       >
         <mat-icon>download</mat-icon>
@@ -30,7 +30,7 @@
     </div>
     } @if (showTable && players().length > 0) {
     <div class="table-container">
-      <app-generic-mat-table [columns]="columns" [data]="players()" />
+      <app-generic-mat-table [columns]="columns" [data]="sortedPlayers()" />
     </div>
     } @if (showTable && players().length === 0) {
     <div class="no-data-message">

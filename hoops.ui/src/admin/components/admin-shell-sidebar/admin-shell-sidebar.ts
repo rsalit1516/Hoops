@@ -53,8 +53,13 @@ export class AdminShellSidebar {
   ReportsSection = 'Reports';
   reportsItems = [
     {
-      name: 'Draft List',
+      name: 'Season Players',
       route: '/admin/reports/draft-list',
+      isSelected: false,
+    },
+    {
+      name: 'Draft Report',
+      route: '/admin/reports/draft-report',
       isSelected: false,
     },
     {

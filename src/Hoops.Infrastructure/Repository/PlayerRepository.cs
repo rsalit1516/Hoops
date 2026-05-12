@@ -607,5 +607,32 @@ namespace Hoops.Infrastructure.Repository
 #pragma warning restore CS8629
             return query.ToList();
         }
+
+        public List<DraftReportPlayer> GetDraftReportPlayers(int seasonId, int? divisionId)
+        {
+            var query = from p in context.Set<Person>()
+                        join pl in context.Set<Player>() on p.PersonId equals pl.PersonId
+                        join d in context.Set<Division>() on pl.DivisionId equals d.DivisionId
+                        join s in context.Set<Season>() on d.SeasonId equals s.SeasonId
+                        where s.SeasonId == seasonId
+                        where !divisionId.HasValue || pl.DivisionId == divisionId
+                        orderby d.DivisionDescription, pl.DraftId
+                        select new DraftReportPlayer
+                        {
+                            PersonId = p.PersonId,
+                            Division = d.DivisionDescription ?? string.Empty,
+                            DraftId = pl.DraftId,
+                            LastName = p.LastName ?? string.Empty,
+                            FirstName = p.FirstName ?? string.Empty,
+                            DOB = p.BirthDate != null ? p.BirthDate.Value.Date : null,
+                            // Correlated subquery — returns null when HouseId is null or household has no phone
+                            Phone = context.Set<Household>().Where(h => h.HouseId == p.HouseId).Select(h => h.Phone).FirstOrDefault(),
+                            Grade = p.Grade,
+                            Rating = pl.Rating,
+                            DraftNotes = pl.DraftNotes,
+                        };
+
+            return query.ToList();
+        }
     }
 }
