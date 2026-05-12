@@ -250,12 +250,44 @@ jobs:
             --query "{name:name, resourceGroup:resourceGroup, state:state}" \
             -o json
 
+      - name: Show Function App runtime configuration
+        run: |
+          az functionapp show \
+            --name ${{ steps.selectapp.outputs.app_name }} \
+            --resource-group ${{ steps.selectapp.outputs.resource_group }} \
+            --query "{name:name, kind:kind, linux:reserved}" \
+            -o table
+          az functionapp config show \
+            --name ${{ steps.selectapp.outputs.app_name }} \
+            --resource-group ${{ steps.selectapp.outputs.resource_group }} \
+            --query "{linuxFxVersion:linuxFxVersion, alwaysOn:alwaysOn}" \
+            -o table
+
       # Dev only: prod connection string is provided by Key Vault
       - name: Validate required secrets (dev only)
         if: steps.selectapp.outputs.env_name == 'dev'
         shell: bash
         run: |
           [ -n "${{ secrets.HOOPS_CONNECTION_STRING }}" ] && echo "HOOPS_CONNECTION_STRING: set" || (echo "HOOPS_CONNECTION_STRING: MISSING (set environment secret for dev)" >&2; exit 1)
+
+      - name: Enforce runtime stack for prod (Linux only)
+        if: steps.selectapp.outputs.env_name == 'prod'
+        shell: bash
+        run: |
+          IS_LINUX=$(az functionapp show \
+            --name ${{ steps.selectapp.outputs.app_name }} \
+            --resource-group ${{ steps.selectapp.outputs.resource_group }} \
+            --query reserved -o tsv)
+
+          if [ "$IS_LINUX" = "true" ]; then
+            echo "Setting linuxFxVersion to DOTNET-ISOLATED|10.0"
+            az functionapp config set \
+              --name ${{ steps.selectapp.outputs.app_name }} \
+              --resource-group ${{ steps.selectapp.outputs.resource_group }} \
+              --linux-fx-version "DOTNET-ISOLATED|10.0"
+          else
+            echo "Prod app is not Linux; skipping linuxFxVersion update."
+          fi
 
       - name: Deploy via Azure CLI
         run: |
@@ -293,6 +325,8 @@ jobs:
             --name ${{ steps.selectapp.outputs.app_name }} \
             --resource-group ${{ steps.selectapp.outputs.resource_group }} \
             --settings \
+              "FUNCTIONS_WORKER_RUNTIME=dotnet-isolated" \
+              "FUNCTIONS_EXTENSION_VERSION=~4" \
               "AzureWebJobsFeatureFlags=EnableOpenApi" \
               "CompanySettings__DefaultCompanyId=1" \
               "KeyVaultUri=${{ steps.selectapp.outputs.kv_uri }}" \

@@ -5,8 +5,6 @@
     <OutputType>Exe</OutputType>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <!-- Target Windows runtime for Azure Functions (avoid Linux libssl issues) -->
-    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <SelfContained>false</SelfContained>
       <!-- Control inclusion of Functions Worker SDK via property; default to true for local/dev -->
       <UseFunctionsSdk Condition="'$(UseFunctionsSdk)' == ''">true</UseFunctionsSdk>
