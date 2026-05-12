@@ -59,6 +59,7 @@
             <th class="col-phone">Phone</th>
             <th class="col-grade">Grade</th>
             <th class="col-notes">Draft Notes</th>
+            <th class="col-balance">Balance</th>
           </tr>
         </thead>
         <tbody>
@@ -71,6 +72,7 @@
             <td class="col-phone">{{ player.phone }}</td>
             <td class="col-grade">{{ player.grade }}</td>
             <td class="col-notes">{{ player.draftNotes }}</td>
+            <td class="col-balance">{{ player.balance ? (player.balance | currency) : '' }}</td>
           </tr>
           }
         </tbody>
