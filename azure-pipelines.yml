@@ -1,15 +1,6 @@
-trigger:
-  branches:
-    include:
-      - develop
-      - master
-      - main
+trigger: none
 
-pr:
-  branches:
-    include:
-      - develop
-      - master
+pr: none
 
 variables:
   # Agent/Tooling
