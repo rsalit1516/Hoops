@@ -20,6 +20,7 @@ import { PeopleService } from '@app/services/people.service';
 interface PersonPhoneFormModel {
   cellphone: string;
   workphone: string;
+  grade: number;
 }
 
 @Component({
@@ -56,6 +57,7 @@ export class RegistrationPersonPhoneForm {
   readonly model = signal<PersonPhoneFormModel>({
     cellphone: '',
     workphone: '',
+    grade: 0,
   });
 
   readonly personPhoneForm = form(this.model);
@@ -69,7 +71,8 @@ export class RegistrationPersonPhoneForm {
     const current = this.model();
     return (
       current.cellphone !== initial.cellphone ||
-      current.workphone !== initial.workphone
+      current.workphone !== initial.workphone ||
+      Number(current.grade) !== Number(initial.grade)
     );
   });
 
@@ -84,6 +87,7 @@ export class RegistrationPersonPhoneForm {
       const snap: PersonPhoneFormModel = {
         cellphone: p.cellphone ?? '',
         workphone: p.workphone ?? '',
+        grade: p.grade ?? 0,
       };
       this.model.set({ ...snap });
       this.initialSnapshot.set({ ...snap });
@@ -99,6 +103,7 @@ export class RegistrationPersonPhoneForm {
       ...person,
       cellphone: current.cellphone,
       workphone: current.workphone,
+      grade: Number(current.grade),
     };
     this.isSaving.set(true);
     this.peopleService.savePerson(updated).subscribe({
