@@ -4,3 +4,21 @@
   color: vars.$admin-input-hint-color;
   font-size: vars.$admin-input-hint-font-size;
 }
+
+.eligible-panel-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.eligible-panel-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding-bottom: 0;
+}
+
+.eligible-list {
+  height: calc(100vh - 340px);
+  min-height: 150px;
+  overflow-y: auto;
+}
