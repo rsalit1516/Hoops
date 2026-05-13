@@ -1,5 +1,11 @@
 @use "@app/Content/variables" as vars;
 
+.save-action-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
 ::ng-deep {
   #volunteerInfo mat-chip {
     color: vars.$admin-font-color;
