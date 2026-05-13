@@ -58,8 +58,7 @@ export class HouseholdMembers implements OnInit {
     'lastName',
     'firstName',
     'birthDate',
-    // 'gender',
-    // 'register'
+    'register',
   ]
 
   dataSource!: MatTableDataSource<Person>;
@@ -126,6 +125,11 @@ export class HouseholdMembers implements OnInit {
     this.#logger.info('Setting houseId to:', newPerson.houseId);
     this.#peopleService.updateSelectedPerson(newPerson);
     this.#router.navigate(['/admin/people/detail']);
+  }
+
+  onRegister (person: Person, event: Event) {
+    event.stopPropagation();
+    this.#router.navigate(['/admin/player-registration', person.personId], { queryParams: { from: 'household' } });
   }
 
 }

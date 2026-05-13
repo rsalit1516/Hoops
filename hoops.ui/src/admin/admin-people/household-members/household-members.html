@@ -36,12 +36,21 @@
           {{ col.gender }}
         </td>
       </ng-container> -->
-      <!-- <ng-container matColumnDef="register">
-        <th mat-header-cell *matHeaderCellDef>Register</th>
-        <td mat-cell *matCellDef="let col" class="teamName">
-          button
+      <ng-container matColumnDef="register">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let col">
+          @if (col.player) {
+            <button
+              mat-stroked-button
+              color="primary"
+              type="button"
+              (click)="onRegister(col, $event)"
+            >
+              Register
+            </button>
+          }
         </td>
-      </ng-container> -->
+      </ng-container>
 
       <ng-container matColumnDef="nodata">
         <td

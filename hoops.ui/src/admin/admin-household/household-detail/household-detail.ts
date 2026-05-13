@@ -130,7 +130,7 @@ export class HouseholdDetail implements OnInit, OnChanges {
     // this.members.removeAt(index);
   }
 
-  onSave () {
+  onSave (closeAfterSave: boolean = false) {
     if (this.householdDetailForm.valid) {
       let household = this.household();
       if (household) {
@@ -171,18 +171,26 @@ export class HouseholdDetail implements OnInit, OnChanges {
         this.#householdService.saveHousehold(household).subscribe({
           next: (response) => {
             this.#logger.info('Household saved successfully:', response);
-            this.householdDetailForm.reset();
-            this.#householdService.householdSaved.set(true);
-            this.#router.navigate(['/admin/households/list']);
+            if (closeAfterSave) {
+              this.householdDetailForm.reset();
+              this.#householdService.householdSaved.set(true);
+              this.#router.navigate(['/admin/households/list']);
+            } else {
+              this.#householdService.updateSelectedHousehold(response);
+              this.householdDetailForm.markAsPristine();
+            }
           },
           error: (error) => {
             this.#logger.error('Error saving household:', error);
-            // You might want to show a user-friendly error message here
             alert('Error saving household. Please check the console for details.');
           }
         });
       }
     };
+  }
+
+  onSaveAndClose () {
+    this.onSave(true);
   }
 
 }

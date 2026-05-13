@@ -179,6 +179,8 @@ export class HouseholdService {
   }
   newHousehold() {
     const household = new Household();
+    household.city = 'Coral Springs';
+    household.state = 'FL';
     this._selectedHousehold.set(household);
   }
   selectedHouseholdByHouseId(houseId: number) {

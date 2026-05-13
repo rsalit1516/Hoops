@@ -76,6 +76,20 @@
             Save
           </button>
           <button
+            mat-raised-button
+            color="primary"
+            type="button"
+            [disabled]="
+              !householdDetailForm.valid || !householdDetailForm.dirty
+            "
+            [style.opacity]="!householdDetailForm.valid || !householdDetailForm.dirty
+                  ? 0.5
+                  : 1"
+            (click)="onSaveAndClose()"
+          >
+            Save &amp; Close
+          </button>
+          <button
             type="button"
             mat-raised-button
             [routerLink]="['/admin/households/list']"
