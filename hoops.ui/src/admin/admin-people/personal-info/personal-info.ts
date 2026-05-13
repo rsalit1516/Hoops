@@ -1,6 +1,12 @@
-
 import { Component, computed, effect, inject, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -9,6 +15,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -38,17 +45,17 @@ interface Item {
     MatDatepickerModule,
     MatCheckboxModule,
     MatRadioModule,
-    RouterModule
+    MatMenuModule,
+    RouterModule,
   ],
-  templateUrl: "./personal-info.html",
-  styleUrls: ['./personal-info.scss',
+  templateUrl: './personal-info.html',
+  styleUrls: [
+    './personal-info.scss',
     '../../admin.scss',
     '../../../shared/scss/forms.scss',
     '../../../shared/scss/cards.scss',
   ],
-  providers: [
-    provideNativeDateAdapter(),
-  ],
+  providers: [provideNativeDateAdapter()],
 })
 export class PersonalInfo implements OnInit {
   fb = inject(FormBuilder);
@@ -81,27 +88,28 @@ export class PersonalInfo implements OnInit {
     const currentPerson = this.person();
     const users = this.#usersService.users();
     if (!currentPerson?.personId || !users?.length) return null;
-    return users.find(u => u.peopleId === currentPerson.personId) || null;
+    return users.find((u) => u.peopleId === currentPerson.personId) || null;
   });
 
-  userButtonText = computed(() => this.existingUser() ? 'User' : 'Create User');
+  userButtonText = computed(() =>
+    this.existingUser() ? 'User' : 'Create User',
+  );
 
-  get volunteerControls (): FormArray {
+  get volunteerControls(): FormArray {
     return this.personalInfoForm.get('volunteerControls') as FormArray;
   }
 
-  constructor () {
+  constructor() {
     // Load users to check if user exists
     this.#usersService.loadUsers();
 
     effect(() => {
       this.person = this.#peopleService.selectedPerson;
       this.patchValue();
-
     });
   }
 
-  ngOnInit (): void {
+  ngOnInit(): void {
     this.personalInfoForm = this.fb.group({
       firstName: [''],
       lastName: [''],
@@ -127,9 +135,8 @@ export class PersonalInfo implements OnInit {
     this.personalInfoForm.statusChanges.subscribe(() => {
       this.#peopleService.updateFormDirtyState(this.personalInfoForm.dirty);
     });
-
   }
-  patchValue () {
+  patchValue() {
     const person = this.person();
 
     this.personalInfoForm.patchValue({
@@ -152,7 +159,9 @@ export class PersonalInfo implements OnInit {
 
     // Patch volunteer checkboxes
     if (person) {
-      const checkboxesArray = this.personalInfoForm.get('volunteerCheckboxes') as FormArray;
+      const checkboxesArray = this.personalInfoForm.get(
+        'volunteerCheckboxes',
+      ) as FormArray;
       checkboxesArray.setValue([
         person.boardOfficer || false,
         person.boardMember || false,
@@ -173,8 +182,10 @@ export class PersonalInfo implements OnInit {
     this.#peopleService.updateFormDirtyState(false);
   }
 
-  addVolunteerCheckboxes () {
-    const checkboxesArray = this.personalInfoForm.get('volunteerCheckboxes') as FormArray;
+  addVolunteerCheckboxes() {
+    const checkboxesArray = this.personalInfoForm.get(
+      'volunteerCheckboxes',
+    ) as FormArray;
     this.volunteers.forEach(() => checkboxesArray.push(this.fb.control(false)));
   }
 
@@ -187,8 +198,11 @@ export class PersonalInfo implements OnInit {
   //     this.volunteerControls.push(control); // Add the control to the FormArray
   //   });
   // }
-  onSubmit () {
-    this.logger.info('Submitting personal info form:', this.personalInfoForm.value);
+  onSubmit(closeAfterSave: boolean = false) {
+    this.logger.info(
+      'Submitting personal info form:',
+      this.personalInfoForm.value,
+    );
 
     const currentPerson = this.person();
     if (!currentPerson) {
@@ -206,7 +220,9 @@ export class PersonalInfo implements OnInit {
       cellphone: this.personalInfoForm.value.cellPhone,
       workphone: this.personalInfoForm.value.workPhone,
       gender: this.personalInfoForm.value.gender,
-      grade: this.personalInfoForm.value.grade ? Number(this.personalInfoForm.value.grade) : 0,
+      grade: this.personalInfoForm.value.grade
+        ? Number(this.personalInfoForm.value.grade)
+        : 0,
       schoolName: this.personalInfoForm.value.schoolName,
       parent: this.personalInfoForm.value.parent,
       coach: this.personalInfoForm.value.coach,
@@ -241,18 +257,26 @@ export class PersonalInfo implements OnInit {
         this.#peopleService.updateSelectedPerson(response);
         this.personalInfoForm.markAsPristine();
         this.#peopleService.updateFormDirtyState(false);
+
+        if (closeAfterSave) {
+          this.router.navigate(['/admin/people']);
+        }
       },
       error: (error) => {
         this.logger.error('Error saving person:', error);
-      }
+      },
     });
   }
 
-  onReset () {
+  onSaveAndClose() {
+    this.onSubmit(true);
+  }
+
+  onReset() {
     this.personalInfoForm.reset();
   }
 
-  onDelete () {
+  onDelete() {
     const currentPerson = this.person();
     if (!currentPerson || !currentPerson.personId) {
       this.logger.error('No person selected or person has no ID');
@@ -264,8 +288,8 @@ export class PersonalInfo implements OnInit {
       width: '400px',
       data: {
         title: 'Confirm Delete',
-        message: `Are you sure you want to delete ${currentPerson.firstName} ${currentPerson.lastName}? This action cannot be undone.`
-      }
+        message: `Are you sure you want to delete ${currentPerson.firstName} ${currentPerson.lastName}? This action cannot be undone.`,
+      },
     });
 
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
@@ -279,13 +303,13 @@ export class PersonalInfo implements OnInit {
           },
           error: (error) => {
             this.logger.error('Error deleting person:', error);
-          }
+          },
         });
       }
     });
   }
 
-  onRegister () {
+  onRegister() {
     const currentPerson = this.person();
     if (!currentPerson || !currentPerson.personId) {
       this.logger.error('No person selected or person has no ID');
@@ -296,16 +320,23 @@ export class PersonalInfo implements OnInit {
     }
 
     // Navigate to player registration form
-    this.router.navigate(['/admin/player-registration', currentPerson.personId], { queryParams: { from: 'people' } });
+    this.router.navigate(
+      ['/admin/player-registration', currentPerson.personId],
+      { queryParams: { from: 'people' } },
+    );
   }
 
-  onCreateUser () {
+  onCreateUser() {
     const currentPerson = this.person();
     if (!currentPerson || !currentPerson.personId || !currentPerson.houseId) {
       this.logger.error('No person selected or person has no household');
-      this.snackBar.open('Please select a person with a household first.', 'OK', {
-        duration: 3000,
-      });
+      this.snackBar.open(
+        'Please select a person with a household first.',
+        'OK',
+        {
+          duration: 3000,
+        },
+      );
       return;
     }
 
@@ -327,12 +358,11 @@ export class PersonalInfo implements OnInit {
         queryParams: {
           houseId: currentPerson.houseId,
           personId: currentPerson.personId,
-          name: personName
-        }
+          name: personName,
+        },
       });
     }
   }
-
 }
 
 // ad:false

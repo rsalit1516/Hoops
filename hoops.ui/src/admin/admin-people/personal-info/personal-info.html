@@ -111,14 +111,37 @@
       </mat-form-field>
     </mat-card-content>
     <mat-card-actions>
-      <button
-        mat-raised-button
-        color="primary"
-        type="submit"
-        [disabled]="!personalInfoForm.valid || !personalInfoForm.dirty"
-      >
-        Save
-      </button>
+      <div class="save-action-group">
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="!personalInfoForm.valid || !personalInfoForm.dirty"
+        >
+          Save
+        </button>
+        <button
+          mat-icon-button
+          color="primary"
+          type="button"
+          [matMenuTriggerFor]="saveMenu"
+          [disabled]="!personalInfoForm.valid || !personalInfoForm.dirty"
+          aria-label="Save options"
+        >
+          <mat-icon>arrow_drop_down</mat-icon>
+        </button>
+        <mat-menu #saveMenu="matMenu">
+          <button
+            mat-menu-item
+            type="button"
+            [disabled]="!personalInfoForm.valid || !personalInfoForm.dirty"
+            (click)="onSaveAndClose()"
+          >
+            <mat-icon>save</mat-icon>
+            <span>Save and Close</span>
+          </button>
+        </mat-menu>
+      </div>
       <button type="button" mat-raised-button color="warn" (click)="onDelete()">
         Delete
       </button>
