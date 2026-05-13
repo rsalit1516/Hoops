@@ -108,10 +108,6 @@ export class PersonalInfo implements OnInit {
     this.existingUser() ? 'User' : 'Create User',
   );
 
-  get volunteerControls(): FormArray {
-    return this.personalInfoForm.get('volunteerControls') as FormArray;
-  }
-
   constructor() {
     // Load users to check if user exists
     this.#usersService.loadUsers();
@@ -170,45 +166,41 @@ export class PersonalInfo implements OnInit {
     // Patch volunteer positions into signal
     const selected = new Set<number>();
     if (person) {
-      const checkboxesArray = this.personalInfoForm.get(
-        'volunteerCheckboxes',
-      ) as FormArray;
-      checkboxesArray.setValue([
-        person.boardOfficer || false,
-        person.boardMember || false,
-        person.ad || false,
-        person.sponsor || false,
-        person.signUps || false,
-        person.tryOuts || false,
-        person.teeShirts || false,
-        person.printing || false,
-        person.equipment || false,
-        person.electrician || false,
-        person.asstCoach || false,
-      ]);
+      if (person.boardOfficer) selected.add(1);
+      if (person.boardMember) selected.add(2);
+      if (person.ad) selected.add(3);
+      if (person.sponsor) selected.add(4);
+      if (person.signUps) selected.add(5);
+      if (person.tryOuts) selected.add(6);
+      if (person.teeShirts) selected.add(7);
+      if (person.printing) selected.add(8);
+      if (person.equipment) selected.add(9);
+      if (person.electrician) selected.add(10);
+      if (person.asstCoach) selected.add(11);
     }
+    this.selectedVolunteerIds.set(selected);
 
     // Mark form as pristine after patching to reset dirty state
     this.personalInfoForm.markAsPristine();
     this.#peopleService.updateFormDirtyState(false);
   }
 
-  addVolunteerCheckboxes() {
-    const checkboxesArray = this.personalInfoForm.get(
-      'volunteerCheckboxes',
-    ) as FormArray;
-    this.volunteers.forEach(() => checkboxesArray.push(this.fb.control(false)));
+  addVolunteer(volunteer: Item): void {
+    const current = new Set(this.selectedVolunteerIds());
+    current.add(volunteer.id);
+    this.selectedVolunteerIds.set(current);
+    this.personalInfoForm.markAsDirty();
+    this.#peopleService.updateFormDirtyState(true);
   }
 
-  //   // Clear the FormArray to avoid duplicates if this method is called multiple times
-  //   this.volunteerControls.clear();
+  removeVolunteer(id: number): void {
+    const current = new Set(this.selectedVolunteerIds());
+    current.delete(id);
+    this.selectedVolunteerIds.set(current);
+    this.personalInfoForm.markAsDirty();
+    this.#peopleService.updateFormDirtyState(true);
+  }
 
-  //   // Add a FormControl for each volunteer
-  //   this.volunteers.forEach(() => {
-  //     const control = new FormControl(false);  //(this.fb.control(false); // Initialize each checkbox as unchecked
-  //     this.volunteerControls.push(control); // Add the control to the FormArray
-  //   });
-  // }
   onSubmit(closeAfterSave: boolean = false) {
     this.logger.info(
       'Submitting personal info form:',
