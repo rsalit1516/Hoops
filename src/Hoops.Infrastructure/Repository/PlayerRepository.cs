@@ -376,11 +376,8 @@ namespace Hoops.Infrastructure.Repository
             var playerold = GetById(player.PlayerId);
             if (playerold != null)
             {
+                // Preserve caller-selected DivisionId during edits; auto-assignment is create-time behavior.
                 context.Entry(playerold).CurrentValues.SetValues(player);
-                if (player.SeasonId.HasValue && player.PersonId != 0)
-                {
-                    SetDivision(player.SeasonId.Value, player.PersonId);
-                }
                 return playerold;
             }
             return new Player();
@@ -469,7 +466,9 @@ namespace Hoops.Infrastructure.Repository
         {
             var player = context
                 .Set<Player>()
-                .FirstOrDefault(p => p.SeasonId == seasonId && p.PersonId == PersonId);
+                .Where(p => p.SeasonId == seasonId && p.PersonId == PersonId)
+                .OrderByDescending(p => p.PlayerId)
+                .FirstOrDefault();
             return player ?? new Player();
         }
 

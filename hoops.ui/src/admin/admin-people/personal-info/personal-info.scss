@@ -1,0 +1,22 @@
+@use "../../../Content/variables" as vars;
+
+.save-action-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+::ng-deep {
+  #volunteerInfo mat-chip {
+    color: vars.$admin-font-color !important;
+  }
+}
+.mat-mdc-chip-action-label {
+  color: vars.$admin-font-color !important;
+}
+
+::ng-deep
+  .mat-mdc-standard-chip:not(.mdc-evolution-chip--disabled)
+  .mdc-evolution-chip__text-label {
+  color: vars.$admin-font-color !important;
+}

@@ -195,6 +195,99 @@ namespace Hoops.Infrastructure.Tests
             Assert.Equal("U14 Girls", result[1].Division);
         }
 
+        [Fact]
+        public void GetPlayerByPersonAndSeasonId_ReturnsLatestPlayer_WhenDuplicateRowsExist()
+        {
+            var options = new DbContextOptionsBuilder<hoopsContext>()
+                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+                .Options;
+            var context = new hoopsContext(options);
+
+            context.Households.Add(new Household
+            {
+                HouseId = 1,
+                Name = "Johnson Family",
+                Address1 = "123 Main St",
+                City = "Springfield",
+                Zip = "12345"
+            });
+            context.People.Add(new Person
+            {
+                PersonId = 1,
+                FirstName = "John",
+                LastName = "Johnson",
+                BirthDate = new DateTime(2010, 5, 15),
+                Grade = 6,
+                HouseId = 1
+            });
+            context.Seasons.Add(new Season
+            {
+                SeasonId = 1,
+                Description = "2024-25",
+                FromDate = new DateTime(2024, 9, 1),
+                ToDate = new DateTime(2025, 5, 31)
+            });
+            context.Divisions.AddRange(
+                new Division
+                {
+                    DivisionId = 1,
+                    SeasonId = 1,
+                    DivisionDescription = "U12 Boys",
+                    MinDate = new DateTime(2010, 1, 1),
+                    MaxDate = new DateTime(2012, 12, 31)
+                },
+                new Division
+                {
+                    DivisionId = 2,
+                    SeasonId = 1,
+                    DivisionDescription = "U14 Girls",
+                    MinDate2 = new DateTime(2008, 1, 1),
+                    MaxDate2 = new DateTime(2010, 12, 31)
+                }
+            );
+            context.Players.AddRange(
+                new Player
+                {
+                    PlayerId = 1,
+                    PersonId = 1,
+                    SeasonId = 1,
+                    DivisionId = 1,
+                    DraftId = "001"
+                },
+                new Player
+                {
+                    PlayerId = 3,
+                    PersonId = 1,
+                    SeasonId = 1,
+                    DivisionId = 2,
+                    DraftId = "003"
+                }
+            );
+            context.SaveChanges();
+
+            var repo = new PlayerRepository(context);
+
+            var result = repo.GetPlayerByPersonAndSeasonId(1, 1);
+
+            Assert.Equal(3, result.PlayerId);
+            Assert.Equal(2, result.DivisionId);
+        }
+
+        [Fact]
+        public void Update_PreservesUserSelectedDivision()
+        {
+            var repo = CreateRepositoryWithSeededContext();
+
+            var player = repo.GetPlayerByPersonAndSeasonId(1, 1);
+            player.DivisionId = 2;
+
+            repo.Update(player);
+            repo.SaveChanges();
+
+            var updated = repo.GetById(player.PlayerId);
+            Assert.Equal(2, updated.DivisionId);
+        }
+
         // ── GetDraftReportPlayers ────────────────────────────────────────────
 
         private PlayerRepository CreateRepositoryWithPhoneData()
@@ -206,15 +299,15 @@ namespace Hoops.Infrastructure.Tests
 
             context.Households.AddRange(
                 new Household { HouseId = 1, Name = "Johnson Family", Address1 = "123 Main St", City = "Springfield", Zip = "12345", Phone = "555-111-1111" },
-                new Household { HouseId = 2, Name = "Smith Family",   Address1 = "456 Oak Ave",  City = "Riverside",   Zip = "67890", Phone = "555-222-2222" }
+                new Household { HouseId = 2, Name = "Smith Family", Address1 = "456 Oak Ave", City = "Riverside", Zip = "67890", Phone = "555-222-2222" }
             );
             context.People.AddRange(
                 new Person { PersonId = 1, FirstName = "John", LastName = "Johnson", BirthDate = new DateTime(2010, 5, 15), Grade = 6, HouseId = 1 },
-                new Person { PersonId = 2, FirstName = "Jane", LastName = "Smith",   BirthDate = new DateTime(2012, 8, 20), Grade = 4, HouseId = 2 }
+                new Person { PersonId = 2, FirstName = "Jane", LastName = "Smith", BirthDate = new DateTime(2012, 8, 20), Grade = 4, HouseId = 2 }
             );
             context.Seasons.Add(new Season { SeasonId = 1, Description = "2024-25", FromDate = new DateTime(2024, 9, 1), ToDate = new DateTime(2025, 5, 31) });
             context.Divisions.AddRange(
-                new Division { DivisionId = 1, SeasonId = 1, DivisionDescription = "U12 Boys", MinDate  = new DateTime(2010, 1, 1), MaxDate  = new DateTime(2012, 12, 31) },
+                new Division { DivisionId = 1, SeasonId = 1, DivisionDescription = "U12 Boys", MinDate = new DateTime(2010, 1, 1), MaxDate = new DateTime(2012, 12, 31) },
                 new Division { DivisionId = 2, SeasonId = 1, DivisionDescription = "U14 Girls", MinDate2 = new DateTime(2008, 1, 1), MaxDate2 = new DateTime(2010, 12, 31) }
             );
             context.Players.AddRange(
@@ -298,10 +391,10 @@ namespace Hoops.Infrastructure.Tests
             var repo = CreateRepositoryWithPhoneData();
             var result = repo.GetDraftReportPlayers(1, null);
             Assert.Equal(2, result.Count);
-            Assert.Equal("U12 Boys",  result[0].Division);
-            Assert.Equal("001",       result[0].DraftId);
+            Assert.Equal("U12 Boys", result[0].Division);
+            Assert.Equal("001", result[0].DraftId);
             Assert.Equal("U14 Girls", result[1].Division);
-            Assert.Equal("002",       result[1].DraftId);
+            Assert.Equal("002", result[1].DraftId);
         }
     }
 }

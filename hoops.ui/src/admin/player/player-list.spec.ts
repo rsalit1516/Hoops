@@ -132,6 +132,8 @@ describe('PlayerList', () => {
   });
 
   afterEach(() => {
+    // EligiblePersonsPanel fires GET /api/Person on init; flush leftovers before verify
+    httpMock.match((r) => r.url === Constants.peopleUrl).forEach((r) => r.flush([]));
     httpMock.verify();
   });
 

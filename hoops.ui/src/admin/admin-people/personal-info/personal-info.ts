@@ -1,14 +1,27 @@
-
-import { Component, computed, effect, inject, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatChipsModule } from '@angular/material/chips';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -37,18 +50,20 @@ interface Item {
     MatCardModule,
     MatDatepickerModule,
     MatCheckboxModule,
+    MatChipsModule,
+    MatMenuModule,
     MatRadioModule,
-    RouterModule
+    MatMenuModule,
+    RouterModule,
   ],
-  templateUrl: "./personal-info.html",
-  styleUrls: ['./personal-info.scss',
+  templateUrl: './personal-info.html',
+  styleUrls: [
+    './personal-info.scss',
     '../../admin.scss',
     '../../../shared/scss/forms.scss',
     '../../../shared/scss/cards.scss',
   ],
-  providers: [
-    provideNativeDateAdapter(),
-  ],
+  providers: [provideNativeDateAdapter()],
 })
 export class PersonalInfo implements OnInit {
   fb = inject(FormBuilder);
@@ -75,33 +90,35 @@ export class PersonalInfo implements OnInit {
   ];
   person = this.#peopleService.selectedPerson;
   personalInfoForm!: FormGroup;
-
-  // Check if a user exists for the current person
+  selectedVolunteerIds = signal<Set<number>>(new Set());
+  selectedVolunteers = computed(() =>
+    this.volunteers.filter((v) => this.selectedVolunteerIds().has(v.id)),
+  );
+  availableVolunteers = computed(() =>
+    this.volunteers.filter((v) => !this.selectedVolunteerIds().has(v.id)),
+  );
   existingUser = computed(() => {
     const currentPerson = this.person();
     const users = this.#usersService.users();
     if (!currentPerson?.personId || !users?.length) return null;
-    return users.find(u => u.peopleId === currentPerson.personId) || null;
+    return users.find((u) => u.peopleId === currentPerson.personId) || null;
   });
 
-  userButtonText = computed(() => this.existingUser() ? 'User' : 'Create User');
+  userButtonText = computed(() =>
+    this.existingUser() ? 'User' : 'Create User',
+  );
 
-  get volunteerControls (): FormArray {
-    return this.personalInfoForm.get('volunteerControls') as FormArray;
-  }
-
-  constructor () {
+  constructor() {
     // Load users to check if user exists
     this.#usersService.loadUsers();
 
     effect(() => {
       this.person = this.#peopleService.selectedPerson;
       this.patchValue();
-
     });
   }
 
-  ngOnInit (): void {
+  ngOnInit(): void {
     this.personalInfoForm = this.fb.group({
       firstName: [''],
       lastName: [''],
@@ -117,19 +134,15 @@ export class PersonalInfo implements OnInit {
       player: [false],
       currentBM: [false],
       playsUp: [false],
-      volunteerCheckboxes: this.fb.array([]),
       comments: [''],
     });
-
-    this.addVolunteerCheckboxes(); // Initialize volunteer checkboxes
 
     // Track form dirty state
     this.personalInfoForm.statusChanges.subscribe(() => {
       this.#peopleService.updateFormDirtyState(this.personalInfoForm.dirty);
     });
-
   }
-  patchValue () {
+  patchValue() {
     const person = this.person();
 
     this.personalInfoForm.patchValue({
@@ -150,45 +163,49 @@ export class PersonalInfo implements OnInit {
       comments: person?.comments ?? '',
     });
 
-    // Patch volunteer checkboxes
+    // Patch volunteer positions into signal
+    const selected = new Set<number>();
     if (person) {
-      const checkboxesArray = this.personalInfoForm.get('volunteerCheckboxes') as FormArray;
-      checkboxesArray.setValue([
-        person.boardOfficer || false,
-        person.boardMember || false,
-        person.ad || false,
-        person.sponsor || false,
-        person.signUps || false,
-        person.tryOuts || false,
-        person.teeShirts || false,
-        person.printing || false,
-        person.equipment || false,
-        person.electrician || false,
-        person.asstCoach || false,
-      ]);
+      if (person.boardOfficer) selected.add(1);
+      if (person.boardMember) selected.add(2);
+      if (person.ad) selected.add(3);
+      if (person.sponsor) selected.add(4);
+      if (person.signUps) selected.add(5);
+      if (person.tryOuts) selected.add(6);
+      if (person.teeShirts) selected.add(7);
+      if (person.printing) selected.add(8);
+      if (person.equipment) selected.add(9);
+      if (person.electrician) selected.add(10);
+      if (person.asstCoach) selected.add(11);
     }
+    this.selectedVolunteerIds.set(selected);
 
     // Mark form as pristine after patching to reset dirty state
     this.personalInfoForm.markAsPristine();
     this.#peopleService.updateFormDirtyState(false);
   }
 
-  addVolunteerCheckboxes () {
-    const checkboxesArray = this.personalInfoForm.get('volunteerCheckboxes') as FormArray;
-    this.volunteers.forEach(() => checkboxesArray.push(this.fb.control(false)));
+  addVolunteer(volunteer: Item): void {
+    const current = new Set(this.selectedVolunteerIds());
+    current.add(volunteer.id);
+    this.selectedVolunteerIds.set(current);
+    this.personalInfoForm.markAsDirty();
+    this.#peopleService.updateFormDirtyState(true);
   }
 
-  //   // Clear the FormArray to avoid duplicates if this method is called multiple times
-  //   this.volunteerControls.clear();
+  removeVolunteer(id: number): void {
+    const current = new Set(this.selectedVolunteerIds());
+    current.delete(id);
+    this.selectedVolunteerIds.set(current);
+    this.personalInfoForm.markAsDirty();
+    this.#peopleService.updateFormDirtyState(true);
+  }
 
-  //   // Add a FormControl for each volunteer
-  //   this.volunteers.forEach(() => {
-  //     const control = new FormControl(false);  //(this.fb.control(false); // Initialize each checkbox as unchecked
-  //     this.volunteerControls.push(control); // Add the control to the FormArray
-  //   });
-  // }
-  onSubmit () {
-    this.logger.info('Submitting personal info form:', this.personalInfoForm.value);
+  onSubmit(closeAfterSave: boolean = false) {
+    this.logger.info(
+      'Submitting personal info form:',
+      this.personalInfoForm.value,
+    );
 
     const currentPerson = this.person();
     if (!currentPerson) {
@@ -206,7 +223,9 @@ export class PersonalInfo implements OnInit {
       cellphone: this.personalInfoForm.value.cellPhone,
       workphone: this.personalInfoForm.value.workPhone,
       gender: this.personalInfoForm.value.gender,
-      grade: this.personalInfoForm.value.grade ? Number(this.personalInfoForm.value.grade) : 0,
+      grade: this.personalInfoForm.value.grade
+        ? Number(this.personalInfoForm.value.grade)
+        : 0,
       schoolName: this.personalInfoForm.value.schoolName,
       parent: this.personalInfoForm.value.parent,
       coach: this.personalInfoForm.value.coach,
@@ -216,21 +235,19 @@ export class PersonalInfo implements OnInit {
       comments: this.personalInfoForm.value.comments,
     };
 
-    // Map volunteer checkboxes to person properties
-    const volunteerCheckboxes = this.personalInfoForm.value.volunteerCheckboxes;
-    if (volunteerCheckboxes) {
-      updatedPerson.boardOfficer = volunteerCheckboxes[0] || false;
-      updatedPerson.boardMember = volunteerCheckboxes[1] || false;
-      updatedPerson.ad = volunteerCheckboxes[2] || false;
-      updatedPerson.sponsor = volunteerCheckboxes[3] || false;
-      updatedPerson.signUps = volunteerCheckboxes[4] || false;
-      updatedPerson.tryOuts = volunteerCheckboxes[5] || false;
-      updatedPerson.teeShirts = volunteerCheckboxes[6] || false;
-      updatedPerson.printing = volunteerCheckboxes[7] || false;
-      updatedPerson.equipment = volunteerCheckboxes[8] || false;
-      updatedPerson.electrician = volunteerCheckboxes[9] || false;
-      updatedPerson.asstCoach = volunteerCheckboxes[10] || false;
-    }
+    // Map volunteer positions from signal to person properties
+    const ids = this.selectedVolunteerIds();
+    updatedPerson.boardOfficer = ids.has(1);
+    updatedPerson.boardMember = ids.has(2);
+    updatedPerson.ad = ids.has(3);
+    updatedPerson.sponsor = ids.has(4);
+    updatedPerson.signUps = ids.has(5);
+    updatedPerson.tryOuts = ids.has(6);
+    updatedPerson.teeShirts = ids.has(7);
+    updatedPerson.printing = ids.has(8);
+    updatedPerson.equipment = ids.has(9);
+    updatedPerson.electrician = ids.has(10);
+    updatedPerson.asstCoach = ids.has(11);
 
     this.logger.info('Saving person:', updatedPerson);
 
@@ -241,18 +258,26 @@ export class PersonalInfo implements OnInit {
         this.#peopleService.updateSelectedPerson(response);
         this.personalInfoForm.markAsPristine();
         this.#peopleService.updateFormDirtyState(false);
+
+        if (closeAfterSave) {
+          this.router.navigate(['/admin/people']);
+        }
       },
       error: (error) => {
         this.logger.error('Error saving person:', error);
-      }
+      },
     });
   }
 
-  onReset () {
+  onSaveAndClose() {
+    this.onSubmit(true);
+  }
+
+  onReset() {
     this.personalInfoForm.reset();
   }
 
-  onDelete () {
+  onDelete() {
     const currentPerson = this.person();
     if (!currentPerson || !currentPerson.personId) {
       this.logger.error('No person selected or person has no ID');
@@ -264,8 +289,8 @@ export class PersonalInfo implements OnInit {
       width: '400px',
       data: {
         title: 'Confirm Delete',
-        message: `Are you sure you want to delete ${currentPerson.firstName} ${currentPerson.lastName}? This action cannot be undone.`
-      }
+        message: `Are you sure you want to delete ${currentPerson.firstName} ${currentPerson.lastName}? This action cannot be undone.`,
+      },
     });
 
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
@@ -279,13 +304,13 @@ export class PersonalInfo implements OnInit {
           },
           error: (error) => {
             this.logger.error('Error deleting person:', error);
-          }
+          },
         });
       }
     });
   }
 
-  onRegister () {
+  onRegister() {
     const currentPerson = this.person();
     if (!currentPerson || !currentPerson.personId) {
       this.logger.error('No person selected or person has no ID');
@@ -296,16 +321,23 @@ export class PersonalInfo implements OnInit {
     }
 
     // Navigate to player registration form
-    this.router.navigate(['/admin/player-registration', currentPerson.personId], { queryParams: { from: 'people' } });
+    this.router.navigate(
+      ['/admin/player-registration', currentPerson.personId],
+      { queryParams: { from: 'people' } },
+    );
   }
 
-  onCreateUser () {
+  onCreateUser() {
     const currentPerson = this.person();
     if (!currentPerson || !currentPerson.personId || !currentPerson.houseId) {
       this.logger.error('No person selected or person has no household');
-      this.snackBar.open('Please select a person with a household first.', 'OK', {
-        duration: 3000,
-      });
+      this.snackBar.open(
+        'Please select a person with a household first.',
+        'OK',
+        {
+          duration: 3000,
+        },
+      );
       return;
     }
 
@@ -327,12 +359,11 @@ export class PersonalInfo implements OnInit {
         queryParams: {
           houseId: currentPerson.houseId,
           personId: currentPerson.personId,
-          name: personName
-        }
+          name: personName,
+        },
       });
     }
   }
-
 }
 
 // ad:false

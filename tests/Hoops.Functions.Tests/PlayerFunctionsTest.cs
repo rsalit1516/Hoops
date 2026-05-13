@@ -274,6 +274,39 @@ namespace Hoops.Functions.Tests
         }
 
         [Fact]
+        public async Task PutPlayer_PreservesClientDivisionId_WhenUpdating()
+        {
+            // Arrange
+            var playerId = 1;
+            var player = new Player
+            {
+                PlayerId = playerId,
+                PersonId = 100,
+                SeasonId = 1,
+                DivisionId = 7
+            };
+
+            var playerJson = JsonSerializer.Serialize(player, new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            });
+
+            _mockPlayerService.Setup(s => s.UpdatePlayerAsync(It.IsAny<Player>()))
+                .ReturnsAsync(player);
+
+            var request = CreateMockRequest(playerJson);
+
+            // Act
+            var response = await _functions.PutPlayer(request, playerId);
+
+            // Assert
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            _mockPlayerService.Verify(
+                s => s.UpdatePlayerAsync(It.Is<Player>(p => p.PlayerId == playerId && p.DivisionId == 7)),
+                Times.Once);
+        }
+
+        [Fact]
         public async Task PutPlayer_WithMismatchedId_ReturnsBadRequest()
         {
             // Arrange

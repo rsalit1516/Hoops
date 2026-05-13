@@ -92,18 +92,33 @@
           </div>
         </div>
       </div>
-      <div
-        id="volunteerInfo"
-        class="grid grid-cols-3 gap-2 border p-1 mt-4"
-        formArrayName="volunteerCheckboxes"
-      >
-        @for (volunteer of volunteers; track volunteer; let i = $index) {
-        <div class="flex items-center">
-          <mat-checkbox [formControlName]="i" class="flex items-center">
-            {{ volunteer.name }}
-          </mat-checkbox>
-        </div>
-        }
+      <div id="volunteerInfo" class="border p-2 mt-4">
+        <mat-chip-set class="flex flex-wrap gap-1">
+          @for (volunteer of selectedVolunteers(); track volunteer.id) {
+            <mat-chip (removed)="removeVolunteer(volunteer.id)">
+              {{ volunteer.name }}
+              <button matChipRemove aria-label="Remove {{ volunteer.name }}">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip>
+          }
+        </mat-chip-set>
+        <button
+          type="button"
+          mat-stroked-button
+          class="mt-2"
+          [matMenuTriggerFor]="volunteerMenu"
+          [disabled]="availableVolunteers().length === 0"
+        >
+          <mat-icon>add</mat-icon> Add Volunteer Position
+        </button>
+        <mat-menu #volunteerMenu="matMenu">
+          @for (volunteer of availableVolunteers(); track volunteer.id) {
+            <button mat-menu-item (click)="addVolunteer(volunteer)">
+              {{ volunteer.name }}
+            </button>
+          }
+        </mat-menu>
       </div>
       <mat-form-field [appearance]="inputStyle" class="w-full">
         <mat-label>Comments</mat-label>
@@ -118,6 +133,15 @@
         [disabled]="!personalInfoForm.valid || !personalInfoForm.dirty"
       >
         Save
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        type="button"
+        (click)="onSaveAndClose()"
+        [disabled]="!personalInfoForm.valid || !personalInfoForm.dirty"
+      >
+        Save & Close
       </button>
       <button type="button" mat-raised-button color="warn" (click)="onDelete()">
         Delete
