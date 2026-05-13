@@ -1,18 +1,27 @@
 @if (division()) {
-<mat-card>
+<mat-card class="eligible-panel-card">
   <mat-card-header>
     <mat-card-title class="text-base">Eligible &amp; Unregistered</mat-card-title>
     <mat-card-subtitle>{{ division()?.divisionDescription }}</mat-card-subtitle>
   </mat-card-header>
-  <mat-card-content>
+  <mat-card-content class="eligible-panel-content">
+    <mat-form-field appearance="fill" class="w-full" subscriptSizing="dynamic">
+      <mat-icon matPrefix>search</mat-icon>
+      <input
+        matInput
+        placeholder="Search by name…"
+        (input)="searchTerm.set($any($event.target).value)"
+      />
+    </mat-form-field>
+
     @if (isLoading()) {
     <div class="flex justify-center p-4">
       <mat-spinner diameter="32"></mat-spinner>
     </div>
     } @else if (eligiblePeople().length === 0) {
-    <p class="text-sm text-gray-500 p-2">No eligible unregistered players found.</p>
+    <p class="text-sm p-2 eligible-person-hint">No eligible unregistered players found.</p>
     } @else {
-    <mat-nav-list class="max-h-[520px] overflow-y-auto">
+    <mat-nav-list class="eligible-list">
       @for (person of eligiblePeople(); track person.personId) {
       <a mat-list-item (click)="personSelected.emit(person)">
         <span matListItemTitle>{{ person.lastName }}, {{ person.firstName }}</span>
