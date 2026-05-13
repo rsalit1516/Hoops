@@ -1,4 +1,4 @@
-@use "@app/Content/variables" as vars;
+@use "../../../Content/variables" as vars;
 
 .save-action-group {
   display: inline-flex;
@@ -8,6 +8,15 @@
 
 ::ng-deep {
   #volunteerInfo mat-chip {
-    color: vars.$admin-font-color;
+    color: vars.$admin-font-color !important;
   }
+}
+.mat-mdc-chip-action-label {
+  color: vars.$admin-font-color !important;
+}
+
+::ng-deep
+  .mat-mdc-standard-chip:not(.mdc-evolution-chip--disabled)
+  .mdc-evolution-chip__text-label {
+  color: vars.$admin-font-color !important;
 }
