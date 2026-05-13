@@ -10,6 +10,9 @@ import {
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Division } from '@app/domain/division';
@@ -25,7 +28,15 @@ import { LoggerService } from '@app/services/logger.service';
     '../../../shared/scss/cards.scss',
   ],
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatListModule, MatProgressSpinnerModule],
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatListModule,
+    MatProgressSpinnerModule,
+  ],
 })
 export class EligiblePersonsPanel implements OnInit {
   private readonly http = inject(HttpClient);
@@ -38,18 +49,24 @@ export class EligiblePersonsPanel implements OnInit {
 
   private allPeople = signal<Person[]>([]);
   isLoading = signal(false);
+  searchTerm = signal('');
 
   eligiblePeople = computed(() => {
     const division = this.division();
     if (!division) return [];
     const registered = this.registeredPersonIds();
+    const term = this.searchTerm().toLowerCase().trim();
     return this.allPeople()
-      .filter(
-        (p) =>
-          p.player &&
-          !registered.has(p.personId) &&
-          this.isEligibleForDivision(p, division),
-      )
+      .filter((p) => {
+        if (!p.player || registered.has(p.personId)) return false;
+        if (!this.isEligibleForDivision(p, division)) return false;
+        if (term) {
+          const first = (p.firstName ?? '').toLowerCase();
+          const last = (p.lastName ?? '').toLowerCase();
+          return first.includes(term) || last.includes(term);
+        }
+        return true;
+      })
       .sort((a, b) => a.lastName.localeCompare(b.lastName));
   });
 
