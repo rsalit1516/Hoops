@@ -1,0 +1,6 @@
+@use "../../Content/variables" as vars;
+
+.eligible-person-hint {
+  color: vars.$admin-input-hint-color;
+  font-size: vars.$admin-input-hint-font-size;
+}

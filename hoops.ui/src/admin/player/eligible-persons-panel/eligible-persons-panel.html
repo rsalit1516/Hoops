@@ -1,0 +1,28 @@
+@if (division()) {
+<mat-card>
+  <mat-card-header>
+    <mat-card-title class="text-base">Eligible &amp; Unregistered</mat-card-title>
+    <mat-card-subtitle>{{ division()?.divisionDescription }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    @if (isLoading()) {
+    <div class="flex justify-center p-4">
+      <mat-spinner diameter="32"></mat-spinner>
+    </div>
+    } @else if (eligiblePeople().length === 0) {
+    <p class="text-sm text-gray-500 p-2">No eligible unregistered players found.</p>
+    } @else {
+    <mat-nav-list class="max-h-[520px] overflow-y-auto">
+      @for (person of eligiblePeople(); track person.personId) {
+      <a mat-list-item (click)="personSelected.emit(person)">
+        <span matListItemTitle>{{ person.lastName }}, {{ person.firstName }}</span>
+        <span matListItemLine class="eligible-person-hint">
+          {{ person.birthDate | date:'MM/dd/yyyy' }}
+        </span>
+      </a>
+      }
+    </mat-nav-list>
+    }
+  </mat-card-content>
+</mat-card>
+}
