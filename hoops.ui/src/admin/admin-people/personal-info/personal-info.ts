@@ -148,7 +148,7 @@ export class PersonalInfo implements OnInit {
     this.personalInfoForm.patchValue({
       firstName: person?.firstName ?? '',
       lastName: person?.lastName ?? '',
-      birthDate: person?.birthDate ?? '',
+      birthDate: person?.personId ? (person.birthDate ?? '') : '',
       birthCertificate: person?.bc ?? false,
       gender: person?.gender ?? 'male',
       cellPhone: person?.cellphone ?? '',

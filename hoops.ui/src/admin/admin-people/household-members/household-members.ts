@@ -121,7 +121,9 @@ export class HouseholdMembers implements OnInit {
     this.#logger.info('Adding household member');
     var newPerson = new Person();
     // Use the correct signal to get the household ID
-    newPerson.houseId = this.#HouseholdService.selectedRecordSignal()?.houseId ?? 0;
+    const household = this.#HouseholdService.selectedRecordSignal();
+    newPerson.houseId = household?.houseId ?? 0;
+    newPerson.lastName = household?.name ?? '';
     this.#logger.info('Setting houseId to:', newPerson.houseId);
     this.#peopleService.updateSelectedPerson(newPerson);
     this.#router.navigate(['/admin/people/detail']);
