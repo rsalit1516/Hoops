@@ -1,300 +1,399 @@
 <div class="form-container">
   <mat-card>
     <mat-card-header>
-      <mat-card-title>{{ isNew() ? 'New Sponsor' : (profileDetail()?.spoName || 'Sponsor') }}</mat-card-title>
+      <mat-card-title
+        >{{ isNew() ? 'New Sponsor' : (profileDetail()?.spoName || 'Sponsor')
+        }}</mat-card-title
+      >
       @if (!isNew() && profileDetail()) {
-        <mat-card-subtitle>Profile ID: {{ profileDetail()?.sponsorProfileId }}</mat-card-subtitle>
+      <mat-card-subtitle
+        >Profile ID: {{ profileDetail()?.sponsorProfileId }}</mat-card-subtitle
+      >
       }
     </mat-card-header>
 
     <mat-card-content>
       @if (isLoadingProfile()) {
-        <div class="flex justify-center p-4">
-          <mat-spinner diameter="40" />
-        </div>
+      <div class="flex justify-center p-4">
+        <mat-spinner diameter="40" />
+      </div>
       } @else {
-        <mat-tab-group animationDuration="200ms">
+      <mat-tab-group animationDuration="200ms">
+        <!-- ── Profile Tab ────────────────────────────────────────────── -->
+        <mat-tab label="Profile">
+          <div class="tab-content">
+            <div class="form-heading">Business Information</div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4">
+              <mat-form-field
+                appearance="fill"
+                floatLabel="always"
+                class="col-span-2"
+              >
+                <mat-label>Business / Sponsor Name *</mat-label>
+                <input
+                  matInput
+                  [formField]="profileForm.spoName"
+                  placeholder="Business name"
+                />
+              </mat-form-field>
 
-          <!-- ── Profile Tab ────────────────────────────────────────────── -->
-          <mat-tab label="Profile">
-            <div class="tab-content">
-              <div class="form-heading">Business Information</div>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4">
+              <mat-form-field appearance="fill" floatLabel="always">
+                <mat-label>Contact Name *</mat-label>
+                <input
+                  matInput
+                  [formField]="profileForm.contactName"
+                  placeholder="Contact name"
+                />
+              </mat-form-field>
 
-                <mat-form-field appearance="fill" floatLabel="always" class="col-span-2">
-                  <mat-label>Business / Sponsor Name *</mat-label>
-                  <input matInput [formField]="profileForm.spoName" placeholder="Business name" />
+              <mat-form-field appearance="fill" floatLabel="always">
+                <mat-label>Type of Business</mat-label>
+                <input
+                  matInput
+                  [formField]="profileForm.typeOfBuss"
+                  placeholder="e.g. Restaurant, Retail"
+                />
+              </mat-form-field>
+            </div>
+
+            <div class="form-heading">Contact Information</div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4">
+              <mat-form-field appearance="fill" floatLabel="always">
+                <mat-label>Email</mat-label>
+                <input
+                  matInput
+                  [formField]="profileForm.email"
+                  placeholder="email@example.com"
+                />
+              </mat-form-field>
+
+              <mat-form-field appearance="fill" floatLabel="always">
+                <mat-label>Phone</mat-label>
+                <input
+                  matInput
+                  [formField]="profileForm.phone"
+                  placeholder="(555) 555-5555"
+                />
+              </mat-form-field>
+
+              <mat-form-field
+                appearance="fill"
+                floatLabel="always"
+                class="col-span-2"
+              >
+                <mat-label>Website</mat-label>
+                <input
+                  matInput
+                  [formField]="profileForm.url"
+                  placeholder="https://example.com"
+                />
+              </mat-form-field>
+            </div>
+
+            <div class="form-heading">Address</div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4">
+              <mat-form-field
+                appearance="fill"
+                floatLabel="always"
+                class="col-span-2"
+              >
+                <mat-label>Street Address</mat-label>
+                <input matInput [formField]="profileForm.address" />
+              </mat-form-field>
+
+              <mat-form-field appearance="fill" floatLabel="always">
+                <mat-label>City</mat-label>
+                <input matInput [formField]="profileForm.city" />
+              </mat-form-field>
+
+              <div class="flex gap-2">
+                <mat-form-field
+                  appearance="fill"
+                  floatLabel="always"
+                  class="flex-1"
+                >
+                  <mat-label>State</mat-label>
+                  <input matInput [formField]="profileForm.stateAbbr" />
                 </mat-form-field>
 
-                <mat-form-field appearance="fill" floatLabel="always">
-                  <mat-label>Contact Name *</mat-label>
-                  <input matInput [formField]="profileForm.contactName" placeholder="Contact name" />
+                <mat-form-field
+                  appearance="fill"
+                  floatLabel="always"
+                  class="flex-1"
+                >
+                  <mat-label>Zip</mat-label>
+                  <input matInput [formField]="profileForm.zip" />
                 </mat-form-field>
+              </div>
+            </div>
 
-                <mat-form-field appearance="fill" floatLabel="always">
-                  <mat-label>Type of Business</mat-label>
-                  <input matInput [formField]="profileForm.typeOfBuss" placeholder="e.g. Restaurant, Retail" />
-                </mat-form-field>
+            <div class="form-heading">Advertising</div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4 items-center">
+              <mat-checkbox [formField]="profileForm.showAd"
+                >Show Ad</mat-checkbox
+              >
 
+              <mat-form-field appearance="fill" floatLabel="always">
+                <mat-label>Ad Expiration</mat-label>
+                <input
+                  matInput
+                  [matDatepicker]="adPicker"
+                  [formField]="$any(profileForm.adExpiration)"
+                />
+                <mat-datepicker-toggle matSuffix [for]="adPicker" />
+                <mat-datepicker #adPicker />
+              </mat-form-field>
+            </div>
+
+            <div class="form-actions">
+              <button
+                type="button"
+                mat-raised-button
+                color="primary"
+                [disabled]="!canSaveProfile() || saving()"
+                (click)="onSaveProfile()"
+              >
+                @if (saving()) { Saving... } @else { Save }
+              </button>
+              <button type="button" mat-button (click)="onCancel()">
+                Close
+              </button>
+            </div>
+          </div>
+        </mat-tab>
+
+        <!-- ── Seasons Tab ──────────────────────────────────────────────── -->
+        <mat-tab label="Seasons" [disabled]="isNew()">
+          <div class="tab-content">
+            @if (!showSeasonForm()) {
+            <div class="tab-header-row">
+              <div class="form-heading">Season Entries</div>
+              <button
+                type="button"
+                mat-raised-button
+                color="accent"
+                (click)="onShowSeasonForm()"
+              >
+                <mat-icon>add</mat-icon> Add Current Season
+              </button>
+            </div>
+
+            @if (seasons().length === 0) {
+            <p class="empty-state">No season entries yet.</p>
+            } @else {
+            <table class="detail-table">
+              <thead>
+                <tr>
+                  <th>Season</th>
+                  <th>Shirt Name</th>
+                  <th>Amount</th>
+                  <th>Mail Check</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (s of seasons(); track s.sponsorId) {
+                <tr>
+                  <td>{{ s.seasonDescription }}</td>
+                  <td>{{ s.shirtName }}</td>
+                  <td>{{ s.spoAmount | currency }}</td>
+                  <td>{{ s.mailCheck ? 'Yes' : 'No' }}</td>
+                </tr>
+                }
+              </tbody>
+            </table>
+            } } @if (showSeasonForm()) {
+            <div class="inline-form">
+              <div class="form-heading">
+                Add: {{ currentSeason()?.description ?? 'Current Season' }}
               </div>
 
-              <div class="form-heading">Contact Information</div>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4">
-
                 <mat-form-field appearance="fill" floatLabel="always">
-                  <mat-label>Email</mat-label>
-                  <input matInput [formField]="profileForm.email" placeholder="email@example.com" />
-                </mat-form-field>
-
-                <mat-form-field appearance="fill" floatLabel="always">
-                  <mat-label>Phone</mat-label>
-                  <input matInput [formField]="profileForm.phone" placeholder="(555) 555-5555" />
-                </mat-form-field>
-
-                <mat-form-field appearance="fill" floatLabel="always" class="col-span-2">
-                  <mat-label>Website</mat-label>
-                  <input matInput [formField]="profileForm.url" placeholder="https://example.com" />
-                </mat-form-field>
-
-              </div>
-
-              <div class="form-heading">Address</div>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4">
-
-                <mat-form-field appearance="fill" floatLabel="always" class="col-span-2">
-                  <mat-label>Street Address</mat-label>
-                  <input matInput [formField]="profileForm.address" />
+                  <mat-label>Shirt Name</mat-label>
+                  <input
+                    matInput
+                    [formField]="seasonForm.shirtName"
+                    placeholder="Name on shirt"
+                  />
                 </mat-form-field>
 
                 <mat-form-field appearance="fill" floatLabel="always">
-                  <mat-label>City</mat-label>
-                  <input matInput [formField]="profileForm.city" />
+                  <mat-label>Shirt Size</mat-label>
+                  <input
+                    matInput
+                    [formField]="seasonForm.shirtSize"
+                    placeholder="e.g. XL"
+                  />
                 </mat-form-field>
 
-                <div class="flex gap-2">
-                  <mat-form-field appearance="fill" floatLabel="always" class="flex-1">
-                    <mat-label>State</mat-label>
-                    <input matInput [formField]="$any(profileForm).state" maxlength="2" />
-                  </mat-form-field>
+                <mat-form-field appearance="fill" floatLabel="always">
+                  <mat-label>Amount</mat-label>
+                  <input
+                    matInput
+                    type="number"
+                    [formField]="$any(seasonForm.spoAmount)"
+                  />
+                </mat-form-field>
 
-                  <mat-form-field appearance="fill" floatLabel="always" class="flex-1">
-                    <mat-label>Zip</mat-label>
-                    <input matInput [formField]="profileForm.zip" />
-                  </mat-form-field>
+                <mat-form-field appearance="fill" floatLabel="always">
+                  <mat-label>Fee Type</mat-label>
+                  <mat-select [formField]="$any(seasonForm.feeId)">
+                    @for (fee of fees(); track fee.sponsorFeeId) {
+                    <mat-option [value]="fee.sponsorFeeId">
+                      {{ fee.feeName }} ({{ fee.amount | currency }})
+                    </mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+
+                <div class="flex items-center">
+                  <mat-checkbox [formField]="seasonForm.mailCheck"
+                    >Mail Check</mat-checkbox
+                  >
                 </div>
-
-              </div>
-
-              <div class="form-heading">Advertising</div>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4 items-center">
-
-                <mat-checkbox [formField]="profileForm.showAd">Show Ad</mat-checkbox>
-
-                <mat-form-field appearance="fill" floatLabel="always">
-                  <mat-label>Ad Expiration</mat-label>
-                  <input matInput [matDatepicker]="adPicker" [formField]="$any(profileForm.adExpiration)" />
-                  <mat-datepicker-toggle matSuffix [for]="adPicker" />
-                  <mat-datepicker #adPicker />
-                </mat-form-field>
-
               </div>
 
               <div class="form-actions">
-                <button type="button" mat-raised-button color="primary"
-                  [disabled]="!canSaveProfile() || saving()"
-                  (click)="onSaveProfile()">
-                  @if (saving()) { Saving... } @else { Save }
+                <button
+                  type="button"
+                  mat-raised-button
+                  color="primary"
+                  [disabled]="savingSeasonEntry()"
+                  (click)="onSaveSeasonEntry()"
+                >
+                  @if (savingSeasonEntry()) { Saving... } @else { Save Season }
                 </button>
-                <button type="button" mat-button (click)="onCancel()">Close</button>
+                <button type="button" mat-button (click)="onCancelSeasonForm()">
+                  Cancel
+                </button>
               </div>
             </div>
-          </mat-tab>
+            }
+          </div>
+        </mat-tab>
 
-          <!-- ── Seasons Tab ──────────────────────────────────────────────── -->
-          <mat-tab label="Seasons" [disabled]="isNew()">
-            <div class="tab-content">
-
-              @if (!showSeasonForm()) {
-                <div class="tab-header-row">
-                  <div class="form-heading">Season Entries</div>
-                  <button type="button" mat-raised-button color="accent" (click)="onShowSeasonForm()">
-                    <mat-icon>add</mat-icon> Add Current Season
-                  </button>
-                </div>
-
-                @if (seasons().length === 0) {
-                  <p class="empty-state">No season entries yet.</p>
-                } @else {
-                  <table class="detail-table">
-                    <thead>
-                      <tr>
-                        <th>Season</th>
-                        <th>Shirt Name</th>
-                        <th>Amount</th>
-                        <th>Mail Check</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      @for (s of seasons(); track s.sponsorId) {
-                        <tr>
-                          <td>{{ s.seasonDescription }}</td>
-                          <td>{{ s.shirtName }}</td>
-                          <td>{{ s.spoAmount | currency }}</td>
-                          <td>{{ s.mailCheck ? 'Yes' : 'No' }}</td>
-                        </tr>
-                      }
-                    </tbody>
-                  </table>
-                }
-              }
-
-              @if (showSeasonForm()) {
-                <div class="inline-form">
-                  <div class="form-heading">
-                    Add: {{ currentSeason()?.description ?? 'Current Season' }}
-                  </div>
-
-                  <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4">
-
-                    <mat-form-field appearance="fill" floatLabel="always">
-                      <mat-label>Shirt Name</mat-label>
-                      <input matInput [formField]="seasonForm.shirtName" placeholder="Name on shirt" />
-                    </mat-form-field>
-
-                    <mat-form-field appearance="fill" floatLabel="always">
-                      <mat-label>Shirt Size</mat-label>
-                      <input matInput [formField]="seasonForm.shirtSize" placeholder="e.g. XL" />
-                    </mat-form-field>
-
-                    <mat-form-field appearance="fill" floatLabel="always">
-                      <mat-label>Amount</mat-label>
-                      <input matInput type="number" [formField]="$any(seasonForm.spoAmount)" />
-                    </mat-form-field>
-
-                    <mat-form-field appearance="fill" floatLabel="always">
-                      <mat-label>Fee Type</mat-label>
-                      <mat-select [formField]="$any(seasonForm.feeId)">
-                        @for (fee of fees(); track fee.sponsorFeeId) {
-                          <mat-option [value]="fee.sponsorFeeId">
-                            {{ fee.feeName }} ({{ fee.amount | currency }})
-                          </mat-option>
-                        }
-                      </mat-select>
-                    </mat-form-field>
-
-                    <div class="flex items-center">
-                      <mat-checkbox [formField]="seasonForm.mailCheck">Mail Check</mat-checkbox>
-                    </div>
-
-                  </div>
-
-                  <div class="form-actions">
-                    <button type="button" mat-raised-button color="primary"
-                      [disabled]="savingSeasonEntry()"
-                      (click)="onSaveSeasonEntry()">
-                      @if (savingSeasonEntry()) { Saving... } @else { Save Season }
-                    </button>
-                    <button type="button" mat-button (click)="onCancelSeasonForm()">Cancel</button>
-                  </div>
-                </div>
-              }
-
+        <!-- ── Payments Tab ─────────────────────────────────────────────── -->
+        <mat-tab label="Payments" [disabled]="isNew()">
+          <div class="tab-content">
+            @if (!showPaymentForm()) {
+            <div class="tab-header-row">
+              <div class="form-heading">Payment History</div>
+              <button
+                type="button"
+                mat-raised-button
+                color="accent"
+                (click)="onShowPaymentForm()"
+              >
+                <mat-icon>add</mat-icon> Add Payment
+              </button>
             </div>
-          </mat-tab>
 
-          <!-- ── Payments Tab ─────────────────────────────────────────────── -->
-          <mat-tab label="Payments" [disabled]="isNew()">
-            <div class="tab-content">
-
-              @if (!showPaymentForm()) {
-                <div class="tab-header-row">
-                  <div class="form-heading">Payment History</div>
-                  <button type="button" mat-raised-button color="accent" (click)="onShowPaymentForm()">
-                    <mat-icon>add</mat-icon> Add Payment
-                  </button>
-                </div>
-
-                <div class="balance-row">
-                  <span class="balance-label">Total Paid:</span>
-                  <span class="balance-amount">{{ totalPayments() | currency }}</span>
-                </div>
-
-                @if (payments().length === 0) {
-                  <p class="empty-state">No payments recorded.</p>
-                } @else {
-                  <table class="detail-table">
-                    <thead>
-                      <tr>
-                        <th>Date</th>
-                        <th>Amount</th>
-                        <th>Type</th>
-                        <th>Memo</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      @for (p of payments(); track p.paymentId) {
-                        <tr>
-                          <td>{{ p.transactionDate | date:'shortDate' }}</td>
-                          <td>{{ p.amount | currency }}</td>
-                          <td>{{ p.paymentType }}</td>
-                          <td>{{ p.memo }}</td>
-                        </tr>
-                      }
-                    </tbody>
-                  </table>
-                }
-              }
-
-              @if (showPaymentForm()) {
-                <div class="inline-form">
-                  <div class="form-heading">New Payment</div>
-
-                  <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4">
-
-                    <mat-form-field appearance="fill" floatLabel="always">
-                      <mat-label>Amount *</mat-label>
-                      <input matInput type="number" [formField]="$any(paymentForm.amount)" />
-                    </mat-form-field>
-
-                    <mat-form-field appearance="fill" floatLabel="always">
-                      <mat-label>Payment Type</mat-label>
-                      <input matInput [formField]="paymentForm.paymentType" placeholder="Check, Credit Card…" />
-                    </mat-form-field>
-
-                    <mat-form-field appearance="fill" floatLabel="always">
-                      <mat-label>Transaction Date</mat-label>
-                      <input matInput [matDatepicker]="txDatePicker" [formField]="$any(paymentForm.transactionDate)" />
-                      <mat-datepicker-toggle matSuffix [for]="txDatePicker" />
-                      <mat-datepicker #txDatePicker />
-                    </mat-form-field>
-
-                    <mat-form-field appearance="fill" floatLabel="always">
-                      <mat-label>Transaction #</mat-label>
-                      <input matInput [formField]="paymentForm.transactionNumber" />
-                    </mat-form-field>
-
-                    <mat-form-field appearance="fill" floatLabel="always" class="col-span-2">
-                      <mat-label>Memo</mat-label>
-                      <textarea matInput rows="2" [formField]="paymentForm.memo"></textarea>
-                    </mat-form-field>
-
-                  </div>
-
-                  <div class="form-actions">
-                    <button type="button" mat-raised-button color="primary"
-                      [disabled]="!canSavePayment() || savingPayment()"
-                      (click)="onSavePayment()">
-                      @if (savingPayment()) { Saving... } @else { Save Payment }
-                    </button>
-                    <button type="button" mat-button (click)="onCancelPaymentForm()">Cancel</button>
-                  </div>
-                </div>
-              }
-
+            <div class="balance-row">
+              <span class="balance-label">Total Paid:</span>
+              <span class="balance-amount"
+                >{{ totalPayments() | currency }}</span
+              >
             </div>
-          </mat-tab>
 
-        </mat-tab-group>
+            @if (payments().length === 0) {
+            <p class="empty-state">No payments recorded.</p>
+            } @else {
+            <table class="detail-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Amount</th>
+                  <th>Type</th>
+                  <th>Memo</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (p of payments(); track p.paymentId) {
+                <tr>
+                  <td>{{ p.transactionDate | date:'shortDate' }}</td>
+                  <td>{{ p.amount | currency }}</td>
+                  <td>{{ p.paymentType }}</td>
+                  <td>{{ p.memo }}</td>
+                </tr>
+                }
+              </tbody>
+            </table>
+            } } @if (showPaymentForm()) {
+            <div class="inline-form">
+              <div class="form-heading">New Payment</div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4">
+                <mat-form-field appearance="fill" floatLabel="always">
+                  <mat-label>Amount *</mat-label>
+                  <input
+                    matInput
+                    type="number"
+                    [formField]="$any(paymentForm.amount)"
+                  />
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" floatLabel="always">
+                  <mat-label>Payment Type</mat-label>
+                  <input
+                    matInput
+                    [formField]="paymentForm.paymentType"
+                    placeholder="Check, Credit Card…"
+                  />
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" floatLabel="always">
+                  <mat-label>Transaction Date</mat-label>
+                  <input
+                    matInput
+                    [matDatepicker]="txDatePicker"
+                    [formField]="$any(paymentForm.transactionDate)"
+                  />
+                  <mat-datepicker-toggle matSuffix [for]="txDatePicker" />
+                  <mat-datepicker #txDatePicker />
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" floatLabel="always">
+                  <mat-label>Transaction #</mat-label>
+                  <input matInput [formField]="paymentForm.transactionNumber" />
+                </mat-form-field>
+
+                <mat-form-field
+                  appearance="fill"
+                  floatLabel="always"
+                  class="col-span-2"
+                >
+                  <mat-label>Memo</mat-label>
+                  <textarea
+                    matInput
+                    rows="2"
+                    [formField]="paymentForm.memo"
+                  ></textarea>
+                </mat-form-field>
+              </div>
+
+              <div class="form-actions">
+                <button
+                  type="button"
+                  mat-raised-button
+                  color="primary"
+                  [disabled]="!canSavePayment() || savingPayment()"
+                  (click)="onSavePayment()"
+                >
+                  @if (savingPayment()) { Saving... } @else { Save Payment }
+                </button>
+                <button
+                  type="button"
+                  mat-button
+                  (click)="onCancelPaymentForm()"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+            }
+          </div>
+        </mat-tab>
+      </mat-tab-group>
       }
     </mat-card-content>
   </mat-card>

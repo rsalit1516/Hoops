@@ -35,7 +35,7 @@ interface ProfileFormModel {
   url: string;
   address: string;
   city: string;
-  state: string;
+  stateAbbr: string;
   zip: string;
   typeOfBuss: string;
   showAd: boolean;
@@ -58,7 +58,7 @@ interface PaymentFormModel {
   memo: string;
 }
 
-const BLANK_PROFILE: ProfileFormModel = {
+const BLANK_PROFILE: { state: string; spoName: string; contactName: string; email: string; phone: string; url: string; address: string; city: string; zip: string; typeOfBuss: string; showAd: boolean; adExpiration: Date | string | null } = {
   spoName: '', contactName: '', email: '', phone: '', url: '',
   address: '', city: '', state: '', zip: '', typeOfBuss: '', showAd: false, adExpiration: null,
 };
@@ -111,7 +111,10 @@ export class SponsorDetail {
   private readonly logger = inject(LoggerService);
 
   // ── Profile form ────────────────────────────────────────────────────────────
-  readonly profileModel = signal<ProfileFormModel>({ ...BLANK_PROFILE });
+  readonly profileModel = signal<ProfileFormModel>({
+    spoName: '', contactName: '', email: '', phone: '', url: '',
+    address: '', city: '', stateAbbr: '', zip: '', typeOfBuss: '', showAd: false, adExpiration: null,
+  });
   readonly profileForm = form(this.profileModel);
 
   readonly isProfileValid = computed(() =>
@@ -127,7 +130,7 @@ export class SponsorDetail {
     this.profileForm.url().dirty() ||
     this.profileForm.address().dirty() ||
     this.profileForm.city().dirty() ||
-    this.profileForm.state().dirty() ||
+    this.profileForm.stateAbbr().dirty() ||
     this.profileForm.zip().dirty() ||
     this.profileForm.typeOfBuss().dirty() ||
     this.profileForm.showAd().dirty() ||
@@ -196,12 +199,12 @@ export class SponsorDetail {
     effect(() => {
       const profile = this.profileDetail();
       if (profile != null) {
-        untracked(() => this.resetProfileForm(profile as unknown as ProfileFormModel));
+        untracked(() => this.resetProfileForm(profile));
       }
     });
   }
 
-  private resetProfileForm(model: ProfileFormModel) {
+  private resetProfileForm(model: Partial<ProfileFormModel> & { state?: string | null }) {
     this.profileForm.spoName().value.set(model.spoName ?? '');
     this.profileForm.contactName().value.set(model.contactName ?? '');
     this.profileForm.email().value.set(model.email ?? '');
@@ -209,7 +212,7 @@ export class SponsorDetail {
     this.profileForm.url().value.set(model.url ?? '');
     this.profileForm.address().value.set(model.address ?? '');
     this.profileForm.city().value.set(model.city ?? '');
-    this.profileForm.state().value.set(model.state ?? '');
+    this.profileForm.stateAbbr().value.set(model.state ?? '');
     this.profileForm.zip().value.set(model.zip ?? '');
     this.profileForm.typeOfBuss().value.set(model.typeOfBuss ?? '');
     this.profileForm.showAd().value.set(model.showAd ?? false);
@@ -232,7 +235,7 @@ export class SponsorDetail {
       url: this.profileForm.url().value() ?? '',
       address: this.profileForm.address().value() ?? '',
       city: this.profileForm.city().value() ?? '',
-      state: this.profileForm.state().value() ?? '',
+      state: this.profileForm.stateAbbr().value() ?? '',
       zip: this.profileForm.zip().value() ?? '',
       typeOfBuss: this.profileForm.typeOfBuss().value() ?? '',
       showAd: this.profileForm.showAd().value() ?? false,

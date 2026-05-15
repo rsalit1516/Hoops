@@ -1,21 +1,68 @@
 <?xml version="1.0"?>
-<testsuite name="Chrome Headless 148.0.0.0 (Windows 10)" package="unit" timestamp="2026-05-15T15:04:26" id="0" hostname="Rich-Think" tests="13" errors="0" failures="0" time="1.208">
+<testsuite name="Chrome Headless 148.0.0.0 (Windows 10)" package="unit" timestamp="2026-05-15T15:19:08" id="0" hostname="Rich-Think" tests="60" errors="0" failures="0" time="1.52">
   <properties>
     <property name="browser.fullName" value="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/148.0.0.0 Safari/537.36"/>
   </properties>
-  <testcase name="SponsorDetail should create" time="0.367" classname=".SponsorDetail"/>
-  <testcase name="SponsorDetail should call clearDetail when isNew is true" time="0.114" classname=".SponsorDetail"/>
-  <testcase name="SponsorDetail canSaveProfile should be true when form is valid in new mode" time="0.092" classname=".SponsorDetail"/>
-  <testcase name="SponsorDetail canSaveProfile should be false when required fields are empty in new mode" time="0.08" classname=".SponsorDetail"/>
-  <testcase name="SponsorDetail should load profile, seasons, payments when sponsorProfileId is set" time="0.076" classname=".SponsorDetail"/>
-  <testcase name="SponsorDetail canSaveProfile should be false when form is pristine (no changes)" time="0.066" classname=".SponsorDetail"/>
-  <testcase name="SponsorDetail canSaveProfile should be true when form is dirty and valid in edit mode" time="0.062" classname=".SponsorDetail"/>
-  <testcase name="SponsorDetail should call saveProfile on service when onSaveProfile is called with valid form" time="0.062" classname=".SponsorDetail"/>
-  <testcase name="SponsorDetail should not call saveProfile when canSaveProfile is false" time="0.05" classname=".SponsorDetail"/>
-  <testcase name="SponsorDetail should emit closed event when onCancel is called" time="0.06" classname=".SponsorDetail"/>
-  <testcase name="SponsorDetail canSavePayment should be false when amount is null or zero" time="0.053" classname=".SponsorDetail"/>
-  <testcase name="SponsorDetail canSavePayment should be true when amount is positive" time="0.052" classname=".SponsorDetail"/>
-  <testcase name="SponsorDetail totalPayments should sum all payment amounts" time="0.074" classname=".SponsorDetail"/>
+  <testcase name="AdminSponsorService should load profile and update signal" time="0.021" classname=".AdminSponsorService"/>
+  <testcase name="AdminSponsorService should set isLoadingProfile false and log on HTTP error" time="0.005" classname=".AdminSponsorService"/>
+  <testcase name="AdminSponsorService should POST to create a new profile" time="0.005" classname=".AdminSponsorService"/>
+  <testcase name="AdminSponsorService should PUT to update an existing profile" time="0.005" classname=".AdminSponsorService"/>
+  <testcase name="AdminSponsorService should load seasons and update signal" time="0.005" classname=".AdminSponsorService"/>
+  <testcase name="AdminSponsorService should set seasons to empty array on HTTP error" time="0.004" classname=".AdminSponsorService"/>
+  <testcase name="AdminSponsorService should load payments and update signal" time="0.005" classname=".AdminSponsorService"/>
+  <testcase name="AdminSponsorService should set payments empty on HTTP error" time="0.004" classname=".AdminSponsorService"/>
+  <testcase name="AdminSponsorService should POST a new payment and prepend to payments signal" time="0.006" classname=".AdminSponsorService"/>
+  <testcase name="AdminSponsorService should reset all detail signals on clearDetail" time="0.002" classname=".AdminSponsorService"/>
+  <testcase name="SponsorDetail should create" time="0.289" classname=".SponsorDetail"/>
+  <testcase name="SponsorDetail should call clearDetail when isNew is true" time="0.048" classname=".SponsorDetail"/>
+  <testcase name="SponsorDetail canSaveProfile should be true when form is valid in new mode" time="0.044" classname=".SponsorDetail"/>
+  <testcase name="SponsorDetail canSaveProfile should be false when required fields are empty in new mode" time="0.033" classname=".SponsorDetail"/>
+  <testcase name="SponsorDetail should load profile, seasons, payments when sponsorProfileId is set" time="0.033" classname=".SponsorDetail"/>
+  <testcase name="SponsorDetail canSaveProfile should be false when form is pristine (no changes)" time="0.038" classname=".SponsorDetail"/>
+  <testcase name="SponsorDetail canSaveProfile should be true when form is dirty and valid in edit mode" time="0.04" classname=".SponsorDetail"/>
+  <testcase name="SponsorDetail should call saveProfile on service when onSaveProfile is called with valid form" time="0.035" classname=".SponsorDetail"/>
+  <testcase name="SponsorDetail should not call saveProfile when canSaveProfile is false" time="0.033" classname=".SponsorDetail"/>
+  <testcase name="SponsorDetail should emit closed event when onCancel is called" time="0.03" classname=".SponsorDetail"/>
+  <testcase name="SponsorDetail canSavePayment should be false when amount is null or zero" time="0.026" classname=".SponsorDetail"/>
+  <testcase name="SponsorDetail canSavePayment should be true when amount is positive" time="0.029" classname=".SponsorDetail"/>
+  <testcase name="SponsorDetail totalPayments should sum all payment amounts" time="0.025" classname=".SponsorDetail"/>
+  <testcase name="SponsorFilters should create" time="0.021" classname=".SponsorFilters"/>
+  <testcase name="SponsorFilters should emit initial filter values synchronously on init" time="0.008" classname=".SponsorFilters"/>
+  <testcase name="SponsorFilters should emit initial values reflecting the filters input" time="0.006" classname=".SponsorFilters"/>
+  <testcase name="SponsorFilters should not emit for form changes before 300 ms" time="0.016" classname=".SponsorFilters"/>
+  <testcase name="SponsorFilters should emit after 300 ms debounce when form value changes" time="0.01" classname=".SponsorFilters"/>
+  <testcase name="SponsorFilters should emit only once when multiple rapid changes occur within 300 ms" time="0.009" classname=".SponsorFilters"/>
+  <testcase name="SponsorFilters should reset name and currentSeasonOnly when clearFilters() is called" time="0.006" classname=".SponsorFilters"/>
+  <testcase name="SponsorFilters should return false for hasActiveFilters when form is empty" time="0.006" classname=".SponsorFilters"/>
+  <testcase name="SponsorFilters should return true for hasActiveFilters when name is non-empty" time="0.006" classname=".SponsorFilters"/>
+  <testcase name="SponsorFilters should return true for hasActiveFilters when currentSeasonOnly is true" time="0.008" classname=".SponsorFilters"/>
+  <testcase name="SponsorFilters should return false for hasActiveFilters after clearFilters()" time="0.007" classname=".SponsorFilters"/>
+  <testcase name="SponsorFilters should patch the form when filters input changes after first render" time="0.008" classname=".SponsorFilters"/>
+  <testcase name="SponsorFilters should not patch the form on the first ngOnChanges (ngOnInit handles first patch)" time="0.005" classname=".SponsorFilters"/>
+  <testcase name="SponsorList should create" time="0.07" classname=".SponsorList"/>
+  <testcase name="SponsorList should call fetchCurrentSeason on init" time="0.022" classname=".SponsorList"/>
+  <testcase name="SponsorList should map sponsorProfileId to id for BaseList compatibility" time="0.036" classname=".SponsorList"/>
+  <testcase name="SponsorList should expose empty list before HTTP response arrives" time="0.035" classname=".SponsorList"/>
+  <testcase name="SponsorList should handle an empty HTTP response" time="0.031" classname=".SponsorList"/>
+  <testcase name="SponsorList should set isLoading to false after successful response" time="0.035" classname=".SponsorList"/>
+  <testcase name="SponsorList should set isLoading to false and keep sponsors empty on HTTP error" time="0.036" classname=".SponsorList"/>
+  <testcase name="SponsorList should define a spoName column" time="0.032" classname=".SponsorList"/>
+  <testcase name="SponsorList should define a lastSeasonDescription column" time="0.023" classname=".SponsorList"/>
+  <testcase name="SponsorList should show all sponsors when no filter is active" time="0.026" classname=".SponsorList"/>
+  <testcase name="SponsorList should filter sponsors by name substring" time="0.027" classname=".SponsorList"/>
+  <testcase name="SponsorList should filter sponsors by name case-insensitively" time="0.022" classname=".SponsorList"/>
+  <testcase name="SponsorList should return no results when name filter matches nothing" time="0.019" classname=".SponsorList"/>
+  <testcase name="SponsorList should show all sponsors when name filter is cleared" time="0.018" classname=".SponsorList"/>
+  <testcase name="SponsorList should show no sponsors when currentSeasonOnly is true and season is not loaded" time="0.021" classname=".SponsorList"/>
+  <testcase name="SponsorList should show all sponsors when currentSeasonOnly is false regardless of season" time="0.025" classname=".SponsorList"/>
+  <testcase name="SponsorList should filter to only current-season sponsors when currentSeasonOnly is true" time="0.031" classname=".SponsorList"/>
+  <testcase name="SponsorList should exclude sponsors with no season history when currentSeasonOnly is true" time="0.018" classname=".SponsorList"/>
+  <testcase name="SponsorList should exclude past-season-only sponsors when currentSeasonOnly is true" time="0.019" classname=".SponsorList"/>
+  <testcase name="SponsorList should reactively update when currentSeason signal changes" time="0.021" classname=".SponsorList"/>
+  <testcase name="SponsorList should emit sponsorSelected when onRowClick is called" time="0.019" classname=".SponsorList"/>
+  <testcase name="SponsorList should emit newSponsor when onNewClick is called" time="0.017" classname=".SponsorList"/>
+  <testcase name="SponsorList should apply name and currentSeasonOnly filters together" time="0.017" classname=".SponsorList"/>
+  <testcase name="SponsorList should return nothing when name matches a past-season sponsor with currentSeasonOnly active" time="0.019" classname=".SponsorList"/>
   <system-out>
     <![CDATA[
 ]]>
