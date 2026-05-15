@@ -254,6 +254,26 @@ describe('SponsorList', () => {
     expect(component.filteredSponsors().length).toBe(1);
   });
 
+  // ── Row click / New button outputs ───────────────────────────────────────
+
+  it('should emit sponsorSelected when onRowClick is called', () => {
+    flushSponsors();
+    const emitted: any[] = [];
+    component.sponsorSelected.subscribe((v: any) => emitted.push(v));
+    const item = component.filteredSponsors()[0];
+    component.onRowClick(item);
+    expect(emitted.length).toBe(1);
+    expect(emitted[0].sponsorProfileId).toBe(item.sponsorProfileId);
+  });
+
+  it('should emit newSponsor when onNewClick is called', () => {
+    flushSponsors();
+    let emitted = false;
+    component.newSponsor.subscribe(() => (emitted = true));
+    component.onNewClick();
+    expect(emitted).toBeTrue();
+  });
+
   // ── Combined filters ──────────────────────────────────────────────────────
 
   it('should apply name and currentSeasonOnly filters together', () => {

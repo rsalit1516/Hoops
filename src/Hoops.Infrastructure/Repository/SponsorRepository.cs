@@ -1,8 +1,10 @@
-﻿using System.Data;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Hoops.Core.Interface;
 using Hoops.Core.Models;
 using Hoops.Core.ViewModels;
-
 using Microsoft.EntityFrameworkCore;
 using Hoops.Infrastructure.Data;
 
@@ -89,6 +91,52 @@ namespace Hoops.Infrastructure.Repository
             var repPayments = new SponsorPaymentRepository(context);
             var payments = repPayments.GetTotalPayments(sponsorProfileId);
             return (Convert.ToDecimal(fees) - payments);
+        }
+
+        public async Task<List<SponsorSeasonDto>> GetByProfileIdAsync(int sponsorProfileId)
+        {
+            return await context.Set<Sponsor>()
+                .Where(s => s.SponsorProfileId == sponsorProfileId)
+                .Join(context.Set<Season>(),
+                    s => s.SeasonId,
+                    se => se.SeasonId,
+                    (s, se) => new SponsorSeasonDto
+                    {
+                        SponsorId = s.SponsorId,
+                        SponsorProfileId = s.SponsorProfileId,
+                        SeasonId = s.SeasonId,
+                        SeasonDescription = se.Description ?? string.Empty,
+                        ShirtName = s.ShirtName ?? string.Empty,
+                        ShirtSize = s.ShirtSize ?? string.Empty,
+                        SpoAmount = s.SpoAmount,
+                        FeeId = s.FeeId,
+                        MailCheck = s.MailCheck,
+                        AdExpiration = s.AdExpiration
+                    })
+                .OrderByDescending(s => s.SeasonId)
+                .ToListAsync();
+        }
+
+        public async Task<Sponsor> CreateSeasonEntryAsync(Sponsor sponsor)
+        {
+            if (sponsor.SponsorId == 0)
+            {
+                sponsor.SponsorId = context.Set<Sponsor>().Any()
+                    ? context.Set<Sponsor>().Max(p => p.SponsorId) + 1
+                    : 1;
+            }
+            context.Set<Sponsor>().Add(sponsor);
+            await context.SaveChangesAsync();
+            return sponsor;
+        }
+
+        public async Task<Sponsor> UpdateSeasonEntryAsync(Sponsor sponsor)
+        {
+            var existing = await context.Set<Sponsor>().FindAsync(sponsor.SponsorId);
+            if (existing == null) return sponsor;
+            context.Entry(existing).CurrentValues.SetValues(sponsor);
+            await context.SaveChangesAsync();
+            return existing;
         }
     }
 }

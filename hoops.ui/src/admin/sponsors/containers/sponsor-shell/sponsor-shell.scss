@@ -1,0 +1,30 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.sponsor-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  @media (min-width: 1024px) {
+    flex-direction: row;
+    align-items: flex-start;
+
+    &.detail-open .sponsor-list-pane {
+      flex: 0 0 420px;
+      max-width: 420px;
+    }
+  }
+}
+
+.sponsor-list-pane {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.sponsor-detail-pane {
+  flex: 1 1 auto;
+  min-width: 0;
+}

@@ -1,10 +1,34 @@
-import { Component } from '@angular/core';
-import { SponsorList } from '../../components/sponsor-list/sponsor-list';
+import { Component, signal } from '@angular/core';
+import { SponsorList, SponsorListItem } from '../../components/sponsor-list/sponsor-list';
+import { SponsorDetail } from '../../components/sponsor-detail/sponsor-detail';
 
 @Component({
   selector: 'sponsor-shell',
-  template: '<sponsor-list />',
   standalone: true,
-  imports: [SponsorList],
+  imports: [SponsorList, SponsorDetail],
+  templateUrl: './sponsor-shell.html',
+  styleUrls: ['./sponsor-shell.scss'],
 })
-export class SponsorShell {}
+export class SponsorShell {
+  readonly selectedProfileId = signal<number | null>(null);
+  readonly isNewSponsor = signal(false);
+
+  get showDetail(): boolean {
+    return this.selectedProfileId() !== null || this.isNewSponsor();
+  }
+
+  onSponsorSelected(item: SponsorListItem) {
+    this.isNewSponsor.set(false);
+    this.selectedProfileId.set(item.sponsorProfileId);
+  }
+
+  onNewSponsor() {
+    this.selectedProfileId.set(null);
+    this.isNewSponsor.set(true);
+  }
+
+  onDetailClosed() {
+    this.selectedProfileId.set(null);
+    this.isNewSponsor.set(false);
+  }
+}

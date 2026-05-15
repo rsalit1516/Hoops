@@ -6,9 +6,16 @@
     />
   </div>
 
+  <div actions>
+    <button type="button" mat-raised-button color="primary" (click)="onNewClick()">
+      <mat-icon>add</mat-icon> New
+    </button>
+  </div>
+
   <app-generic-mat-table
     list
     [columns]="columns"
     [data]="filteredSponsors()"
+    (rowClick)="onRowClick($event)"
   />
 </csbc-list-page-shell>

@@ -3,9 +3,12 @@ import {
   computed,
   inject,
   OnInit,
+  output,
   signal,
 } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { BaseList } from '@app/admin/shared/BaseList';
 import {
   TableColumn,
@@ -20,7 +23,7 @@ import {
   SponsorFilterCriteria,
 } from '../sponsor-filters/sponsor-filters';
 
-interface SponsorListItem {
+export interface SponsorListItem {
   id: number;
   sponsorProfileId: number;
   spoName: string;
@@ -33,7 +36,7 @@ interface SponsorListItem {
 
 @Component({
   selector: 'sponsor-list',
-  imports: [GenericMatTableComponent, ListPageShellComponent, SponsorFilters],
+  imports: [GenericMatTableComponent, ListPageShellComponent, SponsorFilters, MatButtonModule, MatIconModule],
   templateUrl: './sponsor-list.html',
   styleUrls: ['./sponsor-list.scss', '../../../admin.scss'],
   standalone: true,
@@ -47,12 +50,16 @@ export class SponsorList extends BaseList<SponsorListItem> implements OnInit {
   readonly isLoading = signal(false);
   readonly filters = signal<SponsorFilterCriteria>({ name: '', currentSeasonOnly: false });
 
+  readonly sponsorSelected = output<SponsorListItem>();
+  readonly newSponsor = output<void>();
+
   override get basePath(): string {
     return '/admin/sponsors';
   }
 
   columns: TableColumn<SponsorListItem>[] = [
     { key: 'spoName', header: 'Sponsor Name', field: 'spoName', sortable: true },
+    { key: 'contactName', header: 'Contact', field: 'contactName', sortable: true },
     { key: 'lastSeasonDescription', header: 'Last Season', field: 'lastSeasonDescription', sortable: true },
   ];
 
@@ -77,6 +84,14 @@ export class SponsorList extends BaseList<SponsorListItem> implements OnInit {
 
   onFilterChange(filters: SponsorFilterCriteria) {
     this.filters.set(filters);
+  }
+
+  onRowClick(item: SponsorListItem) {
+    this.sponsorSelected.emit(item);
+  }
+
+  onNewClick() {
+    this.newSponsor.emit();
   }
 
   private loadSponsors() {

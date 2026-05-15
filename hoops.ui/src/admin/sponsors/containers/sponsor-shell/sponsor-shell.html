@@ -1,0 +1,18 @@
+<div class="sponsor-shell" [class.detail-open]="showDetail">
+  <div class="sponsor-list-pane">
+    <sponsor-list
+      (sponsorSelected)="onSponsorSelected($event)"
+      (newSponsor)="onNewSponsor()"
+    />
+  </div>
+
+  @if (showDetail) {
+    <div class="sponsor-detail-pane">
+      <sponsor-detail
+        [sponsorProfileId]="selectedProfileId()"
+        [isNew]="isNewSponsor()"
+        (closed)="onDetailClosed()"
+      />
+    </div>
+  }
+</div>

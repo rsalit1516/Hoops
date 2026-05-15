@@ -85,6 +85,52 @@ namespace Hoops.Infrastructure.Repository
             return sponsors.OrderBy(s => s.SpoName);
         }
 
+        public async Task<SponsorProfileDetailDto?> GetDetailByIdAsync(int id)
+        {
+            var sp = await context.Set<SponsorProfile>().FindAsync(id);
+            if (sp == null) return null;
+            return new SponsorProfileDetailDto
+            {
+                SponsorProfileId = sp.SponsorProfileId,
+                CompanyId = sp.CompanyId,
+                HouseId = sp.HouseId,
+                SpoName = sp.SpoName ?? string.Empty,
+                ContactName = sp.ContactName ?? string.Empty,
+                Email = sp.Email ?? string.Empty,
+                Phone = sp.Phone ?? string.Empty,
+                Url = sp.Url ?? string.Empty,
+                Address = sp.Address ?? string.Empty,
+                City = sp.City ?? string.Empty,
+                State = sp.State ?? string.Empty,
+                Zip = sp.Zip ?? string.Empty,
+                TypeOfBuss = sp.TypeOfBuss ?? string.Empty,
+                ShowAd = sp.ShowAd ?? false,
+                AdExpiration = sp.AdExpiration
+            };
+        }
+
+        public async Task<SponsorProfile> CreateProfileAsync(SponsorProfile profile)
+        {
+            if (profile.SponsorProfileId == 0)
+            {
+                profile.SponsorProfileId = context.Set<SponsorProfile>().Any()
+                    ? context.Set<SponsorProfile>().Max(p => p.SponsorProfileId) + 1
+                    : 1;
+            }
+            context.Set<SponsorProfile>().Add(profile);
+            await context.SaveChangesAsync();
+            return profile;
+        }
+
+        public async Task<SponsorProfile> UpdateProfileAsync(SponsorProfile profile)
+        {
+            var existing = await context.Set<SponsorProfile>().FindAsync(profile.SponsorProfileId);
+            if (existing == null) return profile;
+            context.Entry(existing).CurrentValues.SetValues(profile);
+            await context.SaveChangesAsync();
+            return existing;
+        }
+
         public async Task<List<SponsorProfileListItemDto>> GetAllWithLastSeasonAsync(int companyId)
         {
             var lastSeasonIds = await context.Set<Sponsor>()

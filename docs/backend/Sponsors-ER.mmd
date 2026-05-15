@@ -1,0 +1,64 @@
+erDiagram
+    SponsorProfile ||--o{ Sponsors : has
+    SponsorProfile ||--o{ SponsorPayment : receives
+
+    Sponsors {
+        int SponsorID PK
+        int CompanyID
+        int SeasonID
+        int HouseID
+        string ShirtName
+        string ShirtSize
+        decimal SpoAmount
+        int Color1AD
+        int Color2AD
+        int ShoppingCartID
+        bool MailCheck
+        datetime CreatedDate
+        string CreatedUser
+        int SponsorProfileID FK
+        decimal FeeID
+        date AdExpiration
+    }
+
+    SponsorFee {
+        int SponsorFeeId PK
+        string Name
+        decimal Amount
+        datetime CreatedDate
+        string CreatedUser
+    }
+
+    SponsorProfile {
+        int SponsorProfileID PK
+        int CompanyID
+        int HouseID
+        string ContactName
+        string SpoName
+        string EMAIL
+        string URL
+        string Address
+        string City
+        string State
+        string Zip
+        string Phone
+        string TypeOfBuss
+        datetime CreatedDate
+        string CreatedUser
+        bool ShowAd
+        date AdExpiration
+    }
+
+    SponsorPayment {
+        int PaymentID PK
+        int CompanyID
+        int SponsorProfileID FK
+        decimal Amount
+        string PaymentType
+        datetime TransactionDate
+        string TransactionNumber
+        string Memo
+        string ShoppingCartID
+        datetime CreatedDate
+        string CreatedUser
+    }

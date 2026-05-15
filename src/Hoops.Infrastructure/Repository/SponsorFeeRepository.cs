@@ -1,34 +1,20 @@
-using Hoops.Infrastructure.Repository;
-using Csbc.Infrastructure.Interface;
-using Hoops.Core.Models;
-using Hoops.Infrastructure.Data;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Hoops.Core.Interface;
+using Hoops.Core.ViewModels;
 
-namespace Csbc.Infrastructure.Repository
+namespace Hoops.Infrastructure.Repository
 {
-    public class SponsorFeeRepository : EFRepository<Season>, ISponsorFeeRepository
+    // SponsorFee table does not exist in production; fees are a fixed set.
+    public class SponsorFeeRepository : ISponsorFeeRepository
     {
-        public SponsorFeeRepository(hoopsContext _context) : base(_context) { }
-
-
-        public List<SponsorFee> GetSeasonFees(int seasonId)
+        private static readonly List<SponsorFeeDto> _fees = new()
         {
-            var fees = new List<SponsorFee>();
-            var scholarshipFee =
-                new SponsorFee { FeeName = "Scholarship", Amount = 0 };
-            fees.Add(scholarshipFee);
-            var discountFee =
-                new SponsorFee { FeeName = "Discount", Amount = (decimal)112.50 };
-            fees.Add(discountFee);
-            var season = GetById(seasonId);
-            if (season != null)
-                fees
-                    .Add(new SponsorFee
-                    {
-                        FeeName = "Standard",
-                        Amount = Convert.ToDecimal(season.SponsorFee)
-                    });
-            return fees;
-        }
-    }
+            new SponsorFeeDto { SponsorFeeId = 1, FeeName = "Standard",    Amount = 225.00m },
+            new SponsorFeeDto { SponsorFeeId = 2, FeeName = "Discount",    Amount = 112.50m },
+            new SponsorFeeDto { SponsorFeeId = 3, FeeName = "Scholarship", Amount = 0m },
+        };
 
+        public Task<List<SponsorFeeDto>> GetAllAsync() => Task.FromResult(_fees);
+    }
 }

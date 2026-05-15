@@ -1,12 +1,11 @@
-using Hoops.Core.Models;
 using System.Collections.Generic;
-using Hoops.Core.Interface;
+using System.Threading.Tasks;
+using Hoops.Core.ViewModels;
 
-namespace Csbc.Infrastructure.Interface
+namespace Hoops.Core.Interface
 {
-    public interface ISponsorFeeRepository : IRepository<Season>
+    public interface ISponsorFeeRepository
     {
-        // Move to Sponsor Fee Repository
-        List<SponsorFee> GetSeasonFees(int seasonId);
+        Task<List<SponsorFeeDto>> GetAllAsync();
     }
 }

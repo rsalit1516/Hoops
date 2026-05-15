@@ -1,40 +1,23 @@
 <?xml version="1.0"?>
-<testsuite name="Chrome Headless 147.0.0.0 (Windows 10)" package="unit" timestamp="2026-05-07T16:49:02" id="0" hostname="Rich-Think" tests="26" errors="0" failures="0" time="0.582">
+<testsuite name="Chrome Headless 148.0.0.0 (Windows 10)" package="unit" timestamp="2026-05-15T15:04:26" id="0" hostname="Rich-Think" tests="13" errors="0" failures="0" time="1.208">
   <properties>
-    <property name="browser.fullName" value="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/147.0.0.0 Safari/537.36"/>
+    <property name="browser.fullName" value="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/148.0.0.0 Safari/537.36"/>
   </properties>
-  <testcase name="DraftReport should create" time="0.194" classname=".DraftReport"/>
-  <testcase name="DraftReport showNoSelection should be true when no division is selected" time="0.028" classname=".DraftReport showNoSelection"/>
-  <testcase name="DraftReport showNoSelection should be false when a division is selected" time="0.028" classname=".DraftReport showNoSelection"/>
-  <testcase name="DraftReport showNoSelection should be false when All Divisions sentinel is selected" time="0.024" classname=".DraftReport showNoSelection"/>
-  <testcase name="DraftReport showReport should be false when no division is selected" time="0.021" classname=".DraftReport showReport"/>
-  <testcase name="DraftReport showReport should be true when a division is selected and not loading" time="0.023" classname=".DraftReport showReport"/>
-  <testcase name="DraftReport showReport should be false while loading" time="0.023" classname=".DraftReport showReport"/>
-  <testcase name="DraftReport groupedByDivision should return empty array when no players" time="0.02" classname=".DraftReport groupedByDivision"/>
-  <testcase name="DraftReport groupedByDivision should return a single group for a specific division" time="0.024" classname=".DraftReport groupedByDivision"/>
-  <testcase name="DraftReport groupedByDivision should group by division when All Divisions is selected" time="0.052" classname=".DraftReport groupedByDivision"/>
-  <testcase name="DraftReport groupedByDivision should sort groups alphabetically by division name" time="0.02" classname=".DraftReport groupedByDivision"/>
-  <testcase name="DraftReport groupedByDivision should place multiple players in the correct group" time="0.012" classname=".DraftReport groupedByDivision"/>
-  <testcase name="DraftReport effect: getDraftReport should call getDraftReport when both season and division are set" time="0.014" classname=".DraftReport effect: getDraftReport"/>
-  <testcase name="DraftReport effect: getDraftReport should not call getDraftReport when only season is set" time="0.011" classname=".DraftReport effect: getDraftReport"/>
-  <testcase name="DraftReport effect: getDraftReport should not call getDraftReport when only division is set" time="0.015" classname=".DraftReport effect: getDraftReport"/>
-  <testcase name="DraftReport effect: getDraftReport should pass null divisionId when All Divisions sentinel is selected" time="0.013" classname=".DraftReport effect: getDraftReport"/>
-  <testcase name="DraftReport formatDob should format ISO date string as mm/dd/yyyy" time="0.01" classname=".DraftReport formatDob"/>
-  <testcase name="DraftReport formatDob should zero-pad single-digit month and day" time="0.009" classname=".DraftReport formatDob"/>
-  <testcase name="DraftReport formatDob should return empty string for null" time="0.009" classname=".DraftReport formatDob"/>
-  <testcase name="DraftReport formatDob should return empty string for undefined" time="0.01" classname=".DraftReport formatDob"/>
-  <testcase name="DraftReport print should call window.print()" time="0.01" classname=".DraftReport print"/>
-  <testcase name="DraftReportService should be created" time="0.002" classname=".DraftReportService"/>
-  <testcase name="DraftReportService getDraftReport should fetch players for season without division" time="0.003" classname=".DraftReportService getDraftReport"/>
-  <testcase name="DraftReportService getDraftReport should fetch players for season and division" time="0.002" classname=".DraftReportService getDraftReport"/>
-  <testcase name="DraftReportService getDraftReport should set loading false and clear players on error" time="0.003" classname=".DraftReportService getDraftReport"/>
-  <testcase name="DraftReportService clearPlayers should clear the players signal" time="0.002" classname=".DraftReportService clearPlayers"/>
+  <testcase name="SponsorDetail should create" time="0.367" classname=".SponsorDetail"/>
+  <testcase name="SponsorDetail should call clearDetail when isNew is true" time="0.114" classname=".SponsorDetail"/>
+  <testcase name="SponsorDetail canSaveProfile should be true when form is valid in new mode" time="0.092" classname=".SponsorDetail"/>
+  <testcase name="SponsorDetail canSaveProfile should be false when required fields are empty in new mode" time="0.08" classname=".SponsorDetail"/>
+  <testcase name="SponsorDetail should load profile, seasons, payments when sponsorProfileId is set" time="0.076" classname=".SponsorDetail"/>
+  <testcase name="SponsorDetail canSaveProfile should be false when form is pristine (no changes)" time="0.066" classname=".SponsorDetail"/>
+  <testcase name="SponsorDetail canSaveProfile should be true when form is dirty and valid in edit mode" time="0.062" classname=".SponsorDetail"/>
+  <testcase name="SponsorDetail should call saveProfile on service when onSaveProfile is called with valid form" time="0.062" classname=".SponsorDetail"/>
+  <testcase name="SponsorDetail should not call saveProfile when canSaveProfile is false" time="0.05" classname=".SponsorDetail"/>
+  <testcase name="SponsorDetail should emit closed event when onCancel is called" time="0.06" classname=".SponsorDetail"/>
+  <testcase name="SponsorDetail canSavePayment should be false when amount is null or zero" time="0.053" classname=".SponsorDetail"/>
+  <testcase name="SponsorDetail canSavePayment should be true when amount is positive" time="0.052" classname=".SponsorDetail"/>
+  <testcase name="SponsorDetail totalPayments should sum all payment amounts" time="0.074" classname=".SponsorDetail"/>
   <system-out>
-    <![CDATA[Chrome Headless 147.0.0.0 (Windows 10) INFO: '[LOCAL]', '[DraftReportService] Fetching draft report from:', 'http://localhost:7071/api/DraftReport/1'
-,Chrome Headless 147.0.0.0 (Windows 10) INFO: '[LOCAL]', '[DraftReportService] Fetching draft report from:', 'http://localhost:7071/api/DraftReport/1/2'
-,Chrome Headless 147.0.0.0 (Windows 10) INFO: '[LOCAL]', '[DraftReportService] Fetching draft report from:', 'http://localhost:7071/api/DraftReport/1'
-,Chrome Headless 147.0.0.0 (Windows 10) INFO: '[LOCAL]', '[DraftReportService] Fetching draft report from:', 'http://localhost:7071/api/DraftReport/1'
-
+    <![CDATA[
 ]]>
   </system-out>
   <system-err/>

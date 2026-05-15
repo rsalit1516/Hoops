@@ -27,6 +27,17 @@ This project uses cutting-edge Angular features. Claude's training data may be i
 - **NEVER** use `ReactiveFormsModule` or template-driven forms for new work
 - If unsure about the Signal Forms API, fetch the documentation before implementing: https://angular.dev/guide/signals/signal-forms
 - Save buttons should only be availble for existing records when something has been changed and the form is valid on the form and for a New form when the form is valid.
+- **`[formField]` template binding**: bind the field proxy **without** `()` — e.g. `[formField]="myForm.fieldName"`, NOT `[formField]="myForm.fieldName()"`. The `FormField` directive's `state` computed calls the input twice (`this.field()()`), so passing an already-called FieldNode causes "this.field(...) is not a function". Only call the field with `()` in component TypeScript code (e.g. `myForm.fieldName().value.set(...)`), never in template `[formField]` bindings.
+- **Reserved field name conflicts**: Signal Forms proxies expose built-in properties (`state`, `value`, `errors`, `valid`, `dirty`, etc.) that shadow model fields with the same name. If a model field shares a name with one of these (e.g. `state` for a US state abbreviation), TypeScript will reject `[formField]="myForm.state"`. Use `$any(myForm).fieldName` to bypass the type conflict — the proxy's `get` trap still routes to the correct model child at runtime.
+- **Signal Forms dirty tracking**: calling `field().value.set(x)` alone does NOT mark a field dirty. To test `dirty()` state in a unit test, also call `field().markAsDirty()` after setting the value.
+- **Form/detail component styling**: every form or detail component **must** include `cards.scss` and `forms.scss` in its `styleUrls`:
+  ```typescript
+  styleUrls: [
+    '../../../../shared/scss/forms.scss',
+    '../../../../shared/scss/cards.scss',
+  ],
+  ```
+  These files define the shared form typography, colours, and card chrome used across all admin detail views. Omitting them results in unstyled or inconsistently styled forms.
 
 ### Standalone Components
 
