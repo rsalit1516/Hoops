@@ -1,46 +1,73 @@
-import { Component, OnInit, inject } from '@angular/core';
+import {
+  Component,
+  computed,
+  DestroyRef,
+  inject,
+  input,
+  OnInit,
+  signal,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { interval } from 'rxjs';
+import {
+  animate,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
+import { SponsorService } from '../../sponsor.service';
 import { Sponsor } from '@app/domain/sponsor';
-import { Store } from '@ngrx/store';
-import * as fromHome from '../../state';
-
-// import { NgbCarousel, NgbSlide } from '@ng-bootstrap/ng-bootstrap';
-
 
 @Component({
-    selector: 'app-sponsor-list',
-    templateUrl: "./sponsor-list.html",
-    styleUrls: ['./sponsor-list.scss', '../../home.scss'],
-    imports: []
+  selector: 'app-sponsor-list',
+  templateUrl: './sponsor-list.html',
+  styleUrls: ['./sponsor-list.scss'],
+  animations: [
+    trigger('fadeSponsor', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(6px)' }),
+        animate('350ms ease-out', style({ opacity: 1, transform: 'translateY(0)' })),
+      ]),
+      transition(':leave', [
+        animate('350ms ease-in', style({ opacity: 0, transform: 'translateY(-6px)' })),
+      ]),
+    ]),
+  ],
+  imports: [],
 })
 export class SponsorList implements OnInit {
-  private store = inject<Store<fromHome.State>>(Store);
+  private readonly sponsorService = inject(SponsorService);
+  private readonly destroyRef = inject(DestroyRef);
 
-  sponsors: Sponsor[] | undefined;
+  readonly displayDurationMs = input<number>(2000);
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
+  readonly sponsors = this.sponsorService.sponsors;
+  private readonly currentIndex = signal(0);
 
-  constructor() { }
+  readonly currentSponsor = computed<Sponsor | null>(() => {
+    const list = this.sponsors();
+    return list.length > 0 ? list[this.currentIndex()] : null;
+  });
+
+  readonly currentSponsorArray = computed<Sponsor[]>(() => {
+    const s = this.currentSponsor();
+    return s ? [s] : [];
+  });
 
   ngOnInit(): void {
-    this.store
-    .select(fromHome.getSponsors)
-    .subscribe((sponsors) => (this.sponsors = sponsors));
-    // this.sponsors = this.getSponsors();
+    this.sponsorService.load();
 
+    interval(this.displayDurationMs())
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        const len = this.sponsors().length;
+        if (len > 0) {
+          this.currentIndex.update((i) => (i + 1) % len);
+        }
+      });
   }
-  getSponsors(): Sponsor[] {
-    const sponsor = new Sponsor();
-    sponsor.name = 'Test';
-    sponsor.phone = '999-999-9990';
-    sponsor.website = 'https://cnn.com';
-    let sponsors = [];
-    sponsors.push(sponsor);
-    const sponsor2 = new Sponsor();
-    sponsor2.name = 'Test 2';
-    sponsor2.phone = '999-992-9990';
-    sponsor2.website = 'https://amazon.com';
-    sponsors.push(sponsor2);
-    return sponsors;
+
+  onLogoError(event: Event): void {
+    (event.target as HTMLImageElement).style.display = 'none';
   }
 }

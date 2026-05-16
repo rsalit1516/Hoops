@@ -4,5 +4,6 @@ export class Sponsor {
     public name!: string;
     public website!: string;
     public phone!: string;
+    public logoUrl?: string;
     constructor() {}
 }

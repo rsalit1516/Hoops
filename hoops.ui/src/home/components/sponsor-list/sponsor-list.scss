@@ -1,22 +1,40 @@
 @use "variables" as v;
 
-.sponsor-wrapper {
-  padding-top: 40px;
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
+
+.sponsor-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 4px;
+  padding: 8px 16px;
+}
+
+.sponsor-logo {
+  max-height: 48px;
+  max-width: 160px;
+  object-fit: contain;
+}
+
 .sponsor-name {
-  color: v.$font-color-text;
-  font-weight: 700;
-  font-size: 1.4em;
-  padding-top: 12px;
-  padding-bottom: 12px;
-}
-.sponsor-phone {
   color: v.$font-color-text;
   font-weight: 700;
   font-size: 1.2em;
 }
-.sponsor-website, a {
-  color: v.$font-color-text;
+
+.sponsor-website {
+  color: v.$link-color;
   font-weight: 500;
-  font-size: 1em;
+  font-size: 0.9em;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }

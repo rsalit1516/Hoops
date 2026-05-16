@@ -1,16 +1,12 @@
 import {
   Component,
   computed,
-  effect,
   inject,
-  linkedSignal,
   OnInit,
 } from '@angular/core';
 
 import * as fromHome from './state';
-import * as homeActions from './state/home.actions';
-import { Store, select } from '@ngrx/store';
-import { map } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { WebContent } from '../domain/webContent';
 
@@ -22,10 +18,8 @@ import { CsbcHomeSidebar } from './components/home-sidebar/home-sidebar';
 import { NgClass } from '@angular/common';
 import { HomeCenter } from './components/home-center/home-center';
 import { LoggerService } from '@app/services/logger.service';
-import { SeasonService } from '@app/services/season.service';
-import { Season } from '@app/domain/season';
-import { Content } from '@app/domain/content';
 import { ContentService } from '@app/admin/web-content/content.service';
+import { SponsorService } from './sponsor.service';
 
 @Component({
   selector: 'csbc-home',
@@ -42,10 +36,10 @@ import { ContentService } from '@app/admin/web-content/content.service';
 })
 export class Home implements OnInit {
   logger = inject(LoggerService);
-  readonly #seasonService = inject(SeasonService);
   readonly #store = inject(Store<fromHome.State>);
   readonly #gameStore = inject(Store<fromGames.State>);
   readonly #contentService = inject(ContentService);
+  readonly #sponsorService = inject(SponsorService);
 
   coverImage = 'images/sky.jpg';
   seasonInfoCount: number = 1;
@@ -60,7 +54,7 @@ export class Home implements OnInit {
   meetingNotices: WebContent[] | undefined;
 
   showSidebar = false;
-  showSponsors = false;
+  showSponsors = computed(() => this.#sponsorService.sponsors().length > 0);
   imageClass = 'col-sm-8 offset-sm-2 col-12';
   meetingNoticeClass = 'col-sm-0 col-xs-0';
   announcementInfo: WebContent[] | undefined = [];
@@ -69,10 +63,10 @@ export class Home implements OnInit {
 
   ngOnInit(): void {
     this.setImageClass();
+    this.#sponsorService.load();
     // this.#gameStore.dispatch(new gameActions.LoadCurrentSeason());
     // this.#gameStore.select(fromGames.getCurrentSeason).subscribe((season) => {
     //   if ((season?.seasonId !== 0) && (season?.seasonId !== undefined)) {
-    this.#store.dispatch(new homeActions.LoadSponsors());
     // this.#gameStore.dispatch(new gameActions.LoadDivisions());
     this.#gameStore.dispatch(new gameActions.LoadTeams());
     // this.#gameStore.dispatch(new gameActions.LoadGames());

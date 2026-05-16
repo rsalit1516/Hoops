@@ -70,8 +70,8 @@ namespace Hoops.Infrastructure.Repository
                 SponsorId = z.s.SponsorId,
                 Name = z.p.SpoName,
                 Website = z.p.Url,
-                Phone = z.p.Phone
-
+                Phone = z.p.Phone,
+                LogoUrl = z.p.LogoUrl
             })
             .ToListAsync();
             return sponsors;
