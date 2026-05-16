@@ -39,7 +39,8 @@ export class SponsorList implements OnInit {
   private readonly sponsorService = inject(SponsorService);
   private readonly destroyRef = inject(DestroyRef);
 
-  readonly displayDurationMs = input<number>(2000);
+  readonly displayDurationMs = input<number>(4000);
+  readonly currentYear = new Date().getFullYear();
 
   readonly sponsors = this.sponsorService.sponsors;
   private readonly currentIndex = signal(0);
@@ -55,8 +56,6 @@ export class SponsorList implements OnInit {
   });
 
   ngOnInit(): void {
-    this.sponsorService.load();
-
     interval(this.displayDurationMs())
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {

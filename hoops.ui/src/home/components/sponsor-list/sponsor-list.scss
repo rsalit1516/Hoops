@@ -1,9 +1,18 @@
 @use "variables" as v;
 
 :host {
-  display: block;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   height: 100%;
+}
+
+.carousel-area {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
 .sponsor-card {
@@ -11,7 +20,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100%;
   gap: 4px;
   padding: 8px 16px;
 }
@@ -37,4 +45,12 @@
   &:hover {
     text-decoration: underline;
   }
+}
+
+.copyright {
+  text-align: center;
+  font-size: 0.7em;
+  color: v.$font-color-text;
+  opacity: 0.6;
+  padding-bottom: 4px;
 }

@@ -64,7 +64,7 @@ namespace Hoops.Infrastructure.Repository
             s => s.SponsorProfileId,
             p => p.SponsorProfileId,
             (s, p) => new { s, p })
-            .Where(z => z.s.SeasonId == seasonId)
+            .Where(z => z.s.SeasonId == seasonId && z.p.ShowAd == true)
             .Select(z => new SponsorWithProfile
             {
                 SponsorId = z.s.SponsorId,

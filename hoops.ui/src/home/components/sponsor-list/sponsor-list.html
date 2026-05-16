@@ -1,22 +1,25 @@
-@for (sponsor of currentSponsorArray(); track sponsor.sponsorId) {
-  <div @fadeSponsor class="sponsor-card">
-    @if (sponsor.logoUrl) {
-      <img
-        class="sponsor-logo"
-        [src]="sponsor.logoUrl"
-        [alt]="sponsor.name"
-        [title]="sponsor.name"
-        (error)="onLogoError($event)"
-      />
-    }
-    <div class="sponsor-name">{{ sponsor.name }}</div>
-    @if (sponsor.website) {
-      <a
-        class="sponsor-website"
-        [href]="sponsor.website"
-        target="_blank"
-        rel="noopener noreferrer"
-      >{{ sponsor.website }}</a>
-    }
-  </div>
-}
+<div class="carousel-area">
+  @for (sponsor of currentSponsorArray(); track sponsor.sponsorId) {
+    <div @fadeSponsor class="sponsor-card">
+      @if (sponsor.logoUrl) {
+        <img
+          class="sponsor-logo"
+          [src]="sponsor.logoUrl"
+          [alt]="sponsor.name"
+          [title]="sponsor.name"
+          (error)="onLogoError($event)"
+        />
+      }
+      <div class="sponsor-name">{{ sponsor.name }}</div>
+      @if (sponsor.website) {
+        <a
+          class="sponsor-website"
+          [href]="sponsor.website"
+          target="_blank"
+          rel="noopener noreferrer"
+        >{{ sponsor.website }}</a>
+      }
+    </div>
+  }
+</div>
+<div class="copyright">&copy; {{ currentYear }} CSBC Basketball. All rights reserved.</div>
