@@ -1,5 +1,15 @@
 @use "../../Content/variables" as vars;
 
+.player-list-container {
+  padding: clamp(0.25rem, 1.5vh, 0.75rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.1rem, 0.5vh, 0.25rem);
+  height: calc(100vh - 94px);
+  overflow: hidden;
+  background-color: vars.$admin-background-color;
+}
+
 .eligible-person-hint {
   color: vars.$admin-input-hint-color;
   font-size: vars.$admin-input-hint-font-size;
@@ -8,6 +18,8 @@
 .eligible-panel-card {
   display: flex;
   flex-direction: column;
+  flex: 1;
+  min-height: 0;
 }
 
 .eligible-panel-content {
@@ -18,7 +30,7 @@
 }
 
 .eligible-list {
-  height: calc(100vh - 340px);
+  flex: 1;
   min-height: 150px;
   overflow-y: auto;
 }
