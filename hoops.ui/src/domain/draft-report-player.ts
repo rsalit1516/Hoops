@@ -9,4 +9,5 @@ export class DraftReportPlayer {
   public grade: number | null = null;
   public rating: number | null = null;
   public draftNotes: string | null = null;
+  public balance: number | null = null;
 }
