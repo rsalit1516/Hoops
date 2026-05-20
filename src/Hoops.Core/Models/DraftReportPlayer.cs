@@ -15,5 +15,6 @@ namespace Hoops.Core.Models
         public int? Grade { get; set; }
         public int? Rating { get; set; }
         public string? DraftNotes { get; set; }
+        public decimal? Balance { get; set; }
     }
 }

@@ -92,7 +92,8 @@
 .col-dob    { width: 7rem;  white-space: nowrap; }
 .col-phone  { width: 8rem;  white-space: nowrap; }
 .col-grade  { width: 3.5rem; text-align: center; }
-.col-notes  { min-width: 20%; }
+.col-notes  { min-width: 15%; }
+.col-balance { width: 5rem; text-align: right; }
 
 // ── Print styles ─────────────────────────────────────────────────────────────
 
@@ -161,5 +162,6 @@
   .col-dob    { width: 0.75in; }
   .col-phone  { width: 0.9in; }
   .col-grade  { width: 0.4in; }
-  .col-notes  { width: 20%; min-width: 20%; }
+  .col-notes   { width: 15%; min-width: 15%; }
+  .col-balance { width: 0.75in; }
 }
