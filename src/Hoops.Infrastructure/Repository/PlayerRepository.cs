@@ -629,6 +629,7 @@ namespace Hoops.Infrastructure.Repository
                             Grade = p.Grade,
                             Rating = pl.Rating,
                             DraftNotes = pl.DraftNotes,
+                            Balance = pl.BalanceOwed,
                         };
 
             return query.ToList();

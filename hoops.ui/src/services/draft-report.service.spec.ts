@@ -26,6 +26,7 @@ describe('DraftReportService', () => {
       grade: 6,
       rating: null,
       draftNotes: null,
+      balance: null,
     },
     {
       personId: 2,
@@ -38,6 +39,7 @@ describe('DraftReportService', () => {
       grade: 4,
       rating: null,
       draftNotes: null,
+      balance: null,
     },
   ];
 
