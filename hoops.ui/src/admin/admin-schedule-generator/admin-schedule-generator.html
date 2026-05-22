@@ -1,0 +1,389 @@
+<div class="card-container">
+  <div class="card-header">
+    <h2 class="card-title">Season Schedule Generator</h2>
+  </div>
+  <div class="card-body">
+    <mat-stepper linear #stepper>
+
+      <!-- Step 1: Parameters -->
+      <mat-step [completed]="step1Valid()" label="Schedule Parameters">
+        <div class="step-content">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+
+            <mat-form-field appearance="fill" class="col-span-2">
+              <mat-label>Season</mat-label>
+              <mat-select [value]="selectedSeasonId()" (selectionChange)="onSeasonChange($event.value)">
+                @for (season of seasons(); track season.seasonId) {
+                  <mat-option [value]="season.seasonId">{{ season.description }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Start Date</mat-label>
+              <input matInput [matDatepicker]="startPicker" [value]="startDate()"
+                (dateChange)="startDate.set($event.value)" />
+              <mat-datepicker-toggle matSuffix [for]="startPicker" />
+              <mat-datepicker #startPicker />
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>End Date</mat-label>
+              <input matInput [matDatepicker]="endPicker" [value]="endDate()"
+                (dateChange)="endDate.set($event.value)" />
+              <mat-datepicker-toggle matSuffix [for]="endPicker" />
+              <mat-datepicker #endPicker />
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Games per Team (season total)</mat-label>
+              <input matInput type="number" min="1" [value]="gamesPerTeam()"
+                (change)="gamesPerTeam.set(+$any($event.target).value)" />
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Max Games per Team per Week</mat-label>
+              <input matInput type="number" min="1" [value]="maxGamesPerWeek()"
+                (change)="maxGamesPerWeek.set(+$any($event.target).value)" />
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Game Duration (minutes)</mat-label>
+              <input matInput type="number" min="10" [value]="gameDurationMinutes()"
+                (change)="gameDurationMinutes.set(+$any($event.target).value)" />
+            </mat-form-field>
+
+          </div>
+
+          <div class="mt-3">
+            <mat-checkbox [checked]="enforceCoachConflicts()"
+              (change)="enforceCoachConflicts.set($event.checked)">
+              Enforce coach conflict detection
+            </mat-checkbox>
+          </div>
+
+          <div class="flex gap-2 mt-4">
+            <button mat-raised-button color="primary" matStepperNext [disabled]="!step1Valid()">
+              Next
+            </button>
+          </div>
+        </div>
+      </mat-step>
+
+      <!-- Step 2: Divisions -->
+      <mat-step [completed]="step2Valid()" label="Select Divisions">
+        <div class="step-content mt-4">
+
+          @if (isLoadingDivisions()) {
+            <div class="flex items-center gap-2">
+              <mat-spinner diameter="24" />
+              <span>Loading divisions...</span>
+            </div>
+          } @else if (!selectedSeasonId()) {
+            <p class="text-gray-500 italic">Select a season in Step 1 to load available divisions.</p>
+          } @else if (divisionsForSeason().length === 0) {
+            <p class="text-gray-500 italic">No divisions found for the selected season.</p>
+          } @else {
+            <p class="mb-3 text-sm text-gray-600">
+              Select one or more divisions to include in the schedule:
+            </p>
+            <div class="flex flex-col gap-2">
+              @for (div of divisionsForSeason(); track div.divisionId) {
+                <mat-checkbox
+                  [checked]="isDivisionSelected(div.divisionId)"
+                  (change)="toggleDivision(div.divisionId)">
+                {{ div.divisionDescription }}
+                </mat-checkbox>
+              }
+            </div>
+          }
+
+          <div class="flex gap-2 mt-4">
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-raised-button color="primary" matStepperNext [disabled]="!step2Valid()">
+              Next
+            </button>
+          </div>
+        </div>
+      </mat-step>
+
+      <!-- Step 3: Time Slots -->
+      <mat-step [completed]="step3Valid()" label="Available Time Slots">
+        <div class="step-content mt-4">
+
+          <div class="flex justify-between items-center mb-3">
+            <p class="text-sm text-gray-600">Configure available game time slots:</p>
+            <div class="flex gap-2">
+              <button mat-stroked-button (click)="resetToDefaultSlots()">
+                <mat-icon>restore</mat-icon> Reset to Defaults
+              </button>
+              <button mat-stroked-button color="primary" (click)="addTimeSlot()">
+                <mat-icon>add</mat-icon> Add Slot
+              </button>
+            </div>
+          </div>
+
+          <table mat-table [dataSource]="timeSlots()" class="w-full time-slot-table">
+
+            <ng-container matColumnDef="day">
+              <th mat-header-cell *matHeaderCellDef>Day</th>
+              <td mat-cell *matCellDef="let slot; let i = index">
+                <mat-select [value]="slot.dayOfWeek"
+                  (selectionChange)="updateTimeSlotDay(i, $event.value)">
+                  @for (d of dayOptions; track d) {
+                    <mat-option [value]="d">{{ dayNames[d] }}</mat-option>
+                  }
+                </mat-select>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="time">
+              <th mat-header-cell *matHeaderCellDef>Start Time</th>
+              <td mat-cell *matCellDef="let slot; let i = index">
+                <input type="time" [value]="slot.startTime"
+                  (change)="updateTimeSlotTime(i, $any($event.target).value)"
+                  class="time-input" />
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="location">
+              <th mat-header-cell *matHeaderCellDef>Location (optional)</th>
+              <td mat-cell *matCellDef="let slot; let i = index">
+                <mat-select [value]="slot.locationId"
+                  (selectionChange)="updateTimeSlotLocation(i, $event.value)">
+                  <mat-option [value]="null">Any Location</mat-option>
+                  @for (loc of locations(); track loc.locationNumber) {
+                    <mat-option [value]="loc.locationNumber">{{ loc.locationName }}</mat-option>
+                  }
+                </mat-select>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="remove">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let slot; let i = index">
+                <button mat-icon-button color="warn" (click)="removeTimeSlot(i)"
+                  [disabled]="timeSlots().length <= 1">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="['day','time','location','remove']"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['day','time','location','remove']"></tr>
+          </table>
+
+          <div class="flex gap-2 mt-4">
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-raised-button color="primary" matStepperNext [disabled]="!step3Valid()">
+              Next
+            </button>
+          </div>
+        </div>
+      </mat-step>
+
+      <!-- Step 4: Blackout Dates -->
+      <mat-step label="Blackout Dates">
+        <div class="step-content mt-4">
+
+          <div class="flex justify-between items-center mb-3">
+            <p class="text-sm text-gray-600">
+              Optionally add dates when games cannot be scheduled (e.g. holidays):
+            </p>
+            <button mat-stroked-button color="primary" (click)="addBlackoutDate()">
+              <mat-icon>add</mat-icon> Add Blackout Date
+            </button>
+          </div>
+
+          @if (blackoutDates().length === 0) {
+            <p class="text-gray-400 italic text-sm">No blackout dates configured.</p>
+          } @else {
+            <table mat-table [dataSource]="blackoutDates()" class="w-full blackout-table">
+
+              <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef>Date</th>
+                <td mat-cell *matCellDef="let row; let i = index">
+                  <mat-form-field appearance="fill" class="compact-field">
+                    <input matInput [matDatepicker]="bp"
+                      (dateChange)="updateBlackoutDate(i, $event.value)" />
+                    <mat-datepicker-toggle matSuffix [for]="bp" />
+                    <mat-datepicker #bp />
+                  </mat-form-field>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="location">
+                <th mat-header-cell *matHeaderCellDef>Location</th>
+                <td mat-cell *matCellDef="let row; let i = index">
+                  <mat-select [value]="row.locationId"
+                    (selectionChange)="updateBlackoutLocation(i, $event.value)">
+                    <mat-option [value]="null">All Locations</mat-option>
+                    @for (loc of locations(); track loc.locationNumber) {
+                      <mat-option [value]="loc.locationNumber">{{ loc.locationName }}</mat-option>
+                    }
+                  </mat-select>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="remove">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let row; let i = index">
+                  <button mat-icon-button color="warn" (click)="removeBlackoutDate(i)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="['date','location','remove']"></tr>
+              <tr mat-row *matRowDef="let row; columns: ['date','location','remove']"></tr>
+            </table>
+          }
+
+          <div class="flex gap-2 mt-4">
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-raised-button color="primary" matStepperNext>Next</button>
+          </div>
+        </div>
+      </mat-step>
+
+      <!-- Step 5: Preview & Commit -->
+      <mat-step label="Preview & Commit">
+        <div class="step-content mt-4">
+
+          @if (!isGenerating() && previewGames().length === 0 && !previewError()) {
+            <div class="flex flex-col gap-3">
+              <p class="text-sm text-gray-600">
+                Review your configuration and generate a preview of the proposed schedule.
+                No games will be saved until you click Commit.
+              </p>
+              <div>
+                <button mat-raised-button color="primary" (click)="generatePreview()"
+                  [disabled]="!step1Valid() || !step2Valid()">
+                  <mat-icon>preview</mat-icon> Generate Preview
+                </button>
+              </div>
+            </div>
+          }
+
+          @if (isGenerating()) {
+            <div class="flex items-center gap-3 py-4">
+              <mat-spinner diameter="28" />
+              <span>Generating schedule preview...</span>
+            </div>
+          }
+
+          @if (previewError()) {
+            <div class="error-panel mt-2 p-3 flex items-start gap-2">
+              <mat-icon class="text-red-600">error</mat-icon>
+              <span>{{ previewError() }}</span>
+            </div>
+            <button mat-stroked-button (click)="generatePreview()" class="mt-3">
+              <mat-icon>refresh</mat-icon> Retry
+            </button>
+          }
+
+          @if (previewGames().length > 0) {
+            <div class="preview-header mb-4">
+              <mat-chip-set>
+                <mat-chip>{{ previewGames().length }} total games</mat-chip>
+                @if (warningCount() > 0) {
+                  <mat-chip color="warn" highlighted>
+                    <mat-icon matChipAvatar>warning</mat-icon>
+                    {{ warningCount() }} warnings
+                  </mat-chip>
+                }
+              </mat-chip-set>
+            </div>
+
+            @for (group of previewByDivision(); track group.name) {
+              <h3 class="division-group-header">{{ group.name }}</h3>
+              <table mat-table [dataSource]="group.items" class="preview-table w-full mb-6">
+
+                <ng-container matColumnDef="gameDate">
+                  <th mat-header-cell *matHeaderCellDef>Date</th>
+                  <td mat-cell *matCellDef="let g">{{ formatGameDate(g.gameDate) }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="gameTime">
+                  <th mat-header-cell *matHeaderCellDef>Time</th>
+                  <td mat-cell *matCellDef="let g">{{ formatGameTime(g.gameTime) }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="location">
+                  <th mat-header-cell *matHeaderCellDef>Location</th>
+                  <td mat-cell *matCellDef="let g">{{ g.locationName }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="home">
+                  <th mat-header-cell *matHeaderCellDef>Home</th>
+                  <td mat-cell *matCellDef="let g">{{ g.homeTeamName }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="visiting">
+                  <th mat-header-cell *matHeaderCellDef>Visiting</th>
+                  <td mat-cell *matCellDef="let g">{{ g.visitingTeamName }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="warnings">
+                  <th mat-header-cell *matHeaderCellDef>Warnings</th>
+                  <td mat-cell *matCellDef="let g">
+                    @for (w of g.warnings; track w) {
+                      <div class="warning-text">{{ w }}</div>
+                    }
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="previewColumns; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: previewColumns"
+                  [class.row-has-warnings]="row.warnings?.length > 0"></tr>
+              </table>
+            }
+
+            <mat-divider class="my-4" />
+
+            @if (commitGamesCreated() !== null) {
+              <div class="success-panel p-3 flex items-center gap-2 mb-3">
+                <mat-icon class="text-green-600">check_circle</mat-icon>
+                <span>{{ commitGamesCreated() }} games committed successfully.</span>
+              </div>
+            }
+
+            @if (commitErrors().length > 0) {
+              <div class="error-panel p-3 mb-3">
+                @for (err of commitErrors(); track err) {
+                  <div class="flex items-start gap-1">
+                    <mat-icon class="text-red-600 text-sm">error</mat-icon>
+                    <span>{{ err }}</span>
+                  </div>
+                }
+              </div>
+            }
+
+            <div class="flex gap-2">
+              <button mat-stroked-button (click)="generatePreview()" [disabled]="isCommitting()">
+                <mat-icon>refresh</mat-icon> Regenerate
+              </button>
+              <button mat-raised-button color="accent"
+                [disabled]="isCommitting() || commitGamesCreated() !== null"
+                (click)="commitSchedule()">
+                @if (isCommitting()) {
+                  <mat-spinner diameter="18" class="inline-spinner" />
+                } @else {
+                  <mat-icon>save</mat-icon>
+                }
+                Commit Schedule
+              </button>
+            </div>
+          }
+
+          <div class="flex gap-2 mt-4">
+            <button mat-button matStepperPrevious [disabled]="isGenerating() || isCommitting()">
+              Back
+            </button>
+          </div>
+        </div>
+      </mat-step>
+
+    </mat-stepper>
+  </div>
+</div>

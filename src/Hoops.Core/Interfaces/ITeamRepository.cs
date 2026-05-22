@@ -13,5 +13,6 @@ namespace Hoops.Core.Interface
         bool DeleteById(int id);
         List<Team> GetSeasonTeams(int seasonId);
         IQueryable<Team> GetDivisionTeams(int divisionId);
+        List<Team> GetDivisionTeamsWithCoaches(int divisionId);
     }
 }

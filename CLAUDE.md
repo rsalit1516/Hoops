@@ -105,7 +105,37 @@ When generating Azure-related code or running Azure terminal commands, always fo
 
 When working on a story, copy the story content from Azure DevOps and provide it directly. Claude Code will apply the architectural standards defined in this file and the relevant sub-CLAUDE.md files.
 
-## Technical Documentation
+## Definition of Done
+
+Every implementation task is **not complete** until all of the following pass:
+
+1. **Frontend builds**: `cd hoops.ui && npm run build` (or `ng build`) exits with no errors.
+2. **Backend builds**: `dotnet build Hoops.sln` exits with no errors.
+3. **Unit tests written**: Every new Angular component gets a `.spec.ts` file (use the `gen-angular-spec` skill to scaffold it). Every new backend service/function gets an xUnit test class (use the `gen-azure-fn-test` skill).
+4. **Tests pass**: `cd hoops.ui && npm run test:ci` and `dotnet test --filter TestCategory!=Slow` exit clean.
+5. **E2E / Playwright**: Add Playwright tests for any new user-facing route or multi-step flow when a `playwright/` or `e2e/` test suite is present in the repo.
+
+Claude must run steps 1–2 before reporting a task as complete, and explicitly state test coverage provided for steps 3–4.
+
+## Domain Model Property Reference
+
+Key property names that differ from obvious guesses — check these before writing templates:
+
+| Class | Display property | Key property |
+|-------|-----------------|--------------|
+| `Season` | `description` | `seasonId` |
+| `Division` | `divisionDescription` | `divisionId` |
+| `Location` / `GymLocation` | `locationName` | `locationNumber` (not `locationId`) |
+
+## SCSS Path Reference (relative to component file)
+
+| Component depth under `src/` | forms.scss | cards.scss | admin.scss |
+|------------------------------|------------|------------|------------|
+| `src/admin/<component>/` (2 deep) | `../../shared/scss/forms.scss` | `../../shared/scss/cards.scss` | `../admin.scss` |
+| `src/admin/<feature>/<component>/` (3 deep) | `../../../shared/scss/forms.scss` | `../../../shared/scss/cards.scss` | `../../admin.scss` |
+| `src/admin/<feature>/<sub>/<component>/` (4 deep) | `../../../../shared/scss/forms.scss` | `../../../../shared/scss/cards.scss` | `../../../admin.scss` |
+
+
 
 - `docs/architecture-overview.md` — System design and ER diagrams
 - `docs/testing/` — Test specifications and strategy

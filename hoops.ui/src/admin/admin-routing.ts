@@ -129,6 +129,14 @@ export const ADMINROUTES: Routes = [
         title: 'Reports',
         children: ADMIN_REPORTS_ROUTES,
       },
+      {
+        path: 'schedule-generator',
+        title: 'Schedule Generator',
+        loadComponent: () =>
+          import('./admin-schedule-generator/admin-schedule-generator').then(
+            (m) => m.AdminScheduleGenerator,
+          ),
+      },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: '**', component: PageNotFound },
     ],
