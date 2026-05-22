@@ -7,6 +7,7 @@ using Hoops.Core.Models;
 using Hoops.Functions.Utils;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Hoops.Functions.Functions
@@ -90,7 +91,17 @@ namespace Hoops.Functions.Functions
                 return ResponseUtils.CreateErrorResponse(req, HttpStatusCode.BadRequest, "Missing request body");
 
             profile.CompanyId = DefaultCompanyId;
-            var created = await _repository.CreateProfileAsync(profile);
+            SponsorProfile created;
+            try
+            {
+                created = await _repository.CreateProfileAsync(profile);
+            }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError(ex, "Database update failed while creating SponsorProfile");
+                var detail = ex.InnerException?.Message ?? ex.Message;
+                return ResponseUtils.CreateErrorResponse(req, HttpStatusCode.InternalServerError, detail);
+            }
             var resp = req.CreateResponse();
             await ResponseUtils.WriteJsonAsync(resp, created, HttpStatusCode.Created);
             return resp;
@@ -122,7 +133,17 @@ namespace Hoops.Functions.Functions
                 return ResponseUtils.CreateErrorResponse(req, HttpStatusCode.BadRequest, "Missing request body");
 
             profile.SponsorProfileId = id;
-            var updated = await _repository.UpdateProfileAsync(profile);
+            SponsorProfile updated;
+            try
+            {
+                updated = await _repository.UpdateProfileAsync(profile);
+            }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError(ex, "Database update failed while updating SponsorProfile {SponsorProfileId}", id);
+                var detail = ex.InnerException?.Message ?? ex.Message;
+                return ResponseUtils.CreateErrorResponse(req, HttpStatusCode.InternalServerError, detail);
+            }
             var resp = req.CreateResponse();
             await ResponseUtils.WriteJsonAsync(resp, updated);
             return resp;

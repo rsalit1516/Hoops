@@ -40,7 +40,7 @@ namespace Hoops.Functions.Tests
 
             // Use real in-memory configuration
             _configuration = new ConfigurationBuilder()
-                .AddInMemoryCollection(new Dictionary<string, string>
+                .AddInMemoryCollection(new Dictionary<string, string?>
                 {
                     ["CompanySettings:DefaultCompanyId"] = "1"
                 })

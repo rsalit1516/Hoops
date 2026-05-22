@@ -122,7 +122,7 @@ namespace Hoops.Functions.Tests
             var seasonId = 999;
 
             _mockRepository.Setup(r => r.GetPlayerByPersonAndSeasonId(personId, seasonId))
-                .Returns((Player)null);
+                .Returns((Player)null!);
 
             var request = CreateMockRequest();
 
@@ -393,7 +393,7 @@ namespace Hoops.Functions.Tests
             var playerId = 999;
 
             _mockRepository.Setup(r => r.GetById(playerId))
-                .Returns((Player)null);
+                .Returns((Player)null!);
 
             var request = CreateMockRequest();
 

@@ -31,7 +31,8 @@ namespace Hoops.Core.Models
         public string CreatedUser { get; set; }
         public bool? ShowAd { get; set; }
         public DateTime? AdExpiration { get; set; }
-        public string? LogoUrl { get; set; }
+        [NotMapped]
+        public string LogoUrl { get; set; }
 
 
         public virtual ICollection<Sponsor> Sponsors { get; set; }

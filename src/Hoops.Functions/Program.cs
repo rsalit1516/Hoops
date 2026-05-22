@@ -36,7 +36,7 @@ var host = new HostBuilder()
         if (env.IsDevelopment())
         {
             // Optional: user secrets for local
-            config.AddUserSecrets(typeof(Program).Assembly, optional: true);
+            config.AddUserSecrets(System.Reflection.Assembly.GetExecutingAssembly(), optional: true);
         }
 
         // Azure Key Vault (optional at startup; don't fail host if access is not yet granted)

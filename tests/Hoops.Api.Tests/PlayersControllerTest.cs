@@ -51,7 +51,7 @@ namespace Hoops.Api.Tests
         {
             // Arrange
             var playerId = 999;
-            _mockPlayerRepository.Setup(r => r.GetById(playerId)).Returns((Player)null);
+            _mockPlayerRepository.Setup(r => r.GetById(playerId)).Returns((Player)null!);
 
             // Act & Assert
             await Assert.ThrowsAsync<InvalidOperationException>(() => _service.GetPlayerByIdAsync(playerId));
@@ -78,7 +78,7 @@ namespace Hoops.Api.Tests
         public async Task UpdatePlayerAsync_WithNullPlayer_ThrowsArgumentNullException()
         {
             // Act & Assert
-            await Assert.ThrowsAsync<ArgumentNullException>(() => _service.UpdatePlayerAsync(null));
+            await Assert.ThrowsAsync<ArgumentNullException>(() => _service.UpdatePlayerAsync(null!));
         }
 
         [Fact]
@@ -86,7 +86,7 @@ namespace Hoops.Api.Tests
         {
             // Arrange
             var player = new Player { PlayerId = 999, PersonId = 100 };
-            _mockPlayerRepository.Setup(r => r.GetById(player.PlayerId)).Returns((Player)null);
+            _mockPlayerRepository.Setup(r => r.GetById(player.PlayerId)).Returns((Player)null!);
 
             // Act & Assert
             await Assert.ThrowsAsync<InvalidOperationException>(() => _service.UpdatePlayerAsync(player));
@@ -224,7 +224,7 @@ namespace Hoops.Api.Tests
             // Arrange
             var personId = 999;
             var seasonId = 1;
-            _mockPersonRepository.Setup(r => r.GetById(personId)).Returns((Person)null);
+            _mockPersonRepository.Setup(r => r.GetById(personId)).Returns((Person)null!);
 
             // Act & Assert
             await Assert.ThrowsAsync<InvalidOperationException>(
@@ -240,7 +240,7 @@ namespace Hoops.Api.Tests
             var person = new Person { PersonId = personId, BirthDate = new DateTime(2015, 1, 1), Gender = "M" };
 
             _mockPersonRepository.Setup(r => r.GetById(personId)).Returns(person);
-            _mockSeasonRepository.Setup(r => r.GetByIdAsync(seasonId)).ReturnsAsync((Season)null);
+            _mockSeasonRepository.Setup(r => r.GetByIdAsync(seasonId)).ReturnsAsync((Season)null!);
 
             // Act & Assert
             await Assert.ThrowsAsync<InvalidOperationException>(

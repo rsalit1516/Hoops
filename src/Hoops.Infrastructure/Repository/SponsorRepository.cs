@@ -71,7 +71,7 @@ namespace Hoops.Infrastructure.Repository
                 Name = z.p.SpoName,
                 Website = z.p.Url,
                 Phone = z.p.Phone,
-                LogoUrl = z.p.LogoUrl
+                LogoUrl = string.Empty
             })
             .ToListAsync();
             return sponsors;
