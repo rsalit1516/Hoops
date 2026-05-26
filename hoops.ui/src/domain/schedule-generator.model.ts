@@ -1,11 +1,13 @@
 export interface AvailableTimeSlot {
+  divisionId: number;
   dayOfWeek: number;
   startTime: string;
-  locationId: number | null;
+  locationId: number;
 }
 
 export interface ScheduleBlackoutDate {
-  date: string;
+  startDate: string;
+  endDate: string;
   locationId: number | null;
 }
 

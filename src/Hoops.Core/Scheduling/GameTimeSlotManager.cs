@@ -7,63 +7,39 @@ namespace Hoops.Core.Scheduling
 {
     public class GameTimeSlotManager
     {
+        private readonly List<AvailableTimeSlot> _slots;
         private readonly Dictionary<(DateTime date, int location), HashSet<TimeSpan>> _claimed = new();
-        private readonly ILookup<DayOfWeek, (TimeSpan time, int? locationId)> _slotsByDay;
 
         public GameTimeSlotManager(IEnumerable<AvailableTimeSlot> timeSlots)
         {
-            _slotsByDay = timeSlots.ToLookup(
-                s => s.DayOfWeek,
-                s => (s.StartTime, s.LocationId));
+            _slots = timeSlots.ToList();
         }
 
-        public static IEnumerable<AvailableTimeSlot> DefaultSlots()
+        /// <summary>
+        /// Returns distinct location IDs that have at least one configured slot for a given division and day.
+        /// </summary>
+        public IEnumerable<int> GetLocationsForDivisionAndDay(int divisionId, DayOfWeek day)
+            => _slots
+                .Where(s => s.DivisionId == divisionId && s.DayOfWeek == day)
+                .Select(s => s.LocationId)
+                .Distinct();
+
+        /// <summary>
+        /// Claims the next unclaimed start time for a division/date/location combination.
+        /// Returns null if no time is available (all slots claimed or none configured).
+        /// Court occupancy is shared across divisions — two divisions cannot claim the same court at the same time.
+        /// </summary>
+        public TimeSpan? ClaimNextSlot(int divisionId, DateTime date, int locationId)
         {
-            var weeknightTimes = new[]
-            {
-                new TimeSpan(18, 0, 0),
-                new TimeSpan(18, 50, 0),
-                new TimeSpan(19, 40, 0),
-                new TimeSpan(20, 30, 0),
-            };
-            var weekendTimes = new[]
-            {
-                new TimeSpan(9, 0, 0),
-                new TimeSpan(9, 50, 0),
-                new TimeSpan(10, 40, 0),
-                new TimeSpan(11, 30, 0),
-            };
+            var times = _slots
+                .Where(s => s.DivisionId == divisionId && s.DayOfWeek == date.DayOfWeek && s.LocationId == locationId)
+                .Select(s => s.StartTime)
+                .OrderBy(t => t)
+                .ToList();
 
-            foreach (var day in new[] { DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday, DayOfWeek.Thursday })
-                foreach (var time in weeknightTimes)
-                    yield return new AvailableTimeSlot { DayOfWeek = day, StartTime = time };
-
-            foreach (var day in new[] { DayOfWeek.Saturday, DayOfWeek.Sunday })
-                foreach (var time in weekendTimes)
-                    yield return new AvailableTimeSlot { DayOfWeek = day, StartTime = time };
-        }
-
-        public IEnumerable<TimeSpan> GetTimesForDay(DayOfWeek day, int locationNumber)
-            => _slotsByDay[day]
-                .Where(s => s.locationId == null || s.locationId == locationNumber)
-                .Select(s => s.time)
-                .OrderBy(t => t);
-
-        public bool HasAvailableSlot(DateTime date, int locationNumber)
-        {
-            var times = GetTimesForDay(date.DayOfWeek, locationNumber).ToList();
-            if (times.Count == 0) return false;
-
-            var key = (date.Date, locationNumber);
-            return !_claimed.TryGetValue(key, out var used) || used.Count < times.Count;
-        }
-
-        public TimeSpan? ClaimNextSlot(DateTime date, int locationNumber)
-        {
-            var times = GetTimesForDay(date.DayOfWeek, locationNumber).ToList();
             if (times.Count == 0) return null;
 
-            var key = (date.Date, locationNumber);
+            var key = (date.Date, locationId);
             if (!_claimed.TryGetValue(key, out var used))
             {
                 used = new HashSet<TimeSpan>();

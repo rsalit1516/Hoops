@@ -44,10 +44,26 @@ public class ScheduleGeneratorFunction
         if (request == null)
             return ResponseUtils.CreateErrorResponse(req, HttpStatusCode.BadRequest, "Request body is required.");
 
-        var result = await _schedulerService.PreviewAsync(request);
+        ScheduleGeneratorResult result;
+        try
+        {
+            result = await _schedulerService.PreviewAsync(request);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Unhandled exception in PreviewAsync");
+            var errRes = ResponseUtils.CreateResponse(req, HttpStatusCode.InternalServerError);
+            await ResponseUtils.WriteJsonAsync(errRes, new ScheduleGeneratorResult
+            {
+                Success = false,
+                ErrorMessage = $"Internal error: {ex.Message}",
+            }, HttpStatusCode.InternalServerError);
+            return errRes;
+        }
 
-        var res = ResponseUtils.CreateResponse(req, result.Success ? HttpStatusCode.OK : HttpStatusCode.UnprocessableEntity);
-        await ResponseUtils.WriteJsonAsync(res, result);
+        var statusCode = result.Success ? HttpStatusCode.OK : HttpStatusCode.UnprocessableEntity;
+        var res = ResponseUtils.CreateResponse(req, statusCode);
+        await ResponseUtils.WriteJsonAsync(res, result, statusCode);
         return res;
     }
 
@@ -77,11 +93,25 @@ public class ScheduleGeneratorFunction
 
         _logger.LogInformation("Committing {Count} games for season {SeasonId}", request.Games.Count, request.SeasonId);
 
-        var result = await _schedulerService.CommitAsync(request);
+        ScheduleCommitResult result;
+        try
+        {
+            result = await _schedulerService.CommitAsync(request);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Unhandled exception in CommitAsync");
+            var errRes = ResponseUtils.CreateResponse(req, HttpStatusCode.InternalServerError);
+            await ResponseUtils.WriteJsonAsync(errRes, new ScheduleCommitResult
+            {
+                Errors = new List<string> { $"Internal error: {ex.Message}" },
+            }, HttpStatusCode.InternalServerError);
+            return errRes;
+        }
 
         var statusCode = result.Errors.Count == 0 ? HttpStatusCode.OK : HttpStatusCode.MultiStatus;
         var res = ResponseUtils.CreateResponse(req, statusCode);
-        await ResponseUtils.WriteJsonAsync(res, result);
+        await ResponseUtils.WriteJsonAsync(res, result, statusCode);
         return res;
     }
 }

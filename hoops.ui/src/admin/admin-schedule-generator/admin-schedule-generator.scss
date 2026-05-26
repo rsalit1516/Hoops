@@ -1,0 +1,161 @@
+@use "sass:color";
+@use "../../Content/variables" as v;
+
+:host {
+  display: block;
+}
+
+.card-container {
+  background-color: v.$admin-card-background-color;
+  border-radius: v.$border-radius;
+  border: 0.5px solid v.$card-border-color;
+  margin: 0.5rem;
+}
+
+.card-header {
+  background-color: v.$admin-background-color;
+  padding: 0.75rem 1rem 0.5rem;
+  border-bottom: 1px solid v.$card-border-color;
+  border-radius: v.$border-radius v.$border-radius 0 0;
+}
+
+.card-title {
+  color: v.$field-label;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+}
+
+.card-body {
+  background-color: v.$admin-card-background-color;
+  padding: 1rem;
+  border-radius: 0 0 v.$border-radius v.$border-radius;
+}
+
+.step-content {
+  background-color: v.$admin-card-background-color;
+  color: v.$field-label;
+}
+
+// Override mat-stepper backgrounds
+::ng-deep .mat-stepper-horizontal {
+  background-color: v.$admin-card-background-color !important;
+}
+
+::ng-deep .mat-horizontal-content-container {
+  background-color: v.$admin-card-background-color !important;
+  padding: 0 1rem 1rem !important;
+}
+
+::ng-deep .mat-horizontal-stepper-header-container {
+  background-color: v.$admin-background-color !important;
+}
+
+::ng-deep .mat-step-header {
+  background-color: transparent !important;
+}
+
+::ng-deep .mat-step-header .mat-step-label {
+  color: color.adjust(v.$field-label, $lightness: -20%) !important;
+}
+
+::ng-deep .mat-step-header.cdk-keyboard-focused,
+::ng-deep .mat-step-header.cdk-program-focused,
+::ng-deep .mat-step-header:hover:not([aria-disabled]),
+::ng-deep .mat-step-header:hover[aria-disabled='false'] {
+  background-color: color.adjust(v.$admin-background-color, $lightness: 5%) !important;
+}
+
+::ng-deep .mat-stepper-horizontal-line {
+  border-top-color: v.$card-border-color !important;
+}
+
+// Table styling for time slots / blackout tables
+::ng-deep .time-slot-table,
+::ng-deep .blackout-table,
+::ng-deep .preview-table {
+  background-color: v.$admin-card-background-color !important;
+
+  th.mat-header-cell {
+    color: v.$brand-color !important;
+    background-color: v.$admin-background-color !important;
+    font-weight: 700;
+  }
+
+  td.mat-cell {
+    color: v.$field-label !important;
+    background-color: v.$table-body-color !important;
+  }
+}
+
+.division-group-header {
+  color: v.$brand-color;
+  font-size: 1rem;
+  font-weight: 700;
+  background-color: v.$admin-background-color;
+  padding: 0.4rem 0.75rem;
+  margin: 0.5rem 0 0.25rem;
+  border-left: 3px solid v.$brand-color;
+}
+
+.preview-header {
+  color: v.$field-label;
+}
+
+.warning-text {
+  color: #ff9800;
+  font-size: 0.8rem;
+}
+
+.row-has-warnings td {
+  background-color: color.adjust(#3a2800, $lightness: 5%) !important;
+}
+
+.error-panel {
+  background-color: color.adjust(#3a0000, $lightness: 5%);
+  border: 1px solid #a94442;
+  border-radius: 4px;
+  color: #ffaaaa;
+}
+
+.success-panel {
+  background-color: color.adjust(#003a00, $lightness: 5%);
+  border: 1px solid #2e7d32;
+  border-radius: 4px;
+  color: #aaffaa;
+}
+
+.time-input {
+  background-color: v.$admin-input-background-color;
+  color: v.$field-label;
+  border: 1px solid v.$card-border-color;
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.9rem;
+}
+
+.period-field-day   { min-width: 100px; max-width: 120px; }
+.period-field-time  { min-width: 120px; max-width: 140px; }
+.period-field-courts { min-width: 200px; flex: 1; }
+.period-field-copy  { min-width: 160px; max-width: 220px; }
+.period-delete-btn  { margin-top: 8px; }
+
+.period-warning {
+  color: #ff9800;
+  font-size: 0.8rem;
+
+  .warn-icon {
+    font-size: 1rem;
+    height: 1rem;
+    width: 1rem;
+    vertical-align: middle;
+  }
+}
+
+p.text-gray-500,
+p.text-gray-600,
+p.text-gray-400,
+span {
+  color: color.adjust(v.$field-label, $lightness: -20%) !important;
+}

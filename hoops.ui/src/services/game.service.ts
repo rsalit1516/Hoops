@@ -500,7 +500,11 @@ export class GameService {
     };
     return this.http
       .post<ScheduleGeneratorResult>(Constants.SCHEDULE_GENERATOR_PREVIEW_URL, request, httpOptions)
-      .pipe(catchError(this.dataService.handleError('previewSchedule', { success: false, errorMessage: 'Request failed', games: [], totalGames: 0 })));
+      .pipe(catchError((err: HttpErrorResponse) => {
+        const errorMessage: string = err.error?.errorMessage ?? err.message ?? 'Request failed';
+        this.logger.error('previewSchedule failed', err);
+        return of({ success: false, errorMessage, games: [], totalGames: 0 } as ScheduleGeneratorResult);
+      }));
   }
 
   commitSchedule(request: ScheduleCommitRequest): Observable<ScheduleCommitResult> {

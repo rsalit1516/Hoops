@@ -43,15 +43,14 @@ namespace Hoops.Application.Services
             if (request.GamesPerTeam <= 0)
                 return Fail("Games per team must be greater than zero.");
 
-            var timeSlots = request.TimeSlots?.Count > 0
-                ? request.TimeSlots
-                : GameTimeSlotManager.DefaultSlots().ToList();
+            if (request.TimeSlots == null || request.TimeSlots.Count == 0)
+                return Fail("At least one time slot must be configured.");
 
             var locations = (await _locationRepo.GetAll()).ToList();
             if (locations.Count == 0)
                 return Fail("No locations found. Add at least one location before generating a schedule.");
 
-            var slotManager = new GameTimeSlotManager(timeSlots);
+            var slotManager = new GameTimeSlotManager(request.TimeSlots);
             var allPreviewGames = new List<ScheduleGamePreviewItem>();
             // tracks (date, time) -> set of coachIds already scheduled (for cross-division conflict detection)
             var coachSlotMap = new Dictionary<(DateTime date, TimeSpan time), HashSet<int>>();
@@ -86,7 +85,7 @@ namespace Hoops.Application.Services
                 {
                     var slot = FindNextSlot(
                         request, locations, slotManager, coachSlotMap,
-                        home, visiting, weeklyGameCount, allPreviewGames, divIndex);
+                        home, visiting, weeklyGameCount, allPreviewGames, divisionId, divIndex);
 
                     if (slot == null)
                     {
@@ -241,13 +240,14 @@ namespace Hoops.Application.Services
 
         private (DateTime date, TimeSpan time, Location location)? FindNextSlot(
             ScheduleGeneratorRequest request,
-            List<Location> locations,
+            List<Location> allLocations,
             GameTimeSlotManager slotManager,
             Dictionary<(DateTime date, TimeSpan time), HashSet<int>> coachSlotMap,
             Team home,
             Team visiting,
             Dictionary<int, Dictionary<DateTime, int>> weeklyGameCount,
             List<ScheduleGamePreviewItem> alreadyScheduled,
+            int divisionId,
             int divIndex)
         {
             var current = request.StartDate.Date;
@@ -260,11 +260,14 @@ namespace Hoops.Application.Services
                     if (WeeklyCountFor(weeklyGameCount, home.TeamId, current) < request.MaxGamesPerWeekPerTeam &&
                         WeeklyCountFor(weeklyGameCount, visiting.TeamId, current) < request.MaxGamesPerWeekPerTeam)
                     {
+                        var validLocationIds = slotManager.GetLocationsForDivisionAndDay(divisionId, current.DayOfWeek);
+                        var locations = allLocations.Where(l => validLocationIds.Contains(l.LocationNumber));
+
                         foreach (var location in locations)
                         {
                             if (IsBlackedOut(current, location.LocationNumber, request.BlackoutDates)) continue;
 
-                            var time = slotManager.ClaimNextSlot(current, location.LocationNumber);
+                            var time = slotManager.ClaimNextSlot(divisionId, current, location.LocationNumber);
                             if (time == null) continue;
 
                             return (current, time.Value, location);
@@ -282,7 +285,7 @@ namespace Hoops.Application.Services
         {
             if (blackouts == null) return false;
             return blackouts.Any(b =>
-                b.Date.Date == date.Date &&
+                date.Date >= b.StartDate.Date && date.Date <= b.EndDate.Date &&
                 (b.LocationId == null || b.LocationId == locationId));
         }
 

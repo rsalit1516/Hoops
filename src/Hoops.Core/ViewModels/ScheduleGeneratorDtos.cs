@@ -19,14 +19,16 @@ namespace Hoops.Core.ViewModels
 
     public class AvailableTimeSlot
     {
+        public int DivisionId { get; set; }
         public DayOfWeek DayOfWeek { get; set; }
         public TimeSpan StartTime { get; set; }
-        public int? LocationId { get; set; }
+        public int LocationId { get; set; }
     }
 
     public class ScheduleBlackoutDate
     {
-        public DateTime Date { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
         public int? LocationId { get; set; }
     }
 

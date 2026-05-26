@@ -95,8 +95,6 @@ namespace Hoops.Infrastructure.Repository
         {
             return context.Teams
                 .Where(t => t.DivisionId == divisionId)
-                .Include(t => t.Coach)
-                .Include(t => t.AssistantCoach)
                 .ToList();
         }
 

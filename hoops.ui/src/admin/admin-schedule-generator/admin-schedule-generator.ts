@@ -1,11 +1,12 @@
 import {
   Component,
   computed,
+  effect,
   inject,
   OnInit,
   signal,
 } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
@@ -27,7 +28,6 @@ import { LocationService } from '@app/services/location.service';
 import { GameService } from '@app/services/game.service';
 import { Constants } from '@app/shared/constants';
 import { Division } from '@app/domain/division';
-import { Season } from '@app/domain/season';
 import {
   AvailableTimeSlot,
   ScheduleBlackoutDate,
@@ -35,43 +35,21 @@ import {
   ScheduleGeneratorRequest,
 } from '@app/domain/schedule-generator.model';
 
-interface TimeSlotRow {
-  dayOfWeek: number;
-  startTime: string;
-  locationId: number | null;
+interface TimePeriodRow {
+  id: number;
+  divisionId: number;
+  dayOfWeek: number;      // 0–6
+  beginTime: string;      // "HH:MM" (HTML time input format)
+  endTime: string;        // "HH:MM"
+  locationIds: number[];  // locationNumber values
 }
 
 interface BlackoutDateRow {
-  date: string;
+  id: number;
+  startDate: string;
+  endDate: string;
   locationId: number | null;
 }
-
-const DEFAULT_TIME_SLOTS: TimeSlotRow[] = [
-  { dayOfWeek: 1, startTime: '18:00', locationId: null },
-  { dayOfWeek: 1, startTime: '18:50', locationId: null },
-  { dayOfWeek: 1, startTime: '19:40', locationId: null },
-  { dayOfWeek: 1, startTime: '20:30', locationId: null },
-  { dayOfWeek: 2, startTime: '18:00', locationId: null },
-  { dayOfWeek: 2, startTime: '18:50', locationId: null },
-  { dayOfWeek: 2, startTime: '19:40', locationId: null },
-  { dayOfWeek: 2, startTime: '20:30', locationId: null },
-  { dayOfWeek: 3, startTime: '18:00', locationId: null },
-  { dayOfWeek: 3, startTime: '18:50', locationId: null },
-  { dayOfWeek: 3, startTime: '19:40', locationId: null },
-  { dayOfWeek: 3, startTime: '20:30', locationId: null },
-  { dayOfWeek: 4, startTime: '18:00', locationId: null },
-  { dayOfWeek: 4, startTime: '18:50', locationId: null },
-  { dayOfWeek: 4, startTime: '19:40', locationId: null },
-  { dayOfWeek: 4, startTime: '20:30', locationId: null },
-  { dayOfWeek: 6, startTime: '09:00', locationId: null },
-  { dayOfWeek: 6, startTime: '09:50', locationId: null },
-  { dayOfWeek: 6, startTime: '10:40', locationId: null },
-  { dayOfWeek: 6, startTime: '11:30', locationId: null },
-  { dayOfWeek: 0, startTime: '09:00', locationId: null },
-  { dayOfWeek: 0, startTime: '09:50', locationId: null },
-  { dayOfWeek: 0, startTime: '10:40', locationId: null },
-  { dayOfWeek: 0, startTime: '11:30', locationId: null },
-];
 
 @Component({
   selector: 'app-admin-schedule-generator',
@@ -98,6 +76,7 @@ const DEFAULT_TIME_SLOTS: TimeSlotRow[] = [
     '../../shared/scss/forms.scss',
     '../../shared/scss/cards.scss',
     '../admin.scss',
+    './admin-schedule-generator.scss',
   ],
 })
 export class AdminScheduleGenerator implements OnInit {
@@ -106,6 +85,11 @@ export class AdminScheduleGenerator implements OnInit {
   private locationService = inject(LocationService);
   private gameService = inject(GameService);
   private snackBar = inject(MatSnackBar);
+
+  private nextSlotId = 1;
+  private nextBlackoutId = 1;
+
+  private static readonly STORAGE_KEY = 'schedule-generator-settings';
 
   // ----- season / parameter state -----
   seasons = computed(() => this.seasonService.seasons);
@@ -122,8 +106,9 @@ export class AdminScheduleGenerator implements OnInit {
   selectedDivisionIds = signal<number[]>([]);
   isLoadingDivisions = signal<boolean>(false);
 
-  // ----- time slots -----
-  timeSlots = signal<TimeSlotRow[]>([...DEFAULT_TIME_SLOTS]);
+  // ----- time periods (keyed by id, grouped by division in template) -----
+  timePeriods = signal<TimePeriodRow[]>([]);
+  copySourceIds = signal<Record<number, number | null>>({});
 
   // ----- blackout dates -----
   blackoutDates = signal<BlackoutDateRow[]>([]);
@@ -138,6 +123,10 @@ export class AdminScheduleGenerator implements OnInit {
 
   // ----- derived -----
   locations = computed(() => this.locationService.locations());
+  selectedDivisions = computed(() => {
+    const ids = this.selectedDivisionIds();
+    return this.divisionsForSeason().filter(d => ids.includes(d.divisionId));
+  });
   previewByDivision = computed(() => {
     const games = this.previewGames();
     const map = new Map<string, ScheduleGamePreviewItem[]>();
@@ -161,6 +150,70 @@ export class AdminScheduleGenerator implements OnInit {
       this.locationService.fetchLocations();
     }
     this.loadSeasons();
+    this.restoreFromStorage();
+    effect(() => this.saveToStorage(), { allowSignalWrites: true });
+  }
+
+  private saveToStorage() {
+    const state = {
+      selectedSeasonId: this.selectedSeasonId(),
+      startDate: this.startDate()?.toISOString() ?? null,
+      endDate: this.endDate()?.toISOString() ?? null,
+      gamesPerTeam: this.gamesPerTeam(),
+      maxGamesPerWeek: this.maxGamesPerWeek(),
+      gameDurationMinutes: this.gameDurationMinutes(),
+      enforceCoachConflicts: this.enforceCoachConflicts(),
+      selectedDivisionIds: this.selectedDivisionIds(),
+      timePeriods: this.timePeriods(),
+      blackoutDates: this.blackoutDates(),
+    };
+    try {
+      localStorage.setItem(AdminScheduleGenerator.STORAGE_KEY, JSON.stringify(state));
+    } catch { /* ignore quota errors */ }
+  }
+
+  private restoreFromStorage() {
+    try {
+      const raw = localStorage.getItem(AdminScheduleGenerator.STORAGE_KEY);
+      if (!raw) return;
+      const state = JSON.parse(raw);
+      if (state.selectedSeasonId != null) {
+        this.selectedSeasonId.set(state.selectedSeasonId);
+        this.loadDivisionsForSeason(state.selectedSeasonId);
+      }
+      if (state.startDate) this.startDate.set(new Date(state.startDate));
+      if (state.endDate) this.endDate.set(new Date(state.endDate));
+      if (state.gamesPerTeam != null) this.gamesPerTeam.set(state.gamesPerTeam);
+      if (state.maxGamesPerWeek != null) this.maxGamesPerWeek.set(state.maxGamesPerWeek);
+      if (state.gameDurationMinutes != null) this.gameDurationMinutes.set(state.gameDurationMinutes);
+      if (state.enforceCoachConflicts != null) this.enforceCoachConflicts.set(state.enforceCoachConflicts);
+      if (Array.isArray(state.selectedDivisionIds)) this.selectedDivisionIds.set(state.selectedDivisionIds);
+      if (Array.isArray(state.timePeriods) && state.timePeriods.length > 0) {
+        this.timePeriods.set(state.timePeriods);
+        this.nextSlotId = Math.max(...state.timePeriods.map((p: TimePeriodRow) => p.id)) + 1;
+      }
+      if (Array.isArray(state.blackoutDates) && state.blackoutDates.length > 0) {
+        this.blackoutDates.set(state.blackoutDates);
+        this.nextBlackoutId = Math.max(...state.blackoutDates.map((b: BlackoutDateRow) => b.id)) + 1;
+      }
+    } catch { /* ignore corrupt storage */ }
+  }
+
+  clearSavedSettings() {
+    localStorage.removeItem(AdminScheduleGenerator.STORAGE_KEY);
+    this.selectedSeasonId.set(null);
+    this.startDate.set(null);
+    this.endDate.set(null);
+    this.gamesPerTeam.set(10);
+    this.maxGamesPerWeek.set(2);
+    this.gameDurationMinutes.set(50);
+    this.enforceCoachConflicts.set(true);
+    this.selectedDivisionIds.set([]);
+    this.divisionsForSeason.set([]);
+    this.timePeriods.set([]);
+    this.blackoutDates.set([]);
+    this.previewGames.set([]);
+    this.previewError.set(null);
   }
 
   private loadSeasons() {
@@ -180,6 +233,7 @@ export class AdminScheduleGenerator implements OnInit {
     }
     this.loadDivisionsForSeason(seasonId);
     this.selectedDivisionIds.set([]);
+    this.timePeriods.set([]);
   }
 
   private loadDivisionsForSeason(seasonId: number) {
@@ -203,80 +257,96 @@ export class AdminScheduleGenerator implements OnInit {
     this.selectedDivisionIds.update((ids) =>
       ids.includes(divisionId) ? ids.filter((id) => id !== divisionId) : [...ids, divisionId],
     );
+    // drop periods for divisions that are no longer selected
+    const selected = this.selectedDivisionIds();
+    this.timePeriods.update(rows => rows.filter(p => selected.includes(p.divisionId)));
   }
 
   isDivisionSelected(divisionId: number) {
     return this.selectedDivisionIds().includes(divisionId);
   }
 
-  // ----- time slot management -----
-  addTimeSlot() {
-    this.timeSlots.update((rows) => [
-      ...rows,
-      { dayOfWeek: 1, startTime: '18:00', locationId: null },
-    ]);
+  // ----- time period management -----
+  periodsForDivision(divisionId: number): TimePeriodRow[] {
+    return this.timePeriods().filter(p => p.divisionId === divisionId);
   }
 
-  removeTimeSlot(index: number) {
-    this.timeSlots.update((rows) => rows.filter((_, i) => i !== index));
+  addTimePeriodForDivision(divisionId: number) {
+    this.timePeriods.update(rows => [...rows, {
+      id: this.nextSlotId++, divisionId,
+      dayOfWeek: 6, beginTime: '09:00', endTime: '13:00', locationIds: [],
+    }]);
   }
 
-  updateTimeSlotDay(index: number, day: number) {
-    this.timeSlots.update((rows) => {
-      const copy = [...rows];
-      copy[index] = { ...copy[index], dayOfWeek: day };
-      return copy;
-    });
+  removeTimePeriod(id: number) {
+    this.timePeriods.update(rows => rows.filter(p => p.id !== id));
   }
 
-  updateTimeSlotTime(index: number, time: string) {
-    this.timeSlots.update((rows) => {
-      const copy = [...rows];
-      copy[index] = { ...copy[index], startTime: time };
-      return copy;
-    });
+  updatePeriodDay(id: number, day: number) {
+    this.timePeriods.update(rows => rows.map(p => p.id === id ? { ...p, dayOfWeek: day } : p));
   }
 
-  updateTimeSlotLocation(index: number, locationId: number | null) {
-    this.timeSlots.update((rows) => {
-      const copy = [...rows];
-      copy[index] = { ...copy[index], locationId };
-      return copy;
-    });
+  updatePeriodBeginTime(id: number, time: string) {
+    this.timePeriods.update(rows => rows.map(p => p.id === id ? { ...p, beginTime: time } : p));
   }
 
-  resetToDefaultSlots() {
-    this.timeSlots.set([...DEFAULT_TIME_SLOTS]);
+  updatePeriodEndTime(id: number, time: string) {
+    this.timePeriods.update(rows => rows.map(p => p.id === id ? { ...p, endTime: time } : p));
+  }
+
+  updatePeriodLocations(id: number, locationIds: number[]) {
+    this.timePeriods.update(rows => rows.map(p => p.id === id ? { ...p, locationIds } : p));
+  }
+
+  divisionsWithPeriods(excludeId: number): Division[] {
+    const configured = new Set(this.timePeriods().map(p => p.divisionId));
+    return this.selectedDivisions().filter(
+      d => d.divisionId !== excludeId && configured.has(d.divisionId)
+    );
+  }
+
+  copyFromDivision(sourceDivisionId: number, targetDivisionId: number) {
+    if (sourceDivisionId === targetDivisionId) return;
+    this.timePeriods.update(rows => rows.filter(p => p.divisionId !== targetDivisionId));
+    const cloned = this.timePeriods()
+      .filter(p => p.divisionId === sourceDivisionId)
+      .map(p => ({ ...p, id: this.nextSlotId++, divisionId: targetDivisionId }));
+    this.timePeriods.update(rows => [...rows, ...cloned]);
+    this.copySourceIds.update(m => ({ ...m, [targetDivisionId]: null }));
+  }
+
+  periodWindowTooShort(period: TimePeriodRow): boolean {
+    if (!period.beginTime || !period.endTime) return false;
+    return (this.timeToMinutes(period.endTime) - this.timeToMinutes(period.beginTime))
+      < this.gameDurationMinutes();
   }
 
   // ----- blackout date management -----
   addBlackoutDate() {
-    this.blackoutDates.update((rows) => [
+    this.blackoutDates.update(rows => [
       ...rows,
-      { date: '', locationId: null },
+      { id: this.nextBlackoutId++, startDate: '', endDate: '', locationId: null },
     ]);
   }
 
-  removeBlackoutDate(index: number) {
-    this.blackoutDates.update((rows) => rows.filter((_, i) => i !== index));
+  removeBlackoutDate(id: number) {
+    this.blackoutDates.update(rows => rows.filter(b => b.id !== id));
   }
 
-  updateBlackoutDate(index: number, date: Date | null) {
+  updateBlackoutStartDate(id: number, date: Date | null) {
     if (!date) return;
-    const iso = date.toISOString().split('T')[0];
-    this.blackoutDates.update((rows) => {
-      const copy = [...rows];
-      copy[index] = { ...copy[index], date: iso };
-      return copy;
-    });
+    const iso = new Date(date).toISOString().split('T')[0];
+    this.blackoutDates.update(rows => rows.map(b => b.id === id ? { ...b, startDate: iso } : b));
   }
 
-  updateBlackoutLocation(index: number, locationId: number | null) {
-    this.blackoutDates.update((rows) => {
-      const copy = [...rows];
-      copy[index] = { ...copy[index], locationId };
-      return copy;
-    });
+  updateBlackoutEndDate(id: number, date: Date | null) {
+    if (!date) return;
+    const iso = new Date(date).toISOString().split('T')[0];
+    this.blackoutDates.update(rows => rows.map(b => b.id === id ? { ...b, endDate: iso } : b));
+  }
+
+  updateBlackoutLocation(id: number, locationId: number | null) {
+    this.blackoutDates.update(rows => rows.map(b => b.id === id ? { ...b, locationId } : b));
   }
 
   // ----- validation helpers -----
@@ -296,7 +366,13 @@ export class AdminScheduleGenerator implements OnInit {
   }
 
   step3Valid() {
-    return this.timeSlots().length > 0;
+    const ids = this.selectedDivisionIds();
+    if (ids.length === 0) return false;
+    return ids.every(id =>
+      this.periodsForDivision(id).some(p =>
+        p.locationIds.length > 0 && !this.periodWindowTooShort(p)
+      )
+    );
   }
 
   // ----- generate preview -----
@@ -317,21 +393,31 @@ export class AdminScheduleGenerator implements OnInit {
       gamesPerTeam: this.gamesPerTeam(),
       maxGamesPerWeekPerTeam: this.maxGamesPerWeek(),
       gameDurationMinutes: this.gameDurationMinutes(),
-      timeSlots: this.timeSlots().map(
-        (r): AvailableTimeSlot => ({
-          dayOfWeek: r.dayOfWeek,
-          startTime: this.parseTimeToSpan(r.startTime),
-          locationId: r.locationId,
-        }),
-      ),
+      timeSlots: this.timePeriods().flatMap((period): AvailableTimeSlot[] => {
+        const slots: AvailableTimeSlot[] = [];
+        const duration = this.gameDurationMinutes();
+        let t = this.timeToMinutes(period.beginTime);
+        const end = this.timeToMinutes(period.endTime);
+        while (t + duration <= end) {
+          for (const locId of period.locationIds) {
+            slots.push({
+              divisionId: period.divisionId,
+              dayOfWeek: period.dayOfWeek,
+              startTime: this.minutesToSpan(t),
+              locationId: locId,
+            });
+          }
+          t += duration;
+        }
+        return slots;
+      }),
       blackoutDates: this.blackoutDates()
-        .filter((r) => !!r.date)
-        .map(
-          (r): ScheduleBlackoutDate => ({
-            date: r.date,
-            locationId: r.locationId,
-          }),
-        ),
+        .filter(r => !!r.startDate && !!r.endDate)
+        .map((r): ScheduleBlackoutDate => ({
+          startDate: r.startDate,
+          endDate: r.endDate,
+          locationId: r.locationId,
+        })),
       enforceCoachConflicts: this.enforceCoachConflicts(),
     };
 
@@ -344,9 +430,10 @@ export class AdminScheduleGenerator implements OnInit {
           this.previewError.set(result.errorMessage ?? 'Preview failed.');
         }
       },
-      error: () => {
+      error: (err) => {
         this.isGenerating.set(false);
-        this.previewError.set('Failed to generate preview. Check console for details.');
+        const msg = err?.error?.errorMessage ?? err?.message ?? 'Failed to generate preview.';
+        this.previewError.set(msg);
       },
     });
   }
@@ -380,9 +467,15 @@ export class AdminScheduleGenerator implements OnInit {
     });
   }
 
-  private parseTimeToSpan(time: string): string {
+  private timeToMinutes(time: string): number {
     const [h, m] = time.split(':').map(Number);
-    return `${String(h).padStart(2, '0')}:${String(m ?? 0).padStart(2, '0')}:00`;
+    return h * 60 + (m ?? 0);
+  }
+
+  private minutesToSpan(minutes: number): string {
+    const h = Math.floor(minutes / 60);
+    const m = minutes % 60;
+    return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:00`;
   }
 
   formatGameDate(dateStr: string): string {
