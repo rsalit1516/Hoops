@@ -63,8 +63,11 @@
 ::ng-deep .mat-step-header.cdk-keyboard-focused,
 ::ng-deep .mat-step-header.cdk-program-focused,
 ::ng-deep .mat-step-header:hover:not([aria-disabled]),
-::ng-deep .mat-step-header:hover[aria-disabled='false'] {
-  background-color: color.adjust(v.$admin-background-color, $lightness: 5%) !important;
+::ng-deep .mat-step-header:hover[aria-disabled="false"] {
+  background-color: color.adjust(
+    v.$admin-background-color,
+    $lightness: 5%
+  ) !important;
 }
 
 ::ng-deep .mat-stepper-horizontal-line {
@@ -135,11 +138,25 @@
   font-size: 0.9rem;
 }
 
-.period-field-day   { min-width: 100px; max-width: 120px; }
-.period-field-time  { min-width: 120px; max-width: 140px; }
-.period-field-courts { min-width: 200px; flex: 1; }
-.period-field-copy  { min-width: 160px; max-width: 220px; }
-.period-delete-btn  { margin-top: 8px; }
+.period-field-day {
+  min-width: 100px;
+  max-width: 120px;
+}
+.period-field-time {
+  min-width: 120px;
+  max-width: 140px;
+}
+.period-field-courts {
+  min-width: 200px;
+  flex: 1;
+}
+.period-field-copy {
+  min-width: 160px;
+  max-width: 220px;
+}
+.period-delete-btn {
+  margin-top: 8px;
+}
 
 .period-warning {
   color: #ff9800;
@@ -153,9 +170,27 @@
   }
 }
 
-p.text-gray-500,
-p.text-gray-600,
-p.text-gray-400,
-span {
-  color: color.adjust(v.$field-label, $lightness: -20%) !important;
+.period-slots-summary {
+  font-size: 0.8rem;
+  color: #aaa;
+}
+
+.row-editing td {
+  background-color: color.adjust(
+    v.$admin-background-color,
+    $lightness: 8%
+  ) !important;
+}
+
+.edit-cell {
+  padding: 4px 0;
+}
+
+.edit-input {
+  background-color: v.$admin-input-background-color;
+  color: v.$field-label;
+  border: 1px solid v.$card-border-color;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 0.85rem;
 }

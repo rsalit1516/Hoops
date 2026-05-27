@@ -50,14 +50,10 @@ namespace Hoops.Application.Services
             if (locations.Count == 0)
                 return Fail("No locations found. Add at least one location before generating a schedule.");
 
-            var slotManager = new GameTimeSlotManager(request.TimeSlots);
-            var allPreviewGames = new List<ScheduleGamePreviewItem>();
-            // tracks (date, time) -> set of coachIds already scheduled (for cross-division conflict detection)
-            var coachSlotMap = new Dictionary<(DateTime date, TimeSpan time), HashSet<int>>();
-
-            for (int divIndex = 0; divIndex < request.DivisionIds.Count; divIndex++)
+            // Phase 1: load divisions and build pairings per division
+            var divisionPairings = new List<(int divisionId, Division division, List<(Team home, Team visiting)> pairings)>();
+            foreach (var divisionId in request.DivisionIds)
             {
-                var divisionId = request.DivisionIds[divIndex];
                 var division = await _divisionRepo.GetByIdAsync(divisionId);
                 if (division == null)
                 {
@@ -66,79 +62,97 @@ namespace Hoops.Application.Services
                 }
 
                 var teams = _teamRepo.GetDivisionTeamsWithCoaches(divisionId);
-
                 if (teams.Count < 2)
                 {
                     _logger.LogWarning("Division {DivisionId} has fewer than 2 teams, skipping.", divisionId);
                     continue;
                 }
 
-                var scheduleNumber = divisionId; // use divisionId as schedule group identifier
                 var pairings = GenerateRoundRobinPairings(teams, request.GamesPerTeam);
+                divisionPairings.Add((divisionId, division, pairings));
+                _logger.LogInformation("Division {Name}: {TeamCount} teams, {PairingCount} games to schedule",
+                    division.DivisionDescription, teams.Count, pairings.Count);
+            }
 
-                var gamesPerTeamCount = teams.ToDictionary(t => t.TeamId, _ => 0);
-                // track games scheduled this week per team: teamId -> (weekStart -> count)
-                var weeklyGameCount = new Dictionary<int, Dictionary<DateTime, int>>();
+            if (divisionPairings.Count == 0)
+                return Fail("No eligible divisions found (each division requires at least 2 teams).");
 
-                int gameNumber = 1;
-                foreach (var (home, visiting) in pairings)
+            // Phase 2: interleave pairings across divisions so court time is distributed fairly.
+            // Pattern: game1-div1, game1-div2, game1-div3, game2-div1, game2-div2, ...
+            var interleaved = new List<(Team home, Team visiting, int divisionId, Division division, int scheduleNumber)>();
+            int maxPairings = divisionPairings.Max(d => d.pairings.Count);
+            for (int i = 0; i < maxPairings; i++)
+            {
+                foreach (var (divId, div, pairings) in divisionPairings)
                 {
-                    var slot = FindNextSlot(
-                        request, locations, slotManager, coachSlotMap,
-                        home, visiting, weeklyGameCount, allPreviewGames, divisionId, divIndex);
+                    if (i < pairings.Count)
+                        interleaved.Add((pairings[i].home, pairings[i].visiting, divId, div, divId));
+                }
+            }
 
-                    if (slot == null)
-                    {
-                        _logger.LogWarning("Could not find a slot for {Home} vs {Visiting} in division {Division}",
-                            home.TeamId, visiting.TeamId, division.DivisionDescription);
-                        continue;
-                    }
+            // Phase 3: assign slots in interleaved order
+            var slotManager = new GameTimeSlotManager(request.TimeSlots);
+            var allPreviewGames = new List<ScheduleGamePreviewItem>();
+            var coachSlotMap = new Dictionary<(DateTime date, TimeSpan time), HashSet<int>>();
+            var gameNumbers = divisionPairings.ToDictionary(d => d.divisionId, _ => 1);
+            var weeklyGameCount = new Dictionary<int, Dictionary<DateTime, int>>();
 
-                    var (gameDate, gameTime, location) = slot.Value;
-                    var legacyGameTime = new DateTime(1899, 12, 30).Add(gameTime).ToString("yyyy-MM-dd HH:mm:ss");
+            foreach (var (home, visiting, divisionId, division, scheduleNumber) in interleaved)
+            {
+                var slot = FindNextSlot(
+                    request, locations, slotManager, coachSlotMap,
+                    home, visiting, weeklyGameCount, allPreviewGames, divisionId);
 
-                    var warnings = new List<string>();
-
-                    if (request.EnforceCoachConflicts)
-                    {
-                        var slotKey = (gameDate.Date, gameTime);
-                        if (!coachSlotMap.TryGetValue(slotKey, out var usedCoaches))
-                        {
-                            usedCoaches = new HashSet<int>();
-                            coachSlotMap[slotKey] = usedCoaches;
-                        }
-
-                        CheckAndRecordCoachConflict(home, slotKey, coachSlotMap, warnings, "Home");
-                        CheckAndRecordCoachConflict(visiting, slotKey, coachSlotMap, warnings, "Visiting");
-
-                        RecordCoachIds(home, coachSlotMap[slotKey]);
-                        RecordCoachIds(visiting, coachSlotMap[slotKey]);
-                    }
-
-                    var fullDateTime = gameDate.Date.Add(gameTime);
-                    allPreviewGames.Add(new ScheduleGamePreviewItem
-                    {
-                        DivisionId = divisionId,
-                        DivisionName = division.DivisionDescription ?? $"Division {divisionId}",
-                        ScheduleNumber = scheduleNumber,
-                        GameNumber = gameNumber++,
-                        GameDate = fullDateTime,
-                        GameTime = legacyGameTime,
-                        LocationNumber = location.LocationNumber,
-                        LocationName = location.LocationName ?? $"Location {location.LocationNumber}",
-                        HomeTeamId = home.TeamId,
-                        HomeTeamName = home.GetDisplayName(),
-                        VisitingTeamId = visiting.TeamId,
-                        VisitingTeamName = visiting.GetDisplayName(),
-                        Warnings = warnings,
-                    });
-
-                    IncrementWeeklyCount(weeklyGameCount, home.TeamId, gameDate);
-                    IncrementWeeklyCount(weeklyGameCount, visiting.TeamId, gameDate);
+                if (slot == null)
+                {
+                    _logger.LogWarning("Could not find a slot for {Home} vs {Visiting} in division {Division}",
+                        home.TeamId, visiting.TeamId, division.DivisionDescription);
+                    continue;
                 }
 
-                _logger.LogInformation("Generated {Count} games for division {Name}", gameNumber - 1, division.DivisionDescription);
+                var (gameDate, gameTime, location) = slot.Value;
+                var legacyGameTime = new DateTime(1899, 12, 30).Add(gameTime).ToString("yyyy-MM-dd HH:mm:ss");
+
+                var warnings = new List<string>();
+                if (request.EnforceCoachConflicts)
+                {
+                    var slotKey = (gameDate.Date, gameTime);
+                    if (!coachSlotMap.TryGetValue(slotKey, out var usedCoaches))
+                    {
+                        usedCoaches = new HashSet<int>();
+                        coachSlotMap[slotKey] = usedCoaches;
+                    }
+
+                    CheckAndRecordCoachConflict(home, slotKey, coachSlotMap, warnings, "Home");
+                    CheckAndRecordCoachConflict(visiting, slotKey, coachSlotMap, warnings, "Visiting");
+                    RecordCoachIds(home, coachSlotMap[slotKey]);
+                    RecordCoachIds(visiting, coachSlotMap[slotKey]);
+                }
+
+                var fullDateTime = gameDate.Date.Add(gameTime);
+                allPreviewGames.Add(new ScheduleGamePreviewItem
+                {
+                    DivisionId = divisionId,
+                    DivisionName = division.DivisionDescription ?? $"Division {divisionId}",
+                    ScheduleNumber = scheduleNumber,
+                    GameNumber = gameNumbers[divisionId]++,
+                    GameDate = fullDateTime,
+                    GameTime = legacyGameTime,
+                    LocationNumber = location.LocationNumber,
+                    LocationName = location.LocationName ?? $"Location {location.LocationNumber}",
+                    HomeTeamId = home.TeamId,
+                    HomeTeamName = home.GetDisplayName(),
+                    VisitingTeamId = visiting.TeamId,
+                    VisitingTeamName = visiting.GetDisplayName(),
+                    Warnings = warnings,
+                });
+
+                IncrementWeeklyCount(weeklyGameCount, home.TeamId, gameDate);
+                IncrementWeeklyCount(weeklyGameCount, visiting.TeamId, gameDate);
             }
+
+            _logger.LogInformation("Generated {TotalCount} games across {DivisionCount} divisions",
+                allPreviewGames.Count, divisionPairings.Count);
 
             return new ScheduleGeneratorResult
             {
@@ -247,8 +261,7 @@ namespace Hoops.Application.Services
             Team visiting,
             Dictionary<int, Dictionary<DateTime, int>> weeklyGameCount,
             List<ScheduleGamePreviewItem> alreadyScheduled,
-            int divisionId,
-            int divIndex)
+            int divisionId)
         {
             var current = request.StartDate.Date;
             var end = request.EndDate.Date;

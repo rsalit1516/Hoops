@@ -120,6 +120,7 @@ export class AdminScheduleGenerator implements OnInit {
   isCommitting = signal<boolean>(false);
   commitGamesCreated = signal<number | null>(null);
   commitErrors = signal<string[]>([]);
+  selectedPreviewDivisionName = signal<string>('');
 
   // ----- derived -----
   locations = computed(() => this.locationService.locations());
@@ -137,13 +138,22 @@ export class AdminScheduleGenerator implements OnInit {
     }
     return Array.from(map.entries()).map(([name, items]) => ({ name, items }));
   });
+  filteredPreviewByDivision = computed(() => {
+    const selected = this.selectedPreviewDivisionName();
+    const groups = this.previewByDivision();
+    return selected ? groups.filter(g => g.name === selected) : groups;
+  });
   warningCount = computed(() =>
     this.previewGames().reduce((n, g) => n + g.warnings.length, 0),
   );
 
   readonly dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   readonly dayOptions = [0, 1, 2, 3, 4, 5, 6];
-  readonly previewColumns = ['gameDate', 'gameTime', 'location', 'home', 'visiting', 'warnings'];
+  readonly previewColumns = ['gameDate', 'location', 'home', 'visiting', 'warnings', 'edit'];
+
+  constructor() {
+    effect(() => this.saveToStorage());
+  }
 
   ngOnInit() {
     if (!this.locationService.locations().length) {
@@ -151,7 +161,6 @@ export class AdminScheduleGenerator implements OnInit {
     }
     this.loadSeasons();
     this.restoreFromStorage();
-    effect(() => this.saveToStorage(), { allowSignalWrites: true });
   }
 
   private saveToStorage() {
@@ -214,6 +223,7 @@ export class AdminScheduleGenerator implements OnInit {
     this.blackoutDates.set([]);
     this.previewGames.set([]);
     this.previewError.set(null);
+    this.selectedPreviewDivisionName.set('');
   }
 
   private loadSeasons() {
@@ -321,6 +331,20 @@ export class AdminScheduleGenerator implements OnInit {
       < this.gameDurationMinutes();
   }
 
+  slotSummaryForPeriod(period: TimePeriodRow): string[] {
+    if (!period.beginTime || !period.endTime || period.locationIds.length === 0) return [];
+    const slots: string[] = [];
+    const duration = this.gameDurationMinutes();
+    let t = this.timeToMinutes(period.beginTime);
+    const end = this.timeToMinutes(period.endTime);
+    while (t + duration <= end) {
+      const d = new Date(1970, 0, 1, Math.floor(t / 60), t % 60);
+      slots.push(d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }));
+      t += duration;
+    }
+    return slots;
+  }
+
   // ----- blackout date management -----
   addBlackoutDate() {
     this.blackoutDates.update(rows => [
@@ -384,6 +408,7 @@ export class AdminScheduleGenerator implements OnInit {
     this.previewError.set(null);
     this.commitGamesCreated.set(null);
     this.commitErrors.set([]);
+    this.selectedPreviewDivisionName.set('');
 
     const request: ScheduleGeneratorRequest = {
       seasonId: this.selectedSeasonId()!,
@@ -478,15 +503,53 @@ export class AdminScheduleGenerator implements OnInit {
     return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:00`;
   }
 
+  // ----- preview game editing -----
+  editingGameKey = signal<string | null>(null);
+  editDate = signal<string>('');
+  editTime = signal<string>('');
+
+  gameKey(g: ScheduleGamePreviewItem): string {
+    return `${g.divisionId}_${g.gameNumber}`;
+  }
+
+  startEditGame(g: ScheduleGamePreviewItem) {
+    const d = new Date(g.gameDate);
+    this.editDate.set(d.toISOString().split('T')[0]);                 // "YYYY-MM-DD"
+    this.editTime.set(d.toTimeString().substring(0, 5));              // "HH:MM"
+    this.editingGameKey.set(this.gameKey(g));
+  }
+
+  saveGameEdit(g: ScheduleGamePreviewItem) {
+    const date = this.editDate();
+    const time = this.editTime();
+    if (!date || !time) return;
+    const newGameDate = `${date}T${time}:00`;
+    const newGameTime = `1899-12-30 ${time}:00`;
+    this.previewGames.update(games =>
+      games.map(game => this.gameKey(game) === this.gameKey(g)
+        ? { ...game, gameDate: newGameDate, gameTime: newGameTime }
+        : game
+      )
+    );
+    this.editingGameKey.set(null);
+  }
+
+  cancelGameEdit() {
+    this.editingGameKey.set(null);
+  }
+
   formatGameDate(dateStr: string): string {
     const d = new Date(dateStr);
-    return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+    const date = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+    const time = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+    return `${date} ${time}`;
   }
 
   formatGameTime(timeStr: string): string {
-    const parts = timeStr.split(' ');
-    if (parts.length === 2) return timeStr;
-    const d = new Date(`1899-12-30T${timeStr.substring(0, 8)}`);
+    // Legacy format: "1899-12-30 09:00:00" — extract just the time portion
+    const timePart = timeStr.includes('T') ? timeStr.split('T')[1] : timeStr.split(' ')[1];
+    if (!timePart) return timeStr;
+    const d = new Date(`1970-01-01T${timePart.substring(0, 8)}`);
     return d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
   }
 }
