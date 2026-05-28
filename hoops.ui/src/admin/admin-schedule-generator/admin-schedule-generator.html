@@ -168,13 +168,13 @@
 
                       <mat-form-field appearance="fill" class="period-field-time">
                         <mat-label>Begin</mat-label>
-                        <input matInput type="time" [value]="period.beginTime"
+                        <input matInput type="time" [defaultValue]="period.beginTime"
                           (change)="updatePeriodBeginTime(period.id, $any($event.target).value)" />
                       </mat-form-field>
 
                       <mat-form-field appearance="fill" class="period-field-time">
                         <mat-label>End</mat-label>
-                        <input matInput type="time" [value]="period.endTime"
+                        <input matInput type="time" [defaultValue]="period.endTime"
                           (change)="updatePeriodEndTime(period.id, $any($event.target).value)" />
                       </mat-form-field>
 

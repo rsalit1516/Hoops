@@ -94,14 +94,36 @@ namespace Hoops.Application.Services
             var slotManager = new GameTimeSlotManager(request.TimeSlots);
             var allPreviewGames = new List<ScheduleGamePreviewItem>();
             var coachSlotMap = new Dictionary<(DateTime date, TimeSpan time), HashSet<int>>();
+            var dailyGameCount = new Dictionary<int, HashSet<DateTime>>();
             var gameNumbers = divisionPairings.ToDictionary(d => d.divisionId, _ => 1);
             var weeklyGameCount = new Dictionary<int, Dictionary<DateTime, int>>();
 
+            // Round-robin day selection per division so games spread across all configured days
+            // rather than packing into whichever day falls earliest in the calendar.
+            var configuredDaysByDivision = divisionPairings.ToDictionary(
+                d => d.divisionId,
+                d => request.TimeSlots
+                    .Where(s => s.DivisionId == d.divisionId)
+                    .Select(s => s.DayOfWeek)
+                    .Distinct()
+                    .OrderBy(day => (int)day)
+                    .ToList());
+            var dayRotationIdx = divisionPairings.ToDictionary(d => d.divisionId, _ => 0);
+
             foreach (var (home, visiting, divisionId, division, scheduleNumber) in interleaved)
             {
+                DayOfWeek? preferDay = null;
+                var days = configuredDaysByDivision[divisionId];
+                if (days.Count > 1)
+                {
+                    var idx = dayRotationIdx[divisionId];
+                    preferDay = days[idx];
+                    dayRotationIdx[divisionId] = (idx + 1) % days.Count;
+                }
+
                 var slot = FindNextSlot(
                     request, locations, slotManager, coachSlotMap,
-                    home, visiting, weeklyGameCount, allPreviewGames, divisionId);
+                    home, visiting, weeklyGameCount, dailyGameCount, allPreviewGames, divisionId, preferDay);
 
                 if (slot == null)
                 {
@@ -149,6 +171,8 @@ namespace Hoops.Application.Services
 
                 IncrementWeeklyCount(weeklyGameCount, home.TeamId, gameDate);
                 IncrementWeeklyCount(weeklyGameCount, visiting.TeamId, gameDate);
+                RecordDailyGame(dailyGameCount, home.TeamId, gameDate);
+                RecordDailyGame(dailyGameCount, visiting.TeamId, gameDate);
             }
 
             _logger.LogInformation("Generated {TotalCount} games across {DivisionCount} divisions",
@@ -260,18 +284,28 @@ namespace Hoops.Application.Services
             Team home,
             Team visiting,
             Dictionary<int, Dictionary<DateTime, int>> weeklyGameCount,
+            Dictionary<int, HashSet<DateTime>> dailyGameCount,
             List<ScheduleGamePreviewItem> alreadyScheduled,
-            int divisionId)
+            int divisionId,
+            DayOfWeek? preferDay = null)
         {
             var current = request.StartDate.Date;
             var end = request.EndDate.Date;
 
             while (current <= end)
             {
+                if (preferDay.HasValue && current.DayOfWeek != preferDay.Value)
+                {
+                    current = current.AddDays(1);
+                    continue;
+                }
+
                 if (!IsBlackedOut(current, null, request.BlackoutDates))
                 {
                     if (WeeklyCountFor(weeklyGameCount, home.TeamId, current) < request.MaxGamesPerWeekPerTeam &&
-                        WeeklyCountFor(weeklyGameCount, visiting.TeamId, current) < request.MaxGamesPerWeekPerTeam)
+                        WeeklyCountFor(weeklyGameCount, visiting.TeamId, current) < request.MaxGamesPerWeekPerTeam &&
+                        !HasDailyGame(dailyGameCount, home.TeamId, current) &&
+                        !HasDailyGame(dailyGameCount, visiting.TeamId, current))
                     {
                         var validLocationIds = slotManager.GetLocationsForDivisionAndDay(divisionId, current.DayOfWeek);
                         var locations = allLocations.Where(l => validLocationIds.Contains(l.LocationNumber));
@@ -291,6 +325,9 @@ namespace Hoops.Application.Services
                 current = current.AddDays(1);
             }
 
+            // Preferred day couldn't be scheduled; fall back to any configured day
+            if (preferDay.HasValue)
+                return FindNextSlot(request, allLocations, slotManager, coachSlotMap, home, visiting, weeklyGameCount, dailyGameCount, alreadyScheduled, divisionId);
             return null;
         }
 
@@ -322,6 +359,17 @@ namespace Hoops.Application.Services
             if (!map.ContainsKey(teamId)) map[teamId] = new Dictionary<DateTime, int>();
             map[teamId].TryGetValue(week, out var current);
             map[teamId][week] = current + 1;
+        }
+
+        private static bool HasDailyGame(Dictionary<int, HashSet<DateTime>> daily, int teamId, DateTime date)
+        {
+            return daily.TryGetValue(teamId, out var dates) && dates.Contains(date.Date);
+        }
+
+        private static void RecordDailyGame(Dictionary<int, HashSet<DateTime>> daily, int teamId, DateTime date)
+        {
+            if (!daily.ContainsKey(teamId)) daily[teamId] = new HashSet<DateTime>();
+            daily[teamId].Add(date.Date);
         }
 
         private static void CheckAndRecordCoachConflict(

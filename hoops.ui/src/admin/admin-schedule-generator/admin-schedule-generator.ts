@@ -412,8 +412,8 @@ export class AdminScheduleGenerator implements OnInit {
 
     const request: ScheduleGeneratorRequest = {
       seasonId: this.selectedSeasonId()!,
-      startDate: this.startDate()?.toISOString() ?? null,
-      endDate: this.endDate()?.toISOString() ?? null,
+      startDate: this.startDate() ? this.formatLocalDate(this.startDate()!) : null,
+      endDate: this.endDate() ? this.formatLocalDate(this.endDate()!) : null,
       divisionIds: this.selectedDivisionIds(),
       gamesPerTeam: this.gamesPerTeam(),
       maxGamesPerWeekPerTeam: this.maxGamesPerWeek(),
@@ -492,6 +492,13 @@ export class AdminScheduleGenerator implements OnInit {
     });
   }
 
+  private formatLocalDate(d: Date): string {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const dy = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${dy}`;
+  }
+
   private timeToMinutes(time: string): number {
     const [h, m] = time.split(':').map(Number);
     return h * 60 + (m ?? 0);
@@ -514,7 +521,7 @@ export class AdminScheduleGenerator implements OnInit {
 
   startEditGame(g: ScheduleGamePreviewItem) {
     const d = new Date(g.gameDate);
-    this.editDate.set(d.toISOString().split('T')[0]);                 // "YYYY-MM-DD"
+    this.editDate.set(this.formatLocalDate(d));
     this.editTime.set(d.toTimeString().substring(0, 5));              // "HH:MM"
     this.editingGameKey.set(this.gameKey(g));
   }
