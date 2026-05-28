@@ -1,0 +1,46 @@
+<h2 mat-dialog-title>Edit Game</h2>
+
+<mat-dialog-content>
+  <div class="mb-3">
+    <span class="field-label">Division:</span>
+    <span class="ml-2">{{ data.game.divisionName }}</span>
+  </div>
+  <div class="flex gap-4 mb-3">
+    <div>
+      <span class="field-label">Home:</span>
+      <span class="ml-2">{{ data.game.homeTeamName }}</span>
+    </div>
+    <div>
+      <span class="field-label">Visiting:</span>
+      <span class="ml-2">{{ data.game.visitingTeamName }}</span>
+    </div>
+  </div>
+
+  <div class="flex gap-4 flex-wrap mt-4">
+    <mat-form-field appearance="fill">
+      <mat-label>Date</mat-label>
+      <input matInput [matDatepicker]="picker" [formField]="$any(gameForm.gameDate)" />
+      <mat-datepicker-toggle matSuffix [for]="picker" />
+      <mat-datepicker #picker />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Time</mat-label>
+      <input matInput type="time" [formField]="$any(gameForm.gameTime)" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Location</mat-label>
+      <mat-select [formField]="$any(gameForm.locationNumber)">
+        @for (loc of data.locations; track loc.locationNumber) {
+          <mat-option [value]="loc.locationNumber">{{ loc.locationName }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancel()">Cancel</button>
+  <button mat-raised-button color="primary" [disabled]="!canSave()" (click)="save()">Save</button>
+</mat-dialog-actions>

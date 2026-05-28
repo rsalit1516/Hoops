@@ -56,3 +56,22 @@ export interface ScheduleCommitResult {
   gamesCreated: number;
   errors: string[];
 }
+
+export interface GameEditDialogData {
+  game: ScheduleGamePreviewItem;
+  locations: { locationNumber: number; locationName: string }[];
+}
+
+export interface GameEditDialogResult {
+  gameDate: string;       // "YYYY-MM-DD"
+  gameTime: string;       // "HH:MM"
+  locationNumber: number;
+}
+
+export interface ScheduleDraft {
+  id: string;
+  name: string;
+  savedAt: string;        // ISO datetime
+  seasonId: number;
+  games: ScheduleGamePreviewItem[];
+}

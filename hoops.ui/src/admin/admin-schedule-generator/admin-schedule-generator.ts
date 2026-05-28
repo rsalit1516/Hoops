@@ -5,6 +5,7 @@ import {
   inject,
   OnInit,
   signal,
+  viewChild,
 } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatStepperModule } from '@angular/material/stepper';
@@ -13,14 +14,17 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
-import { MatTableModule } from '@angular/material/table';
-import { MatIconModule } from '@angular/material/icon';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { CommonModule } from '@angular/common';
 
 import { SeasonService } from '@app/services/season.service';
@@ -30,10 +34,14 @@ import { Constants } from '@app/shared/constants';
 import { Division } from '@app/domain/division';
 import {
   AvailableTimeSlot,
+  GameEditDialogData,
+  GameEditDialogResult,
   ScheduleBlackoutDate,
+  ScheduleDraft,
   ScheduleGamePreviewItem,
   ScheduleGeneratorRequest,
 } from '@app/domain/schedule-generator.model';
+import { ScheduleGameEditDialogComponent } from './schedule-game-edit-dialog';
 
 interface TimePeriodRow {
   id: number;
@@ -63,6 +71,8 @@ interface BlackoutDateRow {
     MatCheckboxModule,
     MatSelectModule,
     MatTableModule,
+    MatSortModule,
+    MatPaginatorModule,
     MatIconModule,
     MatDatepickerModule,
     MatNativeDateModule,
@@ -70,6 +80,8 @@ interface BlackoutDateRow {
     MatChipsModule,
     MatDividerModule,
     MatSnackBarModule,
+    MatDialogModule,
+    MatButtonToggleModule,
   ],
   templateUrl: './admin-schedule-generator.html',
   styleUrls: [
@@ -85,11 +97,16 @@ export class AdminScheduleGenerator implements OnInit {
   private locationService = inject(LocationService);
   private gameService = inject(GameService);
   private snackBar = inject(MatSnackBar);
+  private dialog = inject(MatDialog);
+
+  private readonly sortRef = viewChild(MatSort);
+  private readonly paginatorRef = viewChild<MatPaginator>('paginator');
 
   private nextSlotId = 1;
   private nextBlackoutId = 1;
 
   private static readonly STORAGE_KEY = 'schedule-generator-settings';
+  private static readonly DRAFTS_KEY = 'schedule-generator-drafts';
 
   // ----- season / parameter state -----
   seasons = computed(() => this.seasonService.seasons);
@@ -121,6 +138,11 @@ export class AdminScheduleGenerator implements OnInit {
   commitGamesCreated = signal<number | null>(null);
   commitErrors = signal<string[]>([]);
   selectedPreviewDivisionName = signal<string>('');
+  selectedPreviewTeamName = signal<string>('');
+
+  // ----- draft save / restore -----
+  savedDrafts = signal<ScheduleDraft[]>([]);
+  previewDataSource = new MatTableDataSource<ScheduleGamePreviewItem>([]);
 
   // ----- derived -----
   locations = computed(() => this.locationService.locations());
@@ -128,20 +150,17 @@ export class AdminScheduleGenerator implements OnInit {
     const ids = this.selectedDivisionIds();
     return this.divisionsForSeason().filter(d => ids.includes(d.divisionId));
   });
-  previewByDivision = computed(() => {
-    const games = this.previewGames();
-    const map = new Map<string, ScheduleGamePreviewItem[]>();
-    for (const g of games) {
-      const key = g.divisionName;
-      if (!map.has(key)) map.set(key, []);
-      map.get(key)!.push(g);
-    }
-    return Array.from(map.entries()).map(([name, items]) => ({ name, items }));
+  previewDivisionNames = computed(() => {
+    const names = new Set(this.previewGames().map(g => g.divisionName));
+    return Array.from(names).sort();
   });
-  filteredPreviewByDivision = computed(() => {
-    const selected = this.selectedPreviewDivisionName();
-    const groups = this.previewByDivision();
-    return selected ? groups.filter(g => g.name === selected) : groups;
+  previewTeamNames = computed(() => {
+    const div = this.selectedPreviewDivisionName();
+    const games = this.previewGames();
+    const scoped = div ? games.filter(g => g.divisionName === div) : games;
+    const names = new Set<string>();
+    scoped.forEach(g => { names.add(g.homeTeamName); names.add(g.visitingTeamName); });
+    return Array.from(names).sort();
   });
   warningCount = computed(() =>
     this.previewGames().reduce((n, g) => n + g.warnings.length, 0),
@@ -149,10 +168,35 @@ export class AdminScheduleGenerator implements OnInit {
 
   readonly dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   readonly dayOptions = [0, 1, 2, 3, 4, 5, 6];
-  readonly previewColumns = ['gameDate', 'location', 'home', 'visiting', 'warnings', 'edit'];
+  readonly previewColumns = ['gameDate', 'division', 'location', 'home', 'visiting', 'warnings', 'edit'];
 
   constructor() {
     effect(() => this.saveToStorage());
+    effect(() => {
+      const sort = this.sortRef();
+      if (sort) {
+        this.previewDataSource.sort = sort;
+        this.previewDataSource.sortingDataAccessor = (item, col) => {
+          if (col === 'gameDate') return item.gameDate;
+          if (col === 'division') return item.divisionName;
+          if (col === 'location') return item.locationName;
+          if (col === 'home') return item.homeTeamName;
+          if (col === 'visiting') return item.visitingTeamName;
+          return '';
+        };
+      }
+    });
+    effect(() => {
+      this.previewDataSource.paginator = this.paginatorRef() ?? null;
+    });
+    effect(() => {
+      const div = this.selectedPreviewDivisionName();
+      const team = this.selectedPreviewTeamName();
+      let data = this.previewGames();
+      if (div) data = data.filter(g => g.divisionName === div);
+      if (team) data = data.filter(g => g.homeTeamName === team || g.visitingTeamName === team);
+      this.previewDataSource.data = data;
+    });
   }
 
   ngOnInit() {
@@ -161,6 +205,10 @@ export class AdminScheduleGenerator implements OnInit {
     }
     this.loadSeasons();
     this.restoreFromStorage();
+    try {
+      const raw = localStorage.getItem(AdminScheduleGenerator.DRAFTS_KEY);
+      if (raw) this.savedDrafts.set(JSON.parse(raw));
+    } catch { /* ignore corrupt storage */ }
   }
 
   private saveToStorage() {
@@ -224,6 +272,12 @@ export class AdminScheduleGenerator implements OnInit {
     this.previewGames.set([]);
     this.previewError.set(null);
     this.selectedPreviewDivisionName.set('');
+    this.selectedPreviewTeamName.set('');
+  }
+
+  onDivisionFilterChange(val: string) {
+    this.selectedPreviewDivisionName.set(val);
+    this.selectedPreviewTeamName.set('');
   }
 
   private loadSeasons() {
@@ -409,6 +463,7 @@ export class AdminScheduleGenerator implements OnInit {
     this.commitGamesCreated.set(null);
     this.commitErrors.set([]);
     this.selectedPreviewDivisionName.set('');
+    this.selectedPreviewTeamName.set('');
 
     const request: ScheduleGeneratorRequest = {
       seasonId: this.selectedSeasonId()!,
@@ -451,6 +506,10 @@ export class AdminScheduleGenerator implements OnInit {
         this.isGenerating.set(false);
         if (result.success) {
           this.previewGames.set(result.games);
+          if (result.games.length > 0) {
+            this.calendarMonth.set(new Date(result.games[0].gameDate));
+            this.selectedCalendarDate.set(null);
+          }
         } else {
           this.previewError.set(result.errorMessage ?? 'Preview failed.');
         }
@@ -511,38 +570,29 @@ export class AdminScheduleGenerator implements OnInit {
   }
 
   // ----- preview game editing -----
-  editingGameKey = signal<string | null>(null);
-  editDate = signal<string>('');
-  editTime = signal<string>('');
-
-  gameKey(g: ScheduleGamePreviewItem): string {
+  private gameKey(g: ScheduleGamePreviewItem): string {
     return `${g.divisionId}_${g.gameNumber}`;
   }
 
-  startEditGame(g: ScheduleGamePreviewItem) {
-    const d = new Date(g.gameDate);
-    this.editDate.set(this.formatLocalDate(d));
-    this.editTime.set(d.toTimeString().substring(0, 5));              // "HH:MM"
-    this.editingGameKey.set(this.gameKey(g));
-  }
-
-  saveGameEdit(g: ScheduleGamePreviewItem) {
-    const date = this.editDate();
-    const time = this.editTime();
-    if (!date || !time) return;
-    const newGameDate = `${date}T${time}:00`;
-    const newGameTime = `1899-12-30 ${time}:00`;
-    this.previewGames.update(games =>
-      games.map(game => this.gameKey(game) === this.gameKey(g)
-        ? { ...game, gameDate: newGameDate, gameTime: newGameTime }
-        : game
-      )
-    );
-    this.editingGameKey.set(null);
-  }
-
-  cancelGameEdit() {
-    this.editingGameKey.set(null);
+  openEditDialog(g: ScheduleGamePreviewItem) {
+    const ref = this.dialog.open(ScheduleGameEditDialogComponent, {
+      data: {
+        game: g,
+        locations: this.locations().map(l => ({ locationNumber: l.locationNumber, locationName: l.locationName })),
+      } as GameEditDialogData,
+      width: '480px',
+    });
+    ref.afterClosed().subscribe((result: GameEditDialogResult | undefined) => {
+      if (!result) return;
+      const newGameDate = `${result.gameDate}T${result.gameTime}:00`;
+      const newGameTime = `1899-12-30 ${result.gameTime}:00`;
+      this.previewGames.update(games =>
+        games.map(game => this.gameKey(game) === this.gameKey(g)
+          ? { ...game, gameDate: newGameDate, gameTime: newGameTime, locationNumber: result.locationNumber }
+          : game,
+        ),
+      );
+    });
   }
 
   formatGameDate(dateStr: string): string {
@@ -558,5 +608,90 @@ export class AdminScheduleGenerator implements OnInit {
     if (!timePart) return timeStr;
     const d = new Date(`1970-01-01T${timePart.substring(0, 8)}`);
     return d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+  }
+
+  // ----- draft management -----
+  saveDraft() {
+    const name = window.prompt('Draft name:')?.trim();
+    if (!name) return;
+    const draft: ScheduleDraft = {
+      id: Date.now().toString(),
+      name,
+      savedAt: new Date().toISOString(),
+      seasonId: this.selectedSeasonId()!,
+      games: this.previewGames(),
+    };
+    this.savedDrafts.update(list => [...list, draft]);
+    try {
+      localStorage.setItem(AdminScheduleGenerator.DRAFTS_KEY, JSON.stringify(this.savedDrafts()));
+    } catch { /* ignore quota errors */ }
+    this.snackBar.open(`Draft "${name}" saved.`, 'Close', { duration: 3000 });
+  }
+
+  loadDraft(draft: ScheduleDraft) {
+    this.previewGames.set(draft.games);
+    if (draft.games.length > 0) {
+      this.calendarMonth.set(new Date(draft.games[0].gameDate));
+      this.selectedCalendarDate.set(null);
+    }
+    this.snackBar.open(`Loaded draft "${draft.name}".`, 'Close', { duration: 3000 });
+  }
+
+  deleteDraft(id: string) {
+    this.savedDrafts.update(list => list.filter(d => d.id !== id));
+    try {
+      localStorage.setItem(AdminScheduleGenerator.DRAFTS_KEY, JSON.stringify(this.savedDrafts()));
+    } catch { /* ignore quota errors */ }
+  }
+
+  // ----- calendar view -----
+  previewViewMode = signal<'table' | 'calendar'>('table');
+  calendarMonth = signal<Date>(new Date());
+  selectedCalendarDate = signal<string | null>(null);
+
+  gamesByDate = computed(() => {
+    const map = new Map<string, ScheduleGamePreviewItem[]>();
+    for (const g of this.previewGames()) {
+      const key = g.gameDate.substring(0, 10);
+      if (!map.has(key)) map.set(key, []);
+      map.get(key)!.push(g);
+    }
+    return map;
+  });
+
+  calendarDays = computed(() => {
+    const m = this.calendarMonth();
+    const year = m.getFullYear();
+    const month = m.getMonth();
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const cells: ({ d: number; dateKey: string } | null)[] = [];
+    for (let i = 0; i < firstDay; i++) cells.push(null);
+    for (let d = 1; d <= daysInMonth; d++) {
+      const dateKey = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+      cells.push({ d, dateKey });
+    }
+    return cells;
+  });
+
+  selectedDateGames = computed(() => {
+    const key = this.selectedCalendarDate();
+    return key ? (this.gamesByDate().get(key) ?? []) : [];
+  });
+
+  calendarMonthLabel = computed(() =>
+    this.calendarMonth().toLocaleDateString('en-US', { month: 'long', year: 'numeric' }),
+  );
+
+  prevMonth() {
+    this.calendarMonth.update(d => new Date(d.getFullYear(), d.getMonth() - 1, 1));
+  }
+
+  nextMonth() {
+    this.calendarMonth.update(d => new Date(d.getFullYear(), d.getMonth() + 1, 1));
+  }
+
+  selectCalendarDate(key: string) {
+    this.selectedCalendarDate.set(this.selectedCalendarDate() === key ? null : key);
   }
 }
