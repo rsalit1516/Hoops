@@ -1,0 +1,108 @@
+<p class="text-sm text-gray-600 mb-4 mt-4">
+  For each division, define time windows when games can be scheduled.
+  Pick a day, begin/end times, and which courts are available — the generator fills in
+  all start times that fit within the window based on the game duration.
+</p>
+
+@for (div of s.selectedDivisions(); track div.divisionId) {
+  <div class="division-slot-group mb-6">
+
+    <div class="flex justify-between items-center mb-2 flex-wrap gap-2">
+      <h4 class="text-base font-semibold">{{ div.divisionDescription }}</h4>
+
+      <div class="flex items-center gap-2 flex-wrap">
+        @if (s.divisionsWithPeriods(div.divisionId).length > 0) {
+          <mat-form-field appearance="fill" style="min-width:160px;max-width:220px">
+            <mat-label>Copy from</mat-label>
+            <mat-select [value]="s.copySourceIds()[div.divisionId] ?? null"
+              (selectionChange)="s.copyFromDivision($event.value, div.divisionId)">
+              <mat-option [value]="null">-- Select --</mat-option>
+              @for (src of s.divisionsWithPeriods(div.divisionId); track src.divisionId) {
+                <mat-option [value]="src.divisionId">{{ src.divisionDescription }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        }
+
+        <button type="button" mat-stroked-button color="primary"
+          (click)="s.addTimePeriodForDivision(div.divisionId)">
+          <mat-icon>add</mat-icon> Add Period
+        </button>
+      </div>
+    </div>
+
+    @if (s.periodsForDivision(div.divisionId).length === 0) {
+      <p class="text-gray-400 italic text-sm pl-1">
+        No time periods configured. Add a period above.
+      </p>
+    } @else {
+      @for (period of s.periodsForDivision(div.divisionId); track period.id) {
+        <div class="period-row mb-3">
+          <div class="flex gap-3 items-start flex-wrap">
+
+            <mat-form-field appearance="fill" style="min-width:100px;max-width:120px">
+              <mat-label>Day</mat-label>
+              <mat-select [value]="period.dayOfWeek"
+                (selectionChange)="s.updatePeriodDay(period.id, $event.value)">
+                @for (d of s.dayOptions; track d) {
+                  <mat-option [value]="d">{{ s.dayNames[d] }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" style="min-width:120px;max-width:140px">
+              <mat-label>Begin</mat-label>
+              <input matInput type="time" [defaultValue]="period.beginTime"
+                (change)="s.updatePeriodBeginTime(period.id, $any($event.target).value)" />
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" style="min-width:120px;max-width:140px">
+              <mat-label>End</mat-label>
+              <input matInput type="time" [defaultValue]="period.endTime"
+                (change)="s.updatePeriodEndTime(period.id, $any($event.target).value)" />
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" style="min-width:200px;flex:1">
+              <mat-label>Courts</mat-label>
+              <mat-select multiple [value]="period.locationIds"
+                (selectionChange)="s.updatePeriodLocations(period.id, $event.value)">
+                @for (loc of s.locations(); track loc.locationNumber) {
+                  <mat-option [value]="loc.locationNumber">{{ loc.locationName }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+
+            <button type="button" mat-icon-button color="warn"
+              (click)="s.removeTimePeriod(period.id)"
+              style="margin-top:8px">
+              <mat-icon>delete</mat-icon>
+            </button>
+
+          </div>
+
+          @if (s.periodWindowTooShort(period)) {
+            <div class="period-warning flex items-center gap-1 mt-1 pl-1">
+              <mat-icon class="warn-icon">warning</mat-icon>
+              <span>Window is shorter than game duration ({{ s.gameDurationMinutes() }} min) — no slots will be generated.</span>
+            </div>
+          } @else if (period.locationIds.length === 0) {
+            <div class="period-warning flex items-center gap-1 mt-1 pl-1">
+              <mat-icon class="warn-icon">warning</mat-icon>
+              <span>Select at least one court for this period.</span>
+            </div>
+          } @else {
+            @let summary = s.slotSummaryForPeriod(period);
+            @if (summary.length > 0) {
+              <div class="period-slots-summary mt-1 pl-1">
+                <span class="font-medium">→ {{ summary.length }} slot{{ summary.length !== 1 ? 's' : '' }} per court:</span>
+                {{ summary.join(' · ') }}
+              </div>
+            }
+          }
+        </div>
+      }
+    }
+
+    <mat-divider class="mt-3 mb-2" />
+  </div>
+}
