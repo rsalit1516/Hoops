@@ -12,15 +12,14 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { debounceTime } from 'rxjs';
 import { AlphabeticalSearch } from '@app/admin/admin-shared/alphabetical-search/alphabetical-search';
 import { LoggerService } from '@app/services/logger.service';
 import { peopleSearchCriteria } from '@app/services/people.service';
+import { FilterCard } from '@app/shared/components/filter-card/filter-card';
 
 // Interface for filter data structure (extends peopleSearchCriteria)
 export interface PeopleFilterCriteria extends peopleSearchCriteria {
@@ -30,13 +29,12 @@ export interface PeopleFilterCriteria extends peopleSearchCriteria {
 @Component({
   selector: 'csbc-people-filters',
   imports: [
-    MatCardModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule,
     MatCheckboxModule,
     ReactiveFormsModule,
     AlphabeticalSearch,
+    FilterCard,
   ],
   templateUrl: './people-filters.html',
   styleUrls: [

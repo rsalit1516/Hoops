@@ -9,12 +9,11 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { debounceTime } from 'rxjs';
+import { FilterCard } from '@app/shared/components/filter-card/filter-card';
 
 export interface SponsorFilterCriteria {
   name: string;
@@ -24,12 +23,11 @@ export interface SponsorFilterCriteria {
 @Component({
   selector: 'csbc-sponsor-filters',
   imports: [
-    MatCardModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule,
     MatCheckboxModule,
     ReactiveFormsModule,
+    FilterCard,
   ],
   templateUrl: './sponsor-filters.html',
   styleUrls: [

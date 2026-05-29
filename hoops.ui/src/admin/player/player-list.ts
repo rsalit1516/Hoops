@@ -11,6 +11,7 @@ import { SeasonService } from '@app/services/season.service';
 import { DivisionService } from '@app/services/division.service';
 import { PeopleService } from '@app/services/people.service';
 import { DraftListService } from '@app/services/draft-list.service';
+import { formatPersonName } from '@app/shared/utils/person.utils';
 import { SeasonSelect } from '../admin-shared/season-select/season-select';
 import { DivisionSelect } from '../admin-shared/division-select/division-select';
 import { LoggerService } from '@app/services/logger.service';
@@ -96,7 +97,7 @@ export class PlayerList implements OnInit {
         this.logger.info('Players loaded:', players.length);
         this.dataSource.data = players.map((player) => ({
           ...player,
-          name: `${player.lastName}, ${player.firstName}`,
+          name: formatPersonName(player),
         }));
         this.registeredPersonIds.set(new Set(players.map((p) => p.personId)));
         this.isLoading = false;
