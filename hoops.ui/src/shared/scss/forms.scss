@@ -52,9 +52,6 @@ h2 {
 
 label .mdc-floating-label {
   display: block;
-  // margin-bottom: 0.9rem;
-  // padding-bottom: 12px;
-  color: pink;
 }
 
 .field-label {
@@ -82,10 +79,6 @@ input {
 
 .mdc-text-field {
   background-color: v.$card-background-color;
-}
-
-.mdc-text-field--filled:not {
-  background-color: v.$admin-background-color !important;
 }
 
 .mdc-text-field--filled:not(.mdc-text-field--disabled) {
@@ -128,10 +121,6 @@ div.mat-mdc-select-panel {
   color: v.$field-label !important;
   font-size: v.$input-font-size;
   font-weight: 500;
-}
-
-.mdc-list-item__primary-text {
-  color: color.adjust(v.$field-label, $lightness: -50%) !important;
 }
 
 .mdc-list-item__primary-text {
@@ -249,23 +238,6 @@ fieldset {
   margin-right: 2rem;
   margin-bottom: 1rem;
   padding: 1rem;
-}
-
-input::-webkit-input-placeholder {
-  /* Chrome/Opera/Safari */
-  color: red;
-}
-input::-moz-placeholder {
-  /* Firefox 19+ */
-  color: red;
-}
-input:-ms-input-placeholder {
-  /* IE 10+ */
-  color: red;
-}
-input:-moz-placeholder {
-  /* Firefox 18- */
-  color: red;
 }
 
 input::placeholder {
