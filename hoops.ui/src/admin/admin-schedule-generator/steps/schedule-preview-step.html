@@ -1,240 +1,303 @@
 @if (!s.isGenerating() && s.previewGames().length === 0 && !s.previewError()) {
-  <div class="flex flex-col gap-3 mt-4">
-    <p class="text-sm text-gray-600">
-      Review your configuration and generate a preview of the proposed schedule.
-      No games will be saved until you click Commit.
-    </p>
-    <div>
-      <button type="button" mat-raised-button color="primary" (click)="s.generatePreview()"
-        [disabled]="!s.step1Valid() || !s.step2Valid() || !s.step3Valid()">
-        <mat-icon>preview</mat-icon> Generate Preview
-      </button>
-    </div>
+<div class="flex flex-col gap-3 mt-4">
+  <p class="text-sm text-gray-600">
+    Review your configuration and generate a preview of the proposed schedule.
+    No games will be saved until you click Commit.
+  </p>
+  <div>
+    <button
+      type="button"
+      mat-raised-button
+      color="primary"
+      (click)="s.generatePreview()"
+      [disabled]="!s.step1Valid() || !s.step2Valid() || !s.step3Valid()"
+    >
+      <mat-icon>preview</mat-icon> Generate Preview
+    </button>
   </div>
-}
+</div>
+} @if (s.isGenerating()) {
+<div class="flex items-center gap-3 py-4">
+  <mat-spinner diameter="28" />
+  <span>Generating schedule preview...</span>
+</div>
+} @if (s.previewError()) {
+<div class="error-panel mt-2 p-3 flex items-start gap-2">
+  <mat-icon class="text-red-600">error</mat-icon>
+  <span>{{ s.previewError() }}</span>
+</div>
+<button
+  type="button"
+  mat-stroked-button
+  (click)="s.generatePreview()"
+  class="mt-3"
+>
+  <mat-icon>refresh</mat-icon> Retry
+</button>
+} @if (s.previewGames().length > 0) {
+<div class="preview-header mb-4 mt-4">
+  <div class="flex items-center gap-4 flex-wrap">
+    <mat-chip-set>
+      <mat-chip>{{ s.previewGames().length }} total games</mat-chip>
+      @if (s.warningCount() > 0) {
+      <mat-chip color="warn" highlighted>
+        <mat-icon matChipAvatar>warning</mat-icon>
+        {{ s.warningCount() }} warnings
+      </mat-chip>
+      }
+    </mat-chip-set>
 
-@if (s.isGenerating()) {
-  <div class="flex items-center gap-3 py-4">
-    <mat-spinner diameter="28" />
-    <span>Generating schedule preview...</span>
-  </div>
-}
-
-@if (s.previewError()) {
-  <div class="error-panel mt-2 p-3 flex items-start gap-2">
-    <mat-icon class="text-red-600">error</mat-icon>
-    <span>{{ s.previewError() }}</span>
-  </div>
-  <button type="button" mat-stroked-button (click)="s.generatePreview()" class="mt-3">
-    <mat-icon>refresh</mat-icon> Retry
-  </button>
-}
-
-@if (s.previewGames().length > 0) {
-  <div class="preview-header mb-4 mt-4">
-    <div class="flex items-center gap-4 flex-wrap">
-      <mat-chip-set>
-        <mat-chip>{{ s.previewGames().length }} total games</mat-chip>
-        @if (s.warningCount() > 0) {
-          <mat-chip color="warn" highlighted>
-            <mat-icon matChipAvatar>warning</mat-icon>
-            {{ s.warningCount() }} warnings
-          </mat-chip>
+    @if (s.previewDivisionNames().length > 1) {
+    <mat-form-field appearance="fill" style="min-width: 200px">
+      <mat-label>Division</mat-label>
+      <mat-select
+        [value]="s.selectedPreviewDivisionName()"
+        (selectionChange)="s.onDivisionFilterChange($event.value)"
+      >
+        <mat-option value="">All Divisions</mat-option>
+        @for (name of s.previewDivisionNames(); track name) {
+        <mat-option [value]="name">{{ name }}</mat-option>
         }
-      </mat-chip-set>
-
-      @if (s.previewDivisionNames().length > 1) {
-        <mat-form-field appearance="fill" style="min-width:200px">
-          <mat-label>Division</mat-label>
-          <mat-select [value]="s.selectedPreviewDivisionName()"
-            (selectionChange)="s.onDivisionFilterChange($event.value)">
-            <mat-option value="">All Divisions</mat-option>
-            @for (name of s.previewDivisionNames(); track name) {
-              <mat-option [value]="name">{{ name }}</mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
-      }
-
-      <mat-form-field appearance="fill" style="min-width:200px">
-        <mat-label>Team</mat-label>
-        <mat-select [value]="s.selectedPreviewTeamName()"
-          (selectionChange)="s.selectedPreviewTeamName.set($event.value)">
-          <mat-option value="">All Teams</mat-option>
-          @for (name of s.previewTeamNames(); track name) {
-            <mat-option [value]="name">{{ name }}</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-
-      <mat-button-toggle-group [value]="s.previewViewMode()" (change)="s.previewViewMode.set($event.value)" class="ml-auto">
-        <mat-button-toggle value="table"><mat-icon>table_rows</mat-icon> Table</mat-button-toggle>
-        <mat-button-toggle value="calendar"><mat-icon>calendar_month</mat-icon> Calendar</mat-button-toggle>
-      </mat-button-toggle-group>
-    </div>
-  </div>
-
-  @if (s.previewViewMode() === 'table') {
-    <table mat-table [dataSource]="s.previewDataSource" matSort class="preview-table w-full mb-2">
-
-      <ng-container matColumnDef="gameDate">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Date / Time</th>
-        <td mat-cell *matCellDef="let g">{{ s.formatGameDate(g.gameDate) }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="division">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Division</th>
-        <td mat-cell *matCellDef="let g">{{ g.divisionName }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="location">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Location</th>
-        <td mat-cell *matCellDef="let g">{{ g.locationName }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="home">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Home</th>
-        <td mat-cell *matCellDef="let g">{{ g.homeTeamName }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="visiting">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Visiting</th>
-        <td mat-cell *matCellDef="let g">{{ g.visitingTeamName }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="warnings">
-        <th mat-header-cell *matHeaderCellDef>Warnings</th>
-        <td mat-cell *matCellDef="let g">
-          @for (w of g.warnings; track w) {
-            <div class="warning-text">{{ w }}</div>
-          }
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="edit">
-        <th mat-header-cell *matHeaderCellDef></th>
-        <td mat-cell *matCellDef="let g">
-          <button mat-icon-button color="primary" title="Edit game" (click)="s.openEditDialog(g)">
-            <mat-icon>edit</mat-icon>
-          </button>
-        </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="s.previewColumns; sticky: true"></tr>
-      <tr mat-row *matRowDef="let row; columns: s.previewColumns"
-        [class.row-has-warnings]="row.warnings?.length > 0"></tr>
-    </table>
-    <mat-paginator #paginator [pageSizeOptions]="[25, 50, 100]" [pageSize]="25" [showFirstLastButtons]="true" class="mb-4"></mat-paginator>
-  } @else {
-    <!-- Calendar view -->
-    <div class="flex items-center gap-3 mb-3">
-      <button mat-icon-button (click)="s.prevMonth()"><mat-icon>chevron_left</mat-icon></button>
-      <span class="calendar-month-label">{{ s.calendarMonthLabel() }}</span>
-      <button mat-icon-button (click)="s.nextMonth()"><mat-icon>chevron_right</mat-icon></button>
-    </div>
-    <div class="calendar-grid mb-3">
-      @for (name of ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']; track name) {
-        <div class="cal-header">{{ name }}</div>
-      }
-      @for (cell of s.calendarDays(); track $index) {
-        @if (cell) {
-          <div class="cal-cell" [class.has-games]="s.gamesByDate().has(cell.dateKey)"
-              [class.selected]="s.selectedCalendarDate() === cell.dateKey"
-              (click)="cell && s.gamesByDate().has(cell.dateKey) && s.selectCalendarDate(cell.dateKey)">
-            <span class="cal-day-num">{{ cell.d }}</span>
-            @if (s.gamesByDate().has(cell.dateKey)) {
-              <span class="cal-badge">{{ s.gamesByDate().get(cell.dateKey)!.length }}</span>
-            }
-          </div>
-        } @else {
-          <div class="cal-cell cal-empty"></div>
-        }
-      }
-    </div>
-    @if (s.selectedCalendarDate() && s.selectedDateGames().length > 0) {
-      <div class="mb-4">
-        <h4 class="mb-2">{{ s.selectedCalendarDate() }}</h4>
-        <table mat-table [dataSource]="s.selectedDateGames()" class="preview-table w-full">
-          <ng-container matColumnDef="division">
-            <th mat-header-cell *matHeaderCellDef>Division</th>
-            <td mat-cell *matCellDef="let g">{{ g.divisionName }}</td>
-          </ng-container>
-          <ng-container matColumnDef="location">
-            <th mat-header-cell *matHeaderCellDef>Location</th>
-            <td mat-cell *matCellDef="let g">{{ g.locationName }}</td>
-          </ng-container>
-          <ng-container matColumnDef="home">
-            <th mat-header-cell *matHeaderCellDef>Home</th>
-            <td mat-cell *matCellDef="let g">{{ g.homeTeamName }}</td>
-          </ng-container>
-          <ng-container matColumnDef="visiting">
-            <th mat-header-cell *matHeaderCellDef>Visiting</th>
-            <td mat-cell *matCellDef="let g">{{ g.visitingTeamName }}</td>
-          </ng-container>
-          <ng-container matColumnDef="time">
-            <th mat-header-cell *matHeaderCellDef>Time</th>
-            <td mat-cell *matCellDef="let g">{{ s.formatGameDate(g.gameDate) }}</td>
-          </ng-container>
-          <tr mat-header-row *matHeaderRowDef="['time','division','location','home','visiting']"></tr>
-          <tr mat-row *matRowDef="let row; columns: ['time','division','location','home','visiting']"
-            [class.row-has-warnings]="row.warnings?.length > 0"></tr>
-        </table>
-      </div>
+      </mat-select>
+    </mat-form-field>
     }
-  }
 
-  <mat-divider class="my-4" />
+    <mat-form-field appearance="fill" style="min-width: 200px">
+      <mat-label>Team</mat-label>
+      <mat-select
+        [value]="s.selectedPreviewTeamName()"
+        (selectionChange)="s.selectedPreviewTeamName.set($event.value)"
+      >
+        <mat-option value="">All Teams</mat-option>
+        @for (name of s.previewTeamNames(); track name) {
+        <mat-option [value]="name">{{ name }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
 
-  @if (s.savedDrafts().length > 0) {
-    <div class="flex items-center gap-2 flex-wrap mb-3">
-      <span class="text-sm">Saved drafts:</span>
-      @for (draft of s.savedDrafts(); track draft.id) {
-        <span class="inline-flex items-center">
-          <button mat-stroked-button (click)="s.loadDraft(draft)" title="Load draft">
-            <mat-icon>folder_open</mat-icon> {{ draft.name }}
-          </button>
-          <button mat-icon-button (click)="s.deleteDraft(draft.id)" title="Delete draft">
-            <mat-icon>close</mat-icon>
-          </button>
-        </span>
-      }
-    </div>
-  }
-
-  @if (s.commitGamesCreated() !== null) {
-    <div class="success-panel p-3 flex items-center gap-2 mb-3">
-      <mat-icon class="text-green-600">check_circle</mat-icon>
-      <span>{{ s.commitGamesCreated() }} games committed successfully.</span>
-    </div>
-  }
-
-  @if (s.commitErrors().length > 0) {
-    <div class="error-panel p-3 mb-3">
-      @for (err of s.commitErrors(); track err) {
-        <div class="flex items-start gap-1">
-          <mat-icon class="text-red-600 text-sm">error</mat-icon>
-          <span>{{ err }}</span>
-        </div>
-      }
-    </div>
-  }
-
-  <div class="flex gap-2">
-    <button type="button" mat-stroked-button (click)="s.generatePreview()" [disabled]="s.isCommitting()">
-      <mat-icon>refresh</mat-icon> Regenerate
-    </button>
-    <button type="button" mat-stroked-button (click)="s.saveDraft()" [disabled]="s.isCommitting()">
-      <mat-icon>bookmark</mat-icon> Save Draft
-    </button>
-    <button type="button" mat-raised-button color="accent"
-      [disabled]="s.isCommitting() || s.commitGamesCreated() !== null"
-      (click)="s.commitSchedule()">
-      @if (s.isCommitting()) {
-        <mat-spinner diameter="18" class="inline-spinner" />
-      } @else {
-        <mat-icon>save</mat-icon>
-      }
-      Commit Schedule
-    </button>
+    <mat-button-toggle-group
+      [value]="s.previewViewMode()"
+      (change)="s.previewViewMode.set($event.value)"
+      class="ml-auto"
+    >
+      <mat-button-toggle value="table"
+        ><mat-icon>table_rows</mat-icon> Table</mat-button-toggle
+      >
+      <mat-button-toggle value="calendar"
+        ><mat-icon>calendar_month</mat-icon> Calendar</mat-button-toggle
+      >
+    </mat-button-toggle-group>
   </div>
+</div>
+
+@if (s.previewViewMode() === 'table') {
+<table
+  mat-table
+  [dataSource]="s.previewDataSource"
+  matSort
+  class="preview-table w-full mb-2"
+>
+  <ng-container matColumnDef="gameDate">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Date / Time</th>
+    <td mat-cell *matCellDef="let g">{{ s.formatGameDate(g.gameDate) }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="division">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Division</th>
+    <td mat-cell *matCellDef="let g">{{ g.divisionName }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="location">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Location</th>
+    <td mat-cell *matCellDef="let g">{{ g.locationName }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="home">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Home</th>
+    <td mat-cell *matCellDef="let g">{{ g.homeTeamName }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="visiting">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Visiting</th>
+    <td mat-cell *matCellDef="let g">{{ g.visitingTeamName }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="warnings">
+    <th mat-header-cell *matHeaderCellDef>Warnings</th>
+    <td mat-cell *matCellDef="let g">
+      @for (w of g.warnings; track w) {
+      <div class="warning-text">{{ w }}</div>
+      }
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="edit">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let g">
+      <button
+        mat-icon-button
+        color="primary"
+        title="Edit game"
+        (click)="s.openEditDialog(g)"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="s.previewColumns; sticky: true"></tr>
+  <tr
+    mat-row
+    *matRowDef="let row; columns: s.previewColumns"
+    [class.row-has-warnings]="row.warnings?.length > 0"
+  ></tr>
+</table>
+<mat-paginator
+  #paginator
+  [length]="s.previewDataSource.data.length"
+  [pageSizeOptions]="[25, 50, 100]"
+  [pageSize]="25"
+  [showFirstLastButtons]="true"
+  class="mb-4"
+></mat-paginator>
+} @else {
+<!-- Calendar view -->
+<div class="flex items-center gap-3 mb-3">
+  <button mat-icon-button (click)="s.prevMonth()">
+    <mat-icon>chevron_left</mat-icon>
+  </button>
+  <span class="calendar-month-label">{{ s.calendarMonthLabel() }}</span>
+  <button mat-icon-button (click)="s.nextMonth()">
+    <mat-icon>chevron_right</mat-icon>
+  </button>
+</div>
+<div class="calendar-grid mb-3">
+  @for (name of ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']; track name) {
+  <div class="cal-header">{{ name }}</div>
+  } @for (cell of s.calendarDays(); track $index) { @if (cell) {
+  <div
+    class="cal-cell"
+    [class.has-games]="s.gamesByDate().has(cell.dateKey)"
+    [class.selected]="s.selectedCalendarDate() === cell.dateKey"
+    (click)="cell && s.gamesByDate().has(cell.dateKey) && s.selectCalendarDate(cell.dateKey)"
+  >
+    <span class="cal-day-num">{{ cell.d }}</span>
+    @if (s.gamesByDate().has(cell.dateKey)) {
+    <span class="cal-badge"
+      >{{ s.gamesByDate().get(cell.dateKey)!.length }}</span
+    >
+    }
+  </div>
+  } @else {
+  <div class="cal-cell cal-empty"></div>
+  } }
+</div>
+@if (s.selectedCalendarDate() && s.selectedDateGames().length > 0) {
+<div class="mb-4">
+  <h4 class="mb-2">{{ s.selectedCalendarDate() }}</h4>
+  <table
+    mat-table
+    [dataSource]="s.selectedDateGames()"
+    class="preview-table w-full"
+  >
+    <ng-container matColumnDef="division">
+      <th mat-header-cell *matHeaderCellDef>Division</th>
+      <td mat-cell *matCellDef="let g">{{ g.divisionName }}</td>
+    </ng-container>
+    <ng-container matColumnDef="location">
+      <th mat-header-cell *matHeaderCellDef>Location</th>
+      <td mat-cell *matCellDef="let g">{{ g.locationName }}</td>
+    </ng-container>
+    <ng-container matColumnDef="home">
+      <th mat-header-cell *matHeaderCellDef>Home</th>
+      <td mat-cell *matCellDef="let g">{{ g.homeTeamName }}</td>
+    </ng-container>
+    <ng-container matColumnDef="visiting">
+      <th mat-header-cell *matHeaderCellDef>Visiting</th>
+      <td mat-cell *matCellDef="let g">{{ g.visitingTeamName }}</td>
+    </ng-container>
+    <ng-container matColumnDef="time">
+      <th mat-header-cell *matHeaderCellDef>Time</th>
+      <td mat-cell *matCellDef="let g">{{ s.formatGameDate(g.gameDate) }}</td>
+    </ng-container>
+    <tr
+      mat-header-row
+      *matHeaderRowDef="['time','division','location','home','visiting']"
+    ></tr>
+    <tr
+      mat-row
+      *matRowDef="let row; columns: ['time','division','location','home','visiting']"
+      [class.row-has-warnings]="row.warnings?.length > 0"
+    ></tr>
+  </table>
+</div>
+} }
+
+<mat-divider class="my-4" />
+
+@if (s.savedDrafts().length > 0) {
+<div class="flex items-center gap-2 flex-wrap mb-3">
+  <span class="text-sm">Saved drafts:</span>
+  @for (draft of s.savedDrafts(); track draft.id) {
+  <span class="inline-flex items-center">
+    <button mat-stroked-button (click)="s.loadDraft(draft)" title="Load draft">
+      <mat-icon>folder_open</mat-icon> {{ draft.name }}
+    </button>
+    <button
+      mat-icon-button
+      (click)="s.deleteDraft(draft.id)"
+      title="Delete draft"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </span>
+  }
+</div>
+} @if (s.commitGamesCreated() !== null) {
+<div class="success-panel p-3 flex items-center gap-2 mb-3">
+  <mat-icon class="text-green-600">check_circle</mat-icon>
+  <span>{{ s.commitGamesCreated() }} games committed successfully.</span>
+</div>
+} @if (s.commitErrors().length > 0) {
+<div class="error-panel p-3 mb-3">
+  @for (err of s.commitErrors(); track err) {
+  <div class="flex items-start gap-1">
+    <mat-icon class="text-red-600 text-sm">error</mat-icon>
+    <span>{{ err }}</span>
+  </div>
+  }
+</div>
+}
+
+<div class="flex gap-2">
+  <button
+    type="button"
+    mat-stroked-button
+    (click)="s.generatePreview()"
+    [disabled]="s.isCommitting()"
+  >
+    <mat-icon>refresh</mat-icon> Regenerate
+  </button>
+  <button
+    type="button"
+    mat-stroked-button
+    (click)="s.saveDraft()"
+    [disabled]="s.isCommitting()"
+  >
+    <mat-icon>bookmark</mat-icon> Save Draft
+  </button>
+  <button
+    type="button"
+    mat-raised-button
+    color="accent"
+    [disabled]="s.isCommitting() || s.commitGamesCreated() !== null"
+    (click)="s.commitSchedule()"
+  >
+    @if (s.isCommitting()) {
+    <mat-spinner diameter="18" class="inline-spinner" />
+    } @else {
+    <mat-icon>save</mat-icon>
+    } Commit Schedule
+  </button>
+</div>
 }

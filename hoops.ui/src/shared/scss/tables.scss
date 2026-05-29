@@ -59,6 +59,7 @@ tr:hover {
 // Only set color here; height is content-driven via td padding.
 .mat-mdc-row {
   color: v.$table-font-color;
+  height: 24px;
 }
 
 // ── Cells ─────────────────────────────────────────────────────────────────────
@@ -66,6 +67,7 @@ tr:hover {
 td {
   font-weight: 400;
   font-size: v.$table-font-size;
+  height: 24px;
   padding-top: 0.1rem;
   padding-bottom: 0.1rem;
 }

@@ -32,6 +32,9 @@
   background-color: v.$admin-card-background-color;
   padding: 1rem;
   border-radius: 0 0 v.$border-radius v.$border-radius;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .step-content {
@@ -47,7 +50,15 @@
 ::ng-deep .mat-horizontal-content-container {
   background-color: v.$admin-card-background-color !important;
   padding: 0 1rem 2rem !important;
-  overflow: visible !important;
+  overflow-y: auto !important;
+  max-height: calc(100vh - 260px);
+  min-height: 0;
+}
+
+::ng-deep .schedule-stepper {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 ::ng-deep .mat-horizontal-stepper-header-container {
@@ -228,7 +239,13 @@
     background: color.adjust(v.$brand-color, $lightness: -30%);
   }
 
-  &// Paginator dark theme
+  &.cal-empty {
+    background: transparent;
+    border-color: transparent;
+  }
+}
+
+// Paginator dark theme
 ::ng-deep .mat-mdc-paginator {
   background-color: v.$admin-card-background-color !important;
   color: v.$field-label !important;
@@ -247,12 +264,6 @@
 ::ng-deep .mat-mdc-paginator .mat-mdc-select-value,
 ::ng-deep .mat-mdc-paginator .mat-mdc-select-arrow {
   color: v.$field-label !important;
-}
-
-.cal-empty {
-    background: transparent;
-    border-color: transparent;
-  }
 }
 
 .cal-day-num {
