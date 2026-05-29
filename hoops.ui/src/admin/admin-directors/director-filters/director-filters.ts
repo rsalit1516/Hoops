@@ -30,9 +30,7 @@ export interface DirectorFilterCriteria {
     FilterCard,
   ],
   templateUrl: './director-filters.html',
-  styleUrls: ['./director-filters.scss',
-      '../../../shared/scss/forms.scss',
-    '../../../shared/scss/cards.scss']
+  styleUrls: ['./director-filters.scss', '../../../shared/scss/forms.scss'],
 
 })
 export class DirectorFilters implements OnInit, OnChanges {

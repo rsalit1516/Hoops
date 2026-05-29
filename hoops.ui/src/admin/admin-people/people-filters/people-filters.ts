@@ -39,7 +39,6 @@ export interface PeopleFilterCriteria extends peopleSearchCriteria {
   templateUrl: './people-filters.html',
   styleUrls: [
     './people-filters.scss',
-    '../../../shared/scss/cards.scss',
     '../../../shared/scss/forms.scss',
   ],
 })

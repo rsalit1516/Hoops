@@ -6,7 +6,7 @@ import { MatCardModule } from '@angular/material/card';
   selector: 'csbc-filter-card',
   imports: [MatCardModule, MatButtonModule],
   templateUrl: './filter-card.html',
-  styleUrls: ['./filter-card.scss'],
+  styleUrls: ['./filter-card.scss', '../../scss/cards.scss'],
 })
 export class FilterCard {
   @Input() hasActiveFilters = false;

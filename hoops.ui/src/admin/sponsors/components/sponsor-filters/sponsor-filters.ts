@@ -32,7 +32,6 @@ export interface SponsorFilterCriteria {
   templateUrl: './sponsor-filters.html',
   styleUrls: [
     './sponsor-filters.scss',
-    '../../../../shared/scss/cards.scss',
     '../../../../shared/scss/forms.scss',
   ],
 })

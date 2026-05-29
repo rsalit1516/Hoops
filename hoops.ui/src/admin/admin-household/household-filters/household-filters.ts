@@ -39,7 +39,6 @@ export interface HouseholdFilterCriteria {
   templateUrl: './household-filters.html',
   styleUrls: [
     './household-filters.scss',
-    '../../../shared/scss/cards.scss',
     '../../../shared/scss/forms.scss',
   ],
 })
