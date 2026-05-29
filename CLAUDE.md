@@ -14,6 +14,41 @@ Hoops is a youth basketball league management system with a .NET 9 backend API, 
 - **Cloud**: Azure (App Services, Functions, SQL Server)
 - **CI/CD**: Azure Pipelines
 
+## Design Principles
+
+All new and refactored code must follow SOLID and DRY. These are not abstract goals — they have concrete implications for this codebase:
+
+### SOLID
+
+**Single Responsibility** — one reason to change per unit.
+- Angular: each component owns one view concern; each service owns one domain area. Extract state and business logic to a service when a component exceeds ~150 lines or mixes data-fetching with presentation. The `ScheduleGeneratorStateService` pattern is the reference example.
+- .NET: application services (use-case handlers) call one repository area; domain entities contain their own invariants. Controllers only route and return HTTP responses.
+
+**Open/Closed** — extend, don't modify shared infrastructure.
+- Add new features as new components/services rather than expanding general-purpose ones with feature-specific flags.
+- Shared SCSS files (`forms.scss`, `tables.scss`) define the baseline; override per-component in the component's own `styleUrls`, not by editing the shared file.
+
+**Liskov Substitution** — subtypes must honour the contract of the type they replace.
+- .NET: concrete repository implementations must not add observable side-effects beyond what the interface declares.
+
+**Interface Segregation** — inject only what you need.
+- Angular: a component that needs one method from a service should not be forced to take the whole service if a narrower interface or a focused child service makes sense.
+- .NET: define narrow `IRepository<T>` or use-case-specific interfaces rather than one mega-repository.
+
+**Dependency Inversion** — depend on abstractions; let the container wire concretions.
+- Angular: always inject services via Angular DI (`inject()` / constructor injection). Never `new` a service inside a component.
+- .NET: always inject via the DI container. Never `new` an infrastructure dependency (repositories, HTTP clients, loggers) inside application logic.
+
+### DRY
+
+- **Logic**: if the same transformation or calculation appears in more than one place, extract it to a shared service method or utility function.
+- **Templates**: repeated markup patterns (e.g., a form row, a status badge) belong in a shared component, not copy-pasted across templates.
+- **Styles**: shared visual rules go in `src/shared/scss/`; component-only overrides go in the component's stylesheet.
+- **Types**: model interfaces live in `src/domain/` (Angular) or the Core/Domain project (.NET). Do not redefine the same shape in multiple places.
+- **API access**: all HTTP calls go through a service in `src/services/`. Components never call `HttpClient` directly.
+
+---
+
 ## Frontend Testing Direction
 
 - The current Angular frontend still runs unit tests with Jasmine/Karma.
