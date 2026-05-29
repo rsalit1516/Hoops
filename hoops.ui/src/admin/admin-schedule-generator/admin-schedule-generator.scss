@@ -105,6 +105,21 @@
   }
 }
 
+// Compact row density for the preview table — scales with viewport height
+// so high-res / tall screens get slightly more generous rows.
+::ng-deep .preview-table {
+  // MDC CSS custom properties that control row and header height
+  --mat-table-header-container-height: clamp(32px, 3.5vh, 44px);
+  --mat-table-row-item-container-height: clamp(28px, 3vh, 40px);
+  --mat-table-footer-container-height: clamp(28px, 3vh, 40px);
+
+  td.mat-cell,
+  th.mat-header-cell {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+}
+
 .division-group-header {
   color: v.$brand-color;
   font-size: 1rem;
