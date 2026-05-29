@@ -1,4 +1,4 @@
-import { Component, effect, inject, viewChild } from '@angular/core';
+import { Component, effect, inject, viewChild, ViewChild } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
@@ -29,13 +29,19 @@ import { ScheduleGeneratorStateService } from '../schedule-generator-state.servi
     MatProgressSpinnerModule,
   ],
   templateUrl: './schedule-preview-step.html',
-  styleUrls: ['../admin-schedule-generator.scss'],
+  styleUrls: [
+    '../../../shared/scss/tables.scss',
+    '../admin-schedule-generator.scss',
+  ],
 })
 export class SchedulePreviewStepComponent {
   protected s = inject(ScheduleGeneratorStateService);
 
   private readonly sortRef = viewChild(MatSort);
-  private readonly paginatorRef = viewChild<MatPaginator>('paginator');
+
+  @ViewChild(MatPaginator) set paginatorSetter(p: MatPaginator) {
+    this.s.previewDataSource.paginator = p ?? null;
+  }
 
   constructor() {
     effect(() => {
@@ -51,9 +57,6 @@ export class SchedulePreviewStepComponent {
           return '';
         };
       }
-    });
-    effect(() => {
-      this.s.previewDataSource.paginator = this.paginatorRef() ?? null;
     });
   }
 }
