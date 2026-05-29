@@ -44,3 +44,14 @@ export interface SponsorFee {
   feeName: string;
   amount: number;
 }
+
+export interface SponsorListItem {
+  id: number;
+  sponsorProfileId: number;
+  spoName: string;
+  contactName: string;
+  email: string;
+  phone: string;
+  lastSeasonId: number | null;
+  lastSeasonDescription: string | null;
+}

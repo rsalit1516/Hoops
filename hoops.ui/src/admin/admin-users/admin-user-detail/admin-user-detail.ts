@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import {
   Component,
   OnInit,
@@ -35,7 +34,6 @@ import { HouseholdService } from '@app/services/household.service';
 import { PeopleService } from '@app/services/people.service';
 import { Household } from '@app/domain/household';
 import { Person } from '@app/domain/person';
-import { Constants } from '@app/shared/constants';
 
 interface UserEditModel {
   userName: string;
@@ -64,7 +62,6 @@ interface UserEditModel {
 export class AdminUserDetail implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
-  private http = inject(HttpClient);
   private usersService = inject(AdminUsersService);
   private householdService = inject(HouseholdService);
   private peopleService = inject(PeopleService);
@@ -161,7 +158,7 @@ export class AdminUserDetail implements OnInit {
           this.initialSnapshot.set({ ...this.model() });
 
           if (u.houseId) {
-            this.getHouseholdById(u.houseId).subscribe({
+            this.householdService.getById(u.houseId).subscribe({
               next: (household) => this.householdName.set(household.name),
               error: (err) =>
                 this.logger.error('Failed to load household', err),
@@ -193,7 +190,7 @@ export class AdminUserDetail implements OnInit {
         const personId = Number(params['personId']);
         const name = params['name'] || '';
 
-        this.getHouseholdById(houseId).subscribe({
+        this.householdService.getById(houseId).subscribe({
           next: (household) => {
             this.householdName.set(household.name);
             this.userForm.houseId().value.set(houseId);
@@ -238,12 +235,6 @@ export class AdminUserDetail implements OnInit {
 
   onPersonSelected(personId: number | null): void {
     this.userForm.peopleId().value.set(personId);
-  }
-
-  private getHouseholdById(houseId: number): Observable<Household> {
-    return this.http.get<Household>(
-      `${Constants.GET_HOUSEHOLD_BY_ID_URL}/${houseId}`,
-    );
   }
 
   private loadPeopleForHousehold(houseId: number): void {

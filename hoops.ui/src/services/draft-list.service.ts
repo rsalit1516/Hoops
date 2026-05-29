@@ -22,6 +22,14 @@ export class DraftListService {
     return this._isLoading.asReadonly();
   }
 
+  getPlayersBySeason(seasonId: number, divisionId?: number): Observable<DraftListPlayer[]> {
+    let url = `${Constants.GET_SEASON_PLAYERS_URL}/${seasonId}`;
+    if (divisionId && divisionId > 0) {
+      url += `?divisionId=${divisionId}`;
+    }
+    return this.http.get<DraftListPlayer[]>(url);
+  }
+
   getDraftList(seasonId: number, divisionId: number | null): void {
     this._isLoading.set(true);
     const url = divisionId

@@ -106,7 +106,9 @@ describe('PlayerList', () => {
     ]);
     mockPeopleService = jasmine.createSpyObj('PeopleService', [
       'loadAndSelectPerson',
+      'getAllPeople',
     ]);
+    mockPeopleService.getAllPeople.and.returnValue(of([]));
 
     await TestBed.configureTestingModule({
       imports: [

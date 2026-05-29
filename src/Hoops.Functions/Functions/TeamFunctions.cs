@@ -7,7 +7,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Hoops.Core.Interface;
 using Hoops.Core.Models;
-using Hoops.Functions.Models;
+using Hoops.Functions.Mapping;
 using Hoops.Functions.Utils;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
@@ -21,13 +21,6 @@ namespace Hoops.Functions.Functions
         private readonly IScheduleDivTeamsRepository _scheduleDivTeamsRepository;
         private readonly ILogger<TeamFunctions> _logger;
 
-        private static readonly JsonSerializerOptions JsonOptions = new()
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            PropertyNameCaseInsensitive = true,
-            DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
-        };
-
         public TeamFunctions(ITeamRepository repository, IScheduleDivTeamsRepository scheduleDivTeamsRepository, ILogger<TeamFunctions> logger)
         {
             _repository = repository;
@@ -35,21 +28,14 @@ namespace Hoops.Functions.Functions
             _logger = logger;
         }
 
-        private static async Task WriteJsonAsync<T>(HttpResponseData resp, T payload, HttpStatusCode status = HttpStatusCode.OK)
-        {
-            resp.StatusCode = status;
-            resp.Headers.Add("Content-Type", "application/json; charset=utf-8");
-            await JsonSerializer.SerializeAsync(resp.Body, payload, JsonOptions);
-        }
-
         [Function("GetTeams")]
         public async Task<HttpResponseData> GetTeams(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Team")] HttpRequestData req)
         {
             var teams = await _repository.GetAllAsync();
-            var dtos = teams.Select(ToDto).ToList();
+            var dtos = teams.Select(EntityMapper.ToDto).ToList();
             var resp = req.CreateResponse();
-            await WriteJsonAsync(resp, dtos);
+            await ResponseUtils.WriteJsonAsync(resp, dtos);
             return resp;
         }
 
@@ -64,7 +50,7 @@ namespace Hoops.Functions.Functions
                 return req.CreateResponse(HttpStatusCode.NotFound);
             }
             var resp = req.CreateResponse();
-            await WriteJsonAsync(resp, ToDto(team));
+            await ResponseUtils.WriteJsonAsync(resp, EntityMapper.ToDto(team));
             return resp;
         }
 
@@ -75,7 +61,6 @@ namespace Hoops.Functions.Functions
             int id,
             FunctionContext context)
         {
-            // Check authentication
             var authError = context.CheckAuthentication(req, _logger);
             if (authError != null) return authError;
 
@@ -85,7 +70,7 @@ namespace Hoops.Functions.Functions
                 var json = await sr.ReadToEndAsync();
                 try
                 {
-                    body = JsonSerializer.Deserialize<Team>(json, JsonOptions);
+                    body = JsonSerializer.Deserialize<Team>(json, ResponseUtils.JsonOptions);
                 }
                 catch (JsonException)
                 {
@@ -124,7 +109,6 @@ namespace Hoops.Functions.Functions
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Team")] HttpRequestData req,
             FunctionContext context)
         {
-            // Check authentication
             var authError = context.CheckAuthentication(req, _logger);
             if (authError != null) return authError;
 
@@ -134,7 +118,7 @@ namespace Hoops.Functions.Functions
                 var json = await sr.ReadToEndAsync();
                 try
                 {
-                    body = JsonSerializer.Deserialize<Team>(json, JsonOptions);
+                    body = JsonSerializer.Deserialize<Team>(json, ResponseUtils.JsonOptions);
                 }
                 catch (JsonException)
                 {
@@ -148,7 +132,7 @@ namespace Hoops.Functions.Functions
             _repository.Insert(body);
             await _repository.SaveChangesAsync();
             var created = req.CreateResponse(HttpStatusCode.Created);
-            await WriteJsonAsync(created, ToDto(body), HttpStatusCode.Created);
+            await ResponseUtils.WriteJsonAsync(created, EntityMapper.ToDto(body), HttpStatusCode.Created);
             return created;
         }
 
@@ -159,7 +143,6 @@ namespace Hoops.Functions.Functions
             int id,
             FunctionContext context)
         {
-            // Check authentication
             var authError = context.CheckAuthentication(req, _logger);
             if (authError != null) return authError;
 
@@ -171,7 +154,7 @@ namespace Hoops.Functions.Functions
             _repository.Delete(team);
             await _repository.SaveChangesAsync();
             var resp = req.CreateResponse();
-            await WriteJsonAsync(resp, ToDto(team));
+            await ResponseUtils.WriteJsonAsync(resp, EntityMapper.ToDto(team));
             return resp;
         }
 
@@ -185,9 +168,9 @@ namespace Hoops.Functions.Functions
                 return req.CreateResponse(HttpStatusCode.BadRequest);
             }
             var teams = _repository.GetSeasonTeams(seasonId) ?? new List<Team>();
-            var dtos = teams.Select(ToDto).ToList();
+            var dtos = teams.Select(EntityMapper.ToDto).ToList();
             var resp = req.CreateResponse();
-            WriteJsonAsync(resp, dtos).GetAwaiter().GetResult();
+            ResponseUtils.WriteJsonAsync(resp, dtos).GetAwaiter().GetResult();
             return resp;
         }
 
@@ -202,7 +185,7 @@ namespace Hoops.Functions.Functions
             }
             var mapped = _scheduleDivTeamsRepository.GetTeamNo(scheduleNumber, teamNumber);
             var resp = req.CreateResponse();
-            WriteJsonAsync(resp, mapped).GetAwaiter().GetResult();
+            ResponseUtils.WriteJsonAsync(resp, mapped).GetAwaiter().GetResult();
             return resp;
         }
 
@@ -217,7 +200,7 @@ namespace Hoops.Functions.Functions
             }
             var mapped = _scheduleDivTeamsRepository.GetTeamNo(scheduleNumber, teamNumber, seasonId);
             var resp = req.CreateResponse();
-            WriteJsonAsync(resp, mapped).GetAwaiter().GetResult();
+            ResponseUtils.WriteJsonAsync(resp, mapped).GetAwaiter().GetResult();
             return resp;
         }
 
@@ -231,32 +214,11 @@ namespace Hoops.Functions.Functions
                 return req.CreateResponse(HttpStatusCode.BadRequest);
             }
 
-            var scheduleDivTeams = await _scheduleDivTeamsRepository.GetAllAsync();
-            var validTeams = scheduleDivTeams
-                .Where(sdt => sdt.ScheduleNumber == scheduleNumber && sdt.SeasonId == seasonId)
-                .OrderBy(sdt => sdt.ScheduleTeamNumber)
-                .Select(sdt => new
-                {
-                    scheduleTeamNumber = sdt.ScheduleTeamNumber,
-                    teamNumber = sdt.TeamNumber,
-                    displayName = $"Team {sdt.ScheduleTeamNumber}"
-                })
-                .ToList();
+            var validTeams = _scheduleDivTeamsRepository.GetValidScheduleTeams(scheduleNumber, seasonId);
 
             var resp = req.CreateResponse();
-            await WriteJsonAsync(resp, validTeams);
+            await ResponseUtils.WriteJsonAsync(resp, validTeams);
             return resp;
         }
-        private static TeamDto ToDto(Team t) => new TeamDto
-        {
-            TeamId = t.TeamId,
-            DivisionId = t.DivisionId,
-            TeamColorId = t.TeamColorId,
-            TeamName = t.TeamName,
-            Name = t.TeamName,
-            TeamNumber = t.TeamNumber,
-            CreatedDate = t.CreatedDate,
-            CreatedUser = t.CreatedUser
-        };
     }
 }

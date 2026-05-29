@@ -194,6 +194,13 @@ export class HouseholdService {
       });
   }
 
+  getById(houseId: number): Observable<Household> {
+    return this.http.get<Household>(
+      `${Constants.GET_HOUSEHOLD_BY_ID_URL}/${houseId}`,
+      { responseType: 'json' },
+    );
+  }
+
   getAllHouseholds(): Observable<Household[]> {
     return this.http
       .get<Household[]>(Constants.GET_ALL_HOUSEHOLDS_URL, {

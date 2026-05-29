@@ -1,4 +1,6 @@
-﻿using Hoops.Core.Models;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Hoops.Core.Models;
 using Hoops.Core.Interface;
 using Hoops.Infrastructure.Data;
 
@@ -43,6 +45,18 @@ namespace Hoops.Infrastructure.Repository
                 t.TeamNumber == teamNumber &&
                 t.SeasonId == seasonId);
             return team?.ScheduleTeamNumber ?? 0;
+        }
+
+        public IReadOnlyList<ScheduleTeamDisplayItem> GetValidScheduleTeams(int scheduleNumber, int seasonId)
+        {
+            return context.Set<ScheduleDivTeam>()
+                .Where(sdt => sdt.ScheduleNumber == scheduleNumber && sdt.SeasonId == seasonId)
+                .OrderBy(sdt => sdt.ScheduleTeamNumber)
+                .Select(sdt => new ScheduleTeamDisplayItem(
+                    sdt.ScheduleTeamNumber,
+                    sdt.TeamNumber,
+                    $"Team {sdt.ScheduleTeamNumber}"))
+                .ToList();
         }
     }
 }
