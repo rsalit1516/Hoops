@@ -113,20 +113,38 @@ namespace Hoops.Infrastructure.Tests
                     HomeTeamScore = 72,
                     VisitingTeamScore = 69
                 },
-                new ScheduleGame 
-                { 
-                    ScheduleGamesId = 3, 
-                    SeasonId = 2, 
-                    GameDate = new DateTime(2024, 7, 1), 
+                new ScheduleGame
+                {
+                    ScheduleGamesId = 3,
+                    SeasonId = 2,
+                    GameDate = new DateTime(2024, 7, 1),
                     GameTime = "18:30",
-                    ScheduleNumber = 300, 
-                    GameNumber = 1, 
+                    ScheduleNumber = 300,
+                    GameNumber = 1,
                     DivisionId = 20,
                     LocationNumber = 101,
                     HomeTeamNumber = 4,
                     VisitingTeamNumber = 3,
                     HomeTeamScore = 0,
                     VisitingTeamScore = 0
+                }
+            });
+
+            // Add SchedulePlayoffs
+            context.SchedulePlayoffs.AddRange(new List<SchedulePlayoff>
+            {
+                new SchedulePlayoff
+                {
+                    SchedulePlayoffId = 1,
+                    ScheduleNumber = 100,
+                    GameNumber = 1,
+                    DivisionId = 10,
+                    LocationNumber = 101,
+                    GameDate = new DateTime(2024, 6, 15),
+                    GameTime = "18:00",
+                    HomeTeam = "Red Team",
+                    VisitingTeam = "Blue Team",
+                    Descr = "Championship Game"
                 }
             });
         }
@@ -193,7 +211,7 @@ namespace Hoops.Infrastructure.Tests
             
             // Assert
             Assert.NotNull(games);
-            Assert.Equal(2, games.Count);
+            Assert.Equal(3, games.Count);
             
             var firstGame = games.First();
             Assert.NotNull(firstGame.HomeTeamName);
@@ -228,7 +246,8 @@ namespace Hoops.Infrastructure.Tests
             var games = repo.GetGames(1);
             
             // Assert
-            Assert.All(games, game => Assert.Equal(GameTypes.Regular, game.GameType));
+            Assert.Contains(games, g => g.GameType == GameTypes.Regular);
+            Assert.Contains(games, g => g.GameType == GameTypes.Playoff);
         }
 
         [Fact]
@@ -385,6 +404,24 @@ namespace Hoops.Infrastructure.Tests
             
             // Assert
             Assert.Equal(2, insertedGame.GameNumber); // Should be next number in schedule (1 already exists)
+        }
+
+        [Fact]
+        public void GetGames_IncludesPlayoffGames()
+        {
+            // Arrange
+            var repo = CreateRepositoryWithSeededContext();
+
+            // Act
+            var games = repo.GetGames(1);
+
+            // Assert
+            var playoffGames = games.Where(g => g.GameType == GameTypes.Playoff).ToList();
+            Assert.Single(playoffGames);
+            Assert.Equal("Red Team", playoffGames[0].HomeTeamName);
+            Assert.Equal("Blue Team", playoffGames[0].VisitingTeamName);
+            Assert.Equal("Gym A", playoffGames[0].LocationName);
+            Assert.Equal(new DateTime(2024, 6, 15), playoffGames[0].GameDate);
         }
 
         [Fact]
