@@ -9,6 +9,9 @@
     "start": "ng serve --configuration local",
     "test": "ng test",
     "test:ci": "ng test --watch=false --browsers=ChromeHeadless --code-coverage",
+    "e2e": "playwright test",
+    "e2e:headed": "playwright test --headed",
+    "e2e:report": "playwright show-report",
     "lint": "eslint src --ext .ts",
     "app_build_command": "npm run docs:build"
   },
@@ -50,6 +53,7 @@
     "@nrwl/angular": "^19.4.4",
     "@nrwl/nx-cloud": "^15.3.5",
     "@nrwl/workspace": "^19.8.4",
+    "@playwright/test": "^1.60.0",
     "@schematics/angular": "^0.1.11",
     "@types/babel__core": "^7.20.5",
     "@types/jasmine": "~4.3.0",
