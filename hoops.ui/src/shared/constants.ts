@@ -22,6 +22,18 @@ export class Constants {
   public static MEN = 'Men 18+';
   public static WOMEN = 'Women';
 
+  // season-setup division names — match actual DB DivisionDescription values
+  public static readonly SETUP_TR2COED  = 'TRAINEE 2 COED';
+  public static readonly SETUP_TR4      = 'TRAINEE 4';
+  public static readonly SETUP_INTBOYS  = 'INT BOYS';
+  public static readonly SETUP_JVBOYS   = 'JV BOYS';
+  public static readonly SETUP_HSBOYS   = 'HS BOYS';
+  public static readonly SETUP_INTGIRLS = 'INT GIRLS';
+  public static readonly SETUP_JVGIRLS  = 'JV GIRLS';
+  public static readonly SETUP_HSGIRLS  = 'HS Girls';
+  public static readonly SETUP_MEN      = 'Men 18+';
+  public static readonly SETUP_WOMEN    = 'Women';
+
   /* company */
   public static COMPANYID = 1;
 

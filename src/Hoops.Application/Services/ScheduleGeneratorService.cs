@@ -40,11 +40,21 @@ namespace Hoops.Application.Services
             if (request.StartDate >= request.EndDate)
                 return Fail("Start date must be before end date.");
 
-            if (request.GamesPerTeam <= 0)
-                return Fail("Games per team must be greater than zero.");
+            if (request.DivisionSettings == null || request.DivisionSettings.Count == 0)
+                return Fail("Division settings must be provided.");
+
+            var missingSettings = request.DivisionIds.Except(request.DivisionSettings.Select(s => s.DivisionId)).ToList();
+            if (missingSettings.Count > 0)
+                return Fail($"Missing settings for division(s): {string.Join(", ", missingSettings)}.");
+
+            var invalidSettings = request.DivisionSettings.Where(s => s.GamesPerTeam <= 0 || s.MaxGamesPerWeekPerTeam <= 0).ToList();
+            if (invalidSettings.Count > 0)
+                return Fail("GamesPerTeam and MaxGamesPerWeekPerTeam must be greater than zero for all divisions.");
 
             if (request.TimeSlots == null || request.TimeSlots.Count == 0)
                 return Fail("At least one time slot must be configured.");
+
+            var settingsById = request.DivisionSettings.ToDictionary(s => s.DivisionId);
 
             var locations = (await _locationRepo.GetAll()).ToList();
             if (locations.Count == 0)
@@ -68,7 +78,7 @@ namespace Hoops.Application.Services
                     continue;
                 }
 
-                var pairings = GenerateRoundRobinPairings(teams, request.GamesPerTeam);
+                var pairings = GenerateRoundRobinPairings(teams, settingsById[divisionId].GamesPerTeam);
                 divisionPairings.Add((divisionId, division, pairings));
                 _logger.LogInformation("Division {Name}: {TeamCount} teams, {PairingCount} games to schedule",
                     division.DivisionDescription, teams.Count, pairings.Count);
@@ -123,7 +133,8 @@ namespace Hoops.Application.Services
 
                 var slot = FindNextSlot(
                     request, locations, slotManager, coachSlotMap,
-                    home, visiting, weeklyGameCount, dailyGameCount, allPreviewGames, divisionId, preferDay);
+                    home, visiting, weeklyGameCount, dailyGameCount, allPreviewGames, divisionId,
+                    settingsById[divisionId].MaxGamesPerWeekPerTeam, preferDay);
 
                 if (slot == null)
                 {
@@ -287,6 +298,7 @@ namespace Hoops.Application.Services
             Dictionary<int, HashSet<DateTime>> dailyGameCount,
             List<ScheduleGamePreviewItem> alreadyScheduled,
             int divisionId,
+            int maxGamesPerWeek,
             DayOfWeek? preferDay = null)
         {
             var current = request.StartDate.Date;
@@ -302,8 +314,8 @@ namespace Hoops.Application.Services
 
                 if (!IsBlackedOut(current, null, request.BlackoutDates))
                 {
-                    if (WeeklyCountFor(weeklyGameCount, home.TeamId, current) < request.MaxGamesPerWeekPerTeam &&
-                        WeeklyCountFor(weeklyGameCount, visiting.TeamId, current) < request.MaxGamesPerWeekPerTeam &&
+                    if (WeeklyCountFor(weeklyGameCount, home.TeamId, current) < maxGamesPerWeek &&
+                        WeeklyCountFor(weeklyGameCount, visiting.TeamId, current) < maxGamesPerWeek &&
                         !HasDailyGame(dailyGameCount, home.TeamId, current) &&
                         !HasDailyGame(dailyGameCount, visiting.TeamId, current))
                     {
@@ -327,7 +339,7 @@ namespace Hoops.Application.Services
 
             // Preferred day couldn't be scheduled; fall back to any configured day
             if (preferDay.HasValue)
-                return FindNextSlot(request, allLocations, slotManager, coachSlotMap, home, visiting, weeklyGameCount, dailyGameCount, alreadyScheduled, divisionId);
+                return FindNextSlot(request, allLocations, slotManager, coachSlotMap, home, visiting, weeklyGameCount, dailyGameCount, alreadyScheduled, divisionId, maxGamesPerWeek);
             return null;
         }
 

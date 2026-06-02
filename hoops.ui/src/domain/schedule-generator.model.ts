@@ -11,14 +11,19 @@ export interface ScheduleBlackoutDate {
   locationId: number | null;
 }
 
+export interface DivisionScheduleSettings {
+  divisionId: number;
+  gamesPerTeam: number;
+  maxGamesPerWeekPerTeam: number;
+  gameDurationMinutes: number;
+}
+
 export interface ScheduleGeneratorRequest {
   seasonId: number;
   startDate: string | null;
   endDate: string | null;
   divisionIds: number[];
-  gamesPerTeam: number;
-  maxGamesPerWeekPerTeam: number;
-  gameDurationMinutes: number;
+  divisionSettings: DivisionScheduleSettings[];
   timeSlots: AvailableTimeSlot[];
   blackoutDates: ScheduleBlackoutDate[];
   enforceCoachConflicts: boolean;

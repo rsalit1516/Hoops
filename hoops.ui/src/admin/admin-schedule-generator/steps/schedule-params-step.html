@@ -25,24 +25,6 @@
     <mat-datepicker #endPicker />
   </mat-form-field>
 
-  <mat-form-field appearance="fill">
-    <mat-label>Games per Team (season total)</mat-label>
-    <input matInput type="number" min="1" [value]="s.gamesPerTeam()"
-      (change)="s.gamesPerTeam.set(+$any($event.target).value)" />
-  </mat-form-field>
-
-  <mat-form-field appearance="fill">
-    <mat-label>Max Games per Team per Week</mat-label>
-    <input matInput type="number" min="1" [value]="s.maxGamesPerWeek()"
-      (change)="s.maxGamesPerWeek.set(+$any($event.target).value)" />
-  </mat-form-field>
-
-  <mat-form-field appearance="fill">
-    <mat-label>Game Duration (minutes)</mat-label>
-    <input matInput type="number" min="10" [value]="s.gameDurationMinutes()"
-      (change)="s.gameDurationMinutes.set(+$any($event.target).value)" />
-  </mat-form-field>
-
 </div>
 
 <div class="mt-3">
