@@ -167,7 +167,7 @@ export class AdminSeasonDetail implements OnInit {
           this.seasonService.fetchSeasons();
           this.seasonService.fetchCurrentSeason();
           this.snackBar.open('Season created', 'OK', { duration: 2500 });
-          this.router.navigate(['/admin/seasons/list']);
+          this.router.navigate(['/admin/seasons/setup', created.seasonId]);
         },
         error: (err) => this.logger.error('Failed to create season', err),
       });

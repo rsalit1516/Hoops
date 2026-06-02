@@ -279,6 +279,41 @@ export class DivisionService {
   getSelectedSeasonDivisions() {
     this.#http.get<Division[]>(Constants.SEASON_DIVISIONS_URL + this.seasonId);
   }
+
+  private static readonly DIVISION_TEMPLATES = [
+    { name: Constants.SETUP_TR2COED,  gender: 'M', gender2: 'F' as string | null, minOff: 9,  maxOff: 6,  maxMon: 3, maxDay: 31, coed: true  },
+    { name: Constants.SETUP_TR4,      gender: 'M', gender2: null,                  minOff: 11, maxOff: 9,  maxMon: 8, maxDay: 31, coed: false },
+    { name: Constants.SETUP_INTBOYS,  gender: 'M', gender2: null,                  minOff: 13, maxOff: 11, maxMon: 8, maxDay: 31, coed: false },
+    { name: Constants.SETUP_JVBOYS,   gender: 'M', gender2: null,                  minOff: 15, maxOff: 13, maxMon: 8, maxDay: 31, coed: false },
+    { name: Constants.SETUP_HSBOYS,   gender: 'M', gender2: null,                  minOff: 19, maxOff: 15, maxMon: 8, maxDay: 31, coed: false },
+    { name: Constants.SETUP_INTGIRLS, gender: 'F', gender2: null,                  minOff: 13, maxOff: 9,  maxMon: 8, maxDay: 31, coed: false },
+    { name: Constants.SETUP_JVGIRLS,  gender: 'F', gender2: null,                  minOff: 15, maxOff: 13, maxMon: 8, maxDay: 31, coed: false },
+    { name: Constants.SETUP_HSGIRLS,  gender: 'F', gender2: null,                  minOff: 19, maxOff: 15, maxMon: 8, maxDay: 31, coed: false },
+    { name: Constants.SETUP_MEN,      gender: 'M', gender2: null,                  minOff: 46, maxOff: 19, maxMon: 8, maxDay: 31, coed: false },
+    { name: Constants.SETUP_WOMEN,    gender: 'F', gender2: null,                  minOff: 46, maxOff: 19, maxMon: 8, maxDay: 31, coed: false },
+  ];
+
+  getSetupDivisions(): string[] {
+    return DivisionService.DIVISION_TEMPLATES.map(t => t.name);
+  }
+
+  getDefaultDivisionForSetup(name: string, seasonYear: number): Division {
+    const tmpl = DivisionService.DIVISION_TEMPLATES.find(t => t.name === name)!;
+    const div = new Division();
+    div.divisionDescription = tmpl.name;
+    div.gender = tmpl.gender;
+    div.minDate = new Date(`09/01/${seasonYear - tmpl.minOff}`);
+    div.maxDate = new Date(
+      `${String(tmpl.maxMon).padStart(2, '0')}/${tmpl.maxDay}/${seasonYear - tmpl.maxOff}`
+    );
+    if (tmpl.gender2) div.gender2 = tmpl.gender2;
+    if (tmpl.coed) {
+      div.minDate2 = div.minDate;
+      div.maxDate2 = div.maxDate;
+    }
+    return div;
+  }
+
   standardDivisions() {
     return [
       Constants.TR2COED,

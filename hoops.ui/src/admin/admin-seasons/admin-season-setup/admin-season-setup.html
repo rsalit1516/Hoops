@@ -1,0 +1,80 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      Set Up Divisions
+      @if (season()) {
+        — {{ season()!.description }}
+      }
+    </mat-card-title>
+    <mat-card-subtitle>
+      Select the divisions for this season and specify the number of teams in each.
+    </mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <table class="division-setup-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Division</th>
+          <th>Gender</th>
+          <th>Age Range (Birth Dates)</th>
+          <th>No. of Teams</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (row of rows(); track row.division.divisionDescription) {
+          <tr [class.selected]="row.selected()">
+            <td>
+              <mat-checkbox
+                [checked]="row.selected()"
+                (change)="toggleSelected(row)"
+              ></mat-checkbox>
+            </td>
+            <td>{{ row.division.divisionDescription }}</td>
+            <td>
+              {{ row.division.gender }}
+              @if (row.division.gender2) {
+                / {{ row.division.gender2 }}
+              }
+            </td>
+            <td>
+              {{ row.division.minDate | date: 'MM/dd/yyyy' }}
+              &ndash;
+              {{ row.division.maxDate | date: 'MM/dd/yyyy' }}
+            </td>
+            <td>
+              <mat-form-field appearance="outline" class="team-count-field">
+                <mat-label>Teams</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  min="1"
+                  [disabled]="!row.selected()"
+                  [value]="row.teamCount()"
+                  (change)="setTeamCount(row, $any($event.target).value)"
+                />
+              </mat-form-field>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </mat-card-content>
+
+  <mat-card-actions align="end">
+    <button mat-button (click)="skip()">Skip</button>
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="!canSubmit()"
+      (click)="onSubmit()"
+    >
+      @if (isSubmitting()) {
+        Setting Up…
+      } @else {
+        Set Up Divisions
+      }
+    </button>
+  </mat-card-actions>
+</mat-card>
