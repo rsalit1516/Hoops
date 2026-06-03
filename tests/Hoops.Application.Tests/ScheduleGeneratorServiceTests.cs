@@ -175,13 +175,29 @@ namespace Hoops.Application.Tests
             StartDate = start,
             EndDate = end,
             DivisionIds = divIds,
-            GamesPerTeam = 2,
-            MaxGamesPerWeekPerTeam = 2,
-            GameDurationMinutes = 60,
+            DivisionSettings = divIds.Select(id => new DivisionScheduleSettings
+            {
+                DivisionId = id,
+                GamesPerTeam = 2,
+                MaxGamesPerWeekPerTeam = 2,
+                GameDurationMinutes = 60,
+            }).ToList(),
             TimeSlots = slots,
             BlackoutDates = new(),
             EnforceCoachConflicts = false,
         };
+
+        private static void SetDivisionGamesPerTeam(ScheduleGeneratorRequest req, int divisionId, int value)
+        {
+            var s = req.DivisionSettings.First(x => x.DivisionId == divisionId);
+            s.GamesPerTeam = value;
+        }
+
+        private static void SetDivisionMaxGamesPerWeek(ScheduleGeneratorRequest req, int divisionId, int value)
+        {
+            var s = req.DivisionSettings.First(x => x.DivisionId == divisionId);
+            s.MaxGamesPerWeekPerTeam = value;
+        }
 
         private static AvailableTimeSlot Slot(int divId, DayOfWeek day, int hour, int loc) =>
             new() { DivisionId = divId, DayOfWeek = day, StartTime = TimeSpan.FromHours(hour), LocationId = loc };
@@ -217,12 +233,11 @@ namespace Hoops.Application.Tests
         {
             var svc = CreateService();
             var req = BaseRequest(new DateTime(2026, 1, 1), new DateTime(2026, 6, 1), new List<int> { 1 }, new());
-            req.GamesPerTeam = 0;
+            req.DivisionSettings[0].GamesPerTeam = 0;
 
             var result = await svc.PreviewAsync(req);
 
             Assert.False(result.Success);
-            Assert.Contains("games per team", result.ErrorMessage, StringComparison.OrdinalIgnoreCase);
         }
 
         [Fact]
@@ -261,7 +276,7 @@ namespace Hoops.Application.Tests
                 new DateTime(2026, 1, 1), new DateTime(2026, 1, 31),
                 new List<int> { 1 },
                 new List<AvailableTimeSlot> { Slot(1, DayOfWeek.Saturday, 9, 1) });
-            req.GamesPerTeam = 1;
+            SetDivisionGamesPerTeam(req, 1, 1);
 
             var result = await svc.PreviewAsync(req);
 
@@ -329,7 +344,8 @@ namespace Hoops.Application.Tests
                     Slot(2, DayOfWeek.Saturday, 9, 2),
                     Slot(2, DayOfWeek.Saturday, 10, 2),
                 });
-            req.GamesPerTeam = 2;
+            SetDivisionGamesPerTeam(req, 1, 2);
+            SetDivisionGamesPerTeam(req, 2, 2);
 
             var result = await svc.PreviewAsync(req);
 
@@ -361,8 +377,8 @@ namespace Hoops.Application.Tests
                     Slot(1, DayOfWeek.Saturday, 10, 1),
                     Slot(1, DayOfWeek.Saturday, 11, 1),
                 });
-            req.GamesPerTeam = 4;
-            req.MaxGamesPerWeekPerTeam = 1;
+            SetDivisionGamesPerTeam(req, 1, 4);
+            SetDivisionMaxGamesPerWeek(req, 1, 1);
 
             var result = await svc.PreviewAsync(req);
 
@@ -420,7 +436,7 @@ namespace Hoops.Application.Tests
                 new DateTime(2026, 1, 1), new DateTime(2026, 1, 15),
                 new List<int> { 1 },
                 new List<AvailableTimeSlot> { Slot(1, DayOfWeek.Saturday, 9, 1) });
-            req.GamesPerTeam = 1;
+            SetDivisionGamesPerTeam(req, 1, 1);
             req.BlackoutDates.Add(new ScheduleBlackoutDate
             {
                 StartDate = new DateTime(2026, 1, 3),

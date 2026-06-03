@@ -3,15 +3,21 @@ using System.Collections.Generic;
 
 namespace Hoops.Core.ViewModels
 {
+    public class DivisionScheduleSettings
+    {
+        public int DivisionId { get; set; }
+        public int GamesPerTeam { get; set; } = 10;
+        public int MaxGamesPerWeekPerTeam { get; set; } = 2;
+        public int GameDurationMinutes { get; set; } = 50;
+    }
+
     public class ScheduleGeneratorRequest
     {
         public int SeasonId { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public List<int> DivisionIds { get; set; } = new();
-        public int GamesPerTeam { get; set; } = 10;
-        public int MaxGamesPerWeekPerTeam { get; set; } = 2;
-        public int GameDurationMinutes { get; set; } = 50;
+        public List<DivisionScheduleSettings> DivisionSettings { get; set; } = new();
         public List<AvailableTimeSlot> TimeSlots { get; set; } = new();
         public List<ScheduleBlackoutDate> BlackoutDates { get; set; } = new();
         public bool EnforceCoachConflicts { get; set; } = true;

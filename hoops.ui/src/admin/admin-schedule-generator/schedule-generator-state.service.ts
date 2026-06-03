@@ -11,6 +11,7 @@ import { Constants } from '@app/shared/constants';
 import { Division } from '@app/domain/division';
 import {
   AvailableTimeSlot,
+  DivisionScheduleSettings,
   GameEditDialogData,
   GameEditDialogResult,
   ScheduleBlackoutDate,
@@ -59,9 +60,7 @@ export class ScheduleGeneratorStateService {
   selectedSeasonId = signal<number | null>(null);
   startDate = signal<Date | null>(null);
   endDate = signal<Date | null>(null);
-  gamesPerTeam = signal<number>(10);
-  maxGamesPerWeek = signal<number>(2);
-  gameDurationMinutes = signal<number>(50);
+  divisionSettings = signal<Record<number, DivisionScheduleSettings>>({});
   enforceCoachConflicts = signal<boolean>(true);
 
   divisionsForSeason = signal<Division[]>([]);
@@ -171,9 +170,7 @@ export class ScheduleGeneratorStateService {
       selectedSeasonId: this.selectedSeasonId(),
       startDate: this.startDate()?.toISOString() ?? null,
       endDate: this.endDate()?.toISOString() ?? null,
-      gamesPerTeam: this.gamesPerTeam(),
-      maxGamesPerWeek: this.maxGamesPerWeek(),
-      gameDurationMinutes: this.gameDurationMinutes(),
+      divisionSettings: this.divisionSettings(),
       enforceCoachConflicts: this.enforceCoachConflicts(),
       selectedDivisionIds: this.selectedDivisionIds(),
       timePeriods: this.timePeriods(),
@@ -195,9 +192,7 @@ export class ScheduleGeneratorStateService {
       }
       if (state.startDate) this.startDate.set(new Date(state.startDate));
       if (state.endDate) this.endDate.set(new Date(state.endDate));
-      if (state.gamesPerTeam != null) this.gamesPerTeam.set(state.gamesPerTeam);
-      if (state.maxGamesPerWeek != null) this.maxGamesPerWeek.set(state.maxGamesPerWeek);
-      if (state.gameDurationMinutes != null) this.gameDurationMinutes.set(state.gameDurationMinutes);
+      if (state.divisionSettings != null) this.divisionSettings.set(state.divisionSettings);
       if (state.enforceCoachConflicts != null) this.enforceCoachConflicts.set(state.enforceCoachConflicts);
       if (Array.isArray(state.selectedDivisionIds)) this.selectedDivisionIds.set(state.selectedDivisionIds);
       if (Array.isArray(state.timePeriods) && state.timePeriods.length > 0) {
@@ -216,9 +211,7 @@ export class ScheduleGeneratorStateService {
     this.selectedSeasonId.set(null);
     this.startDate.set(null);
     this.endDate.set(null);
-    this.gamesPerTeam.set(10);
-    this.maxGamesPerWeek.set(2);
-    this.gameDurationMinutes.set(50);
+    this.divisionSettings.set({});
     this.enforceCoachConflicts.set(true);
     this.selectedDivisionIds.set([]);
     this.divisionsForSeason.set([]);
@@ -228,6 +221,22 @@ export class ScheduleGeneratorStateService {
     this.previewError.set(null);
     this.selectedPreviewDivisionName.set('');
     this.selectedPreviewTeamName.set('');
+  }
+
+  getDivisionSettings(divisionId: number): DivisionScheduleSettings {
+    return this.divisionSettings()[divisionId] ?? { divisionId, gamesPerTeam: 10, maxGamesPerWeekPerTeam: 2, gameDurationMinutes: 50 };
+  }
+
+  updateDivisionGamesPerTeam(divisionId: number, val: number) {
+    this.divisionSettings.update(s => ({ ...s, [divisionId]: { ...this.getDivisionSettings(divisionId), gamesPerTeam: val } }));
+  }
+
+  updateDivisionMaxGamesPerWeek(divisionId: number, val: number) {
+    this.divisionSettings.update(s => ({ ...s, [divisionId]: { ...this.getDivisionSettings(divisionId), maxGamesPerWeekPerTeam: val } }));
+  }
+
+  updateDivisionGameDuration(divisionId: number, val: number) {
+    this.divisionSettings.update(s => ({ ...s, [divisionId]: { ...this.getDivisionSettings(divisionId), gameDurationMinutes: val } }));
   }
 
   onDivisionFilterChange(val: string) {
@@ -271,11 +280,20 @@ export class ScheduleGeneratorStateService {
   }
 
   toggleDivision(divisionId: number) {
+    const wasSelected = this.selectedDivisionIds().includes(divisionId);
     this.selectedDivisionIds.update(ids =>
-      ids.includes(divisionId) ? ids.filter(id => id !== divisionId) : [...ids, divisionId],
+      wasSelected ? ids.filter(id => id !== divisionId) : [...ids, divisionId],
     );
-    const selected = this.selectedDivisionIds();
-    this.timePeriods.update(rows => rows.filter(p => selected.includes(p.divisionId)));
+    if (!wasSelected) {
+      if (!this.divisionSettings()[divisionId]) {
+        this.divisionSettings.update(s => ({
+          ...s,
+          [divisionId]: { divisionId, gamesPerTeam: 10, maxGamesPerWeekPerTeam: 2, gameDurationMinutes: 50 },
+        }));
+      }
+    } else {
+      this.timePeriods.update(rows => rows.filter(p => this.selectedDivisionIds().includes(p.divisionId)));
+    }
   }
 
   isDivisionSelected(divisionId: number) {
@@ -330,13 +348,13 @@ export class ScheduleGeneratorStateService {
 
   periodWindowTooShort(period: TimePeriodRow): boolean {
     if (!period.beginTime || !period.endTime) return false;
-    return (this.timeToMinutes(period.endTime) - this.timeToMinutes(period.beginTime)) < this.gameDurationMinutes();
+    return (this.timeToMinutes(period.endTime) - this.timeToMinutes(period.beginTime)) < this.getDivisionSettings(period.divisionId).gameDurationMinutes;
   }
 
   slotSummaryForPeriod(period: TimePeriodRow): string[] {
     if (!period.beginTime || !period.endTime || period.locationIds.length === 0) return [];
     const slots: string[] = [];
-    const duration = this.gameDurationMinutes();
+    const duration = this.getDivisionSettings(period.divisionId).gameDurationMinutes;
     let t = this.timeToMinutes(period.beginTime);
     const end = this.timeToMinutes(period.endTime);
     while (t + duration <= end) {
@@ -378,10 +396,7 @@ export class ScheduleGeneratorStateService {
     return (
       this.selectedSeasonId() != null &&
       this.startDate() != null &&
-      this.endDate() != null &&
-      this.gamesPerTeam() > 0 &&
-      this.maxGamesPerWeek() > 0 &&
-      this.gameDurationMinutes() > 0
+      this.endDate() != null
     );
   }
 
@@ -392,9 +407,15 @@ export class ScheduleGeneratorStateService {
   step3Valid() {
     const ids = this.selectedDivisionIds();
     if (ids.length === 0) return false;
-    return ids.every(id =>
-      this.periodsForDivision(id).some(p => p.locationIds.length > 0 && !this.periodWindowTooShort(p)),
-    );
+    return ids.every(id => {
+      const settings = this.getDivisionSettings(id);
+      return (
+        settings.gamesPerTeam > 0 &&
+        settings.maxGamesPerWeekPerTeam > 0 &&
+        settings.gameDurationMinutes > 0 &&
+        this.periodsForDivision(id).some(p => p.locationIds.length > 0 && !this.periodWindowTooShort(p))
+      );
+    });
   }
 
   generatePreview() {
@@ -412,12 +433,10 @@ export class ScheduleGeneratorStateService {
       startDate: this.startDate() ? this._formatLocalDate(this.startDate()!) : null,
       endDate: this.endDate() ? this._formatLocalDate(this.endDate()!) : null,
       divisionIds: this.selectedDivisionIds(),
-      gamesPerTeam: this.gamesPerTeam(),
-      maxGamesPerWeekPerTeam: this.maxGamesPerWeek(),
-      gameDurationMinutes: this.gameDurationMinutes(),
+      divisionSettings: this.selectedDivisionIds().map(id => this.getDivisionSettings(id)),
       timeSlots: this.timePeriods().flatMap((period): AvailableTimeSlot[] => {
         const slots: AvailableTimeSlot[] = [];
-        const duration = this.gameDurationMinutes();
+        const duration = this.getDivisionSettings(period.divisionId).gameDurationMinutes;
         let t = this.timeToMinutes(period.beginTime);
         const end = this.timeToMinutes(period.endTime);
         while (t + duration <= end) {
