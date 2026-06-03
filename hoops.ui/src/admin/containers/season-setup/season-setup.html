@@ -1,19 +1,75 @@
-<div class="container mx-auto">
-  <div class="flex">
-    <div class="flex-1">
-      <season-select />
-    </div>
-    <div class="flex-1">
-      <division-select />
-    </div>
-    <div class="col-3"></div>
+<div class="card-container">
+  <div class="card-header">
+    <h2 class="card-title">Season Division Setup</h2>
   </div>
-  <div class="flex flex-wrap -mx-2">
-    <div class="w-2/4 px-2">
-      <csbc-admin-team-list />
-    </div>
-    <div class="w-2/4 px-2">
-      <app-admin-team-detail />
-    </div>
+  <div class="card-body">
+    <p class="mb-4 text-sm text-gray-600">
+      Select a season, choose which divisions to include, and set the number of teams per division.
+      Dates are automatically calculated based on the current year.
+    </p>
+
+    <season-select />
+
+    @if (selectedSeason(); as season) {
+      <div class="mt-6">
+        <table class="w-full border-collapse">
+          <thead>
+            <tr class="border-b-2">
+              <th class="text-left py-2 pr-4 w-12">Include</th>
+              <th class="text-left py-2 pr-4">Division</th>
+              <th class="text-left py-2 w-28">Teams</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of rows(); track row.template.name) {
+              <tr class="border-b">
+                <td class="py-2 pr-4">
+                  <mat-checkbox
+                    [checked]="row.selected()"
+                    (change)="row.selected.set($event.checked)"
+                    [attr.aria-label]="'Include ' + row.template.name"
+                  />
+                </td>
+                <td class="py-2 pr-4">{{ row.template.name }}</td>
+                <td class="py-1">
+                  <mat-form-field appearance="fill" class="team-count-field">
+                    <mat-label>Teams</mat-label>
+                    <input
+                      matInput
+                      type="number"
+                      min="1"
+                      [value]="row.teamCount()"
+                      (change)="setTeamCount(row, $any($event.target).value)"
+                      [disabled]="!row.selected()"
+                    />
+                  </mat-form-field>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+
+        @if (submitting()) {
+          <mat-progress-bar mode="indeterminate" class="mt-4" />
+        }
+
+        <div class="mt-6 flex gap-4 items-center">
+          <button
+            type="button"
+            mat-raised-button
+            color="primary"
+            [disabled]="!canSubmit()"
+            (click)="submit()"
+          >
+            Create Divisions &amp; Teams
+          </button>
+          @if (submitting()) {
+            <span class="text-sm text-gray-500">Creating divisions and teams…</span>
+          }
+        </div>
+      </div>
+    } @else {
+      <p class="mt-4 text-sm text-gray-500">Please select a season above to begin setup.</p>
+    }
   </div>
 </div>

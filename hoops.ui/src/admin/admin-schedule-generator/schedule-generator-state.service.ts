@@ -12,7 +12,6 @@ import { Division } from '@app/domain/division';
 import {
   AvailableTimeSlot,
   DivisionScheduleSettings,
-  DivisionScheduleSettings,
   GameEditDialogData,
   GameEditDialogResult,
   ScheduleBlackoutDate,

@@ -1,1 +1,10 @@
 @use 'variables' as *;
+
+.team-count-field {
+  width: 80px;
+
+  .mat-mdc-form-field-infix {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+}
