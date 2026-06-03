@@ -278,12 +278,6 @@ h3 {
   font-size: 0.8rem;
   font-weight: 400;
 }
-.mat-raised-button .mat-button,
-button {
-  background-color: v.$brand-color;
-  color: white;
-}
-
 .ng-star-inserted {
   color: v.$admin-font-color;
 }
@@ -292,12 +286,6 @@ button {
 .mdc-checkbox {
   background-color: v.$card-background-color;
   color: v.$admin-font-color;
-}
-
-.mat-raised-button,
-button {
-  background-color: v.$brand-color;
-  color: white;
 }
 
 .form-control .mat-input-element {
@@ -381,15 +369,3 @@ table {
   }
 }
 
-.mat-mdc-button:not(:disabled) {
-  color: white !important;
-}
-
-button:disabled,
-button[disabled],
-.mat-mdc-raised-button:disabled,
-.mat-mdc-button:disabled {
-  background-color: v.$button-disabled-background !important;
-  color: v.$button-disabled-color !important;
-  opacity: 1 !important;
-}

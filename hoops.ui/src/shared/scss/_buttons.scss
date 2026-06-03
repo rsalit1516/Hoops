@@ -1,0 +1,124 @@
+@use "sass:color";
+
+// ─────────────────────────────────────────────────────────────────────────────
+// _buttons.scss — Single source of truth for all button states.
+//
+// Tokens are CSS custom properties defined on :root in styles.scss.
+// To support light mode, add class="light-theme" to <body> and override the
+// --btn-* tokens there (also toggle .theme-alternate for Material components).
+//
+// Semantic roles:
+//   mat-raised-button       → primary action   (Save, Submit, Create, Next)
+//   mat-button              → secondary/ghost   (Cancel, Back, nav links)
+//   mat-stroked-button      → outlined secondary (file upload, load draft)
+//   mat-raised-button[warn] → destructive        (Delete)
+//   mat-icon-button         → icon action        (toolbar icons)
+//   mat-button-toggle       → toggle/filter group
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ── Primary action (raised / filled) ─────────────────────────────────────────
+.mat-mdc-raised-button:not([disabled]),
+.mat-mdc-unelevated-button:not([disabled]) {
+  background-color: var(--btn-primary-bg) !important;
+  color: var(--btn-primary-text) !important;
+
+  &:hover {
+    background-color: var(--btn-primary-hover-bg) !important;
+  }
+}
+
+// ── Secondary / ghost (text button) ─────────────────────────────────────────
+.mat-mdc-button:not([disabled]) {
+  background-color: transparent !important;
+  color: var(--btn-secondary-text) !important;
+  border: 1px solid var(--btn-secondary-border) !important;
+
+  &:hover {
+    background-color: var(--btn-secondary-hover-bg) !important;
+  }
+}
+
+// ── Outlined secondary (stroked button) ──────────────────────────────────────
+.mat-mdc-outlined-button:not([disabled]) {
+  background-color: transparent !important;
+  color: var(--btn-primary-bg) !important;
+  border-color: var(--btn-stroked-border) !important;
+
+  &:hover {
+    background-color: var(--btn-stroked-hover-bg) !important;
+  }
+}
+
+// ── Destructive (warn color) ─────────────────────────────────────────────────
+.mat-mdc-raised-button[color="warn"]:not([disabled]),
+.mat-mdc-unelevated-button[color="warn"]:not([disabled]) {
+  background-color: var(--btn-warn-bg) !important;
+  color: var(--btn-warn-text) !important;
+
+  &:hover {
+    background-color: var(--btn-warn-hover-bg) !important;
+  }
+}
+
+// ── Icon buttons ─────────────────────────────────────────────────────────────
+.mat-mdc-icon-button:not([disabled]) .mat-icon,
+.mat-mdc-icon-button:not([disabled]) mat-icon {
+  color: var(--btn-icon-color) !important;
+}
+
+.mat-mdc-icon-button[color="warn"]:not([disabled]) .mat-icon,
+.mat-mdc-icon-button[color="warn"]:not([disabled]) mat-icon {
+  color: var(--btn-warn-bg) !important;
+}
+
+// ── Button toggle group ───────────────────────────────────────────────────────
+.mat-button-toggle-button {
+  color: var(--btn-secondary-text) !important;
+  background-color: transparent !important;
+}
+
+.mat-button-toggle-checked .mat-button-toggle-button {
+  background-color: var(--btn-toggle-selected-bg) !important;
+  color: var(--btn-primary-text) !important;
+}
+
+.mat-button-toggle-checkbox-wrapper {
+  color: var(--btn-secondary-text) !important;
+  background-color: transparent !important;
+}
+
+// ── Disabled — all button variants ───────────────────────────────────────────
+button[disabled],
+.mat-mdc-button[disabled],
+.mat-mdc-raised-button[disabled],
+.mat-mdc-outlined-button[disabled],
+.mat-mdc-unelevated-button[disabled],
+.mat-mdc-icon-button[disabled] {
+  background-color: var(--btn-disabled-bg) !important;
+  color: var(--btn-disabled-text) !important;
+  opacity: 1 !important;
+  cursor: not-allowed;
+}
+
+// ── Nav / toolbar links — brand-color text, transparent bg, no border ────────
+// mat-button used on <a routerLink> inside a mat-toolbar is a nav link, not an
+// action button. Override the secondary ghost styles so it renders as before.
+mat-toolbar .mat-mdc-button:not([disabled]) {
+  background-color: transparent !important;
+  color: var(--btn-nav-color) !important;
+  border: none !important;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.06) !important;
+  }
+}
+
+// ── Layout — consistent margin and font across all button types ───────────────
+.mat-mdc-button,
+.mat-mdc-raised-button,
+.mat-mdc-outlined-button,
+.mat-mdc-unelevated-button,
+.mat-mdc-icon-button {
+  font-size: var(--btn-font-size);
+  margin-right: var(--btn-margin);
+}

@@ -140,10 +140,6 @@ div.mat-mdc-select-panel {
     $lightness: 20%
   ) !important;
 }
-.mat-mdc-raised-button:not(:disabled) {
-  background-color: v.$brand-color !important;
-}
-
 .mat-mdc-form-field {
   padding-right: 12px;
 }
@@ -156,10 +152,6 @@ div.mat-mdc-select-panel {
 
 .button-row {
   margin-right: 8px;
-}
-
-button {
-  margin-right: 12px;
 }
 
 .mat-select-value-text {
@@ -318,53 +310,6 @@ div[mat-dialog-content] {
   line-height: 1.5;
 }
 
-.mat-mdc-dialog-actions,
-div[mat-dialog-actions] {
-  button {
-    color: v.$admin-font-color !important;
-
-    &.mat-mdc-button {
-      background-color: transparent;
-      border: 1px solid color.adjust(v.$admin-font-color, $lightness: -20%);
-
-      &:hover {
-        background-color: color.adjust(
-          v.$admin-background-color,
-          $lightness: 10%
-        );
-      }
-    }
-
-    &.mat-mdc-raised-button {
-      background-color: v.$brand-color !important;
-      color: white !important;
-
-      &:hover {
-        background-color: color.adjust(
-          v.$brand-color,
-          $lightness: -10%
-        ) !important;
-      }
-    }
-  }
-}
-.mat-mdc-icon-button .mat-icon {
-  color: v.$admin-font-color !important;
-}
-.mat-button-toggle-button {
-  color: v.$admin-font-color !important;
-  background-color: v.$admin-background-color !important;
-}
-.mat-button-toggle-checkbox-wrapper {
-  color: v.$admin-font-color !important;
-  background-color: v.$admin-background-color !important;
-}
-.mat-button-toggle-group-appearance-standard .mat-pseudo-checkbox {
-  background-color: v.$admin-background-color !important;
-  color: v.$admin-font-color !important;
-  --mat-pseudo-checkbox-minimal-selected-checkmark-color: v.$admin-font-color !important;
-}
-
 /* Save button states for better UX */
 .form-actions {
   margin-top: 1rem;
@@ -381,12 +326,6 @@ div[mat-dialog-actions] {
     color: #ff9800;
     font-style: italic;
   }
-}
-
-/* Disabled save button with helpful tooltip */
-button[mat-raised-button][disabled] {
-  opacity: 0.6;
-  cursor: not-allowed;
 }
 
 /* Visual feedback for save button states */

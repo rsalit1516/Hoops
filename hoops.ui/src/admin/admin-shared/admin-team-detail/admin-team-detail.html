@@ -30,17 +30,17 @@
     </div>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-raised-button color="Primary" (click)="newTeam()">
+    <button mat-raised-button color="primary" (click)="newTeam()">
       New Team
     </button>
     <button
       mat-raised-button
-      color="Primary"
+      color="primary"
       [disabled]="!isFormValid() || !isFormDirty()"
       (click)="save()"
     >
       Save
     </button>
-    <button mat-raised-button color="Primary" (click)="cancel()">Cancel</button>
+    <button mat-raised-button color="primary" (click)="cancel()">Cancel</button>
   </mat-card-actions>
 </mat-card>

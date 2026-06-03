@@ -1,10 +1,12 @@
 @use "variables" as v;
 @use "_material.scss";
+@use "sass:color";
 
 @use "./_mixins";
 @use "./../shared/scss/menu";
 @use "./../shared/scss/tables";
 @use "./../shared/scss/forms";
+@use "./../shared/scss/buttons";
 
 @use "tailwindcss/base";
 @use "tailwindcss/components";
@@ -38,6 +40,50 @@
 .csbc-login-dialog-panel .mat-mdc-dialog-container .mdc-dialog__surface {
   margin: 0 auto;
   border-radius: 8px;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Button design tokens — dark mode defaults.
+// Override the --btn-* variables inside .light-theme on <body> for light mode.
+// Also toggle .theme-alternate on <body> to re-theme Angular Material components.
+// ─────────────────────────────────────────────────────────────────────────────
+:root {
+  --btn-primary-bg:         #{v.$brand-color};
+  --btn-primary-text:       white;
+  --btn-primary-hover-bg:   #{color.adjust(v.$brand-color, $lightness: -10%)};
+  --btn-secondary-text:     white;
+  --btn-secondary-border:   rgba(255, 255, 255, 0.45);
+  --btn-secondary-hover-bg: rgba(255, 255, 255, 0.08);
+  --btn-stroked-border:     #{v.$brand-color};
+  --btn-stroked-hover-bg:   rgba(209, 123, 0, 0.12);
+  --btn-disabled-bg:        #{v.$button-disabled-background};
+  --btn-disabled-text:      #{v.$button-disabled-color};
+  --btn-warn-bg:            #b30000;
+  --btn-warn-hover-bg:      #8c0000;
+  --btn-warn-text:          white;
+  --btn-icon-color:         #{v.$admin-font-color};
+  --btn-toggle-selected-bg: rgba(209, 123, 0, 0.25);
+  --btn-margin:             0.75rem;
+  --btn-font-size:          #{v.$button-font-size};
+  --btn-nav-color:          #{v.$navbar-color};
+}
+
+// Light-mode token overrides — applied when <body class="light-theme">.
+// Values are intentional placeholders; refine when the light theme feature ships.
+.light-theme {
+  --btn-primary-bg:         #{v.$brand-color};
+  --btn-primary-text:       white;
+  --btn-primary-hover-bg:   #{color.adjust(v.$brand-color, $lightness: -15%)};
+  --btn-secondary-text:     #222222;
+  --btn-secondary-border:   rgba(0, 0, 0, 0.35);
+  --btn-secondary-hover-bg: rgba(0, 0, 0, 0.06);
+  --btn-stroked-border:     #{color.adjust(v.$brand-color, $lightness: -10%)};
+  --btn-stroked-hover-bg:   rgba(0, 0, 0, 0.06);
+  --btn-disabled-bg:        #d0d0d0;
+  --btn-disabled-text:      #777777;
+  --btn-icon-color:         #444444;
+  --btn-toggle-selected-bg: rgba(209, 123, 0, 0.18);
+  --btn-nav-color:          #{color.adjust(v.$brand-color, $lightness: -5%)};
 }
 
 html,
