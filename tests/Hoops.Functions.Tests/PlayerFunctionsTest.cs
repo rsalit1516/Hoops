@@ -158,6 +158,8 @@ namespace Hoops.Functions.Tests
                 DivisionId = 5
             };
 
+            _mockRepository.Setup(r => r.GetPlayerByPersonAndDivisionId(It.IsAny<int>(), It.IsAny<int>()))
+                .Returns(new Player { PlayerId = 0 });
             _mockRepository.Setup(r => r.Insert(It.IsAny<Player>()))
                 .Returns(createdPlayer);
             _mockRepository.Setup(r => r.SaveChangesAsync())
@@ -227,6 +229,8 @@ namespace Hoops.Functions.Tests
                 DivisionId = 5
             };
 
+            _mockRepository.Setup(r => r.GetPlayerByPersonAndDivisionId(It.IsAny<int>(), It.IsAny<int>()))
+                .Returns(new Player { PlayerId = 0 });
             _mockRepository.Setup(r => r.Insert(It.IsAny<Player>()))
                 .Returns(createdPlayer);
             _mockRepository.Setup(r => r.SaveChangesAsync())
