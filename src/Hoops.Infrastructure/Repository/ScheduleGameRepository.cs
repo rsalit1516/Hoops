@@ -480,10 +480,52 @@ namespace Hoops.Infrastructure.Repository
             var games = GetTeamNamesFromScheduledGames(result);
             var afterGettingTeamNames = DateTime.Now;
             _logger.LogInformation("Retrieved " + games.Count.ToString() + " season games");
-            // var playoffGames = GetSeasonPlayoffGames(seasonId);
-            // _logger.LogInformation("Retrieved " + playoffGames.Count.ToString() + " playoff games");
-            // games.AddRange(playoffGames);
-            // _logger.LogInformation("Retrieved " + games.Count.ToString() + " total season games");
+            var playoffQuery =
+                from g in db.SchedulePlayoffs
+                from l in db.Location
+                from d in db.Divisions
+                where g.DivisionId == d.DivisionId
+                where g.LocationNumber == l.LocationNumber
+                where d.SeasonId == seasonId
+                select new
+                {
+                    g.ScheduleNumber,
+                    d.DivisionId,
+                    g.GameDate,
+                    g.GameTime,
+                    d.DivisionDescription,
+                    l.LocationName,
+                    g.GameNumber,
+                    g.HomeTeam,
+                    g.VisitingTeam,
+                    g.Descr,
+                };
+
+            _logger.LogInformation("Retrieved " + playoffQuery.Count().ToString() + " playoff games");
+            foreach (var g in playoffQuery)
+            {
+                DateTime gameTime = DateTime.Now;
+                if (DateTime.TryParse(g.GameTime, out DateTime parsedTime))
+                    gameTime = parsedTime;
+
+                games.Add(new vmGameSchedule
+                {
+                    ScheduleNumber = g.ScheduleNumber,
+                    DivisionId = g.DivisionId,
+                    GameDate = g.GameDate ?? DateTime.MinValue,
+                    DivisionDescription = g.DivisionDescription,
+                    SeasonId = seasonId,
+                    LocationName = g.LocationName,
+                    GameNumber = g.GameNumber,
+                    HomeTeamName = g.HomeTeam,
+                    VisitingTeamName = g.VisitingTeam,
+                    GameDescription = g.Descr,
+                    GameType = GameTypes.Playoff,
+                    GameTime = gameTime,
+                });
+            }
+
+            _logger.LogInformation("Retrieved " + games.Count.ToString() + " total season games");
             return games;
         }
 

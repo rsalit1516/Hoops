@@ -23,6 +23,7 @@ namespace Hoops.Core.Interface
         bool WasPlayer(int peopleId);
         Player GetLastSeasonPlayed(int peopleId);
         Player GetPlayerByPersonAndSeasonId(int peopleId, int seasonId);
+        Player GetPlayerByPersonAndDivisionId(int personId, int divisionId);
         IQueryable<Player> PlayerHistory(int personId);
         List<PlayerHistory> GetPlayerHistory(int peopleId);
         List<DraftListPlayer> GetDraftListPlayers(int seasonId, int? divisionId);

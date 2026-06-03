@@ -107,6 +107,15 @@
     margin: 0.5in;
   }
 
+  // Force white canvas regardless of browser "Background graphics" setting or
+  // OS color scheme — the admin dark theme sets a black body background that
+  // bleeds through for users whose browser print defaults differ from ours.
+  body,
+  .draft-report-page {
+    background-color: #fff !important;
+    color: #000 !important;
+  }
+
   .draft-report-page {
     padding: 0;
   }
@@ -144,6 +153,13 @@
 
     th {
       background-color: #ddd !important;
+      color: #000 !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    td {
+      background-color: #fff !important;
       color: #000 !important;
       -webkit-print-color-adjust: exact;
       print-color-adjust: exact;
