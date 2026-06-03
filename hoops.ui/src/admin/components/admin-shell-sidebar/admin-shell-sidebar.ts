@@ -33,6 +33,7 @@ export class AdminShellSidebar {
     { name: 'Players', route: '/admin/players', isSelected: false },
     { name: 'Teams', route: '/admin/season-setup', isSelected: false },
     { name: 'Games', route: '/admin/games', isSelected: false },
+    { name: 'Schedule Generator', route: '/admin/schedule-generator', isSelected: false },
   ];
   CommunicationSection = 'Communication';
   communicationItems = [

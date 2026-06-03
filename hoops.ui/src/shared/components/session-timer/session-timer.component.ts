@@ -18,50 +18,7 @@ import { MatIconModule } from '@angular/material/icon';
       </div>
     }
     `,
-  styles: [
-    `
-      .session-timer {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        padding: 4px 8px;
-        border-radius: 4px;
-        background-color: rgba(255, 255, 255, 0.1);
-        color: white;
-        font-size: 12px;
-        transition: all 0.3s ease;
-      }
-
-      .session-timer.expiring-soon {
-        background-color: rgba(255, 193, 7, 0.2);
-        color: #ffc107;
-        animation: pulse 2s infinite;
-      }
-
-      @keyframes pulse {
-        0% {
-          opacity: 1;
-        }
-        50% {
-          opacity: 0.7;
-        }
-        100% {
-          opacity: 1;
-        }
-      }
-
-      .time {
-        font-weight: 500;
-        font-family: 'Courier New', monospace;
-      }
-
-      mat-icon {
-        font-size: 16px;
-        width: 16px;
-        height: 16px;
-      }
-    `,
-  ],
+  styleUrls: ['./session-timer.component.scss'],
   imports: [MatTooltipModule, MatIconModule],
 })
 export class SessionTimerComponent {

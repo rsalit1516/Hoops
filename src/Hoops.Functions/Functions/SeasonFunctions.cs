@@ -1,9 +1,10 @@
 using System.Net;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using Hoops.Core.Interface;
 using Hoops.Core.Models;
+using Hoops.Functions.Mapping;
 using Hoops.Functions.Models;
+using Hoops.Functions.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
@@ -21,20 +22,6 @@ public class SeasonFunctions
     private readonly ISeasonRepository _seasonRepository;
     private readonly IConfiguration _configuration;
 
-    // Ensure camelCase JSON consistently for frontend expectations
-    private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web)
-    {
-        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-        DictionaryKeyPolicy = JsonNamingPolicy.CamelCase,
-        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
-    };
-
-    private static async Task WriteJsonAsync<T>(HttpResponseData response, T value)
-    {
-        response.Headers.Add("Content-Type", "application/json; charset=utf-8");
-        await JsonSerializer.SerializeAsync(response.Body, value, JsonOptions);
-    }
-
     public SeasonFunctions(ILogger<SeasonFunctions> logger, ISeasonService seasonService, ISeasonRepository seasonRepository, IConfiguration configuration)
     {
         _logger = logger;
@@ -42,48 +29,6 @@ public class SeasonFunctions
         _seasonRepository = seasonRepository;
         _configuration = configuration;
     }
-
-    private static SeasonDto ToDto(Season s) => new SeasonDto
-    {
-        SeasonId = s.SeasonId,
-        CompanyId = s.CompanyId,
-        Description = s.Description,
-        FromDate = s.FromDate,
-        ToDate = s.ToDate,
-        ParticipationFee = s.ParticipationFee,
-        SponsorFee = s.SponsorFee,
-        ConvenienceFee = s.ConvenienceFee,
-        CurrentSeason = s.CurrentSeason,
-        CurrentSchedule = s.CurrentSchedule,
-        CurrentSignUps = s.CurrentSignUps,
-        SignUpsDate = s.SignUpsDate,
-        SignUpsEnd = s.SignUpsEnd,
-        TestSeason = s.TestSeason,
-        NewSchoolYear = s.NewSchoolYear,
-        CreatedDate = s.CreatedDate,
-        CreatedUser = s.CreatedUser
-    };
-
-    private static Season ToEntity(SeasonDto d) => new Season
-    {
-        SeasonId = d.SeasonId,
-        CompanyId = d.CompanyId,
-        Description = d.Description,
-        FromDate = d.FromDate,
-        ToDate = d.ToDate,
-        ParticipationFee = d.ParticipationFee,
-        SponsorFee = d.SponsorFee,
-        ConvenienceFee = d.ConvenienceFee,
-        CurrentSeason = d.CurrentSeason,
-        CurrentSchedule = d.CurrentSchedule,
-        CurrentSignUps = d.CurrentSignUps,
-        SignUpsDate = d.SignUpsDate,
-        SignUpsEnd = d.SignUpsEnd,
-        TestSeason = d.TestSeason,
-        NewSchoolYear = d.NewSchoolYear,
-        CreatedDate = d.CreatedDate,
-        CreatedUser = d.CreatedUser
-    };
 
     [Function("Season_GetAll")]
     [OpenApiOperation(operationId: "Season_GetAll", tags: new[] { "Season" }, Summary = "Get all seasons", Description = "Returns all seasons for a company.")]
@@ -103,8 +48,8 @@ public class SeasonFunctions
             res.StatusCode = HttpStatusCode.NotFound;
             return res;
         }
-        var dto = seasons.Select(ToDto);
-        await WriteJsonAsync(res, dto);
+        var dto = seasons.Select(EntityMapper.ToDto);
+        await ResponseUtils.WriteJsonAsync(res, dto);
         return res;
     }
 
@@ -126,9 +71,8 @@ public class SeasonFunctions
             {
                 return req.CreateResponse(HttpStatusCode.NotFound);
             }
-            var dto = ToDto(season);
             var res = req.CreateResponse(HttpStatusCode.OK);
-            await WriteJsonAsync(res, dto);
+            await ResponseUtils.WriteJsonAsync(res, EntityMapper.ToDto(season));
             return res;
         }
         catch (InvalidOperationException)
@@ -152,8 +96,7 @@ public class SeasonFunctions
             return req.CreateResponse(HttpStatusCode.NotFound);
         }
         var res = req.CreateResponse(HttpStatusCode.OK);
-        var dto = ToDto(season);
-        await WriteJsonAsync(res, dto);
+        await ResponseUtils.WriteJsonAsync(res, EntityMapper.ToDto(season));
         return res;
     }
 
@@ -168,19 +111,18 @@ public class SeasonFunctions
         [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "Season/{id:int}")] HttpRequestData req,
         int id)
     {
-        var seasonDto = await JsonSerializer.DeserializeAsync<SeasonDto>(req.Body, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        var seasonDto = await JsonSerializer.DeserializeAsync<SeasonDto>(req.Body, ResponseUtils.JsonOptions);
         if (seasonDto == null || id != seasonDto.SeasonId)
             return req.CreateResponse(HttpStatusCode.BadRequest);
 
-        var season = ToEntity(seasonDto);
+        var season = EntityMapper.ToEntity(seasonDto);
         var updated = await _seasonRepository.UpdateAsync(season);
         if (!updated)
             return req.CreateResponse(HttpStatusCode.NotFound);
 
         await _seasonRepository.SaveChangesAsync();
         var res = req.CreateResponse(HttpStatusCode.OK);
-        var dto = ToDto(season);
-        await WriteJsonAsync(res, dto);
+        await ResponseUtils.WriteJsonAsync(res, EntityMapper.ToDto(season));
         return res;
     }
 
@@ -192,16 +134,15 @@ public class SeasonFunctions
     public async Task<HttpResponseData> Post(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Season")] HttpRequestData req)
     {
-        var seasonDto = await JsonSerializer.DeserializeAsync<SeasonDto>(req.Body, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        var seasonDto = await JsonSerializer.DeserializeAsync<SeasonDto>(req.Body, ResponseUtils.JsonOptions);
         if (seasonDto == null)
             return req.CreateResponse(HttpStatusCode.BadRequest);
 
-        var season = ToEntity(seasonDto);
+        var season = EntityMapper.ToEntity(seasonDto);
         var created = await _seasonRepository.InsertAsync(season);
         await _seasonRepository.SaveChangesAsync();
         var res = req.CreateResponse(HttpStatusCode.OK);
-        var dto = ToDto(created);
-        await WriteJsonAsync(res, dto);
+        await ResponseUtils.WriteJsonAsync(res, EntityMapper.ToDto(created));
         return res;
     }
 
@@ -221,8 +162,7 @@ public class SeasonFunctions
         await _seasonRepository.DeleteAsync(id);
         await _seasonRepository.SaveChangesAsync();
         var res = req.CreateResponse(HttpStatusCode.OK);
-        var dto = ToDto(season);
-        await res.WriteAsJsonAsync(dto);
+        await ResponseUtils.WriteJsonAsync(res, EntityMapper.ToDto(season));
         return res;
     }
 }

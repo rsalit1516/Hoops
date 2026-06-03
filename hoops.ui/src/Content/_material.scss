@@ -1,66 +1,16 @@
 @use "variables" as v;
 
+// mat-toolbar still emits .mat-toolbar in MDC Material.
 .mat-toolbar {
   background: v.$base-background-color;
   color: v.$font-color-text;
 }
 
-.mat-select-value {
-  color: v.$font-color-text;
-}
-
-.mat-form-field {
-  padding-left: 12px;
-  padding-right: 12px;
-  padding-top: 12px;
-  color: v.$admin-font-color;
-  font-size: 0.8rem;
-}
-
-.mat-select {
-  color: v.$admin-font-color;
-  background-color: v.$admin-card-background-color;
-}
-
-.mat-select-arrow-wrapper {
-  color: v.$admin-font-color;
-  background-color: v.$admin-card-background-color;
-}
-
-.mat-form-field-empty.mat-form-field-label,
-.mat-form-field-label {
-  font-size: 1rem !important;
-  color: v.$field-label !important;
-}
-
+// Datepicker toggle — class still emitted by MDC.
 .mat-datepicker-toggle {
   color: v.$admin-input-hint-color !important;
 }
 
 .mat-datepicker-toggle-default-icon {
   width: 1rem;
-}
-
-.mat-checkbox-background {
-  background-color: v.$brand-color !important;
-}
-
-.mat-list-item.active {
-  color: white;
-}
-
-.mat-table {
-  background-color: v.$base-background-color;
-}
-
-th.mat-header-cell {
-  background-color: transaprent;
-  color: v.$admin-font-color;
-  padding-top: 4px;
-  padding-bottom: 4px;
-}
-
-tr.mat-header-row {
-  font-weight: 600 !important;
-  font-size: 1.2em !important;
 }

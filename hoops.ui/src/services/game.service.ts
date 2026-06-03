@@ -31,6 +31,12 @@ import { AuthService } from './auth.service';
 import { Standing } from '@app/domain/standing';
 import { TeamService } from './team.service';
 import { RegularGameSaveObject } from '@app/domain/RegularGameSaveObject';
+import {
+  ScheduleGeneratorRequest,
+  ScheduleGeneratorResult,
+  ScheduleCommitRequest,
+  ScheduleCommitResult,
+} from '@app/domain/schedule-generator.model';
 
 @Injectable({
   providedIn: 'root',
@@ -485,6 +491,30 @@ export class GameService {
     const isValid = (v: number) =>
       Number.isFinite(v) && Number.isInteger(v) && v >= 0 && v <= 150;
     return isValid(homeTeamScore) && isValid(visitorTeamScore);
+  }
+
+  previewSchedule(request: ScheduleGeneratorRequest): Observable<ScheduleGeneratorResult> {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+      withCredentials: true,
+    };
+    return this.http
+      .post<ScheduleGeneratorResult>(Constants.SCHEDULE_GENERATOR_PREVIEW_URL, request, httpOptions)
+      .pipe(catchError((err: HttpErrorResponse) => {
+        const errorMessage: string = err.error?.errorMessage ?? err.message ?? 'Request failed';
+        this.logger.error('previewSchedule failed', err);
+        return of({ success: false, errorMessage, games: [], totalGames: 0 } as ScheduleGeneratorResult);
+      }));
+  }
+
+  commitSchedule(request: ScheduleCommitRequest): Observable<ScheduleCommitResult> {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+      withCredentials: true,
+    };
+    return this.http
+      .post<ScheduleCommitResult>(Constants.SCHEDULE_GENERATOR_COMMIT_URL, request, httpOptions)
+      .pipe(catchError(this.dataService.handleError('commitSchedule', { gamesCreated: 0, errors: ['Request failed'] })));
   }
 }
 export interface GameResponse {

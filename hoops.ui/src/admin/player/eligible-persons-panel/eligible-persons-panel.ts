@@ -8,7 +8,6 @@ import {
   signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -17,7 +16,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Division } from '@app/domain/division';
 import { Person } from '@app/domain/person';
-import { Constants } from '@app/shared/constants';
+import { PeopleService } from '@app/services/people.service';
 import { LoggerService } from '@app/services/logger.service';
 
 @Component({
@@ -39,7 +38,7 @@ import { LoggerService } from '@app/services/logger.service';
   ],
 })
 export class EligiblePersonsPanel implements OnInit {
-  private readonly http = inject(HttpClient);
+  private readonly peopleService = inject(PeopleService);
   private readonly logger = inject(LoggerService);
 
   division = input<Division | undefined>(undefined);
@@ -76,7 +75,7 @@ export class EligiblePersonsPanel implements OnInit {
 
   private loadAllPeople(): void {
     this.isLoading.set(true);
-    this.http.get<Person[]>(Constants.peopleUrl).subscribe({
+    this.peopleService.getAllPeople().subscribe({
       next: (people) => {
         this.allPeople.set(people);
         this.isLoading.set(false);

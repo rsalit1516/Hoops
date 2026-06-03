@@ -1,5 +1,4 @@
 import { Component, OnInit, inject, effect, signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { MatTableDataSource } from '@angular/material/table';
 import { PaginationPreferencesService } from '@app/services/pagination-preferences.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -8,10 +7,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
 import { DraftListPlayer } from '@app/domain/draft-list-player';
 import { Person } from '@app/domain/person';
-import { Constants } from '@app/shared/constants';
 import { SeasonService } from '@app/services/season.service';
 import { DivisionService } from '@app/services/division.service';
 import { PeopleService } from '@app/services/people.service';
+import { DraftListService } from '@app/services/draft-list.service';
+import { formatPersonName } from '@app/shared/utils/person.utils';
 import { SeasonSelect } from '../admin-shared/season-select/season-select';
 import { DivisionSelect } from '../admin-shared/division-select/division-select';
 import { LoggerService } from '@app/services/logger.service';
@@ -43,11 +43,11 @@ import { EligiblePersonsPanel } from './eligible-persons-panel/eligible-persons-
   ],
 })
 export class PlayerList implements OnInit {
-  private http = inject(HttpClient);
   private router = inject(Router);
   readonly seasonService = inject(SeasonService);
   readonly divisionService = inject(DivisionService);
   private peopleService = inject(PeopleService);
+  private draftListService = inject(DraftListService);
   private logger = inject(LoggerService);
   private readonly prefs = inject(PaginationPreferencesService);
 
@@ -91,18 +91,13 @@ export class PlayerList implements OnInit {
     const division = this.divisionService.selectedDivision();
     const divisionId = division?.divisionId;
 
-    let url = `${Constants.GET_SEASON_PLAYERS_URL}/${seasonId}`;
-    if (divisionId && divisionId > 0) {
-      url += `?divisionId=${divisionId}`;
-    }
-
-    this.logger.info('Loading players from:', url);
-    this.http.get<DraftListPlayer[]>(url).subscribe({
+    this.logger.info('Loading players for season:', seasonId, 'division:', divisionId);
+    this.draftListService.getPlayersBySeason(seasonId, divisionId).subscribe({
       next: (players) => {
         this.logger.info('Players loaded:', players.length);
         this.dataSource.data = players.map((player) => ({
           ...player,
-          name: `${player.lastName}, ${player.firstName}`,
+          name: formatPersonName(player),
         }));
         this.registeredPersonIds.set(new Set(players.map((p) => p.personId)));
         this.isLoading = false;

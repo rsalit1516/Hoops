@@ -1,0 +1,35 @@
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+
+  <mat-form-field appearance="fill" class="col-span-2">
+    <mat-label>Season</mat-label>
+    <mat-select [value]="s.selectedSeasonId()" (selectionChange)="s.onSeasonChange($event.value)">
+      @for (season of s.seasons(); track season.seasonId) {
+        <mat-option [value]="season.seasonId">{{ season.description }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Start Date</mat-label>
+    <input matInput [matDatepicker]="startPicker" [value]="s.startDate()"
+      (dateChange)="s.startDate.set($event.value)" />
+    <mat-datepicker-toggle matSuffix [for]="startPicker" />
+    <mat-datepicker #startPicker />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>End Date</mat-label>
+    <input matInput [matDatepicker]="endPicker" [value]="s.endDate()"
+      (dateChange)="s.endDate.set($event.value)" />
+    <mat-datepicker-toggle matSuffix [for]="endPicker" />
+    <mat-datepicker #endPicker />
+  </mat-form-field>
+
+</div>
+
+<div class="mt-3">
+  <mat-checkbox [checked]="s.enforceCoachConflicts()"
+    (change)="s.enforceCoachConflicts.set($event.checked)">
+    Enforce coach conflict detection
+  </mat-checkbox>
+</div>

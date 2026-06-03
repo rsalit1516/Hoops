@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Hoops.Core.Interface;
 using Hoops.Core.Models;
 using Hoops.Core.ViewModels;
-using Hoops.Functions.Models;
+using Hoops.Functions.Mapping;
 using Hoops.Functions.Utils;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
@@ -20,24 +20,10 @@ namespace Hoops.Functions.Functions
         private readonly IHouseholdRepository _repository;
         private readonly ILogger<HouseholdFunctions> _logger;
 
-        private static readonly JsonSerializerOptions JsonOptions = new()
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            PropertyNameCaseInsensitive = true,
-            DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
-        };
-
         public HouseholdFunctions(IHouseholdRepository repository, ILogger<HouseholdFunctions> logger)
         {
             _repository = repository;
             _logger = logger;
-        }
-
-        private static async Task WriteJsonAsync<T>(HttpResponseData resp, T payload, HttpStatusCode status = HttpStatusCode.OK)
-        {
-            resp.StatusCode = status;
-            resp.Headers.Add("Content-Type", "application/json; charset=utf-8");
-            await JsonSerializer.SerializeAsync(resp.Body, payload!, JsonOptions);
         }
 
         [Function("GetHouseholds")]
@@ -45,9 +31,9 @@ namespace Hoops.Functions.Functions
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Household")] HttpRequestData req)
         {
             var list = await _repository.GetAllAsync();
-            var dtos = list.Select(ToDto).ToList();
+            var dtos = list.Select(EntityMapper.ToDto).ToList();
             var resp = req.CreateResponse();
-            await WriteJsonAsync(resp, dtos);
+            await ResponseUtils.WriteJsonAsync(resp, dtos);
             return resp;
         }
 
@@ -70,7 +56,7 @@ namespace Hoops.Functions.Functions
                 return req.CreateResponse(HttpStatusCode.NotFound);
             }
             var resp = req.CreateResponse();
-            await WriteJsonAsync(resp, ToDto(entity));
+            await ResponseUtils.WriteJsonAsync(resp, EntityMapper.ToDto(entity));
             return resp;
         }
 
@@ -81,7 +67,6 @@ namespace Hoops.Functions.Functions
             int id,
             FunctionContext context)
         {
-            // Check authentication
             var authError = context.CheckAuthentication(req, _logger);
             if (authError != null) return authError;
 
@@ -89,7 +74,7 @@ namespace Hoops.Functions.Functions
             using (var sr = new StreamReader(req.Body))
             {
                 var json = await sr.ReadToEndAsync();
-                body = JsonSerializer.Deserialize<Household>(json, JsonOptions);
+                body = JsonSerializer.Deserialize<Household>(json, ResponseUtils.JsonOptions);
             }
             if (body == null || id != body.HouseId)
             {
@@ -103,7 +88,6 @@ namespace Hoops.Functions.Functions
             }
             catch (Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException)
             {
-                // if entity no longer exists
                 Household? exists = null;
                 try { exists = await _repository.FindByAsync(id); } catch { exists = null; }
                 if (exists == null)
@@ -121,7 +105,6 @@ namespace Hoops.Functions.Functions
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Household")] HttpRequestData req,
             FunctionContext context)
         {
-            // Check authentication
             var authError = context.CheckAuthentication(req, _logger);
             if (authError != null) return authError;
 
@@ -129,7 +112,7 @@ namespace Hoops.Functions.Functions
             using (var sr = new StreamReader(req.Body))
             {
                 var json = await sr.ReadToEndAsync();
-                body = JsonSerializer.Deserialize<Household>(json, JsonOptions);
+                body = JsonSerializer.Deserialize<Household>(json, ResponseUtils.JsonOptions);
             }
             if (body == null)
             {
@@ -140,7 +123,7 @@ namespace Hoops.Functions.Functions
             await _repository.SaveChangesAsync();
 
             var resp = req.CreateResponse(HttpStatusCode.Created);
-            await WriteJsonAsync(resp, ToDto(createdEntity), HttpStatusCode.Created);
+            await ResponseUtils.WriteJsonAsync(resp, EntityMapper.ToDto(createdEntity), HttpStatusCode.Created);
             return resp;
         }
 
@@ -151,7 +134,6 @@ namespace Hoops.Functions.Functions
             int id,
             FunctionContext context)
         {
-            // Check authentication
             var authError = context.CheckAuthentication(req, _logger);
             if (authError != null) return authError;
 
@@ -164,7 +146,7 @@ namespace Hoops.Functions.Functions
             _repository.Delete(entity);
             await _repository.SaveChangesAsync();
             var resp = req.CreateResponse();
-            await WriteJsonAsync(resp, ToDto(entity));
+            await ResponseUtils.WriteJsonAsync(resp, EntityMapper.ToDto(entity));
             return resp;
         }
 
@@ -181,23 +163,10 @@ namespace Hoops.Functions.Functions
                 Phone = query["phone"]
             };
             var results = _repository.SearchHouseholds(criteria) ?? new List<Household>();
-            var dtos = results.Select(ToDto).ToList();
+            var dtos = results.Select(EntityMapper.ToDto).ToList();
             var resp = req.CreateResponse();
-            WriteJsonAsync(resp, dtos).GetAwaiter().GetResult();
+            ResponseUtils.WriteJsonAsync(resp, dtos).GetAwaiter().GetResult();
             return resp;
         }
-
-        private static HouseholdDto ToDto(Household h) => new HouseholdDto
-        {
-            HouseId = h.HouseId,
-            Name = h.Name,
-            Address1 = h.Address1,
-            Address2 = h.Address2,
-            City = h.City,
-            State = h.State,
-            Zip = h.Zip,
-            Email = h.Email,
-            Phone = h.Phone
-        };
     }
 }

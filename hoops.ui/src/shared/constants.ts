@@ -87,6 +87,8 @@ export class Constants {
   public static DOCUMENT_UPLOAD_URL = `${this.FUNCTIONS_BASE_URL}/api/documents/upload`;
   public static DOCUMENT_LIST_URL = `${this.FUNCTIONS_BASE_URL}/api/documents`;
   public static DOCUMENT_PUBLIC_URL = `${this.FUNCTIONS_BASE_URL}/api/documents/public`;
+  public static SCHEDULE_GENERATOR_PREVIEW_URL = `${this.FUNCTIONS_BASE_URL}/api/schedule-generator/preview`;
+  public static SCHEDULE_GENERATOR_COMMIT_URL = `${this.FUNCTIONS_BASE_URL}/api/schedule-generator/commit`;
 }
 export const Literals = {
   BUTTONS: {

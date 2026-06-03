@@ -5,6 +5,8 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Hoops.Core.Interface;
 using Hoops.Core.Models;
+using Hoops.Functions.Mapping;
+using Hoops.Functions.Utils;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 
@@ -15,24 +17,10 @@ namespace Hoops.Functions.Functions
         private readonly IPlayerRepository _repository;
         private readonly IPlayerService _playerService;
 
-        private static readonly JsonSerializerOptions JsonOptions = new()
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            PropertyNameCaseInsensitive = true,
-            DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
-        };
-
         public PlayerFunctions(IPlayerRepository repository, IPlayerService playerService)
         {
             _repository = repository;
             _playerService = playerService;
-        }
-
-        private static async Task WriteJsonAsync<T>(HttpResponseData resp, T payload, HttpStatusCode status = HttpStatusCode.OK)
-        {
-            resp.StatusCode = status;
-            resp.Headers.Add("Content-Type", "application/json; charset=utf-8");
-            await JsonSerializer.SerializeAsync(resp.Body, payload!, JsonOptions);
         }
 
         [Function("GetPlayer")]
@@ -44,7 +32,7 @@ namespace Hoops.Functions.Functions
             {
                 var player = await _playerService.GetPlayerByIdAsync(id);
                 var resp = req.CreateResponse();
-                await WriteJsonAsync(resp, ToDto(player));
+                await ResponseUtils.WriteJsonAsync(resp, EntityMapper.ToDto(player));
                 return resp;
             }
             catch (InvalidOperationException)
@@ -65,7 +53,7 @@ namespace Hoops.Functions.Functions
             }
 
             var resp = req.CreateResponse();
-            WriteJsonAsync(resp, ToDto(player)).GetAwaiter().GetResult();
+            ResponseUtils.WriteJsonAsync(resp, EntityMapper.ToDto(player)).GetAwaiter().GetResult();
             return resp;
         }
 
@@ -82,7 +70,7 @@ namespace Hoops.Functions.Functions
             }
 
             var resp = req.CreateResponse();
-            WriteJsonAsync(resp, ToDto(player)).GetAwaiter().GetResult();
+            ResponseUtils.WriteJsonAsync(resp, EntityMapper.ToDto(player)).GetAwaiter().GetResult();
             return resp;
         }
 
@@ -91,7 +79,6 @@ namespace Hoops.Functions.Functions
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Player/season/{seasonId:int}")] HttpRequestData req,
             int seasonId)
         {
-            // Parse optional divisionId from query string
             int? divisionId = null;
             var query = System.Web.HttpUtility.ParseQueryString(req.Url.Query);
             if (int.TryParse(query["divisionId"], out var divId))
@@ -102,7 +89,7 @@ namespace Hoops.Functions.Functions
             var players = _repository.GetDraftListPlayers(seasonId, divisionId);
 
             var resp = req.CreateResponse();
-            WriteJsonAsync(resp, players).GetAwaiter().GetResult();
+            ResponseUtils.WriteJsonAsync(resp, players).GetAwaiter().GetResult();
             return resp;
         }
 
@@ -116,7 +103,7 @@ namespace Hoops.Functions.Functions
                 using (var sr = new StreamReader(req.Body))
                 {
                     var json = await sr.ReadToEndAsync();
-                    player = JsonSerializer.Deserialize<Player>(json, JsonOptions);
+                    player = JsonSerializer.Deserialize<Player>(json, ResponseUtils.JsonOptions);
                 }
 
                 if (player == null)
@@ -131,7 +118,6 @@ namespace Hoops.Functions.Functions
                     return badReq;
                 }
 
-                // If division is not set, determine it automatically
                 if (player.DivisionId == null || player.DivisionId == 0)
                 {
                     var divisionId = await _playerService.DetermineDivisionAsync(
@@ -157,7 +143,7 @@ namespace Hoops.Functions.Functions
                 await _repository.SaveChangesAsync();
 
                 var resp = req.CreateResponse(HttpStatusCode.Created);
-                await WriteJsonAsync(resp, ToDto(createdPlayer), HttpStatusCode.Created);
+                await ResponseUtils.WriteJsonAsync(resp, EntityMapper.ToDto(createdPlayer), HttpStatusCode.Created);
                 return resp;
             }
             catch (InvalidOperationException ex)
@@ -186,7 +172,7 @@ namespace Hoops.Functions.Functions
                 using (var sr = new StreamReader(req.Body))
                 {
                     var json = await sr.ReadToEndAsync();
-                    player = JsonSerializer.Deserialize<Player>(json, JsonOptions);
+                    player = JsonSerializer.Deserialize<Player>(json, ResponseUtils.JsonOptions);
                 }
 
                 if (player == null || id != player.PlayerId)
@@ -196,7 +182,7 @@ namespace Hoops.Functions.Functions
 
                 var updatedPlayer = await _playerService.UpdatePlayerAsync(player);
                 var resp = req.CreateResponse();
-                await WriteJsonAsync(resp, ToDto(updatedPlayer));
+                await ResponseUtils.WriteJsonAsync(resp, EntityMapper.ToDto(updatedPlayer));
                 return resp;
             }
             catch (InvalidOperationException)
@@ -239,7 +225,7 @@ namespace Hoops.Functions.Functions
                 await _repository.SaveChangesAsync();
 
                 var resp = req.CreateResponse();
-                await WriteJsonAsync(resp, ToDto(player));
+                await ResponseUtils.WriteJsonAsync(resp, EntityMapper.ToDto(player));
                 return resp;
             }
             catch (Exception ex)
@@ -248,76 +234,6 @@ namespace Hoops.Functions.Functions
                 await errorResp.WriteStringAsync($"Error deleting player: {ex.Message}\n{ex.StackTrace}");
                 return errorResp;
             }
-        }
-
-        private static PlayerDto ToDto(Player p) => new PlayerDto
-        {
-            PlayerId = p.PlayerId,
-            SeasonId = p.SeasonId,
-            DivisionId = p.DivisionId,
-            TeamId = p.TeamId,
-            PersonId = p.PersonId,
-            DraftId = p.DraftId,
-            DraftNotes = p.DraftNotes,
-            Rating = p.Rating,
-            Coach = p.Coach,
-            CoachId = p.CoachId,
-            Sponsor = p.Sponsor,
-            SponsorId = p.SponsorId,
-            Ad = p.Ad,
-            Scholarship = p.Scholarship,
-            FamilyDisc = p.FamilyDisc,
-            Rollover = p.Rollover,
-            OutOfTown = p.OutOfTown,
-            RefundBatchId = p.RefundBatchId,
-            PaidDate = p.PaidDate,
-            PaidAmount = p.PaidAmount,
-            BalanceOwed = p.BalanceOwed,
-            PayType = p.PayType,
-            NoteDesc = p.NoteDesc,
-            CheckMemo = p.CheckMemo,
-            CreatedDate = p.CreatedDate,
-            CreatedUser = p.CreatedUser,
-            ModifiedDate = p.ModifiedDate,
-            ModifiedUser = p.ModifiedUser,
-            PlaysDown = p.PlaysDown,
-            PlaysUp = p.PlaysUp,
-            ShoppingCartId = p.ShoppingCartId,
-        };
-
-        private sealed class PlayerDto
-        {
-            public int PlayerId { get; set; }
-            public int? SeasonId { get; set; }
-            public int? DivisionId { get; set; }
-            public int? TeamId { get; set; }
-            public int PersonId { get; set; }
-            public string? DraftId { get; set; }
-            public string? DraftNotes { get; set; }
-            public int? Rating { get; set; }
-            public int? Coach { get; set; }
-            public int? CoachId { get; set; }
-            public int? Sponsor { get; set; }
-            public int? SponsorId { get; set; }
-            public bool? Ad { get; set; }
-            public bool? Scholarship { get; set; }
-            public bool? FamilyDisc { get; set; }
-            public bool? Rollover { get; set; }
-            public bool? OutOfTown { get; set; }
-            public int? RefundBatchId { get; set; }
-            public DateTime? PaidDate { get; set; }
-            public decimal? PaidAmount { get; set; }
-            public decimal? BalanceOwed { get; set; }
-            public string? PayType { get; set; }
-            public string? NoteDesc { get; set; }
-            public string? CheckMemo { get; set; }
-            public DateTime? CreatedDate { get; set; }
-            public int? CreatedUser { get; set; }
-            public DateTime? ModifiedDate { get; set; }
-            public int? ModifiedUser { get; set; }
-            public bool? PlaysDown { get; set; }
-            public bool? PlaysUp { get; set; }
-            public int? ShoppingCartId { get; set; }
         }
     }
 }

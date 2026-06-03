@@ -109,6 +109,7 @@ var host = new HostBuilder()
         // Application services
         services.AddScoped<ISeasonService, SeasonService>();
         services.AddScoped<IPlayerService, PlayerService>();
+        services.AddScoped<IScheduleGeneratorService, ScheduleGeneratorService>();
 
         // Logging
         services.AddLogging(builder =>

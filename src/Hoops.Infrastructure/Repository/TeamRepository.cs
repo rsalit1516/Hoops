@@ -2,6 +2,7 @@
 using Hoops.Core.Interface;
 using Hoops.Core.Models;
 using Hoops.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hoops.Infrastructure.Repository
 {
@@ -88,6 +89,13 @@ namespace Hoops.Infrastructure.Repository
         {
             var teams = context.Teams.Where(s => s.DivisionId == divisionId);
             return teams;
+        }
+
+        public List<Team> GetDivisionTeamsWithCoaches(int divisionId)
+        {
+            return context.Teams
+                .Where(t => t.DivisionId == divisionId)
+                .ToList();
         }
 
         public static Team ConvertRecordForTeamNumber(Team team, List<Color> colors)

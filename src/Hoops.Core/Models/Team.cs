@@ -92,11 +92,25 @@ namespace Hoops.Core.Models
         // Helper methods
         public string GetDisplayName()
         {
-            if (!string.IsNullOrEmpty(TeamColor))
-            {
-                return $"{TeamName} ({TeamColor})";
-            }
-            return TeamName ?? "Unknown Team";
+            var num = TeamNumber?.Trim();
+            var color = TeamColor?.Trim();
+            var name = TeamName?.Trim();
+
+            if (!string.IsNullOrEmpty(num) && !string.IsNullOrEmpty(color) && !string.IsNullOrEmpty(name))
+                return $"{num}-{color} {name}";
+            if (!string.IsNullOrEmpty(num) && !string.IsNullOrEmpty(color))
+                return $"{num}-{color}";
+            if (!string.IsNullOrEmpty(num) && !string.IsNullOrEmpty(name))
+                return $"{num} {name}";
+            if (!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(color))
+                return $"{name} ({color})";
+            if (!string.IsNullOrEmpty(num))
+                return $"#{num}";
+            if (!string.IsNullOrEmpty(name))
+                return name;
+            if (!string.IsNullOrEmpty(color))
+                return color;
+            return $"Team {TeamId}";
         }
 
         public string GetTeamIdentifier()

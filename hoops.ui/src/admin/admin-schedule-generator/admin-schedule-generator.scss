@@ -1,0 +1,293 @@
+@use "sass:color";
+@use "../../Content/variables" as v;
+
+:host {
+  display: block;
+  overflow-y: auto;
+}
+
+.card-container {
+  background-color: v.$admin-card-background-color;
+  border-radius: v.$border-radius;
+  border: 0.5px solid v.$card-border-color;
+  margin: 0.5rem;
+}
+
+.card-header {
+  background-color: v.$admin-background-color;
+  padding: 0.75rem 1rem 0.5rem;
+  border-bottom: 1px solid v.$card-border-color;
+  border-radius: v.$border-radius v.$border-radius 0 0;
+}
+
+.card-title {
+  color: v.$field-label;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+}
+
+.card-body {
+  background-color: v.$admin-card-background-color;
+  padding: 1rem;
+  border-radius: 0 0 v.$border-radius v.$border-radius;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.step-content {
+  background-color: v.$admin-card-background-color;
+  color: v.$field-label;
+}
+
+// Override mat-stepper backgrounds
+::ng-deep .mat-stepper-horizontal {
+  background-color: v.$admin-card-background-color !important;
+}
+
+::ng-deep .mat-horizontal-content-container {
+  background-color: v.$admin-card-background-color !important;
+  padding: 0 1rem 2rem !important;
+  overflow-y: auto !important;
+  max-height: calc(100vh - 260px);
+  min-height: 0;
+}
+
+::ng-deep .schedule-stepper {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+::ng-deep .mat-horizontal-stepper-header-container {
+  background-color: v.$admin-background-color !important;
+}
+
+::ng-deep .mat-step-header {
+  background-color: transparent !important;
+}
+
+::ng-deep .mat-step-header .mat-step-label {
+  color: color.adjust(v.$field-label, $lightness: -20%) !important;
+}
+
+::ng-deep .mat-step-header.cdk-keyboard-focused,
+::ng-deep .mat-step-header.cdk-program-focused,
+::ng-deep .mat-step-header:hover:not([aria-disabled]),
+::ng-deep .mat-step-header:hover[aria-disabled="false"] {
+  background-color: color.adjust(
+    v.$admin-background-color,
+    $lightness: 5%
+  ) !important;
+}
+
+::ng-deep .mat-stepper-horizontal-line {
+  border-top-color: v.$card-border-color !important;
+}
+
+// Table styling for time slots / blackout tables
+::ng-deep .time-slot-table,
+::ng-deep .blackout-table,
+::ng-deep .preview-table {
+  background-color: v.$admin-card-background-color !important;
+
+  th.mat-header-cell {
+    color: v.$brand-color !important;
+    background-color: v.$admin-background-color !important;
+    font-weight: 700;
+  }
+
+  td.mat-cell {
+    color: v.$field-label !important;
+    background-color: v.$table-body-color !important;
+  }
+}
+
+::ng-deep .preview-table {
+  td.mat-cell,
+  th.mat-header-cell {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+}
+
+.division-group-header {
+  color: v.$brand-color;
+  font-size: 1rem;
+  font-weight: 700;
+  background-color: v.$admin-background-color;
+  padding: 0.4rem 0.75rem;
+  margin: 0.5rem 0 0.25rem;
+  border-left: 3px solid v.$brand-color;
+}
+
+.preview-header {
+  color: v.$field-label;
+}
+
+// Item 1: chip text color on dark background
+::ng-deep .preview-header .mat-mdc-chip .mdc-evolution-chip__text-label {
+  color: #fff !important;
+}
+
+.warning-text {
+  color: #ff9800;
+  font-size: 0.8rem;
+}
+
+.row-has-warnings td {
+  background-color: color.adjust(#3a2800, $lightness: 5%) !important;
+}
+
+.error-panel {
+  background-color: color.adjust(#3a0000, $lightness: 5%);
+  border: 1px solid #a94442;
+  border-radius: 4px;
+  color: #ffaaaa;
+}
+
+.success-panel {
+  background-color: color.adjust(#003a00, $lightness: 5%);
+  border: 1px solid #2e7d32;
+  border-radius: 4px;
+  color: #aaffaa;
+}
+
+.time-input {
+  background-color: v.$admin-input-background-color;
+  color: v.$field-label;
+  border: 1px solid v.$card-border-color;
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.9rem;
+}
+
+.period-field-day {
+  min-width: 100px;
+  max-width: 120px;
+}
+.period-field-time {
+  min-width: 120px;
+  max-width: 140px;
+}
+.period-field-courts {
+  min-width: 200px;
+  flex: 1;
+}
+.period-field-copy {
+  min-width: 160px;
+  max-width: 220px;
+}
+.period-delete-btn {
+  margin-top: 8px;
+}
+
+.period-warning {
+  color: #ff9800;
+  font-size: 0.8rem;
+
+  .warn-icon {
+    font-size: 1rem;
+    height: 1rem;
+    width: 1rem;
+    vertical-align: middle;
+  }
+}
+
+.period-slots-summary {
+  font-size: 0.8rem;
+  color: #aaa;
+}
+
+.row-editing td {
+  background-color: color.adjust(
+    v.$admin-background-color,
+    $lightness: 8%
+  ) !important;
+}
+
+.calendar-month-label {
+  font-size: 1rem;
+  font-weight: 700;
+  color: v.$field-label;
+  min-width: 160px;
+  text-align: center;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.cal-header {
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.75rem;
+  padding: 4px;
+  color: v.$brand-color;
+}
+
+.cal-cell {
+  min-height: 56px;
+  border: 1px solid v.$card-border-color;
+  padding: 4px;
+  cursor: default;
+  position: relative;
+
+  &.has-games {
+    cursor: pointer;
+    background: color.adjust(v.$admin-background-color, $lightness: 4%);
+  }
+
+  &.selected {
+    border-color: v.$brand-color;
+    background: color.adjust(v.$brand-color, $lightness: -30%);
+  }
+
+  &.cal-empty {
+    background: transparent;
+    border-color: transparent;
+  }
+}
+
+// Paginator dark theme
+::ng-deep .mat-mdc-paginator {
+  background-color: v.$admin-card-background-color !important;
+  color: v.$field-label !important;
+}
+
+::ng-deep .mat-mdc-paginator-range-label,
+::ng-deep .mat-mdc-paginator-page-size-label {
+  color: v.$field-label !important;
+}
+
+::ng-deep .mat-mdc-paginator .mat-mdc-icon-button svg,
+::ng-deep .mat-mdc-paginator .mat-mdc-icon-button mat-icon {
+  color: v.$field-label !important;
+}
+
+::ng-deep .mat-mdc-paginator .mat-mdc-select-value,
+::ng-deep .mat-mdc-paginator .mat-mdc-select-arrow {
+  color: v.$field-label !important;
+}
+
+.cal-day-num {
+  font-size: 0.75rem;
+  color: v.$field-label;
+}
+
+.cal-badge {
+  display: block;
+  background: v.$brand-color;
+  color: #fff;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  text-align: center;
+  font-size: 0.7rem;
+  margin: 2px auto 0;
+}

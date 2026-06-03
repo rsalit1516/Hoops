@@ -6,7 +6,6 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { BaseList } from '@app/admin/shared/BaseList';
@@ -17,22 +16,12 @@ import {
 import { ListPageShellComponent } from '@app/admin/shared/list-page-shell/ListPageShell';
 import { LoggerService } from '@app/services/logger.service';
 import { SeasonService } from '@app/services/season.service';
-import { Constants } from '@app/shared/constants';
+import { SponsorService } from '@app/services/sponsor.service';
+import { SponsorListItem } from '@app/domain/sponsor-profile';
 import {
   SponsorFilters,
   SponsorFilterCriteria,
 } from '../sponsor-filters/sponsor-filters';
-
-export interface SponsorListItem {
-  id: number;
-  sponsorProfileId: number;
-  spoName: string;
-  contactName: string;
-  email: string;
-  phone: string;
-  lastSeasonId: number | null;
-  lastSeasonDescription: string | null;
-}
 
 @Component({
   selector: 'sponsor-list',
@@ -42,9 +31,9 @@ export interface SponsorListItem {
   standalone: true,
 })
 export class SponsorList extends BaseList<SponsorListItem> implements OnInit {
-  private http = inject(HttpClient);
   private logger = inject(LoggerService);
   private seasonService = inject(SeasonService);
+  private sponsorService = inject(SponsorService);
 
   readonly sponsors = signal<SponsorListItem[]>([]);
   readonly isLoading = signal(false);
@@ -96,17 +85,15 @@ export class SponsorList extends BaseList<SponsorListItem> implements OnInit {
 
   private loadSponsors() {
     this.isLoading.set(true);
-    this.http
-      .get<SponsorListItem[]>(Constants.GET_SPONSOR_PROFILES_URL, { withCredentials: true })
-      .subscribe({
-        next: (sponsors) => {
-          this.sponsors.set((sponsors ?? []).map((s) => ({ ...s, id: s.sponsorProfileId })));
-          this.isLoading.set(false);
-        },
-        error: (err) => {
-          this.logger.error('Failed to load sponsors', err);
-          this.isLoading.set(false);
-        },
-      });
+    this.sponsorService.getSponsors().subscribe({
+      next: (sponsors) => {
+        this.sponsors.set((sponsors ?? []).map((s) => ({ ...s, id: s.sponsorProfileId })));
+        this.isLoading.set(false);
+      },
+      error: (err) => {
+        this.logger.error('Failed to load sponsors', err);
+        this.isLoading.set(false);
+      },
+    });
   }
 }

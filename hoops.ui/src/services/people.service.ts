@@ -64,6 +64,10 @@ export class PeopleService {
     this._isFormDirty.set(isDirty);
   }
 
+  getAllPeople(): Observable<Person[]> {
+    return this.http.get<Person[]>(Constants.peopleUrl);
+  }
+
   getData(): Observable<any> {
     return this.http.get<any>(Constants.peopleUrl);
   }

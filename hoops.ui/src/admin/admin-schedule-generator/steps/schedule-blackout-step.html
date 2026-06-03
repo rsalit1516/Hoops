@@ -1,0 +1,50 @@
+<div class="flex justify-between items-center mb-3 mt-4">
+  <p class="text-sm text-gray-600">
+    Add date ranges when games cannot be scheduled (holidays, tournaments, facility closures).
+    Leave Location set to "All Locations" to block the entire facility.
+  </p>
+  <button type="button" mat-stroked-button color="primary" (click)="s.addBlackoutDate()">
+    <mat-icon>add</mat-icon> Add Blackout Period
+  </button>
+</div>
+
+@if (s.blackoutDates().length === 0) {
+  <p class="text-gray-400 italic text-sm">No blackout periods configured.</p>
+} @else {
+  @for (blackout of s.blackoutDates(); track blackout.id) {
+    <div class="flex gap-3 items-center mb-3 flex-wrap">
+
+      <mat-form-field appearance="fill" style="min-width:170px">
+        <mat-label>Start Date</mat-label>
+        <input matInput [matDatepicker]="bpStart"
+          (dateChange)="s.updateBlackoutStartDate(blackout.id, $event.value)" />
+        <mat-datepicker-toggle matSuffix [for]="bpStart" />
+        <mat-datepicker #bpStart />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" style="min-width:170px">
+        <mat-label>End Date</mat-label>
+        <input matInput [matDatepicker]="bpEnd"
+          (dateChange)="s.updateBlackoutEndDate(blackout.id, $event.value)" />
+        <mat-datepicker-toggle matSuffix [for]="bpEnd" />
+        <mat-datepicker #bpEnd />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" style="min-width:200px">
+        <mat-label>Location</mat-label>
+        <mat-select [value]="blackout.locationId"
+          (selectionChange)="s.updateBlackoutLocation(blackout.id, $event.value)">
+          <mat-option [value]="null">All Locations</mat-option>
+          @for (loc of s.locations(); track loc.locationNumber) {
+            <mat-option [value]="loc.locationNumber">{{ loc.locationName }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <button type="button" mat-icon-button color="warn" (click)="s.removeBlackoutDate(blackout.id)">
+        <mat-icon>delete</mat-icon>
+      </button>
+
+    </div>
+  }
+}

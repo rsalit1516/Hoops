@@ -1,5 +1,6 @@
 import { Component, signal } from '@angular/core';
-import { SponsorList, SponsorListItem } from '../../components/sponsor-list/sponsor-list';
+import { SponsorList } from '../../components/sponsor-list/sponsor-list';
+import { SponsorListItem } from '@app/domain/sponsor-profile';
 import { SponsorDetail } from '../../components/sponsor-detail/sponsor-detail';
 
 @Component({

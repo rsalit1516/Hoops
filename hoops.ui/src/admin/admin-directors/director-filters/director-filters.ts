@@ -9,12 +9,11 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { debounceTime } from 'rxjs';
+import { FilterCard } from '@app/shared/components/filter-card/filter-card';
 
 // Interface for filter data structure
 export interface DirectorFilterCriteria {
@@ -24,17 +23,14 @@ export interface DirectorFilterCriteria {
 @Component({
   selector: 'csbc-director-filters',
   imports: [
-    MatCardModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule,
     MatIconModule,
     ReactiveFormsModule,
+    FilterCard,
   ],
   templateUrl: './director-filters.html',
-  styleUrls: ['./director-filters.scss',
-      '../../../shared/scss/forms.scss',
-    '../../../shared/scss/cards.scss']
+  styleUrls: ['./director-filters.scss', '../../../shared/scss/forms.scss'],
 
 })
 export class DirectorFilters implements OnInit, OnChanges {

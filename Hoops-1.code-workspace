@@ -98,7 +98,7 @@
         "command": "npm",
         "args": ["start"],
         "options": {
-          "cwd": "${workspaceFolder}/hoops.ui/src",
+          "cwd": "${workspaceFolder}/hoops.ui",
         },
         "dependsOn": ["Start Functions (Local)"],
         "dependsOrder": "sequence",
@@ -110,7 +110,7 @@
         "command": "npm",
         "args": ["start"],
         "options": {
-          "cwd": "${workspaceFolder}/hoops.ui/src",
+          "cwd": "${workspaceFolder}/hoops.ui",
           "env": {
             "API_BASE_URL": "https://hoops-functions-dev-djeqhegwahbua7eq.eastus-01.azurewebsites.net",
           },
@@ -241,6 +241,9 @@
         "type": "shell",
         "command": "npm",
         "args": ["run", "lint"],
+        "options": {
+          "cwd": "${workspaceFolder}/hoops.ui",
+        },
         "isBackground": false,
         "problemMatcher": ["$eslint-stylish"],
         "group": "test",

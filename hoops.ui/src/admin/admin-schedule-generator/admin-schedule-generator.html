@@ -1,0 +1,98 @@
+<div class="card-container">
+  <div class="card-header">
+    <h2 class="card-title">Season Schedule Generator</h2>
+  </div>
+  <div class="card-body">
+    <mat-stepper linear #stepper class="schedule-stepper">
+      <!-- Step 1: Parameters -->
+      <mat-step [completed]="state.step1Valid()" label="Schedule Parameters">
+        <div class="step-content">
+          <app-schedule-params-step />
+          <div class="flex gap-2 mt-4">
+            <button
+              mat-raised-button
+              color="primary"
+              matStepperNext
+              [disabled]="!state.step1Valid()"
+            >
+              Next
+            </button>
+            <button
+              mat-stroked-button
+              color="warn"
+              type="button"
+              (click)="state.clearSavedSettings()"
+            >
+              Clear Saved Settings
+            </button>
+          </div>
+        </div>
+      </mat-step>
+
+      <!-- Step 2: Divisions -->
+      <mat-step [completed]="state.step2Valid()" label="Select Divisions">
+        <div class="step-content">
+          <app-schedule-divisions-step />
+          <div class="flex gap-2 mt-4">
+            <button mat-button matStepperPrevious>Back</button>
+            <button
+              mat-raised-button
+              color="primary"
+              matStepperNext
+              [disabled]="!state.step2Valid()"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      </mat-step>
+
+      <!-- Step 3: Time Slots -->
+      <mat-step [completed]="state.step3Valid()" label="Available Time Slots">
+        <div class="step-content">
+          <app-schedule-time-periods-step />
+          <div class="flex gap-2 mt-4">
+            <button mat-button matStepperPrevious>Back</button>
+            <button
+              mat-raised-button
+              color="primary"
+              matStepperNext
+              [disabled]="!state.step3Valid()"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      </mat-step>
+
+      <!-- Step 4: Blackout Dates -->
+      <mat-step label="Blackout Dates">
+        <div class="step-content">
+          <app-schedule-blackout-step />
+          <div class="flex gap-2 mt-4">
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-raised-button color="primary" matStepperNext>
+              Next
+            </button>
+          </div>
+        </div>
+      </mat-step>
+
+      <!-- Step 5: Preview & Commit -->
+      <mat-step label="Preview & Commit">
+        <div class="step-content mt-4">
+          <app-schedule-preview-step />
+          <div class="flex gap-2 mt-4">
+            <button
+              mat-button
+              matStepperPrevious
+              [disabled]="state.isGenerating() || state.isCommitting()"
+            >
+              Back
+            </button>
+          </div>
+        </div>
+      </mat-step>
+    </mat-stepper>
+  </div>
+</div>
