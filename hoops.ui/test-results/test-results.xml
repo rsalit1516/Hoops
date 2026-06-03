@@ -1,60 +1,60 @@
 <?xml version="1.0"?>
-<testsuite name="Chrome Headless 148.0.0.0 (Windows 10)" package="unit" timestamp="2026-06-03T21:05:01" id="0" hostname="Rich-Think" tests="491" errors="0" failures="1" time="10.62">
+<testsuite name="Chrome Headless 148.0.0.0 (Windows 10)" package="unit" timestamp="2026-06-03T21:38:19" id="0" hostname="Rich-Think" tests="491" errors="0" failures="1" time="13.046">
   <properties>
     <property name="browser.fullName" value="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/148.0.0.0 Safari/537.36"/>
   </properties>
-  <testcase name="DirectorDetail should create" time="0.261" classname=".DirectorDetail"/>
-  <testcase name="DirectorDetail should default to a new director when no item is resolved" time="0.037" classname=".DirectorDetail"/>
-  <testcase name="DirectorDetail should load volunteers for the embedded form" time="0.04" classname=".DirectorDetail"/>
-  <testcase name="DirectorFiltersComponent should create" time="0.05" classname=".DirectorFiltersComponent"/>
-  <testcase name="DirectorForm should create" time="0.031" classname=".DirectorForm"/>
-  <testcase name="DirectorForm should load volunteers on init" time="0.03" classname=".DirectorForm"/>
-  <testcase name="DirectorForm should initialise form with default values" time="0.029" classname=".DirectorForm"/>
-  <testcase name="DirectorForm should patch form when director input is provided" time="0.027" classname=".DirectorForm"/>
-  <testcase name="DirectorForm should populate name and personId when a volunteer is selected" time="0.026" classname=".DirectorForm"/>
-  <testcase name="DirectorForm should not change form when an unknown personId is selected" time="0.034" classname=".DirectorForm"/>
-  <testcase name="DirectorList should create" time="0.156" classname=".DirectorList"/>
-  <testcase name="DirectorList should show no rows when directorsSignal is null" time="0.045" classname=".DirectorList"/>
-  <testcase name="DirectorList should map directors to list items" time="0.063" classname=".DirectorList"/>
-  <testcase name="AdminGamesPlayoffsDetail - Date/Time Pickers should create" time="0.121" classname=".AdminGamesPlayoffsDetail - Date/Time Pickers"/>
-  <testcase name="AdminGamesPlayoffsDetail - Date/Time Pickers should have form controls for gameDate and gameTime as Date objects" time="0.054" classname=".AdminGamesPlayoffsDetail - Date/Time Pickers"/>
-  <testcase name="AdminGamesPlayoffsDetail - Date/Time Pickers should set Date objects in form when editing existing record" time="0.06" classname=".AdminGamesPlayoffsDetail - Date/Time Pickers"/>
-  <testcase name="AdminGamesPlayoffsDetail - Date/Time Pickers should combine date and time when saving" time="0.086" classname=".AdminGamesPlayoffsDetail - Date/Time Pickers"/>
-  <testcase name="AdminGamesPlayoffsDetail - Date/Time Pickers should have isFormDirty method for PendingChangesGuard" time="0.036" classname=".AdminGamesPlayoffsDetail - Date/Time Pickers"/>
-  <testcase name="HouseholdFilters should create" time="0.039" classname=".HouseholdFilters"/>
+  <testcase name="DirectorDetail should create" time="0.31" classname=".DirectorDetail"/>
+  <testcase name="DirectorDetail should default to a new director when no item is resolved" time="0.05" classname=".DirectorDetail"/>
+  <testcase name="DirectorDetail should load volunteers for the embedded form" time="0.049" classname=".DirectorDetail"/>
+  <testcase name="DirectorFiltersComponent should create" time="0.083" classname=".DirectorFiltersComponent"/>
+  <testcase name="DirectorForm should create" time="0.046" classname=".DirectorForm"/>
+  <testcase name="DirectorForm should load volunteers on init" time="0.035" classname=".DirectorForm"/>
+  <testcase name="DirectorForm should initialise form with default values" time="0.031" classname=".DirectorForm"/>
+  <testcase name="DirectorForm should patch form when director input is provided" time="0.032" classname=".DirectorForm"/>
+  <testcase name="DirectorForm should populate name and personId when a volunteer is selected" time="0.029" classname=".DirectorForm"/>
+  <testcase name="DirectorForm should not change form when an unknown personId is selected" time="0.025" classname=".DirectorForm"/>
+  <testcase name="DirectorList should create" time="0.119" classname=".DirectorList"/>
+  <testcase name="DirectorList should show no rows when directorsSignal is null" time="0.039" classname=".DirectorList"/>
+  <testcase name="DirectorList should map directors to list items" time="0.047" classname=".DirectorList"/>
+  <testcase name="AdminGamesPlayoffsDetail - Date/Time Pickers should create" time="0.101" classname=".AdminGamesPlayoffsDetail - Date/Time Pickers"/>
+  <testcase name="AdminGamesPlayoffsDetail - Date/Time Pickers should have form controls for gameDate and gameTime as Date objects" time="0.043" classname=".AdminGamesPlayoffsDetail - Date/Time Pickers"/>
+  <testcase name="AdminGamesPlayoffsDetail - Date/Time Pickers should set Date objects in form when editing existing record" time="0.055" classname=".AdminGamesPlayoffsDetail - Date/Time Pickers"/>
+  <testcase name="AdminGamesPlayoffsDetail - Date/Time Pickers should combine date and time when saving" time="0.091" classname=".AdminGamesPlayoffsDetail - Date/Time Pickers"/>
+  <testcase name="AdminGamesPlayoffsDetail - Date/Time Pickers should have isFormDirty method for PendingChangesGuard" time="0.035" classname=".AdminGamesPlayoffsDetail - Date/Time Pickers"/>
+  <testcase name="HouseholdFilters should create" time="0.042" classname=".HouseholdFilters"/>
   <testcase name="HouseholdFilters should initialize with letter A" time="0.019" classname=".HouseholdFilters"/>
-  <testcase name="HouseholdFilters should emit filters on letter change" time="0.058" classname=".HouseholdFilters"/>
-  <testcase name="HouseholdFilters should clear filters" time="0.028" classname=".HouseholdFilters"/>
-  <testcase name="PeopleFilters should create" time="0.026" classname=".PeopleFilters"/>
-  <testcase name="PeopleFilters should initialize with letter A" time="0.012" classname=".PeopleFilters"/>
-  <testcase name="PeopleFilters should emit filters on letter change" time="0.03" classname=".PeopleFilters"/>
-  <testcase name="PeopleFilters should clear filters" time="0.02" classname=".PeopleFilters"/>
-  <testcase name="PeopleList should create" time="0.076" classname=".PeopleList"/>
-  <testcase name="PeopleList should show Register button only for players" time="0.047" classname=".PeopleList"/>
-  <testcase name="PeopleList should not show Register button for non-players" time="0.042" classname=".PeopleList"/>
-  <testcase name="PeopleList onRegister sets selected person before navigating" time="0.045" classname=".PeopleList"/>
-  <testcase name="PeopleList onRegister navigates to player-registration with personId" time="0.046" classname=".PeopleList"/>
-  <testcase name="PeopleList onRegister stops event propagation to prevent row navigation" time="0.046" classname=".PeopleList"/>
-  <testcase name="DailyScheduleReport should create" time="0.054" classname=".DailyScheduleReport"/>
-  <testcase name="DailyScheduleReport should return empty rows when seasonGames is null" time="0.021" classname=".DailyScheduleReport"/>
-  <testcase name="DailyScheduleReport should show all games when All Divisions is selected and no date filter" time="0.039" classname=".DailyScheduleReport"/>
-  <testcase name="DailyScheduleReport should filter to one division" time="0.051" classname=".DailyScheduleReport"/>
-  <testcase name="DailyScheduleReport should filter by start date (inclusive)" time="0.069" classname=".DailyScheduleReport"/>
-  <testcase name="DailyScheduleReport should filter by end date (inclusive through end of day)" time="0.043" classname=".DailyScheduleReport"/>
-  <testcase name="DailyScheduleReport time formatting should format &quot;1899-12-30 20:30:00&quot; as &quot;08:30 PM&quot;" time="0.048" classname=".DailyScheduleReport time formatting"/>
-  <testcase name="DailyScheduleReport time formatting should format &quot;1899-12-30 09:00:00&quot; as &quot;09:00 AM&quot;" time="0.055" classname=".DailyScheduleReport time formatting"/>
-  <testcase name="DailyScheduleReport time formatting should format &quot;1899-12-30 18:00:00&quot; as &quot;06:00 PM&quot;" time="0.051" classname=".DailyScheduleReport time formatting"/>
-  <testcase name="DailyScheduleReport time formatting should format &quot;9:00 AM&quot; as &quot;09:00 AM&quot;" time="0.067" classname=".DailyScheduleReport time formatting"/>
-  <testcase name="DailyScheduleReport time formatting should format &quot;09:00 AM&quot; as &quot;09:00 AM&quot;" time="0.044" classname=".DailyScheduleReport time formatting"/>
-  <testcase name="DailyScheduleReport time formatting should format &quot;2:30 PM&quot; as &quot;02:30 PM&quot;" time="0.039" classname=".DailyScheduleReport time formatting"/>
-  <testcase name="DailyScheduleReport time formatting should format &quot;14:30&quot; as &quot;02:30 PM&quot;" time="0.046" classname=".DailyScheduleReport time formatting"/>
-  <testcase name="DailyScheduleReport time formatting should format &quot;09:00:00&quot; as &quot;09:00 AM&quot;" time="0.041" classname=".DailyScheduleReport time formatting"/>
+  <testcase name="HouseholdFilters should emit filters on letter change" time="0.044" classname=".HouseholdFilters"/>
+  <testcase name="HouseholdFilters should clear filters" time="0.022" classname=".HouseholdFilters"/>
+  <testcase name="PeopleFilters should create" time="0.031" classname=".PeopleFilters"/>
+  <testcase name="PeopleFilters should initialize with letter A" time="0.016" classname=".PeopleFilters"/>
+  <testcase name="PeopleFilters should emit filters on letter change" time="0.022" classname=".PeopleFilters"/>
+  <testcase name="PeopleFilters should clear filters" time="0.012" classname=".PeopleFilters"/>
+  <testcase name="PeopleList should create" time="0.054" classname=".PeopleList"/>
+  <testcase name="PeopleList should show Register button only for players" time="0.032" classname=".PeopleList"/>
+  <testcase name="PeopleList should not show Register button for non-players" time="0.034" classname=".PeopleList"/>
+  <testcase name="PeopleList onRegister sets selected person before navigating" time="0.039" classname=".PeopleList"/>
+  <testcase name="PeopleList onRegister navigates to player-registration with personId" time="0.036" classname=".PeopleList"/>
+  <testcase name="PeopleList onRegister stops event propagation to prevent row navigation" time="0.038" classname=".PeopleList"/>
+  <testcase name="DailyScheduleReport should create" time="0.053" classname=".DailyScheduleReport"/>
+  <testcase name="DailyScheduleReport should return empty rows when seasonGames is null" time="0.023" classname=".DailyScheduleReport"/>
+  <testcase name="DailyScheduleReport should show all games when All Divisions is selected and no date filter" time="0.028" classname=".DailyScheduleReport"/>
+  <testcase name="DailyScheduleReport should filter to one division" time="0.027" classname=".DailyScheduleReport"/>
+  <testcase name="DailyScheduleReport should filter by start date (inclusive)" time="0.03" classname=".DailyScheduleReport"/>
+  <testcase name="DailyScheduleReport should filter by end date (inclusive through end of day)" time="0.029" classname=".DailyScheduleReport"/>
+  <testcase name="DailyScheduleReport time formatting should format &quot;1899-12-30 20:30:00&quot; as &quot;08:30 PM&quot;" time="0.031" classname=".DailyScheduleReport time formatting"/>
+  <testcase name="DailyScheduleReport time formatting should format &quot;1899-12-30 09:00:00&quot; as &quot;09:00 AM&quot;" time="0.031" classname=".DailyScheduleReport time formatting"/>
+  <testcase name="DailyScheduleReport time formatting should format &quot;1899-12-30 18:00:00&quot; as &quot;06:00 PM&quot;" time="0.029" classname=".DailyScheduleReport time formatting"/>
+  <testcase name="DailyScheduleReport time formatting should format &quot;9:00 AM&quot; as &quot;09:00 AM&quot;" time="0.044" classname=".DailyScheduleReport time formatting"/>
+  <testcase name="DailyScheduleReport time formatting should format &quot;09:00 AM&quot; as &quot;09:00 AM&quot;" time="0.024" classname=".DailyScheduleReport time formatting"/>
+  <testcase name="DailyScheduleReport time formatting should format &quot;2:30 PM&quot; as &quot;02:30 PM&quot;" time="0.03" classname=".DailyScheduleReport time formatting"/>
+  <testcase name="DailyScheduleReport time formatting should format &quot;14:30&quot; as &quot;02:30 PM&quot;" time="0.028" classname=".DailyScheduleReport time formatting"/>
+  <testcase name="DailyScheduleReport time formatting should format &quot;09:00:00&quot; as &quot;09:00 AM&quot;" time="0.034" classname=".DailyScheduleReport time formatting"/>
   <testcase name="DailyScheduleReport time formatting should format &quot;12:00&quot; as &quot;12:00 PM&quot;" time="0.028" classname=".DailyScheduleReport time formatting"/>
-  <testcase name="DailyScheduleReport time formatting should format &quot;00:00&quot; as &quot;12:00 AM&quot;" time="0.035" classname=".DailyScheduleReport time formatting"/>
-  <testcase name="DailyScheduleReport time formatting should format &quot;0:00&quot; as &quot;12:00 AM&quot;" time="0.037" classname=".DailyScheduleReport time formatting"/>
-  <testcase name="DailyScheduleReport should label regular games as &quot;Regular&quot;" time="0.036" classname=".DailyScheduleReport"/>
-  <testcase name="DailyScheduleReport should label playoff games as &quot;Playoff&quot;" time="0.04" classname=".DailyScheduleReport"/>
-  <testcase name="DailyScheduleReport should sort results by date then division" time="0.04" classname=".DailyScheduleReport">
+  <testcase name="DailyScheduleReport time formatting should format &quot;00:00&quot; as &quot;12:00 AM&quot;" time="0.032" classname=".DailyScheduleReport time formatting"/>
+  <testcase name="DailyScheduleReport time formatting should format &quot;0:00&quot; as &quot;12:00 AM&quot;" time="0.034" classname=".DailyScheduleReport time formatting"/>
+  <testcase name="DailyScheduleReport should label regular games as &quot;Regular&quot;" time="0.027" classname=".DailyScheduleReport"/>
+  <testcase name="DailyScheduleReport should label playoff games as &quot;Playoff&quot;" time="0.024" classname=".DailyScheduleReport"/>
+  <testcase name="DailyScheduleReport should sort results by date then division" time="0.028" classname=".DailyScheduleReport">
     <failure type="">Expected '5/4/2026' to be '5/3/2026'.
     at &lt;Jasmine&gt;
     at UserContext.&lt;anonymous&gt; (src/admin/admin-reports/daily-schedule/daily-schedule.spec.ts:233:30)
@@ -63,445 +63,445 @@
     at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:397:34)
 </failure>
   </testcase>
-  <testcase name="DailyScheduleReport divisionsForSelect should prepend All Divisions option" time="0.018" classname=".DailyScheduleReport"/>
-  <testcase name="DailyScheduleReport downloadCSV should open snackbar when no games" time="0.033" classname=".DailyScheduleReport downloadCSV"/>
-  <testcase name="DailyScheduleReport downloadCSV should trigger file download when games exist" time="0.058" classname=".DailyScheduleReport downloadCSV"/>
-  <testcase name="DraftList should create" time="0.057" classname=".DraftList"/>
-  <testcase name="DraftList showNoSelection should be true when no division is selected and not loading" time="0.035" classname=".DraftList showNoSelection"/>
+  <testcase name="DailyScheduleReport divisionsForSelect should prepend All Divisions option" time="0.014" classname=".DailyScheduleReport"/>
+  <testcase name="DailyScheduleReport downloadCSV should open snackbar when no games" time="0.015" classname=".DailyScheduleReport downloadCSV"/>
+  <testcase name="DailyScheduleReport downloadCSV should trigger file download when games exist" time="0.028" classname=".DailyScheduleReport downloadCSV"/>
+  <testcase name="DraftList should create" time="0.03" classname=".DraftList"/>
+  <testcase name="DraftList showNoSelection should be true when no division is selected and not loading" time="0.023" classname=".DraftList showNoSelection"/>
   <testcase name="DraftList showNoSelection should be false when a specific division is selected" time="0.015" classname=".DraftList showNoSelection"/>
-  <testcase name="DraftList showNoSelection should be false when All Divisions sentinel is selected" time="0.019" classname=".DraftList showNoSelection"/>
-  <testcase name="DraftList showTable should be false when no division is selected" time="0.025" classname=".DraftList showTable"/>
-  <testcase name="DraftList showTable should be true when a division is selected and not loading" time="0.034" classname=".DraftList showTable"/>
-  <testcase name="DraftList showTable should be false when loading even with a division selected" time="0.025" classname=".DraftList showTable"/>
-  <testcase name="DraftList sortedPlayers should return players unchanged for a specific division" time="0.049" classname=".DraftList sortedPlayers"/>
-  <testcase name="DraftList sortedPlayers should sort players by division name when All Divisions is selected" time="0.042" classname=".DraftList sortedPlayers"/>
-  <testcase name="DraftList sortedPlayers should not mutate the original players array when sorting" time="0.035" classname=".DraftList sortedPlayers"/>
-  <testcase name="DraftList sortedPlayers should return empty array when no players" time="0.035" classname=".DraftList sortedPlayers"/>
-  <testcase name="DraftList effect: getDraftList should call getDraftList when both season and division are set" time="0.023" classname=".DraftList effect: getDraftList"/>
-  <testcase name="DraftList effect: getDraftList should not call getDraftList when only season is set" time="0.031" classname=".DraftList effect: getDraftList"/>
-  <testcase name="DraftList effect: getDraftList should not call getDraftList when only division is set" time="0.03" classname=".DraftList effect: getDraftList"/>
-  <testcase name="DraftList effect: getDraftList should pass null divisionId when All Divisions sentinel is selected" time="0.019" classname=".DraftList effect: getDraftList"/>
-  <testcase name="DraftList downloadCSV should show snackbar when there are no players" time="0.017" classname=".DraftList downloadCSV"/>
-  <testcase name="DraftList downloadCSV should trigger file download when players exist" time="0.067" classname=".DraftList downloadCSV"/>
-  <testcase name="DraftList downloadCSV should include division description in filename for a specific division" time="0.045" classname=".DraftList downloadCSV"/>
-  <testcase name="DraftList downloadCSV should use &quot;All&quot; in filename when All Divisions is selected" time="0.043" classname=".DraftList downloadCSV"/>
-  <testcase name="DraftList DOB column formatter should format ISO date string as mm-dd-yyyy" time="0.019" classname=".DraftList DOB column formatter"/>
-  <testcase name="DraftList DOB column formatter should zero-pad single-digit month and day" time="0.027" classname=".DraftList DOB column formatter"/>
-  <testcase name="DraftList DOB column formatter should return empty string for null" time="0.016" classname=".DraftList DOB column formatter"/>
-  <testcase name="DraftList DOB column formatter should return empty string for undefined" time="0.014" classname=".DraftList DOB column formatter"/>
-  <testcase name="DraftReport should create" time="0.037" classname=".DraftReport"/>
-  <testcase name="DraftReport showNoSelection should be true when no division is selected" time="0.014" classname=".DraftReport showNoSelection"/>
-  <testcase name="DraftReport showNoSelection should be false when a division is selected" time="0.011" classname=".DraftReport showNoSelection"/>
-  <testcase name="DraftReport showNoSelection should be false when All Divisions sentinel is selected" time="0.013" classname=".DraftReport showNoSelection"/>
-  <testcase name="DraftReport showReport should be false when no division is selected" time="0.01" classname=".DraftReport showReport"/>
-  <testcase name="DraftReport showReport should be true when a division is selected and not loading" time="0.008" classname=".DraftReport showReport"/>
-  <testcase name="DraftReport showReport should be false while loading" time="0.012" classname=".DraftReport showReport"/>
+  <testcase name="DraftList showNoSelection should be false when All Divisions sentinel is selected" time="0.012" classname=".DraftList showNoSelection"/>
+  <testcase name="DraftList showTable should be false when no division is selected" time="0.011" classname=".DraftList showTable"/>
+  <testcase name="DraftList showTable should be true when a division is selected and not loading" time="0.009" classname=".DraftList showTable"/>
+  <testcase name="DraftList showTable should be false when loading even with a division selected" time="0.013" classname=".DraftList showTable"/>
+  <testcase name="DraftList sortedPlayers should return players unchanged for a specific division" time="0.024" classname=".DraftList sortedPlayers"/>
+  <testcase name="DraftList sortedPlayers should sort players by division name when All Divisions is selected" time="0.031" classname=".DraftList sortedPlayers"/>
+  <testcase name="DraftList sortedPlayers should not mutate the original players array when sorting" time="0.026" classname=".DraftList sortedPlayers"/>
+  <testcase name="DraftList sortedPlayers should return empty array when no players" time="0.015" classname=".DraftList sortedPlayers"/>
+  <testcase name="DraftList effect: getDraftList should call getDraftList when both season and division are set" time="0.018" classname=".DraftList effect: getDraftList"/>
+  <testcase name="DraftList effect: getDraftList should not call getDraftList when only season is set" time="0.015" classname=".DraftList effect: getDraftList"/>
+  <testcase name="DraftList effect: getDraftList should not call getDraftList when only division is set" time="0.016" classname=".DraftList effect: getDraftList"/>
+  <testcase name="DraftList effect: getDraftList should pass null divisionId when All Divisions sentinel is selected" time="0.014" classname=".DraftList effect: getDraftList"/>
+  <testcase name="DraftList downloadCSV should show snackbar when there are no players" time="0.016" classname=".DraftList downloadCSV"/>
+  <testcase name="DraftList downloadCSV should trigger file download when players exist" time="0.033" classname=".DraftList downloadCSV"/>
+  <testcase name="DraftList downloadCSV should include division description in filename for a specific division" time="0.057" classname=".DraftList downloadCSV"/>
+  <testcase name="DraftList downloadCSV should use &quot;All&quot; in filename when All Divisions is selected" time="0.072" classname=".DraftList downloadCSV"/>
+  <testcase name="DraftList DOB column formatter should format ISO date string as mm-dd-yyyy" time="0.025" classname=".DraftList DOB column formatter"/>
+  <testcase name="DraftList DOB column formatter should zero-pad single-digit month and day" time="0.02" classname=".DraftList DOB column formatter"/>
+  <testcase name="DraftList DOB column formatter should return empty string for null" time="0.024" classname=".DraftList DOB column formatter"/>
+  <testcase name="DraftList DOB column formatter should return empty string for undefined" time="0.019" classname=".DraftList DOB column formatter"/>
+  <testcase name="DraftReport should create" time="0.073" classname=".DraftReport"/>
+  <testcase name="DraftReport showNoSelection should be true when no division is selected" time="0.019" classname=".DraftReport showNoSelection"/>
+  <testcase name="DraftReport showNoSelection should be false when a division is selected" time="0.048" classname=".DraftReport showNoSelection"/>
+  <testcase name="DraftReport showNoSelection should be false when All Divisions sentinel is selected" time="0.009" classname=".DraftReport showNoSelection"/>
+  <testcase name="DraftReport showReport should be false when no division is selected" time="0.012" classname=".DraftReport showReport"/>
+  <testcase name="DraftReport showReport should be true when a division is selected and not loading" time="0.011" classname=".DraftReport showReport"/>
+  <testcase name="DraftReport showReport should be false while loading" time="0.011" classname=".DraftReport showReport"/>
   <testcase name="DraftReport groupedByDivision should return empty array when no players" time="0.011" classname=".DraftReport groupedByDivision"/>
-  <testcase name="DraftReport groupedByDivision should return a single group for a specific division" time="0.012" classname=".DraftReport groupedByDivision"/>
-  <testcase name="DraftReport groupedByDivision should group by division when All Divisions is selected" time="0.01" classname=".DraftReport groupedByDivision"/>
-  <testcase name="DraftReport groupedByDivision should sort groups alphabetically by division name" time="0.01" classname=".DraftReport groupedByDivision"/>
-  <testcase name="DraftReport groupedByDivision should place multiple players in the correct group" time="0.011" classname=".DraftReport groupedByDivision"/>
+  <testcase name="DraftReport groupedByDivision should return a single group for a specific division" time="0.013" classname=".DraftReport groupedByDivision"/>
+  <testcase name="DraftReport groupedByDivision should group by division when All Divisions is selected" time="0.015" classname=".DraftReport groupedByDivision"/>
+  <testcase name="DraftReport groupedByDivision should sort groups alphabetically by division name" time="0.014" classname=".DraftReport groupedByDivision"/>
+  <testcase name="DraftReport groupedByDivision should place multiple players in the correct group" time="0.014" classname=".DraftReport groupedByDivision"/>
   <testcase name="DraftReport effect: getDraftReport should call getDraftReport when both season and division are set" time="0.012" classname=".DraftReport effect: getDraftReport"/>
-  <testcase name="DraftReport effect: getDraftReport should not call getDraftReport when only season is set" time="0.009" classname=".DraftReport effect: getDraftReport"/>
-  <testcase name="DraftReport effect: getDraftReport should not call getDraftReport when only division is set" time="0.008" classname=".DraftReport effect: getDraftReport"/>
-  <testcase name="DraftReport effect: getDraftReport should pass null divisionId when All Divisions sentinel is selected" time="0.011" classname=".DraftReport effect: getDraftReport"/>
+  <testcase name="DraftReport effect: getDraftReport should not call getDraftReport when only season is set" time="0.01" classname=".DraftReport effect: getDraftReport"/>
+  <testcase name="DraftReport effect: getDraftReport should not call getDraftReport when only division is set" time="0.009" classname=".DraftReport effect: getDraftReport"/>
+  <testcase name="DraftReport effect: getDraftReport should pass null divisionId when All Divisions sentinel is selected" time="0.008" classname=".DraftReport effect: getDraftReport"/>
   <testcase name="DraftReport formatDob should format ISO date string as mm/dd/yyyy" time="0.008" classname=".DraftReport formatDob"/>
-  <testcase name="DraftReport formatDob should zero-pad single-digit month and day" time="0.01" classname=".DraftReport formatDob"/>
-  <testcase name="DraftReport formatDob should return empty string for null" time="0.01" classname=".DraftReport formatDob"/>
-  <testcase name="DraftReport formatDob should return empty string for undefined" time="0.009" classname=".DraftReport formatDob"/>
-  <testcase name="DraftReport print should call window.print()" time="0.011" classname=".DraftReport print"/>
-  <testcase name="AdminSeasonDetail should create" time="0.078" classname=".AdminSeasonDetail"/>
-  <testcase name="AdminSeasonDetail new season (seasonId === 0) calls postSeason, not putSeason" time="0.056" classname=".AdminSeasonDetail new season (seasonId === 0)"/>
-  <testcase name="AdminSeasonDetail new season (seasonId === 0) shows created snackbar and navigates to list on success" time="0.048" classname=".AdminSeasonDetail new season (seasonId === 0)"/>
-  <testcase name="AdminSeasonDetail new season (seasonId === 0) refreshes seasons list on success" time="0.04" classname=".AdminSeasonDetail new season (seasonId === 0)"/>
-  <testcase name="AdminSeasonDetail new season (seasonId === 0) does not show snackbar when postSeason errors" time="0.046" classname=".AdminSeasonDetail new season (seasonId === 0)"/>
-  <testcase name="AdminSeasonDetail new season (seasonId === 0) does not submit when form is invalid" time="0.038" classname=".AdminSeasonDetail new season (seasonId === 0)"/>
-  <testcase name="AdminSeasonDetail existing season (seasonId > 0) calls putSeason, not postSeason" time="0.044" classname=".AdminSeasonDetail existing season (seasonId > 0)"/>
-  <testcase name="AdminSeasonDetail existing season (seasonId > 0) shows updated snackbar and navigates to list on success" time="0.037" classname=".AdminSeasonDetail existing season (seasonId > 0)"/>
-  <testcase name="AdminSeasonDetail save() field mapping maps currentSchedule and currentSignUps from form to the season passed to postSeason" time="0.04" classname=".AdminSeasonDetail save() field mapping"/>
-  <testcase name="AdminSeasonDetail save() field mapping passes the logged-in user id to postSeason" time="0.038" classname=".AdminSeasonDetail save() field mapping"/>
-  <testcase name="AdminSeasonWizard should create" time="0.085" classname=".AdminSeasonWizard"/>
-  <testcase name="AdminSeasonWizard initializes with seasonCreated false and saving false" time="0.063" classname=".AdminSeasonWizard"/>
-  <testcase name="AdminSeasonWizard initializes with 10 division rows all selected with teamCount 6" time="0.056" classname=".AdminSeasonWizard"/>
-  <testcase name="AdminSeasonWizard save() does nothing when form is invalid" time="0.061" classname=".AdminSeasonWizard save()"/>
-  <testcase name="AdminSeasonWizard save() calls postSeason with seasonId 0" time="0.05" classname=".AdminSeasonWizard save()"/>
-  <testcase name="AdminSeasonWizard save() passes logged-in user id to postSeason" time="0.053" classname=".AdminSeasonWizard save()"/>
-  <testcase name="AdminSeasonWizard save() calls updateSelectedSeason, fetchSeasons, fetchCurrentSeason on success" time="0.054" classname=".AdminSeasonWizard save()"/>
-  <testcase name="AdminSeasonWizard save() shows season created snackbar on save" time="0.049" classname=".AdminSeasonWizard save()"/>
-  <testcase name="AdminSeasonWizard save() stores the new season id after save" time="0.072" classname=".AdminSeasonWizard save()"/>
-  <testcase name="AdminSeasonWizard save() calls DivisionService.save and TeamService.addTeam for all divisions and teams" time="0.058" classname=".AdminSeasonWizard save()"/>
-  <testcase name="AdminSeasonWizard save() sets seasonCreated to true after all divisions are created" time="0.084" classname=".AdminSeasonWizard save()"/>
-  <testcase name="AdminSeasonWizard save() shows error snackbar when postSeason fails" time="0.121" classname=".AdminSeasonWizard save()"/>
-  <testcase name="AdminSeasonWizard createDivisions() canCreateDivisions is true when rows are selected" time="0.088" classname=".AdminSeasonWizard createDivisions()"/>
-  <testcase name="AdminSeasonWizard createDivisions() canCreateDivisions is false when all rows deselected" time="0.047" classname=".AdminSeasonWizard createDivisions()"/>
-  <testcase name="AdminSeasonWizard createDivisions() calls DivisionService.save once per selected row" time="0.044" classname=".AdminSeasonWizard createDivisions()"/>
-  <testcase name="AdminSeasonWizard createDivisions() passes the correct seasonId to each division" time="0.049" classname=".AdminSeasonWizard createDivisions()"/>
-  <testcase name="AdminSeasonWizard createDivisions() calls TeamService.addTeam for each team (10 × 6 = 60)" time="0.053" classname=".AdminSeasonWizard createDivisions()"/>
-  <testcase name="AdminSeasonWizard createDivisions() only creates divisions for selected rows" time="0.046" classname=".AdminSeasonWizard createDivisions()"/>
-  <testcase name="AdminSeasonWizard createDivisions() opens snackbar after all rows complete" time="0.051" classname=".AdminSeasonWizard createDivisions()"/>
-  <testcase name="AdminSeasonWizard finish() navigates to /admin/seasons/list" time="0.048" classname=".AdminSeasonWizard finish()"/>
-  <testcase name="DivisionTemplateSetup should create" time="0.02" classname=".DivisionTemplateSetup"/>
-  <testcase name="DivisionTemplateSetup renders one row per template (10 rows)" time="0.019" classname=".DivisionTemplateSetup"/>
-  <testcase name="DivisionTemplateSetup shows each division template name" time="0.017" classname=".DivisionTemplateSetup"/>
-  <testcase name="DivisionTemplateSetup setTeamCount() sets the team count to the parsed integer" time="0.016" classname=".DivisionTemplateSetup setTeamCount()"/>
-  <testcase name="DivisionTemplateSetup setTeamCount() clamps non-numeric input to 1" time="0.017" classname=".DivisionTemplateSetup setTeamCount()"/>
-  <testcase name="DivisionTemplateSetup setTeamCount() clamps zero to 1" time="0.018" classname=".DivisionTemplateSetup setTeamCount()"/>
-  <testcase name="DivisionTemplateSetup setTeamCount() clamps negative to 1" time="0.017" classname=".DivisionTemplateSetup setTeamCount()"/>
-  <testcase name="DivisionTemplateSetup checkbox change updates row.selected" time="0.035" classname=".DivisionTemplateSetup"/>
-  <testcase name="AlphabeticalSearch should highlight selected letter" time="0.007" classname=".AlphabeticalSearch"/>
-  <testcase name="AlphabeticalSearch should default to A on clear" time="0.004" classname=".AlphabeticalSearch"/>
-  <testcase name="AlphabeticalSearch should update criteria in PeopleService when letter is selected" time="0.003" classname=".AlphabeticalSearch"/>
-  <testcase name="AdminUserDetail should create" time="0.055" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail should initialise model with empty values for a new user" time="0.02" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail should have peopleSelectEnabled false on init until a household is selected" time="0.015" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail should expose houseId and peopleId fields on the signal form" time="0.015" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail displayHousehold — positive: returns the household name" time="0.016" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail displayHousehold — negative: returns empty string for null" time="0.02" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail displayHousehold — negative: returns empty string when name is undefined" time="0.016" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail onHouseholdSearchInput — positive: updates householdSearchText signal" time="0.015" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail onHouseholdSearchInput — negative: clears houseId in model" time="0.016" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail onHouseholdSearchInput — negative: clears peopleId and disables the select" time="0.022" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail onHouseholdSearchInput — negative: clears peopleOptions" time="0.016" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail onHouseholdSelected — positive: sets houseId in model" time="0.018" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail onHouseholdSelected — positive: marks the form as dirty" time="0.016" classname=".AdminUserDetail"/>
+  <testcase name="DraftReport formatDob should zero-pad single-digit month and day" time="0.011" classname=".DraftReport formatDob"/>
+  <testcase name="DraftReport formatDob should return empty string for null" time="0.007" classname=".DraftReport formatDob"/>
+  <testcase name="DraftReport formatDob should return empty string for undefined" time="0.008" classname=".DraftReport formatDob"/>
+  <testcase name="DraftReport print should call window.print()" time="0.014" classname=".DraftReport print"/>
+  <testcase name="AdminSeasonDetail should create" time="0.067" classname=".AdminSeasonDetail"/>
+  <testcase name="AdminSeasonDetail new season (seasonId === 0) calls postSeason, not putSeason" time="0.042" classname=".AdminSeasonDetail new season (seasonId === 0)"/>
+  <testcase name="AdminSeasonDetail new season (seasonId === 0) shows created snackbar and navigates to list on success" time="0.052" classname=".AdminSeasonDetail new season (seasonId === 0)"/>
+  <testcase name="AdminSeasonDetail new season (seasonId === 0) refreshes seasons list on success" time="0.044" classname=".AdminSeasonDetail new season (seasonId === 0)"/>
+  <testcase name="AdminSeasonDetail new season (seasonId === 0) does not show snackbar when postSeason errors" time="0.036" classname=".AdminSeasonDetail new season (seasonId === 0)"/>
+  <testcase name="AdminSeasonDetail new season (seasonId === 0) does not submit when form is invalid" time="0.047" classname=".AdminSeasonDetail new season (seasonId === 0)"/>
+  <testcase name="AdminSeasonDetail existing season (seasonId > 0) calls putSeason, not postSeason" time="0.045" classname=".AdminSeasonDetail existing season (seasonId > 0)"/>
+  <testcase name="AdminSeasonDetail existing season (seasonId > 0) shows updated snackbar and navigates to list on success" time="0.047" classname=".AdminSeasonDetail existing season (seasonId > 0)"/>
+  <testcase name="AdminSeasonDetail save() field mapping maps currentSchedule and currentSignUps from form to the season passed to postSeason" time="0.037" classname=".AdminSeasonDetail save() field mapping"/>
+  <testcase name="AdminSeasonDetail save() field mapping passes the logged-in user id to postSeason" time="0.039" classname=".AdminSeasonDetail save() field mapping"/>
+  <testcase name="AdminSeasonWizard should create" time="0.101" classname=".AdminSeasonWizard"/>
+  <testcase name="AdminSeasonWizard initializes with seasonCreated false and saving false" time="0.115" classname=".AdminSeasonWizard"/>
+  <testcase name="AdminSeasonWizard initializes with 10 division rows all selected with teamCount 6" time="0.111" classname=".AdminSeasonWizard"/>
+  <testcase name="AdminSeasonWizard save() does nothing when form is invalid" time="0.055" classname=".AdminSeasonWizard save()"/>
+  <testcase name="AdminSeasonWizard save() calls postSeason with seasonId 0" time="0.063" classname=".AdminSeasonWizard save()"/>
+  <testcase name="AdminSeasonWizard save() passes logged-in user id to postSeason" time="0.075" classname=".AdminSeasonWizard save()"/>
+  <testcase name="AdminSeasonWizard save() calls updateSelectedSeason, fetchSeasons, fetchCurrentSeason on success" time="0.046" classname=".AdminSeasonWizard save()"/>
+  <testcase name="AdminSeasonWizard save() shows season created snackbar on save" time="0.048" classname=".AdminSeasonWizard save()"/>
+  <testcase name="AdminSeasonWizard save() stores the new season id after save" time="0.047" classname=".AdminSeasonWizard save()"/>
+  <testcase name="AdminSeasonWizard save() calls DivisionService.save and TeamService.addTeam for all divisions and teams" time="0.045" classname=".AdminSeasonWizard save()"/>
+  <testcase name="AdminSeasonWizard save() sets seasonCreated to true after all divisions are created" time="0.06" classname=".AdminSeasonWizard save()"/>
+  <testcase name="AdminSeasonWizard save() shows error snackbar when postSeason fails" time="0.047" classname=".AdminSeasonWizard save()"/>
+  <testcase name="AdminSeasonWizard createDivisions() canCreateDivisions is true when rows are selected" time="0.052" classname=".AdminSeasonWizard createDivisions()"/>
+  <testcase name="AdminSeasonWizard createDivisions() canCreateDivisions is false when all rows deselected" time="0.044" classname=".AdminSeasonWizard createDivisions()"/>
+  <testcase name="AdminSeasonWizard createDivisions() calls DivisionService.save once per selected row" time="0.052" classname=".AdminSeasonWizard createDivisions()"/>
+  <testcase name="AdminSeasonWizard createDivisions() passes the correct seasonId to each division" time="0.051" classname=".AdminSeasonWizard createDivisions()"/>
+  <testcase name="AdminSeasonWizard createDivisions() calls TeamService.addTeam for each team (10 × 6 = 60)" time="0.071" classname=".AdminSeasonWizard createDivisions()"/>
+  <testcase name="AdminSeasonWizard createDivisions() only creates divisions for selected rows" time="0.078" classname=".AdminSeasonWizard createDivisions()"/>
+  <testcase name="AdminSeasonWizard createDivisions() opens snackbar after all rows complete" time="0.118" classname=".AdminSeasonWizard createDivisions()"/>
+  <testcase name="AdminSeasonWizard finish() navigates to /admin/seasons/list" time="0.073" classname=".AdminSeasonWizard finish()"/>
+  <testcase name="DivisionTemplateSetup should create" time="0.038" classname=".DivisionTemplateSetup"/>
+  <testcase name="DivisionTemplateSetup renders one row per template (10 rows)" time="0.024" classname=".DivisionTemplateSetup"/>
+  <testcase name="DivisionTemplateSetup shows each division template name" time="0.019" classname=".DivisionTemplateSetup"/>
+  <testcase name="DivisionTemplateSetup setTeamCount() sets the team count to the parsed integer" time="0.027" classname=".DivisionTemplateSetup setTeamCount()"/>
+  <testcase name="DivisionTemplateSetup setTeamCount() clamps non-numeric input to 1" time="0.023" classname=".DivisionTemplateSetup setTeamCount()"/>
+  <testcase name="DivisionTemplateSetup setTeamCount() clamps zero to 1" time="0.023" classname=".DivisionTemplateSetup setTeamCount()"/>
+  <testcase name="DivisionTemplateSetup setTeamCount() clamps negative to 1" time="0.029" classname=".DivisionTemplateSetup setTeamCount()"/>
+  <testcase name="DivisionTemplateSetup checkbox change updates row.selected" time="0.027" classname=".DivisionTemplateSetup"/>
+  <testcase name="AlphabeticalSearch should highlight selected letter" time="0.009" classname=".AlphabeticalSearch"/>
+  <testcase name="AlphabeticalSearch should default to A on clear" time="0.005" classname=".AlphabeticalSearch"/>
+  <testcase name="AlphabeticalSearch should update criteria in PeopleService when letter is selected" time="0.009" classname=".AlphabeticalSearch"/>
+  <testcase name="AdminUserDetail should create" time="0.066" classname=".AdminUserDetail"/>
+  <testcase name="AdminUserDetail should initialise model with empty values for a new user" time="0.027" classname=".AdminUserDetail"/>
+  <testcase name="AdminUserDetail should have peopleSelectEnabled false on init until a household is selected" time="0.023" classname=".AdminUserDetail"/>
+  <testcase name="AdminUserDetail should expose houseId and peopleId fields on the signal form" time="0.024" classname=".AdminUserDetail"/>
+  <testcase name="AdminUserDetail displayHousehold — positive: returns the household name" time="0.024" classname=".AdminUserDetail"/>
+  <testcase name="AdminUserDetail displayHousehold — negative: returns empty string for null" time="0.032" classname=".AdminUserDetail"/>
+  <testcase name="AdminUserDetail displayHousehold — negative: returns empty string when name is undefined" time="0.018" classname=".AdminUserDetail"/>
+  <testcase name="AdminUserDetail onHouseholdSearchInput — positive: updates householdSearchText signal" time="0.018" classname=".AdminUserDetail"/>
+  <testcase name="AdminUserDetail onHouseholdSearchInput — negative: clears houseId in model" time="0.025" classname=".AdminUserDetail"/>
+  <testcase name="AdminUserDetail onHouseholdSearchInput — negative: clears peopleId and disables the select" time="0.017" classname=".AdminUserDetail"/>
+  <testcase name="AdminUserDetail onHouseholdSearchInput — negative: clears peopleOptions" time="0.019" classname=".AdminUserDetail"/>
+  <testcase name="AdminUserDetail onHouseholdSelected — positive: sets houseId in model" time="0.014" classname=".AdminUserDetail"/>
+  <testcase name="AdminUserDetail onHouseholdSelected — positive: marks the form as dirty" time="0.015" classname=".AdminUserDetail"/>
   <testcase name="AdminUserDetail onHouseholdSelected — positive: updates householdSearchText to the name" time="0.017" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail onHouseholdSelected — positive: loads people for the selected household" time="0.016" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail onHouseholdSelected — negative: household with no name sets search text to empty" time="0.017" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail filteredHouseholds — positive: calls searchByName after 300 ms debounce for ≥2 chars" time="0.05" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail filteredHouseholds — negative: does not call searchByName for &lt; 2 chars" time="0.027" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail filteredHouseholds — negative: returns empty array on HTTP error" time="0.015" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail filteredHouseholds — debounce: only calls API once for rapid keystrokes" time="0.046" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail loadPeopleForHousehold — positive: sorts people by last name then first name" time="0.015" classname=".AdminUserDetail"/>
+  <testcase name="AdminUserDetail onHouseholdSelected — positive: loads people for the selected household" time="0.02" classname=".AdminUserDetail"/>
+  <testcase name="AdminUserDetail onHouseholdSelected — negative: household with no name sets search text to empty" time="0.018" classname=".AdminUserDetail"/>
+  <testcase name="AdminUserDetail filteredHouseholds — positive: calls searchByName after 300 ms debounce for ≥2 chars" time="0.034" classname=".AdminUserDetail"/>
+  <testcase name="AdminUserDetail filteredHouseholds — negative: does not call searchByName for &lt; 2 chars" time="0.016" classname=".AdminUserDetail"/>
+  <testcase name="AdminUserDetail filteredHouseholds — negative: returns empty array on HTTP error" time="0.017" classname=".AdminUserDetail"/>
+  <testcase name="AdminUserDetail filteredHouseholds — debounce: only calls API once for rapid keystrokes" time="0.027" classname=".AdminUserDetail"/>
+  <testcase name="AdminUserDetail loadPeopleForHousehold — positive: sorts people by last name then first name" time="0.018" classname=".AdminUserDetail"/>
   <testcase name="AdminUserDetail loadPeopleForHousehold — positive: enables peopleSelectEnabled after load" time="0.018" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail loadPeopleForHousehold — negative: clears peopleOptions on error" time="0.024" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail showHouseholdDropdown — true when userId is 0 and no householdName" time="0.014" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail showHouseholdDropdown — false when householdName is set" time="0.015" classname=".AdminUserDetail"/>
-  <testcase name="AdminUserDetail showHouseholdDropdown — false when editing an existing user (userId > 0)" time="0.016" classname=".AdminUserDetail"/>
-  <testcase name="AdminUsersList should create and render rows" time="0.019" classname=".AdminUsersList"/>
-  <testcase name="PlayerBalance should create" time="0.008" classname=".PlayerBalance"/>
+  <testcase name="AdminUserDetail loadPeopleForHousehold — negative: clears peopleOptions on error" time="0.022" classname=".AdminUserDetail"/>
+  <testcase name="AdminUserDetail showHouseholdDropdown — true when userId is 0 and no householdName" time="0.02" classname=".AdminUserDetail"/>
+  <testcase name="AdminUserDetail showHouseholdDropdown — false when householdName is set" time="0.042" classname=".AdminUserDetail"/>
+  <testcase name="AdminUserDetail showHouseholdDropdown — false when editing an existing user (userId > 0)" time="0.05" classname=".AdminUserDetail"/>
+  <testcase name="AdminUsersList should create and render rows" time="0.027" classname=".AdminUsersList"/>
+  <testcase name="PlayerBalance should create" time="0.007" classname=".PlayerBalance"/>
   <testcase name="PlayerHistory should create" time="0.003" classname=".PlayerHistory"/>
-  <testcase name="SeasonSetup should create" time="0.031" classname=".SeasonSetup"/>
-  <testcase name="SeasonSetup should initialize with 10 division rows" time="0.03" classname=".SeasonSetup"/>
-  <testcase name="SeasonSetup should default all rows to selected" time="0.017" classname=".SeasonSetup"/>
-  <testcase name="SeasonSetup should default each row team count to 6" time="0.018" classname=".SeasonSetup"/>
-  <testcase name="SeasonSetup canSubmit returns false when no season selected" time="0.023" classname=".SeasonSetup canSubmit"/>
-  <testcase name="SeasonSetup canSubmit returns true when season selected and rows are valid" time="0.037" classname=".SeasonSetup canSubmit"/>
-  <testcase name="SeasonSetup canSubmit returns false when all rows deselected" time="0.039" classname=".SeasonSetup canSubmit"/>
-  <testcase name="SeasonSetup canSubmit returns false while submitting" time="0.038" classname=".SeasonSetup canSubmit"/>
-  <testcase name="SeasonSetup setTeamCount sets valid team count" time="0.025" classname=".SeasonSetup setTeamCount"/>
-  <testcase name="SeasonSetup setTeamCount clamps zero to 1" time="0.018" classname=".SeasonSetup setTeamCount"/>
-  <testcase name="SeasonSetup setTeamCount clamps non-numeric to 1" time="0.015" classname=".SeasonSetup setTeamCount"/>
-  <testcase name="SeasonSetup submit calls DivisionService.save once per selected row" time="0.036" classname=".SeasonSetup submit"/>
-  <testcase name="SeasonSetup submit passes the correct seasonId to each division" time="0.034" classname=".SeasonSetup submit"/>
-  <testcase name="SeasonSetup submit calls TeamService.addTeam for each team in each division (10 × 6 = 60)" time="0.037" classname=".SeasonSetup submit"/>
-  <testcase name="SeasonSetup submit only creates divisions for selected rows" time="0.032" classname=".SeasonSetup submit"/>
-  <testcase name="SeasonSetup submit opens snackbar after all rows complete" time="0.06" classname=".SeasonSetup submit"/>
-  <testcase name="SeasonSetup submit does nothing when no season is selected" time="0.035" classname=".SeasonSetup submit"/>
-  <testcase name="SeasonSetup submit assigns sequential team numbers starting at 1" time="0.038" classname=".SeasonSetup submit"/>
-  <testcase name="PlayerList should create" time="0.025" classname=".PlayerList"/>
+  <testcase name="SeasonSetup should create" time="0.039" classname=".SeasonSetup"/>
+  <testcase name="SeasonSetup should initialize with 10 division rows" time="0.019" classname=".SeasonSetup"/>
+  <testcase name="SeasonSetup should default all rows to selected" time="0.019" classname=".SeasonSetup"/>
+  <testcase name="SeasonSetup should default each row team count to 6" time="0.024" classname=".SeasonSetup"/>
+  <testcase name="SeasonSetup canSubmit returns false when no season selected" time="0.031" classname=".SeasonSetup canSubmit"/>
+  <testcase name="SeasonSetup canSubmit returns true when season selected and rows are valid" time="0.042" classname=".SeasonSetup canSubmit"/>
+  <testcase name="SeasonSetup canSubmit returns false when all rows deselected" time="0.031" classname=".SeasonSetup canSubmit"/>
+  <testcase name="SeasonSetup canSubmit returns false while submitting" time="0.033" classname=".SeasonSetup canSubmit"/>
+  <testcase name="SeasonSetup setTeamCount sets valid team count" time="0.018" classname=".SeasonSetup setTeamCount"/>
+  <testcase name="SeasonSetup setTeamCount clamps zero to 1" time="0.016" classname=".SeasonSetup setTeamCount"/>
+  <testcase name="SeasonSetup setTeamCount clamps non-numeric to 1" time="0.016" classname=".SeasonSetup setTeamCount"/>
+  <testcase name="SeasonSetup submit calls DivisionService.save once per selected row" time="0.034" classname=".SeasonSetup submit"/>
+  <testcase name="SeasonSetup submit passes the correct seasonId to each division" time="0.042" classname=".SeasonSetup submit"/>
+  <testcase name="SeasonSetup submit calls TeamService.addTeam for each team in each division (10 × 6 = 60)" time="0.045" classname=".SeasonSetup submit"/>
+  <testcase name="SeasonSetup submit only creates divisions for selected rows" time="0.049" classname=".SeasonSetup submit"/>
+  <testcase name="SeasonSetup submit opens snackbar after all rows complete" time="0.039" classname=".SeasonSetup submit"/>
+  <testcase name="SeasonSetup submit does nothing when no season is selected" time="0.044" classname=".SeasonSetup submit"/>
+  <testcase name="SeasonSetup submit assigns sequential team numbers starting at 1" time="0.067" classname=".SeasonSetup submit"/>
+  <testcase name="PlayerList should create" time="0.044" classname=".PlayerList"/>
   <testcase name="PlayerList should load players on init when season is available" time="0.017" classname=".PlayerList"/>
-  <testcase name="PlayerList should update players when season changes" time="0.015" classname=".PlayerList"/>
-  <testcase name="PlayerList should update players when division changes" time="0.014" classname=".PlayerList"/>
-  <testcase name="PlayerList should navigate to player registration on row click" time="0.011" classname=".PlayerList"/>
-  <testcase name="PlayerList should set isLoading to true while fetching" time="0.017" classname=".PlayerList"/>
-  <testcase name="PlayerList should handle HTTP errors gracefully" time="0.015" classname=".PlayerList"/>
-  <testcase name="PlayerList should display player data in correct columns" time="0.035" classname=".PlayerList"/>
-  <testcase name="AdminListDetailShell Component Initialization should create the component" time="0.038" classname=".AdminListDetailShell Component Initialization"/>
-  <testcase name="AdminListDetailShell Component Initialization should have default input values" time="0.007" classname=".AdminListDetailShell Component Initialization"/>
-  <testcase name="AdminListDetailShell Component Initialization should accept custom configuration values" time="0.004" classname=".AdminListDetailShell Component Initialization"/>
-  <testcase name="AdminListDetailShell Component Initialization should initialize with loading state" time="0.011" classname=".AdminListDetailShell Component Initialization"/>
-  <testcase name="AdminListDetailShell Component Initialization should initialize with error state" time="0.005" classname=".AdminListDetailShell Component Initialization"/>
-  <testcase name="AdminListDetailShell Table Display should render the title" time="0.015" classname=".AdminListDetailShell Table Display"/>
-  <testcase name="AdminListDetailShell Table Display should render the add button when showAddButton is true" time="0.024" classname=".AdminListDetailShell Table Display"/>
-  <testcase name="AdminListDetailShell Table Display should not render the add button when showAddButton is false" time="0.018" classname=".AdminListDetailShell Table Display"/>
-  <testcase name="AdminListDetailShell Table Display should render custom add button text" time="0.017" classname=".AdminListDetailShell Table Display"/>
-  <testcase name="AdminListDetailShell Table Display should render table with correct columns" time="0.019" classname=".AdminListDetailShell Table Display"/>
-  <testcase name="AdminListDetailShell Table Display should render table rows with data" time="0.02" classname=".AdminListDetailShell Table Display"/>
-  <testcase name="AdminListDetailShell Table Display should render table cells with correct data" time="0.015" classname=".AdminListDetailShell Table Display"/>
-  <testcase name="AdminListDetailShell Table Display should render actions column when showActionsColumn is true" time="0.016" classname=".AdminListDetailShell Table Display"/>
-  <testcase name="AdminListDetailShell Table Display should not render actions column when showActionsColumn is false" time="0.015" classname=".AdminListDetailShell Table Display"/>
-  <testcase name="AdminListDetailShell Computed Signals should compute displayedColumns correctly without actions" time="0.003" classname=".AdminListDetailShell Computed Signals"/>
+  <testcase name="PlayerList should update players when season changes" time="0.014" classname=".PlayerList"/>
+  <testcase name="PlayerList should update players when division changes" time="0.017" classname=".PlayerList"/>
+  <testcase name="PlayerList should navigate to player registration on row click" time="0.009" classname=".PlayerList"/>
+  <testcase name="PlayerList should set isLoading to true while fetching" time="0.019" classname=".PlayerList"/>
+  <testcase name="PlayerList should handle HTTP errors gracefully" time="0.025" classname=".PlayerList"/>
+  <testcase name="PlayerList should display player data in correct columns" time="0.05" classname=".PlayerList"/>
+  <testcase name="AdminListDetailShell Component Initialization should create the component" time="0.053" classname=".AdminListDetailShell Component Initialization"/>
+  <testcase name="AdminListDetailShell Component Initialization should have default input values" time="0.009" classname=".AdminListDetailShell Component Initialization"/>
+  <testcase name="AdminListDetailShell Component Initialization should accept custom configuration values" time="0.007" classname=".AdminListDetailShell Component Initialization"/>
+  <testcase name="AdminListDetailShell Component Initialization should initialize with loading state" time="0.01" classname=".AdminListDetailShell Component Initialization"/>
+  <testcase name="AdminListDetailShell Component Initialization should initialize with error state" time="0.013" classname=".AdminListDetailShell Component Initialization"/>
+  <testcase name="AdminListDetailShell Table Display should render the title" time="0.03" classname=".AdminListDetailShell Table Display"/>
+  <testcase name="AdminListDetailShell Table Display should render the add button when showAddButton is true" time="0.031" classname=".AdminListDetailShell Table Display"/>
+  <testcase name="AdminListDetailShell Table Display should not render the add button when showAddButton is false" time="0.035" classname=".AdminListDetailShell Table Display"/>
+  <testcase name="AdminListDetailShell Table Display should render custom add button text" time="0.033" classname=".AdminListDetailShell Table Display"/>
+  <testcase name="AdminListDetailShell Table Display should render table with correct columns" time="0.028" classname=".AdminListDetailShell Table Display"/>
+  <testcase name="AdminListDetailShell Table Display should render table rows with data" time="0.025" classname=".AdminListDetailShell Table Display"/>
+  <testcase name="AdminListDetailShell Table Display should render table cells with correct data" time="0.025" classname=".AdminListDetailShell Table Display"/>
+  <testcase name="AdminListDetailShell Table Display should render actions column when showActionsColumn is true" time="0.034" classname=".AdminListDetailShell Table Display"/>
+  <testcase name="AdminListDetailShell Table Display should not render actions column when showActionsColumn is false" time="0.025" classname=".AdminListDetailShell Table Display"/>
+  <testcase name="AdminListDetailShell Computed Signals should compute displayedColumns correctly without actions" time="0.006" classname=".AdminListDetailShell Computed Signals"/>
   <testcase name="AdminListDetailShell Computed Signals should compute displayedColumns correctly with actions" time="0.006" classname=".AdminListDetailShell Computed Signals"/>
-  <testcase name="AdminListDetailShell Computed Signals should filter out invisible columns" time="0.004" classname=".AdminListDetailShell Computed Signals"/>
-  <testcase name="AdminListDetailShell Computed Signals should compute hasFilterContent as false when no filter projected" time="0.003" classname=".AdminListDetailShell Computed Signals"/>
-  <testcase name="AdminListDetailShell Column Configuration should use valueGetter when provided" time="0.014" classname=".AdminListDetailShell Column Configuration"/>
-  <testcase name="AdminListDetailShell Column Configuration should apply custom cellClass when provided" time="0.014" classname=".AdminListDetailShell Column Configuration"/>
-  <testcase name="AdminListDetailShell Column Configuration should apply custom headerClass when provided" time="0.016" classname=".AdminListDetailShell Column Configuration"/>
-  <testcase name="AdminListDetailShell Column Configuration should apply width styles when provided" time="0.012" classname=".AdminListDetailShell Column Configuration"/>
-  <testcase name="AdminListDetailShell Column Configuration should enable sorting for sortable columns" time="0.014" classname=".AdminListDetailShell Column Configuration"/>
-  <testcase name="AdminListDetailShell Column Configuration should not enable sorting for non-sortable columns" time="0.015" classname=".AdminListDetailShell Column Configuration"/>
-  <testcase name="AdminListDetailShell Event Emissions should emit addClick when add button is clicked" time="0.015" classname=".AdminListDetailShell Event Emissions"/>
-  <testcase name="AdminListDetailShell Event Emissions should emit rowClick when a row is clicked" time="0.015" classname=".AdminListDetailShell Event Emissions"/>
-  <testcase name="AdminListDetailShell Event Emissions should not emit rowClick when rowClickable is false" time="0.017" classname=".AdminListDetailShell Event Emissions"/>
-  <testcase name="AdminListDetailShell Event Emissions should call onRowClick method when row is clicked" time="0.014" classname=".AdminListDetailShell Event Emissions"/>
+  <testcase name="AdminListDetailShell Computed Signals should filter out invisible columns" time="0.007" classname=".AdminListDetailShell Computed Signals"/>
+  <testcase name="AdminListDetailShell Computed Signals should compute hasFilterContent as false when no filter projected" time="0.006" classname=".AdminListDetailShell Computed Signals"/>
+  <testcase name="AdminListDetailShell Column Configuration should use valueGetter when provided" time="0.027" classname=".AdminListDetailShell Column Configuration"/>
+  <testcase name="AdminListDetailShell Column Configuration should apply custom cellClass when provided" time="0.027" classname=".AdminListDetailShell Column Configuration"/>
+  <testcase name="AdminListDetailShell Column Configuration should apply custom headerClass when provided" time="0.023" classname=".AdminListDetailShell Column Configuration"/>
+  <testcase name="AdminListDetailShell Column Configuration should apply width styles when provided" time="0.023" classname=".AdminListDetailShell Column Configuration"/>
+  <testcase name="AdminListDetailShell Column Configuration should enable sorting for sortable columns" time="0.039" classname=".AdminListDetailShell Column Configuration"/>
+  <testcase name="AdminListDetailShell Column Configuration should not enable sorting for non-sortable columns" time="0.033" classname=".AdminListDetailShell Column Configuration"/>
+  <testcase name="AdminListDetailShell Event Emissions should emit addClick when add button is clicked" time="0.034" classname=".AdminListDetailShell Event Emissions"/>
+  <testcase name="AdminListDetailShell Event Emissions should emit rowClick when a row is clicked" time="0.026" classname=".AdminListDetailShell Event Emissions"/>
+  <testcase name="AdminListDetailShell Event Emissions should not emit rowClick when rowClickable is false" time="0.025" classname=".AdminListDetailShell Event Emissions"/>
+  <testcase name="AdminListDetailShell Event Emissions should call onRowClick method when row is clicked" time="0.027" classname=".AdminListDetailShell Event Emissions"/>
   <testcase name="AdminListDetailShell Event Emissions should call onAdd method when add button is clicked" time="0.026" classname=".AdminListDetailShell Event Emissions"/>
   <testcase name="AdminListDetailShell Loading State should show loading spinner when isLoading is true" time="0.009" classname=".AdminListDetailShell Loading State"/>
-  <testcase name="AdminListDetailShell Loading State should show loading text when isLoading is true" time="0.006" classname=".AdminListDetailShell Loading State"/>
-  <testcase name="AdminListDetailShell Loading State should hide table when isLoading is true" time="0.007" classname=".AdminListDetailShell Loading State"/>
-  <testcase name="AdminListDetailShell Loading State should show table when isLoading is false" time="0.013" classname=".AdminListDetailShell Loading State"/>
-  <testcase name="AdminListDetailShell Error State should show error message when errorMessage is set" time="0.008" classname=".AdminListDetailShell Error State"/>
-  <testcase name="AdminListDetailShell Error State should show error icon when errorMessage is set" time="0.006" classname=".AdminListDetailShell Error State"/>
-  <testcase name="AdminListDetailShell Error State should hide table when errorMessage is set" time="0.005" classname=".AdminListDetailShell Error State"/>
-  <testcase name="AdminListDetailShell Error State should not show error message when errorMessage is null" time="0.016" classname=".AdminListDetailShell Error State"/>
-  <testcase name="AdminListDetailShell Error State should have proper ARIA role for error message" time="0.007" classname=".AdminListDetailShell Error State"/>
-  <testcase name="AdminListDetailShell Empty State should show default empty state when no data" time="0.016" classname=".AdminListDetailShell Empty State"/>
-  <testcase name="AdminListDetailShell Empty State should show empty state icon" time="0.016" classname=".AdminListDetailShell Empty State"/>
-  <testcase name="AdminListDetailShell Empty State should show empty state message" time="0.032" classname=".AdminListDetailShell Empty State"/>
-  <testcase name="AdminListDetailShell Empty State should show empty state hint when showAddButton is true" time="0.019" classname=".AdminListDetailShell Empty State"/>
-  <testcase name="AdminListDetailShell Empty State should not show empty state hint when showAddButton is false" time="0.015" classname=".AdminListDetailShell Empty State"/>
-  <testcase name="AdminListDetailShell Empty State should show custom add button text in empty state hint" time="0.015" classname=".AdminListDetailShell Empty State"/>
-  <testcase name="AdminListDetailShell Pagination should render paginator" time="0.018" classname=".AdminListDetailShell Pagination"/>
-  <testcase name="AdminListDetailShell Pagination should use custom page size options" time="0.015" classname=".AdminListDetailShell Pagination"/>
-  <testcase name="AdminListDetailShell Pagination should use custom default page size" time="0.023" classname=".AdminListDetailShell Pagination"/>
-  <testcase name="AdminListDetailShell Pagination should use custom aria label" time="0.019" classname=".AdminListDetailShell Pagination"/>
-  <testcase name="AdminListDetailShell Pagination should show first/last buttons" time="0.015" classname=".AdminListDetailShell Pagination"/>
-  <testcase name="AdminListDetailShell Sorting and Pagination Integration should wire up sort to dataSource after view init" time="0.015" classname=".AdminListDetailShell Sorting and Pagination Integration"/>
-  <testcase name="AdminListDetailShell Sorting and Pagination Integration should wire up paginator to dataSource after view init" time="0.019" classname=".AdminListDetailShell Sorting and Pagination Integration"/>
-  <testcase name="AdminListDetailShell Sorting and Pagination Integration should handle null dataSource gracefully" time="0.014" classname=".AdminListDetailShell Sorting and Pagination Integration"/>
-  <testcase name="AdminListDetailShell Row Styling should apply clickable-row class when rowClickable is true" time="0.018" classname=".AdminListDetailShell Row Styling"/>
-  <testcase name="AdminListDetailShell Row Styling should not apply clickable-row class when rowClickable is false" time="0.018" classname=".AdminListDetailShell Row Styling"/>
-  <testcase name="AdminListDetailShell Content Projection should project filter content" time="0.026" classname=".AdminListDetailShell Content Projection"/>
-  <testcase name="AdminListDetailShell Content Projection should show filter section when filter content is projected" time="0.016" classname=".AdminListDetailShell Content Projection"/>
-  <testcase name="AdminListDetailShell Content Projection should project detail form content" time="0.019" classname=".AdminListDetailShell Content Projection"/>
-  <testcase name="AdminListDetailShell Accessibility should have proper ARIA label on paginator" time="0.012" classname=".AdminListDetailShell Accessibility"/>
-  <testcase name="AdminListDetailShell Accessibility should use custom ARIA label when provided" time="0.016" classname=".AdminListDetailShell Accessibility"/>
-  <testcase name="AdminListDetailShell Accessibility should have role=&quot;alert&quot; on error message" time="0.016" classname=".AdminListDetailShell Accessibility"/>
-  <testcase name="AdminSponsorService should load profile and update signal" time="0.003" classname=".AdminSponsorService"/>
-  <testcase name="AdminSponsorService should set isLoadingProfile false and log on HTTP error" time="0.002" classname=".AdminSponsorService"/>
+  <testcase name="AdminListDetailShell Loading State should show loading text when isLoading is true" time="0.008" classname=".AdminListDetailShell Loading State"/>
+  <testcase name="AdminListDetailShell Loading State should hide table when isLoading is true" time="0.009" classname=".AdminListDetailShell Loading State"/>
+  <testcase name="AdminListDetailShell Loading State should show table when isLoading is false" time="0.026" classname=".AdminListDetailShell Loading State"/>
+  <testcase name="AdminListDetailShell Error State should show error message when errorMessage is set" time="0.015" classname=".AdminListDetailShell Error State"/>
+  <testcase name="AdminListDetailShell Error State should show error icon when errorMessage is set" time="0.01" classname=".AdminListDetailShell Error State"/>
+  <testcase name="AdminListDetailShell Error State should hide table when errorMessage is set" time="0.018" classname=".AdminListDetailShell Error State"/>
+  <testcase name="AdminListDetailShell Error State should not show error message when errorMessage is null" time="0.038" classname=".AdminListDetailShell Error State"/>
+  <testcase name="AdminListDetailShell Error State should have proper ARIA role for error message" time="0.009" classname=".AdminListDetailShell Error State"/>
+  <testcase name="AdminListDetailShell Empty State should show default empty state when no data" time="0.035" classname=".AdminListDetailShell Empty State"/>
+  <testcase name="AdminListDetailShell Empty State should show empty state icon" time="0.024" classname=".AdminListDetailShell Empty State"/>
+  <testcase name="AdminListDetailShell Empty State should show empty state message" time="0.023" classname=".AdminListDetailShell Empty State"/>
+  <testcase name="AdminListDetailShell Empty State should show empty state hint when showAddButton is true" time="0.032" classname=".AdminListDetailShell Empty State"/>
+  <testcase name="AdminListDetailShell Empty State should not show empty state hint when showAddButton is false" time="0.023" classname=".AdminListDetailShell Empty State"/>
+  <testcase name="AdminListDetailShell Empty State should show custom add button text in empty state hint" time="0.025" classname=".AdminListDetailShell Empty State"/>
+  <testcase name="AdminListDetailShell Pagination should render paginator" time="0.029" classname=".AdminListDetailShell Pagination"/>
+  <testcase name="AdminListDetailShell Pagination should use custom page size options" time="0.035" classname=".AdminListDetailShell Pagination"/>
+  <testcase name="AdminListDetailShell Pagination should use custom default page size" time="0.056" classname=".AdminListDetailShell Pagination"/>
+  <testcase name="AdminListDetailShell Pagination should use custom aria label" time="0.046" classname=".AdminListDetailShell Pagination"/>
+  <testcase name="AdminListDetailShell Pagination should show first/last buttons" time="0.026" classname=".AdminListDetailShell Pagination"/>
+  <testcase name="AdminListDetailShell Sorting and Pagination Integration should wire up sort to dataSource after view init" time="0.049" classname=".AdminListDetailShell Sorting and Pagination Integration"/>
+  <testcase name="AdminListDetailShell Sorting and Pagination Integration should wire up paginator to dataSource after view init" time="0.041" classname=".AdminListDetailShell Sorting and Pagination Integration"/>
+  <testcase name="AdminListDetailShell Sorting and Pagination Integration should handle null dataSource gracefully" time="0.031" classname=".AdminListDetailShell Sorting and Pagination Integration"/>
+  <testcase name="AdminListDetailShell Row Styling should apply clickable-row class when rowClickable is true" time="0.032" classname=".AdminListDetailShell Row Styling"/>
+  <testcase name="AdminListDetailShell Row Styling should not apply clickable-row class when rowClickable is false" time="0.024" classname=".AdminListDetailShell Row Styling"/>
+  <testcase name="AdminListDetailShell Content Projection should project filter content" time="0.037" classname=".AdminListDetailShell Content Projection"/>
+  <testcase name="AdminListDetailShell Content Projection should show filter section when filter content is projected" time="0.034" classname=".AdminListDetailShell Content Projection"/>
+  <testcase name="AdminListDetailShell Content Projection should project detail form content" time="0.039" classname=".AdminListDetailShell Content Projection"/>
+  <testcase name="AdminListDetailShell Accessibility should have proper ARIA label on paginator" time="0.039" classname=".AdminListDetailShell Accessibility"/>
+  <testcase name="AdminListDetailShell Accessibility should use custom ARIA label when provided" time="0.033" classname=".AdminListDetailShell Accessibility"/>
+  <testcase name="AdminListDetailShell Accessibility should have role=&quot;alert&quot; on error message" time="0.07" classname=".AdminListDetailShell Accessibility"/>
+  <testcase name="AdminSponsorService should load profile and update signal" time="0.004" classname=".AdminSponsorService"/>
+  <testcase name="AdminSponsorService should set isLoadingProfile false and log on HTTP error" time="0.003" classname=".AdminSponsorService"/>
   <testcase name="AdminSponsorService should POST to create a new profile" time="0.003" classname=".AdminSponsorService"/>
-  <testcase name="AdminSponsorService should PUT to update an existing profile" time="0.002" classname=".AdminSponsorService"/>
-  <testcase name="AdminSponsorService should load seasons and update signal" time="0.002" classname=".AdminSponsorService"/>
-  <testcase name="AdminSponsorService should set seasons to empty array on HTTP error" time="0.001" classname=".AdminSponsorService"/>
-  <testcase name="AdminSponsorService should load payments and update signal" time="0.001" classname=".AdminSponsorService"/>
-  <testcase name="AdminSponsorService should set payments empty on HTTP error" time="0.001" classname=".AdminSponsorService"/>
+  <testcase name="AdminSponsorService should PUT to update an existing profile" time="0.016" classname=".AdminSponsorService"/>
+  <testcase name="AdminSponsorService should load seasons and update signal" time="0.003" classname=".AdminSponsorService"/>
+  <testcase name="AdminSponsorService should set seasons to empty array on HTTP error" time="0.006" classname=".AdminSponsorService"/>
+  <testcase name="AdminSponsorService should load payments and update signal" time="0.004" classname=".AdminSponsorService"/>
+  <testcase name="AdminSponsorService should set payments empty on HTTP error" time="0.002" classname=".AdminSponsorService"/>
   <testcase name="AdminSponsorService should POST a new payment and prepend to payments signal" time="0.002" classname=".AdminSponsorService"/>
-  <testcase name="AdminSponsorService should reset all detail signals on clearDetail" time="0.007" classname=".AdminSponsorService"/>
-  <testcase name="SponsorDetail should create" time="0.131" classname=".SponsorDetail"/>
-  <testcase name="SponsorDetail should call clearDetail when isNew is true" time="0.04" classname=".SponsorDetail"/>
-  <testcase name="SponsorDetail canSaveProfile should be true when form is valid in new mode" time="0.036" classname=".SponsorDetail"/>
-  <testcase name="SponsorDetail canSaveProfile should be false when required fields are empty in new mode" time="0.034" classname=".SponsorDetail"/>
-  <testcase name="SponsorDetail should load profile, seasons, payments when sponsorProfileId is set" time="0.03" classname=".SponsorDetail"/>
-  <testcase name="SponsorDetail canSaveProfile should be false when form is pristine (no changes)" time="0.032" classname=".SponsorDetail"/>
-  <testcase name="SponsorDetail canSaveProfile should be true when form is dirty and valid in edit mode" time="0.033" classname=".SponsorDetail"/>
-  <testcase name="SponsorDetail should call saveProfile on service when onSaveProfile is called with valid form" time="0.035" classname=".SponsorDetail"/>
-  <testcase name="SponsorDetail should not call saveProfile when canSaveProfile is false" time="0.046" classname=".SponsorDetail"/>
-  <testcase name="SponsorDetail should emit closed event when onCancel is called" time="0.039" classname=".SponsorDetail"/>
-  <testcase name="SponsorDetail canSavePayment should be false when amount is null or zero" time="0.038" classname=".SponsorDetail"/>
-  <testcase name="SponsorDetail canSavePayment should be true when amount is positive" time="0.043" classname=".SponsorDetail"/>
-  <testcase name="SponsorDetail totalPayments should sum all payment amounts" time="0.038" classname=".SponsorDetail"/>
-  <testcase name="SponsorFilters should create" time="0.018" classname=".SponsorFilters"/>
-  <testcase name="SponsorFilters should emit initial filter values synchronously on init" time="0.01" classname=".SponsorFilters"/>
-  <testcase name="SponsorFilters should emit initial values reflecting the filters input" time="0.008" classname=".SponsorFilters"/>
-  <testcase name="SponsorFilters should not emit for form changes before 300 ms" time="0.013" classname=".SponsorFilters"/>
-  <testcase name="SponsorFilters should emit after 300 ms debounce when form value changes" time="0.016" classname=".SponsorFilters"/>
-  <testcase name="SponsorFilters should emit only once when multiple rapid changes occur within 300 ms" time="0.013" classname=".SponsorFilters"/>
-  <testcase name="SponsorFilters should reset name and currentSeasonOnly when clearFilters() is called" time="0.011" classname=".SponsorFilters"/>
-  <testcase name="SponsorFilters should return false for hasActiveFilters when form is empty" time="0.013" classname=".SponsorFilters"/>
-  <testcase name="SponsorFilters should return true for hasActiveFilters when name is non-empty" time="0.012" classname=".SponsorFilters"/>
-  <testcase name="SponsorFilters should return true for hasActiveFilters when currentSeasonOnly is true" time="0.007" classname=".SponsorFilters"/>
-  <testcase name="SponsorFilters should return false for hasActiveFilters after clearFilters()" time="0.012" classname=".SponsorFilters"/>
-  <testcase name="SponsorFilters should patch the form when filters input changes after first render" time="0.02" classname=".SponsorFilters"/>
-  <testcase name="SponsorFilters should not patch the form on the first ngOnChanges (ngOnInit handles first patch)" time="0.014" classname=".SponsorFilters"/>
-  <testcase name="SponsorList should create" time="0.063" classname=".SponsorList"/>
-  <testcase name="SponsorList should call fetchCurrentSeason on init" time="0.042" classname=".SponsorList"/>
-  <testcase name="SponsorList should map sponsorProfileId to id for BaseList compatibility" time="0.037" classname=".SponsorList"/>
-  <testcase name="SponsorList should expose empty list before HTTP response arrives" time="0.037" classname=".SponsorList"/>
-  <testcase name="SponsorList should handle an empty HTTP response" time="0.039" classname=".SponsorList"/>
-  <testcase name="SponsorList should set isLoading to false after successful response" time="0.025" classname=".SponsorList"/>
-  <testcase name="SponsorList should set isLoading to false and keep sponsors empty on HTTP error" time="0.02" classname=".SponsorList"/>
-  <testcase name="SponsorList should define a spoName column" time="0.021" classname=".SponsorList"/>
-  <testcase name="SponsorList should define a lastSeasonDescription column" time="0.021" classname=".SponsorList"/>
-  <testcase name="SponsorList should show all sponsors when no filter is active" time="0.02" classname=".SponsorList"/>
-  <testcase name="SponsorList should filter sponsors by name substring" time="0.02" classname=".SponsorList"/>
-  <testcase name="SponsorList should filter sponsors by name case-insensitively" time="0.019" classname=".SponsorList"/>
-  <testcase name="SponsorList should return no results when name filter matches nothing" time="0.017" classname=".SponsorList"/>
-  <testcase name="SponsorList should show all sponsors when name filter is cleared" time="0.021" classname=".SponsorList"/>
-  <testcase name="SponsorList should show no sponsors when currentSeasonOnly is true and season is not loaded" time="0.031" classname=".SponsorList"/>
-  <testcase name="SponsorList should show all sponsors when currentSeasonOnly is false regardless of season" time="0.023" classname=".SponsorList"/>
-  <testcase name="SponsorList should filter to only current-season sponsors when currentSeasonOnly is true" time="0.025" classname=".SponsorList"/>
-  <testcase name="SponsorList should exclude sponsors with no season history when currentSeasonOnly is true" time="0.035" classname=".SponsorList"/>
-  <testcase name="SponsorList should exclude past-season-only sponsors when currentSeasonOnly is true" time="0.026" classname=".SponsorList"/>
-  <testcase name="SponsorList should reactively update when currentSeason signal changes" time="0.028" classname=".SponsorList"/>
-  <testcase name="SponsorList should emit sponsorSelected when onRowClick is called" time="0.022" classname=".SponsorList"/>
-  <testcase name="SponsorList should emit newSponsor when onNewClick is called" time="0.026" classname=".SponsorList"/>
-  <testcase name="SponsorList should apply name and currentSeasonOnly filters together" time="0.021" classname=".SponsorList"/>
-  <testcase name="SponsorList should return nothing when name matches a past-season sponsor with currentSeasonOnly active" time="0.036" classname=".SponsorList"/>
-  <testcase name="ContentEdit Component Initialization should create" time="0.031" classname=".ContentEdit Component Initialization"/>
-  <testcase name="ContentEdit Component Initialization should initialize with correct default values" time="0.015" classname=".ContentEdit Component Initialization"/>
-  <testcase name="ContentEdit Component Initialization should initialize form with correct structure and validators" time="0.03" classname=".ContentEdit Component Initialization"/>
-  <testcase name="ContentEdit Form Validation should validate title field correctly" time="0.029" classname=".ContentEdit Form Validation"/>
-  <testcase name="ContentEdit Form Validation should validate subtitle field correctly" time="0.021" classname=".ContentEdit Form Validation"/>
-  <testcase name="ContentEdit Form Validation should validate expiration date field correctly" time="0.029" classname=".ContentEdit Form Validation"/>
-  <testcase name="ContentEdit Content Loading and Effects should populate form when content is retrieved" time="0.03" classname=".ContentEdit Content Loading and Effects"/>
-  <testcase name="ContentEdit Content Loading and Effects should set page title correctly for new content" time="0.033" classname=".ContentEdit Content Loading and Effects"/>
-  <testcase name="ContentEdit Content Loading and Effects should set page title correctly for existing content" time="0.031" classname=".ContentEdit Content Loading and Effects"/>
-  <testcase name="ContentEdit Content Loading and Effects should compute content types correctly" time="0.041" classname=".ContentEdit Content Loading and Effects"/>
-  <testcase name="ContentEdit Save Functionality should save content when form is valid and dirty" time="0.064" classname=".ContentEdit Save Functionality"/>
-  <testcase name="ContentEdit Save Functionality should not save content when form is invalid" time="0.04" classname=".ContentEdit Save Functionality"/>
-  <testcase name="ContentEdit Save Functionality should not save content when form is not dirty" time="0.052" classname=".ContentEdit Save Functionality"/>
-  <testcase name="ContentEdit Save Functionality should create WebContent object with correct values when saving" time="0.049" classname=".ContentEdit Save Functionality"/>
-  <testcase name="ContentEdit Save Functionality should handle save error and not navigate" time="0.048" classname=".ContentEdit Save Functionality"/>
-  <testcase name="ContentEdit Save Functionality should reset form after successful save" time="0.025" classname=".ContentEdit Save Functionality"/>
-  <testcase name="ContentEdit Delete Functionality should delete content when webContentId is not 0" time="0.022" classname=".ContentEdit Delete Functionality"/>
-  <testcase name="ContentEdit Delete Functionality should not delete content when webContentId is 0" time="0.021" classname=".ContentEdit Delete Functionality"/>
-  <testcase name="ContentEdit Delete Functionality should handle delete error and not navigate" time="0.021" classname=".ContentEdit Delete Functionality"/>
-  <testcase name="ContentEdit Helper Methods should format text correctly" time="0.018" classname=".ContentEdit Helper Methods"/>
-  <testcase name="ContentEdit Helper Methods should convert values to numbers correctly" time="0.02" classname=".ContentEdit Helper Methods"/>
-  <testcase name="ContentEdit Helper Methods should return correct float label value" time="0.024" classname=".ContentEdit Helper Methods"/>
-  <testcase name="ContentEdit Helper Methods should detect form dirty state correctly" time="0.021" classname=".ContentEdit Helper Methods"/>
-  <testcase name="ContentEdit Helper Methods should get web content type correctly" time="0.031" classname=".ContentEdit Helper Methods"/>
-  <testcase name="ContentEdit Helper Methods should handle input events" time="0.028" classname=".ContentEdit Helper Methods"/>
-  <testcase name="ContentEdit Update Method should update form with content values" time="0.026" classname=".ContentEdit Update Method"/>
+  <testcase name="AdminSponsorService should reset all detail signals on clearDetail" time="0.003" classname=".AdminSponsorService"/>
+  <testcase name="SponsorDetail should create" time="0.242" classname=".SponsorDetail"/>
+  <testcase name="SponsorDetail should call clearDetail when isNew is true" time="0.097" classname=".SponsorDetail"/>
+  <testcase name="SponsorDetail canSaveProfile should be true when form is valid in new mode" time="0.076" classname=".SponsorDetail"/>
+  <testcase name="SponsorDetail canSaveProfile should be false when required fields are empty in new mode" time="0.078" classname=".SponsorDetail"/>
+  <testcase name="SponsorDetail should load profile, seasons, payments when sponsorProfileId is set" time="0.074" classname=".SponsorDetail"/>
+  <testcase name="SponsorDetail canSaveProfile should be false when form is pristine (no changes)" time="0.07" classname=".SponsorDetail"/>
+  <testcase name="SponsorDetail canSaveProfile should be true when form is dirty and valid in edit mode" time="0.066" classname=".SponsorDetail"/>
+  <testcase name="SponsorDetail should call saveProfile on service when onSaveProfile is called with valid form" time="0.086" classname=".SponsorDetail"/>
+  <testcase name="SponsorDetail should not call saveProfile when canSaveProfile is false" time="0.063" classname=".SponsorDetail"/>
+  <testcase name="SponsorDetail should emit closed event when onCancel is called" time="0.068" classname=".SponsorDetail"/>
+  <testcase name="SponsorDetail canSavePayment should be false when amount is null or zero" time="0.055" classname=".SponsorDetail"/>
+  <testcase name="SponsorDetail canSavePayment should be true when amount is positive" time="0.054" classname=".SponsorDetail"/>
+  <testcase name="SponsorDetail totalPayments should sum all payment amounts" time="0.076" classname=".SponsorDetail"/>
+  <testcase name="SponsorFilters should create" time="0.03" classname=".SponsorFilters"/>
+  <testcase name="SponsorFilters should emit initial filter values synchronously on init" time="0.014" classname=".SponsorFilters"/>
+  <testcase name="SponsorFilters should emit initial values reflecting the filters input" time="0.017" classname=".SponsorFilters"/>
+  <testcase name="SponsorFilters should not emit for form changes before 300 ms" time="0.043" classname=".SponsorFilters"/>
+  <testcase name="SponsorFilters should emit after 300 ms debounce when form value changes" time="0.021" classname=".SponsorFilters"/>
+  <testcase name="SponsorFilters should emit only once when multiple rapid changes occur within 300 ms" time="0.017" classname=".SponsorFilters"/>
+  <testcase name="SponsorFilters should reset name and currentSeasonOnly when clearFilters() is called" time="0.013" classname=".SponsorFilters"/>
+  <testcase name="SponsorFilters should return false for hasActiveFilters when form is empty" time="0.012" classname=".SponsorFilters"/>
+  <testcase name="SponsorFilters should return true for hasActiveFilters when name is non-empty" time="0.018" classname=".SponsorFilters"/>
+  <testcase name="SponsorFilters should return true for hasActiveFilters when currentSeasonOnly is true" time="0.017" classname=".SponsorFilters"/>
+  <testcase name="SponsorFilters should return false for hasActiveFilters after clearFilters()" time="0.019" classname=".SponsorFilters"/>
+  <testcase name="SponsorFilters should patch the form when filters input changes after first render" time="0.016" classname=".SponsorFilters"/>
+  <testcase name="SponsorFilters should not patch the form on the first ngOnChanges (ngOnInit handles first patch)" time="0.009" classname=".SponsorFilters"/>
+  <testcase name="SponsorList should create" time="0.055" classname=".SponsorList"/>
+  <testcase name="SponsorList should call fetchCurrentSeason on init" time="0.039" classname=".SponsorList"/>
+  <testcase name="SponsorList should map sponsorProfileId to id for BaseList compatibility" time="0.032" classname=".SponsorList"/>
+  <testcase name="SponsorList should expose empty list before HTTP response arrives" time="0.028" classname=".SponsorList"/>
+  <testcase name="SponsorList should handle an empty HTTP response" time="0.028" classname=".SponsorList"/>
+  <testcase name="SponsorList should set isLoading to false after successful response" time="0.031" classname=".SponsorList"/>
+  <testcase name="SponsorList should set isLoading to false and keep sponsors empty on HTTP error" time="0.029" classname=".SponsorList"/>
+  <testcase name="SponsorList should define a spoName column" time="0.031" classname=".SponsorList"/>
+  <testcase name="SponsorList should define a lastSeasonDescription column" time="0.034" classname=".SponsorList"/>
+  <testcase name="SponsorList should show all sponsors when no filter is active" time="0.041" classname=".SponsorList"/>
+  <testcase name="SponsorList should filter sponsors by name substring" time="0.044" classname=".SponsorList"/>
+  <testcase name="SponsorList should filter sponsors by name case-insensitively" time="0.056" classname=".SponsorList"/>
+  <testcase name="SponsorList should return no results when name filter matches nothing" time="0.057" classname=".SponsorList"/>
+  <testcase name="SponsorList should show all sponsors when name filter is cleared" time="0.047" classname=".SponsorList"/>
+  <testcase name="SponsorList should show no sponsors when currentSeasonOnly is true and season is not loaded" time="0.041" classname=".SponsorList"/>
+  <testcase name="SponsorList should show all sponsors when currentSeasonOnly is false regardless of season" time="0.061" classname=".SponsorList"/>
+  <testcase name="SponsorList should filter to only current-season sponsors when currentSeasonOnly is true" time="0.044" classname=".SponsorList"/>
+  <testcase name="SponsorList should exclude sponsors with no season history when currentSeasonOnly is true" time="0.039" classname=".SponsorList"/>
+  <testcase name="SponsorList should exclude past-season-only sponsors when currentSeasonOnly is true" time="0.037" classname=".SponsorList"/>
+  <testcase name="SponsorList should reactively update when currentSeason signal changes" time="0.042" classname=".SponsorList"/>
+  <testcase name="SponsorList should emit sponsorSelected when onRowClick is called" time="0.04" classname=".SponsorList"/>
+  <testcase name="SponsorList should emit newSponsor when onNewClick is called" time="0.044" classname=".SponsorList"/>
+  <testcase name="SponsorList should apply name and currentSeasonOnly filters together" time="0.043" classname=".SponsorList"/>
+  <testcase name="SponsorList should return nothing when name matches a past-season sponsor with currentSeasonOnly active" time="0.041" classname=".SponsorList"/>
+  <testcase name="ContentEdit Component Initialization should create" time="0.063" classname=".ContentEdit Component Initialization"/>
+  <testcase name="ContentEdit Component Initialization should initialize with correct default values" time="0.038" classname=".ContentEdit Component Initialization"/>
+  <testcase name="ContentEdit Component Initialization should initialize form with correct structure and validators" time="0.049" classname=".ContentEdit Component Initialization"/>
+  <testcase name="ContentEdit Form Validation should validate title field correctly" time="0.072" classname=".ContentEdit Form Validation"/>
+  <testcase name="ContentEdit Form Validation should validate subtitle field correctly" time="0.098" classname=".ContentEdit Form Validation"/>
+  <testcase name="ContentEdit Form Validation should validate expiration date field correctly" time="0.067" classname=".ContentEdit Form Validation"/>
+  <testcase name="ContentEdit Content Loading and Effects should populate form when content is retrieved" time="0.062" classname=".ContentEdit Content Loading and Effects"/>
+  <testcase name="ContentEdit Content Loading and Effects should set page title correctly for new content" time="0.087" classname=".ContentEdit Content Loading and Effects"/>
+  <testcase name="ContentEdit Content Loading and Effects should set page title correctly for existing content" time="0.067" classname=".ContentEdit Content Loading and Effects"/>
+  <testcase name="ContentEdit Content Loading and Effects should compute content types correctly" time="0.064" classname=".ContentEdit Content Loading and Effects"/>
+  <testcase name="ContentEdit Save Functionality should save content when form is valid and dirty" time="0.048" classname=".ContentEdit Save Functionality"/>
+  <testcase name="ContentEdit Save Functionality should not save content when form is invalid" time="0.043" classname=".ContentEdit Save Functionality"/>
+  <testcase name="ContentEdit Save Functionality should not save content when form is not dirty" time="0.045" classname=".ContentEdit Save Functionality"/>
+  <testcase name="ContentEdit Save Functionality should create WebContent object with correct values when saving" time="0.083" classname=".ContentEdit Save Functionality"/>
+  <testcase name="ContentEdit Save Functionality should handle save error and not navigate" time="0.062" classname=".ContentEdit Save Functionality"/>
+  <testcase name="ContentEdit Save Functionality should reset form after successful save" time="0.07" classname=".ContentEdit Save Functionality"/>
+  <testcase name="ContentEdit Delete Functionality should delete content when webContentId is not 0" time="0.059" classname=".ContentEdit Delete Functionality"/>
+  <testcase name="ContentEdit Delete Functionality should not delete content when webContentId is 0" time="0.044" classname=".ContentEdit Delete Functionality"/>
+  <testcase name="ContentEdit Delete Functionality should handle delete error and not navigate" time="0.054" classname=".ContentEdit Delete Functionality"/>
+  <testcase name="ContentEdit Helper Methods should format text correctly" time="0.057" classname=".ContentEdit Helper Methods"/>
+  <testcase name="ContentEdit Helper Methods should convert values to numbers correctly" time="0.048" classname=".ContentEdit Helper Methods"/>
+  <testcase name="ContentEdit Helper Methods should return correct float label value" time="0.041" classname=".ContentEdit Helper Methods"/>
+  <testcase name="ContentEdit Helper Methods should detect form dirty state correctly" time="0.038" classname=".ContentEdit Helper Methods"/>
+  <testcase name="ContentEdit Helper Methods should get web content type correctly" time="0.059" classname=".ContentEdit Helper Methods"/>
+  <testcase name="ContentEdit Helper Methods should handle input events" time="0.079" classname=".ContentEdit Helper Methods"/>
+  <testcase name="ContentEdit Update Method should update form with content values" time="0.054" classname=".ContentEdit Update Method"/>
   <testcase name="ContentEdit Update Method should format text and log it" time="0.035" classname=".ContentEdit Update Method"/>
-  <testcase name="ContentEdit Error Handling should have hasError method that returns empty string" time="0.023" classname=".ContentEdit Error Handling"/>
-  <testcase name="AuthGuard should allow activation when logged in" time="0.002" classname=".AuthGuard"/>
-  <testcase name="AuthGuard should redirect to login with returnUrl when not logged in" time="0.002" classname=".AuthGuard"/>
-  <testcase name="AuthGuard should allow load when logged in" time="0.001" classname=".AuthGuard"/>
-  <testcase name="AuthGuard should block load when not logged in" time="0.001" classname=".AuthGuard"/>
-  <testcase name="GameScoreDialog renders team labels with fallback display values when team names are empty" time="0.027" classname=".GameScoreDialog"/>
-  <testcase name="AuthService when no stored session (HTTP path) should be created" time="0.004" classname=".AuthService when no stored session (HTTP path)"/>
+  <testcase name="ContentEdit Error Handling should have hasError method that returns empty string" time="0.037" classname=".ContentEdit Error Handling"/>
+  <testcase name="AuthGuard should allow activation when logged in" time="0.003" classname=".AuthGuard"/>
+  <testcase name="AuthGuard should redirect to login with returnUrl when not logged in" time="0.003" classname=".AuthGuard"/>
+  <testcase name="AuthGuard should allow load when logged in" time="0.002" classname=".AuthGuard"/>
+  <testcase name="AuthGuard should block load when not logged in" time="0.002" classname=".AuthGuard"/>
+  <testcase name="GameScoreDialog renders team labels with fallback display values when team names are empty" time="0.036" classname=".GameScoreDialog"/>
+  <testcase name="AuthService when no stored session (HTTP path) should be created" time="0.005" classname=".AuthService when no stored session (HTTP path)"/>
   <testcase name="AuthService when no stored session (HTTP path) isLoggedIn returns false when no user is set" time="0.003" classname=".AuthService when no stored session (HTTP path) isLoggedIn"/>
-  <testcase name="AuthService when no stored session (HTTP path) isLoggedIn returns true after a user is set" time="0.002" classname=".AuthService when no stored session (HTTP path) isLoggedIn"/>
-  <testcase name="AuthService when no stored session (HTTP path) isAdmin returns false when no user" time="0.002" classname=".AuthService when no stored session (HTTP path) isAdmin"/>
-  <testcase name="AuthService when no stored session (HTTP path) isAdmin returns false for userType 1 (regular user)" time="0.005" classname=".AuthService when no stored session (HTTP path) isAdmin"/>
+  <testcase name="AuthService when no stored session (HTTP path) isLoggedIn returns true after a user is set" time="0.003" classname=".AuthService when no stored session (HTTP path) isLoggedIn"/>
+  <testcase name="AuthService when no stored session (HTTP path) isAdmin returns false when no user" time="0.007" classname=".AuthService when no stored session (HTTP path) isAdmin"/>
+  <testcase name="AuthService when no stored session (HTTP path) isAdmin returns false for userType 1 (regular user)" time="0.003" classname=".AuthService when no stored session (HTTP path) isAdmin"/>
   <testcase name="AuthService when no stored session (HTTP path) isAdmin returns true for userType 2 (admin)" time="0.003" classname=".AuthService when no stored session (HTTP path) isAdmin"/>
-  <testcase name="AuthService when no stored session (HTTP path) isAdmin returns true for userType 3 (super-admin)" time="0.002" classname=".AuthService when no stored session (HTTP path) isAdmin"/>
-  <testcase name="AuthService when no stored session (HTTP path) canEditGames returns false when no user" time="0.002" classname=".AuthService when no stored session (HTTP path) canEditGames"/>
+  <testcase name="AuthService when no stored session (HTTP path) isAdmin returns true for userType 3 (super-admin)" time="0.01" classname=".AuthService when no stored session (HTTP path) isAdmin"/>
+  <testcase name="AuthService when no stored session (HTTP path) canEditGames returns false when no user" time="0.003" classname=".AuthService when no stored session (HTTP path) canEditGames"/>
   <testcase name="AuthService when no stored session (HTTP path) canEditGames returns false when no division selected" time="0.003" classname=".AuthService when no stored session (HTTP path) canEditGames"/>
-  <testcase name="AuthService when no stored session (HTTP path) canEditGames returns true for admin user regardless of division assignment" time="0.002" classname=".AuthService when no stored session (HTTP path) canEditGames"/>
-  <testcase name="AuthService when no stored session (HTTP path) canEditGames returns false for non-admin user without a matching division" time="0.002" classname=".AuthService when no stored session (HTTP path) canEditGames"/>
-  <testcase name="AuthService when no stored session (HTTP path) canEditGames returns true for non-admin user with a matching division" time="0.001" classname=".AuthService when no stored session (HTTP path) canEditGames"/>
+  <testcase name="AuthService when no stored session (HTTP path) canEditGames returns true for admin user regardless of division assignment" time="0.003" classname=".AuthService when no stored session (HTTP path) canEditGames"/>
+  <testcase name="AuthService when no stored session (HTTP path) canEditGames returns false for non-admin user without a matching division" time="0.003" classname=".AuthService when no stored session (HTTP path) canEditGames"/>
+  <testcase name="AuthService when no stored session (HTTP path) canEditGames returns true for non-admin user with a matching division" time="0.002" classname=".AuthService when no stored session (HTTP path) canEditGames"/>
   <testcase name="AuthService when no stored session (HTTP path) initializeAuth (HTTP path) leaves currentUser undefined when server returns null" time="0.003" classname=".AuthService when no stored session (HTTP path) initializeAuth (HTTP path)"/>
   <testcase name="AuthService when no stored session (HTTP path) setUserState sets currentUser and dispatches a store action" time="0.003" classname=".AuthService when no stored session (HTTP path) setUserState"/>
-  <testcase name="AuthService when no stored session (HTTP path) login POSTs credentials and sets user state on success" time="0.002" classname=".AuthService when no stored session (HTTP path) login"/>
-  <testcase name="AuthService when no stored session (HTTP path) login propagates error on failed login" time="0.02" classname=".AuthService when no stored session (HTTP path) login"/>
-  <testcase name="AuthService when no stored session (HTTP path) logout clears user session after successful logout response" time="0.005" classname=".AuthService when no stored session (HTTP path) logout"/>
-  <testcase name="AuthService when no stored session (HTTP path) logout clears user session even when logout request errors" time="0.004" classname=".AuthService when no stored session (HTTP path) logout"/>
-  <testcase name="AuthService when no stored session (HTTP path) logoutDueToInactivity clears the user session" time="0.033" classname=".AuthService when no stored session (HTTP path) logoutDueToInactivity"/>
-  <testcase name="AuthService when no stored session (HTTP path) getSessionInfo delegates to userActivityService" time="0.003" classname=".AuthService when no stored session (HTTP path) getSessionInfo"/>
-  <testcase name="AuthService when no stored session (HTTP path) hasValidSession delegates to userActivityService" time="0.002" classname=".AuthService when no stored session (HTTP path) hasValidSession"/>
-  <testcase name="AuthService when no stored session (HTTP path) recordActivity delegates to userActivityService" time="0.004" classname=".AuthService when no stored session (HTTP path) recordActivity"/>
-  <testcase name="AuthService when a stored session exists (localStorage path) restores user from localStorage without making an HTTP call" time="0.002" classname=".AuthService when a stored session exists (localStorage path)"/>
-  <testcase name="AuthService when a stored session exists (localStorage path) calls recordActivity to restart the inactivity timer" time="0.001" classname=".AuthService when a stored session exists (localStorage path)"/>
-  <testcase name="YourService put should make a PUT request with the correct URL and data" time="0.005" classname=".YourService put"/>
+  <testcase name="AuthService when no stored session (HTTP path) login POSTs credentials and sets user state on success" time="0.004" classname=".AuthService when no stored session (HTTP path) login"/>
+  <testcase name="AuthService when no stored session (HTTP path) login propagates error on failed login" time="0.006" classname=".AuthService when no stored session (HTTP path) login"/>
+  <testcase name="AuthService when no stored session (HTTP path) logout clears user session after successful logout response" time="0.003" classname=".AuthService when no stored session (HTTP path) logout"/>
+  <testcase name="AuthService when no stored session (HTTP path) logout clears user session even when logout request errors" time="0.003" classname=".AuthService when no stored session (HTTP path) logout"/>
+  <testcase name="AuthService when no stored session (HTTP path) logoutDueToInactivity clears the user session" time="0.003" classname=".AuthService when no stored session (HTTP path) logoutDueToInactivity"/>
+  <testcase name="AuthService when no stored session (HTTP path) getSessionInfo delegates to userActivityService" time="0.002" classname=".AuthService when no stored session (HTTP path) getSessionInfo"/>
+  <testcase name="AuthService when no stored session (HTTP path) hasValidSession delegates to userActivityService" time="0.003" classname=".AuthService when no stored session (HTTP path) hasValidSession"/>
+  <testcase name="AuthService when no stored session (HTTP path) recordActivity delegates to userActivityService" time="0.002" classname=".AuthService when no stored session (HTTP path) recordActivity"/>
+  <testcase name="AuthService when a stored session exists (localStorage path) restores user from localStorage without making an HTTP call" time="0.003" classname=".AuthService when a stored session exists (localStorage path)"/>
+  <testcase name="AuthService when a stored session exists (localStorage path) calls recordActivity to restart the inactivity timer" time="0.003" classname=".AuthService when a stored session exists (localStorage path)"/>
+  <testcase name="YourService put should make a PUT request with the correct URL and data" time="0.006" classname=".YourService put"/>
   <testcase name="YourService put should handle errors appropriately" time="0.003" classname=".YourService put"/>
-  <testcase name="YourService put should handle null response" time="0.002" classname=".YourService put"/>
-  <testcase name="YourService put should include custom headers in the request" time="0.002" classname=".YourService put"/>
+  <testcase name="YourService put should handle null response" time="0.005" classname=".YourService put"/>
+  <testcase name="YourService put should include custom headers in the request" time="0.003" classname=".YourService put"/>
   <testcase name="DirectorService should be created" time="0.006" classname=".DirectorService"/>
   <testcase name="DirectorService fetchDirectors should fetch directors and update signal" time="0.003" classname=".DirectorService fetchDirectors"/>
-  <testcase name="DirectorService fetchDirectors should handle error when fetching directors" time="0.002" classname=".DirectorService fetchDirectors"/>
-  <testcase name="DirectorService create should create a new director" time="0.003" classname=".DirectorService create"/>
+  <testcase name="DirectorService fetchDirectors should handle error when fetching directors" time="0.003" classname=".DirectorService fetchDirectors"/>
+  <testcase name="DirectorService create should create a new director" time="0.006" classname=".DirectorService create"/>
   <testcase name="DirectorService update should update an existing director" time="0.004" classname=".DirectorService update"/>
-  <testcase name="DirectorService update should handle update errors" time="0.003" classname=".DirectorService update"/>
-  <testcase name="DivisionService should be created" time="0.002" classname=".DivisionService"/>
+  <testcase name="DirectorService update should handle update errors" time="0.009" classname=".DirectorService update"/>
+  <testcase name="DivisionService should be created" time="0.003" classname=".DivisionService"/>
   <testcase name="DivisionService updateSelectedDivision sets the selectedDivision signal" time="0.003" classname=".DivisionService updateSelectedDivision"/>
-  <testcase name="DivisionService updateSelectedDivision persists the divisionId to localStorage when seasonId is available" time="0.003" classname=".DivisionService updateSelectedDivision"/>
+  <testcase name="DivisionService updateSelectedDivision persists the divisionId to localStorage when seasonId is available" time="0.004" classname=".DivisionService updateSelectedDivision"/>
   <testcase name="DivisionService updateSelectedDivision updates currentDivision state via setCurrent" time="0.002" classname=".DivisionService updateSelectedDivision"/>
-  <testcase name="DivisionService getSeasonDivisions GETs divisions and updates seasonDivisions signal" time="0.003" classname=".DivisionService getSeasonDivisions"/>
-  <testcase name="DivisionService getSeasonDivisions selects the first division as default when none previously selected" time="0.006" classname=".DivisionService getSeasonDivisions"/>
-  <testcase name="DivisionService getSeasonDivisions preserves an existing selection when it is present in the new data" time="0.008" classname=".DivisionService getSeasonDivisions"/>
-  <testcase name="DivisionService getSeasonDivisions restores selection from localStorage when no existing selection" time="0.007" classname=".DivisionService getSeasonDivisions"/>
-  <testcase name="DivisionService getSeasonDivisions sets seasonDivisions to empty array on HTTP error" time="0.001" classname=".DivisionService getSeasonDivisions"/>
-  <testcase name="DivisionService findEligibleDivision returns undefined when birthDate is missing" time="0.002" classname=".DivisionService findEligibleDivision"/>
-  <testcase name="DivisionService findEligibleDivision returns undefined when gender is missing" time="0.001" classname=".DivisionService findEligibleDivision"/>
-  <testcase name="DivisionService findEligibleDivision returns undefined when divisions array is empty" time="0.002" classname=".DivisionService findEligibleDivision"/>
+  <testcase name="DivisionService getSeasonDivisions GETs divisions and updates seasonDivisions signal" time="0.004" classname=".DivisionService getSeasonDivisions"/>
+  <testcase name="DivisionService getSeasonDivisions selects the first division as default when none previously selected" time="0.003" classname=".DivisionService getSeasonDivisions"/>
+  <testcase name="DivisionService getSeasonDivisions preserves an existing selection when it is present in the new data" time="0.003" classname=".DivisionService getSeasonDivisions"/>
+  <testcase name="DivisionService getSeasonDivisions restores selection from localStorage when no existing selection" time="0.003" classname=".DivisionService getSeasonDivisions"/>
+  <testcase name="DivisionService getSeasonDivisions sets seasonDivisions to empty array on HTTP error" time="0.004" classname=".DivisionService getSeasonDivisions"/>
+  <testcase name="DivisionService findEligibleDivision returns undefined when birthDate is missing" time="0.003" classname=".DivisionService findEligibleDivision"/>
+  <testcase name="DivisionService findEligibleDivision returns undefined when gender is missing" time="0.003" classname=".DivisionService findEligibleDivision"/>
+  <testcase name="DivisionService findEligibleDivision returns undefined when divisions array is empty" time="0.003" classname=".DivisionService findEligibleDivision"/>
   <testcase name="DivisionService findEligibleDivision matches the primary gender and date range" time="0.002" classname=".DivisionService findEligibleDivision"/>
-  <testcase name="DivisionService findEligibleDivision returns undefined when gender does not match any division" time="0.002" classname=".DivisionService findEligibleDivision"/>
-  <testcase name="DivisionService findEligibleDivision returns undefined when birth date is out of range" time="0.002" classname=".DivisionService findEligibleDivision"/>
-  <testcase name="DivisionService findEligibleDivision matches the secondary gender in a co-ed division" time="0.001" classname=".DivisionService findEligibleDivision"/>
-  <testcase name="DivisionService getDivisionMinDate returns September 1st of (currentYear - years)" time="0.002" classname=".DivisionService getDivisionMinDate"/>
-  <testcase name="DivisionService getDivisionMaxDate returns August 31st of (currentYear - years)" time="0.002" classname=".DivisionService getDivisionMaxDate"/>
-  <testcase name="DivisionService getDefaultDivision returns TR2COED division with correct gender for Trainee 2 Coed" time="0.001" classname=".DivisionService getDefaultDivision"/>
-  <testcase name="DivisionService getDefaultDivision returns SI Boys division with male gender" time="0.001" classname=".DivisionService getDefaultDivision"/>
-  <testcase name="DivisionService getDefaultDivision returns Int Girls division with female gender" time="0.001" classname=".DivisionService getDefaultDivision"/>
-  <testcase name="DivisionService getDefaultDivision returns Women division with female gender" time="0.002" classname=".DivisionService getDefaultDivision"/>
-  <testcase name="DivisionService getDefaultDivision returns Men 18+ division with male gender" time="0.002" classname=".DivisionService getDefaultDivision"/>
-  <testcase name="DivisionService getDefaultDivision returns an empty division for an unknown name" time="0.001" classname=".DivisionService getDefaultDivision"/>
-  <testcase name="DivisionService save calls DataService.put when divisionId is not 0" time="0.002" classname=".DivisionService save"/>
-  <testcase name="DivisionService save calls DataService.post when divisionId is 0" time="0.002" classname=".DivisionService save"/>
-  <testcase name="DivisionService delete calls DataService.delete with the correct URL" time="0.001" classname=".DivisionService delete"/>
-  <testcase name="DivisionService getmatchingDivision returns the canonical name when there is a case-insensitive match" time="0.002" classname=".DivisionService getmatchingDivision"/>
-  <testcase name="DivisionService getmatchingDivision returns &quot;Other&quot; when there is no match" time="0.004" classname=".DivisionService getmatchingDivision"/>
+  <testcase name="DivisionService findEligibleDivision returns undefined when gender does not match any division" time="0.005" classname=".DivisionService findEligibleDivision"/>
+  <testcase name="DivisionService findEligibleDivision returns undefined when birth date is out of range" time="0.009" classname=".DivisionService findEligibleDivision"/>
+  <testcase name="DivisionService findEligibleDivision matches the secondary gender in a co-ed division" time="0.003" classname=".DivisionService findEligibleDivision"/>
+  <testcase name="DivisionService getDivisionMinDate returns September 1st of (currentYear - years)" time="0.003" classname=".DivisionService getDivisionMinDate"/>
+  <testcase name="DivisionService getDivisionMaxDate returns August 31st of (currentYear - years)" time="0.004" classname=".DivisionService getDivisionMaxDate"/>
+  <testcase name="DivisionService getDefaultDivision returns TR2COED division with correct gender for Trainee 2 Coed" time="0.003" classname=".DivisionService getDefaultDivision"/>
+  <testcase name="DivisionService getDefaultDivision returns SI Boys division with male gender" time="0.007" classname=".DivisionService getDefaultDivision"/>
+  <testcase name="DivisionService getDefaultDivision returns Int Girls division with female gender" time="0.01" classname=".DivisionService getDefaultDivision"/>
+  <testcase name="DivisionService getDefaultDivision returns Women division with female gender" time="0.008" classname=".DivisionService getDefaultDivision"/>
+  <testcase name="DivisionService getDefaultDivision returns Men 18+ division with male gender" time="0.004" classname=".DivisionService getDefaultDivision"/>
+  <testcase name="DivisionService getDefaultDivision returns an empty division for an unknown name" time="0.007" classname=".DivisionService getDefaultDivision"/>
+  <testcase name="DivisionService save calls DataService.put when divisionId is not 0" time="0.007" classname=".DivisionService save"/>
+  <testcase name="DivisionService save calls DataService.post when divisionId is 0" time="0.003" classname=".DivisionService save"/>
+  <testcase name="DivisionService delete calls DataService.delete with the correct URL" time="0.004" classname=".DivisionService delete"/>
+  <testcase name="DivisionService getmatchingDivision returns the canonical name when there is a case-insensitive match" time="0.004" classname=".DivisionService getmatchingDivision"/>
+  <testcase name="DivisionService getmatchingDivision returns &quot;Other&quot; when there is no match" time="0.007" classname=".DivisionService getmatchingDivision"/>
   <testcase name="DivisionService setLoadingIndicator updates the isLoading state signal" time="0.003" classname=".DivisionService setLoadingIndicator"/>
-  <testcase name="DraftListService should be created" time="0.003" classname=".DraftListService"/>
-  <testcase name="DraftListService getDraftList should fetch draft list for season and division" time="0.011" classname=".DraftListService getDraftList"/>
-  <testcase name="DraftListService getDraftList should fetch draft list for season without division" time="0.003" classname=".DraftListService getDraftList"/>
-  <testcase name="DraftListService getDraftList should handle error when fetching draft list" time="0.002" classname=".DraftListService getDraftList"/>
+  <testcase name="DraftListService should be created" time="0.005" classname=".DraftListService"/>
+  <testcase name="DraftListService getDraftList should fetch draft list for season and division" time="0.004" classname=".DraftListService getDraftList"/>
+  <testcase name="DraftListService getDraftList should fetch draft list for season without division" time="0.007" classname=".DraftListService getDraftList"/>
+  <testcase name="DraftListService getDraftList should handle error when fetching draft list" time="0.003" classname=".DraftListService getDraftList"/>
   <testcase name="DraftListService getDraftList should set loading state while fetching" time="0.004" classname=".DraftListService getDraftList"/>
-  <testcase name="DraftListService clearPlayers should clear the players signal" time="0.002" classname=".DraftListService clearPlayers"/>
-  <testcase name="DraftReportService should be created" time="0.002" classname=".DraftReportService"/>
-  <testcase name="DraftReportService getDraftReport should fetch players for season without division" time="0.003" classname=".DraftReportService getDraftReport"/>
-  <testcase name="DraftReportService getDraftReport should fetch players for season and division" time="0.007" classname=".DraftReportService getDraftReport"/>
-  <testcase name="DraftReportService getDraftReport should set loading false and clear players on error" time="0.002" classname=".DraftReportService getDraftReport"/>
-  <testcase name="DraftReportService clearPlayers should clear the players signal" time="0.002" classname=".DraftReportService clearPlayers"/>
-  <testcase name="GameService should be created" time="0.002" classname=".GameService"/>
-  <testcase name="GameService validateScores returns true for two valid integer scores" time="0.003" classname=".GameService validateScores"/>
-  <testcase name="GameService validateScores returns true for boundary scores of 0 and 0" time="0.003" classname=".GameService validateScores"/>
-  <testcase name="GameService validateScores returns true for boundary scores of 150 and 150" time="0.009" classname=".GameService validateScores"/>
-  <testcase name="GameService validateScores returns false when home score exceeds 150" time="0.007" classname=".GameService validateScores"/>
-  <testcase name="GameService validateScores returns false when visitor score is negative" time="0.004" classname=".GameService validateScores"/>
+  <testcase name="DraftListService clearPlayers should clear the players signal" time="0.003" classname=".DraftListService clearPlayers"/>
+  <testcase name="DraftReportService should be created" time="0.003" classname=".DraftReportService"/>
+  <testcase name="DraftReportService getDraftReport should fetch players for season without division" time="0.005" classname=".DraftReportService getDraftReport"/>
+  <testcase name="DraftReportService getDraftReport should fetch players for season and division" time="0.004" classname=".DraftReportService getDraftReport"/>
+  <testcase name="DraftReportService getDraftReport should set loading false and clear players on error" time="0.004" classname=".DraftReportService getDraftReport"/>
+  <testcase name="DraftReportService clearPlayers should clear the players signal" time="0.004" classname=".DraftReportService clearPlayers"/>
+  <testcase name="GameService should be created" time="0.005" classname=".GameService"/>
+  <testcase name="GameService validateScores returns true for two valid integer scores" time="0.004" classname=".GameService validateScores"/>
+  <testcase name="GameService validateScores returns true for boundary scores of 0 and 0" time="0.004" classname=".GameService validateScores"/>
+  <testcase name="GameService validateScores returns true for boundary scores of 150 and 150" time="0.004" classname=".GameService validateScores"/>
+  <testcase name="GameService validateScores returns false when home score exceeds 150" time="0.004" classname=".GameService validateScores"/>
+  <testcase name="GameService validateScores returns false when visitor score is negative" time="0.003" classname=".GameService validateScores"/>
   <testcase name="GameService validateScores returns false for non-integer scores" time="0.004" classname=".GameService validateScores"/>
-  <testcase name="GameService validateScores returns false for NaN" time="0.011" classname=".GameService validateScores"/>
-  <testcase name="GameService validateScores returns false for Infinity" time="0.004" classname=".GameService validateScores"/>
-  <testcase name="GameService compare returns negative when a &lt; b ascending" time="0.003" classname=".GameService compare"/>
-  <testcase name="GameService compare returns positive when a > b ascending" time="0.004" classname=".GameService compare"/>
+  <testcase name="GameService validateScores returns false for NaN" time="0.003" classname=".GameService validateScores"/>
+  <testcase name="GameService validateScores returns false for Infinity" time="0.003" classname=".GameService validateScores"/>
+  <testcase name="GameService compare returns negative when a &lt; b ascending" time="0.004" classname=".GameService compare"/>
+  <testcase name="GameService compare returns positive when a > b ascending" time="0.003" classname=".GameService compare"/>
   <testcase name="GameService compare returns positive when a &lt; b descending" time="0.003" classname=".GameService compare"/>
-  <testcase name="GameService extractDate converts an ISO date string to a JS Date" time="0.007" classname=".GameService extractDate"/>
-  <testcase name="GameService updateSelectedGame sets the selectedGame" time="0.002" classname=".GameService updateSelectedGame"/>
-  <testcase name="GameService clearSelectedGame resets selectedGame to null" time="0.006" classname=".GameService clearSelectedGame"/>
-  <testcase name="GameService updateSeasonGames stores the games in the internal signal" time="0.003" classname=".GameService updateSeasonGames"/>
-  <testcase name="GameService groupRegularGamesByDate groups games that share the same calendar date" time="0.004" classname=".GameService groupRegularGamesByDate"/>
+  <testcase name="GameService extractDate converts an ISO date string to a JS Date" time="0.006" classname=".GameService extractDate"/>
+  <testcase name="GameService updateSelectedGame sets the selectedGame" time="0.004" classname=".GameService updateSelectedGame"/>
+  <testcase name="GameService clearSelectedGame resets selectedGame to null" time="0.002" classname=".GameService clearSelectedGame"/>
+  <testcase name="GameService updateSeasonGames stores the games in the internal signal" time="0.004" classname=".GameService updateSeasonGames"/>
+  <testcase name="GameService groupRegularGamesByDate groups games that share the same calendar date" time="0.006" classname=".GameService groupRegularGamesByDate"/>
   <testcase name="GameService groupRegularGamesByDate returns an empty array for empty input" time="0.003" classname=".GameService groupRegularGamesByDate"/>
-  <testcase name="GameService groupRegularGamesByDate creates one group per unique date" time="0.002" classname=".GameService groupRegularGamesByDate"/>
-  <testcase name="GameService filterGamesByDivision returns only games matching the selected division" time="0.004" classname=".GameService filterGamesByDivision"/>
-  <testcase name="GameService filterGamesByDivision returns games sorted by gameDate ascending" time="0.008" classname=".GameService filterGamesByDivision"/>
+  <testcase name="GameService groupRegularGamesByDate creates one group per unique date" time="0.003" classname=".GameService groupRegularGamesByDate"/>
+  <testcase name="GameService filterGamesByDivision returns only games matching the selected division" time="0.011" classname=".GameService filterGamesByDivision"/>
+  <testcase name="GameService filterGamesByDivision returns games sorted by gameDate ascending" time="0.003" classname=".GameService filterGamesByDivision"/>
   <testcase name="GameService filterGamesByDivision returns empty array when no seasonGames are loaded" time="0.003" classname=".GameService filterGamesByDivision"/>
   <testcase name="GameService filterGamesByTeam emits an empty array when no team is selected" time="0.004" classname=".GameService filterGamesByTeam"/>
-  <testcase name="GameService seasonGamesCount returns 0 when no games are loaded" time="0.002" classname=".GameService seasonGamesCount"/>
-  <testcase name="GameService seasonGamesCount returns the count of loaded season games" time="0.001" classname=".GameService seasonGamesCount"/>
+  <testcase name="GameService seasonGamesCount returns 0 when no games are loaded" time="0.003" classname=".GameService seasonGamesCount"/>
+  <testcase name="GameService seasonGamesCount returns the count of loaded season games" time="0.003" classname=".GameService seasonGamesCount"/>
   <testcase name="GameService fetchSeasonGames does nothing when no season is selected" time="0.003" classname=".GameService fetchSeasonGames"/>
-  <testcase name="GameService fetchSeasonGames GETs season games and updates the signal" time="0.003" classname=".GameService fetchSeasonGames"/>
-  <testcase name="GameService saveGame PUTs to the scores endpoint and updates selected game optimistically" time="0.003" classname=".GameService saveGame"/>
-  <testcase name="HouseholdService should be created" time="0.003" classname=".HouseholdService"/>
-  <testcase name="HouseholdService searchByName should make a GET request to the correct URL with the name param" time="0.005" classname=".HouseholdService searchByName"/>
+  <testcase name="GameService fetchSeasonGames GETs season games and updates the signal" time="0.005" classname=".GameService fetchSeasonGames"/>
+  <testcase name="GameService saveGame PUTs to the scores endpoint and updates selected game optimistically" time="0.005" classname=".GameService saveGame"/>
+  <testcase name="HouseholdService should be created" time="0.004" classname=".HouseholdService"/>
+  <testcase name="HouseholdService searchByName should make a GET request to the correct URL with the name param" time="0.003" classname=".HouseholdService searchByName"/>
   <testcase name="HouseholdService searchByName should return matching households from the API response" time="0.003" classname=".HouseholdService searchByName"/>
   <testcase name="HouseholdService searchByName should return an empty array when the API returns no matches" time="0.003" classname=".HouseholdService searchByName"/>
-  <testcase name="HouseholdService searchByName should URL-encode special characters in the search term" time="0.002" classname=".HouseholdService searchByName"/>
-  <testcase name="HouseholdService searchByName should return a single household when API returns exactly one match" time="0.004" classname=".HouseholdService searchByName"/>
-  <testcase name="HouseholdService searchByName should propagate an HTTP error to the subscriber" time="0.003" classname=".HouseholdService searchByName"/>
-  <testcase name="HouseholdService searchByName should propagate a 404 error to the subscriber" time="0.002" classname=".HouseholdService searchByName"/>
+  <testcase name="HouseholdService searchByName should URL-encode special characters in the search term" time="0.003" classname=".HouseholdService searchByName"/>
+  <testcase name="HouseholdService searchByName should return a single household when API returns exactly one match" time="0.002" classname=".HouseholdService searchByName"/>
+  <testcase name="HouseholdService searchByName should propagate an HTTP error to the subscriber" time="0.012" classname=".HouseholdService searchByName"/>
+  <testcase name="HouseholdService searchByName should propagate a 404 error to the subscriber" time="0.004" classname=".HouseholdService searchByName"/>
   <testcase name="PaginationPreferencesService should return the fallback when nothing is stored" time="0.003" classname=".PaginationPreferencesService"/>
-  <testcase name="PaginationPreferencesService should return a custom fallback when nothing is stored" time="0.002" classname=".PaginationPreferencesService"/>
-  <testcase name="PaginationPreferencesService should return the stored value when one exists" time="0.002" classname=".PaginationPreferencesService"/>
-  <testcase name="PaginationPreferencesService should overwrite a previously stored value" time="0.002" classname=".PaginationPreferencesService"/>
-  <testcase name="PaginationPreferencesService should write the page size to localStorage" time="0.005" classname=".PaginationPreferencesService"/>
+  <testcase name="PaginationPreferencesService should return a custom fallback when nothing is stored" time="0.004" classname=".PaginationPreferencesService"/>
+  <testcase name="PaginationPreferencesService should return the stored value when one exists" time="0.004" classname=".PaginationPreferencesService"/>
+  <testcase name="PaginationPreferencesService should overwrite a previously stored value" time="0.006" classname=".PaginationPreferencesService"/>
+  <testcase name="PaginationPreferencesService should write the page size to localStorage" time="0.002" classname=".PaginationPreferencesService"/>
   <testcase name="PlayoffGameService - Time Formatting should create" time="0.003" classname=".PlayoffGameService - Time Formatting"/>
   <testcase name="PlayoffGameService - Time Formatting should format time with AM/PM format" time="0.003" classname=".PlayoffGameService - Time Formatting"/>
-  <testcase name="PlayoffGameService - Time Formatting should convert AM/PM time to 24-hour format" time="0.004" classname=".PlayoffGameService - Time Formatting"/>
-  <testcase name="PlayoffGameService - Time Formatting should normalize API playoff game with AM/PM time" time="0.003" classname=".PlayoffGameService - Time Formatting"/>
-  <testcase name="PlayoffGameService - Time Formatting formatLocalDateTime should return YYYY-MM-DDTHH:mm:ss with no timezone offset" time="0.002" classname=".PlayoffGameService - Time Formatting"/>
-  <testcase name="PlayoffGameService - Time Formatting toApiModel should send a local datetime string (not UTC) for gameDate" time="0.002" classname=".PlayoffGameService - Time Formatting"/>
+  <testcase name="PlayoffGameService - Time Formatting should convert AM/PM time to 24-hour format" time="0.002" classname=".PlayoffGameService - Time Formatting"/>
+  <testcase name="PlayoffGameService - Time Formatting should normalize API playoff game with AM/PM time" time="0.005" classname=".PlayoffGameService - Time Formatting"/>
+  <testcase name="PlayoffGameService - Time Formatting formatLocalDateTime should return YYYY-MM-DDTHH:mm:ss with no timezone offset" time="0.003" classname=".PlayoffGameService - Time Formatting"/>
+  <testcase name="PlayoffGameService - Time Formatting toApiModel should send a local datetime string (not UTC) for gameDate" time="0.003" classname=".PlayoffGameService - Time Formatting"/>
   <testcase name="SeasonService convertToSeasonApiFormat sets createdUser to the passed userId" time="0.006" classname=".SeasonService convertToSeasonApiFormat"/>
   <testcase name="SeasonService convertToSeasonApiFormat sets createdUser to null when no userId is provided" time="0.003" classname=".SeasonService convertToSeasonApiFormat"/>
-  <testcase name="SeasonService convertToSeasonApiFormat maps onlineStarts/onlineStops to signUpsDate/signUpsEnd" time="0.003" classname=".SeasonService convertToSeasonApiFormat"/>
-  <testcase name="SeasonService convertToSeasonApiFormat always sets companyId to 1" time="0.004" classname=".SeasonService convertToSeasonApiFormat"/>
+  <testcase name="SeasonService convertToSeasonApiFormat maps onlineStarts/onlineStops to signUpsDate/signUpsEnd" time="0.007" classname=".SeasonService convertToSeasonApiFormat"/>
+  <testcase name="SeasonService convertToSeasonApiFormat always sets companyId to 1" time="0.003" classname=".SeasonService convertToSeasonApiFormat"/>
   <testcase name="FilterCard should create" time="0.012" classname=".FilterCard"/>
-  <testcase name="FilterCard should project content into the filter row" time="0.007" classname=".FilterCard"/>
-  <testcase name="FilterCard should disable the clear button when hasActiveFilters is false" time="0.006" classname=".FilterCard"/>
-  <testcase name="FilterCard should enable the clear button when hasActiveFilters is true" time="0.003" classname=".FilterCard"/>
+  <testcase name="FilterCard should project content into the filter row" time="0.008" classname=".FilterCard"/>
+  <testcase name="FilterCard should disable the clear button when hasActiveFilters is false" time="0.005" classname=".FilterCard"/>
+  <testcase name="FilterCard should enable the clear button when hasActiveFilters is true" time="0.005" classname=".FilterCard"/>
   <testcase name="FilterCard should render the clearLabel text" time="0.007" classname=".FilterCard"/>
-  <testcase name="FilterCard should emit clearClicked when button is clicked" time="0.004" classname=".FilterCard"/>
-  <testcase name="Login Component navigates to returnUrl on successful login" time="0.045" classname=".Login Component"/>
-  <testcase name="Login Component toggles hidePassword state" time="0.012" classname=".Login Component"/>
+  <testcase name="FilterCard should emit clearClicked when button is clicked" time="0.005" classname=".FilterCard"/>
+  <testcase name="Login Component navigates to returnUrl on successful login" time="0.043" classname=".Login Component"/>
+  <testcase name="Login Component toggles hidePassword state" time="0.015" classname=".Login Component"/>
   <testcase name="SectionTitle should create" time="0.004" classname=".SectionTitle"/>
-  <testcase name="ShellTitle should create" time="0.005" classname=".ShellTitle"/>
-  <testcase name="AppFeatureFlagDirective creates embedded view when flag enabled" time="0.003" classname=".AppFeatureFlagDirective"/>
-  <testcase name="AppFeatureFlagDirective does not create embedded view when flag disabled" time="0.002" classname=".AppFeatureFlagDirective"/>
-  <testcase name="adminGuard allows when adminModule flag enabled" time="0.002" classname=".adminGuard"/>
-  <testcase name="adminGuard blocks when adminModule flag disabled" time="0.001" classname=".adminGuard"/>
+  <testcase name="ShellTitle should create" time="0.006" classname=".ShellTitle"/>
+  <testcase name="AppFeatureFlagDirective creates embedded view when flag enabled" time="0.007" classname=".AppFeatureFlagDirective"/>
+  <testcase name="AppFeatureFlagDirective does not create embedded view when flag disabled" time="0.003" classname=".AppFeatureFlagDirective"/>
+  <testcase name="adminGuard allows when adminModule flag enabled" time="0.005" classname=".adminGuard"/>
+  <testcase name="adminGuard blocks when adminModule flag disabled" time="0.002" classname=".adminGuard"/>
   <testcase name="PersonNamePipe should format as &quot;Last, First&quot;" time="0" classname=".PersonNamePipe"/>
-  <testcase name="PersonNamePipe should handle empty strings" time="0" classname=".PersonNamePipe"/>
-  <testcase name="NoticeTypesService should be created" time="0.003" classname=".NoticeTypesService"/>
+  <testcase name="PersonNamePipe should handle empty strings" time="0.001" classname=".PersonNamePipe"/>
+  <testcase name="NoticeTypesService should be created" time="0.007" classname=".NoticeTypesService"/>
   <system-out>
     <![CDATA[Chrome Headless 148.0.0.0 (Windows 10) INFO: '[LOCAL]', 'Emitting household filters:', Object{letter: 'A'}
 ,Chrome Headless 148.0.0.0 (Windows 10) INFO: '[LOCAL]', 'Household filter letter changed:', 'A'
@@ -594,7 +594,7 @@
 ,Chrome Headless 148.0.0.0 (Windows 10) DEBUG: '[DEBUG]', 'PUT data:', Object{id: 1, name: 'Test'}
 ,Chrome Headless 148.0.0.0 (Windows 10) DEBUG: '[DEBUG]', 'PUT url:', 'api/test'
 ,Chrome Headless 148.0.0.0 (Windows 10) DEBUG: '[DEBUG]', 'PUT data:', Object{id: 1, name: 'Test'}
-,Chrome Headless 148.0.0.0 (Windows 10) INFO: '[LOCAL]', 'Created Director:', Object{directorId: 3, companyId: 1, personId: 103, seq: 3, title: 'Treasurer', name: 'Bob Williams', createdDate: Wed Jun 03 2026 17:05:12 GMT-0400 (Eastern Daylight Time), createdUser: 'admin'}
+,Chrome Headless 148.0.0.0 (Windows 10) INFO: '[LOCAL]', 'Created Director:', Object{directorId: 3, companyId: 1, personId: 103, seq: 3, title: 'Treasurer', name: 'Bob Williams', createdDate: Wed Jun 03 2026 17:38:33 GMT-0400 (Eastern Daylight Time), createdUser: 'admin'}
 ,Chrome Headless 148.0.0.0 (Windows 10) INFO: '[LOCAL]', 'Updated Director:', Object{directorId: 1, companyId: 1, personId: 101, seq: 1, title: 'Updated President', name: 'John Smith', createdDate: Sun Dec 31 2023 19:00:00 GMT-0500 (Eastern Standard Time), createdUser: 'admin'}
 ,Chrome Headless 148.0.0.0 (Windows 10) INFO: '[LOCAL]', '[DraftListService] Fetching draft list from:', 'http://localhost:7071/api/DraftList/1/2'
 ,Chrome Headless 148.0.0.0 (Windows 10) INFO: '[LOCAL]', '[DraftListService] Players received:', [Object{personId: 1, division: 'U12 Boys', draftId: '001', lastName: 'Johnson', firstName: 'John', dob: Fri May 14 2010 20:00:00 GMT-0400 (Eastern Daylight Time), grade: 6, address1: '123 Main St', city: 'Springfield', zip: '12345'}, Object{personId: 2, division: 'U14 Girls', draftId: '002', lastName: 'Smith', firstName: 'Jane', dob: Sun Aug 19 2012 20:00:00 GMT-0400 (Eastern Daylight Time), grade: 4, address1: '456 Oak Ave', city: 'Riverside', zip: '67890'}]

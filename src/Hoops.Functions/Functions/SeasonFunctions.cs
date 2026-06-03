@@ -134,15 +134,34 @@ public class SeasonFunctions
     public async Task<HttpResponseData> Post(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Season")] HttpRequestData req)
     {
-        var seasonDto = await JsonSerializer.DeserializeAsync<SeasonDto>(req.Body, ResponseUtils.JsonOptions);
+        SeasonDto? seasonDto;
+        try
+        {
+            seasonDto = await JsonSerializer.DeserializeAsync<SeasonDto>(req.Body, ResponseUtils.JsonOptions);
+        }
+        catch (JsonException ex)
+        {
+            _logger.LogWarning(ex, "Invalid Season POST body");
+            return ResponseUtils.CreateErrorResponse(req, HttpStatusCode.BadRequest, "Invalid request body.");
+        }
+
         if (seasonDto == null)
             return req.CreateResponse(HttpStatusCode.BadRequest);
 
         var season = EntityMapper.ToEntity(seasonDto);
-        var created = await _seasonRepository.InsertAsync(season);
-        await _seasonRepository.SaveChangesAsync();
+        try
+        {
+            await _seasonRepository.InsertAsync(season);
+            await _seasonRepository.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to insert Season");
+            return ResponseUtils.CreateErrorResponse(req, HttpStatusCode.InternalServerError, "Failed to save season.");
+        }
+
         var res = req.CreateResponse(HttpStatusCode.OK);
-        await ResponseUtils.WriteJsonAsync(res, EntityMapper.ToDto(created));
+        await ResponseUtils.WriteJsonAsync(res, EntityMapper.ToDto(season));
         return res;
     }
 
