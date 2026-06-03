@@ -19,8 +19,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
+import { MatDialog } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
+import { ConfirmDialog } from '@app/admin/shared/confirm-dialog/confirm-dialog';
 import { Player } from '@app/domain/player';
 import { Season } from '@app/domain/season';
 import { Division } from '@app/domain/division';
@@ -80,6 +83,7 @@ interface PlayerFormData {
     MatRadioModule,
     MatSelectModule,
     RouterModule,
+    MatDialogModule,
     RegistrationHouseholdForm,
     RegistrationPersonPhoneForm,
   ],
@@ -96,6 +100,7 @@ export class PlayerRegistration implements OnInit, HasUnsavedChanges {
   readonly router = inject(Router);
   readonly route = inject(ActivatedRoute);
   private readonly location = inject(Location);
+  private readonly dialog = inject(MatDialog);
   private readonly playerService = inject(PlayerService);
   private readonly peopleService = inject(PeopleService);
   private readonly seasonService = inject(SeasonService);
@@ -577,6 +582,40 @@ export class PlayerRegistration implements OnInit, HasUnsavedChanges {
       complete: () => {
         this.playerService.updateLoadingState(false);
       },
+    });
+  }
+
+  onDelete(): void {
+    const playerId = this.playerFormModel().playerId;
+    if (!playerId) return;
+
+    const ref = this.dialog.open(ConfirmDialog, {
+      data: {
+        title: 'Remove Player',
+        message: 'Remove this player registration? This cannot be undone.',
+      },
+    });
+
+    ref.afterClosed().subscribe((confirmed: boolean) => {
+      if (!confirmed) return;
+      this.playerService.deletePlayer(playerId).subscribe({
+        next: () => {
+          this.playerService.updateSelectedPlayer(null);
+          this.snackBar.open('Player registration removed.', 'OK', { duration: 3000 });
+          if (this.returnToPeople) {
+            this.router.navigate(['/admin/people']);
+          } else {
+            this.router.navigate(['/admin/players']);
+          }
+        },
+        error: (err) => {
+          const msg =
+            err.status === 409
+              ? 'Cannot remove — player is assigned to a team. Remove from the team first.'
+              : 'Error removing player registration.';
+          this.snackBar.open(msg, 'OK', { duration: 5000 });
+        },
+      });
     });
   }
 

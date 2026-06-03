@@ -472,6 +472,16 @@ namespace Hoops.Infrastructure.Repository
             return player ?? new Player();
         }
 
+        public Player GetPlayerByPersonAndDivisionId(int personId, int divisionId)
+        {
+            var player = context
+                .Set<Player>()
+                .Where(p => p.PersonId == personId && p.DivisionId == divisionId)
+                .OrderByDescending(p => p.PlayerId)
+                .FirstOrDefault();
+            return player ?? new Player();
+        }
+
         public IQueryable<Player> PlayerHistory(int personId)
         {
             var players = context.Set<Player>().Where(p => p.PersonId == personId);
