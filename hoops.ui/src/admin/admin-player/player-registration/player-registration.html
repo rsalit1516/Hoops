@@ -289,9 +289,10 @@
         <!-- Action Buttons -->
         <div class="form-actions">
           <button mat-raised-button color="primary" type="submit" [disabled]="!canSave()">Save</button>
-          <button mat-raised-button type="button" (click)="onCancel()">
-            Cancel
-          </button>
+          <button mat-raised-button type="button" (click)="onCancel()">Cancel</button>
+          @if (playerFormModel().playerId) {
+            <button mat-raised-button color="warn" type="button" (click)="onDelete()">Delete</button>
+          }
         </div>
       </mat-card-content>
     </form>

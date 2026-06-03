@@ -12,6 +12,7 @@ import { Division } from '@app/domain/division';
 import {
   AvailableTimeSlot,
   DivisionScheduleSettings,
+  DivisionScheduleSettings,
   GameEditDialogData,
   GameEditDialogResult,
   ScheduleBlackoutDate,
@@ -54,7 +55,15 @@ export class ScheduleGeneratorStateService {
 
   readonly dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   readonly dayOptions = [0, 1, 2, 3, 4, 5, 6];
-  readonly previewColumns = ['gameDate', 'division', 'location', 'home', 'visiting', 'warnings', 'edit'];
+  readonly previewColumns = [
+    'gameDate',
+    'division',
+    'location',
+    'home',
+    'visiting',
+    'warnings',
+    'edit',
+  ];
 
   seasons = computed(() => this.seasonService.seasons);
   selectedSeasonId = signal<number | null>(null);
@@ -82,7 +91,9 @@ export class ScheduleGeneratorStateService {
   selectedPreviewTeamName = signal<string>('');
 
   savedDrafts = signal<ScheduleDraft[]>([]);
-  readonly previewDataSource = new MatTableDataSource<ScheduleGamePreviewItem>([]);
+  readonly previewDataSource = new MatTableDataSource<ScheduleGamePreviewItem>(
+    [],
+  );
 
   previewViewMode = signal<'table' | 'calendar'>('table');
   calendarMonth = signal<Date>(new Date());
@@ -91,21 +102,26 @@ export class ScheduleGeneratorStateService {
   locations = computed(() => this.locationService.locations());
   selectedDivisions = computed(() => {
     const ids = this.selectedDivisionIds();
-    return this.divisionsForSeason().filter(d => ids.includes(d.divisionId));
+    return this.divisionsForSeason().filter((d) => ids.includes(d.divisionId));
   });
   previewDivisionNames = computed(() => {
-    const names = new Set(this.previewGames().map(g => g.divisionName));
+    const names = new Set(this.previewGames().map((g) => g.divisionName));
     return Array.from(names).sort();
   });
   previewTeamNames = computed(() => {
     const div = this.selectedPreviewDivisionName();
     const games = this.previewGames();
-    const scoped = div ? games.filter(g => g.divisionName === div) : games;
+    const scoped = div ? games.filter((g) => g.divisionName === div) : games;
     const names = new Set<string>();
-    scoped.forEach(g => { names.add(g.homeTeamName); names.add(g.visitingTeamName); });
+    scoped.forEach((g) => {
+      names.add(g.homeTeamName);
+      names.add(g.visitingTeamName);
+    });
     return Array.from(names).sort();
   });
-  warningCount = computed(() => this.previewGames().reduce((n, g) => n + g.warnings.length, 0));
+  warningCount = computed(() =>
+    this.previewGames().reduce((n, g) => n + g.warnings.length, 0),
+  );
 
   gamesByDate = computed(() => {
     const map = new Map<string, ScheduleGamePreviewItem[]>();
@@ -138,7 +154,10 @@ export class ScheduleGeneratorStateService {
   });
 
   calendarMonthLabel = computed(() =>
-    this.calendarMonth().toLocaleDateString('en-US', { month: 'long', year: 'numeric' }),
+    this.calendarMonth().toLocaleDateString('en-US', {
+      month: 'long',
+      year: 'numeric',
+    }),
   );
 
   constructor() {
@@ -147,8 +166,11 @@ export class ScheduleGeneratorStateService {
       const div = this.selectedPreviewDivisionName();
       const team = this.selectedPreviewTeamName();
       let data = this.previewGames();
-      if (div) data = data.filter(g => g.divisionName === div);
-      if (team) data = data.filter(g => g.homeTeamName === team || g.visitingTeamName === team);
+      if (div) data = data.filter((g) => g.divisionName === div);
+      if (team)
+        data = data.filter(
+          (g) => g.homeTeamName === team || g.visitingTeamName === team,
+        );
       this.previewDataSource.data = data;
     });
   }
@@ -160,9 +182,13 @@ export class ScheduleGeneratorStateService {
     this._loadSeasons();
     this._restoreFromStorage();
     try {
-      const raw = localStorage.getItem(ScheduleGeneratorStateService.DRAFTS_KEY);
+      const raw = localStorage.getItem(
+        ScheduleGeneratorStateService.DRAFTS_KEY,
+      );
       if (raw) this.savedDrafts.set(JSON.parse(raw));
-    } catch { /* ignore corrupt storage */ }
+    } catch {
+      /* ignore corrupt storage */
+    }
   }
 
   private _saveToStorage() {
@@ -177,13 +203,20 @@ export class ScheduleGeneratorStateService {
       blackoutDates: this.blackoutDates(),
     };
     try {
-      localStorage.setItem(ScheduleGeneratorStateService.STORAGE_KEY, JSON.stringify(state));
-    } catch { /* ignore quota errors */ }
+      localStorage.setItem(
+        ScheduleGeneratorStateService.STORAGE_KEY,
+        JSON.stringify(state),
+      );
+    } catch {
+      /* ignore quota errors */
+    }
   }
 
   private _restoreFromStorage() {
     try {
-      const raw = localStorage.getItem(ScheduleGeneratorStateService.STORAGE_KEY);
+      const raw = localStorage.getItem(
+        ScheduleGeneratorStateService.STORAGE_KEY,
+      );
       if (!raw) return;
       const state = JSON.parse(raw);
       if (state.selectedSeasonId != null) {
@@ -192,18 +225,29 @@ export class ScheduleGeneratorStateService {
       }
       if (state.startDate) this.startDate.set(new Date(state.startDate));
       if (state.endDate) this.endDate.set(new Date(state.endDate));
-      if (state.divisionSettings != null) this.divisionSettings.set(state.divisionSettings);
-      if (state.enforceCoachConflicts != null) this.enforceCoachConflicts.set(state.enforceCoachConflicts);
-      if (Array.isArray(state.selectedDivisionIds)) this.selectedDivisionIds.set(state.selectedDivisionIds);
+      if (state.divisionSettings != null)
+        this.divisionSettings.set(state.divisionSettings);
+      if (state.enforceCoachConflicts != null)
+        this.enforceCoachConflicts.set(state.enforceCoachConflicts);
+      if (Array.isArray(state.selectedDivisionIds))
+        this.selectedDivisionIds.set(state.selectedDivisionIds);
       if (Array.isArray(state.timePeriods) && state.timePeriods.length > 0) {
         this.timePeriods.set(state.timePeriods);
-        this.nextSlotId = Math.max(...state.timePeriods.map((p: TimePeriodRow) => p.id)) + 1;
+        this.nextSlotId =
+          Math.max(...state.timePeriods.map((p: TimePeriodRow) => p.id)) + 1;
       }
-      if (Array.isArray(state.blackoutDates) && state.blackoutDates.length > 0) {
+      if (
+        Array.isArray(state.blackoutDates) &&
+        state.blackoutDates.length > 0
+      ) {
         this.blackoutDates.set(state.blackoutDates);
-        this.nextBlackoutId = Math.max(...state.blackoutDates.map((b: BlackoutDateRow) => b.id)) + 1;
+        this.nextBlackoutId =
+          Math.max(...state.blackoutDates.map((b: BlackoutDateRow) => b.id)) +
+          1;
       }
-    } catch { /* ignore corrupt storage */ }
+    } catch {
+      /* ignore corrupt storage */
+    }
   }
 
   clearSavedSettings() {
@@ -224,19 +268,44 @@ export class ScheduleGeneratorStateService {
   }
 
   getDivisionSettings(divisionId: number): DivisionScheduleSettings {
-    return this.divisionSettings()[divisionId] ?? { divisionId, gamesPerTeam: 10, maxGamesPerWeekPerTeam: 2, gameDurationMinutes: 50 };
+    return (
+      this.divisionSettings()[divisionId] ?? {
+        divisionId,
+        gamesPerTeam: 10,
+        maxGamesPerWeekPerTeam: 2,
+        gameDurationMinutes: 50,
+      }
+    );
   }
 
   updateDivisionGamesPerTeam(divisionId: number, val: number) {
-    this.divisionSettings.update(s => ({ ...s, [divisionId]: { ...this.getDivisionSettings(divisionId), gamesPerTeam: val } }));
+    this.divisionSettings.update((s) => ({
+      ...s,
+      [divisionId]: {
+        ...this.getDivisionSettings(divisionId),
+        gamesPerTeam: val,
+      },
+    }));
   }
 
   updateDivisionMaxGamesPerWeek(divisionId: number, val: number) {
-    this.divisionSettings.update(s => ({ ...s, [divisionId]: { ...this.getDivisionSettings(divisionId), maxGamesPerWeekPerTeam: val } }));
+    this.divisionSettings.update((s) => ({
+      ...s,
+      [divisionId]: {
+        ...this.getDivisionSettings(divisionId),
+        maxGamesPerWeekPerTeam: val,
+      },
+    }));
   }
 
   updateDivisionGameDuration(divisionId: number, val: number) {
-    this.divisionSettings.update(s => ({ ...s, [divisionId]: { ...this.getDivisionSettings(divisionId), gameDurationMinutes: val } }));
+    this.divisionSettings.update((s) => ({
+      ...s,
+      [divisionId]: {
+        ...this.getDivisionSettings(divisionId),
+        gameDurationMinutes: val,
+      },
+    }));
   }
 
   onDivisionFilterChange(val: string) {
@@ -246,13 +315,15 @@ export class ScheduleGeneratorStateService {
 
   private _loadSeasons() {
     if (this.seasonService.seasons.length === 0) {
-      this.seasonService.seasons$.subscribe(seasons => this.seasonService.updateSeasons(seasons));
+      this.seasonService.seasons$.subscribe((seasons) =>
+        this.seasonService.updateSeasons(seasons),
+      );
     }
   }
 
   onSeasonChange(seasonId: number) {
     this.selectedSeasonId.set(seasonId);
-    const season = this.seasons().find(s => s.seasonId === seasonId);
+    const season = this.seasons().find((s) => s.seasonId === seasonId);
     if (season) {
       this.startDate.set(season.fromDate ? new Date(season.fromDate) : null);
       this.endDate.set(season.toDate ? new Date(season.toDate) : null);
@@ -266,36 +337,34 @@ export class ScheduleGeneratorStateService {
     this.isLoadingDivisions.set(true);
     this.divisionsForSeason.set([]);
     this.http
-      .get<Division[]>(`${Constants.SEASON_DIVISIONS_URL}${seasonId}`, { withCredentials: true })
+      .get<
+        Division[]
+      >(`${Constants.SEASON_DIVISIONS_URL}${seasonId}`, { withCredentials: true })
       .subscribe({
-        next: divs => {
+        next: (divs) => {
           this.divisionsForSeason.set(divs);
           this.isLoadingDivisions.set(false);
         },
         error: () => {
           this.isLoadingDivisions.set(false);
-          this.snackBar.open('Failed to load divisions.', 'Close', { duration: 4000 });
+          this.snackBar.open('Failed to load divisions.', 'Close', {
+            duration: 4000,
+          });
         },
       });
   }
 
   toggleDivision(divisionId: number) {
     const wasSelected = this.selectedDivisionIds().includes(divisionId);
-    this.selectedDivisionIds.update(ids =>
-      wasSelected ? ids.filter(id => id !== divisionId) : [...ids, divisionId],
+    this.selectedDivisionIds.update((ids) =>
+      wasSelected
+        ? ids.filter((id) => id !== divisionId)
+        : [...ids, divisionId],
     );
-    if (!wasSelected) {
-      // Initialize with defaults if no settings exist yet for this division
-      const current = this.divisionSettings();
-      if (!current[divisionId]) {
-        this.divisionSettings.update(s => ({
-          ...s,
-          [divisionId]: { divisionId, gamesPerTeam: 10, maxGamesPerWeekPerTeam: 2, gameDurationMinutes: 50 },
-        }));
-      }
-    } else {
-      this.timePeriods.update(rows => rows.filter(p => this.selectedDivisionIds().includes(p.divisionId)));
-    }
+    const selected = this.selectedDivisionIds();
+    this.timePeriods.update((rows) =>
+      rows.filter((p) => selected.includes(p.divisionId)),
+    );
   }
 
   isDivisionSelected(divisionId: number) {
@@ -303,95 +372,138 @@ export class ScheduleGeneratorStateService {
   }
 
   periodsForDivision(divisionId: number): TimePeriodRow[] {
-    return this.timePeriods().filter(p => p.divisionId === divisionId);
+    return this.timePeriods().filter((p) => p.divisionId === divisionId);
   }
 
   addTimePeriodForDivision(divisionId: number) {
-    this.timePeriods.update(rows => [...rows, {
-      id: this.nextSlotId++, divisionId,
-      dayOfWeek: 6, beginTime: '09:00', endTime: '13:00', locationIds: [],
-    }]);
+    this.timePeriods.update((rows) => [
+      ...rows,
+      {
+        id: this.nextSlotId++,
+        divisionId,
+        dayOfWeek: 6,
+        beginTime: '09:00',
+        endTime: '13:00',
+        locationIds: [],
+      },
+    ]);
   }
 
   removeTimePeriod(id: number) {
-    this.timePeriods.update(rows => rows.filter(p => p.id !== id));
+    this.timePeriods.update((rows) => rows.filter((p) => p.id !== id));
   }
 
   updatePeriodDay(id: number, day: number) {
-    this.timePeriods.update(rows => rows.map(p => p.id === id ? { ...p, dayOfWeek: day } : p));
+    this.timePeriods.update((rows) =>
+      rows.map((p) => (p.id === id ? { ...p, dayOfWeek: day } : p)),
+    );
   }
 
   updatePeriodBeginTime(id: number, time: string) {
-    this.timePeriods.update(rows => rows.map(p => p.id === id ? { ...p, beginTime: time } : p));
+    this.timePeriods.update((rows) =>
+      rows.map((p) => (p.id === id ? { ...p, beginTime: time } : p)),
+    );
   }
 
   updatePeriodEndTime(id: number, time: string) {
-    this.timePeriods.update(rows => rows.map(p => p.id === id ? { ...p, endTime: time } : p));
+    this.timePeriods.update((rows) =>
+      rows.map((p) => (p.id === id ? { ...p, endTime: time } : p)),
+    );
   }
 
   updatePeriodLocations(id: number, locationIds: number[]) {
-    this.timePeriods.update(rows => rows.map(p => p.id === id ? { ...p, locationIds } : p));
+    this.timePeriods.update((rows) =>
+      rows.map((p) => (p.id === id ? { ...p, locationIds } : p)),
+    );
   }
 
   divisionsWithPeriods(excludeId: number): Division[] {
-    const configured = new Set(this.timePeriods().map(p => p.divisionId));
-    return this.selectedDivisions().filter(d => d.divisionId !== excludeId && configured.has(d.divisionId));
+    const configured = new Set(this.timePeriods().map((p) => p.divisionId));
+    return this.selectedDivisions().filter(
+      (d) => d.divisionId !== excludeId && configured.has(d.divisionId),
+    );
   }
 
   copyFromDivision(sourceDivisionId: number, targetDivisionId: number) {
     if (sourceDivisionId === targetDivisionId) return;
-    this.timePeriods.update(rows => rows.filter(p => p.divisionId !== targetDivisionId));
+    this.timePeriods.update((rows) =>
+      rows.filter((p) => p.divisionId !== targetDivisionId),
+    );
     const cloned = this.timePeriods()
-      .filter(p => p.divisionId === sourceDivisionId)
-      .map(p => ({ ...p, id: this.nextSlotId++, divisionId: targetDivisionId }));
-    this.timePeriods.update(rows => [...rows, ...cloned]);
-    this.copySourceIds.update(m => ({ ...m, [targetDivisionId]: null }));
+      .filter((p) => p.divisionId === sourceDivisionId)
+      .map((p) => ({
+        ...p,
+        id: this.nextSlotId++,
+        divisionId: targetDivisionId,
+      }));
+    this.timePeriods.update((rows) => [...rows, ...cloned]);
+    this.copySourceIds.update((m) => ({ ...m, [targetDivisionId]: null }));
   }
 
   periodWindowTooShort(period: TimePeriodRow): boolean {
     if (!period.beginTime || !period.endTime) return false;
-    return (this.timeToMinutes(period.endTime) - this.timeToMinutes(period.beginTime)) < this.getDivisionSettings(period.divisionId).gameDurationMinutes;
+    return (
+      this.timeToMinutes(period.endTime) -
+        this.timeToMinutes(period.beginTime) <
+      this.getDivisionSettings(period.divisionId).gameDurationMinutes
+    );
   }
 
   slotSummaryForPeriod(period: TimePeriodRow): string[] {
-    if (!period.beginTime || !period.endTime || period.locationIds.length === 0) return [];
+    if (!period.beginTime || !period.endTime || period.locationIds.length === 0)
+      return [];
     const slots: string[] = [];
-    const duration = this.getDivisionSettings(period.divisionId).gameDurationMinutes;
+    const duration = this.getDivisionSettings(
+      period.divisionId,
+    ).gameDurationMinutes;
     let t = this.timeToMinutes(period.beginTime);
     const end = this.timeToMinutes(period.endTime);
     while (t + duration <= end) {
       const d = new Date(1970, 0, 1, Math.floor(t / 60), t % 60);
-      slots.push(d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }));
+      slots.push(
+        d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }),
+      );
       t += duration;
     }
     return slots;
   }
 
   addBlackoutDate() {
-    this.blackoutDates.update(rows => [
+    this.blackoutDates.update((rows) => [
       ...rows,
-      { id: this.nextBlackoutId++, startDate: '', endDate: '', locationId: null },
+      {
+        id: this.nextBlackoutId++,
+        startDate: '',
+        endDate: '',
+        locationId: null,
+      },
     ]);
   }
 
   removeBlackoutDate(id: number) {
-    this.blackoutDates.update(rows => rows.filter(b => b.id !== id));
+    this.blackoutDates.update((rows) => rows.filter((b) => b.id !== id));
   }
 
   updateBlackoutStartDate(id: number, date: Date | null) {
     if (!date) return;
     const iso = new Date(date).toISOString().split('T')[0];
-    this.blackoutDates.update(rows => rows.map(b => b.id === id ? { ...b, startDate: iso } : b));
+    this.blackoutDates.update((rows) =>
+      rows.map((b) => (b.id === id ? { ...b, startDate: iso } : b)),
+    );
   }
 
   updateBlackoutEndDate(id: number, date: Date | null) {
     if (!date) return;
     const iso = new Date(date).toISOString().split('T')[0];
-    this.blackoutDates.update(rows => rows.map(b => b.id === id ? { ...b, endDate: iso } : b));
+    this.blackoutDates.update((rows) =>
+      rows.map((b) => (b.id === id ? { ...b, endDate: iso } : b)),
+    );
   }
 
   updateBlackoutLocation(id: number, locationId: number | null) {
-    this.blackoutDates.update(rows => rows.map(b => b.id === id ? { ...b, locationId } : b));
+    this.blackoutDates.update((rows) =>
+      rows.map((b) => (b.id === id ? { ...b, locationId } : b)),
+    );
   }
 
   step1Valid() {
@@ -409,13 +521,15 @@ export class ScheduleGeneratorStateService {
   step3Valid() {
     const ids = this.selectedDivisionIds();
     if (ids.length === 0) return false;
-    return ids.every(id => {
+    return ids.every((id) => {
       const settings = this.getDivisionSettings(id);
       return (
         settings.gamesPerTeam > 0 &&
         settings.maxGamesPerWeekPerTeam > 0 &&
         settings.gameDurationMinutes > 0 &&
-        this.periodsForDivision(id).some(p => p.locationIds.length > 0 && !this.periodWindowTooShort(p))
+        this.periodsForDivision(id).some(
+          (p) => p.locationIds.length > 0 && !this.periodWindowTooShort(p),
+        )
       );
     });
   }
@@ -432,31 +546,48 @@ export class ScheduleGeneratorStateService {
 
     const request: ScheduleGeneratorRequest = {
       seasonId: this.selectedSeasonId()!,
-      startDate: this.startDate() ? this._formatLocalDate(this.startDate()!) : null,
+      startDate: this.startDate()
+        ? this._formatLocalDate(this.startDate()!)
+        : null,
       endDate: this.endDate() ? this._formatLocalDate(this.endDate()!) : null,
       divisionIds: this.selectedDivisionIds(),
-      divisionSettings: this.selectedDivisionIds().map(id => this.getDivisionSettings(id)),
+      divisionSettings: this.selectedDivisionIds().map((id) =>
+        this.getDivisionSettings(id),
+      ),
       timeSlots: this.timePeriods().flatMap((period): AvailableTimeSlot[] => {
         const slots: AvailableTimeSlot[] = [];
-        const duration = this.getDivisionSettings(period.divisionId).gameDurationMinutes;
+        const duration = this.getDivisionSettings(
+          period.divisionId,
+        ).gameDurationMinutes;
         let t = this.timeToMinutes(period.beginTime);
         const end = this.timeToMinutes(period.endTime);
         while (t + duration <= end) {
           for (const locId of period.locationIds) {
-            slots.push({ divisionId: period.divisionId, dayOfWeek: period.dayOfWeek, startTime: this._minutesToSpan(t), locationId: locId });
+            slots.push({
+              divisionId: period.divisionId,
+              dayOfWeek: period.dayOfWeek,
+              startTime: this._minutesToSpan(t),
+              locationId: locId,
+            });
           }
           t += duration;
         }
         return slots;
       }),
       blackoutDates: this.blackoutDates()
-        .filter(r => !!r.startDate && !!r.endDate)
-        .map((r): ScheduleBlackoutDate => ({ startDate: r.startDate, endDate: r.endDate, locationId: r.locationId })),
+        .filter((r) => !!r.startDate && !!r.endDate)
+        .map(
+          (r): ScheduleBlackoutDate => ({
+            startDate: r.startDate,
+            endDate: r.endDate,
+            locationId: r.locationId,
+          }),
+        ),
       enforceCoachConflicts: this.enforceCoachConflicts(),
     };
 
     this.gameService.previewSchedule(request).subscribe({
-      next: result => {
+      next: (result) => {
         this.isGenerating.set(false);
         if (result.success) {
           this.previewGames.set(result.games);
@@ -468,9 +599,13 @@ export class ScheduleGeneratorStateService {
           this.previewError.set(result.errorMessage ?? 'Preview failed.');
         }
       },
-      error: err => {
+      error: (err) => {
         this.isGenerating.set(false);
-        this.previewError.set(err?.error?.errorMessage ?? err?.message ?? 'Failed to generate preview.');
+        this.previewError.set(
+          err?.error?.errorMessage ??
+            err?.message ??
+            'Failed to generate preview.',
+        );
       },
     });
   }
@@ -482,20 +617,26 @@ export class ScheduleGeneratorStateService {
     this.commitGamesCreated.set(null);
     this.commitErrors.set([]);
 
-    this.gameService.commitSchedule({ seasonId: this.selectedSeasonId()!, games }).subscribe({
-      next: result => {
-        this.isCommitting.set(false);
-        this.commitGamesCreated.set(result.gamesCreated);
-        this.commitErrors.set(result.errors ?? []);
-        if (result.gamesCreated > 0) {
-          this.snackBar.open(`${result.gamesCreated} games saved successfully.`, 'Close', { duration: 5000 });
-        }
-      },
-      error: () => {
-        this.isCommitting.set(false);
-        this.commitErrors.set(['Commit request failed.']);
-      },
-    });
+    this.gameService
+      .commitSchedule({ seasonId: this.selectedSeasonId()!, games })
+      .subscribe({
+        next: (result) => {
+          this.isCommitting.set(false);
+          this.commitGamesCreated.set(result.gamesCreated);
+          this.commitErrors.set(result.errors ?? []);
+          if (result.gamesCreated > 0) {
+            this.snackBar.open(
+              `${result.gamesCreated} games saved successfully.`,
+              'Close',
+              { duration: 5000 },
+            );
+          }
+        },
+        error: () => {
+          this.isCommitting.set(false);
+          this.commitErrors.set(['Commit request failed.']);
+        },
+      });
   }
 
   private _gameKey(g: ScheduleGamePreviewItem): string {
@@ -506,7 +647,10 @@ export class ScheduleGeneratorStateService {
     const ref = this.dialog.open(ScheduleGameEditDialogComponent, {
       data: {
         game: g,
-        locations: this.locations().map(l => ({ locationNumber: l.locationNumber, locationName: l.locationName })),
+        locations: this.locations().map((l) => ({
+          locationNumber: l.locationNumber,
+          locationName: l.locationName,
+        })),
       } as GameEditDialogData,
       width: '480px',
     });
@@ -514,10 +658,15 @@ export class ScheduleGeneratorStateService {
       if (!result) return;
       const newGameDate = `${result.gameDate}T${result.gameTime}:00`;
       const newGameTime = `1899-12-30 ${result.gameTime}:00`;
-      this.previewGames.update(games =>
-        games.map(game =>
+      this.previewGames.update((games) =>
+        games.map((game) =>
           this._gameKey(game) === this._gameKey(g)
-            ? { ...game, gameDate: newGameDate, gameTime: newGameTime, locationNumber: result.locationNumber }
+            ? {
+                ...game,
+                gameDate: newGameDate,
+                gameTime: newGameTime,
+                locationNumber: result.locationNumber,
+              }
             : game,
         ),
       );
@@ -526,8 +675,15 @@ export class ScheduleGeneratorStateService {
 
   formatGameDate(dateStr: string): string {
     const d = new Date(dateStr);
-    const date = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-    const time = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+    const date = d.toLocaleDateString('en-US', {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
+    });
+    const time = d.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+    });
     return `${date} ${time}`;
   }
 
@@ -541,10 +697,15 @@ export class ScheduleGeneratorStateService {
       seasonId: this.selectedSeasonId()!,
       games: this.previewGames(),
     };
-    this.savedDrafts.update(list => [...list, draft]);
+    this.savedDrafts.update((list) => [...list, draft]);
     try {
-      localStorage.setItem(ScheduleGeneratorStateService.DRAFTS_KEY, JSON.stringify(this.savedDrafts()));
-    } catch { /* ignore quota errors */ }
+      localStorage.setItem(
+        ScheduleGeneratorStateService.DRAFTS_KEY,
+        JSON.stringify(this.savedDrafts()),
+      );
+    } catch {
+      /* ignore quota errors */
+    }
     this.snackBar.open(`Draft "${name}" saved.`, 'Close', { duration: 3000 });
   }
 
@@ -554,26 +715,39 @@ export class ScheduleGeneratorStateService {
       this.calendarMonth.set(new Date(draft.games[0].gameDate));
       this.selectedCalendarDate.set(null);
     }
-    this.snackBar.open(`Loaded draft "${draft.name}".`, 'Close', { duration: 3000 });
+    this.snackBar.open(`Loaded draft "${draft.name}".`, 'Close', {
+      duration: 3000,
+    });
   }
 
   deleteDraft(id: string) {
-    this.savedDrafts.update(list => list.filter(d => d.id !== id));
+    this.savedDrafts.update((list) => list.filter((d) => d.id !== id));
     try {
-      localStorage.setItem(ScheduleGeneratorStateService.DRAFTS_KEY, JSON.stringify(this.savedDrafts()));
-    } catch { /* ignore quota errors */ }
+      localStorage.setItem(
+        ScheduleGeneratorStateService.DRAFTS_KEY,
+        JSON.stringify(this.savedDrafts()),
+      );
+    } catch {
+      /* ignore quota errors */
+    }
   }
 
   prevMonth() {
-    this.calendarMonth.update(d => new Date(d.getFullYear(), d.getMonth() - 1, 1));
+    this.calendarMonth.update(
+      (d) => new Date(d.getFullYear(), d.getMonth() - 1, 1),
+    );
   }
 
   nextMonth() {
-    this.calendarMonth.update(d => new Date(d.getFullYear(), d.getMonth() + 1, 1));
+    this.calendarMonth.update(
+      (d) => new Date(d.getFullYear(), d.getMonth() + 1, 1),
+    );
   }
 
   selectCalendarDate(key: string) {
-    this.selectedCalendarDate.set(this.selectedCalendarDate() === key ? null : key);
+    this.selectedCalendarDate.set(
+      this.selectedCalendarDate() === key ? null : key,
+    );
   }
 
   private _formatLocalDate(d: Date): string {
