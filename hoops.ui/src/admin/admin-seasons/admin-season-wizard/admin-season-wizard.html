@@ -4,12 +4,17 @@
   </mat-card-header>
 
   <mat-card-content>
-    <mat-stepper linear #stepper>
+    @if (seasonCreated()) {
+      <p class="mb-4 text-green-700 font-medium">
+        Season "{{ newSeasonName() }}" created successfully. Review your divisions below, then click Finish.
+      </p>
+    }
 
-      <!-- Step 1: Season Info -->
-      <mat-step label="Season Info">
-        <form [formGroup]="form" class="mt-4">
+    <div class="flex gap-6 items-start">
 
+      <!-- Left: Season Info form -->
+      <div class="flex-1 min-w-0">
+        <form [formGroup]="form">
           <mat-form-field appearance="fill" class="w-full">
             <mat-label>Season Name</mat-label>
             <input matInput type="text" formControlName="name" />
@@ -70,39 +75,36 @@
             <mat-checkbox formControlName="currentSignUps">Current Sign-ups</mat-checkbox>
             <mat-checkbox formControlName="currentSchedule">Current Schedule</mat-checkbox>
           </div>
-
-          @if (saving()) {
-            <mat-progress-bar mode="indeterminate" class="mt-4" />
-          }
-
-          <mat-card-actions>
-            <button
-              type="button"
-              mat-raised-button
-              color="primary"
-              [disabled]="!form.valid || saving()"
-              (click)="saveAndContinue()"
-            >
-              Save &amp; Continue
-            </button>
-            <button type="button" mat-stroked-button (click)="finish()">Cancel</button>
-          </mat-card-actions>
         </form>
-      </mat-step>
+      </div>
 
-      <!-- Step 2: Division & Team Setup -->
-      <mat-step label="Division &amp; Team Setup">
-        <p class="mt-4 mb-2 text-sm text-gray-400">
-          Your season was created. Choose which divisions to include and set the number of teams per division.
-        </p>
-        <season-setup />
-        <mat-card-actions>
-          <button type="button" mat-raised-button color="primary" (click)="finish()">
-            Finish
-          </button>
-        </mat-card-actions>
-      </mat-step>
+      <!-- Right: Division & Team setup -->
+      <div class="w-80 flex-shrink-0">
+        <h3 class="text-sm font-semibold mb-2">Divisions &amp; Teams</h3>
+        <division-template-setup [rows]="rows()" />
+      </div>
 
-    </mat-stepper>
+    </div>
+
+    @if (saving() || creatingDivisions()) {
+      <mat-progress-bar mode="indeterminate" class="mt-4" />
+    }
   </mat-card-content>
+
+  <mat-card-actions>
+    @if (!seasonCreated()) {
+      <button
+        type="button"
+        mat-raised-button
+        color="primary"
+        [disabled]="!form.valid || saving() || creatingDivisions() || !canCreateDivisions()"
+        (click)="save()"
+      >
+        Save Season &amp; Create Divisions
+      </button>
+      <button type="button" mat-stroked-button (click)="finish()">Cancel</button>
+    } @else {
+      <button type="button" mat-raised-button color="primary" (click)="finish()">Finish</button>
+    }
+  </mat-card-actions>
 </mat-card>
