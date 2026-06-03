@@ -126,6 +126,17 @@ namespace Hoops.Functions.Functions
                     player.DivisionId = divisionId;
                 }
 
+                if (player.DivisionId.HasValue && player.DivisionId != 0)
+                {
+                    var duplicate = _repository.GetPlayerByPersonAndDivisionId(player.PersonId, player.DivisionId.Value);
+                    if (duplicate.PlayerId != 0)
+                    {
+                        var conflictResp = req.CreateResponse(HttpStatusCode.Conflict);
+                        await conflictResp.WriteStringAsync("This player is already registered in that division for this season.");
+                        return conflictResp;
+                    }
+                }
+
                 player.CreatedDate ??= DateTime.Now;
 
                 var createdPlayer = _repository.Insert(player);
