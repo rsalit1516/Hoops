@@ -5,6 +5,7 @@ import { AuthGuard } from '@app/auth/auth.guard';
 import { AdminSeasonShell } from './admin-season-shell/admin-season-shell';
 import { AdminSeasonDetail } from './admin-season-detail/admin-season-detail';
 import { AdminSeasonList } from './admin-season-list/admin-season-list';
+import { AdminSeasonWizard } from './admin-season-wizard/admin-season-wizard';
 export const ADMIN_SEASONS_ROUTES: Routes = [
   {
     path: '',
@@ -14,6 +15,7 @@ export const ADMIN_SEASONS_ROUTES: Routes = [
     children: [
       { path: 'list', component: AdminSeasonList },
       { path: 'detail', component: AdminSeasonDetail },
+      { path: 'new', component: AdminSeasonWizard },
       { path: '', redirectTo: 'list', pathMatch: 'full' },
       { path: '**', component: PageNotFound }
     ]
