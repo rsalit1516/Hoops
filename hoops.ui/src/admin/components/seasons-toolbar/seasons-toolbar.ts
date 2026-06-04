@@ -5,10 +5,6 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router } from '@angular/router';
-import { Store, select } from '@ngrx/store';
-
-import * as fromAdmin from '../../state';
-import * as adminActions from '../../state/admin.actions';
 import { Season } from '@app/domain/season';
 import { SeasonService } from '@app/services/season.service';
 import { LoggerService } from '@app/services/logger.service';
@@ -36,7 +32,6 @@ import { LoggerService } from '@app/services/logger.service';
 export class SeasonsToolbar implements OnInit {
   private router = inject(Router);
   private fb = inject(UntypedFormBuilder);
-  private store = inject<Store<fromAdmin.State>>(Store);
   private logger = inject(LoggerService);
 
   readonly #seasonService = inject(SeasonService);

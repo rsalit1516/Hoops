@@ -1,27 +1,22 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { RegularGame } from '@app/domain/regularGame';
 import { DataService } from '@app/services/data.service';
-import { select, Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
-import * as fromGames from '../state';
-import * as gameActions from '../state/admin.actions';
 import { User } from '@app/domain/user';
-import { rxResource } from '@angular/core/rxjs-interop';
-import { setErrorMessage } from '@app/shared/error-message';
 import { Division } from '@app/domain/division';
 import { AuthService } from '@app/services/auth.service';
+import { GameService } from '@app/services/game.service';
 import { LoggerService } from '@app/services/logger.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AdminGameService {
-  private store = inject<Store<fromGames.State>>(Store);
-
   private http = inject(HttpClient);
   private dataService = inject(DataService);
   private authService = inject(AuthService);
+  private gameService = inject(GameService);
   private logger = inject(LoggerService);
   allGames: RegularGame[] | undefined;
   selectedDivision = signal<Division | null>(null);
@@ -43,58 +38,31 @@ export class AdminGameService {
   }
 
   filterGamesByDivision(): Observable<RegularGame[]> {
-    let games: RegularGame[] = [];
-    let gamesSortedByDate: RegularGame[] = [];
-    this.store.pipe(select(fromGames.getSeasonGames)).subscribe((allGames) => {
-      this.allGames = allGames;
-      if (this.selectedDivision() !== null) {
-        this.setCanEdit(this.selectedDivision()!.divisionId);
-      }
-      if (allGames) {
-        for (let i = 0; i < this.allGames.length; i++) {
-          if (
-            this.allGames[i].divisionId === this.selectedDivision()?.divisionId
-          ) {
-            let game = allGames[i];
-            games.push(game);
-          }
-        }
-        games.sort();
-        gamesSortedByDate = games.sort((a, b) => {
-          return this.compare(a.gameDate!, b.gameDate!, true);
-        });
-        this.filteredGames.set(gamesSortedByDate);
-        return of(gamesSortedByDate);
-      }
-      return of(gamesSortedByDate);
-    });
+    const allGames = this.gameService.seasonGames ?? [];
+    this.allGames = allGames;
+    if (this.selectedDivision() !== null) {
+      this.setCanEdit(this.selectedDivision()!.divisionId);
+    }
+    let games: RegularGame[] = allGames.filter(
+      g => g.divisionId === this.selectedDivision()?.divisionId
+    );
+    const gamesSortedByDate = games.sort((a, b) =>
+      this.compare(a.gameDate!, b.gameDate!, true)
+    );
+    this.filteredGames.set(gamesSortedByDate);
     return of(gamesSortedByDate);
   }
 
   filterGamesByTeam(team: number): Observable<RegularGame[]> {
-    let games: RegularGame[] = [];
-    let sortedDate: RegularGame[] = [];
-    this.store.pipe(select(fromGames.getSeasonGames)).subscribe((allGames) => {
-      this.allGames = allGames;
-      this.setCanEdit(team);
-      if (allGames) {
-        for (let i = 0; i < this.allGames.length; i++) {
-          if (
-            this.allGames[i].homeTeamId === team ||
-            this.allGames[i].visitingTeamId === team
-          ) {
-            let game = allGames[i];
-            games.push(game);
-          }
-        }
-        games.sort();
-        sortedDate = games.sort((a, b) => {
-          return this.compare(a.gameDate!, b.gameDate!, true);
-        });
-        return of(sortedDate);
-      }
-      return of(sortedDate);
-    });
+    const allGames = this.gameService.seasonGames ?? [];
+    this.allGames = allGames;
+    this.setCanEdit(team);
+    const games = allGames.filter(
+      g => g.homeTeamId === team || g.visitingTeamId === team
+    );
+    const sortedDate = games.sort((a, b) =>
+      this.compare(a.gameDate!, b.gameDate!, true)
+    );
     return of(sortedDate);
   }
   compare(a: Date | string, b: Date | string, isAsc: boolean) {

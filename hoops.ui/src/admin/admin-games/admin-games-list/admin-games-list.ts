@@ -8,9 +8,7 @@ import {
   inject,
   input,
 } from '@angular/core';
-import { Store } from '@ngrx/store';
 import { RegularGame } from '@app/domain/regularGame';
-import * as fromAdmin from '../../state';
 import { Observable } from 'rxjs';
 import { DatePipe, NgIf } from '@angular/common';
 import { TeamDisplayPipe } from '@app/shared/pipes/team-display.pipe';

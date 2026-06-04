@@ -1,10 +1,4 @@
 import { Component, OnInit, inject, input } from '@angular/core';
-import { Store } from '@ngrx/store';
-
-import * as fromAdmin from '../../state';
-
-
-
 import { Season } from '@app/domain/season';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -41,7 +35,6 @@ import { ShellTitle } from "../../../shared/components/shell-title/shell-title";
 ],
 })
 export class AdminDivisionShell implements OnInit {
-  private store = inject<Store<fromAdmin.State>>(Store);
   private logger = inject(LoggerService);
 
   season = input(new Season());

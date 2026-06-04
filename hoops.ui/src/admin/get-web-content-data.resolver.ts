@@ -1,26 +1,17 @@
 import { inject, Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
-// import { DataService } from './data.service'; // Replace with your actual data service
-import { Store } from '@ngrx/store';
-import * as contentActions from './state/admin.actions';
-import * as fromContent from './state';
 import { ContentService } from './web-content/content.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class getWebContentDataResolver implements Resolve<any> {
-  private store = inject<Store<fromContent.State>>(Store);
-
   contentService = inject(ContentService);
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-  constructor () {}
+  constructor() {}
 
-  resolve (route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     return this.contentService.getContents();
   }
 }
-

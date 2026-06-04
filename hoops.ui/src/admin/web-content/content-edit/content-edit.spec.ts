@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ChangeDetectorRef } from '@angular/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialog } from '@angular/material/dialog';
-import { Store } from '@ngrx/store';
 import { signal } from '@angular/core';
 import { of, throwError } from 'rxjs';
 
@@ -15,7 +14,6 @@ import { LoggerService } from '@app/services/logger.service';
 import { WebContent } from '@app/domain/webContent';
 import { Content } from '@app/domain/content';
 import { WebContentType } from '@app/domain/webContentType';
-import * as contentActions from '@app/admin/state/admin.actions';
 
 describe('ContentEdit', () => {
   let component: ContentEdit;
@@ -24,7 +22,6 @@ describe('ContentEdit', () => {
   let mockNoticeTypesService: jasmine.SpyObj<NoticeTypesService>;
   let mockLoggerService: jasmine.SpyObj<LoggerService>;
   let mockRouter: jasmine.SpyObj<Router>;
-  let mockStore: jasmine.SpyObj<Store>;
   let mockChangeDetectorRef: jasmine.SpyObj<ChangeDetectorRef>;
 
   const mockWebContent: WebContent = {
@@ -75,7 +72,7 @@ describe('ContentEdit', () => {
   beforeEach(async () => {
     const contentServiceSpy = jasmine.createSpyObj(
       'ContentService',
-      ['saveContent', 'deleteContent'],
+      ['saveContent', 'deleteContent', 'fetchAllContents'],
       {
         selectedContent$: of(null), // Start with null to prevent initial effects
         selectedContent: signal(null), // Start with null
@@ -99,7 +96,6 @@ describe('ContentEdit', () => {
       'warn',
     ]);
     const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
-    const storeSpy = jasmine.createSpyObj('Store', ['dispatch']);
     const changeDetectorRefSpy = jasmine.createSpyObj('ChangeDetectorRef', [
       'markForCheck',
     ]);
@@ -111,7 +107,6 @@ describe('ContentEdit', () => {
         { provide: NoticeTypesService, useValue: noticeTypesServiceSpy },
         { provide: LoggerService, useValue: loggerServiceSpy },
         { provide: Router, useValue: routerSpy },
-        { provide: Store, useValue: storeSpy },
         { provide: MatDialog, useValue: {} }, // Simple empty mock since we're not testing dialog functionality
         { provide: ChangeDetectorRef, useValue: changeDetectorRefSpy },
         {
@@ -137,7 +132,6 @@ describe('ContentEdit', () => {
       LoggerService
     ) as jasmine.SpyObj<LoggerService>;
     mockRouter = TestBed.inject(Router) as jasmine.SpyObj<Router>;
-    mockStore = TestBed.inject(Store) as jasmine.SpyObj<Store>;
     mockChangeDetectorRef = TestBed.inject(
       ChangeDetectorRef
     ) as jasmine.SpyObj<ChangeDetectorRef>;
@@ -297,9 +291,7 @@ describe('ContentEdit', () => {
       component.saveContent();
 
       expect(mockContentService.saveContent).toHaveBeenCalled();
-      expect(mockStore.dispatch).toHaveBeenCalledWith(
-        jasmine.any(contentActions.LoadAdminContent)
-      );
+      expect(mockContentService.fetchAllContents).toHaveBeenCalled();
       expect(mockRouter.navigate).toHaveBeenCalledWith(['/admin/content']);
     });
 
@@ -406,9 +398,7 @@ describe('ContentEdit', () => {
       component.deleteRecord();
 
       expect(mockContentService.deleteContent).toHaveBeenCalledWith(1);
-      expect(mockStore.dispatch).toHaveBeenCalledWith(
-        jasmine.any(contentActions.LoadAdminContent)
-      );
+      expect(mockContentService.fetchAllContents).toHaveBeenCalled();
       expect(mockRouter.navigate).toHaveBeenCalledWith(['/admin/content']);
     });
 

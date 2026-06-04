@@ -7,11 +7,6 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Season } from '@app/domain/season';
-import { Store } from '@ngrx/store';
-
-import * as fromAdmin from '../../state';
-
-
 import { RouterOutlet } from '@angular/router';
 import { SeasonService } from '@app/services/season.service';
 import { MatButtonModule } from '@angular/material/button';
@@ -45,7 +40,6 @@ import { LoggerService } from '@app/services/logger.service';
     ],
 })
 export class AdminSeasonShell implements OnInit, AfterViewInit {
-  private store = inject<Store<fromAdmin.State>>(Store);
   private readonly logger = inject(LoggerService);
 
   private readonly seasonService = inject(SeasonService);

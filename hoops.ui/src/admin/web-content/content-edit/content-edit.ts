@@ -17,10 +17,6 @@ import {
 
 import { Content } from '../../../domain/content';
 import { ContentService } from '../content.service';
-import { Store } from '@ngrx/store';
-
-import * as fromContent from '@app/admin/state';
-import * as contentActions from '@app/admin/state/admin.actions';
 
 import { WebContentType } from '@app/domain/webContentType';
 import { FloatLabelType } from '@angular/material/form-field';
@@ -70,7 +66,6 @@ import { LoggerService } from '@app/services/logger.service';
   providers: [provideNativeDateAdapter()],
 })
 export class ContentEdit implements OnInit {
-  readonly store = inject(Store<fromContent.State>);
   private fb = inject(FormBuilder);
   readonly contentService = inject(ContentService);
   readonly noticeTypesSvc = inject(NoticeTypesService);
@@ -257,7 +252,7 @@ export class ContentEdit implements OnInit {
       this.contentService.saveContent(content).subscribe({
         next: (response) => {
           this.logger.info('Content saved successfully:', response);
-          this.store.dispatch(new contentActions.LoadAdminContent());
+          this.contentService.fetchAllContents();
           this.contentForm.reset();
           // Navigation will trigger content-shell ngOnInit which fetches fresh data
           this.router.navigate(['/admin/content']);
@@ -347,7 +342,7 @@ export class ContentEdit implements OnInit {
       this.contentService.deleteContent(webContentId).subscribe({
         next: (response) => {
           this.logger.info('Content deleted successfully:', response);
-          this.store.dispatch(new contentActions.LoadAdminContent());
+          this.contentService.fetchAllContents();
           // Navigation will trigger content-shell ngOnInit which fetches fresh data
           this.router.navigate(['/admin/content']);
         },

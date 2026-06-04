@@ -6,13 +6,8 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { Store } from '@ngrx/store';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs/operators';
-
-import * as adminActions from '../../state/admin.actions';
-import * as contentActions from '../../state/admin.actions';
-import * as fromAdmin from '../../state';
 import { ColorService } from '@app/admin/admin-shared/services/color.service';
 
 import { MatDividerModule } from '@angular/material/divider';
@@ -81,7 +76,6 @@ export class AdminShell implements OnInit {
   private colorService = inject(ColorService);
   private logger = inject(LoggerService);
   locationService = inject(LocationService);
-  store = inject(Store<fromAdmin.State>);
   divisionService = inject(DivisionService);
   readonly #router = inject(Router);
 

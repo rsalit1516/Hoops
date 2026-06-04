@@ -14,9 +14,6 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { Store } from '@ngrx/store';
-import * as fromAdmin from '../../state';
-import * as adminActions from '../../state/admin.actions';
 import { MatOptionModule } from '@angular/material/core';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
