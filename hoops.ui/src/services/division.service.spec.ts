@@ -4,7 +4,6 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing';
 import { signal } from '@angular/core';
-import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 
 import { DivisionService } from './division.service';
@@ -61,15 +60,12 @@ describe('DivisionService', () => {
       season1: undefined,
     };
 
-    const mockStore = jasmine.createSpyObj('Store', ['dispatch', 'pipe', 'select']);
-
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
         DivisionService,
         { provide: DataService, useValue: mockDataService },
         { provide: SeasonService, useValue: mockSeasonService },
-        { provide: Store, useValue: mockStore },
         { provide: LoggerService, useValue: mockLoggerService },
       ],
     });

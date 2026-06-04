@@ -2,10 +2,7 @@ import { HttpClient, httpResource } from '@angular/common/http';
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { PlayoffGame } from '@app/domain/playoffGame';
 import { Constants } from '@app/shared/constants';
-import { select, Store } from '@ngrx/store';
 import { Observable, catchError, map, of, tap } from 'rxjs';
-
-import * as fromGames from '../games/state';
 import { LoggerService } from './logger.service';
 import { SeasonService } from '@app/services/season.service';
 import { DivisionService } from './division.service';

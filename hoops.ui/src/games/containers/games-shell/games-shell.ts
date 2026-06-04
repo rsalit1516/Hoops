@@ -10,17 +10,9 @@ import { SeasonService } from '@app/services/season.service';
 import { DivisionService } from '@app/services/division.service';
 import { TeamService } from '@app/services/team.service';
 import { GameService } from '@app/services/game.service';
-import { Store, select } from '@ngrx/store';
-
-import * as fromGames from '../../state';
-
-import * as gameActions from '../../state/games.actions';
 import { RegularGame } from '@app/domain/regularGame';
 import { Team } from '@app/domain/team';
 import { Division } from '@app/domain/division';
-import { Observable, from, zip, of } from 'rxjs';
-import { Standing } from '@app/domain/standing';
-import { User } from '@app/domain/user';
 import { SchedulePlayoffs } from '@app/games/components/schedule-playoffs/schedule-playoffs';
 import { RouterOutlet } from '@angular/router';
 import { GamesTopMenu } from '../../components/games-top-menu/games-top-menu';
@@ -40,54 +32,21 @@ export class GamesShell implements OnInit {
   private readonly divisionService = inject(DivisionService);
   readonly #teamService = inject(TeamService);
   readonly #gameService = inject(GameService);
-  private store = inject(Store<fromGames.State>);
   readonly #authService = inject(AuthService);
   private readonly logger = inject(LoggerService);
   readonly showAllTeams = input<boolean>();
   readonly currentTeam = input<string>();
   teamList: any[] | undefined;
-  filteredGames$: Observable<RegularGame[]> | undefined;
-  standings$: Observable<Standing[]> | undefined;
-  teams: any;
-  // user$ = this.userStore
-  //   .pipe(select(fromUser.getCurrentUser))
-  //   .subscribe((user) => (this.user.update(() => user)));
-  allGames$: Observable<RegularGame[]> | undefined;
   errorMessage: any;
-  selectedDivisionId$: Observable<number> | undefined;
-  teams$: Observable<Team[]> | undefined;
-  selectedTeam$: Observable<Team> | undefined;
-  errorMessage$: Observable<string> | undefined;
-  selectedDivision$: Observable<any> | undefined;
-  standings: RegularGame[] | undefined;
+  games: RegularGame[] | undefined;
+  divisionId: any;
+  selectedDivisionId: number = 1;
+  filteredGames!: RegularGame[];
 
   // Access canEdit from AuthService computed signal
   get canEdit(): boolean {
     return this.#authService.canEditGames();
   }
-
-  // user: User | undefined;
-  games: RegularGame[] | undefined;
-  currentSeason$: Observable<any> | undefined; // = this.seasonService.currentSeason$.subscribe(season => this.seasonDescription = season.description);
-  seasonDescription: string | undefined;
-  // divisions$ = this.divisionService.divisions();
-  games$ = this.#gameService.seasonGames$;
-
-  // TODO: this is a bug that needs to be fixed!
-  // gameDivisionFilter$ = this._gameService.games$
-  // .pipe(
-  //   map(games =>
-  //     games.filter(game =>
-  //       this.selectedDivisionId ? game.DivisionID === this.selectedDivisionId  : true)
-  // ) as Game[]);
-  divisionId: any;
-  divisionId$!: Observable<number> | undefined;
-  selectedDivisionId: number = 1;
-
-  // currentDivision: Division | undefined;
-  // filteredTeams!: Team[];
-  filteredGames!: RegularGame[];
-  filteredGamesByDate!: Observable<RegularGame[]>;
 
   // Signals for reactive state
   divisions = computed(() => this.divisionService.seasonDivisions()!);
@@ -155,18 +114,10 @@ export class GamesShell implements OnInit {
   }
 
   divisionSelected(division: Division): void {
-    this.store.dispatch(new gameActions.SetCurrentDivision(division));
-    // console.log(this.user$);
-    if (division !== undefined) {
-      // this.store.dispatch(
-      // new gameActions.SetCanEdit(
-      //   this.#gameService.getCanEdit(this.user, division.divisionId)
-      // )
-      // );
-    }
+    this.divisionService.updateSelectedDivision(division);
   }
   teamSelected(team: Team): void {
-    this.store.dispatch(new gameActions.SetCurrentTeam(team));
+    this.#teamService.updateSelectedTeam(team);
   }
 
   // getCanEdit method removed - now handled by AuthService.canEditGames() computed signal

@@ -5,13 +5,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Schedule } from './components/schedule/schedule';
 import { ScheduleCardView } from './components/schedule-card-view/schedule-card-view';
 import { GameCard } from './components/game-card/game-card';
-import { GamesRoutingModule } from './games-routing.module';
-import { StoreModule } from '@ngrx/store';
-import { reducer } from './state/games.reducer';
-import { GameEffects } from './state/game.effects';
 import { GameFilter } from './components/game-filter/game-filter';
 import { GamesShell } from './containers/games-shell/games-shell';
-import { EffectsModule } from '@ngrx/effects';
 import { GameService } from '@app/services/game.service';
 import { GameSortPipe } from './game-sort.pipe';
 import { GamesTopMenu } from './components/games-top-menu/games-top-menu';
@@ -28,11 +23,8 @@ import { MatNativeDateModule } from '@angular/material/core';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    GamesRoutingModule,
     SchedulePlayoffs,
     DailyPlayoffSchedule,
-    StoreModule.forFeature('games', reducer),
-    EffectsModule.forFeature([GameEffects]),
     // GamesComponent,
     // Schedule,
     ScheduleCardView,
@@ -47,7 +39,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     // DailySchedule,
     MatNativeDateModule,
   ],
-  exports: [GamesRoutingModule],
+  exports: [],
   // GameService is providedIn: 'root' already; avoid shadowing with a feature-level provider
   providers: [],
 })

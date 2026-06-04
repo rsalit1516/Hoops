@@ -1,9 +1,8 @@
-import { Component, OnInit, Input, input, inject } from '@angular/core';
-import { Store, select } from '@ngrx/store';
+import { Component, OnInit, Input, inject, effect } from '@angular/core';
 import { AuthService } from '@app/services/auth.service';
 import { LoggerService } from '@app/services/logger.service';
-
-import * as fromGames from '../../state';
+import { DivisionService } from '@app/services/division.service';
+import { GameService } from '@app/services/game.service';
 
 import { RegularGame } from '@app/domain/regularGame';
 import { MatDialog } from '@angular/material/dialog';
@@ -16,39 +15,27 @@ import { DatePipe } from '@angular/common';
   selector: 'csbc-scores',
   templateUrl: './scores.html',
   styleUrls: ['./scores.scss', '../../containers/games-shell/games-shell.scss'],
-  imports: [
-    //
-    MatTableModule,
-    // NgIf,
-    MatButtonModule,
-    MatIconModule,
-    DatePipe
-],
+  imports: [MatTableModule, MatButtonModule, MatIconModule, DatePipe],
 })
 export class Scores implements OnInit {
-  private store = inject<Store<fromGames.State>>(Store);
   dialog = inject(MatDialog);
   private logger = inject(LoggerService);
-
   readonly authService = inject(AuthService);
+  private divisionService = inject(DivisionService);
+  private gameService = inject(GameService);
+
   dataSource!: MatTableDataSource<RegularGame>;
   groupedGames!: RegularGame[];
   _gamesByDate!: [Date, RegularGame[]];
   divisionId: number | undefined;
   flexMediaWatcher: any;
   currentScreenWidth: any;
-  get games() {
-    return this._games;
-  }
+
+  get games() { return this._games; }
   @Input()
   set games(games: RegularGame[]) {
     this._games = games;
-    //    console.log(games);
     this.dataSource = new MatTableDataSource(games);
-    //this.groupByDate(games).subscribe(grouped => {
-    // this.groupedGames = grouped;
-    //console.log(grouped);
-    //});
   }
   private _games!: RegularGame[];
 
@@ -63,26 +50,20 @@ export class Scores implements OnInit {
     'homeTeamScore',
   ];
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
   constructor() {
     this.title = 'Schedule!';
+    effect(() => {
+      this.divisionId = this.divisionService.selectedDivision()?.divisionId;
+    });
+    effect(() => {
+      const games = this.gameService.divisionGames();
+      this.games = games;
+      if (this.dataSource) this.dataSource.data = games;
+    });
   }
 
   ngOnInit() {
-    this.store
-      .pipe(select(fromGames.getCurrentDivision))
-      .subscribe((division) => {
-        if (division !== null && fromGames.getCurrentDivisionId !== undefined) {
-          this.divisionId = division?.divisionId;
-        }
-      });
-    this.store.pipe(select(fromGames.getFilteredGames)).subscribe((games) => {
-      this.games = games;
-      this.dataSource.data = games;
-    });
     this.dataSource = new MatTableDataSource(this.games);
-    // Dynamically add actions column if user can edit
     if (this.authService.canEditGames()) {
       this.displayedColumns.push('actions');
     }

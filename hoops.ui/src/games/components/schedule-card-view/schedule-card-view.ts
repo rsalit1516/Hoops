@@ -1,9 +1,7 @@
-import { Component, OnInit, Input, inject } from '@angular/core';
+import { Component, OnInit, Input, inject, effect } from '@angular/core';
 import { RegularGame } from '../../../domain/regularGame';
-import { Store, select } from '@ngrx/store';
-import * as fromGames from '../../state';
+import { GameService } from '@app/services/game.service';
 import { GameCard } from '../game-card/game-card';
-
 
 @Component({
   selector: 'csbc-schedule-card-view',
@@ -12,32 +10,25 @@ import { GameCard } from '../game-card/game-card';
   imports: [GameCard]
 })
 export class ScheduleCardView implements OnInit {
-  private store = inject<Store<fromGames.State>>(Store);
+  private gameService = inject(GameService);
 
   errorMessage: string | undefined;
   public title: string;
-  get games () {
+  get games() {
     return this._games;
   }
   @Input()
-  set games (games: RegularGame[] | null) {
+  set games(games: RegularGame[] | null) {
     this._games = games;
-    // console.log(games);
   }
   private _games!: RegularGame[] | null;
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-  constructor () {
+  constructor() {
     this.title = 'Games!';
+    effect(() => {
+      this._games = this.gameService.divisionGames();
+    });
   }
 
-  ngOnInit () {
-    this.store.select(fromGames.getFilteredGames)
-      .subscribe(games => {
-        this.games = games;
-        // this.dailySchedule = games;
-      });
-  }
+  ngOnInit() {}
 }

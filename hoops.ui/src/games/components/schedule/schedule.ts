@@ -8,10 +8,6 @@ import {
   inject,
 } from '@angular/core';
 import { RegularGame } from '../../../domain/regularGame';
-import { Store } from '@ngrx/store';
-import * as fromGames from '../../state';
-import * as gameActions from '../../state/games.actions';
-
 import { GameScoreDialog } from '../game-score-dialog/game-score-dialog';
 import { GameService } from '@app/services/game.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -34,7 +30,6 @@ import { LoggerService } from '@app/services/logger.service';
   imports: [DailySchedule],
 })
 export class Schedule implements OnInit {
-  private store = inject<Store<fromGames.State>>(Store);
   dialog = inject(MatDialog);
   private logger = inject(LoggerService);
 
@@ -86,7 +81,7 @@ export class Schedule implements OnInit {
   }
 
   editGame(game: RegularGame) {
-    this.store.dispatch(new gameActions.SetCurrentGame(game));
+    this.gameService.updateSelectedGame(game);
     const dialogRef = this.dialog.open(GameScoreDialog, {
       width: '500px',
       data: { game },

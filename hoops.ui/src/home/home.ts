@@ -6,9 +6,6 @@ import {
 } from '@angular/core';
 
 import { WebContent } from '../domain/webContent';
-import { Store } from '@ngrx/store';
-import * as gameActions from '../games/state/games.actions';
-import * as fromGames from '../games/state';
 import { SponsorList } from './components/sponsor-list/sponsor-list';
 import { CsbcAnnouncements } from './components/announcements/announcements';
 import { CsbcHomeSidebar } from './components/home-sidebar/home-sidebar';
@@ -33,7 +30,6 @@ import { SponsorService } from './sponsor.service';
 })
 export class Home implements OnInit {
   logger = inject(LoggerService);
-  readonly #gameStore = inject(Store<fromGames.State>);
   readonly #contentService = inject(ContentService);
   readonly #sponsorService = inject(SponsorService);
 
@@ -57,15 +53,6 @@ export class Home implements OnInit {
   ngOnInit(): void {
     this.setImageClass();
     this.#sponsorService.load();
-    // this.#gameStore.dispatch(new gameActions.LoadCurrentSeason());
-    // this.#gameStore.select(fromGames.getCurrentSeason).subscribe((season) => {
-    //   if ((season?.seasonId !== 0) && (season?.seasonId !== undefined)) {
-    // this.#gameStore.dispatch(new gameActions.LoadDivisions());
-    this.#gameStore.dispatch(new gameActions.LoadTeams());
-    // this.#gameStore.dispatch(new gameActions.LoadGames());
-    // this.store.dispatch(new gameActions.LoadPlayoffGames());
-    //   }
-    // });
 
     // this.#gameStore.select(fromGames.getCurrentSeason).subscribe((season) => {
     //   if (season?.seasonId !== 0) {
