@@ -13,7 +13,6 @@ import { GameService } from '@app/services/game.service';
 import { Store, select } from '@ngrx/store';
 
 import * as fromGames from '../../state';
-import * as fromUser from '../../../user/state';
 
 import * as gameActions from '../../state/games.actions';
 import { RegularGame } from '@app/domain/regularGame';
@@ -42,7 +41,6 @@ export class GamesShell implements OnInit {
   readonly #teamService = inject(TeamService);
   readonly #gameService = inject(GameService);
   private store = inject(Store<fromGames.State>);
-  private userStore = inject(Store<fromUser.State>);
   readonly #authService = inject(AuthService);
   private readonly logger = inject(LoggerService);
   readonly showAllTeams = input<boolean>();

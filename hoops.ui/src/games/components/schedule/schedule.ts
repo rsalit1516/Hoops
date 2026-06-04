@@ -10,7 +10,6 @@ import {
 import { RegularGame } from '../../../domain/regularGame';
 import { Store } from '@ngrx/store';
 import * as fromGames from '../../state';
-import * as fromUser from '../../../user/state';
 import * as gameActions from '../../state/games.actions';
 
 import { GameScoreDialog } from '../game-score-dialog/game-score-dialog';

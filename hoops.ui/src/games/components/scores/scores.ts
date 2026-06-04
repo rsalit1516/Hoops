@@ -1,14 +1,11 @@
 import { Component, OnInit, Input, input, inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
 import { AuthService } from '@app/services/auth.service';
 import { LoggerService } from '@app/services/logger.service';
 
 import * as fromGames from '../../state';
-import * as fromUser from '../../../user/state';
 
 import { RegularGame } from '@app/domain/regularGame';
-import { User } from '@app/domain/user';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
@@ -30,7 +27,6 @@ import { DatePipe } from '@angular/common';
 })
 export class Scores implements OnInit {
   private store = inject<Store<fromGames.State>>(Store);
-  private userStore = inject<Store<fromUser.State>>(Store);
   dialog = inject(MatDialog);
   private logger = inject(LoggerService);
 
@@ -58,7 +54,6 @@ export class Scores implements OnInit {
 
   errorMessage!: string;
   public title: string;
-  private user!: User;
 
   displayedColumns = [
     'gameDate',
@@ -75,10 +70,6 @@ export class Scores implements OnInit {
   }
 
   ngOnInit() {
-    this.userStore.pipe(select(fromUser.getCurrentUser)).subscribe((user) => {
-      this.user = user;
-      this.logger.debug('Current user:', this.user);
-    });
     this.store
       .pipe(select(fromGames.getCurrentDivision))
       .subscribe((division) => {

@@ -5,9 +5,6 @@ import { Observable, of } from 'rxjs';
 import { User } from '../domain/user';
 import { HttpClient } from '@angular/common/http';
 import { DataService } from './data.service';
-import { Store } from '@ngrx/store';
-import * as fromUser from '@app/user/state';
-import * as userActions from '@app/user/state/user.actions';
 
 import { Constants } from '../shared/constants';
 import { DivisionService } from './division.service';
@@ -20,7 +17,6 @@ import { LoggerService } from './logger.service';
 export class AuthService {
   readonly http = inject(HttpClient);
   readonly dataService = inject(DataService);
-  readonly store = inject(Store<fromUser.State>);
   private divisionService = inject(DivisionService);
   private userActivityService = inject(UserActivityService);
   private logger = inject(LoggerService);
@@ -129,7 +125,6 @@ export class AuthService {
   }
 
   setUserState(user: User) {
-    this.store.dispatch(new userActions.SetCurrentUser(user));
     this.currentUser.set(user);
     this.logger.info('👤 User state updated:', user.userName);
   }
@@ -158,7 +153,6 @@ export class AuthService {
    */
   private clearUserSession(): void {
     this.currentUser.set(undefined);
-    this.store.dispatch(new userActions.SetCurrentUser(undefined as any));
     this.userActivityService.clearUserSession();
     this.logger.info('🗑️ User session cleared');
   }

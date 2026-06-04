@@ -6,10 +6,6 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import * as userActions from '../../../user/state/user.actions';
-import * as fromUser from '../../../user/state';
-import { Store } from '@ngrx/store';
-
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
@@ -38,7 +34,6 @@ export class Login implements OnInit, AfterViewInit {
   #router = inject(Router);
   #route = inject(ActivatedRoute);
   fb = inject(FormBuilder);
-  store = inject(Store<fromUser.State>);
   loginForm = this.fb.group({
     userName: ['', Validators.required],
     password: ['', Validators.required],
@@ -90,8 +85,6 @@ export class Login implements OnInit, AfterViewInit {
     return this.#authService.login(userName, password).subscribe({
       next: (response) => {
         if (response !== null) {
-          this.store.dispatch(new userActions.SetCurrentUser(response));
-          this.#authService.currentUser.set(response);
           this.loginError = false;
           this.isFormValid = true;
           this.saving = false;

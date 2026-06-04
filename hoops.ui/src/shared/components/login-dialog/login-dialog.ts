@@ -5,9 +5,6 @@ import {
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
-import * as userActions from '../../../user/state/user.actions';
-import * as fromUser from '../../../user/state';
-import { Store } from '@ngrx/store';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -50,7 +47,6 @@ export class LoginDialog implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<LoginDialog>,
     private fb: UntypedFormBuilder,
-    private store: Store<fromUser.State>
   ) {}
 
   ngOnInit() {
@@ -68,30 +64,14 @@ export class LoginDialog implements OnInit {
       this.isFormValid = false;
       return;
     }
-
     const userName = this.loginForm.controls['userName'].value as string;
     const password = this.loginForm.controls['password'].value as string;
-    this.validateUser(userName, password);
-
-    const sub = this.store.select(fromUser.getCurrentUser).subscribe((user) => {
-      if (user && user.userId !== 0) {
-        sub.unsubscribe();
-        this.dialogRef.close();
-      } else {
-        // Keep the dialog open and show error only if a prior attempt failed
-        this.isFormValid = false;
-      }
-    });
-  }
-  validateUser(userName: string, password: string) {
-    return this.#authService.login(userName, password).subscribe({
+    this.#authService.login(userName, password).subscribe({
       next: (response) => {
         if (response !== null) {
           this.loginError = false;
           this.isFormValid = true;
-          // The login method now automatically calls setUserState via tap operator
-          // But we'll also dispatch to the store for compatibility
-          this.store.dispatch(new userActions.SetCurrentUser(response));
+          this.dialogRef.close();
         } else {
           this.loginError = true;
           this.isFormValid = false;

@@ -7,7 +7,6 @@ import {
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
 import { Director } from '@app/domain/director';
 // import * as fromDirector from './state';
 import { Constants } from '@app/shared/constants';

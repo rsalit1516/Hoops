@@ -6,8 +6,6 @@ import { select, Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import * as fromGames from '../state';
 import * as gameActions from '../state/admin.actions';
-import * as fromUser from '@app/user/state';
-import { User } from '@app/domain/user';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { setErrorMessage } from '@app/shared/error-message';
 import { Division } from '@app/domain/division';
@@ -19,7 +17,6 @@ import { LoggerService } from '@app/services/logger.service';
 })
 export class AdminGameService {
   private store = inject<Store<fromGames.State>>(Store);
-  private userStore = inject<Store<fromUser.State>>(Store);
 
   private http = inject(HttpClient);
   private dataService = inject(DataService);
