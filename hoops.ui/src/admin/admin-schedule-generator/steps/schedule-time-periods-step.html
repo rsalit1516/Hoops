@@ -7,6 +7,29 @@
 @for (div of s.selectedDivisions(); track div.divisionId) {
   <div class="division-slot-group mb-6">
 
+    <div class="flex gap-3 items-center flex-wrap mb-3">
+      <mat-form-field appearance="fill" style="min-width:120px;max-width:150px">
+        <mat-label>Games per Team</mat-label>
+        <input matInput type="number" min="1"
+          [value]="s.getDivisionSettings(div.divisionId).gamesPerTeam"
+          (change)="s.updateDivisionGamesPerTeam(div.divisionId, +$any($event.target).value)" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" style="min-width:120px;max-width:150px">
+        <mat-label>Max per Week</mat-label>
+        <input matInput type="number" min="1"
+          [value]="s.getDivisionSettings(div.divisionId).maxGamesPerWeekPerTeam"
+          (change)="s.updateDivisionMaxGamesPerWeek(div.divisionId, +$any($event.target).value)" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" style="min-width:130px;max-width:160px">
+        <mat-label>Game Duration (min)</mat-label>
+        <input matInput type="number" min="10"
+          [value]="s.getDivisionSettings(div.divisionId).gameDurationMinutes"
+          (change)="s.updateDivisionGameDuration(div.divisionId, +$any($event.target).value)" />
+      </mat-form-field>
+    </div>
+
     <div class="flex justify-between items-center mb-2 flex-wrap gap-2">
       <h4 class="text-base font-semibold">{{ div.divisionDescription }}</h4>
 

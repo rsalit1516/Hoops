@@ -1,38 +1,27 @@
-<div class="container">
-  <div class="flex">
-    <div class="row">
-      <div class="col-6">
-        <season-select />
-      </div>
-      <div class="col-6">
-        <division-select />
-      </div>
-    </div>
-    <div class="col-6">
-      <button mat-raised-button color="primary" (click)="addTeam()">
-        Add Team
-      </button>
+<div class="admin-toolbar">
+  <mat-toolbar>
+    <span>Teams</span>
+  </mat-toolbar>
+</div>
+
+<div class="flex gap-4 p-4 items-start">
+  <!-- Left: selectors + team list -->
+  <div class="flex-1 min-w-0">
+    <div class="flex gap-4 mb-4">
+      <season-select class="flex-1" />
+      <division-select class="flex-1" />
+      <button mat-raised-button color="primary" (click)="addTeam()">Add Team</button>
     </div>
 
-    <div class="flex">
-      <div class="col-sm-8">
-        <div id="panelSeason" class="row">
-          <div class="panel panel-primary">
-            <div class="table-wrapper">
-              <app-generic-mat-table
-                [columns]="columns"
-                [data]="dataSource.data"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
+    <app-generic-mat-table
+      [columns]="columns"
+      [data]="teams()"
+      (rowClick)="onSelect($event)"
+    />
+  </div>
 
-      <!--<div class="col-sm-8">
-        <div *ngIf="selectedDivision">
-            <csbc-season-detail [season]="selectedDivision"></csbc-season-detail>
-        </div>
-    </div>-->
-    </div>
+  <!-- Right: team edit form -->
+  <div class="w-80 flex-shrink-0">
+    <app-admin-team-detail />
   </div>
 </div>

@@ -50,7 +50,7 @@ namespace Hoops.Core.Models
 
         [Column("TeamColorID")]
         [Display(Name = "Team Color")]
-        public int TeamColorId { get; set; }
+        public int? TeamColorId { get; set; }
 
         [StringLength(4)]
         [Display(Name = "Team Number")]

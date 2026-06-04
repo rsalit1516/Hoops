@@ -1,0 +1,110 @@
+<mat-card class="admin-detail-scroll">
+  <mat-card-header>
+    <mat-card-title>New Season</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    @if (seasonCreated()) {
+      <p class="mb-4 text-green-700 font-medium">
+        Season "{{ newSeasonName() }}" created successfully. Review your divisions below, then click Finish.
+      </p>
+    }
+
+    <div class="flex gap-6 items-start">
+
+      <!-- Left: Season Info form -->
+      <div class="flex-1 min-w-0">
+        <form [formGroup]="form">
+          <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Season Name</mat-label>
+            <input matInput type="text" formControlName="name" />
+            <mat-error>Season name is required.</mat-error>
+          </mat-form-field>
+
+          <div class="flex gap-4">
+            <mat-form-field appearance="fill" class="flex-1">
+              <mat-label>Season Start</mat-label>
+              <input matInput [matDatepicker]="startPicker" formControlName="startDate" />
+              <mat-datepicker-toggle matSuffix [for]="startPicker" />
+              <mat-datepicker #startPicker />
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="flex-1">
+              <mat-label>Season End</mat-label>
+              <input matInput [matDatepicker]="endPicker" formControlName="endDate" />
+              <mat-datepicker-toggle matSuffix [for]="endPicker" />
+              <mat-datepicker #endPicker />
+            </mat-form-field>
+          </div>
+
+          <div class="flex gap-4">
+            <mat-form-field appearance="fill" class="flex-1">
+              <mat-label>Player Fee</mat-label>
+              <input matInput type="number" formControlName="playerFee" />
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="flex-1">
+              <mat-label>Sponsor Fee</mat-label>
+              <input matInput type="number" formControlName="sponsorFee" />
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="flex-1">
+              <mat-label>Sponsor Discount</mat-label>
+              <input matInput type="text" formControlName="sponsorDiscount" />
+            </mat-form-field>
+          </div>
+
+          <div class="flex gap-4">
+            <mat-form-field appearance="fill" class="flex-1">
+              <mat-label>Online Sign-up Start</mat-label>
+              <input matInput [matDatepicker]="onlineStartPicker" formControlName="signUpStartDate" />
+              <mat-datepicker-toggle matSuffix [for]="onlineStartPicker" />
+              <mat-datepicker #onlineStartPicker />
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="flex-1">
+              <mat-label>Online Sign-up Stop</mat-label>
+              <input matInput [matDatepicker]="onlineStopPicker" formControlName="signUpEndDate" />
+              <mat-datepicker-toggle matSuffix [for]="onlineStopPicker" />
+              <mat-datepicker #onlineStopPicker />
+            </mat-form-field>
+          </div>
+
+          <div class="flex gap-6 mt-2">
+            <mat-checkbox formControlName="currentSeason">Current Season</mat-checkbox>
+            <mat-checkbox formControlName="currentSignUps">Current Sign-ups</mat-checkbox>
+            <mat-checkbox formControlName="currentSchedule">Current Schedule</mat-checkbox>
+          </div>
+        </form>
+      </div>
+
+      <!-- Right: Division & Team setup -->
+      <div class="w-80 flex-shrink-0">
+        <h3 class="text-sm font-semibold mb-2">Divisions &amp; Teams</h3>
+        <division-template-setup [rows]="rows()" />
+      </div>
+
+    </div>
+
+    @if (saving() || creatingDivisions()) {
+      <mat-progress-bar mode="indeterminate" class="mt-4" />
+    }
+  </mat-card-content>
+
+  <mat-card-actions>
+    @if (!seasonCreated()) {
+      <button
+        type="button"
+        mat-raised-button
+        color="primary"
+        [disabled]="!form.valid || saving() || creatingDivisions() || !canCreateDivisions()"
+        (click)="save()"
+      >
+        Save Season &amp; Create Divisions
+      </button>
+      <button type="button" mat-stroked-button (click)="finish()">Cancel</button>
+    } @else {
+      <button type="button" mat-raised-button color="primary" (click)="finish()">Finish</button>
+    }
+  </mat-card-actions>
+</mat-card>

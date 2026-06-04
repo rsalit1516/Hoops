@@ -56,13 +56,7 @@ export class SeasonsToolbar implements OnInit {
   }
 
   addSeason() {
-    const season = new Season();
-    season.seasonId = 0;
-    this.#seasonService.updateSelectedSeason(season);
-
-    this.logger.info('Adding new season:', season);
-
-    //this.store.dispatch(new adminActions.SetSelectedSeason(season));
-    this.router.navigate(['/admin/seasons/detail']);
+    this.logger.info('Navigating to new season wizard');
+    this.router.navigate(['/admin/seasons/new']);
   }
 }
