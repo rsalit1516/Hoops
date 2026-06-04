@@ -85,6 +85,7 @@ namespace Hoops.Functions.Functions
             {
                 return req.CreateResponse(HttpStatusCode.BadRequest);
             }
+            if (body.TeamColorId == 0) body.TeamColorId = null;
 
             _repository.Update(body);
             try
@@ -129,6 +130,7 @@ namespace Hoops.Functions.Functions
             {
                 return req.CreateResponse(HttpStatusCode.BadRequest);
             }
+            if (body.TeamColorId == 0) body.TeamColorId = null;
             _repository.Insert(body);
             await _repository.SaveChangesAsync();
             var created = req.CreateResponse(HttpStatusCode.Created);

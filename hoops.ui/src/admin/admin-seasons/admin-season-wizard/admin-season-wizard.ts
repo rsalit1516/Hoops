@@ -197,7 +197,7 @@ export class AdminSeasonWizard {
             team.teamId = 0;
             team.divisionId = (created as Division).divisionId;
             team.teamNumber = String(i + 1);
-            team.teamColorId = 0;
+            team.teamName = `Team ${i + 1}`;
             this.#teamService.addTeam(team).pipe(catchError(() => of(null))).subscribe();
           }
         }),
