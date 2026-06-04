@@ -5,11 +5,8 @@ import {
   OnInit,
 } from '@angular/core';
 
-import * as fromHome from './state';
-import { Store } from '@ngrx/store';
-import { Observable, of } from 'rxjs';
 import { WebContent } from '../domain/webContent';
-
+import { Store } from '@ngrx/store';
 import * as gameActions from '../games/state/games.actions';
 import * as fromGames from '../games/state';
 import { SponsorList } from './components/sponsor-list/sponsor-list';
@@ -36,7 +33,6 @@ import { SponsorService } from './sponsor.service';
 })
 export class Home implements OnInit {
   logger = inject(LoggerService);
-  readonly #store = inject(Store<fromHome.State>);
   readonly #gameStore = inject(Store<fromGames.State>);
   readonly #contentService = inject(ContentService);
   readonly #sponsorService = inject(SponsorService);
@@ -48,9 +44,6 @@ export class Home implements OnInit {
   topImage = '../../assets/images/CSBCTopImage.jpg';
   errorMessage: string | undefined;
   activeWebContent = computed(() => this.#contentService.activeWebContent);
-  //   currentSeason$ = this.seasonService.getCurrent();
-  content$ = this.#store.select(fromHome.getContent);
-  showSidebar$ = of(true);
   meetingNotices: WebContent[] | undefined;
 
   showSidebar = false;
