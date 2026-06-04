@@ -6,6 +6,7 @@ import { select, Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import * as fromGames from '../state';
 import * as gameActions from '../state/admin.actions';
+import { User } from '@app/domain/user';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { setErrorMessage } from '@app/shared/error-message';
 import { Division } from '@app/domain/division';

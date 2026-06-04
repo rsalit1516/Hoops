@@ -4,7 +4,6 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing';
 import { signal } from '@angular/core';
-import { Store } from '@ngrx/store';
 
 import { AuthService } from './auth.service';
 import { DataService } from './data.service';
@@ -40,13 +39,11 @@ const MOCK_DIVISION: Division = {
 // ─────────────────────────────────────────────────────────────────────────────
 
 describe('AuthService', () => {
-  let mockStore: jasmine.SpyObj<Store<any>>;
   let mockUserActivityService: jasmine.SpyObj<UserActivityService>;
   let mockLoggerService: jasmine.SpyObj<LoggerService>;
   let mockDivisionService: { selectedDivision: ReturnType<typeof signal<Division | undefined>> };
 
   function buildMocks(): void {
-    mockStore = jasmine.createSpyObj('Store', ['dispatch', 'pipe', 'select']);
     mockUserActivityService = jasmine.createSpyObj('UserActivityService', [
       'loadUserSession',
       'saveUserSession',
@@ -72,7 +69,6 @@ describe('AuthService', () => {
       imports: [HttpClientTestingModule],
       providers: [
         AuthService,
-        { provide: Store, useValue: mockStore },
         { provide: DivisionService, useValue: mockDivisionService },
         { provide: UserActivityService, useValue: mockUserActivityService },
         { provide: LoggerService, useValue: mockLoggerService },
@@ -194,10 +190,9 @@ describe('AuthService', () => {
     // ── setUserState ────────────────────────────────────────────────────────
 
     describe('setUserState', () => {
-      it('sets currentUser and dispatches a store action', () => {
+      it('sets currentUser signal', () => {
         service.setUserState(regularUser);
         expect(service.currentUser()).toEqual(regularUser);
-        expect(mockStore.dispatch).toHaveBeenCalled();
       });
     });
 
@@ -247,7 +242,6 @@ describe('AuthService', () => {
 
         expect(service.currentUser()).toBeUndefined();
         expect(mockUserActivityService.clearUserSession).toHaveBeenCalled();
-        expect(mockStore.dispatch).toHaveBeenCalled();
       });
 
       it('clears user session even when logout request errors', () => {
