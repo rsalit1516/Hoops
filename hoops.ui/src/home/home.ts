@@ -5,13 +5,6 @@ import {
   OnInit,
 } from '@angular/core';
 
-import * as fromHome from './state';
-import { Store } from '@ngrx/store';
-import { Observable, of } from 'rxjs';
-import { WebContent } from '../domain/webContent';
-
-import * as gameActions from '../games/state/games.actions';
-import * as fromGames from '../games/state';
 import { SponsorList } from './components/sponsor-list/sponsor-list';
 import { CsbcAnnouncements } from './components/announcements/announcements';
 import { CsbcHomeSidebar } from './components/home-sidebar/home-sidebar';
@@ -20,6 +13,7 @@ import { HomeCenter } from './components/home-center/home-center';
 import { LoggerService } from '@app/services/logger.service';
 import { ContentService } from '@app/admin/web-content/content.service';
 import { SponsorService } from './sponsor.service';
+import { WebContent } from '../domain/webContent';
 
 @Component({
   selector: 'csbc-home',
@@ -36,8 +30,6 @@ import { SponsorService } from './sponsor.service';
 })
 export class Home implements OnInit {
   logger = inject(LoggerService);
-  readonly #store = inject(Store<fromHome.State>);
-  readonly #gameStore = inject(Store<fromGames.State>);
   readonly #contentService = inject(ContentService);
   readonly #sponsorService = inject(SponsorService);
 
@@ -48,11 +40,6 @@ export class Home implements OnInit {
   topImage = '../../assets/images/CSBCTopImage.jpg';
   errorMessage: string | undefined;
   activeWebContent = computed(() => this.#contentService.activeWebContent);
-  //   currentSeason$ = this.seasonService.getCurrent();
-  content$ = this.#store.select(fromHome.getContent);
-  showSidebar$ = of(true);
-  meetingNotices: WebContent[] | undefined;
-
   showSidebar = false;
   showSponsors = computed(() => this.#sponsorService.sponsors().length > 0);
   imageClass = 'col-sm-8 offset-sm-2 col-12';
@@ -64,11 +51,6 @@ export class Home implements OnInit {
   ngOnInit(): void {
     this.setImageClass();
     this.#sponsorService.load();
-    // this.#gameStore.dispatch(new gameActions.LoadCurrentSeason());
-    // this.#gameStore.select(fromGames.getCurrentSeason).subscribe((season) => {
-    //   if ((season?.seasonId !== 0) && (season?.seasonId !== undefined)) {
-    // this.#gameStore.dispatch(new gameActions.LoadDivisions());
-    this.#gameStore.dispatch(new gameActions.LoadTeams());
     // this.#gameStore.dispatch(new gameActions.LoadGames());
     // this.store.dispatch(new gameActions.LoadPlayoffGames());
     //   }
@@ -105,7 +87,6 @@ export class Home implements OnInit {
   }
 
   setImageClass(): void {
-    const results = this.meetingNotices!;
     // this.showSidebar = results.length > 0;
     // if (results.length > 0) {
     //   this.imageClass = 'col-sm-8 col-md-9 col-12';

@@ -3,10 +3,6 @@ import { Observable } from 'rxjs';
 import { Standing } from '@app/domain/standing';
 import { Season } from '@app/domain/season';
 import { Division } from '@app/domain/division';
-import { Store, select } from '@ngrx/store';
-
-import * as fromGames from '../../state';
-
 import { Standings } from '@app/games/components/standings/standings';
 import { GameService } from '@app/services/game.service';
 

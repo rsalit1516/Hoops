@@ -14,9 +14,6 @@ import { SeasonService } from '../../../services/season.service';
 import { DivisionService } from '@app/services/division.service';
 import { Division } from '../../../domain/division';
 import { Season } from '../../../domain/season';
-import { Store } from '@ngrx/store';
-import * as fromAdmin from '../../state';
-
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
@@ -56,7 +53,6 @@ export class DivisionList implements OnInit, OnChanges {
   selectedSeason = input<Season>();
   readonly divisionService = inject(DivisionService);
   #seasonService = inject(SeasonService);
-  private store = inject(Store<fromAdmin.State>);
   #router = inject(Router);
   private readonly logger = inject(LoggerService);
 

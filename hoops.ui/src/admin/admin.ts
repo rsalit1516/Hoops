@@ -1,9 +1,6 @@
 import { Component, OnInit, NgZone, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
-import { Store } from '@ngrx/store';
-
-import * as fromContent from './state';
 import { MatSidenav } from '@angular/material/sidenav';
 
 class MenuItem {

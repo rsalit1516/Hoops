@@ -13,9 +13,6 @@ import {
   signal,
 } from '@angular/core';
 import { of, Subject } from 'rxjs';
-import { select, Store } from '@ngrx/store';
-
-import * as fromAdmin from '../admin/state';
 import { Constants } from '@app/shared/constants';
 // import { setErrorMessage } from '@app/shared/error-message';
 import { LoggerService } from './logger.service';
@@ -29,7 +26,6 @@ export class DivisionService {
   #http = inject(HttpClient);
   #dataService = inject(DataService);
   private readonly seasonService = inject(SeasonService);
-  #store = inject(Store<fromAdmin.State>);
   private readonly logger = inject(LoggerService);
   selectedSeason = computed(() => this.seasonService.selectedSeason);
 

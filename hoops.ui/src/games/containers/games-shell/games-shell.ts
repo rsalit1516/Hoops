@@ -10,12 +10,6 @@ import { SeasonService } from '@app/services/season.service';
 import { DivisionService } from '@app/services/division.service';
 import { TeamService } from '@app/services/team.service';
 import { GameService } from '@app/services/game.service';
-import { Store, select } from '@ngrx/store';
-
-import * as fromGames from '../../state';
-import * as fromUser from '../../../user/state';
-
-import * as gameActions from '../../state/games.actions';
 import { RegularGame } from '@app/domain/regularGame';
 import { Team } from '@app/domain/team';
 import { Division } from '@app/domain/division';
@@ -41,8 +35,6 @@ export class GamesShell implements OnInit {
   private readonly divisionService = inject(DivisionService);
   readonly #teamService = inject(TeamService);
   readonly #gameService = inject(GameService);
-  private store = inject(Store<fromGames.State>);
-  private userStore = inject(Store<fromUser.State>);
   readonly #authService = inject(AuthService);
   private readonly logger = inject(LoggerService);
   readonly showAllTeams = input<boolean>();
@@ -157,18 +149,10 @@ export class GamesShell implements OnInit {
   }
 
   divisionSelected(division: Division): void {
-    this.store.dispatch(new gameActions.SetCurrentDivision(division));
-    // console.log(this.user$);
-    if (division !== undefined) {
-      // this.store.dispatch(
-      // new gameActions.SetCanEdit(
-      //   this.#gameService.getCanEdit(this.user, division.divisionId)
-      // )
-      // );
-    }
+    this.divisionService.updateSelectedDivision(division);
   }
   teamSelected(team: Team): void {
-    this.store.dispatch(new gameActions.SetCurrentTeam(team));
+    this.#teamService.updateSelectedTeam(team);
   }
 
   // getCanEdit method removed - now handled by AuthService.canEditGames() computed signal

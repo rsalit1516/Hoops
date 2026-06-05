@@ -28,8 +28,6 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Season } from '@app/domain/season';
 import { SeasonService } from '@app/services/season.service';
 import { AuthService } from '@app/services/auth.service';
-import { Store } from '@ngrx/store';
-import * as fromAdmin from '../../state';
 import { LoggerService } from '@app/services/logger.service';
 
 @Component({
@@ -63,7 +61,6 @@ export class AdminSeasonDetail implements OnInit {
   readonly router = inject(Router);
   private snackBar = inject(MatSnackBar);
   private logger = inject(LoggerService);
-  store = inject(Store<fromAdmin.State>);
   startDatePicker!: MatDatepickerPanel<MatDatepickerControl<any>, any, any>;
 
   selectedSeason = computed(() => this.seasonService.selectedSeason());

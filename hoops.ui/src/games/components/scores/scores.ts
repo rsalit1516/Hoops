@@ -1,14 +1,7 @@
-import { Component, OnInit, Input, input, inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { Store, select } from '@ngrx/store';
+import { Component, OnInit, Input, inject } from '@angular/core';
 import { AuthService } from '@app/services/auth.service';
 import { LoggerService } from '@app/services/logger.service';
-
-import * as fromGames from '../../state';
-import * as fromUser from '../../../user/state';
-
 import { RegularGame } from '@app/domain/regularGame';
-import { User } from '@app/domain/user';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
@@ -29,8 +22,6 @@ import { DatePipe } from '@angular/common';
 ],
 })
 export class Scores implements OnInit {
-  private store = inject<Store<fromGames.State>>(Store);
-  private userStore = inject<Store<fromUser.State>>(Store);
   dialog = inject(MatDialog);
   private logger = inject(LoggerService);
 
@@ -58,8 +49,6 @@ export class Scores implements OnInit {
 
   errorMessage!: string;
   public title: string;
-  private user!: User;
-
   displayedColumns = [
     'gameDate',
     'visitingTeamName',
@@ -75,23 +64,7 @@ export class Scores implements OnInit {
   }
 
   ngOnInit() {
-    this.userStore.pipe(select(fromUser.getCurrentUser)).subscribe((user) => {
-      this.user = user;
-      this.logger.debug('Current user:', this.user);
-    });
-    this.store
-      .pipe(select(fromGames.getCurrentDivision))
-      .subscribe((division) => {
-        if (division !== null && fromGames.getCurrentDivisionId !== undefined) {
-          this.divisionId = division?.divisionId;
-        }
-      });
-    this.store.pipe(select(fromGames.getFilteredGames)).subscribe((games) => {
-      this.games = games;
-      this.dataSource.data = games;
-    });
     this.dataSource = new MatTableDataSource(this.games);
-    // Dynamically add actions column if user can edit
     if (this.authService.canEditGames()) {
       this.displayedColumns.push('actions');
     }

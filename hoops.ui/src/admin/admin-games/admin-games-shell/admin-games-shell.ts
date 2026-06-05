@@ -7,12 +7,6 @@ import {
   untracked,
   ViewChild,
 } from '@angular/core';
-import { Store } from '@ngrx/store';
-
-import * as adminActions from '../../state/admin.actions';
-import * as fromAdmin from '../../state';
-
-// import { GameService } from '@app/services/game.service';
 import { Season } from '@app/domain/season';
 import { RegularGame } from '@app/domain/regularGame';
 
@@ -58,14 +52,11 @@ export class AdminGamesShell implements OnInit {
   router = inject(Router);
   readonly gameService = inject(AdminGameService);
   private readonly regularGameService = inject(GameService);
-  private store = inject(Store<fromAdmin.State>);
   state = inject(AdminGamesState);
 
   pageTitle = 'Game Management';
   title = 'Game Management';
   isSidenavOpen = false;
-  seasons$ = this.store.select(fromAdmin.getSeasons);
-  divisions$ = this.store.select(fromAdmin.getSeasonDivisions);
   showRegularSeason = signal<boolean>(true);
   showPlayoffs = signal<boolean>(false);
   games: RegularGame[] | undefined;

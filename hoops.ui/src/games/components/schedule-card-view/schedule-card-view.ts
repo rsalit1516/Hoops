@@ -1,8 +1,5 @@
 import { Component, OnInit, Input, inject } from '@angular/core';
 import { RegularGame } from '../../../domain/regularGame';
-import { Store, select } from '@ngrx/store';
-import * as fromGames from '../../state';
-import * as fromUser from '../../../user/state';
 import { GameCard } from '../game-card/game-card';
 
 
@@ -13,9 +10,6 @@ import { GameCard } from '../game-card/game-card';
   imports: [GameCard]
 })
 export class ScheduleCardView implements OnInit {
-  private store = inject<Store<fromGames.State>>(Store);
-  private userStore = inject<Store<fromUser.State>>(Store);
-
   errorMessage: string | undefined;
   public title: string;
   get games () {
@@ -35,11 +29,5 @@ export class ScheduleCardView implements OnInit {
     this.title = 'Games!';
   }
 
-  ngOnInit () {
-    this.store.select(fromGames.getFilteredGames)
-      .subscribe(games => {
-        this.games = games;
-        // this.dailySchedule = games;
-      });
-  }
+  ngOnInit () {}
 }

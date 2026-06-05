@@ -10,8 +10,6 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { Store } from '@ngrx/store';
-import * as fromGames from '../../state';
 import { Subject, Observable, Subscription } from 'rxjs';
 import {
   NavigationEnd,
@@ -47,7 +45,6 @@ import { LoggerService } from '@app/services/logger.service';
 export class GamesTopMenu implements OnInit, OnDestroy {
   private routeSub?: Subscription;
   private router = inject(Router);
-  private store = inject(Store<fromGames.State>);
   private logger = inject(LoggerService);
 
   divisions = input.required<Division[]>();

@@ -8,9 +8,6 @@ import {
 } from '@angular/core';
 import { catchError, tap } from 'rxjs/operators';
 
-import * as fromGames from '../games/state';
-import { Store } from '@ngrx/store';
-
 import { Team } from '../domain/team';
 import { DataService } from './data.service';
 import { HttpClient } from '@angular/common/http';

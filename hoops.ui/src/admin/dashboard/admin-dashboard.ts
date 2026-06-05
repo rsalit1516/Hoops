@@ -1,14 +1,9 @@
 import { Component, computed, inject, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
-
 import { Season } from '@app/domain/season';
 import { Division } from '@app/domain/division';
 import { TeamService } from '@app/services/team.service';
 import { Team } from '@app/domain/team';
 import { Router } from '@angular/router';
-
-import * as fromAdmin from '../state';
-import * as adminActions from '../state/admin.actions';
 import { RegularGame } from '@app/domain/regularGame';
 
 import { MatCardModule } from '@angular/material/card';
@@ -42,7 +37,6 @@ import { DashboardSummary } from '../components/dashboard-summary/dashboard-summ
 ]
 })
 export class AdminDashboard implements OnInit {
-  private store = inject(Store<fromAdmin.State>);
   readonly #seasonService = inject(SeasonService);
   readonly #divisionService = inject(DivisionService);
   readonly #teamService = inject(TeamService);
@@ -133,8 +127,6 @@ export class AdminDashboard implements OnInit {
     // this.router.navigate(['/admin/division']);
   }
   setTeam (team: Team) {
-    this.store.dispatch(new adminActions.SetSelectedTeam(team));
-
-    // this.router.navigate(['/admin/division']);
+    this.#teamService.updateSelectedTeam(team);
   }
 }

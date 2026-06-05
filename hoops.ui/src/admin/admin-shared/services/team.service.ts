@@ -1,99 +1,62 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { AdminActionTypes } from '@app/admin/state/admin.actions';
+import { inject, Injectable } from '@angular/core';
 import { Team } from '@app/domain/team';
 import { DataService } from '@app/services/data.service';
+import { DivisionService } from '@app/services/division.service';
+import { TeamService as MainTeamService } from '@app/services/team.service';
 import { Constants } from '@app/shared/constants';
-import { select, Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import * as fromAdmin from '../../state';
-import * as adminActions from '../../state/admin.actions';
 import { LoggerService } from '@app/services/logger.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TeamService {
-  constructor(
-    private dataService: DataService,
-    private store: Store<fromAdmin.State>,
-    private http: HttpClient,
-    private logger: LoggerService
-  ) {}
+  private readonly dataService = inject(DataService);
+  private readonly http = inject(HttpClient);
+  private readonly logger = inject(LoggerService);
+  private readonly divisionService = inject(DivisionService);
+  private readonly mainTeamService = inject(MainTeamService);
 
   filterTeamsByDivision(div: number): Observable<Team[]> {
-    let filteredTeams: Team[] = [];
-    // console.log(filteredTeams);
-    this.store.pipe(select(fromAdmin.getSeasonTeams)).subscribe((teams) => {
-      //console.log(teams);
-      teams?.forEach((team) => {
-        if (team.divisionId === div) {
-          const t: Team = {
-            teamId: team.teamId,
-            divisionId: team.divisionId,
-            name: team.teamName,
-            teamName: team.teamName,
-            teamNumber: team.teamNumber,
-            teamColorId: team.teamColorId,
-          };
-          // console.log(t);
-          filteredTeams = [...filteredTeams, t]; // .push(t);
-        }
-      });
-    });
-    // this.store.pipe(select(fromGames.getTeams)).subscribe((allTeams) => {
-    //   allTeams.forEach((element) => {
-    //     if (element.divisionId === div) {
-    //       filteredTeams.push(element);
-    //     }
-    //   });
-    // });
-    return of(filteredTeams);
+    return of(this.mainTeamService.filterTeamsByDivision(div));
   }
+
   saveTeam(team: Team): void {
     this.logger.info('Saving team:', team);
-
     if (team.teamId === 0) {
-      this.addTeam(team).subscribe((team) => {
-        this.logger.info('Team created:', team);
-        this.store.dispatch(new adminActions.LoadSeasonTeams());
+      this.addTeam(team).subscribe((savedTeam) => {
+        this.logger.info('Team created:', savedTeam);
+        this.mainTeamService.getSeasonTeams();
       });
     } else {
-      this.updateTeam(team).subscribe((team) => {
-        this.store.dispatch(new adminActions.LoadSeasonTeams());
+      this.updateTeam(team).subscribe(() => {
+        this.mainTeamService.getSeasonTeams();
       });
     }
   }
+
   addTeam(team: Team): Observable<Team | ArrayBuffer> {
     this.logger.debug('Adding team to URL:', Constants.teamPostUrl);
     return this.http
-      .post<Team>(
-        Constants.teamPostUrl,
-        team,
-         this.dataService.httpOptions
-      )
+      .post<Team>(Constants.teamPostUrl, team, this.dataService.httpOptions)
       .pipe(catchError(this.dataService.handleError('addTeam', team)));
   }
+
   addNewTeamDefaults(team: Team) {
-    this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
-      let d = division?.divisionId;
-      team.divisionId = d as number;
-      return team;
-    });
+    team.divisionId = this.divisionService.selectedDivision()?.divisionId ?? 0;
     return team;
   }
+
   newTeam() {
-    let team = new Team();
+    const team = new Team();
     team.teamId = 0;
-    this.store.select(fromAdmin.getSelectedDivision).subscribe((division) => {
-      let d = division?.divisionId;
-      team.divisionId = d as number;
-      return team;
-    });
+    team.divisionId = this.divisionService.selectedDivision()?.divisionId ?? 0;
     return team;
   }
-  updateTeam (team: Team) {
+
+  updateTeam(team: Team) {
     return this.http
       .put<Team>(
         Constants.teamPutUrl + team.teamId,

@@ -1,9 +1,5 @@
 import { Component, computed, effect, inject, OnInit } from '@angular/core';
 import { Team } from '@app/domain/team';
-import { Store } from '@ngrx/store';
-
-import * as fromAdmin from '../../state';
-import * as adminActions from '../../state/admin.actions';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 
@@ -32,7 +28,6 @@ import { LoggerService } from '@app/services/logger.service';
 })
 export class AdminTeamList implements OnInit {
   readonly #teamService = inject(TeamService);
-  private store = inject(Store<fromAdmin.State>);
   private logger = inject(LoggerService);
   title = 'Team List';
   teams = computed(() => this.#teamService.divisionTeams);

@@ -1,9 +1,4 @@
 import { Component, computed, inject, OnInit, output } from '@angular/core';
-import * as fromUser from '../../../user/state';
-import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { User } from '@app/domain/user';
-
 import { RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
@@ -18,7 +13,6 @@ import { FeatureFlagService } from '@app/shared/services/feature-flags';
 })
 export class SidenavList implements OnInit {
   private authService = inject(AuthService);
-  readonly store = inject(Store<fromUser.State>);
   private featureFlags = inject(FeatureFlagService);
 
   readonly sidenavClose = output();

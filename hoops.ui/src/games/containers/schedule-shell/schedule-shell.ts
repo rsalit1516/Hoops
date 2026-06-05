@@ -10,11 +10,6 @@ import { Observable, EMPTY } from 'rxjs';
 import { Season } from '@domain/season';
 import { Division } from '@app/domain/division';
 import { Team } from '@app/domain/team';
-import { Store } from '@ngrx/store';
-
-import * as fromGames from '../../state';
-import * as gameActions from '../../state/games.actions';
-
 import { RegularGame } from '@app/domain/regularGame';
 import { PlayoffGame } from '@app/domain/playoffGame';
 import { catchError } from 'rxjs/operators';

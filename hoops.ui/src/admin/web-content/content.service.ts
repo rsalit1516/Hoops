@@ -6,9 +6,6 @@ import { HttpClient } from '@angular/common/http';
 import { Content } from '../../domain/content';
 import { DataService } from '../../services/data.service';
 
-import * as fromContent from '../state';
-
-import { Store } from '@ngrx/store';
 import { WebContentType } from '@app/domain/webContentType';
 import { WebContent } from '../../domain/webContent';
 import { Observable, of } from 'rxjs';
@@ -22,7 +19,6 @@ import { LoggerService } from '@app/services/logger.service';
 export class ContentService {
   private readonly http = inject(HttpClient);
   readonly data = inject(DataService);
-  readonly store = inject(Store<fromContent.State>);
   private readonly logger = inject(LoggerService);
 
   selectedContent$!: Observable<any>;

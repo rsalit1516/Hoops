@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { provideMockStore } from '@ngrx/store/testing';
 import { signal } from '@angular/core';
 import { provideRouter, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -42,7 +41,6 @@ describe('AdminSeasonDetail', () => {
     await TestBed.configureTestingModule({
       imports: [AdminSeasonDetail, HttpClientTestingModule],
       providers: [
-        provideMockStore(),
         provideRouter([]),
         { provide: SeasonService, useValue: mockSeasonService },
         { provide: AuthService, useValue: mockAuthService },

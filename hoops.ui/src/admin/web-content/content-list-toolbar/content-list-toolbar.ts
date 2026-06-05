@@ -1,11 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
-
 import { Content } from '../../../domain/content';
-
-import * as fromContent from '../../state';
-import * as contentActions from '../../state/admin.actions';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -27,15 +22,10 @@ import { LoggerService } from '@app/services/logger.service';
 })
 export class ContentListToolbar implements OnInit {
   private router = inject(Router);
-  private store = inject<Store<fromContent.State>>(Store);
   private logger = inject(LoggerService);
 
   readonly #contentService = inject(ContentService);
   checked = true;
-  isActiveContent$ = this.store.select(fromContent.getIsActiveOnly);
-  // filterForm = this.fb.group({
-  //   activeContent: true
-  // });
   isActive = signal<boolean>(true);
   activeLabel = 'Active Only';
 
@@ -55,7 +45,7 @@ export class ContentListToolbar implements OnInit {
 
   addContent() {
     const content = new Content();
-    this.store.dispatch(new contentActions.SetSelectedContent(content));
+    this.#contentService.selectedContent.set(content as any);
     this.router.navigate(['./admin/content/edit']);
   }
   filterContent(checked: boolean) {

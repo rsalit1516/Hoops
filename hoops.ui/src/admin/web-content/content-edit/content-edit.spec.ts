@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ChangeDetectorRef } from '@angular/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialog } from '@angular/material/dialog';
-import { Store } from '@ngrx/store';
 import { signal } from '@angular/core';
 import { of, throwError } from 'rxjs';
 
@@ -15,8 +14,6 @@ import { LoggerService } from '@app/services/logger.service';
 import { WebContent } from '@app/domain/webContent';
 import { Content } from '@app/domain/content';
 import { WebContentType } from '@app/domain/webContentType';
-import * as contentActions from '@app/admin/state/admin.actions';
-
 describe('ContentEdit', () => {
   let component: ContentEdit;
   let fixture: ComponentFixture<ContentEdit>;
@@ -24,7 +21,6 @@ describe('ContentEdit', () => {
   let mockNoticeTypesService: jasmine.SpyObj<NoticeTypesService>;
   let mockLoggerService: jasmine.SpyObj<LoggerService>;
   let mockRouter: jasmine.SpyObj<Router>;
-  let mockStore: jasmine.SpyObj<Store>;
   let mockChangeDetectorRef: jasmine.SpyObj<ChangeDetectorRef>;
 
   const mockWebContent: WebContent = {
@@ -99,7 +95,6 @@ describe('ContentEdit', () => {
       'warn',
     ]);
     const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
-    const storeSpy = jasmine.createSpyObj('Store', ['dispatch']);
     const changeDetectorRefSpy = jasmine.createSpyObj('ChangeDetectorRef', [
       'markForCheck',
     ]);
@@ -111,7 +106,6 @@ describe('ContentEdit', () => {
         { provide: NoticeTypesService, useValue: noticeTypesServiceSpy },
         { provide: LoggerService, useValue: loggerServiceSpy },
         { provide: Router, useValue: routerSpy },
-        { provide: Store, useValue: storeSpy },
         { provide: MatDialog, useValue: {} }, // Simple empty mock since we're not testing dialog functionality
         { provide: ChangeDetectorRef, useValue: changeDetectorRefSpy },
         {

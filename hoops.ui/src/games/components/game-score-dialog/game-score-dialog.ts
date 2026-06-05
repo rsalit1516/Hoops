@@ -15,8 +15,6 @@ import {
 } from '@angular/forms';
 import { GameService } from '@app/services/game.service';
 
-// import * as fromGames from '../../state';
-// import { Store, select } from '@ngrx/store';
 import { RegularGame } from '@app/domain/regularGame';
 import {
   MatDialogRef,

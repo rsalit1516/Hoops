@@ -1,8 +1,6 @@
 import { Component, inject, computed, input } from '@angular/core';
 import { RegularGame } from '@app/domain/regularGame';
-import { Store } from '@ngrx/store';
 import { GameScoreDialog } from '../game-score-dialog/game-score-dialog';
-import * as fromGames from '../../state';
 import { MatDialog } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { TeamDisplayPipe } from '@app/shared/pipes/team-display.pipe';
@@ -19,7 +17,6 @@ import { LoggerService } from '@app/services/logger.service';
   imports: [MatButtonModule, MatIconModule, DatePipe, TeamDisplayPipe],
 })
 export class DailySchedule {
-  private store = inject<Store<fromGames.State>>(Store);
   private dialog = inject(MatDialog);
   private logger = inject(LoggerService);
   private authService = inject(AuthService);

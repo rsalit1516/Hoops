@@ -7,10 +7,6 @@ import {
   input,
   output,
 } from '@angular/core';
-import { Store } from '@ngrx/store';
-
-import * as fromGames from '../../state';
-import * as gameActions from '../../state/games.actions';
 import { Division } from '@app/domain/division';
 import { Team } from '@app/domain/team';
 import { GameService } from '@app/services/game.service';
@@ -49,10 +45,7 @@ export class GameFilter implements OnInit {
   readonly #gameService = inject(GameService);
   readonly #teamService = inject(TeamService);
   readonly #seasonService = inject(SeasonService);
-  // readonly divisions = input.required<Division[]>();
   readonly display = input.required<string>();
-  // divisionService = inject(GameService);
-  gameStore = inject(Store<fromGames.State>);
   showAllTeams!: boolean;
   // readonly selectedTeam = output<Team>();
   selectedDivision = computed(() => this.divisionService.selectedDivision());

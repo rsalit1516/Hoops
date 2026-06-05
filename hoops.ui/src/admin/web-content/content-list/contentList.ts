@@ -10,12 +10,8 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
 
 import { Content } from '../../../domain/content';
-
-import * as fromContent from '../../state';
-import * as contentActions from '../../state/admin.actions';
 import { WebContent } from '../../../domain/webContent';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -49,8 +45,6 @@ import {
 })
 export class ContentList implements OnInit {
   router = inject(Router);
-  store = inject(Store<fromContent.State>);
-
   readonly #contentService = inject(ContentService);
   private readonly logger = inject(LoggerService);
   private readonly prefs = inject(PaginationPreferencesService);
@@ -125,10 +119,8 @@ export class ContentList implements OnInit {
     this.router.navigate(['./admin/content/edit']);
   }
   cloneContent(content: Content) {
-    // this.store.dispatch(new contentActions.SetClonedContent(content));
     content.webContentId = undefined;
-    this.store.dispatch(new contentActions.SetSelectedContent(content));
-
+    this.#contentService.selectedContent.update(() => content as unknown as WebContent);
     this.router.navigate(['./admin/content/edit']);
   }
 
