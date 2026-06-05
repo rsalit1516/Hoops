@@ -1,11 +1,9 @@
-import {
-  Component,
+import { Component,
   computed,
   effect,
   inject,
   signal,
-  untracked,
-} from '@angular/core';
+  untracked, ChangeDetectionStrategy } from '@angular/core';
 import { form, FormField } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -24,6 +22,7 @@ interface PersonPhoneFormModel {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-registration-person-phone-form',
   standalone: true,
   imports: [

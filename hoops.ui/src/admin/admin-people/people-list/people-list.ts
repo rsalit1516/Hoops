@@ -1,5 +1,4 @@
-import {
-  Component,
+import { Component,
   computed,
   effect,
   inject,
@@ -7,8 +6,7 @@ import {
   AfterViewInit,
   signal,
   ViewChild,
-  TemplateRef,
-} from '@angular/core';
+  TemplateRef, ChangeDetectionStrategy } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
@@ -32,6 +30,7 @@ import { HouseholdService } from '@app/services/household.service';
 type PersonWithId = Person & { id: number };
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-people-list',
   imports: [
     DatePipe,

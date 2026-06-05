@@ -1,15 +1,15 @@
-import {
-  Component,
+import { Component,
   OnInit,
   output,
   inject,
   TemplateRef,
   ViewChild,
   computed,
-  effect,
-} from '@angular/core';
+  effect, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+
+import { Content } from '../../../domain/content';
 import { WebContent } from '../../../domain/webContent';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -26,6 +26,7 @@ import {
 } from '../../shared/generic-mat-table/generic-mat-table';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-content-list',
   templateUrl: './contentList.html',
   styleUrls: [
@@ -43,12 +44,11 @@ import {
 })
 export class ContentList implements OnInit {
   router = inject(Router);
-
   readonly #contentService = inject(ContentService);
   private readonly logger = inject(LoggerService);
   private readonly prefs = inject(PaginationPreferencesService);
 
-  readonly selectedContent = output<WebContent>();
+  readonly selectedContent = output<Content>();
   @ViewChild('expirationDateTemplate', { static: true })
   expirationDateTemplate!: TemplateRef<unknown>;
 
@@ -117,9 +117,9 @@ export class ContentList implements OnInit {
     this.#contentService.selectedContent.update(() => content);
     this.router.navigate(['./admin/content/edit']);
   }
-  cloneContent(content: WebContent) {
+  cloneContent(content: Content) {
     content.webContentId = undefined;
-    this.#contentService.selectedContent.set(content);
+    this.#contentService.selectedContent.update(() => content as unknown as WebContent);
     this.router.navigate(['./admin/content/edit']);
   }
 

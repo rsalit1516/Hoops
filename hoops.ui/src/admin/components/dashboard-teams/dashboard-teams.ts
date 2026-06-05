@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, ChangeDetectionStrategy } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { Team } from '@app/domain/team';
@@ -6,6 +6,7 @@ import { TeamService } from '@app/services/team.service';
 import { ColorService } from '@app/admin/admin-shared/services/color.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-dashboard-teams',
   imports: [MatCardModule, MatListModule],
   templateUrl: './dashboard-teams.html',

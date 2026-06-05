@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { BaseList } from '@app/admin/shared/BaseList';
 import {
   TableColumn,
@@ -17,6 +17,7 @@ import { DirectorService } from '@app/services/director.service';
 import { ListPageShellComponent } from '@app/admin/shared/list-page-shell/ListPageShell';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-director-list',
   imports: [
     MatTableModule,

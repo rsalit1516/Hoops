@@ -1,10 +1,8 @@
-import {
-  Component,
+import { Component,
   computed,
   inject,
   signal,
-  untracked,
-} from '@angular/core';
+  untracked, ChangeDetectionStrategy } from '@angular/core';
 import {
   ReactiveFormsModule,
   UntypedFormBuilder,
@@ -38,6 +36,7 @@ import {
 } from '../division-template-setup/division-template-setup';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'admin-season-wizard',
   templateUrl: './admin-season-wizard.html',
   styleUrls: [

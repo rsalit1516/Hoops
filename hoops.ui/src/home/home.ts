@@ -1,11 +1,8 @@
-import {
-  Component,
+import { Component,
   computed,
   inject,
-  OnInit,
-} from '@angular/core';
+  OnInit, ChangeDetectionStrategy } from '@angular/core';
 
-import { WebContent } from '../domain/webContent';
 import { SponsorList } from './components/sponsor-list/sponsor-list';
 import { CsbcAnnouncements } from './components/announcements/announcements';
 import { CsbcHomeSidebar } from './components/home-sidebar/home-sidebar';
@@ -14,8 +11,10 @@ import { HomeCenter } from './components/home-center/home-center';
 import { LoggerService } from '@app/services/logger.service';
 import { ContentService } from '@app/admin/web-content/content.service';
 import { SponsorService } from './sponsor.service';
+import { WebContent } from '../domain/webContent';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-home',
   templateUrl: './home.html',
   styleUrls: ['./home.scss'],
@@ -40,8 +39,6 @@ export class Home implements OnInit {
   topImage = '../../assets/images/CSBCTopImage.jpg';
   errorMessage: string | undefined;
   activeWebContent = computed(() => this.#contentService.activeWebContent);
-  meetingNotices: WebContent[] | undefined;
-
   showSidebar = false;
   showSponsors = computed(() => this.#sponsorService.sponsors().length > 0);
   imageClass = 'col-sm-8 offset-sm-2 col-12';
@@ -53,6 +50,10 @@ export class Home implements OnInit {
   ngOnInit(): void {
     this.setImageClass();
     this.#sponsorService.load();
+    // this.#gameStore.dispatch(new gameActions.LoadGames());
+    // this.store.dispatch(new gameActions.LoadPlayoffGames());
+    //   }
+    // });
 
     // this.#gameStore.select(fromGames.getCurrentSeason).subscribe((season) => {
     //   if (season?.seasonId !== 0) {
@@ -85,7 +86,6 @@ export class Home implements OnInit {
   }
 
   setImageClass(): void {
-    const results = this.meetingNotices!;
     // this.showSidebar = results.length > 0;
     // if (results.length > 0) {
     //   this.imageClass = 'col-sm-8 col-md-9 col-12';

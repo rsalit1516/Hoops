@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone, viewChild } from '@angular/core';
+import { Component, OnInit, NgZone, viewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 import { MatSidenav } from '@angular/material/sidenav';
@@ -9,6 +9,7 @@ class MenuItem {
 }
 const SMALL_WIDTH_BREAKPOINT = 720;
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './admin.html',
   styleUrls: ['./admin.scss', '../shared/scss/forms.scss'],
   standalone: true,

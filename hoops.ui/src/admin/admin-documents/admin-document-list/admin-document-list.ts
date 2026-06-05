@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit } from '@angular/core';
+import { Component, effect, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -13,6 +13,7 @@ import {
 } from '../../shared/generic-mat-table/generic-mat-table';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-admin-document-list',
   standalone: true,
   imports: [MatButtonModule, MatToolbarModule, GenericMatTableComponent],

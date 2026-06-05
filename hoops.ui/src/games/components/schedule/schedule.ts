@@ -1,12 +1,10 @@
-import {
-  Component,
+import { Component,
   OnInit,
   Input,
   Output,
   input,
   computed,
-  inject,
-} from '@angular/core';
+  inject, ChangeDetectionStrategy } from '@angular/core';
 import { RegularGame } from '../../../domain/regularGame';
 import { GameScoreDialog } from '../game-score-dialog/game-score-dialog';
 import { GameService } from '@app/services/game.service';
@@ -18,6 +16,7 @@ import { DivisionService } from '@app/services/division.service';
 import { LoggerService } from '@app/services/logger.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-schedule',
   template: `
     @for (data of dailySchedule(); track data) {
@@ -81,7 +80,6 @@ export class Schedule implements OnInit {
   }
 
   editGame(game: RegularGame) {
-    this.gameService.updateSelectedGame(game);
     const dialogRef = this.dialog.open(GameScoreDialog, {
       width: '500px',
       data: { game },

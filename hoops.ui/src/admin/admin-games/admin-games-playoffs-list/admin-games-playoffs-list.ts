@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit } from '@angular/core';
+import { Component, effect, inject, OnInit , ChangeDetectionStrategy } from '@angular/core';
 import { PlayoffGame } from '@app/domain/playoffGame';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { LoggerService } from '@app/services/logger.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-admin-games-playoffs-list',
   templateUrl: './admin-games-playoffs-list.html',
   styleUrls: [

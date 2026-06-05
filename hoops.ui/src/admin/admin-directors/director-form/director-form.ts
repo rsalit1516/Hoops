@@ -1,5 +1,4 @@
-import {
-  Component,
+import { Component,
   EventEmitter,
   inject,
   Input,
@@ -7,8 +6,7 @@ import {
   OnInit,
   Output,
   signal,
-  SimpleChanges,
-} from '@angular/core';
+  SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -30,6 +28,7 @@ interface FormField {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-director-form',
   imports: [
     ReactiveFormsModule,

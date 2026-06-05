@@ -9,6 +9,7 @@ import {
   input,
   output,
   signal,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { Subject, Observable, Subscription } from 'rxjs';
 import {
@@ -31,6 +32,7 @@ import { PlayoffGameService } from '@app/services/playoff-game.service';
 import { LoggerService } from '@app/services/logger.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-games-top-menu',
   templateUrl: './games-top-menu.html',
   styleUrls: ['../../../shared/scss/select.scss', './games-top-menu.scss'],

@@ -1,12 +1,10 @@
-import {
-  Component,
+import { Component,
   OnInit,
   TemplateRef,
   ViewChild,
   computed,
   effect,
-  inject,
-} from '@angular/core';
+  inject, ChangeDetectionStrategy } from '@angular/core';
 
 import { Season } from '@app/domain/season';
 import { MatTableDataSource } from '@angular/material/table';
@@ -22,6 +20,7 @@ import {
 } from '../../shared/generic-mat-table/generic-mat-table';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-admin-season-list',
   templateUrl: './admin-season-list.html',
   styleUrls: [

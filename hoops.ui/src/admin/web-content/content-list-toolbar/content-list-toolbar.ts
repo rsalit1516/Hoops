@@ -1,7 +1,6 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
-
-import { WebContent } from '../../../domain/webContent';
+import { Content } from '../../../domain/content';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -11,6 +10,7 @@ import { ContentService } from '../content.service';
 import { LoggerService } from '@app/services/logger.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'content-list-toolbar',
     templateUrl: "./content-list-toolbar.html",
     styleUrls: ['./content-list-toolbar.scss',
@@ -45,7 +45,8 @@ export class ContentListToolbar implements OnInit {
   }
 
   addContent() {
-    this.#contentService.selectedContent.set(new WebContent());
+    const content = new Content();
+    this.#contentService.selectedContent.set(content as any);
     this.router.navigate(['./admin/content/edit']);
   }
   filterContent(checked: boolean) {

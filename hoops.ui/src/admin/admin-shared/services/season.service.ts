@@ -10,6 +10,11 @@ export class AdminSeasonService {
 
   selectedSeason = signal<Season | undefined>(undefined);
 
+  getSeason(id: number): Season {
+    const found = this.seasonService.seasons.find((s) => s.seasonId === id);
+    return found ?? new Season();
+  }
+
   updateSelectedSeason(season: Season) {
     this.selectedSeason.update(() => season);
   }

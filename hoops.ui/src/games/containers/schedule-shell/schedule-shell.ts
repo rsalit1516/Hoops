@@ -1,11 +1,9 @@
-import {
-  Component,
+import { Component,
   computed,
   effect,
   inject,
   OnInit,
-  signal,
-} from '@angular/core';
+  signal, ChangeDetectionStrategy } from '@angular/core';
 import { Observable, EMPTY } from 'rxjs';
 import { Season } from '@domain/season';
 import { Division } from '@app/domain/division';
@@ -21,6 +19,7 @@ import { Schedule } from '../../components/schedule/schedule';
 import { LoggerService } from '@app/services/logger.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-schedule-shell',
   template: `
     <section class="container mx-auto">

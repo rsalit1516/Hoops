@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
-import { ContentService } from '../services/content.service';
 
 @NgModule({
-  providers: [ContentService],
+    imports: [],
 })
-export class HomeModule {}
+export class HomeModule { }

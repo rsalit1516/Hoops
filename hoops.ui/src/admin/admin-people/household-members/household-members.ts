@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, computed, effect, inject, input, linkedSignal, OnInit, ViewChild } from '@angular/core';
+import { Component, computed, effect, inject, input, linkedSignal, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
@@ -18,6 +18,7 @@ import { LoggerService } from '@app/services/logger.service';
 import { ConfirmDialog } from '@app/admin/shared/confirm-dialog/confirm-dialog';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-household-members',
   imports: [
     MatCardModule,

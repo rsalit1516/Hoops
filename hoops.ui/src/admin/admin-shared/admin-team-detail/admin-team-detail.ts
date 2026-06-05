@@ -1,12 +1,10 @@
-import {
-  Component,
+import { Component,
   computed,
   effect,
   inject,
   OnInit,
   signal,
-  untracked,
-} from '@angular/core';
+  untracked, ChangeDetectionStrategy } from '@angular/core';
 import { form, FormField } from '@angular/forms/signals';
 import { Team } from '@app/domain/team';
 
@@ -24,6 +22,7 @@ import { ColorService } from '../services/color.service';
 import { LocationService } from '../services/location.service';
 import { LoggerService } from '@app/services/logger.service';
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-admin-team-detail',
   templateUrl: './admin-team-detail.html',
   styleUrls: [

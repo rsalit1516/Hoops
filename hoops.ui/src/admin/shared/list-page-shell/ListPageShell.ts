@@ -1,8 +1,9 @@
-import { Component, input } from '@angular/core';
+import { Component, input, ChangeDetectionStrategy } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 
 // list-page-shell.component.ts
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-list-page-shell',
   imports: [MatCardModule],
   templateUrl: './list-page-shell.html',

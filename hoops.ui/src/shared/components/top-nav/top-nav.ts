@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit, output } from '@angular/core';
+import { Component, computed, inject, OnInit, output, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from '@app/domain/user';
 import { environment } from '../../../environments/environment';
@@ -15,6 +15,7 @@ import { LoggerService } from '@app/services/logger.service';
 import { SessionTimerComponent } from '../session-timer/session-timer.component';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-top-nav',
   templateUrl: './top-nav.html',
   styleUrls: ['./top-nav.scss', './../../../shared/scss/menu.scss'],

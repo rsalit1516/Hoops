@@ -1,8 +1,9 @@
-import { Component, OnInit, input } from '@angular/core';
+import { Component, OnInit, input, ChangeDetectionStrategy } from '@angular/core';
 import { RegularGame } from '../../../domain/regularGame';
 import { DatePipe } from '@angular/common';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-game-card',
   templateUrl: "./game-card.html",
   styleUrls: ['./game-card.scss'],

@@ -1,9 +1,10 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
 import { SponsorList } from '../../components/sponsor-list/sponsor-list';
 import { SponsorListItem } from '@app/domain/sponsor-profile';
 import { SponsorDetail } from '../../components/sponsor-detail/sponsor-detail';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'sponsor-shell',
   standalone: true,
   imports: [SponsorList, SponsorDetail],

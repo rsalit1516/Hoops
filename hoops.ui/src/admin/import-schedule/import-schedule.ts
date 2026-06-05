@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'csbc-import-schedule',
     templateUrl: "./import-schedule.html",
     styleUrls: ['./import-schedule.scss'],

@@ -1,9 +1,10 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, effect, inject, ChangeDetectionStrategy } from '@angular/core';
 import { MatCard, MatCardModule } from '@angular/material/card';
 import { Router } from '@angular/router';
 import { HouseholdService } from '@app/services/household.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-household-summary',
   imports: [MatCardModule],
   templateUrl: "./household-summary.html",

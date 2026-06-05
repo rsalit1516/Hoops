@@ -1,11 +1,9 @@
-import {
-  Component,
+import { Component,
   computed,
   inject,
   signal,
   untracked,
-  WritableSignal,
-} from '@angular/core';
+  WritableSignal, ChangeDetectionStrategy } from '@angular/core';
 import { forkJoin, of } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
 import { Division } from '@app/domain/division';
@@ -97,6 +95,7 @@ const DIVISION_TEMPLATES: DivisionTemplate[] = [
 ];
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'season-setup',
   templateUrl: './season-setup.html',
   styleUrls: [

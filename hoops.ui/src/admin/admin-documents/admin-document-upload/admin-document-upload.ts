@@ -1,10 +1,8 @@
-import {
-  Component,
+import { Component,
   computed,
   effect,
   inject,
-  signal,
-} from '@angular/core';
+  signal, ChangeDetectionStrategy } from '@angular/core';
 import { catchError, of } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { form, FormField } from '@angular/forms/signals';
@@ -43,6 +41,7 @@ const EMPTY_MODEL: DocumentUploadModel = {
 };
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-admin-document-upload',
   standalone: true,
   imports: [

@@ -1,5 +1,4 @@
-import {
-  Component,
+import { Component,
   OnInit,
   OnChanges,
   TemplateRef,
@@ -7,8 +6,7 @@ import {
   input,
   inject,
   computed,
-  effect,
-} from '@angular/core';
+  effect, ChangeDetectionStrategy } from '@angular/core';
 
 import { SeasonService } from '../../../services/season.service';
 import { DivisionService } from '@app/services/division.service';
@@ -33,6 +31,7 @@ import {
 } from '../../shared/generic-mat-table/generic-mat-table';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-division-list',
   templateUrl: './divisionList.html',
   styleUrls: ['../../admin.scss'],

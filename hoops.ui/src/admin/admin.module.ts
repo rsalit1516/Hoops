@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-
 import { AdminRouting } from './admin-routing';
 import { AdminGamesModule } from './admin-games/admin-games.module';
 

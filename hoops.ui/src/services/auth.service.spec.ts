@@ -4,7 +4,6 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing';
 import { signal } from '@angular/core';
-
 import { AuthService } from './auth.service';
 import { DataService } from './data.service';
 import { DivisionService } from './division.service';
@@ -190,9 +189,10 @@ describe('AuthService', () => {
     // ── setUserState ────────────────────────────────────────────────────────
 
     describe('setUserState', () => {
-      it('sets currentUser signal', () => {
+      it('sets currentUser and dispatches a store action', () => {
         service.setUserState(regularUser);
         expect(service.currentUser()).toEqual(regularUser);
+        expect(mockStore.dispatch).toHaveBeenCalled();
       });
     });
 
@@ -242,6 +242,7 @@ describe('AuthService', () => {
 
         expect(service.currentUser()).toBeUndefined();
         expect(mockUserActivityService.clearUserSession).toHaveBeenCalled();
+        expect(mockStore.dispatch).toHaveBeenCalled();
       });
 
       it('clears user session even when logout request errors', () => {

@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { form, FormField } from '@angular/forms/signals';
 import {
   MAT_DIALOG_DATA,
@@ -25,6 +25,7 @@ interface GameEditModel {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-schedule-game-edit-dialog',
   standalone: true,
   imports: [

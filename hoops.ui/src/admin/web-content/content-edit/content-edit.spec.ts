@@ -14,7 +14,6 @@ import { LoggerService } from '@app/services/logger.service';
 import { WebContent } from '@app/domain/webContent';
 import { Content } from '@app/domain/content';
 import { WebContentType } from '@app/domain/webContentType';
-
 describe('ContentEdit', () => {
   let component: ContentEdit;
   let fixture: ComponentFixture<ContentEdit>;
@@ -72,7 +71,7 @@ describe('ContentEdit', () => {
   beforeEach(async () => {
     const contentServiceSpy = jasmine.createSpyObj(
       'ContentService',
-      ['saveContent', 'deleteContent', 'fetchAllContents'],
+      ['saveContent', 'deleteContent'],
       {
         selectedContent$: of(null), // Start with null to prevent initial effects
         selectedContent: signal(null), // Start with null
@@ -132,6 +131,7 @@ describe('ContentEdit', () => {
       LoggerService
     ) as jasmine.SpyObj<LoggerService>;
     mockRouter = TestBed.inject(Router) as jasmine.SpyObj<Router>;
+    mockStore = TestBed.inject(Store) as jasmine.SpyObj<Store>;
     mockChangeDetectorRef = TestBed.inject(
       ChangeDetectorRef
     ) as jasmine.SpyObj<ChangeDetectorRef>;
@@ -291,7 +291,9 @@ describe('ContentEdit', () => {
       component.saveContent();
 
       expect(mockContentService.saveContent).toHaveBeenCalled();
-      expect(mockContentService.fetchAllContents).toHaveBeenCalled();
+      expect(mockStore.dispatch).toHaveBeenCalledWith(
+        jasmine.any(contentActions.LoadAdminContent)
+      );
       expect(mockRouter.navigate).toHaveBeenCalledWith(['/admin/content']);
     });
 
@@ -398,7 +400,9 @@ describe('ContentEdit', () => {
       component.deleteRecord();
 
       expect(mockContentService.deleteContent).toHaveBeenCalledWith(1);
-      expect(mockContentService.fetchAllContents).toHaveBeenCalled();
+      expect(mockStore.dispatch).toHaveBeenCalledWith(
+        jasmine.any(contentActions.LoadAdminContent)
+      );
       expect(mockRouter.navigate).toHaveBeenCalledWith(['/admin/content']);
     });
 

@@ -1,13 +1,11 @@
-import {
-  Component,
+import { Component,
   computed,
   effect,
   inject,
   input,
   output,
   signal,
-  untracked,
-} from '@angular/core';
+  untracked, ChangeDetectionStrategy } from '@angular/core';
 import { form, FormField } from '@angular/forms/signals';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
@@ -72,6 +70,7 @@ const BLANK_PAYMENT: PaymentFormModel = {
 };
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'sponsor-detail',
   standalone: true,
   imports: [

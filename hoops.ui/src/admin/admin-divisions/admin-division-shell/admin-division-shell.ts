@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, input } from '@angular/core';
+import { Component, OnInit, inject, input , ChangeDetectionStrategy } from '@angular/core';
 import { Season } from '@app/domain/season';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,6 +14,7 @@ import { LoggerService } from '@app/services/logger.service';
 import { ShellTitle } from "../../../shared/components/shell-title/shell-title";
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-admin-division-shell',
   template: `<section class="container">
     <csbc-shell-title [title]="title"/>

@@ -1,5 +1,4 @@
-import {
-  Component,
+import { Component,
   Input,
   OnInit,
   Output,
@@ -10,8 +9,7 @@ import {
   TemplateRef,
   signal,
   Signal,
-  inject,
-} from '@angular/core';
+  inject, ChangeDetectionStrategy } from '@angular/core';
 
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatSortModule, MatSort } from '@angular/material/sort';
@@ -55,6 +53,7 @@ import { ColumnConfig } from '../models';
  * ```
  */
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'admin-list-detail-shell',
   standalone: true,
   imports: [
