@@ -1,10 +1,11 @@
-import { Component, computed, inject, input } from '@angular/core';
+import { Component, computed, inject, input, ChangeDetectionStrategy } from '@angular/core';
 
 import { PlayoffGame } from '@domain/playoffGame';
 import { DailyPlayoffSchedule } from '../daily-playoff-schedule/daily-playoff-schedule';
 import { PlayoffGameService } from '@app/services/playoff-game.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-schedule-playoffs',
   template: `
 @for( data of dailyPlayoffSchedule(); track $index) {

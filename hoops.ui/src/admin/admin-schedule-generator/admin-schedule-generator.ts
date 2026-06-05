@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatButtonModule } from '@angular/material/button';
 
@@ -10,6 +10,7 @@ import { ScheduleBlackoutStepComponent } from './steps/schedule-blackout-step';
 import { SchedulePreviewStepComponent } from './steps/schedule-preview-step';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-admin-schedule-generator',
   standalone: true,
   imports: [

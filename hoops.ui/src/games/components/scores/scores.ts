@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, inject } from '@angular/core';
+import { Component, OnInit, Input, inject , ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '@app/services/auth.service';
 import { LoggerService } from '@app/services/logger.service';
 import { RegularGame } from '@app/domain/regularGame';
@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { DatePipe } from '@angular/common';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-scores',
   templateUrl: './scores.html',
   styleUrls: ['./scores.scss', '../../containers/games-shell/games-shell.scss'],

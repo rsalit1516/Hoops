@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '@app/services/auth.service';
 import {
   UntypedFormBuilder,
@@ -12,6 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-login-dialog',
   templateUrl: './login-dialog.html',
   styleUrls: ['./login-dialog.scss', '../../scss/forms.scss'],

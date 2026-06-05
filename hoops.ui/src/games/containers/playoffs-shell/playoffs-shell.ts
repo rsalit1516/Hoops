@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 import { SchedulePlayoffs } from '@app/games/components/schedule-playoffs/schedule-playoffs';
 import { PlayoffGameService } from '@app/services/playoff-game.service';
@@ -7,6 +7,7 @@ import { SeasonService } from '@app/services/season.service';
 import { LoggerService } from '@app/services/logger.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-playoffs-shell',
   imports: [SchedulePlayoffs],
   providers: [PlayoffGameService],

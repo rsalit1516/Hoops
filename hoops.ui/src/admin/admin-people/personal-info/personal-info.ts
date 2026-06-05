@@ -1,11 +1,9 @@
-import {
-  Component,
+import { Component,
   computed,
   effect,
   inject,
   OnInit,
-  signal,
-} from '@angular/core';
+  signal, ChangeDetectionStrategy } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -38,6 +36,7 @@ interface Item {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-personal-info',
   imports: [
     FormsModule,

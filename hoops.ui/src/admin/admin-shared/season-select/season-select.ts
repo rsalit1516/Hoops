@@ -1,11 +1,9 @@
-import {
-  Component,
+import { Component,
   inject,
   OnInit,
   computed,
   OnChanges,
-  effect,
-} from '@angular/core';
+  effect, ChangeDetectionStrategy } from '@angular/core';
 
 import { Season } from '@app/domain/season';
 import { UntypedFormControl, FormsModule } from '@angular/forms';
@@ -18,6 +16,7 @@ import { SeasonService } from '@app/services/season.service';
 import { LoggerService } from '@app/services/logger.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'season-select',
   template: `<mat-form-field floatLabel="always">
     <mat-label>{{ title }}</mat-label>

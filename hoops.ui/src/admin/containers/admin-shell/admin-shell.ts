@@ -5,6 +5,7 @@ import {
   OnInit,
   inject,
   signal,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs/operators';
@@ -23,6 +24,7 @@ import { DivisionService } from '@app/services/division.service';
 import { LoggerService } from '@app/services/logger.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-admin-shell',
   template: `
     <mat-sidenav-container class="admin-sidenav-container">

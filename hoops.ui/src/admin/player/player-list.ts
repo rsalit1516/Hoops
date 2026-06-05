@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, effect, signal } from '@angular/core';
+import { Component, OnInit, inject, effect, signal, ChangeDetectionStrategy } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { PaginationPreferencesService } from '@app/services/pagination-preferences.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -23,6 +23,7 @@ import {
 import { EligiblePersonsPanel } from './eligible-persons-panel/eligible-persons-panel';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-player-list',
   templateUrl: './player-list.html',
   styleUrls: [

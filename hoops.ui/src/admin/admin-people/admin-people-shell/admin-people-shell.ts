@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 
 
@@ -8,6 +8,7 @@ import { ShellTitle } from '@app/shared/components/shell-title/shell-title';
 import { RouterModule } from '@angular/router';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-admin-people-shell',
   imports: [ShellTitle,
     RouterModule],

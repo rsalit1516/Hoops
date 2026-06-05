@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Content } from '../../../domain/content';
 import { MatButtonModule } from '@angular/material/button';
@@ -10,6 +10,7 @@ import { ContentService } from '../content.service';
 import { LoggerService } from '@app/services/logger.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'content-list-toolbar',
     templateUrl: "./content-list-toolbar.html",
     styleUrls: ['./content-list-toolbar.scss',

@@ -1,12 +1,10 @@
-import {
-  Component,
+import { Component,
   OnInit,
   computed,
   inject,
   input,
   output,
-  signal,
-} from '@angular/core';
+  signal, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -20,6 +18,7 @@ import { PeopleService } from '@app/services/people.service';
 import { LoggerService } from '@app/services/logger.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-eligible-persons-panel',
   templateUrl: './eligible-persons-panel.html',
   styleUrls: [

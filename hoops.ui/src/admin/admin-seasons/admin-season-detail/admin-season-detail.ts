@@ -1,11 +1,9 @@
-import {
-  Component,
+import { Component,
   computed,
   effect,
   inject,
   OnInit,
-  signal,
-} from '@angular/core';
+  signal, ChangeDetectionStrategy } from '@angular/core';
 import {
   ReactiveFormsModule,
   UntypedFormBuilder,
@@ -31,6 +29,7 @@ import { AuthService } from '@app/services/auth.service';
 import { LoggerService } from '@app/services/logger.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-admin-season-detail',
   imports: [
     ReactiveFormsModule,

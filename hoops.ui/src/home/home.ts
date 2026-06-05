@@ -1,9 +1,7 @@
-import {
-  Component,
+import { Component,
   computed,
   inject,
-  OnInit,
-} from '@angular/core';
+  OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 import { SponsorList } from './components/sponsor-list/sponsor-list';
 import { CsbcAnnouncements } from './components/announcements/announcements';
@@ -16,6 +14,7 @@ import { SponsorService } from './sponsor.service';
 import { WebContent } from '../domain/webContent';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-home',
   templateUrl: './home.html',
   styleUrls: ['./home.scss'],

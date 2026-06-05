@@ -1,12 +1,10 @@
-import {
-  Component,
+import { Component,
   computed,
   DestroyRef,
   inject,
   input,
   OnInit,
-  signal,
-} from '@angular/core';
+  signal, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { interval } from 'rxjs';
 import {
@@ -19,6 +17,7 @@ import { SponsorService } from '../../sponsor.service';
 import { Sponsor } from '@app/domain/sponsor';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-sponsor-list',
   templateUrl: './sponsor-list.html',
   styleUrls: ['./sponsor-list.scss'],

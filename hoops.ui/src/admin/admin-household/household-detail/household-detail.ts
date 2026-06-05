@@ -1,5 +1,5 @@
 
-import { Component, effect, inject, input, OnChanges, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, input, OnChanges, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HouseholdService } from '@app/services/household.service';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
@@ -14,6 +14,7 @@ import { HouseholdMembers } from '@app/admin/admin-people/household-members/hous
 import { LoggerService } from '@app/services/logger.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-household-detail',
   imports: [
     FormsModule,

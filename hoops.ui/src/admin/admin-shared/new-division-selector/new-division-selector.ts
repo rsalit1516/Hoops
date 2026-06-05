@@ -9,6 +9,7 @@ import { Division } from '@app/domain/division';
 import { DivisionService } from '@app/services/division.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-new-division-selector',
   templateUrl: "./new-division-selector.html",
   imports: [MatFormFieldModule, MatSelectModule, MatInputModule, MatOptionModule, MatButtonModule],

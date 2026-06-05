@@ -1,9 +1,10 @@
-import { Component, OnInit, Input, inject } from '@angular/core';
+import { Component, OnInit, Input, inject, ChangeDetectionStrategy } from '@angular/core';
 import { RegularGame } from '../../../domain/regularGame';
 import { GameCard } from '../game-card/game-card';
 
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-schedule-card-view',
   templateUrl: "./schedule-card-view.html",
   styleUrls: ['./schedule-card-view.scss'],

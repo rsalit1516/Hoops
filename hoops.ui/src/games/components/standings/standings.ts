@@ -1,10 +1,11 @@
-import { Component, OnInit, Input, input } from '@angular/core';
+import { Component, OnInit, Input, input, ChangeDetectionStrategy } from '@angular/core';
 import { Standing } from '@domain/standing';
 import { GameService } from '@app/services/game.service';
 import { DecimalPipe } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-standings',
   imports: [MatTableModule, DecimalPipe],
   templateUrl: "./standings.html",

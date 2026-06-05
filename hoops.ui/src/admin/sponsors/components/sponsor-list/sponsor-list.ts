@@ -1,11 +1,9 @@
-import {
-  Component,
+import { Component,
   computed,
   inject,
   OnInit,
   output,
-  signal,
-} from '@angular/core';
+  signal, ChangeDetectionStrategy } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { BaseList } from '@app/admin/shared/BaseList';
@@ -24,6 +22,7 @@ import {
 } from '../sponsor-filters/sponsor-filters';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'sponsor-list',
   imports: [GenericMatTableComponent, ListPageShellComponent, SponsorFilters, MatButtonModule, MatIconModule],
   templateUrl: './sponsor-list.html',

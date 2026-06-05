@@ -1,10 +1,8 @@
-import {
-  AfterViewInit,
+import { AfterViewInit,
   Component,
   effect,
   inject,
-  OnInit,
-} from '@angular/core';
+  OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Season } from '@app/domain/season';
 import { RouterOutlet } from '@angular/router';
@@ -19,6 +17,7 @@ import { LoggerService } from '@app/services/logger.service';
 // import { SeasonAddEdit } from '@app/admin/components/season-add-edit/season-add-edit';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-admin-season-shell',
   template: `<section class="container-fluid">
     <h2>{{ title }}</h2>

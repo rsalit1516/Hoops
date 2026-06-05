@@ -1,4 +1,4 @@
-import { Component, OnInit, makeEnvironmentProviders, inject } from '@angular/core';
+import { Component, OnInit, makeEnvironmentProviders, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Content } from '@app/domain/content';
 import { Router, RouterOutlet } from '@angular/router';
 
@@ -10,6 +10,7 @@ import { ContentService } from '../content.service';
 import { LoggerService } from '@app/services/logger.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'csbc-content-shell',
     template: `<section class="container-fluid">
     <h2>{{title}}</h2>

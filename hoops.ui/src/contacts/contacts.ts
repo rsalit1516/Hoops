@@ -1,11 +1,9 @@
-import {
-  Component,
+import { Component,
   computed,
   effect,
   inject,
   OnInit,
-  signal,
-} from '@angular/core';
+  signal, ChangeDetectionStrategy } from '@angular/core';
 import { DirectorService } from '@app/services/director.service';
 import { TitleCasePipe } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -14,6 +12,7 @@ import { Director } from '@app/domain/director';
 import { LoggerService } from '@app/services/logger.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-contacts',
   templateUrl: './contacts.html',
   styleUrls: [

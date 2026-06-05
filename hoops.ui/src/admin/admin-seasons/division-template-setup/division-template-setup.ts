@@ -1,4 +1,4 @@
-import { Component, input, WritableSignal } from '@angular/core';
+import { Component, input, WritableSignal, ChangeDetectionStrategy } from '@angular/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -78,6 +78,7 @@ export const DIVISION_TEMPLATES: DivisionTemplate[] = [
 ];
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'division-template-setup',
   templateUrl: './division-template-setup.html',
   styleUrls: ['./division-template-setup.scss'],

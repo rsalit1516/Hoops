@@ -1,13 +1,11 @@
-import {
-  Component,
+import { Component,
   OnInit,
   output,
   inject,
   TemplateRef,
   ViewChild,
   computed,
-  effect,
-} from '@angular/core';
+  effect, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 
@@ -28,6 +26,7 @@ import {
 } from '../../shared/generic-mat-table/generic-mat-table';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-content-list',
   templateUrl: './contentList.html',
   styleUrls: [

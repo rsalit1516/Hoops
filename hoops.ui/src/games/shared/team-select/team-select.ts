@@ -1,12 +1,10 @@
 
-import {
-  Component,
+import { Component,
   OnInit,
   computed,
   effect,
   inject,
-  input,
-} from '@angular/core';
+  input, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatOptionModule } from '@angular/material/core';
@@ -15,6 +13,7 @@ import { TeamService } from '@app/services/team.service';
 import { Team } from '@app/domain/team';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'team-select',
   template: `
     <mat-form-field floatLabel="always">

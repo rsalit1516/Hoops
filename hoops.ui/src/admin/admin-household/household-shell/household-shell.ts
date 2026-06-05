@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 
 
 
@@ -13,6 +13,7 @@ import { RouterModule } from '@angular/router';
 import { LoggerService } from '@app/services/logger.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-household-shell',
   imports: [RouterModule, MatSidenavModule, MatExpansionModule, MatIconModule, ShellTitle],
   template: `<section class="container">

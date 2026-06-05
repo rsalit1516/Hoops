@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, Output } from '@angular/core';
+import { Component, inject, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Standing } from '@app/domain/standing';
 import { Season } from '@app/domain/season';
@@ -7,6 +7,7 @@ import { Standings } from '@app/games/components/standings/standings';
 import { GameService } from '@app/services/game.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-standings-shell',
   imports: [Standings],
   template: `<div class="container mx-auto">

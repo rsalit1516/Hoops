@@ -1,5 +1,5 @@
 
-import { Component, EventEmitter, inject, Output, output, signal } from '@angular/core';
+import { Component, EventEmitter, inject, Output, output, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormsModule, FormGroup, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -14,6 +14,7 @@ import { LoggerService } from '@app/services/logger.service';
 import { debounceTime, map } from 'rxjs';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-household-search',
   imports: [
     FormsModule,

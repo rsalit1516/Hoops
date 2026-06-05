@@ -1,10 +1,11 @@
 
-import { Component, OnInit, input, inject } from '@angular/core';
+import { Component, OnInit, input, inject, ChangeDetectionStrategy } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { WebContent } from '@app/domain/webContent';
 import { LoggerService } from '@app/services/logger.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-announcement',
   templateUrl: "./announcement.html",
   styleUrls: [

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, input, output } from '@angular/core';
+import { Component, OnInit, inject, input, output, ChangeDetectionStrategy } from '@angular/core';
 
 import { SeasonService } from '../../../services/season.service';
 import { Season } from '../../../domain/season';
@@ -9,6 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-season-select',
   templateUrl: "./csbc-season-select.html",
   styleUrls: ['./csbc-season-select.scss'],

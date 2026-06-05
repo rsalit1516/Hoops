@@ -1,12 +1,10 @@
-import {
-  Component,
+import { Component,
   computed,
   effect,
   inject,
   OnInit,
   signal,
-  viewChild,
-} from '@angular/core';
+  viewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -70,6 +68,7 @@ interface PlayerFormData {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-player-registration',
   imports: [
     FormsModule,

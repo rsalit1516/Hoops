@@ -7,6 +7,7 @@ import {
   effect,
   inject,
   input,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { RegularGame } from '@app/domain/regularGame';
 import { Observable } from 'rxjs';
@@ -28,6 +29,7 @@ import {
   TableColumn,
 } from '../../shared/generic-mat-table/generic-mat-table';
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-admin-games-list',
   imports: [
     MatIconModule,

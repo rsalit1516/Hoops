@@ -1,5 +1,4 @@
-import {
-  Component,
+import { Component,
   Input,
   OnInit,
   Output,
@@ -8,8 +7,7 @@ import {
   AfterViewInit,
   TemplateRef,
   Signal,
-  inject,
-} from '@angular/core';
+  inject, ChangeDetectionStrategy } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
@@ -26,6 +24,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 // generic-mat-table.component.ts
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-generic-mat-table',
   templateUrl: './generic-mat-table.html',
   styleUrls: ['./generic-mat-table.scss', '../../../shared/scss/tables.scss'],

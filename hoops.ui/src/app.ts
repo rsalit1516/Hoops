@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit, output } from '@angular/core';
+import { Component, computed, inject, OnInit, output, ChangeDetectionStrategy } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { TopNav } from './shared/components/top-nav/top-nav';
@@ -12,6 +12,7 @@ import { FeatureFlagService } from './shared/services/feature-flags';
 import { AuthService } from './services/auth.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-root',
   templateUrl: "./app.html",
   styleUrls: [

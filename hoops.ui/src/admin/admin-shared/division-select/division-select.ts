@@ -1,13 +1,11 @@
-import {
-  Component,
+import { Component,
   OnInit,
   Output,
   EventEmitter,
   Input,
   inject,
   computed,
-  effect,
-} from '@angular/core';
+  effect, ChangeDetectionStrategy } from '@angular/core';
 import { Division } from '@app/domain/division';
 import {
   UntypedFormControl,
@@ -22,6 +20,7 @@ import { DivisionService } from '@app/services/division.service';
 import { LoggerService } from '@app/services/logger.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'division-select',
   template: `<mat-form-field floatLabel="always">
     <mat-label>{{ title }}</mat-label>

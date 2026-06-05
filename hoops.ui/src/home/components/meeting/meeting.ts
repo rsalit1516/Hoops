@@ -1,8 +1,9 @@
-import { Component, OnInit, input } from '@angular/core';
+import { Component, OnInit, input, ChangeDetectionStrategy } from '@angular/core';
 import { WebContent } from '../../../domain/webContent';
 import { MatCardModule } from '@angular/material/card';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'csbc-meeting',
     templateUrl: "./meeting.html",
     styleUrls: ['./meeting.scss'],

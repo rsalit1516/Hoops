@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, computed, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, computed, ElementRef, inject, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '@app/services/auth.service';
 import {
   FormsModule,
@@ -14,6 +14,7 @@ import { MatCardModule } from '@angular/material/card';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-login',
   templateUrl: './login.html',
   styleUrls: ['./login.scss', '../../scss/cards.scss', '../../scss/forms.scss'],

@@ -6,6 +6,7 @@ import {
   inject,
   input,
   output,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { Division } from '@app/domain/division';
 import { Team } from '@app/domain/team';
@@ -23,6 +24,7 @@ import { DivisionSelect } from '@app/admin/admin-shared/division-select/division
 import { TeamSelect } from '../../shared/team-select/team-select';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-game-filter',
   templateUrl: './game-filter.html',
   styleUrls: [

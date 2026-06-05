@@ -1,13 +1,11 @@
-import {
-  Component,
+import { Component,
   OnInit,
   Signal,
   computed,
   effect,
   inject,
   signal,
-  untracked,
-} from '@angular/core';
+  untracked, ChangeDetectionStrategy } from '@angular/core';
 import {
   MatAutocompleteModule,
   MatAutocompleteSelectedEvent,
@@ -45,6 +43,7 @@ interface UserEditModel {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-admin-user-detail',
   standalone: true,
   imports: [

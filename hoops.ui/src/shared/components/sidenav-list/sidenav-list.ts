@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit, output } from '@angular/core';
+import { Component, computed, inject, OnInit, output , ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
@@ -6,6 +6,7 @@ import { AuthService } from '@app/services/auth.service';
 import { FeatureFlagService } from '@app/shared/services/feature-flags';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-sidenav-list',
   templateUrl: './sidenav-list.html',
   styleUrls: ['./sidenav-list.css'],

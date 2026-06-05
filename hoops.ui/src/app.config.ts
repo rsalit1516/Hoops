@@ -2,6 +2,7 @@ import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import {
   provideHttpClient,
   withInterceptorsFromDi,
+  withXhr,
   HTTP_INTERCEPTORS,
 } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
@@ -39,6 +40,6 @@ export const appConfig: ApplicationConfig = {
     ),
     DataService,
     provideAnimations(),
-    provideHttpClient(withInterceptorsFromDi()),
+    provideHttpClient(withInterceptorsFromDi(), withXhr()),
   ],
 };

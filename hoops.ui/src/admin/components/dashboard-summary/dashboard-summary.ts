@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, ChangeDetectionStrategy } from '@angular/core';
 import { httpResource } from '@angular/common/http';
 import { MatCardModule } from '@angular/material/card';
 import { DraftListPlayer } from '@app/domain/draft-list-player';
@@ -9,6 +9,7 @@ import { GameService } from '@app/services/game.service';
 import { Constants } from '@shared/constants';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-dashboard-summary',
   imports: [MatCardModule],
   templateUrl: './dashboard-summary.html',

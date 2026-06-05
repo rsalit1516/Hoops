@@ -1,8 +1,9 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, input, ChangeDetectionStrategy } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { PlayoffGame } from '@app/domain/playoffGame';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-daily-playoff-schedule',
   imports: [DatePipe],
   templateUrl: './daily-playoff-schedule.html',

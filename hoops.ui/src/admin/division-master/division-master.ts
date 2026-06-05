@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
+import { Component, inject, OnInit, signal, WritableSignal, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 // import { CsbcSeasonSelect } from '../../shared/season-select/csbc-season-select';
 import { Season } from '../../domain/season';
@@ -7,6 +7,7 @@ import { DivisionList } from '../admin-divisions/admin-division-list/divisionLis
 import { CsbcSeasonSelect } from '../../shared/components/season-select/csbc-season-select';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-division-master',
   templateUrl: "./division-master.html",
   styleUrls: ['./division-master.css'],

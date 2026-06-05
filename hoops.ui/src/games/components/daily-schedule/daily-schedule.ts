@@ -1,4 +1,4 @@
-import { Component, inject, computed, input } from '@angular/core';
+import { Component, inject, computed, input, ChangeDetectionStrategy } from '@angular/core';
 import { RegularGame } from '@app/domain/regularGame';
 import { GameScoreDialog } from '../game-score-dialog/game-score-dialog';
 import { MatDialog } from '@angular/material/dialog';
@@ -11,6 +11,7 @@ import { GameService } from '@app/services/game.service';
 import { LoggerService } from '@app/services/logger.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-daily-schedule',
   templateUrl: './daily-schedule.html',
   styleUrls: ['./daily-schedule.scss'],

@@ -1,10 +1,8 @@
-import {
-  Component,
+import { Component,
   OnDestroy,
   computed,
   inject,
-  EffectRef,
-} from '@angular/core';
+  EffectRef, ChangeDetectionStrategy } from '@angular/core';
 import {
   FormBuilder,
   Validators,
@@ -29,6 +27,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { TeamDisplayPipe } from '@app/shared/pipes/team-display.pipe';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'game-score-dialog',
   templateUrl: './game-score-dialog.html',
   styleUrls: ['./game-score-dialog.scss', './../../../shared/scss/forms.scss'],

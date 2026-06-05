@@ -1,12 +1,10 @@
-import {
-  Component,
+import { Component,
   OnInit,
   TemplateRef,
   ViewChild,
   effect,
   inject,
-  model,
-} from '@angular/core';
+  model, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { PaginationPreferencesService } from '@app/services/pagination-preferences.service';
@@ -22,6 +20,7 @@ import {
 import { LoggerService } from '@app/services/logger.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-admin-users-list',
   standalone: true,
   imports: [GenericMatTableComponent, MatIconModule, MatButtonModule],

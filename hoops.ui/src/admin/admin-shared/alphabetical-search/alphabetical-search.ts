@@ -1,13 +1,11 @@
 
-import {
-  Component,
+import { Component,
   inject,
   input,
   model,
   OnInit,
   output,
-  signal,
-} from '@angular/core';
+  signal, ChangeDetectionStrategy } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { LoggerService } from '@app/services/logger.service';
 import {
@@ -16,6 +14,7 @@ import {
 } from '@app/services/people.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-alphabetical-search',
   templateUrl: './alphabetical-search.html',
   styleUrls: ['./alphabetical-search.scss'],

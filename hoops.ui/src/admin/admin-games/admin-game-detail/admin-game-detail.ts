@@ -1,11 +1,9 @@
-import {
-  Component,
+import { Component,
   computed,
   inject,
   effect,
   signal,
-  untracked,
-} from '@angular/core';
+  untracked, ChangeDetectionStrategy } from '@angular/core';
 import { form, FormField, max, min } from '@angular/forms/signals';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -50,6 +48,7 @@ interface AdminGameEditModel {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'admin-game-detail',
   standalone: true,
   imports: [

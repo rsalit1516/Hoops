@@ -1,11 +1,9 @@
-import {
-  Component,
+import { Component,
   OnInit,
   computed,
   effect,
   inject,
-  input,
-} from '@angular/core';
+  input, ChangeDetectionStrategy } from '@angular/core';
 import { SeasonService } from '@app/services/season.service';
 import { DivisionService } from '@app/services/division.service';
 import { TeamService } from '@app/services/team.service';
@@ -24,6 +22,7 @@ import { AuthService } from '@app/services/auth.service';
 import { LoggerService } from '@app/services/logger.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-games-shell',
   standalone: true,
   templateUrl: './games-shell.html',

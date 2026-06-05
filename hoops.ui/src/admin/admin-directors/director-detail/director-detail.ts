@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject } from '@angular/core';
+import { Component, computed, effect, inject, ChangeDetectionStrategy } from '@angular/core';
 import { BaseDetail } from '@app/admin/shared/BaseDetail';
 import { Director } from '@app/domain/director';
 import { DirectorService } from '@app/services/director.service';
@@ -7,6 +7,7 @@ import { DirectorForm } from '../director-form/director-form';
 import { Observable } from 'rxjs';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-director-detail',
   imports: [MatCardModule, DirectorForm],
   templateUrl: './director-detail.html',

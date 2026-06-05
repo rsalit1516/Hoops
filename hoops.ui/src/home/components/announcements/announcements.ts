@@ -1,4 +1,4 @@
-import { Component, OnInit, computed, effect, inject } from '@angular/core';
+import { Component, OnInit, computed, effect, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ContentService } from '../../../admin/web-content/content.service';
 
 import { WebContent } from '../../../domain/webContent';
@@ -7,6 +7,7 @@ import { Announcement } from '../announcement/announcement';
 import { LoggerService } from '@app/services/logger.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-announcements',
   templateUrl: "./announcements.html",
   styleUrls: ['./announcements.scss'],

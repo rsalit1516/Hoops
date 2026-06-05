@@ -1,5 +1,4 @@
-import {
-  Component,
+import { Component,
   effect,
   EventEmitter,
   inject,
@@ -9,8 +8,7 @@ import {
   OnInit,
   Output,
   signal,
-  SimpleChanges,
-} from '@angular/core';
+  SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -27,6 +25,7 @@ export interface PeopleFilterCriteria extends peopleSearchCriteria {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-people-filters',
   imports: [
     MatFormFieldModule,

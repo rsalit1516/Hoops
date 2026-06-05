@@ -6,6 +6,7 @@ import {
   signal,
   untracked,
   ViewChild,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { Season } from '@app/domain/season';
 import { RegularGame } from '@app/domain/regularGame';
@@ -25,6 +26,7 @@ import { Router, RouterOutlet } from '@angular/router';
 import { AdminGamesState } from '../adminGamesState.service';
 import { GameService } from '@app/services/game.service';
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-admin-games-shell',
   template: `<section class="container">
     <h2>{{ title }}</h2>

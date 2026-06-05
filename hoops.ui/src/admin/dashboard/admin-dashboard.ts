@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit , ChangeDetectionStrategy } from '@angular/core';
 import { Season } from '@app/domain/season';
 import { Division } from '@app/domain/division';
 import { TeamService } from '@app/services/team.service';
@@ -19,6 +19,7 @@ import { DashboardGames } from '../components/dashboard-games/dashboard-games';
 import { DashboardSummary } from '../components/dashboard-summary/dashboard-summary';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'csbc-admin-dashboard',
   templateUrl: "./admin-dashboard.html",
   styleUrls: [
