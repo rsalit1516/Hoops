@@ -1,10 +1,11 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Hoops.Core.Interface;
 
 namespace Hoops.Core.Models
 {
-    public partial class SponsorPayment
+    public partial class SponsorPayment : IAuditable
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
@@ -22,7 +23,9 @@ namespace Hoops.Core.Models
         [Column("ShoppingCartID")]
         public string ShoppingCartId { get; set; }
         public DateTime? CreatedDate { get; set; }
-        public string CreatedUser { get; set; }
+        public int? CreatedUser { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public int? ModifiedUser { get; set; }
 
         [ForeignKey("SponsorProfileId")]
         public virtual SponsorProfile SponsorProfile { get; set; }

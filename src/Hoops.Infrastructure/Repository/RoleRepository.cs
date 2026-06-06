@@ -116,7 +116,7 @@ namespace Hoops.Infrastructure.Repository
                 role.UserId = userId;
                 role.AccessType = "U";
                 role.ScreenName = screenName.ToUpper();
-                role.CreatedUser = userName;
+                // CreatedUser is now set automatically by AuditInterceptor
                 Insert(role);
                 context.SaveChanges();
             }

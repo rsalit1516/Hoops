@@ -39,7 +39,9 @@ namespace Hoops.Functions.Models
         public bool? Equipment { get; set; }
         public bool? Electrician { get; set; }
         public DateTime? CreatedDate { get; set; }
-        public string? CreatedUser { get; set; }
+        public int? CreatedUser { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public int? ModifiedUser { get; set; }
         public int? TempId { get; set; }
     }
 }

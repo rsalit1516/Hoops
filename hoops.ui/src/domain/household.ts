@@ -9,6 +9,10 @@ export class Household {
   public email?: string;
   public phone?: string;
   public companyId?: number = 1;
+  public createdDate?: Date | string | null;
+  public createdUser?: number | null;
+  public modifiedDate?: Date | string | null;
+  public modifiedUser?: number | null;
 }
 
 // Interface for household list display

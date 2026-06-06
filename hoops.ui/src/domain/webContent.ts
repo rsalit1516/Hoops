@@ -26,6 +26,8 @@ export class WebContent {
   public webContentTypeId!: number | null;
   public page: string = '';
   public type: string = '';
+  public createdDate: Date | string | null = null;
+  public createdUser: number | null = null;
   public modifiedDate: Date = DateTime.now().toJSDate();
   public modifiedUser: number = 0;
 webContentType: WebContentType = new WebContentType();

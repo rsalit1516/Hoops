@@ -85,7 +85,7 @@ namespace Hoops.Data.Seeders
                         BirthDate = birthDate,
                         Gender = random.Next(2) == 0 ? "M" : "F",
                         CreatedDate = DateTime.Now,
-                        CreatedUser = "Seed",
+                        // CreatedUser set by AuditInterceptor
                         Parent = j == 0 ? true : false, // First person is the parent
                         Player = j > 0 ? true : false, // First person is a player
                         Grade = j > 0 ? CalculateGrade(birthDate, DateTime.Today) : null, // Only players have grades
@@ -139,7 +139,7 @@ namespace Hoops.Data.Seeders
                     Email = parentAd.Email,
                     Gender = random.Next(2) == 0 ? "M" : "F",
                     CreatedDate = DateTime.Now,
-                    CreatedUser = "Seed",
+                    // CreatedUser set by AuditInterceptor
                     Parent = true,          // All are parents
                     Ad = true,              // All are ADs for user account creation
                     Player = false,         // Parents are not players

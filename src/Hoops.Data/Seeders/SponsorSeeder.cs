@@ -76,7 +76,7 @@ namespace Hoops.Data.Seeders
                     State = "FL",
                     ShowAd = false,
                     CreatedDate = DateTime.Now,
-                    CreatedUser = "Seed"
+                    // CreatedUser set by AuditInterceptor
                 };
                 context.Set<SponsorProfile>().Add(profile);
                 profiles.Add(profile);
@@ -103,7 +103,7 @@ namespace Hoops.Data.Seeders
                     Color1Id = 0,
                     Color2Id = 0,
                     CreatedDate = DateTime.Now,
-                    CreatedUser = "Seed"
+                    // CreatedUser set by AuditInterceptor
                 });
             }
 

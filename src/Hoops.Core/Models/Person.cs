@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using Hoops.Core.Interface;
 
 namespace Hoops.Core.Models
 {
-    public partial class Person
+    public partial class Person : IAuditable
     {
         public int PersonId { get; set; }
         public int? CompanyId { get; set; }
@@ -39,7 +40,9 @@ namespace Hoops.Core.Models
         public bool? Equipment { get; set; }
         public bool? Electrician { get; set; }
         public DateTime? CreatedDate { get; set; }
-        public string CreatedUser { get; set; }
+        public int? CreatedUser { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public int? ModifiedUser { get; set; }
         public int? TempId { get; set; }
 
         // Navigation properties

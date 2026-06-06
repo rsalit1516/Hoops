@@ -73,7 +73,8 @@
       "Bash(head:*)",
       "Bash(az storage *)",
       "Bash(npx tsc *)",
-      "Bash(dotnet list *)"
+      "Bash(dotnet list *)",
+      "PowerShell(dotnet ef migrations add CompleteAuditFields --project src/Hoops.Infrastructure --startup-project src/Hoops.Api 2>&1)"
     ],
     "deny": [],
     "ask": []

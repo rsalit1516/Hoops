@@ -2,10 +2,11 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
+using Hoops.Core.Interface;
 
 namespace Hoops.Core.Models
 {
-    public partial class User
+    public partial class User : IAuditable
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -27,7 +28,9 @@ namespace Hoops.Core.Models
         [Column("HouseID")]
         public int HouseId { get; set; }
         public DateTime? CreatedDate { get; set; }
-        public string CreatedUser { get; set; }
+        public int? CreatedUser { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public int? ModifiedUser { get; set; }
 
         //public virtual Household Household { get; set; }
     }

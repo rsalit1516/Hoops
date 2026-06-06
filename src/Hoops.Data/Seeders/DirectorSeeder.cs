@@ -100,7 +100,7 @@ namespace Hoops.Data.Seeders
                     Seq = seq++,
                     Title = titles[i],
                     CreatedDate = DateTime.Now,
-                    CreatedUser = "Seed"
+                    // CreatedUser set by AuditInterceptor
                 };
 
                 // Use repository to insert to honor ID/Seq assignment behavior

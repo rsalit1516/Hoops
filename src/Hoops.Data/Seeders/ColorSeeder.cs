@@ -45,7 +45,7 @@ namespace Hoops.Data.Seeders
                     ColorName = "Red",
                     Discontinued = false,
                     CreatedDate = DateTime.Now,
-                    CreatedUser = "Seed",
+                    // CreatedUser set by AuditInterceptor
                 },
                 new Color
                 {
@@ -54,7 +54,7 @@ namespace Hoops.Data.Seeders
                     ColorName = "Blue",
                     Discontinued = false,
                     CreatedDate = DateTime.Now,
-                    CreatedUser = "Seed",
+                    // CreatedUser set by AuditInterceptor
                 },
                 new Color
                 {
@@ -63,7 +63,7 @@ namespace Hoops.Data.Seeders
                     ColorName = "Black",
                     Discontinued = false,
                     CreatedDate = DateTime.Now,
-                    CreatedUser = "Seed",
+                    // CreatedUser set by AuditInterceptor
 
                 },
                 new Color
@@ -73,7 +73,7 @@ namespace Hoops.Data.Seeders
                     ColorName = "Yellow",
                     Discontinued = false,
                     CreatedDate = DateTime.Now,
-                    CreatedUser = "Seed",
+                    // CreatedUser set by AuditInterceptor
 
                 },
             new Color
@@ -83,7 +83,7 @@ namespace Hoops.Data.Seeders
                 ColorName = "Orange",
                 Discontinued = false,
                 CreatedDate = DateTime.Now,
-                CreatedUser = "Seed",
+                // CreatedUser set by AuditInterceptor
 
             },
                         new Color
@@ -93,7 +93,7 @@ namespace Hoops.Data.Seeders
                 ColorName = "Gray",
                 Discontinued = false,
                 CreatedDate = DateTime.Now,
-                CreatedUser = "Seed",
+                // CreatedUser set by AuditInterceptor
             }
 
             };

@@ -42,6 +42,8 @@ internal static class EntityMapper
         Electrician = p.Electrician,
         CreatedDate = p.CreatedDate,
         CreatedUser = p.CreatedUser,
+        ModifiedDate = p.ModifiedDate,
+        ModifiedUser = p.ModifiedUser,
         TempId = p.TempId
     };
 
@@ -82,6 +84,8 @@ internal static class EntityMapper
         Electrician = dto.Electrician,
         CreatedDate = dto.CreatedDate,
         CreatedUser = dto.CreatedUser,
+        ModifiedDate = dto.ModifiedDate,
+        ModifiedUser = dto.ModifiedUser,
         TempId = dto.TempId
         // Intentionally omitting navigation properties (Household, Comments)
     };

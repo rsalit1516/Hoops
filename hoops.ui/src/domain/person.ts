@@ -35,8 +35,10 @@ export class Person {
   public equipment: boolean = false;
   public electrician: boolean = false;
   public comments: string = '';
-  public createdDate: Date = new Date();
-  public createdUser: string = '';
+  public createdDate: Date | string | null = null;
+  public createdUser: number | null = null;
+  public modifiedDate: Date | string | null = null;
+  public modifiedUser: number | null = null;
   public tempId: number = 0;
   // public  household: null
 }

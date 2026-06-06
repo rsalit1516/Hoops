@@ -23,8 +23,10 @@ export class Player {
   public payType: string = '';
   public noteDesc: string = '';
   public checkMemo: string = '';
-  public createdDate: Date | null = null;
+  public createdDate: Date | string | null = null;
   public createdUser: number | null = null;
+  public modifiedDate: Date | string | null = null;
+  public modifiedUser: number | null = null;
   public playsDown: boolean = false;
   public playsUp: boolean = false;
   public shoppingCartId: number | null = null;
