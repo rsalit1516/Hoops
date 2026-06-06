@@ -16,7 +16,7 @@ namespace Hoops.Core.Models
         [Column("Comment")]
         public string Comment1 { get; set; }
         public DateTime? CreatedDate { get; set; }
-        public string CreatedUSer { get; set; }
+        public string CreatedUser { get; set; }
 
         [ForeignKey("LinkID")]
         public virtual Person Person { get; set; }

@@ -41,8 +41,7 @@ internal static class EntityMapper
         Equipment = p.Equipment,
         Electrician = p.Electrician,
         CreatedDate = p.CreatedDate,
-        CreatedUser = p.CreatedUser,
-        TempId = p.TempId
+        CreatedUser = p.CreatedUser
     };
 
     internal static Person FromDto(PersonDto dto) => new()
@@ -81,8 +80,7 @@ internal static class EntityMapper
         Equipment = dto.Equipment,
         Electrician = dto.Electrician,
         CreatedDate = dto.CreatedDate,
-        CreatedUser = dto.CreatedUser,
-        TempId = dto.TempId
+        CreatedUser = dto.CreatedUser
         // Intentionally omitting navigation properties (Household, Comments)
     };
 
@@ -121,9 +119,7 @@ internal static class EntityMapper
         DraftId = p.DraftId,
         DraftNotes = p.DraftNotes,
         Rating = p.Rating,
-        Coach = p.Coach,
         CoachId = p.CoachId,
-        Sponsor = p.Sponsor,
         SponsorId = p.SponsorId,
         Ad = p.Ad,
         Scholarship = p.Scholarship,

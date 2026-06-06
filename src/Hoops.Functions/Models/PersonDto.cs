@@ -40,6 +40,5 @@ namespace Hoops.Functions.Models
         public bool? Electrician { get; set; }
         public DateTime? CreatedDate { get; set; }
         public string? CreatedUser { get; set; }
-        public int? TempId { get; set; }
     }
 }

@@ -288,8 +288,6 @@ public partial class hoopsContext : DbContext
             // Column name mappings
             entity.Property(e => e.HouseId).HasColumnName("HouseID");
             entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
-            entity.Property(e => e.TeamId).HasColumnName("TEMID");
-
             // Indexes
             entity.HasIndex(e => new { e.Phone, e.Email, e.HouseId })
                 .HasDatabaseName("idx_DCh_2775_2774_Household");
@@ -324,8 +322,6 @@ public partial class hoopsContext : DbContext
             entity.Property(e => e.Ad).HasColumnName("AD");
             entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime").HasDefaultValue(DateTime.Now);
             entity.Property(e => e.CreatedUser).HasMaxLength(20);
-            entity.Property(e => e.TempId).HasColumnName("TEMPID");
-
             // Indexes
             entity.HasIndex(e => e.Coach)
                 .HasDatabaseName("idx_DCh_12521_12520_People");
@@ -360,15 +356,6 @@ public partial class hoopsContext : DbContext
 
             entity.HasIndex(e => e.TeamId)
                 .HasDatabaseName("idx_DCh_12817_12816_Players");
-
-            entity.HasIndex(e => new { e.Coach, e.Sponsor, e.SeasonId })
-                .HasDatabaseName("idx_DCh_98394_98393_Players");
-
-            entity.HasIndex(e => new { e.SeasonId, e.PayType, e.Sponsor })
-                .HasDatabaseName("idx_DCh_8781_8780_Players");
-
-            entity.HasIndex(e => new { e.PlayerId, e.DivisionId, e.Coach, e.Sponsor, e.SeasonId })
-                .HasDatabaseName("idx_DCh_25_24_Players");
 
             entity.Property(e => e.PlayerId).HasColumnName("PlayerID");
 
@@ -861,11 +848,7 @@ public partial class hoopsContext : DbContext
             //     .HasColumnName("CityDELETE")
             //     .HasMaxLength(50);
 
-            entity.Property(e => e.Color1).HasMaxLength(50);
-
             entity.Property(e => e.Color1Id).HasColumnName("Color1ID");
-
-            entity.Property(e => e.Color2).HasMaxLength(50);
 
             entity.Property(e => e.Color2Id).HasColumnName("Color2ID");
 
@@ -986,8 +969,6 @@ public partial class hoopsContext : DbContext
             entity.Property(e => e.DivisionId).HasColumnName("DivisionID");
 
             entity.Property(e => e.SponsorId).HasColumnName("SponsorID");
-
-            entity.Property(e => e.TeamColor).HasMaxLength(50);
 
             entity.Property(e => e.TeamColorId).HasColumnName("TeamColorID");
 

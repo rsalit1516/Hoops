@@ -44,7 +44,7 @@ namespace Hoops.Core.Models
         [Display(Name = "Team Name")]
         public string? TeamName { get; set; }
 
-        [StringLength(50)]
+        [NotMapped]
         [Display(Name = "Team Color")]
         public string? TeamColor { get; set; }
 
@@ -67,16 +67,6 @@ namespace Hoops.Core.Models
 
         [Display(Name = "Modified By")]
         public int? ModifiedUser { get; set; }
-
-        // Draft pick properties (nullable)
-        public int? Round1 { get; set; }
-        public int? Round2 { get; set; }
-        public int? Round3 { get; set; }
-        public int? Round4 { get; set; }
-        public int? Round5 { get; set; }
-        public int? Round6 { get; set; }
-        public int? Round7 { get; set; }
-        public int? Round8 { get; set; }
 
         // Navigation properties (nullable)
         public virtual Division? Division { get; set; }
@@ -120,26 +110,6 @@ namespace Hoops.Core.Models
                 return $"#{TeamNumber} {TeamName}";
             }
             return TeamName ?? "Unknown Team";
-        }
-
-        public List<int> GetDraftPicks()
-        {
-            var picks = new List<int>();
-            if (Round1.HasValue) picks.Add(Round1.Value);
-            if (Round2.HasValue) picks.Add(Round2.Value);
-            if (Round3.HasValue) picks.Add(Round3.Value);
-            if (Round4.HasValue) picks.Add(Round4.Value);
-            if (Round5.HasValue) picks.Add(Round5.Value);
-            if (Round6.HasValue) picks.Add(Round6.Value);
-            if (Round7.HasValue) picks.Add(Round7.Value);
-            if (Round8.HasValue) picks.Add(Round8.Value);
-            return picks;
-        }
-
-        public string GetDraftPicksString()
-        {
-            var picks = GetDraftPicks();
-            return picks.Count > 0 ? string.Join(", ", picks) : "No picks";
         }
 
         public bool HasCompleteCoachingStaff()

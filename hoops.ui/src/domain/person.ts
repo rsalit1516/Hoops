@@ -37,7 +37,6 @@ export class Person {
   public comments: string = '';
   public createdDate: Date = new Date();
   public createdUser: string = '';
-  public tempId: number = 0;
   // public  household: null
 }
 
