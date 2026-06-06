@@ -189,8 +189,6 @@ public partial class hoopsContext : DbContext
             entity.Property(e => e.CreatedUser);
             entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
             entity.Property(e => e.ModifiedUser);
-            // Preserve legacy column that exists in DB but is not surfaced in the entity.
-            entity.Property<int?>("CompanyID").HasColumnName("CompanyID");
             entity.Property(e => e.DivisionDescription)
                 .HasColumnName("Div_Desc")
                 .HasMaxLength(50);
@@ -386,9 +384,6 @@ public partial class hoopsContext : DbContext
             entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
 
             entity.Property(e => e.ModifiedUser);
-
-            // Preserve legacy column that exists in DB but is not surfaced in the entity.
-            entity.Property<int?>("CompanyID").HasColumnName("CompanyID");
 
             entity.Property(e => e.DivisionId).HasColumnName("DivisionID");
 
