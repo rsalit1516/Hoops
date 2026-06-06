@@ -41,7 +41,6 @@ public partial class hoopsContext : DbContext
     // public virtual DbSet<ScheduleLocation> ScheduleLocations { get; set; 
     public virtual DbSet<SchedulePlayoff> SchedulePlayoffs { get; set; }
     public virtual DbSet<Season> Seasons { get; set; }
-    public virtual DbSet<SponsorFee> SponsorFees { get; set; }
     public virtual DbSet<SponsorPayment> SponsorPayments { get; set; }
     public virtual DbSet<SponsorProfile> SponsorProfiles { get; set; }
     public virtual DbSet<Sponsor> Sponsors { get; set; }
@@ -725,20 +724,6 @@ public partial class hoopsContext : DbContext
                 .HasForeignKey(d => d.ModifiedUser)
                 .OnDelete(DeleteBehavior.NoAction)
                 .HasConstraintName("FK_Seasons_Users_ModifiedUser");
-        });
-
-        modelBuilder.Entity<SponsorFee>(entity =>
-        {
-            entity.ToTable("SponsorFee");
-            entity.HasKey(e => e.SponsorFeeId);
-            entity.Property(e => e.Amount).HasColumnType("decimal(18, 2)");
-            entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime")
-            .HasDefaultValue(DateTime.Now);
-
-            entity.Property(e => e.CreatedUser)
-                .HasMaxLength(20)
-                .IsUnicode(false);
-
         });
 
         modelBuilder.Entity<SponsorPayment>(entity =>
@@ -2338,9 +2323,6 @@ public partial class hoopsContext : DbContext
             entity.ToView("vw_Directors");
         });
 
-        // Exclude SponsorFee from migrations - table doesn't exist in production
-        // (SponsorFee objects are created in-memory by SponsorFeeRepository)
-        modelBuilder.Entity<SponsorFee>().ToTable("SponsorFee", t => t.ExcludeFromMigrations());
 
         OnModelCreatingPartial(modelBuilder);
     }
