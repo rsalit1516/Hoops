@@ -4,7 +4,7 @@ This file provides Angular-specific guidance for the `hoops.ui/` directory. For 
 
 ## Technology
 
-- Angular 21
+- Angular 22
 - Angular Material (UI components)
 - Tailwind CSS (layout and formatting)
 - TypeScript (ES modules only)
@@ -19,6 +19,8 @@ This project uses cutting-edge Angular features. Claude's training data may be i
 - **ALWAYS** use Angular Signals for all new and refactored state management
 - **NEVER** add new NgRx stores, reducers, effects, or selectors
 - Existing NgRx code in `reducers/` is legacy — do not extend it; migrate it to signals when touching those areas
+- Use `computed()` for all derived state — never recompute in a getter or method that is called from a template
+- Do **NOT** use `mutate()` on signals — use `update()` or `set()` instead
 - Documentation: https://angular.dev/guide/signals
 
 ### Forms — Signal Forms
@@ -41,9 +43,46 @@ This project uses cutting-edge Angular features. Claude's training data may be i
 
 ### Standalone Components
 
-- **ALWAYS** create new components as standalone (`standalone: true`)
+- **NEVER** set `standalone: true` inside `@Component` or `@Directive` decorators — it is the default in Angular v20+ and is unnecessary noise
 - **NEVER** declare new components in NgModules
 - Existing module-based components are legacy — do not add to them
+
+### Component Inputs and Outputs
+
+- Use `input()` and `output()` functions instead of `@Input()` and `@Output()` decorators
+- Use `computed()` for derived state (not getters that recompute on every access)
+
+### Host Bindings
+
+- **NEVER** use `@HostBinding` or `@HostListener` decorators
+- Put host bindings in the `host` object of the `@Component` or `@Directive` decorator instead
+
+### Template Control Flow
+
+- Use native control flow (`@if`, `@for`, `@switch`) for all new and refactored templates
+- **NEVER** use `*ngIf`, `*ngFor`, or `*ngSwitch` structural directives
+- Keep templates simple — avoid complex logic in templates
+
+### Template Bindings
+
+- Use `[class.foo]="expr"` or `[class]="expr"` bindings instead of `[ngClass]`
+- Use `[style.prop]="expr"` or `[style]="expr"` bindings instead of `[ngStyle]`
+
+### Images
+
+- Use `NgOptimizedImage` (`NgOptimizedImage` from `@angular/common`) for all static images
+- `NgOptimizedImage` does not apply to inline base64 images
+
+### Services
+
+- Use the `inject()` function instead of constructor injection in all new and refactored services and components
+- Use `providedIn: 'root'` for singleton services
+- Design each service around a single responsibility
+
+### Accessibility
+
+- All UI **must** pass AXE accessibility checks
+- All UI **must** meet WCAG AA minimums: focus management, color contrast ratios, and ARIA attributes where required
 
 ### ES Modules
 
