@@ -189,10 +189,9 @@ describe('AuthService', () => {
     // ── setUserState ────────────────────────────────────────────────────────
 
     describe('setUserState', () => {
-      it('sets currentUser and dispatches a store action', () => {
+      it('sets currentUser', () => {
         service.setUserState(regularUser);
         expect(service.currentUser()).toEqual(regularUser);
-        expect(mockStore.dispatch).toHaveBeenCalled();
       });
     });
 
@@ -242,7 +241,6 @@ describe('AuthService', () => {
 
         expect(service.currentUser()).toBeUndefined();
         expect(mockUserActivityService.clearUserSession).toHaveBeenCalled();
-        expect(mockStore.dispatch).toHaveBeenCalled();
       });
 
       it('clears user session even when logout request errors', () => {

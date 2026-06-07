@@ -71,7 +71,7 @@ describe('ContentEdit', () => {
   beforeEach(async () => {
     const contentServiceSpy = jasmine.createSpyObj(
       'ContentService',
-      ['saveContent', 'deleteContent'],
+      ['saveContent', 'deleteContent', 'fetchAllContents'],
       {
         selectedContent$: of(null), // Start with null to prevent initial effects
         selectedContent: signal(null), // Start with null
@@ -131,7 +131,6 @@ describe('ContentEdit', () => {
       LoggerService
     ) as jasmine.SpyObj<LoggerService>;
     mockRouter = TestBed.inject(Router) as jasmine.SpyObj<Router>;
-    mockStore = TestBed.inject(Store) as jasmine.SpyObj<Store>;
     mockChangeDetectorRef = TestBed.inject(
       ChangeDetectorRef
     ) as jasmine.SpyObj<ChangeDetectorRef>;
@@ -291,9 +290,7 @@ describe('ContentEdit', () => {
       component.saveContent();
 
       expect(mockContentService.saveContent).toHaveBeenCalled();
-      expect(mockStore.dispatch).toHaveBeenCalledWith(
-        jasmine.any(contentActions.LoadAdminContent)
-      );
+      expect(mockContentService.fetchAllContents).toHaveBeenCalled();
       expect(mockRouter.navigate).toHaveBeenCalledWith(['/admin/content']);
     });
 
@@ -400,9 +397,7 @@ describe('ContentEdit', () => {
       component.deleteRecord();
 
       expect(mockContentService.deleteContent).toHaveBeenCalledWith(1);
-      expect(mockStore.dispatch).toHaveBeenCalledWith(
-        jasmine.any(contentActions.LoadAdminContent)
-      );
+      expect(mockContentService.fetchAllContents).toHaveBeenCalled();
       expect(mockRouter.navigate).toHaveBeenCalledWith(['/admin/content']);
     });
 
