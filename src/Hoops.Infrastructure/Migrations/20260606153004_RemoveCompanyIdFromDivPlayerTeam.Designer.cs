@@ -4,6 +4,7 @@ using Hoops.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hoops.Infrastructure.Migrations
 {
     [DbContext(typeof(hoopsContext))]
-    partial class hoopsContextModelSnapshot : ModelSnapshot
+    [Migration("20260606153004_RemoveCompanyIdFromDivPlayerTeam")]
+    partial class RemoveCompanyIdFromDivPlayerTeam
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,7 +45,7 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smalldatetime")
-                        .HasDefaultValue(new DateTime(2026, 4, 9, 18, 32, 57, 795, DateTimeKind.Local).AddTicks(8810));
+                        .HasDefaultValue(new DateTime(2026, 6, 6, 11, 30, 2, 473, DateTimeKind.Local).AddTicks(702));
 
                     b.Property<string>("CreatedUser")
                         .HasMaxLength(50)
@@ -91,7 +94,7 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
-                        .HasDefaultValue(new DateTime(2026, 4, 9, 18, 32, 57, 804, DateTimeKind.Local).AddTicks(7452));
+                        .HasDefaultValue(new DateTime(2026, 6, 6, 11, 30, 2, 484, DateTimeKind.Local).AddTicks(5721));
 
                     b.Property<string>("CreatedUser")
                         .HasMaxLength(10)
@@ -128,9 +131,8 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("CreatedUser")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("CreatedUSer");
+                    b.Property<string>("CreatedUSer")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("LinkID")
                         .HasColumnType("int");
@@ -159,7 +161,7 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
-                        .HasDefaultValue(new DateTime(2026, 4, 9, 18, 32, 57, 805, DateTimeKind.Local).AddTicks(8962));
+                        .HasDefaultValue(new DateTime(2026, 6, 6, 11, 30, 2, 486, DateTimeKind.Local).AddTicks(2803));
 
                     b.Property<string>("CreatedUser")
                         .HasMaxLength(20)
@@ -197,7 +199,7 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smalldatetime")
-                        .HasDefaultValue(new DateTime(2026, 4, 9, 18, 32, 57, 806, DateTimeKind.Local).AddTicks(9427));
+                        .HasDefaultValue(new DateTime(2026, 6, 6, 11, 30, 2, 487, DateTimeKind.Local).AddTicks(6908));
 
                     b.Property<string>("CreatedUser")
                         .HasMaxLength(50)
@@ -245,7 +247,7 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smalldatetime")
-                        .HasDefaultValue(new DateTime(2026, 4, 9, 18, 32, 57, 809, DateTimeKind.Local).AddTicks(7260));
+                        .HasDefaultValue(new DateTime(2026, 6, 6, 11, 30, 2, 491, DateTimeKind.Local).AddTicks(6681));
 
                     b.Property<int?>("CreatedUser")
                         .HasColumnType("int");
@@ -344,7 +346,7 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smalldatetime")
-                        .HasDefaultValue(new DateTime(2026, 4, 9, 18, 32, 57, 820, DateTimeKind.Local).AddTicks(9165));
+                        .HasDefaultValue(new DateTime(2026, 6, 6, 11, 30, 2, 508, DateTimeKind.Local).AddTicks(6198));
 
                     b.Property<string>("CreatedUser")
                         .HasMaxLength(20)
@@ -378,6 +380,10 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<string>("State")
                         .HasMaxLength(2)
                         .HasColumnType("nvarchar(2)");
+
+                    b.Property<int?>("TeamId")
+                        .HasColumnType("int")
+                        .HasColumnName("TEMID");
 
                     b.Property<string>("Zip")
                         .HasMaxLength(20)
@@ -456,7 +462,7 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smalldatetime")
-                        .HasDefaultValue(new DateTime(2026, 4, 9, 18, 32, 57, 823, DateTimeKind.Local).AddTicks(9541));
+                        .HasDefaultValue(new DateTime(2026, 6, 6, 11, 30, 2, 512, DateTimeKind.Local).AddTicks(8809));
 
                     b.Property<string>("CreatedUser")
                         .HasMaxLength(20)
@@ -534,6 +540,10 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<bool?>("TeeShirts")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("TempId")
+                        .HasColumnType("int")
+                        .HasColumnName("TEMPID");
+
                     b.Property<bool?>("TryOuts")
                         .HasColumnType("bit");
 
@@ -575,6 +585,9 @@ namespace Hoops.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int?>("Coach")
+                        .HasColumnType("int");
+
                     b.Property<int?>("CoachId")
                         .HasColumnType("int")
                         .HasColumnName("CoachID");
@@ -582,7 +595,7 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smalldatetime")
-                        .HasDefaultValue(new DateTime(2026, 4, 9, 18, 32, 57, 829, DateTimeKind.Local).AddTicks(7520));
+                        .HasDefaultValue(new DateTime(2026, 6, 6, 11, 30, 2, 523, DateTimeKind.Local).AddTicks(4515));
 
                     b.Property<int?>("CreatedUser")
                         .HasColumnType("int");
@@ -657,6 +670,9 @@ namespace Hoops.Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasColumnName("ShoppingCartID");
 
+                    b.Property<int?>("Sponsor")
+                        .HasColumnType("int");
+
                     b.Property<int?>("SponsorId")
                         .HasColumnType("int")
                         .HasColumnName("SponsorID");
@@ -680,10 +696,17 @@ namespace Hoops.Infrastructure.Migrations
                     b.HasIndex("PlayerId")
                         .HasDatabaseName("idx_DCh_2451_2450_Players");
 
-                    b.HasIndex("SeasonId");
-
                     b.HasIndex("TeamId")
                         .HasDatabaseName("idx_DCh_12817_12816_Players");
+
+                    b.HasIndex("Coach", "Sponsor", "SeasonId")
+                        .HasDatabaseName("idx_DCh_98394_98393_Players");
+
+                    b.HasIndex("SeasonId", "PayType", "Sponsor")
+                        .HasDatabaseName("idx_DCh_8781_8780_Players");
+
+                    b.HasIndex("PlayerId", "DivisionId", "Coach", "Sponsor", "SeasonId")
+                        .HasDatabaseName("idx_DCh_25_24_Players");
 
                     b.ToTable("Players", (string)null);
                 });
@@ -706,7 +729,7 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
-                        .HasDefaultValue(new DateTime(2026, 4, 9, 18, 32, 57, 833, DateTimeKind.Local).AddTicks(8776));
+                        .HasDefaultValue(new DateTime(2026, 6, 6, 11, 30, 2, 529, DateTimeKind.Local).AddTicks(1366));
 
                     b.Property<string>("CreatedUser")
                         .HasMaxLength(10)
@@ -941,7 +964,7 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smalldatetime")
-                        .HasDefaultValue(new DateTime(2026, 4, 9, 18, 32, 57, 862, DateTimeKind.Local).AddTicks(9511));
+                        .HasDefaultValue(new DateTime(2026, 6, 6, 11, 30, 2, 564, DateTimeKind.Local).AddTicks(1218));
 
                     b.Property<int?>("CreatedUser")
                         .HasColumnType("int");
@@ -1022,9 +1045,17 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<DateTime?>("AdExpiration")
                         .HasColumnType("date");
 
+                    b.Property<string>("Color1")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<int>("Color1Id")
                         .HasColumnType("int")
                         .HasColumnName("Color1ID");
+
+                    b.Property<string>("Color2")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("Color2Id")
                         .HasColumnType("int")
@@ -1037,7 +1068,7 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smalldatetime")
-                        .HasDefaultValue(new DateTime(2026, 4, 9, 18, 32, 57, 873, DateTimeKind.Local).AddTicks(6009));
+                        .HasDefaultValue(new DateTime(2026, 6, 6, 11, 30, 2, 574, DateTimeKind.Local).AddTicks(9168));
 
                     b.Property<string>("CreatedUser")
                         .HasMaxLength(50)
@@ -1100,7 +1131,7 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smalldatetime")
-                        .HasDefaultValue(new DateTime(2026, 4, 9, 18, 32, 57, 867, DateTimeKind.Local).AddTicks(4401));
+                        .HasDefaultValue(new DateTime(2026, 6, 6, 11, 30, 2, 567, DateTimeKind.Local).AddTicks(7785));
 
                     b.Property<string>("CreatedUser")
                         .HasMaxLength(20)
@@ -1135,7 +1166,7 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smalldatetime")
-                        .HasDefaultValue(new DateTime(2026, 4, 9, 18, 32, 57, 868, DateTimeKind.Local).AddTicks(8535));
+                        .HasDefaultValue(new DateTime(2026, 6, 6, 11, 30, 2, 569, DateTimeKind.Local).AddTicks(5931));
 
                     b.Property<string>("CreatedUser")
                         .HasMaxLength(20)
@@ -1209,7 +1240,7 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smalldatetime")
-                        .HasDefaultValue(new DateTime(2026, 4, 9, 18, 32, 57, 871, DateTimeKind.Local).AddTicks(1640));
+                        .HasDefaultValue(new DateTime(2026, 6, 6, 11, 30, 2, 572, DateTimeKind.Local).AddTicks(2726));
 
                     b.Property<string>("CreatedUser")
                         .HasMaxLength(20)
@@ -1286,7 +1317,7 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smalldatetime")
-                        .HasDefaultValue(new DateTime(2026, 4, 9, 18, 32, 57, 877, DateTimeKind.Local).AddTicks(3832));
+                        .HasDefaultValue(new DateTime(2026, 6, 6, 11, 30, 2, 579, DateTimeKind.Local).AddTicks(2860));
 
                     b.Property<int?>("CreatedUser")
                         .HasColumnType("int");
@@ -1301,6 +1332,30 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<int?>("ModifiedUser")
                         .HasColumnType("int");
 
+                    b.Property<int?>("Round1")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Round2")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Round3")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Round4")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Round5")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Round6")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Round7")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Round8")
+                        .HasColumnType("int");
+
                     b.Property<int?>("SeasonID")
                         .HasColumnType("int")
                         .HasColumnName("SeasonID");
@@ -1313,7 +1368,7 @@ namespace Hoops.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("TeamColorId")
+                    b.Property<int?>("TeamColorId")
                         .HasColumnType("int")
                         .HasColumnName("TeamColorID");
 
@@ -1369,7 +1424,7 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smalldatetime")
-                        .HasDefaultValue(new DateTime(2026, 4, 9, 18, 32, 57, 900, DateTimeKind.Local).AddTicks(319));
+                        .HasDefaultValue(new DateTime(2026, 6, 6, 11, 30, 2, 603, DateTimeKind.Local).AddTicks(8540));
 
                     b.Property<string>("CreatedUser")
                         .HasMaxLength(50)
@@ -1565,7 +1620,7 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<DateTime?>("ModifiedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
-                        .HasDefaultValue(new DateTime(2026, 4, 9, 18, 32, 57, 894, DateTimeKind.Local).AddTicks(1252));
+                        .HasDefaultValue(new DateTime(2026, 6, 6, 11, 30, 2, 597, DateTimeKind.Local).AddTicks(6839));
 
                     b.Property<int?>("ModifiedUser")
                         .HasColumnType("int");
