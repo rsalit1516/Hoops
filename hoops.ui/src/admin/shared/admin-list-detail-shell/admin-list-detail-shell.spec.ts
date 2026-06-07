@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { Component, signal, TemplateRef, ViewChild } from '@angular/core';
+import { Component, signal, WritableSignal, TemplateRef, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { AdminListDetailShell } from './admin-list-detail-shell';
 import { ColumnConfig } from '../models';
@@ -632,7 +632,7 @@ describe('AdminListDetailShell', () => {
     });
 
     it('should use custom ARIA label when provided', () => {
-      component.paginatorAriaLabel = 'Navigate directors pages';
+      fixture.componentRef.setInput('paginatorAriaLabel', 'Navigate directors pages');
       fixture.detectChanges();
 
       const paginator = compiled.querySelector('mat-paginator');
@@ -640,7 +640,7 @@ describe('AdminListDetailShell', () => {
     });
 
     it('should have role="alert" on error message', () => {
-      component.errorMessage = signal('Error');
+      (component.errorMessage as WritableSignal<string | null>).set('Error');
       fixture.detectChanges();
 
       const errorDiv = compiled.querySelector('.error-message');
