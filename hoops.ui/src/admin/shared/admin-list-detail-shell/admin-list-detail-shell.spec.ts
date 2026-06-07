@@ -113,7 +113,7 @@ describe('AdminListDetailShell', () => {
     });
 
     it('should render the add button when showAddButton is true', () => {
-      component.showAddButton = true;
+      fixture.componentRef.setInput('showAddButton', true);
       fixture.detectChanges();
 
       const addButton = compiled.querySelector('.add-button');
@@ -122,7 +122,7 @@ describe('AdminListDetailShell', () => {
     });
 
     it('should not render the add button when showAddButton is false', () => {
-      component.showAddButton = false;
+      fixture.componentRef.setInput('showAddButton', false);
       fixture.detectChanges();
 
       const addButton = compiled.querySelector('.add-button');
@@ -130,7 +130,7 @@ describe('AdminListDetailShell', () => {
     });
 
     it('should render custom add button text', () => {
-      component.addButtonText = 'Create Director';
+      fixture.componentRef.setInput('addButtonText', 'Create Director');
       fixture.detectChanges();
 
       const addButton = compiled.querySelector('.add-button');
@@ -164,7 +164,7 @@ describe('AdminListDetailShell', () => {
     });
 
     it('should render actions column when showActionsColumn is true', () => {
-      component.showActionsColumn = true;
+      fixture.componentRef.setInput('showActionsColumn', true);
       fixture.detectChanges();
 
       const actionsHeader = compiled.querySelector('.actions-header');
@@ -172,7 +172,7 @@ describe('AdminListDetailShell', () => {
     });
 
     it('should not render actions column when showActionsColumn is false', () => {
-      component.showActionsColumn = false;
+      fixture.componentRef.setInput('showActionsColumn', false);
       fixture.detectChanges();
 
       const actionsHeader = compiled.querySelector('.actions-header');
@@ -453,7 +453,7 @@ describe('AdminListDetailShell', () => {
     });
 
     it('should show empty state hint when showAddButton is true', () => {
-      component.showAddButton = true;
+      fixture.componentRef.setInput('showAddButton', true);
       fixture.detectChanges();
 
       const hint = compiled.querySelector('.empty-state-hint');
@@ -462,7 +462,7 @@ describe('AdminListDetailShell', () => {
     });
 
     it('should not show empty state hint when showAddButton is false', () => {
-      component.showAddButton = false;
+      fixture.componentRef.setInput('showAddButton', false);
       fixture.detectChanges();
 
       const hint = compiled.querySelector('.empty-state-hint');
@@ -470,7 +470,7 @@ describe('AdminListDetailShell', () => {
     });
 
     it('should show custom add button text in empty state hint', () => {
-      component.addButtonText = 'Create Director';
+      fixture.componentRef.setInput('addButtonText', 'Create Director');
       fixture.detectChanges();
 
       const hint = compiled.querySelector('.empty-state-hint');
@@ -491,21 +491,21 @@ describe('AdminListDetailShell', () => {
     });
 
     it('should use custom page size options', () => {
-      component.pageSizeOptions = [5, 10, 20];
+      fixture.componentRef.setInput('pageSizeOptions', [5, 10, 20]);
       fixture.detectChanges();
 
       expect(component.paginator.pageSizeOptions).toEqual([5, 10, 20]);
     });
 
     it('should use custom default page size', () => {
-      component.defaultPageSize = 50;
+      fixture.componentRef.setInput('defaultPageSize', 50);
       fixture.detectChanges();
 
       expect(component.paginator.pageSize).toBe(50);
     });
 
     it('should use custom aria label', () => {
-      component.paginatorAriaLabel = 'Custom paginator';
+      fixture.componentRef.setInput('paginatorAriaLabel', 'Custom paginator');
       fixture.detectChanges();
 
       const paginator = compiled.querySelector('mat-paginator');
@@ -548,7 +548,7 @@ describe('AdminListDetailShell', () => {
     });
 
     it('should apply clickable-row class when rowClickable is true', () => {
-      component.rowClickable = true;
+      fixture.componentRef.setInput('rowClickable', true);
       fixture.detectChanges();
 
       const row = compiled.querySelector('tr.mat-mdc-row');
@@ -556,7 +556,7 @@ describe('AdminListDetailShell', () => {
     });
 
     it('should not apply clickable-row class when rowClickable is false', () => {
-      component.rowClickable = false;
+      fixture.componentRef.setInput('rowClickable', false);
       fixture.detectChanges();
 
       const row = compiled.querySelector('tr.mat-mdc-row');
