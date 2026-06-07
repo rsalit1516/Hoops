@@ -46,6 +46,8 @@ namespace Hoops.Infrastructure.Migrations
                 oldNullable: true,
                 oldDefaultValue: new DateTime(2026, 4, 9, 18, 32, 57, 894, DateTimeKind.Local).AddTicks(1252));
 
+            // Clear legacy string values that cannot be cast to int.
+            migrationBuilder.Sql("UPDATE [Users] SET [CreatedUser] = NULL");
             migrationBuilder.AlterColumn<int>(
                 name: "CreatedUser",
                 table: "Users",
@@ -98,6 +100,7 @@ namespace Hoops.Infrastructure.Migrations
                 oldNullable: true,
                 oldDefaultValue: new DateTime(2026, 4, 9, 18, 32, 57, 877, DateTimeKind.Local).AddTicks(3832));
 
+            migrationBuilder.Sql("UPDATE [Sponsors] SET [CreatedUser] = NULL");
             migrationBuilder.AlterColumn<int>(
                 name: "CreatedUser",
                 table: "Sponsors",
@@ -131,6 +134,7 @@ namespace Hoops.Infrastructure.Migrations
                 type: "int",
                 nullable: true);
 
+            migrationBuilder.Sql("UPDATE [SponsorProfile] SET [CreatedUser] = NULL");
             migrationBuilder.AlterColumn<int>(
                 name: "CreatedUser",
                 table: "SponsorProfile",
@@ -165,6 +169,7 @@ namespace Hoops.Infrastructure.Migrations
                 type: "int",
                 nullable: true);
 
+            migrationBuilder.Sql("UPDATE [SponsorPayments] SET [CreatedUser] = NULL");
             migrationBuilder.AlterColumn<int>(
                 name: "CreatedUser",
                 table: "SponsorPayments",
@@ -258,6 +263,7 @@ namespace Hoops.Infrastructure.Migrations
                 type: "int",
                 nullable: true);
 
+            migrationBuilder.Sql("UPDATE [Rolls] SET [CreatedUser] = NULL");
             migrationBuilder.AlterColumn<int>(
                 name: "CreatedUser",
                 table: "Rolls",
@@ -304,6 +310,7 @@ namespace Hoops.Infrastructure.Migrations
                 oldNullable: true,
                 oldDefaultValue: new DateTime(2026, 4, 9, 18, 32, 57, 829, DateTimeKind.Local).AddTicks(7520));
 
+            migrationBuilder.Sql("UPDATE [People] SET [CreatedUser] = NULL");
             migrationBuilder.AlterColumn<int>(
                 name: "CreatedUser",
                 table: "People",
@@ -337,6 +344,7 @@ namespace Hoops.Infrastructure.Migrations
                 type: "int",
                 nullable: true);
 
+            migrationBuilder.Sql("UPDATE [Households] SET [CreatedUser] = NULL");
             migrationBuilder.AlterColumn<int>(
                 name: "CreatedUser",
                 table: "Households",
@@ -381,6 +389,7 @@ namespace Hoops.Infrastructure.Migrations
                 oldNullable: true,
                 oldDefaultValue: new DateTime(2026, 4, 9, 18, 32, 57, 809, DateTimeKind.Local).AddTicks(7260));
 
+            migrationBuilder.Sql("UPDATE [Directors] SET [CreatedUser] = NULL");
             migrationBuilder.AlterColumn<int>(
                 name: "CreatedUser",
                 table: "Directors",
@@ -414,6 +423,7 @@ namespace Hoops.Infrastructure.Migrations
                 type: "int",
                 nullable: true);
 
+            migrationBuilder.Sql("UPDATE [Companies] SET [CreatedUser] = NULL");
             migrationBuilder.AlterColumn<int>(
                 name: "CreatedUser",
                 table: "Companies",
@@ -448,6 +458,7 @@ namespace Hoops.Infrastructure.Migrations
                 type: "int",
                 nullable: true);
 
+            migrationBuilder.Sql("UPDATE [Colors] SET [CreatedUser] = NULL");
             migrationBuilder.AlterColumn<int>(
                 name: "CreatedUser",
                 table: "Colors",
@@ -483,6 +494,7 @@ namespace Hoops.Infrastructure.Migrations
                 type: "int",
                 nullable: true);
 
+            migrationBuilder.Sql("UPDATE [Coaches] SET [CreatedUser] = NULL");
             migrationBuilder.AlterColumn<int>(
                 name: "CreatedUser",
                 table: "Coaches",
