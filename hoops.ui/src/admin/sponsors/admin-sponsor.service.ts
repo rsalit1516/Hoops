@@ -11,6 +11,12 @@ import {
   SponsorFee,
 } from '@app/domain/sponsor-profile';
 
+const SPONSOR_FEES: SponsorFee[] = [
+  { sponsorFeeId: 1, feeName: 'Standard',    amount: 225.00 },
+  { sponsorFeeId: 2, feeName: 'Discount',    amount: 112.50 },
+  { sponsorFeeId: 3, feeName: 'Scholarship', amount: 0 },
+];
+
 @Injectable({ providedIn: 'root' })
 export class AdminSponsorService {
   private http = inject(HttpClient);
@@ -126,12 +132,7 @@ export class AdminSponsorService {
 
   loadFees(): void {
     if (this.fees().length > 0) return;
-    this.http
-      .get<SponsorFee[]>(Constants.GET_SPONSOR_FEES_URL, { withCredentials: true })
-      .subscribe({
-        next: (fees) => this.fees.set(fees ?? []),
-        error: (err) => this.logger.error('Failed to load sponsor fees', err),
-      });
+    this.fees.set(SPONSOR_FEES);
   }
 
   clearDetail(): void {

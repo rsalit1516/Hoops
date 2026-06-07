@@ -38,7 +38,6 @@ namespace Hoops.Infrastructure
             services.AddScoped<ISponsorRepository, SponsorRepository>();
             services.AddScoped<ISponsorProfileRepository, SponsorProfileRepository>();
             services.AddScoped<ISponsorPaymentRepository, SponsorPaymentRepository>();
-            services.AddScoped<ISponsorFeeRepository, SponsorFeeRepository>();
             services.AddScoped<IPersonRepository, PersonRepository>();
             services.AddScoped<ILocationRepository, LocationRepository>();
             services.AddScoped<IHouseholdRepository, HouseholdRepository>();

@@ -79,7 +79,6 @@ export class Constants {
   public static GET_SPONSOR_PAYMENTS_URL = `${this.FUNCTIONS_BASE_URL}/api/SponsorPayment/ByProfile`;
   public static POST_SPONSOR_PAYMENT_URL = `${this.FUNCTIONS_BASE_URL}/api/SponsorPayment`;
   public static PUT_SPONSOR_PAYMENT_URL = `${this.FUNCTIONS_BASE_URL}/api/SponsorPayment`;
-  public static GET_SPONSOR_FEES_URL = `${this.FUNCTIONS_BASE_URL}/api/SponsorFee`;
   public static GET_LOCATIONS = `${this.FUNCTIONS_BASE_URL}/api/location`;
   public static SEASON_URL = `${this.FUNCTIONS_BASE_URL}/api/Season/`;
   public static currentSeasonUrl = `${this.FUNCTIONS_BASE_URL}/api/Season/GetCurrentSeason/${this.COMPANYID}`;
