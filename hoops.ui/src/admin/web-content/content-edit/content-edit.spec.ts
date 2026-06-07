@@ -37,6 +37,8 @@ describe('ContentEdit', () => {
     webContentTypeDescription: 'Season Info',
     page: '',
     type: '',
+    createdDate: null,
+    createdUser: null,
     modifiedDate: new Date(),
     modifiedUser: 0,
     webContentType: {

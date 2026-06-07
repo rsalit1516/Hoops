@@ -20,7 +20,7 @@ describe('DirectorForm', () => {
       title: '',
       name: 'Alice Smith',
       createdDate: new Date(),
-      createdUser: 'admin',
+      createdUser: null,
     },
     {
       directorId: 0,
@@ -30,7 +30,7 @@ describe('DirectorForm', () => {
       title: '',
       name: 'Bob Jones',
       createdDate: new Date(),
-      createdUser: 'admin',
+      createdUser: null,
     },
   ];
 
@@ -83,7 +83,7 @@ describe('DirectorForm', () => {
       title: 'President',
       name: 'Alice Smith',
       createdDate: new Date(),
-      createdUser: 'admin',
+      createdUser: null,
     };
 
     component.director = director;

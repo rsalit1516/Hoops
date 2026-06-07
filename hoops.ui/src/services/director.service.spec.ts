@@ -20,7 +20,7 @@ describe('DirectorService', () => {
       title: 'Board President',
       name: 'John Smith',
       createdDate: new Date('2024-01-01'),
-      createdUser: 'admin',
+      createdUser: null,
     },
     {
       directorId: 2,
@@ -30,7 +30,7 @@ describe('DirectorService', () => {
       title: 'Vice President',
       name: 'Alice Johnson',
       createdDate: new Date('2024-01-02'),
-      createdUser: 'admin',
+      createdUser: null,
     },
   ];
 
@@ -92,7 +92,7 @@ describe('DirectorService', () => {
         title: 'Treasurer',
         name: 'Bob Williams',
         createdDate: new Date(),
-        createdUser: 'admin',
+        createdUser: null,
       };
 
       const createdDirector: Director = {
@@ -126,7 +126,7 @@ describe('DirectorService', () => {
         title: 'Updated President',
         name: 'John Smith',
         createdDate: new Date('2024-01-01'),
-        createdUser: 'admin',
+        createdUser: null,
       };
 
       service.update(updatedDirector).subscribe((result) => {
@@ -153,7 +153,7 @@ describe('DirectorService', () => {
         title: 'Updated President',
         name: 'John Smith',
         createdDate: new Date('2024-01-01'),
-        createdUser: 'admin',
+        createdUser: null,
       };
 
       // catchError in update() returns a default value on error (does not re-throw)

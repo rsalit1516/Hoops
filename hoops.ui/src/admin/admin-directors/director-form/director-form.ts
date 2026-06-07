@@ -65,8 +65,8 @@ export class DirectorForm implements OnInit, OnChanges {
     seq: [0],
     name: [''],
     title: ['', Validators.required],
-    createdDate: [new Date()],
-    createdUser: [''],
+    createdDate: [new Date() as Date | string | null],
+    createdUser: [null as number | null],
   });
 
   // Field definitions for the dynamic form template

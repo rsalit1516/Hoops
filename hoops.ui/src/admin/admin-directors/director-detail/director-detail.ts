@@ -78,7 +78,7 @@ export class DirectorDetail extends BaseDetail<Director> {
       seq: 0,
       title: '',
       createdDate: new Date(),
-      createdUser: '',
+      createdUser: null,
     };
   }
 }
