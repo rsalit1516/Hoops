@@ -14,6 +14,20 @@ public class AuditInterceptorTests
         public int? UserId { get; set; }
     }
 
+    // Non-IAuditable entity used only to verify the interceptor ignores it.
+    private sealed class PlainRecord
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public DateTime? CreatedDate { get; set; }
+    }
+
+    private sealed class PlainRecordContext : DbContext
+    {
+        public PlainRecordContext(DbContextOptions<PlainRecordContext> options) : base(options) { }
+        public DbSet<PlainRecord> Records { get; set; } = null!;
+    }
+
     private static hoopsContext CreateContext(TestAuditContext auditContext, string? dbName = null)
     {
         var options = new DbContextOptionsBuilder<hoopsContext>()
@@ -156,25 +170,21 @@ public class AuditInterceptorTests
     [Fact]
     public void SaveChanges_OnNonAuditableEntity_DoesNotApplyAuditStamping()
     {
-        // Arrange
+        // Arrange — PlainRecord does not implement IAuditable, so the interceptor must ignore it.
         var auditContext = new TestAuditContext { UserId = 99 };
-        using var context = CreateContext(auditContext);
+        var options = new DbContextOptionsBuilder<PlainRecordContext>()
+            .UseInMemoryDatabase(Guid.NewGuid().ToString())
+            .AddInterceptors(new AuditInterceptor(auditContext))
+            .Options;
+        using var context = new PlainRecordContext(options);
 
-        var user = new User
-        {
-            UserName = "audit-test-user",
-            Name = "Audit Test",
-            Pword = "pw",
-            PassWord = "hash",
-            HouseId = 1
-        };
+        var record = new PlainRecord { Name = "test" };
 
         // Act
-        context.Users.Add(user);
+        context.Records.Add(record);
         context.SaveChanges();
 
         // Assert
-        Assert.Null(user.CreatedDate);
-        Assert.Null(user.CreatedUser);
+        Assert.Null(record.CreatedDate);
     }
 }
