@@ -747,14 +747,6 @@ public partial class hoopsContext : DbContext
                 .HasConstraintName("FK_Seasons_Users_ModifiedUser");
         });
 
-        modelBuilder.Entity<SponsorFee>(entity =>
-        {
-            entity.ToTable("SponsorFee");
-            entity.HasKey(e => e.SponsorFeeId);
-            entity.Property(e => e.Amount).HasColumnType("decimal(18, 2)");
-            entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime").HasDefaultValue(DateTime.Now);
-        });
-
         modelBuilder.Entity<SponsorPayment>(entity =>
         {
             entity.ToTable("SponsorPayments");
