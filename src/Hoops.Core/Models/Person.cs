@@ -40,7 +40,6 @@ namespace Hoops.Core.Models
         public bool? Electrician { get; set; }
         public DateTime? CreatedDate { get; set; }
         public string CreatedUser { get; set; }
-        public int? TempId { get; set; }
 
         // Navigation properties
         public virtual Household Household { get; set; }

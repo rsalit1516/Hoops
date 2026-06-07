@@ -22,10 +22,8 @@ namespace Hoops.Core.Models
         public string DraftId { get; set; }
         public string DraftNotes { get; set; }
         public int? Rating { get; set; }
-        public int? Coach { get; set; }
         [Column("CoachID")]
         public int? CoachId { get; set; }
-        public int? Sponsor { get; set; }
         [Column("SponsorID")]
         public int? SponsorId { get; set; }
         [Column("AD")]

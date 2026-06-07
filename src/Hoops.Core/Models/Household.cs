@@ -118,12 +118,6 @@ namespace Hoops.Core.Models
         [Display(Name = "Created By")]
         public string? CreatedUser { get; set; }
 
-        /// <summary>
-        /// Gets or sets the team identifier associated with the household
-        /// </summary>
-        [Column("TEMID")]
-        public int? TeamId { get; set; }
-
         // Navigation properties
         /// <summary>
         /// Gets or sets the collection of people associated with this household

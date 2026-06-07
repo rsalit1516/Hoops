@@ -29,10 +29,8 @@ namespace Hoops.Core.Models
         public string ShirtSize { get; set; }
         public decimal? SpoAmount { get; set; }
         //public string TypeOfBussDELETE { get; set; }
-        public string Color1 { get; set; }
         [Column("Color1AD")]
         public int Color1Id { get; set; }
-        public string Color2 { get; set; }
         [Column("Color2AD")]
         public int Color2Id { get; set; }
         [Column("ShoppingCartID")]

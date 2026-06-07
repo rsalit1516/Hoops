@@ -12,9 +12,7 @@ public sealed class PlayerDto
     public string? DraftId { get; set; }
     public string? DraftNotes { get; set; }
     public int? Rating { get; set; }
-    public int? Coach { get; set; }
     public int? CoachId { get; set; }
-    public int? Sponsor { get; set; }
     public int? SponsorId { get; set; }
     public bool? Ad { get; set; }
     public bool? Scholarship { get; set; }

@@ -7,9 +7,7 @@ export class Player {
   public draftId: string = '';
   public draftNotes: string = '';
   public rating: number | null = null;
-  public coach: number | null = null;
   public coachId: number | null = null;
-  public sponsor: number | null = null;
   public sponsorId: number | null = null;
   public ad: boolean = false;
   public scholarship: boolean = false;

@@ -81,7 +81,7 @@ namespace Hoops.Infrastructure.Repository
                     p.PlayerId,
                     p.DivisionId,
                     p.DraftId,
-                    p.Sponsor,
+                    p.SponsorId,
                     d.DivisionDescription,
                     p.Person.BirthDate,
                     p.Person.LastName,
@@ -132,7 +132,7 @@ namespace Hoops.Infrastructure.Repository
                     p.PlayerId,
                     p.DivisionId,
                     p.DraftId,
-                    p.Sponsor,
+                    p.SponsorId,
                     p.Person.LastName,
                     p.Person.FirstName,
                 });
@@ -168,7 +168,7 @@ namespace Hoops.Infrastructure.Repository
                     p.PlayerId,
                     p.DivisionId,
                     p.DraftId,
-                    p.Sponsor,
+                    p.SponsorId,
                     p.Rating,
                     p.Person.LastName,
                     p.Person.FirstName,
@@ -187,7 +187,7 @@ namespace Hoops.Infrastructure.Repository
                 vwPlayer.FirstName = player.FirstName;
                 vwPlayer.LastName = player.LastName;
                 vwPlayer.Name = player.FirstName + " " + player.LastName;
-                vwPlayer.Sponsor = player.Sponsor;
+                vwPlayer.Sponsor = player.SponsorId;
                 vwPlayer.PlayerId = player.PlayerId;
                 vwPlayer.DraftId = player.DraftId;
                 vwPlayer.Rating = player.Rating;
