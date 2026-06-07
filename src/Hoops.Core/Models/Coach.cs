@@ -1,10 +1,11 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Hoops.Core.Interface;
 
 namespace Hoops.Core.Models
 {
-    public partial class Coach
+    public partial class Coach : IAuditable
     {
         [Key]
         [Column("CoachID")]
@@ -20,7 +21,9 @@ namespace Hoops.Core.Models
         public string ShirtSize { get; set; }
         public string CoachPhone { get; set; }
         public DateTime? CreatedDate { get; set; }
-        public string CreatedUser { get; set; }
+        public int? CreatedUser { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public int? ModifiedUser { get; set; }
 
         [ForeignKey("PersonId")]
         public virtual Person Person { get; set; }

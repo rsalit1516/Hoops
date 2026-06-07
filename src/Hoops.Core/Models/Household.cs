@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Hoops.Core.Interface;
 
 #nullable enable
 
@@ -10,7 +11,7 @@ namespace Hoops.Core.Models
     /// <summary>
     /// Represents a household entity that can contain multiple people/family members
     /// </summary>
-    public partial class Household
+    public partial class Household : IAuditable
     {
         /// <summary>
         /// Initializes a new instance of the Household class
@@ -114,9 +115,12 @@ namespace Hoops.Core.Models
         /// <summary>
         /// Gets or sets the user who created the household record
         /// </summary>
-        [StringLength(20)]
         [Display(Name = "Created By")]
-        public string? CreatedUser { get; set; }
+        public int? CreatedUser { get; set; }
+        [Display(Name = "Modified Date")]
+        public DateTime? ModifiedDate { get; set; }
+        [Display(Name = "Modified By")]
+        public int? ModifiedUser { get; set; }
 
         // Navigation properties
         /// <summary>

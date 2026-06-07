@@ -69,8 +69,9 @@ public partial class hoopsContext : DbContext
             entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
 
             entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime").HasDefaultValue(DateTime.Now);
-
-            entity.Property(e => e.CreatedUser).HasMaxLength(50);
+            entity.Property(e => e.CreatedUser);
+            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+            entity.Property(e => e.ModifiedUser);
 
             entity.Property(e => e.PersonId).HasColumnName("PeopleID");
 
@@ -79,6 +80,9 @@ public partial class hoopsContext : DbContext
             entity.Property(e => e.SeasonId).HasColumnName("SeasonID");
 
             entity.Property(e => e.ShirtSize).HasMaxLength(50);
+
+            entity.HasOne<User>().WithMany().HasForeignKey(d => d.CreatedUser).OnDelete(DeleteBehavior.NoAction).HasConstraintName("FK_Coaches_Users_CreatedUser");
+            entity.HasOne<User>().WithMany().HasForeignKey(d => d.ModifiedUser).OnDelete(DeleteBehavior.NoAction).HasConstraintName("FK_Coaches_Users_ModifiedUser");
         });
 
         modelBuilder.Entity<Color>(entity =>
@@ -96,11 +100,12 @@ public partial class hoopsContext : DbContext
             entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
 
             entity.Property(e => e.CreatedDate).HasColumnType("datetime").HasDefaultValue(DateTime.Now);
+            entity.Property(e => e.CreatedUser);
+            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+            entity.Property(e => e.ModifiedUser);
 
-            entity.Property(e => e.CreatedUser)
-                .HasMaxLength(10)
-                .IsUnicode(false)
-                .IsFixedLength();
+            entity.HasOne<User>().WithMany().HasForeignKey(d => d.CreatedUser).OnDelete(DeleteBehavior.NoAction).HasConstraintName("FK_Colors_Users_CreatedUser");
+            entity.HasOne<User>().WithMany().HasForeignKey(d => d.ModifiedUser).OnDelete(DeleteBehavior.NoAction).HasConstraintName("FK_Colors_Users_ModifiedUser");
         });
 
         modelBuilder.Entity<Company>(entity =>
@@ -115,10 +120,12 @@ public partial class hoopsContext : DbContext
                 .IsUnicode(false);
 
             entity.Property(e => e.CreatedDate).HasColumnType("datetime").HasDefaultValue(DateTime.Now);
+            entity.Property(e => e.CreatedUser);
+            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+            entity.Property(e => e.ModifiedUser);
 
-            entity.Property(e => e.CreatedUser)
-                .HasMaxLength(20)
-                .IsUnicode(false);
+            entity.HasOne<User>().WithMany().HasForeignKey(d => d.CreatedUser).OnDelete(DeleteBehavior.NoAction).HasConstraintName("FK_Companies_Users_CreatedUser");
+            entity.HasOne<User>().WithMany().HasForeignKey(d => d.ModifiedUser).OnDelete(DeleteBehavior.NoAction).HasConstraintName("FK_Companies_Users_ModifiedUser");
 
             entity.Property(e => e.EmailSender)
                 .HasMaxLength(50)
@@ -168,7 +175,11 @@ public partial class hoopsContext : DbContext
             entity.HasKey(e => e.DirectorId);
             entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
             entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime").HasDefaultValue(DateTime.Now);
-            entity.Property(e => e.CreatedUser).HasMaxLength(50);
+            entity.Property(e => e.CreatedUser);
+            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+            entity.Property(e => e.ModifiedUser);
+            entity.HasOne<User>().WithMany().HasForeignKey(d => d.CreatedUser).OnDelete(DeleteBehavior.NoAction).HasConstraintName("FK_Directors_Users_CreatedUser");
+            entity.HasOne<User>().WithMany().HasForeignKey(d => d.ModifiedUser).OnDelete(DeleteBehavior.NoAction).HasConstraintName("FK_Directors_Users_ModifiedUser");
             entity.Property(e => e.DirectorId).HasColumnName("ID");
             entity.Property(e => e.PersonId).HasColumnName("PeopleID");
             entity.Property(e => e.PhonePref).HasMaxLength(10);
@@ -290,9 +301,13 @@ public partial class hoopsContext : DbContext
                 .HasDatabaseName("idx_DCh_2775_2774_Household");
 
             // Column types and default values
-            entity.Property(e => e.CreatedDate)
-                .HasColumnType("smalldatetime")
-                .HasDefaultValue(DateTime.Now);
+            entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime").HasDefaultValue(DateTime.Now);
+            entity.Property(e => e.CreatedUser);
+            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+            entity.Property(e => e.ModifiedUser);
+
+            entity.HasOne<User>().WithMany().HasForeignKey(d => d.CreatedUser).OnDelete(DeleteBehavior.NoAction).HasConstraintName("FK_Households_Users_CreatedUser");
+            entity.HasOne<User>().WithMany().HasForeignKey(d => d.ModifiedUser).OnDelete(DeleteBehavior.NoAction).HasConstraintName("FK_Households_Users_ModifiedUser");
         });
 
         modelBuilder.Entity<Person>(entity =>
@@ -318,7 +333,11 @@ public partial class hoopsContext : DbContext
             entity.Property(e => e.GiftedLevelsUp).HasColumnName("GiftedLevelsUP");
             entity.Property(e => e.Ad).HasColumnName("AD");
             entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime").HasDefaultValue(DateTime.Now);
-            entity.Property(e => e.CreatedUser).HasMaxLength(20);
+            entity.Property(e => e.CreatedUser);
+            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+            entity.Property(e => e.ModifiedUser);
+            entity.Property(e => e.TempId).HasColumnName("TEMPID");
+
             // Indexes
             entity.HasIndex(e => e.Coach)
                 .HasDatabaseName("idx_DCh_12521_12520_People");
@@ -335,6 +354,9 @@ public partial class hoopsContext : DbContext
                 .HasForeignKey(d => d.HouseId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_People_Households");
+
+            entity.HasOne<User>().WithMany().HasForeignKey(d => d.CreatedUser).OnDelete(DeleteBehavior.NoAction).HasConstraintName("FK_People_Users_CreatedUser");
+            entity.HasOne<User>().WithMany().HasForeignKey(d => d.ModifiedUser).OnDelete(DeleteBehavior.NoAction).HasConstraintName("FK_People_Users_ModifiedUser");
         });
 
         modelBuilder.Entity<Player>(entity =>
@@ -423,11 +445,12 @@ public partial class hoopsContext : DbContext
                 .IsFixedLength();
 
             entity.Property(e => e.CreatedDate).HasColumnType("datetime").HasDefaultValue(DateTime.Now);
+            entity.Property(e => e.CreatedUser);
+            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+            entity.Property(e => e.ModifiedUser);
 
-            entity.Property(e => e.CreatedUser)
-                .HasMaxLength(10)
-                .IsUnicode(false)
-                .IsFixedLength();
+            entity.HasOne<User>().WithMany().HasForeignKey(d => d.CreatedUser).OnDelete(DeleteBehavior.NoAction).HasConstraintName("FK_Rolls_Users_CreatedUser");
+            entity.HasOne<User>().WithMany().HasForeignKey(d => d.ModifiedUser).OnDelete(DeleteBehavior.NoAction).HasConstraintName("FK_Rolls_Users_ModifiedUser");
 
             entity.Property(e => e.RoleId)
                 .HasColumnName("RollsID");
@@ -456,6 +479,14 @@ public partial class hoopsContext : DbContext
 
             entity.Property(e => e.Notes)
                 .HasMaxLength(100);
+
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.CreatedUser);
+            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+            entity.Property(e => e.ModifiedUser);
+
+            entity.HasOne<User>().WithMany().HasForeignKey(d => d.CreatedUser).OnDelete(DeleteBehavior.NoAction).HasConstraintName("FK_ScheduleLocations_Users_CreatedUser");
+            entity.HasOne<User>().WithMany().HasForeignKey(d => d.ModifiedUser).OnDelete(DeleteBehavior.NoAction).HasConstraintName("FK_ScheduleLocations_Users_ModifiedUser");
         });
 
         // modelBuilder.Entity<SchDivisions>(entity =>
@@ -534,6 +565,14 @@ public partial class hoopsContext : DbContext
             // Configure the index
             entity.HasIndex(e => new { e.ScheduleNumber, e.TeamNumber })
                 .HasDatabaseName("IX_ScheduleDivTeams");
+
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.CreatedUser);
+            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+            entity.Property(e => e.ModifiedUser);
+
+            entity.HasOne<User>().WithMany().HasForeignKey(d => d.CreatedUser).OnDelete(DeleteBehavior.NoAction).HasConstraintName("FK_ScheduleDivTeams_Users_CreatedUser");
+            entity.HasOne<User>().WithMany().HasForeignKey(d => d.ModifiedUser).OnDelete(DeleteBehavior.NoAction).HasConstraintName("FK_ScheduleDivTeams_Users_ModifiedUser");
         });
 
         modelBuilder.Entity<ScheduleGame>(entity =>
@@ -708,6 +747,14 @@ public partial class hoopsContext : DbContext
                 .HasConstraintName("FK_Seasons_Users_ModifiedUser");
         });
 
+        modelBuilder.Entity<SponsorFee>(entity =>
+        {
+            entity.ToTable("SponsorFee");
+            entity.HasKey(e => e.SponsorFeeId);
+            entity.Property(e => e.Amount).HasColumnType("decimal(18, 2)");
+            entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime").HasDefaultValue(DateTime.Now);
+        });
+
         modelBuilder.Entity<SponsorPayment>(entity =>
         {
             entity.ToTable("SponsorPayments");
@@ -715,10 +762,12 @@ public partial class hoopsContext : DbContext
             entity.Property(e => e.Amount).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
             entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime").HasDefaultValue(DateTime.Now);
+            entity.Property(e => e.CreatedUser);
+            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+            entity.Property(e => e.ModifiedUser);
 
-            entity.Property(e => e.CreatedUser)
-                .HasMaxLength(20)
-                .IsUnicode(false);
+            entity.HasOne<User>().WithMany().HasForeignKey(d => d.CreatedUser).OnDelete(DeleteBehavior.NoAction).HasConstraintName("FK_SponsorPayments_Users_CreatedUser");
+            entity.HasOne<User>().WithMany().HasForeignKey(d => d.ModifiedUser).OnDelete(DeleteBehavior.NoAction).HasConstraintName("FK_SponsorPayments_Users_ModifiedUser");
 
             entity.Property(e => e.Memo)
                 .HasMaxLength(100)
@@ -770,10 +819,12 @@ public partial class hoopsContext : DbContext
                 .IsUnicode(false);
 
             entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime").HasDefaultValue(DateTime.Now);
+            entity.Property(e => e.CreatedUser);
+            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+            entity.Property(e => e.ModifiedUser);
 
-            entity.Property(e => e.CreatedUser)
-                .HasMaxLength(20)
-                .IsUnicode(false);
+            entity.HasOne<User>().WithMany().HasForeignKey(d => d.CreatedUser).OnDelete(DeleteBehavior.NoAction).HasConstraintName("FK_SponsorProfile_Users_CreatedUser");
+            entity.HasOne<User>().WithMany().HasForeignKey(d => d.ModifiedUser).OnDelete(DeleteBehavior.NoAction).HasConstraintName("FK_SponsorProfile_Users_ModifiedUser");
 
             entity.Property(e => e.Email)
                 .HasColumnName("EMAIL")
@@ -839,8 +890,12 @@ public partial class hoopsContext : DbContext
             //     .HasMaxLength(50);
 
             entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime").HasDefaultValue(DateTime.Now);
+            entity.Property(e => e.CreatedUser);
+            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+            entity.Property(e => e.ModifiedUser);
 
-            entity.Property(e => e.CreatedUser).HasMaxLength(50);
+            entity.HasOne<User>().WithMany().HasForeignKey(d => d.CreatedUser).OnDelete(DeleteBehavior.NoAction).HasConstraintName("FK_Sponsors_Users_CreatedUser");
+            entity.HasOne<User>().WithMany().HasForeignKey(d => d.ModifiedUser).OnDelete(DeleteBehavior.NoAction).HasConstraintName("FK_Sponsors_Users_ModifiedUser");
 
             // entity.Property(e => e.Emaildelete)
             //     .HasColumnName("EMAILDELETE")
@@ -1040,9 +1095,14 @@ public partial class hoopsContext : DbContext
             entity.Property(e => e.WebContentTypeDescription)
                 .IsRequired()
                 .HasMaxLength(50);
-            // entity.HasOne(e => e.WebContents)
-            // .WithOne(w => w..WebContentType)
-            // .HasForeignKey<WebContent>(w => w.WebContentTypeId);
+
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.CreatedUser);
+            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+            entity.Property(e => e.ModifiedUser);
+
+            entity.HasOne<User>().WithMany().HasForeignKey(d => d.CreatedUser).OnDelete(DeleteBehavior.NoAction).HasConstraintName("FK_WebContentType_Users_CreatedUser");
+            entity.HasOne<User>().WithMany().HasForeignKey(d => d.ModifiedUser).OnDelete(DeleteBehavior.NoAction).HasConstraintName("FK_WebContentType_Users_ModifiedUser");
         });
 
         modelBuilder.Entity<User>(entity =>
@@ -1063,8 +1123,12 @@ public partial class hoopsContext : DbContext
             entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
 
             entity.Property(e => e.CreatedDate).HasColumnType("smalldatetime").HasDefaultValue(DateTime.Now);
+            entity.Property(e => e.CreatedUser);
+            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+            entity.Property(e => e.ModifiedUser);
 
-            entity.Property(e => e.CreatedUser).HasMaxLength(50);
+            entity.HasOne<User>().WithMany().HasForeignKey(d => d.CreatedUser).OnDelete(DeleteBehavior.NoAction).HasConstraintName("FK_Users_Users_CreatedUser");
+            entity.HasOne<User>().WithMany().HasForeignKey(d => d.ModifiedUser).OnDelete(DeleteBehavior.NoAction).HasConstraintName("FK_Users_Users_ModifiedUser");
 
             entity.Property(e => e.HouseId).HasColumnName("HouseID");
 

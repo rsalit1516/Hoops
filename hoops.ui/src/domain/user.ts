@@ -14,6 +14,10 @@ export class User {
   pword: string | undefined;
   screens: string[] | undefined;
   divisions: Division[] | undefined;
+  createdDate?: Date | string | null;
+  createdUser?: number | null;
+  modifiedDate?: Date | string | null;
+  modifiedUser?: number | null;
 
   constructor(_userId: number, _userName: string, _isAdmin: boolean) {
     this.userId = _userId;

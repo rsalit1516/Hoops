@@ -1,6 +1,10 @@
 export interface SponsorProfile {
   sponsorProfileId: number;
   companyId: number;
+  createdDate?: Date | string | null;
+  createdUser?: number | null;
+  modifiedDate?: Date | string | null;
+  modifiedUser?: number | null;
   houseId: number | null;
   spoName: string;
   contactName: string;
@@ -32,6 +36,10 @@ export interface SponsorSeason {
 export interface SponsorPayment {
   paymentId: number;
   sponsorProfileId: number;
+  createdDate?: Date | string | null;
+  createdUser?: number | null;
+  modifiedDate?: Date | string | null;
+  modifiedUser?: number | null;
   amount: number;
   paymentType: string;
   transactionDate: Date | string | null;

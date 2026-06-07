@@ -80,7 +80,7 @@ namespace Hoops.Data.Seeders
                     PersonId = person.PersonId,
                     HouseId = person.HouseId ?? 1, // Default to household 1 if null
                     CreatedDate = DateTime.Now,
-                    CreatedUser = "Seed"
+                    // CreatedUser set by AuditInterceptor
                 };
 
                 await _userRepo.InsertAsync(user);
@@ -103,7 +103,7 @@ namespace Hoops.Data.Seeders
                     PersonId = person.PersonId,
                     HouseId = person.HouseId ?? 1, // Default to household 1 if null
                     CreatedDate = DateTime.Now,
-                    CreatedUser = "Seed"
+                    // CreatedUser set by AuditInterceptor
                 };
 
                 await _userRepo.InsertAsync(user);

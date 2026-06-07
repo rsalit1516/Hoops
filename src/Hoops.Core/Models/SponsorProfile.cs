@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Hoops.Core.Interface;
 
 namespace Hoops.Core.Models
 {
-    public partial class SponsorProfile
+    public partial class SponsorProfile : IAuditable
     {
         [Key] //declaring key even though it doesn't exist in DB - it should!
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
@@ -28,7 +29,9 @@ namespace Hoops.Core.Models
         public string Phone { get; set; }
         public string TypeOfBuss { get; set; }
         public DateTime? CreatedDate { get; set; }
-        public string CreatedUser { get; set; }
+        public int? CreatedUser { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public int? ModifiedUser { get; set; }
         public bool? ShowAd { get; set; }
         public DateTime? AdExpiration { get; set; }
         [NotMapped]

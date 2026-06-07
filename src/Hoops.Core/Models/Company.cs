@@ -1,11 +1,12 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Hoops.Core.Interface;
 
 namespace Hoops.Core.Models
 {
     [Table("Companies")]
-    public partial class Company
+    public partial class Company : IAuditable
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
@@ -16,6 +17,8 @@ namespace Hoops.Core.Models
         public string ImageName { get; set; }
         public string EmailSender { get; set; }
         public DateTime? CreatedDate { get; set; }
-        public string CreatedUser { get; set; }
+        public int? CreatedUser { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public int? ModifiedUser { get; set; }
     }
 }

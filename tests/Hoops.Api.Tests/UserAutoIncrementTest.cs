@@ -35,7 +35,7 @@ namespace Hoops.Api.Tests
                 Name = "New User",
                 UserType = 1,
                 CreatedDate = DateTime.Now,
-                CreatedUser = "test"
+                CreatedUser = null
             };
 
             // Act - Test Entity Framework auto-increment directly
@@ -69,7 +69,7 @@ namespace Hoops.Api.Tests
                     Name = "User One",
                     UserType = 1,
                     CreatedDate = DateTime.Now,
-                    CreatedUser = "test"
+                    CreatedUser = null
                 },
                 new User
                 {
@@ -78,7 +78,7 @@ namespace Hoops.Api.Tests
                     Name = "User Two",
                     UserType = 1,
                     CreatedDate = DateTime.Now,
-                    CreatedUser = "test"
+                    CreatedUser = null
                 },
                 new User
                 {
@@ -87,7 +87,7 @@ namespace Hoops.Api.Tests
                     Name = "User Three",
                     UserType = 1,
                     CreatedDate = DateTime.Now,
-                    CreatedUser = "test"
+                    CreatedUser = null
                 }
             };
 
@@ -127,7 +127,7 @@ namespace Hoops.Api.Tests
                     Name = "John Doe",
                     UserType = 1,
                     CreatedDate = DateTime.Now,
-                    CreatedUser = "seed"
+                    CreatedUser = null
                 },
                 new User
                 {
@@ -136,7 +136,7 @@ namespace Hoops.Api.Tests
                     Name = "Jane Smith",
                     UserType = 1,
                     CreatedDate = DateTime.Now,
-                    CreatedUser = "seed"
+                    CreatedUser = null
                 }
             };
 
@@ -150,7 +150,7 @@ namespace Hoops.Api.Tests
                 Name = "New User",
                 UserType = 1,
                 CreatedDate = DateTime.Now,
-                CreatedUser = "test"
+                CreatedUser = null
             };
 
             // Act
@@ -188,7 +188,7 @@ namespace Hoops.Api.Tests
                 Name = "Test User 1",
                 UserType = 1,
                 CreatedDate = DateTime.Now,
-                CreatedUser = "test"
+                CreatedUser = null
             };
 
             var user2 = new User
@@ -197,7 +197,7 @@ namespace Hoops.Api.Tests
                 Name = "Test User 2",
                 UserType = 1,
                 CreatedDate = DateTime.Now,
-                CreatedUser = "test"
+                CreatedUser = null
             };
 
             context.Users.AddRange(user1, user2);
@@ -225,7 +225,7 @@ namespace Hoops.Api.Tests
                 Name = "Zero User",
                 UserType = 1,
                 CreatedDate = DateTime.Now,
-                CreatedUser = "test"
+                CreatedUser = null
             };
 
             // Act - Simulate the function logic

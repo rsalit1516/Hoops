@@ -4,6 +4,7 @@ using Hoops.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hoops.Infrastructure.Migrations
 {
     [DbContext(typeof(hoopsContext))]
-    partial class hoopsContextModelSnapshot : ModelSnapshot
+    [Migration("20260606155046_CompleteAuditFields")]
+    partial class CompleteAuditFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -144,9 +147,8 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("CreatedUser")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("CreatedUSer");
+                    b.Property<string>("CreatedUSer")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("LinkID")
                         .HasColumnType("int");
@@ -274,6 +276,10 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<int?>("CoDirectorId")
                         .HasColumnType("int")
                         .HasColumnName("CoDirectorID");
+
+                    b.Property<int?>("CompanyID")
+                        .HasColumnType("int")
+                        .HasColumnName("CompanyID");
 
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
@@ -416,6 +422,10 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<string>("State")
                         .HasMaxLength(2)
                         .HasColumnType("nvarchar(2)");
+
+                    b.Property<int?>("TeamId")
+                        .HasColumnType("int")
+                        .HasColumnName("TEMID");
 
                     b.Property<string>("Zip")
                         .HasMaxLength(20)
@@ -597,6 +607,10 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<bool?>("TeeShirts")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("TempId")
+                        .HasColumnType("int")
+                        .HasColumnName("TEMPID");
+
                     b.Property<bool?>("TryOuts")
                         .HasColumnType("bit");
 
@@ -642,9 +656,16 @@ namespace Hoops.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int?>("Coach")
+                        .HasColumnType("int");
+
                     b.Property<int?>("CoachId")
                         .HasColumnType("int")
                         .HasColumnName("CoachID");
+
+                    b.Property<int?>("CompanyID")
+                        .HasColumnType("int")
+                        .HasColumnName("CompanyID");
 
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
@@ -724,6 +745,9 @@ namespace Hoops.Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasColumnName("ShoppingCartID");
 
+                    b.Property<int?>("Sponsor")
+                        .HasColumnType("int");
+
                     b.Property<int?>("SponsorId")
                         .HasColumnType("int")
                         .HasColumnName("SponsorID");
@@ -747,10 +771,17 @@ namespace Hoops.Infrastructure.Migrations
                     b.HasIndex("PlayerId")
                         .HasDatabaseName("idx_DCh_2451_2450_Players");
 
-                    b.HasIndex("SeasonId");
-
                     b.HasIndex("TeamId")
                         .HasDatabaseName("idx_DCh_12817_12816_Players");
+
+                    b.HasIndex("Coach", "Sponsor", "SeasonId")
+                        .HasDatabaseName("idx_DCh_98394_98393_Players");
+
+                    b.HasIndex("SeasonId", "PayType", "Sponsor")
+                        .HasDatabaseName("idx_DCh_8781_8780_Players");
+
+                    b.HasIndex("PlayerId", "DivisionId", "Coach", "Sponsor", "SeasonId")
+                        .HasDatabaseName("idx_DCh_25_24_Players");
 
                     b.ToTable("Players", (string)null);
                 });
@@ -1112,9 +1143,17 @@ namespace Hoops.Infrastructure.Migrations
                     b.Property<DateTime?>("AdExpiration")
                         .HasColumnType("date");
 
+                    b.Property<string>("Color1")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<int>("Color1Id")
                         .HasColumnType("int")
                         .HasColumnName("Color1ID");
+
+                    b.Property<string>("Color2")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("Color2Id")
                         .HasColumnType("int")
@@ -1412,6 +1451,30 @@ namespace Hoops.Infrastructure.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<int?>("ModifiedUser")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Round1")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Round2")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Round3")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Round4")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Round5")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Round6")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Round7")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Round8")
                         .HasColumnType("int");
 
                     b.Property<int?>("SeasonID")

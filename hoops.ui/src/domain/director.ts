@@ -17,8 +17,10 @@ export class Director {
   zip?: string;
   phonePref?: string;
   emailPref?: number;
-  createdDate?: Date;
-  createdUser?: string;
+  createdDate?: Date | string | null;
+  createdUser?: number | null;
+  modifiedDate?: Date | string | null;
+  modifiedUser?: number | null;
   photo?: any;
   constructor(
     directorId: number,

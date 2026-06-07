@@ -1,10 +1,11 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Hoops.Core.Interface;
 
 namespace Hoops.Core.Models
 {
-    public partial class Role
+    public partial class Role : IAuditable
     {
 
         [Key]
@@ -16,7 +17,9 @@ namespace Hoops.Core.Models
         public string ScreenName { get; set; }
         public string AccessType { get; set; }
         public DateTime? CreatedDate { get; set; }
-        public string CreatedUser { get; set; }
+        public int? CreatedUser { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public int? ModifiedUser { get; set; }
 
         //public virtual User User { get; set; }
     }

@@ -248,7 +248,7 @@ namespace Hoops.Data
                         CompanyId = person.CompanyId,
                         UserType = 1,
                         CreatedDate = DateTime.Today,
-                        CreatedUser = "Tester"
+                        // CreatedUser set by AuditInterceptor
                     }
                     );
 
@@ -537,8 +537,8 @@ namespace Hoops.Data
         {
             var people = new List<Person>
             {
-                new Person {CompanyId = CompanyId, FirstName = "James", LastName = "Chance", Cellphone = "954-321-3214", Email="test@ab.com", Gender="M", Grade=9, Player=true, CreatedDate=DateTime.Now, CreatedUser="Test"},
-                new Person {CompanyId = CompanyId, FirstName = "Peter", LastName = "Afta", Cellphone = "954-321-3214", Email="test1@ab.com", Gender="M", Grade=9, Player=true, CreatedDate=DateTime.Now, CreatedUser="Test"},
+                new Person {CompanyId = CompanyId, FirstName = "James", LastName = "Chance", Cellphone = "954-321-3214", Email="test@ab.com", Gender="M", Grade=9, Player=true, CreatedDate=DateTime.Now},
+                new Person {CompanyId = CompanyId, FirstName = "Peter", LastName = "Afta", Cellphone = "954-321-3214", Email="test1@ab.com", Gender="M", Grade=9, Player=true, CreatedDate=DateTime.Now},
             };
             people.ForEach(s => context.People.Add(s));
             context.SaveChanges();

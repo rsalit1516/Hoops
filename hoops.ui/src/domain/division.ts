@@ -11,4 +11,8 @@ export class Division {
   public gender2: string = 'M';
   // Director is optional; use null when not set to avoid FK violations
   public directorId: number | null = null;
+  public createdDate?: Date | string | null;
+  public createdUser?: number | null;
+  public modifiedDate?: Date | string | null;
+  public modifiedUser?: number | null;
 }

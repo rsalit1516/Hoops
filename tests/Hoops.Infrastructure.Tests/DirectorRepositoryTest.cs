@@ -43,7 +43,7 @@ namespace Hoops.Infrastructure.Tests
                     Seq = 1,
                     Title = "Board President",
                     CreatedDate = DateTime.Now,
-                    CreatedUser = "test"
+                    CreatedUser = null
                 },
                 new Director
                 {
@@ -53,7 +53,7 @@ namespace Hoops.Infrastructure.Tests
                     Seq = 2,
                     Title = "Vice President",
                     CreatedDate = DateTime.Now,
-                    CreatedUser = "test"
+                    CreatedUser = null
                 }
             });
             context.SaveChanges();
@@ -88,7 +88,7 @@ namespace Hoops.Infrastructure.Tests
                 Seq = 0, // Should be auto-generated
                 Title = "Treasurer",
                 CreatedDate = DateTime.Now,
-                CreatedUser = "test"
+                CreatedUser = null
             };
 
             // Act
