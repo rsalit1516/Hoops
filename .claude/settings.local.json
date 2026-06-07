@@ -73,7 +73,8 @@
       "Bash(head:*)",
       "Bash(az storage *)",
       "Bash(npx tsc *)",
-      "Bash(dotnet list *)"
+      "Bash(dotnet list *)",
+      "Bash(git checkout *)"
     ],
     "deny": [],
     "ask": []
