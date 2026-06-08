@@ -51,7 +51,7 @@
             <th
               mat-header-cell
               *matHeaderCellDef
-              [mat-sort-header]="column.sortable ? column.key : undefined"
+              [mat-sort-header]="column.sortable ? column.key : ''"
               [attr.data-sortable]="column.sortable || null"
               [class]="column.headerClass || ''"
               [style.min-width]="column.minWidth"
@@ -69,8 +69,7 @@
               [style.width]="column.width"
             >
               @if (column.template) {
-                <ng-container *ngTemplateOutlet="column.template; context: { $implicit: row }"
-                 />
+                <ng-container [ngTemplateOutlet]="column.template" [ngTemplateOutletContext]="{ $implicit: row }" />
               } @else {
                 {{
                   column.valueGetter ? column.valueGetter(row) : row[column.key]

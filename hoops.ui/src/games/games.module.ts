@@ -4,7 +4,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ScheduleCardView } from './components/schedule-card-view/schedule-card-view';
 import { GameCard } from './components/game-card/game-card';
-import { GamesRoutingModule } from './games-routing.module';
 import { GameFilter } from './components/game-filter/game-filter';
 import { GamesShell } from './containers/games-shell/games-shell';
 import { GameSortPipe } from './game-sort.pipe';
@@ -20,7 +19,6 @@ import { MatNativeDateModule } from '@angular/material/core';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    GamesRoutingModule,
     SchedulePlayoffs,
     DailyPlayoffSchedule,
     ScheduleCardView,
@@ -33,7 +31,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     Scores,
     MatNativeDateModule,
   ],
-  exports: [GamesRoutingModule],
+  exports: [],
   providers: [],
 })
 export class GamesModule {}

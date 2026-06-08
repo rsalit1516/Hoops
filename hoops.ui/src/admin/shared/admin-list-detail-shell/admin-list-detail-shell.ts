@@ -18,6 +18,7 @@ import { PaginationPreferencesService } from '@app/services/pagination-preferenc
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { NgTemplateOutlet } from '@angular/common';
 import { ColumnConfig } from '../models';
 
 /**
@@ -62,7 +63,8 @@ import { ColumnConfig } from '../models';
     MatPaginatorModule,
     MatButtonModule,
     MatIconModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    NgTemplateOutlet,
 ],
   templateUrl: './admin-list-detail-shell.html',
   styleUrls: [

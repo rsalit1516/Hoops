@@ -97,7 +97,7 @@
           @for (volunteer of selectedVolunteers(); track volunteer.id) {
             <mat-chip (removed)="removeVolunteer(volunteer.id)">
               {{ volunteer.name }}
-              <button matChipRemove aria-label="Remove {{ volunteer.name }}">
+              <button type="button" matChipRemove aria-label="Remove {{ volunteer.name }}">
                 <mat-icon>cancel</mat-icon>
               </button>
             </mat-chip>
@@ -114,7 +114,7 @@
         </button>
         <mat-menu #volunteerMenu="matMenu">
           @for (volunteer of availableVolunteers(); track volunteer.id) {
-            <button mat-menu-item (click)="addVolunteer(volunteer)">
+            <button type="button" mat-menu-item (click)="addVolunteer(volunteer)">
               {{ volunteer.name }}
             </button>
           }
