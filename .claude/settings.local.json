@@ -74,7 +74,9 @@
       "Bash(az storage *)",
       "Bash(npx tsc *)",
       "Bash(dotnet list *)",
-      "PowerShell(dotnet ef migrations add CompleteAuditFields --project src/Hoops.Infrastructure --startup-project src/Hoops.Api 2>&1)"
+      "PowerShell(dotnet ef migrations add CompleteAuditFields --project src/Hoops.Infrastructure --startup-project src/Hoops.Api 2>&1)",
+      "Bash(git checkout *)",
+      "Bash(git -C C:/Users/rrsal/repos/hoops/.claude/worktrees/feat-playwright-e2e log --oneline -5)"
     ],
     "deny": [],
     "ask": []
