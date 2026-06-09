@@ -107,18 +107,16 @@ export class HouseholdList
     this.logger.info('Filter change received:', filters);
     this.filters.set(filters);
 
-    // Update service criteria and execute search
+    const globalSearch = !!(filters.email || filters.phone);
+
     const criteria = {
-      householdName: filters.letter || '',
+      householdName: globalSearch
+        ? (filters.searchText || '')
+        : (filters.searchText || filters.letter || ''),
       address: '',
       email: filters.email || '',
       phone: filters.phone || '',
     };
-
-    // If there's a searchText, use it instead of just the letter
-    if (filters.searchText) {
-      criteria.householdName = filters.searchText;
-    }
 
     this.householdService.selectedCriteria.set(criteria);
     this.householdService.executeSearch();
