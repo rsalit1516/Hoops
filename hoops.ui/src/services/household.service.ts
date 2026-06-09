@@ -146,11 +146,15 @@ export class HouseholdService {
         url += '&email=' + criteria.email;
       }
     }
+    if (criteria.phone !== '') {
+      if (url.indexOf('?') === -1) {
+        url += '?phone=' + criteria.phone;
+      } else {
+        url += '&phone=' + criteria.phone;
+      }
+    }
     this.searchUrl = url;
-    // console.log('Search URL: ', url);
     return url;
-    // add additional criteria as needed
-    // https://localhost:5001/api/Household/search?name=salit&email=richard.salit%40gmail.com
   }
   saveHousehold(household: Household): Observable<Household> {
     // Ensure CompanyId is set

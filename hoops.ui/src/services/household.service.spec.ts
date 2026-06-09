@@ -127,4 +127,33 @@ describe('HouseholdService', () => {
       expect(caughtStatus).toBe(404);
     });
   });
+
+  describe('constructQueryString', () => {
+    it('should include phone param when phone is provided', () => {
+      const url = service.constructQueryString({ householdName: '', address: '', email: '', phone: '5551234' });
+      expect(url).toContain('phone=5551234');
+    });
+
+    it('should include phone as query start when no name or email', () => {
+      const url = service.constructQueryString({ householdName: '', address: '', email: '', phone: '5551234' });
+      expect(url).toContain('?phone=5551234');
+    });
+
+    it('should append phone with & when name is already in the URL', () => {
+      const url = service.constructQueryString({ householdName: 'Smith', address: '', email: '', phone: '5551234' });
+      expect(url).toContain('?name=Smith');
+      expect(url).toContain('&phone=5551234');
+    });
+
+    it('should append phone with & when email is already in the URL', () => {
+      const url = service.constructQueryString({ householdName: '', address: '', email: 'a@b.com', phone: '5551234' });
+      expect(url).toContain('?email=a@b.com');
+      expect(url).toContain('&phone=5551234');
+    });
+
+    it('should not include phone param when phone is empty', () => {
+      const url = service.constructQueryString({ householdName: 'Smith', address: '', email: '', phone: '' });
+      expect(url).not.toContain('phone');
+    });
+  });
 });
