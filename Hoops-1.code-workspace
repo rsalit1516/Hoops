@@ -40,12 +40,14 @@
         "label": "Start Functions (Local)",
         "type": "shell",
         "command": "func",
-        "args": ["start"],
+        "args": [
+          "start"
+        ],
         "options": {
           "cwd": "${workspaceFolder}/src/Hoops.Functions",
           "env": {
-            "SEED_DB": "${input:seedDb}",
-          },
+            "SEED_DB": "${input:seedDb}"
+          }
         },
         "isBackground": true,
         "problemMatcher": {
@@ -54,26 +56,28 @@
               "regexp": ".",
               "file": 1,
               "location": 2,
-              "message": 3,
-            },
+              "message": 3
+            }
           ],
           "background": {
             "activeOnStart": true,
             "beginsPattern": ".*Azure Functions Core Tools.*",
-            "endsPattern": ".*Worker process started and initialized.*",
-          },
-        },
+            "endsPattern": ".*Worker process started and initialized.*"
+          }
+        }
       },
       {
         "label": "Start Functions (Local - Prod Data RO)",
         "type": "shell",
         "command": "func",
-        "args": ["start"],
+        "args": [
+          "start"
+        ],
         "options": {
           "cwd": "${workspaceFolder}/src/Hoops.Functions",
           "env": {
-            "USE_PROD_DATA": "true",
-          },
+            "USE_PROD_DATA": "true"
+          }
         },
         "isBackground": true,
         "problemMatcher": {
@@ -82,46 +86,58 @@
               "regexp": ".",
               "file": 1,
               "location": 2,
-              "message": 3,
-            },
+              "message": 3
+            }
           ],
           "background": {
             "activeOnStart": true,
             "beginsPattern": ".*Azure Functions Core Tools.*",
-            "endsPattern": ".*Worker process started and initialized.*",
-          },
-        },
+            "endsPattern": ".*Worker process started and initialized.*"
+          }
+        }
       },
       {
         "label": "Start Frontend (Local)",
         "type": "shell",
         "command": "npm",
-        "args": ["start"],
+        "args": [
+          "start"
+        ],
         "options": {
-          "cwd": "${workspaceFolder}/hoops.ui",
+          "cwd": "${workspaceFolder}/hoops.ui"
         },
-        "dependsOn": ["Start Functions (Local)"],
+        "dependsOn": [
+          "Start Functions (Local)"
+        ],
         "dependsOrder": "sequence",
-        "problemMatcher": [],
+        "problemMatcher": []
       },
       {
         "label": "Start Frontend (Dev Cloud API)",
         "type": "shell",
         "command": "npm",
-        "args": ["start"],
+        "args": [
+          "start"
+        ],
         "options": {
           "cwd": "${workspaceFolder}/hoops.ui",
           "env": {
-            "API_BASE_URL": "https://hoops-functions-dev-djeqhegwahbua7eq.eastus-01.azurewebsites.net",
-          },
+            "API_BASE_URL": "https://hoops-functions-dev-djeqhegwahbua7eq.eastus-01.azurewebsites.net"
+          }
         },
-        "problemMatcher": [],
+        "problemMatcher": []
       },
       {
         "label": "Build Solution",
         "type": "shell",
         "command": "dotnet",
-        "args": ["build", "Hoops.sln", "-c", "Debug", "/nologo"],
+        "args": [
+          "build",
+          "Hoops.sln",
+          "-c",
+          "Debug",
+          "/nologo"
+        ]
       },
       {
         "label": "Test Solution (fast)",
@@ -132,9 +148,9 @@
           "Hoops.sln",
           "--filter",
           "TestCategory!=Slow",
-          "--nologo",
+          "--nologo"
         ],
-        "group": "test",
+        "group": "test"
       },
       {
         "label": "Build Functions (Debug)",
@@ -145,14 +161,16 @@
           "src/Hoops.Functions/Hoops.Functions.csproj",
           "-c",
           "Debug",
-          "/nologo",
+          "/nologo"
         ],
         "isBackground": false,
-        "problemMatcher": ["$msCompile"],
+        "problemMatcher": [
+          "$msCompile"
+        ],
         "group": {
           "kind": "build",
-          "isDefault": true,
-        },
+          "isDefault": true
+        }
       },
       {
         "label": "clean (functions)",
@@ -160,13 +178,13 @@
         "args": [
           "clean",
           "/property:GenerateFullPaths=true",
-          "/consoleloggerparameters:NoSummary",
+          "/consoleloggerparameters:NoSummary"
         ],
         "type": "process",
         "problemMatcher": "$msCompile",
         "options": {
-          "cwd": "${workspaceFolder}/src\\Hoops.Functions",
-        },
+          "cwd": "${workspaceFolder}/src\\Hoops.Functions"
+        }
       },
       {
         "label": "build (functions)",
@@ -174,18 +192,18 @@
         "args": [
           "build",
           "/property:GenerateFullPaths=true",
-          "/consoleloggerparameters:NoSummary",
+          "/consoleloggerparameters:NoSummary"
         ],
         "type": "process",
         "dependsOn": "clean (functions)",
         "group": {
           "kind": "build",
-          "isDefault": true,
+          "isDefault": true
         },
         "problemMatcher": "$msCompile",
         "options": {
-          "cwd": "${workspaceFolder}/src\\Hoops.Functions",
-        },
+          "cwd": "${workspaceFolder}/src\\Hoops.Functions"
+        }
       },
       {
         "label": "clean release (functions)",
@@ -195,13 +213,13 @@
           "--configuration",
           "Release",
           "/property:GenerateFullPaths=true",
-          "/consoleloggerparameters:NoSummary",
+          "/consoleloggerparameters:NoSummary"
         ],
         "type": "process",
         "problemMatcher": "$msCompile",
         "options": {
-          "cwd": "${workspaceFolder}/src\\Hoops.Functions",
-        },
+          "cwd": "${workspaceFolder}/src\\Hoops.Functions"
+        }
       },
       {
         "label": "publish (functions)",
@@ -211,43 +229,50 @@
           "--configuration",
           "Release",
           "/property:GenerateFullPaths=true",
-          "/consoleloggerparameters:NoSummary",
+          "/consoleloggerparameters:NoSummary"
         ],
         "type": "process",
         "dependsOn": "clean release (functions)",
         "problemMatcher": "$msCompile",
         "options": {
-          "cwd": "${workspaceFolder}/src\\Hoops.Functions",
-        },
+          "cwd": "${workspaceFolder}/src\\Hoops.Functions"
+        }
       },
       {
         "type": "func",
         "dependsOn": "build (functions)",
         "options": {
-          "cwd": "${workspaceFolder}/src\\Hoops.Functions/bin/Debug/net10.0",
+          "cwd": "${workspaceFolder}/src\\Hoops.Functions/bin/Debug/net10.0"
         },
         "command": "host start",
         "isBackground": true,
-        "problemMatcher": "$func-dotnet-watch",
+        "problemMatcher": "$func-dotnet-watch"
       },
       {
         "label": "Rename Angular Components",
         "type": "shell",
         "command": "node",
-        "args": ["scripts/rename-components.mjs"],
+        "args": [
+          "scripts/rename-components.mjs"
+        ]
       },
       {
         "label": "Lint Frontend",
         "type": "shell",
         "command": "npm",
-        "args": ["run", "lint"],
+        "args": [
+          "run",
+          "lint"
+        ],
         "options": {
-          "cwd": "${workspaceFolder}/hoops.ui",
+          "cwd": "${workspaceFolder}/hoops.ui"
         },
         "isBackground": false,
-        "problemMatcher": ["$eslint-stylish"],
-        "group": "test",
-      },
+        "problemMatcher": [
+          "$eslint-stylish"
+        ],
+        "group": "test"
+      }
     ],
   },
 }
