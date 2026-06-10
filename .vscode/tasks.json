@@ -13,7 +13,6 @@
     }
   ],
   "tasks": [
-    // ── Backend ────────────────────────────────────────────────────────────────
     {
       "label": "Start Functions (Local)",
       "type": "shell",
@@ -70,7 +69,6 @@
         }
       }
     },
-    // ── Frontend ───────────────────────────────────────────────────────────────
     {
       "label": "Start Frontend (Local)",
       "type": "shell",
@@ -96,7 +94,6 @@
       },
       "problemMatcher": []
     },
-    // ── Build / Test ───────────────────────────────────────────────────────────
     {
       "label": "Build Solution",
       "type": "shell",
@@ -134,7 +131,6 @@
         "isDefault": true
       }
     },
-    // ── VS Code / Functions debugger tasks (used by launch.json) ──────────────
     {
       "label": "clean (functions)",
       "command": "dotnet",
@@ -205,13 +201,12 @@
       "type": "func",
       "dependsOn": "build (functions)",
       "options": {
-        "cwd": "${workspaceFolder}/src\\Hoops.Functions/bin/Debug/net9.0"
+        "cwd": "${workspaceFolder}/src\\Hoops.Functions/bin/Debug/net10.0"
       },
       "command": "host start",
       "isBackground": true,
       "problemMatcher": "$func-dotnet-watch"
     },
-    // ── Utilities ──────────────────────────────────────────────────────────────
     {
       "label": "Rename Angular Components",
       "type": "shell",
