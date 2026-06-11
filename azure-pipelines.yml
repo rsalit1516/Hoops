@@ -120,6 +120,52 @@ stages:
               PathtoPublish: "$(functionsPackage)"
               ArtifactName: "functions"
 
+  # E2E tests require a running full stack (Angular + Functions backend).
+  # Set runE2ETests=true in the pipeline UI variable group to enable.
+  - stage: E2E_Tests
+    displayName: E2E Tests (Playwright)
+    dependsOn: Build_Test
+    condition: and(succeeded(), eq(variables['runE2ETests'], 'true'))
+    jobs:
+      - job: Playwright
+        displayName: Run Playwright tests
+        pool:
+          vmImage: $(vmImage)
+        steps:
+          - task: NodeTool@0
+            displayName: "Install Node.js $(nodeVersion)"
+            inputs:
+              versionSpec: "$(nodeVersion)"
+
+          - script: |
+              cd hoops.ui
+              npm ci
+              npx playwright install chromium --with-deps
+            displayName: "Install dependencies and Playwright browsers"
+
+          - script: |
+              cd hoops.ui
+              npm run e2e -- --project=chromium
+            displayName: "Run Playwright tests (unauthenticated)"
+            env:
+              CI: true
+              E2E_BASE_URL: $(E2E_BASE_URL)
+
+          - task: PublishTestResults@2
+            displayName: "Publish Playwright test results"
+            condition: succeededOrFailed()
+            inputs:
+              testResultsFormat: "JUnit"
+              testResultsFiles: "hoops.ui/playwright-results/results.xml"
+              failTaskOnFailedTests: true
+
+          - task: PublishPipelineArtifact@1
+            displayName: "Publish Playwright report"
+            condition: always()
+            inputs:
+              targetPath: "hoops.ui/playwright-report"
+              artifact: "playwright-report"
+
   - stage: Deploy_Functions
     displayName: Deploy Azure Functions
     dependsOn: Build_Test
