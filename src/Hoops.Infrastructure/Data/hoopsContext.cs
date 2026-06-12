@@ -336,7 +336,7 @@ public partial class hoopsContext : DbContext
             entity.Property(e => e.CreatedUser);
             entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
             entity.Property(e => e.ModifiedUser);
-            entity.Property(e => e.TempId).HasColumnName("TEMPID");
+            entity.Ignore(e => e.TempId);
 
             // Indexes
             entity.HasIndex(e => e.Coach)
@@ -998,6 +998,7 @@ public partial class hoopsContext : DbContext
             entity.Property(e => e.SponsorId).HasColumnName("SponsorID");
 
             entity.Property(e => e.TeamColorId).HasColumnName("TeamColorID");
+            entity.Ignore(e => e.TeamColor);
 
             entity.Property(e => e.TeamName).HasMaxLength(50);
 
