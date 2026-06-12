@@ -48,7 +48,6 @@ export class App implements OnInit {
   ngOnInit () {
     this.seasonService.fetchCurrentSeason();
     this.contentService.fetchAllContents();
-    this.router.navigate([''])
   }
   public onToggleSidenav = () => {
     this.sidenavToggle.emit();
