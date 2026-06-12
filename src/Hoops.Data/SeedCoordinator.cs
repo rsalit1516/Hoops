@@ -71,7 +71,7 @@ namespace Hoops.Data
             // carry a FK back to Users (Divisions, Teams, Seasons, etc.).
             // Users must come BEFORE People/Households because Users.PersonId → People.
             await context.Database.ExecuteSqlRawAsync("DELETE FROM Players");
-            await context.Database.ExecuteSqlRawAsync("DELETE FROM Coach");
+            await context.Database.ExecuteSqlRawAsync("DELETE FROM Coaches");
             await _schedulePlayoffSeeder.DeleteAllAsync();
             await _scheduleGameSeeder.DeleteAllAsync();
             await _scheduleDivTeamsSeeder.DeleteAllAsync();

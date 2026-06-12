@@ -11,17 +11,10 @@ namespace Hoops.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "CompanyID",
-                table: "Players");
-
-            migrationBuilder.DropColumn(
-                name: "CompanyID",
-                table: "Divisions");
-
-            migrationBuilder.DropColumn(
-                name: "CompanyID",
-                table: "Teams");
+            // Guard each drop in case the column was already removed manually before migrations were applied.
+            migrationBuilder.Sql("IF COL_LENGTH('[dbo].[Players]','CompanyID') IS NOT NULL ALTER TABLE [Players] DROP COLUMN [CompanyID]");
+            migrationBuilder.Sql("IF COL_LENGTH('[dbo].[Divisions]','CompanyID') IS NOT NULL ALTER TABLE [Divisions] DROP COLUMN [CompanyID]");
+            migrationBuilder.Sql("IF COL_LENGTH('[dbo].[Teams]','CompanyID') IS NOT NULL ALTER TABLE [Teams] DROP COLUMN [CompanyID]");
 
             migrationBuilder.AlterColumn<DateTime>(
                 name: "ModifiedDate",
