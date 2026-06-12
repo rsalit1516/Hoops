@@ -210,6 +210,15 @@ export class TeamService {
       )
       .pipe(catchError(this.dataService.handleError('updateTeam', team)));
   }
+
+  deleteTeam(teamId: number): Observable<Team> {
+    return this.http
+      .delete<Team>(
+        Constants.teamDeleteUrl + teamId,
+        this.dataService.httpOptions
+      )
+      .pipe(catchError(this.dataService.handleError('deleteTeam', {} as Team)));
+  }
   newTeam() {
     let team = new Team();
     team.teamId = 0;

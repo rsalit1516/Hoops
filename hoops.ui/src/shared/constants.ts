@@ -62,6 +62,7 @@ export class Constants {
   public static GET_LOCATION_URL = `${this.FUNCTIONS_BASE_URL}/api/location`;
   public static teamPostUrl = `${this.FUNCTIONS_BASE_URL}/api/Team`;
   public static teamPutUrl = `${this.FUNCTIONS_BASE_URL}/api/Team/`;
+  public static teamDeleteUrl = `${this.FUNCTIONS_BASE_URL}/api/Team/`;
   public static getContentUrl = `${this.FUNCTIONS_BASE_URL}/api/webcontent`;
   public static getActiveContentUrl = `${this.FUNCTIONS_BASE_URL}/api/webcontent/getActiveWebContent`;
   public static postContentUrl = `${this.FUNCTIONS_BASE_URL}/api/webcontent`;

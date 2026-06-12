@@ -6,6 +6,12 @@
         <mat-label>Team No</mat-label>
         <input matInput placeholder="" [formField]="editTeamForm.teamNo" />
       </mat-form-field>
+      @if (editTeamForm.teamNo().dirty() && isTeamNoEmpty()) {
+        <p class="text-red-600 text-xs -mt-3">Team number is required.</p>
+      }
+      @if (editTeamForm.teamNo().dirty() && isDuplicateTeamNumber()) {
+        <p class="text-red-600 text-xs -mt-3">This team number already exists in this division.</p>
+      }
       <mat-form-field
         class="form-control w-full"
         appearance="fill"
@@ -30,10 +36,11 @@
     </div>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-raised-button color="primary" (click)="newTeam()">
+    <button type="button" mat-raised-button color="primary" (click)="newTeam()">
       New Team
     </button>
     <button
+      type="button"
       mat-raised-button
       color="primary"
       [disabled]="!isFormValid() || !isFormDirty()"
@@ -41,6 +48,11 @@
     >
       Save
     </button>
-    <button mat-raised-button color="primary" (click)="cancel()">Cancel</button>
+    <button type="button" mat-raised-button color="primary" (click)="cancel()">Cancel</button>
+    @if (isExistingTeam()) {
+      <button type="button" mat-raised-button color="warn" (click)="openDeleteDialog()">
+        Delete
+      </button>
+    }
   </mat-card-actions>
 </mat-card>
