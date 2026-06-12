@@ -1,4 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export default defineConfig({
   testDir: './playwright',
@@ -23,9 +26,10 @@ export default defineConfig({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
+      testIgnore: ['**/admin/**'],
     },
 
-    // Pre-authenticated browser — used for admin tests (added as test suite grows).
+    // Pre-authenticated browser — used for admin tests.
     {
       name: 'chromium:admin',
       use: {
@@ -33,6 +37,7 @@ export default defineConfig({
         storageState: 'playwright/.auth/user.json',
       },
       dependencies: ['setup'],
+      testMatch: ['**/admin/**/*.spec.ts'],
     },
   ],
   webServer: {
