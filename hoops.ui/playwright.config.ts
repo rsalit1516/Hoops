@@ -14,7 +14,7 @@ export default defineConfig({
     ['junit', { outputFile: 'playwright-results/results.xml' }],
   ],
   use: {
-    baseURL: process.env['E2E_BASE_URL'] ?? 'http://localhost:4200',
+    baseURL: process.env['E2E_BASE_URL'] ?? 'http://localhost:4201',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
   },
@@ -41,8 +41,8 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'npm start',
-    url: 'http://localhost:4200',
+    command: 'npm run start:e2e',
+    url: 'http://localhost:4201',
     reuseExistingServer: !process.env['CI'],
     timeout: 120_000,
   },

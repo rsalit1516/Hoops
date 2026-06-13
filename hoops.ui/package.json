@@ -7,6 +7,7 @@
     "build:prod": "ng build csbc --configuration production",
     "build:staging": "ng build csbc --configuration staging",
     "start": "ng serve --configuration local",
+    "start:e2e": "ng serve --configuration local --port 4201",
     "test": "ng test",
     "test:ci": "ng test --watch=false --browsers=ChromeHeadless --code-coverage",
     "e2e": "playwright test",
