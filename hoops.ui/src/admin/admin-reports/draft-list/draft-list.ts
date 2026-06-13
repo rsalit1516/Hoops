@@ -96,7 +96,7 @@ export class DraftList {
     effect(() => {
       const season = this.selectedSeason();
       const division = this.selectedDivision();
-      if (season && division) {
+      if (season?.seasonId && division) {
         const divisionId =
           division.divisionId === 0 ? null : division.divisionId;
         this.draftListService.getDraftList(season.seasonId, divisionId);

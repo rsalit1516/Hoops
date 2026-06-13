@@ -87,7 +87,7 @@ export class DraftReport {
     effect(() => {
       const season = this.selectedSeason();
       const division = this.selectedDivision();
-      if (season && division) {
+      if (season?.seasonId && division) {
         const divisionId = division.divisionId === 0 ? null : division.divisionId;
         this.draftReportService.getDraftReport(season.seasonId, divisionId);
       }

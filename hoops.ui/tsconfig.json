@@ -30,8 +30,6 @@
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true,
-    "strictNullChecks": false,
-    "fullTepmplateTytpeCheck": false,
     "extendedDiagnostics": {
       "checks": {
         "unusedStandaloneImports": "suppress"
