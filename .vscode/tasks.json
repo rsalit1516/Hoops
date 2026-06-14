@@ -224,6 +224,92 @@
       "isBackground": false,
       "problemMatcher": ["$eslint-stylish"],
       "group": "test"
+    },
+    {
+      "label": "Start Functions (Worktree 1)",
+      "type": "shell",
+      "command": "func",
+      "args": ["start"],
+      "options": {
+        "cwd": "${workspaceFolder}/src/Hoops.Functions"
+      },
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": [
+          {
+            "regexp": ".",
+            "file": 1,
+            "location": 2,
+            "message": 3
+          }
+        ],
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".*Azure Functions Core Tools.*",
+          "endsPattern": ".*Worker process started and initialized.*"
+        }
+      }
+    },
+    {
+      "label": "Start Frontend (Worktree 1)",
+      "type": "shell",
+      "command": "ng",
+      "args": ["serve", "--configuration", "local", "--port", "4201"],
+      "options": {
+        "cwd": "${workspaceFolder}/hoops.ui"
+      },
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "Start App (Worktree 1)",
+      "dependsOn": ["Start Functions (Worktree 1)", "Start Frontend (Worktree 1)"],
+      "dependsOrder": "parallel",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Start Functions (Worktree 2)",
+      "type": "shell",
+      "command": "func",
+      "args": ["start"],
+      "options": {
+        "cwd": "${workspaceFolder}/src/Hoops.Functions"
+      },
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": [
+          {
+            "regexp": ".",
+            "file": 1,
+            "location": 2,
+            "message": 3
+          }
+        ],
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".*Azure Functions Core Tools.*",
+          "endsPattern": ".*Worker process started and initialized.*"
+        }
+      }
+    },
+    {
+      "label": "Start Frontend (Worktree 2)",
+      "type": "shell",
+      "command": "ng",
+      "args": ["serve", "--configuration", "local", "--port", "4202"],
+      "options": {
+        "cwd": "${workspaceFolder}/hoops.ui"
+      },
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "Start App (Worktree 2)",
+      "dependsOn": ["Start Functions (Worktree 2)", "Start Frontend (Worktree 2)"],
+      "dependsOrder": "parallel",
+      "group": "build",
+      "problemMatcher": []
     }
   ]
 }

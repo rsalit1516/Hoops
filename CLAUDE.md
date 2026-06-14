@@ -176,3 +176,37 @@ Key property names that differ from obvious guesses — check these before writi
 - `docs/testing/` — Test specifications and strategy
 - `docs/technical-requirements.md` — Functional and non-functional requirements
 - `docs/templates/` — Templates for documentation and technical specifications
+
+## Branching Convention
+
+Use git worktrees for any feature that touches more than 2–3 files, so `develop` stays live in the main folder while the feature branch is isolated in a sibling directory:
+
+```bash
+git worktree add ../<repo>-<short-feature-name> feature/<name>
+```
+
+Work and commit inside the worktree; open PRs from that branch. Remove the worktree when the branch is merged:
+
+```bash
+git worktree remove ../hoops-<short-feature-name>
+```
+
+## Worktree Dev Setup
+
+Each worktree gets its own ports so you can run `develop` and a feature branch side-by-side in separate VS Code windows.
+
+After creating a worktree, run the setup script **once** from the worktree root:
+
+```powershell
+.\scripts\setup-worktree.ps1 -Offset 1
+```
+
+Then open the worktree folder in a new VS Code window and run the task **Start App (Worktree 1)** (`Terminal → Run Task`). Both the Angular dev server and Azure Functions start in parallel.
+
+| Slot | Angular port | Functions port | Task name |
+|------|-------------|----------------|-----------|
+| Main dev (`develop`) | 4200 | 7071 | Start Frontend (Local) |
+| Worktree 1 | 4201 | 7072 | Start App (Worktree 1) |
+| Worktree 2 | 4202 | 7073 | Start App (Worktree 2) |
+
+The script writes two gitignored files: `hoops.ui/src/environments/environment.local.ts` (Angular→Functions URL) and `src/Hoops.Functions/local.settings.json` (Functions port + CORS). See their `.example` counterparts for the default structure.

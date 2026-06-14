@@ -6,6 +6,9 @@
 # Azure Functions local settings (contains secrets - never commit)
 local.settings.json
 
+# Angular local environment (port/flag overrides - per-developer, never commit)
+hoops.ui/src/environments/environment.local.ts
+
 # User-specific files
 *.rsuser
 *.suo
