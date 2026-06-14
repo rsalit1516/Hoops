@@ -22,7 +22,6 @@ export class AdminShellSidebar {
   showDirectors = this.#featureFlagService.isEnabled('adminDirectors');
   showHouseholds = this.#featureFlagService.isEnabled('adminHouseholds');
   showPeople = this.#featureFlagService.isEnabled('adminPeople');
-  showColors = this.#featureFlagService.isEnabled('adminColors');
   showUsers = this.#featureFlagService.isEnabled('adminUsers');
   showNotices = this.#featureFlagService.isEnabled('adminNotices');
   shouldRun = false;
@@ -49,7 +48,11 @@ export class AdminShellSidebar {
     { name: 'Sponsors', route: '/admin/sponsors', isSelected: false },
     { name: 'Users', route: '/admin/users', isSelected: false },
     { name: 'Documents', route: '/admin/documents', isSelected: false },
-    { name: 'Uniform Colors', route: '/admin/colors', isSelected: false },
+  ];
+
+  MasterTablesSection = 'Master Tables';
+  masterTablesItems = [
+    { name: 'Colors', route: '/admin/colors', isSelected: false },
   ];
 
   ReportsSection = 'Reports';
@@ -85,14 +88,10 @@ export class AdminShellSidebar {
 
   navigate(item: nav) {
     this.#logger.info('Navigating to:', item.route);
-    this.seasonSetupItems.forEach((i) => {
-      if (i.name === item.name) {
-        i.isSelected = true;
-      } else {
-        i.isSelected = false;
-      }
+    const allSectionItems = [...this.seasonSetupItems, ...this.masterTablesItems];
+    allSectionItems.forEach((i) => {
+      i.isSelected = i.name === item.name;
     });
-
     this.#router.navigate([item.route]);
   }
 }

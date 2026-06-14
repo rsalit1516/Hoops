@@ -1,0 +1,38 @@
+<div class="admin-toolbar">
+  <mat-toolbar>
+    <span>Colors</span>
+    <span class="spacer"></span>
+    <button mat-raised-button color="primary" (click)="addNew()">New</button>
+  </mat-toolbar>
+</div>
+
+<div class="flex gap-4 p-4 items-start">
+  <!-- Left: filter toggle + color list -->
+  <div class="flex-1 min-w-0">
+    <div class="mb-3">
+      <mat-checkbox
+        [checked]="showDiscontinued()"
+        (change)="showDiscontinued.set($event.checked)">
+        Show discontinued
+      </mat-checkbox>
+    </div>
+
+    <app-generic-mat-table
+      [columns]="columns()"
+      [data]="filteredColors()"
+      (rowClick)="onSelect($event)"
+    />
+  </div>
+
+  <!-- Right: color detail form -->
+  <div class="w-72 flex-shrink-0">
+    <app-color-detail />
+  </div>
+</div>
+
+<!-- Template for color name cell — discontinued rows shown in muted italic -->
+<ng-template #colorNameTpl let-color>
+  <span [class.text-gray-400]="color.discontinued" [class.italic]="color.discontinued">
+    {{ color.colorName }}
+  </span>
+</ng-template>

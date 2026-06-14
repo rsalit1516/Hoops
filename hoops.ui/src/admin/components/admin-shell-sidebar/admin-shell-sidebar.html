@@ -21,18 +21,13 @@
   <a mat-list-item routerLink="/admin/sponsors" routerLinkActive="active"
     >Sponsors</a
   >
-  } @if (showColors) {
-  <a mat-list-item routerLink="/admin/colors" routerLinkActive="active"
-    >Uniform Colors</a
-  >
   } @if (showUsers) {
   <a mat-list-item routerLink="/admin/users" routerLinkActive="active">Users</a>
   }
   <a mat-list-item routerLink="/admin/documents" routerLinkActive="active"
     >Documents</a
   >
-  @if ( showDirectors || showHouseholds || showPeople || showColors || showUsers
-  ) {
+  @if (showDirectors || showHouseholds || showPeople || showUsers) {
   <mat-divider />
   }
   <!-- <a mat-list-item routerLink="./director" routerLinkActive="active">Directors</a> -->
@@ -44,7 +39,18 @@
   >
     {{ item.name }}
   </mat-list-item>
-  } @if (showNotices) {
+  }
+  <mat-divider />
+  <h3 mat-subheader>{{ MasterTablesSection }}</h3>
+  @for (item of masterTablesItems; track item) {
+  <mat-list-item
+    (click)="navigate(item)"
+    [class.selected-list-item]="isSelected(item)"
+  >
+    {{ item.name }}
+  </mat-list-item>
+  }
+  @if (showNotices) {
   <h3 mat-subheader>{{ CommunicationSection }}</h3>
   } @if (showNotices) {
   <div>

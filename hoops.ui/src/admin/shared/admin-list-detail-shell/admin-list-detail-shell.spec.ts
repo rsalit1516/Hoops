@@ -430,7 +430,7 @@ describe('AdminListDetailShell', () => {
 
   describe('Empty State', () => {
     beforeEach(() => {
-      component.dataSource = new MatTableDataSource([]);
+      component.dataSource = new MatTableDataSource<TestData>([]);
       component.isLoading = signal(false);
       component.errorMessage = signal(null);
       fixture.detectChanges();

@@ -1,0 +1,37 @@
+<mat-card class="admin-detail-scroll">
+  <mat-card-title>Color</mat-card-title>
+  <mat-card-content>
+    <div class="flex flex-col gap-4 px-3">
+      <mat-form-field class="form-control w-full" appearance="fill">
+        <mat-label>Color Name</mat-label>
+        <input matInput [formField]="colorForm.colorName" />
+      </mat-form-field>
+      @if (colorForm.colorName().dirty() && isColorNameEmpty()) {
+        <p class="text-red-600 text-xs -mt-3">Color name is required.</p>
+      }
+
+      <mat-checkbox
+        [checked]="colorForm.discontinued().value()"
+        (change)="onDiscontinuedChange($event.checked)">
+        Discontinued
+      </mat-checkbox>
+    </div>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button
+      type="button"
+      mat-raised-button
+      color="primary"
+      [disabled]="!isSaveEnabled()"
+      (click)="save()">
+      Save
+    </button>
+    <button type="button" mat-raised-button (click)="cancel()">Cancel</button>
+    @if (isExistingColor()) {
+      <button type="button" mat-raised-button color="warn" (click)="discontinue()">
+        Delete
+      </button>
+    }
+  </mat-card-actions>
+</mat-card>

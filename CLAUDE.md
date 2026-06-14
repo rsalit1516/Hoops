@@ -176,3 +176,17 @@ Key property names that differ from obvious guesses — check these before writi
 - `docs/testing/` — Test specifications and strategy
 - `docs/technical-requirements.md` — Functional and non-functional requirements
 - `docs/templates/` — Templates for documentation and technical specifications
+
+## Branching Convention
+
+Use git worktrees for any feature that touches more than 2–3 files, so `develop` stays live in the main folder while the feature branch is isolated in a sibling directory:
+
+```bash
+git worktree add ../<repo>-<short-feature-name> feature/<name>
+```
+
+Work and commit inside the worktree; open PRs from that branch. Remove the worktree when the branch is merged:
+
+```bash
+git worktree remove ../hoops-<short-feature-name>
+```

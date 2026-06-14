@@ -59,6 +59,8 @@ export class Constants {
   public static getCurrentSeasonUrl = `${this.FUNCTIONS_BASE_URL}/api/season/getCurrentSeason/${this.COMPANYID}`;
   public static GET_SEASON_TEAMS_URL = `${this.FUNCTIONS_BASE_URL}/api/Team/GetSeasonTeams/`;
   public static getColorUrl = `${this.FUNCTIONS_BASE_URL}/api/color`;
+  public static getAdminColorUrl = `${this.FUNCTIONS_BASE_URL}/api/color/all`;
+  public static colorUrl = `${this.FUNCTIONS_BASE_URL}/api/color`;
   public static GET_LOCATION_URL = `${this.FUNCTIONS_BASE_URL}/api/location`;
   public static teamPostUrl = `${this.FUNCTIONS_BASE_URL}/api/Team`;
   public static teamPutUrl = `${this.FUNCTIONS_BASE_URL}/api/Team/`;

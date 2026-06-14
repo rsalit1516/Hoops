@@ -79,6 +79,12 @@ export const ADMINROUTES: Routes = [
       },
       { path: 'teams', component: TeamList },
       {
+        path: 'colors',
+        title: 'Colors',
+        loadComponent: () =>
+          import('./colors/color-list').then((m) => m.ColorList),
+      },
+      {
         path: 'games',
         children: ADMINGAMESROUTES,
         // loadComponent: () =>
